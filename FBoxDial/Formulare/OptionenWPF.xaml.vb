@@ -20,6 +20,9 @@ Public Class OptionenWPF
         NLogger.Debug("Initialisiere das ViewModel Optionen")
         OptVM = New OptionenViewModel
 
+        ' Lade Daten aus den Einstellungen
+        OptVM.LadeDaten()
+
         ' zeige die Grunddaten an
         NavigationCtrl.Content = New UserCtrlGrund With {.DataContext = OptVM}
 
@@ -71,13 +74,13 @@ Public Class OptionenWPF
         OptVM.Speichern()
 
         ' Formular schließen
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub BCancel_Click(sender As Object, e As RoutedEventArgs)
         NLogger.Debug("User: Optionen Cancel")
         ' Formular schließen
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub BReset_Click(sender As Object, e As RoutedEventArgs)

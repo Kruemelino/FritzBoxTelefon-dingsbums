@@ -231,22 +231,17 @@
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
     <Compile Include="Formulare\Common\NotifyBase.vb" />
     <Compile Include="Formulare\Common\ObservableCollectionEx.vb" />
-    <Compile Include="Formulare\AnrListViewModel.vb" />
+    <Compile Include="Formulare\Common\RelayCommand.vb" />
+    <Compile Include="Formulare\ViewModel\AnrListViewModel.vb" />
     <Compile Include="Formulare\AnrList\TimePicker.vb" />
-    <Compile Include="Formulare\AnrMonViewModel.vb" />
+    <Compile Include="Formulare\ViewModel\AnrMonViewModel.vb" />
     <Compile Include="Formulare\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\OptionenViewModel.vb" />
+    <Compile Include="Formulare\ViewModel\OptionenViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Elemente\OlTreeViewItem.vb" />
     <Compile Include="Formulare\OptionenWPF.xaml.vb">
       <DependentUpon>OptionenWPF.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OlTreeViewItem.vb" />
-    <Compile Include="Formulare\Optionen\Elemente\OptionsCheckBox.xaml.vb">
-      <DependentUpon>OptionsCheckBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsComboBox.xaml.vb">
-      <DependentUpon>OptionsComboBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml.vb">
       <DependentUpon>OptionsPasswordBox.xaml</DependentUpon>
@@ -256,9 +251,6 @@
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml.vb">
       <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsTextBox.xaml.vb">
-      <DependentUpon>OptionsTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml.vb">
       <DependentUpon>OptionsHinweis.xaml</DependentUpon>
@@ -293,14 +285,11 @@
     <Compile Include="Formulare\Optionen\UserCtrlGrund.vb">
       <DependentUpon>UserCtrlGrund.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsÜberschrift.xaml.vb">
-      <DependentUpon>OptionsÜberschrift.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Formulare\Optionen\UserCtrlKontakterstellung.xaml.vb">
       <DependentUpon>UserCtrlKontakterstellung.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\StoppUhrViewModel.vb" />
-    <Compile Include="Formulare\WählClientViewModel.vb" />
+    <Compile Include="Formulare\ViewModel\StoppUhrViewModel.vb" />
+    <Compile Include="Formulare\ViewModel\WählClientViewModel.vb" />
     <Compile Include="Formulare\StoppUhrWPF.xaml.vb">
       <DependentUpon>StoppUhrWPF.xaml</DependentUpon>
     </Compile>
@@ -456,17 +445,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Formulare\Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Formulare\OptionenWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsCheckBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -477,10 +462,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -528,10 +509,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsÜberschrift.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Formulare\Optionen\UserCtrlKontakterstellung.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -556,12 +533,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\XAMLResources.xaml">
+    <Page Include="Formulare\Resources\XAMLResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Formulare\Telefonbuch\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -5,35 +5,65 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:fbd="clr-namespace:FBoxDial"
             mc:Ignorable="d" 
-            d:DesignHeight="350" d:DesignWidth="400"
+            d:DesignHeight="400" d:DesignWidth="400"
             d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/XAMLResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <StackPanel x:Name="MainStackPanel" Margin="8">
+        <TextBlock Style="{StaticResource OptHeader}" Text="Grundaten Fritz!Box"/>
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Fritz!Box Adresse"
+                 Text="{Binding TBFBAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Fritz!Box Benutzername"
+                 Text="{Binding TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsPasswordBox 
+            Label="Fritz!Box Passwort"
+            Value="{Binding Path=TBPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
-        <fbd:OptionsÜberschrift Label="Grundaten Fritz!Box"/>
-        <fbd:OptionsTextBox Label="Fritz!Box Adresse" Value="{Binding Path=TBFBAdr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <fbd:OptionsTextBox Label="Fritz!Box Benutzername" Value="{Binding Path=TBBenutzer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <fbd:OptionsPasswordBox Label="Fritz!Box Passwort" Value="{Binding Path=TBPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="Grundaten Telefonie"/>
+        <fbd:OptionsHinweis Label="Landes- und Ortskennzahl (jeweils ohne führende Null) werden beim Einlesen der Telefone automatisch aus der Fritz!Box ausgelesen."/>
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Ortskennzahl" IsEnabled="False"
+                 Text="{Binding TBOrtsKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <fbd:OptionsÜberschrift Label="Grundaten Telefonie"/>
-        <fbd:OptionsHinweis Label="Landes- und Ortskennzahl (jeweils ohne führende Null) werden beim Einlesen der Telefone und bei Outlookstart automatisch aus der Fritz!Box ausgelesen."/>
-        <fbd:OptionsTextBox Label="Ortskennzahl" Value="{Binding Path=TBOrtsKZ, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False"/>
-        <fbd:OptionsTextBox Label="Landeskennzahl" Value="{Binding Path=TBLandesKZ, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False"/>
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Landeskennzahl" IsEnabled="False"
+                 Text="{Binding TBLandesKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <fbd:OptionsÜberschrift Label="Formatierung von Telefonnummern"/>
-        <fbd:OptionsCheckBox Label="Gruppieren" Value="{Binding Path=CBTelNrGruppieren, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <fbd:OptionsCheckBox Label="Internationale Vorwahl ergänzen" Value="{Binding Path=CBintl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <fbd:OptionsTextBox Label="Maske" Value="{Binding TBTelNrMaske, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <fbd:OptionsÜberschrift Label="Anruflisten"/>
-        <fbd:OptionsTextBox Label="Anzahl der Listenelemente je Liste" Value="{Binding TBNumEntryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <fbd:OptionsÜberschrift Label="Protokollierung"/>
-        <fbd:OptionsComboBox Label="Level"                             
+        <TextBlock Style="{StaticResource OptHeader}" Text="Formatierung von Telefonnummern"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Gruppieren" 
+                  IsChecked="{Binding CBTelNrGruppieren, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>   
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Internationale Vorwahl ergänzen" 
+                  IsChecked="{Binding CBintl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Maske"
+                 Text="{Binding TBTelNrMaske, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <TextBlock Style="{StaticResource OptHeader}" Text="Anruflisten"/>        
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Anzahl der Listenelemente je Liste"
+                 Text="{Binding TBNumEntryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <TextBlock Style="{StaticResource OptHeader}" Text="Protokollierung"/>
+        <ComboBox Style="{StaticResource OptComboBox}" Tag="Level"
                              ItemsSource="{Binding Path=CBoxLogLevel}"
                              SelectedValue="{Binding CBoxMinLogLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              DisplayMemberPath="Name"
                              SelectedValuePath="Name"/>
+        
         <fbd:OptionsLink Label="Arbeitsverzeichnis" URL="{Binding Path=PfadArbeitsverzeichnis}" LinkLabel="Öffnen"/>
 
     </StackPanel>

@@ -1,12 +1,25 @@
 ﻿Imports System.Xml.Serialization
 <Serializable()> Public Class FritzBoxXMLTelefonie
+    Inherits NotifyBase
 
-    <XmlElement("services")> Public Property Dienste As FritzBoxXMLServices
-    <XmlElement("number")> Public Property Nummern As List(Of FritzBoxXMLNummer)
+    Private _Nummern As ObservableCollectionEx(Of FritzBoxXMLNummer)
+    Private _Emails As ObservableCollectionEx(Of FritzBoxXMLEmail)
 
-    Friend ReadOnly Property GetFirstNumber As FritzBoxXMLNummer
+    <XmlArray("services"), XmlArrayItem("email")> Public Property Emails As ObservableCollectionEx(Of FritzBoxXMLEmail)
         Get
-            Return If(Nummern.Any, Nummern.First, Nothing)
+            Return _Emails
         End Get
+        Set
+            SetProperty(_Emails, Value)
+        End Set
+    End Property
+
+    <XmlElement("number")> Public Property Nummern As ObservableCollectionEx(Of FritzBoxXMLNummer)
+        Get
+            Return _Nummern
+        End Get
+        Set
+            SetProperty(_Nummern, Value)
+        End Set
     End Property
 End Class

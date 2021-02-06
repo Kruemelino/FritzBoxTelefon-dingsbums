@@ -7,16 +7,38 @@
             mc:Ignorable="d" 
             d:DesignHeight="350" d:DesignWidth="400"
             d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
-
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/XAMLResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <StackPanel x:Name="MainStackPanel" Margin="8">
 
-        <fbd:OptionsÜberschrift Label="Einstellungen für den Wählhilfe"/>
-        <fbd:OptionsCheckBox Label="Landeskennzahl immer mitwählen" Value="{Binding CBForceDialLKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsTextBox Label="Amtsholung" Value="{Binding TBAmt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsCheckBox Label="Nachfrage beim Wählen von Mobilnummern" Value="{Binding CBCheckMobil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsCheckBox Label="Wähldialog automatisch ausblenden" Value="{Binding CBCloseWClient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsTextBox Label="Anzeigedauer nach dem Wählen" Value="{Binding TBWClientEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="Einstellungen für den Wählhilfe"/>
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Landeskennzahl immer mitwählen" 
+                  IsChecked="{Binding CBForceDialLKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Präfix"
+                 Text="{Binding TBAmt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>        
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Nachfrage beim Wählen von Mobilnummern" 
+                  IsChecked="{Binding CBCheckMobil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}"                   
+                  Content="Wähldialog automatisch ausblenden" 
+                  IsChecked="{Binding CBCloseWClient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Anzeigedauer nach dem Wählen"
+                 Text="{Binding TBWClientEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    
     </StackPanel>
 
 

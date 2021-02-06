@@ -3,11 +3,9 @@ Imports System.Windows.Controls
 
 Partial Public Class OptionsPasswordBox
     Inherits UserControl
+
 #Region "Label"
 
-    ''' <summary>
-    ''' Gets or sets the Label which is displayed next to the field
-    ''' </summary>
     Public Property Label As String
         Get
             Return CStr(GetValue(LabelProperty))
@@ -47,8 +45,6 @@ Partial Public Class OptionsPasswordBox
 
     Public Sub New()
         InitializeComponent()
-        ' Eventhandler erst nach dem Initialisieren hinzufügen
-        'AddHandler PwBox.PasswordChanged, AddressOf PwBox_PasswordChanged
     End Sub
 
     Private Sub PwBox_GotFocus(sender As Object, e As RoutedEventArgs) Handles PwBox.GotFocus
@@ -66,7 +62,5 @@ Partial Public Class OptionsPasswordBox
                 End Using
             End If
         End If
-
-
     End Sub
 End Class

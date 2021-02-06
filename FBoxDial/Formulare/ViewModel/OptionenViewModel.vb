@@ -323,7 +323,7 @@ Public Class OptionenViewModel
             SetProperty(_CBKontaktSucheFritzBox, Value)
         End Set
     End Property
-    Public Property OutlookOrdnerVM As ObservableCollectionEx(Of OutlookOrdner)
+    Public Property OutlookOrdnerListe As ObservableCollectionEx(Of OutlookOrdner)
         Get
             Return _OutlookOrdner
         End Get
@@ -356,7 +356,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-    Public Property PCBRWSIndex As Boolean
+    Public Property CBRWSIndex As Boolean
         Get
             Return _CBRWSIndex
         End Get
@@ -488,13 +488,13 @@ Public Class OptionenViewModel
     End Property
 
     Public ReadOnly Property CBoxLogLevel As IEnumerable(Of LogLevel) = LogLevel.AllLoggingLevels
-    Public ReadOnly Property PfadArbeitsverzeichnis As String = XMLData.POptionen.Arbeitsverzeichnis
+    Public ReadOnly Property PfadArbeitsverzeichnis As String = IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName)
 #End Region
 
 #End Region
 
     Public Sub New()
-        LadeDaten()
+
     End Sub
 
     ''' <summary>
@@ -529,8 +529,8 @@ Public Class OptionenViewModel
         TelGeräteListe.AddRange(XMLData.PTelefonie.Telefoniegeräte)
 
         ' Ornderliste überwachter Ordner
-        OutlookOrdnerVM = New ObservableCollectionEx(Of OutlookOrdner)
-        OutlookOrdnerVM.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
+        OutlookOrdnerListe = New ObservableCollectionEx(Of OutlookOrdner)
+        OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
 
         ' Diverse Einstellungen zur Optik
         EinlesenInaktiv = True
@@ -583,10 +583,10 @@ Public Class OptionenViewModel
             ' Die Ordner in den Optionen löschen
             .Clear()
             ' Die Ordner aus den Viewmodel setzen
-            .AddRange(OutlookOrdnerVM)
+            .AddRange(OutlookOrdnerListe)
         End With
 
         ' Speichern in Datei anstoßen
-        Serializer.Speichern(XMLData, IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, $"{My.Resources.strDefShortName}.xml"))
+        Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
     End Sub
 End Class

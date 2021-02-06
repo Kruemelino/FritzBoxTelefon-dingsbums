@@ -10,14 +10,12 @@
         
         <Grid.Resources>
             <Style TargetType="{x:Type TextBlock}" x:Key="LinkTextBlockStyle">
-                <Setter Property="MinWidth" Value="100"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="HorizontalAlignment" Value="Right"/>
             </Style>
            
             <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockStyle">
                 <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="MinWidth" Value="100"/>
                 <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             </Style>
 

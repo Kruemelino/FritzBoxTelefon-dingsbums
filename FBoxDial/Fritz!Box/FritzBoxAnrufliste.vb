@@ -10,6 +10,7 @@ Module FritzBoxAnrufliste
             ' Ermittle Pfad zur Anrufliste
             If fboxSOAP.GetCallList(Pfad) Then
                 Return Await DeserializeObjectAsyc(Of FritzBoxXMLCallList)(Pfad)
+
             Else
                 NLogger.Warn("Pfad zur XML-Anrufliste konnte nicht ermittelt werden.")
                 Return Nothing

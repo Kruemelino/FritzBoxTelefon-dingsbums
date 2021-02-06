@@ -5,21 +5,53 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:fbd="clr-namespace:FBoxDial"
             mc:Ignorable="d" 
-            d:DesignHeight="350" d:DesignWidth="400"
+            d:DesignHeight="350" d:DesignWidth="420"
             d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
-
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/XAMLResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <StackPanel x:Name="MainStackPanel" Margin="8">
-        
-        <fbd:OptionsÜberschrift Label="Einstellungen für den Anrufmonitor"/>
-        <fbd:OptionsCheckBox Label="Anrufmonitor mit Outlook starten" Value="{Binding CBAnrMonAuto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsCheckBox Label="Anruffenster automatisch ausblenden" Value="{Binding CBAutoClose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsTextBox Label="Anzeigedauer bei Anruf in Sekunden" Value="{Binding TBEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsCheckBox Label="Kontakt bei Anruf öffnen" Value="{Binding CBAnrMonZeigeKontakt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsCheckBox Label="Zeige Kontaktbild" Value="{Binding CBAnrMonContactImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsCheckBox Label="Bei Vollbildanwendungen einblenden" Value="{Binding CBAnrMonVollbildAnzeigen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsÜberschrift Label="Einstellungen für die Stoppuhr"/>
-        <fbd:OptionsCheckBox Label="Stoppuhr bei Verbindungsaufbau einblenden" Value="{Binding CBStoppUhrEinblenden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsCheckBox Label="Stoppuhr bei Beenden ausblenden" Value="{Binding CBStoppUhrAusblenden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsTextBox Label="Ausblendverzögerung in Sekunden" Value="{Binding TBStoppUhrAusblendverzögerung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="Einstellungen für den Anrufmonitor"/>
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Anrufmonitor mit Outlook starten" 
+                  IsChecked="{Binding CBAnrMonAuto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Anruffenster automatisch ausblenden" 
+                  IsChecked="{Binding CBAutoClose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Anzeigedauer bei Anruf in Sekunden"
+                 Text="{Binding TBEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="Kontakt bei Anruf öffnen" 
+                  IsChecked="{Binding CBAnrMonZeigeKontakt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="Zeige Kontaktbild" 
+                  IsChecked="{Binding CBAnrMonContactImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="Bei Vollbildanwendungen einblenden" 
+                  IsChecked="{Binding CBAnrMonVollbildAnzeigen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="Einstellungen für die Stoppuhr"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Stoppuhr bei Verbindungsaufbau einblenden" 
+                  IsChecked="{Binding CBStoppUhrEinblenden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Stoppuhr bei Beenden ausblenden" 
+                  IsChecked="{Binding CBStoppUhrAusblenden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Ausblendverzögerung in Sekunden"
+                 Text="{Binding TBStoppUhrAusblendverzögerung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
     </StackPanel>
 </UserControl>

@@ -7,15 +7,29 @@
             mc:Ignorable="d" 
             d:DesignHeight="450" d:DesignWidth="400"
             d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
-
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/XAMLResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <StackPanel x:Name="MainStackPanel" Margin="8">
-
-        <fbd:OptionsÜberschrift Label="Einstellungen für die Kontaktsuche"/>
+        
+        <TextBlock Style="{StaticResource OptHeader}" Text="Einstellungen für die Kontaktsuche"/>
         <fbd:OptionsHinweis Label="Hinweise zur Kontaktsuche:&#10;Kontakte von eingehenden Anrufen wird nur in den hier gewählten Ordnern durchgeführt.&#10;Dies verringert die Zeit, bis ein passender Kontakt gefunden wurde.&#10;Die Kontaktindizierung wird nur in den ausgewählten Ordnern automatisch beim Speichern durchgeführt. Sie kann aber auch manuell angestoßen werden.&#10;Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werden die Indizierungseinträge beim Speichern automatisch entfernt."/>
-        <fbd:OptionsCheckBox Label="Outlook Unterordner einbeziehen" Value="{Binding CBSucheUnterordner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsCheckBox Label="Fritz!Box Telefonbüchern durchsuchen" Value="{Binding CBKontaktSucheFritzBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsÜberschrift Label="Outlook Kontaktindizierung"/>
-        <fbd:OptionsOLFolderTV x:Name="OLFolderKontaktsSuche" OutlookOlItemType="olContactItem" ÜberwachteOrdnerListe="{Binding OutlookOrdner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Verwendung="KontaktSuche"/>
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Outlook Unterordner einbeziehen" 
+                  IsChecked="{Binding CBSucheUnterordner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Fritz!Box Telefonbüchern durchsuchen" 
+                  IsChecked="{Binding CBKontaktSucheFritzBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Style="{StaticResource OptHeader}" Text="Outlook Kontaktindizierung"/>
+        <fbd:OptionsOLFolderTV x:Name="OLFolderKontaktsSuche" OutlookOlItemType="olContactItem" ÜberwachteOrdnerListe="{Binding OutlookOrdnerListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Verwendung="KontaktSuche"/>
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -40,11 +54,16 @@
             <TextBlock x:Name="LabelAnzahl" Grid.Column="1" Grid.Row="2" Margin="4"/>
 
         </Grid>
-    
-        <fbd:OptionsÜberschrift Label="Rückwärtssuche"/>
-        <fbd:OptionsCheckBox Label="Rückwärtsuche mit DasÖrtliche" Value="{Binding CBRWS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsCheckBox Label="Ergebnisse merken" Value="{Binding CBRWSIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Style="{StaticResource OptHeader}" Text="Rückwärtssuche"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Rückwärtsuche mit DasÖrtliche" 
+                  IsChecked="{Binding CBRWS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Ergebnisse merken" 
+                  IsChecked="{Binding CBRWSIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
     </StackPanel>
 

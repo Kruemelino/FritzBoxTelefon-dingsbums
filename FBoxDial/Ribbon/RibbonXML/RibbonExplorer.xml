@@ -20,7 +20,7 @@
               <button id="btnAnrMonShow_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="btnFBTelBch_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" enabled="false"/>
+          <button id="btnFBTelBch_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonJI_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_K" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
@@ -46,7 +46,7 @@
               <button id="btnAnrMonShow_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="btnFBTelBch_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" enabled="false"/>
+          <button id="btnFBTelBch_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonJI_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_C" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
@@ -72,7 +72,7 @@
               <button id="btnAnrMonShow_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="btnFBTelBch_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" enabled="false"/>
+          <button id="btnFBTelBch_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonJI_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_J" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
@@ -98,7 +98,7 @@
               <button id="btnAnrMonShow_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="btnFBTelBch_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" enabled="false"/>
+          <button id="btnFBTelBch_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonJI_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_M"  getScreentip="GetItemScreenTipp" onAction="BtnOnAction"/>

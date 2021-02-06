@@ -18,10 +18,10 @@ Public NotInheritable Class ThisAddIn
     End Function
 
     Private Sub ThisAddIn_Startup() Handles Me.Startup
-
-        Dim UserData As NutzerDaten = New NutzerDaten
         ' Logging konfigurieren
         LogManager.Configuration = DefaultNLogConfig()
+
+        Dim UserData As NutzerDaten = New NutzerDaten
 
         ' Outlook.Application initialisieren
         If OutookApplication Is Nothing Then OutookApplication = Application
@@ -73,7 +73,9 @@ Public NotInheritable Class ThisAddIn
         ' Eintrag ins Log
         NLogger.Info("{0} {1} beendet.", My.Resources.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
         ' XML-Datei Speichern
-        Serializer.Speichern(XMLData, IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, DfltConfigFileName))
+        Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltConfigFileName))
+
+        OutookApplication.Quit()
     End Sub
 
 #Region "Standby Wakeup"
@@ -108,7 +110,7 @@ Public NotInheritable Class ThisAddIn
                 End If
 
                 ' XML-Datei speichern
-                Serializer.Speichern(XMLData, IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, DfltConfigFileName))
+                Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltConfigFileName))
 
         End Select
     End Sub

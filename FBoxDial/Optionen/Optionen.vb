@@ -2,7 +2,7 @@
 <Serializable()> Public Class Optionen
     Inherits NotifyBase
 
-    <XmlIgnore> Public Property Arbeitsverzeichnis As String
+    '<XmlIgnore> Public Property Arbeitsverzeichnis As String
 
 #Region "Grundeinstellungen"
 #Region "Grundeinstellungen - Erforderliche Angaben"

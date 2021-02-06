@@ -7,11 +7,11 @@
             mc:Ignorable="d" 
             d:DesignHeight="350" d:DesignWidth="400"
             d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../XAMLResources.xaml" />
+                <ResourceDictionary Source="../Resources/XAMLResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -29,15 +29,22 @@
                 <Setter Property="SelectionMode" Value="Single"/>
             </Style>
         </StackPanel.Resources>
-
-        <fbd:OptionsÜberschrift Label="Phoner"/>
+        
+        <TextBlock Style="{StaticResource OptHeader}" Text="Phoner"/>
+        
         <fbd:OptionsHinweis Label="Die Software ermöglicht Gesprächsverbindungen in das Festnetz, zu Mobiltelefonen und zu VoIP-Gegenstellen. Phoner kann als Softphone an analogen Teilnehmeranschlüssen, an digitalen ISDN Teilnehmeranschlussleitungen und als IP-Softphone auf stationären und mobilen Computersystemen benutzt werden."/>
-        <fbd:OptionsTextBlock Label="Phoner Copyright 2020 Heiko Sommerfeldt. Alle Rechte vorbehalten."/>
+        <fbd:OptionsTextBlock Label="Phoner Copyright 2021 Heiko Sommerfeldt. Alle Rechte vorbehalten."/>
         <fbd:OptionsLink Label="Homepage" URL="http://phoner.de" LinkLabel="www.phoner.de"/>
-        <fbd:OptionsÜberschrift Label="Konfiguration"/>
+
+        <TextBlock Style="{StaticResource OptHeader}" Text="Phoner - Konfiguration"/>
+        
         <fbd:OptionsHinweis Label="Hinweise zur korrekten Konfiguration:&#10;Stelle sicher, dass Phoner sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.&#10;Lege ein Passwort für die Authentifizierung bei Phoner fest. Das gleiche Passwort muss bei Phoner unter &quot;Optionen / Web&quot; im Feld Passwort eingegeben werden.&#10;Prüfe, ob die Authentifizierung erfolgreich ist.&#10;Wähle Telefoniegerät aus, was mit Phoner registriert ist."/>
         <fbd:OptionsTextBlock Label="PhonerLight wird nicht unterstützt!"/>
-        <fbd:OptionsCheckBox Label="Phoner verwenden" Value="{Binding Path=CBPhoner, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+       
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Phoner verwenden" 
+                  IsChecked="{Binding CBPhoner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
         <fbd:OptionsPasswordBox Label="Phoner Passwort" Value="{Binding Path=TBPhonerPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
         <fbd:OptionsTextBlock Label="Registriertes Telefon für Phoner"/>

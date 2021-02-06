@@ -346,28 +346,20 @@ Public Class Telefonnummer
         Return other IsNot Nothing AndAlso Unformatiert.AreEqual(other.Unformatiert)
     End Function
     Public Overloads Function Equals(other As String) As Boolean
-        ' Erstelle aus other eine Telefonnummer
-        ' Bei Vergleich eigenener Nummern, übergib die OKZ und LKZ
-        'If EigeneNummer Then
-        '    Return Equals(New Telefonnummer With {.EigeneNummer = EigeneNummer, .Landeskennzahl = Landeskennzahl, .Ortskennzahl = Ortskennzahl, .SetNummer = other})
-        'Else
-        '    Return Equals(New Telefonnummer With {.SetNummer = other})
-        'End If
-
         Select Case True
             Case Unformatiert.AreEqual(NurZiffern(other))
-                NLogger.Trace($"Telefonnummernvergleich Unformatiert true: '{other}'; {Unformatiert}")
+                'NLogger.Trace($"Telefonnummernvergleich Unformatiert true: '{other}'; {Unformatiert}")
                 Return True
 
             Case Einwahl.AreEqual(NurZiffern(other))
-                NLogger.Trace($"Telefonnummernvergleich Einwahl true : '{other}'; {Einwahl}")
+                'NLogger.Trace($"Telefonnummernvergleich Einwahl true : '{other}'; {Einwahl}")
                 Return True
 
             Case Else
                 'Fallbach
-                NLogger.Debug($"Telefonnummernvergleich Fallback: '{other}'")
-                ' Erstelle aus other eine Telefonnummer
-                ' Bei Vergleich eigenener Nummern, übergib die OKZ und LKZ
+                'NLogger.Trace($"Telefonnummernvergleich Fallback: '{other}'")
+                '' Erstelle aus other eine Telefonnummer
+                '' Bei Vergleich eigenener Nummern, übergib die OKZ und LKZ
                 If EigeneNummer Then
                     Return Equals(New Telefonnummer With {.EigeneNummer = EigeneNummer, .Landeskennzahl = Landeskennzahl, .Ortskennzahl = Ortskennzahl, .SetNummer = other})
                 Else

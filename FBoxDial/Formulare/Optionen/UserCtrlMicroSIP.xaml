@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../XAMLResources.xaml" />
+                <ResourceDictionary Source="../Resources/XAMLResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -30,12 +30,20 @@
             </Style>
         </StackPanel.Resources>
 
-        <fbd:OptionsÜberschrift Label="MicroSIP - Open Source SIP-Softphone"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="MicroSIP - Open Source SIP-Softphone"/>
+        
         <fbd:OptionsLink Label="Homepage" URL="https://www.microsip.org/" LinkLabel="www.microsip.org"/>
-        <fbd:OptionsÜberschrift Label="Konfiguration"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="MicroSIP - Konfiguration"/>
         <fbd:OptionsHinweis Label="Hinweise zur korrekten Konfiguration:&#10;Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.&#10;Wähle Telefoniegerät aus, was mit MicroSIP registriert ist."/>
-        <fbd:OptionsCheckBox Label="MicroSIP verwenden" Value="{Binding Path=CBMicroSIP, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <fbd:OptionsTextBox Label="Pfad zu MicroSIP" Value="{Binding Path=TBMicroSIPPath, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="MicroSIP verwenden" 
+                  IsChecked="{Binding CBMicroSIP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="Pfad zu MicroSIP.exe"
+                 Text="{Binding TBMicroSIPPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
         <fbd:OptionsTextBlock Label="Registriertes Telefon für MicroSIP"/>
         <Border BorderThickness="0.5" Margin="0,0,0,4">
             <Border.BorderBrush>

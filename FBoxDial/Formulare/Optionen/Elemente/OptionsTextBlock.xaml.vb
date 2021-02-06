@@ -1,7 +1,7 @@
 ﻿Imports System.Windows
 Imports System.Windows.Controls
 
-Partial Public Class OptionsTextBlock
+<Obsolete> Partial Public Class OptionsTextBlock
     Inherits UserControl
 #Region "Label"
 

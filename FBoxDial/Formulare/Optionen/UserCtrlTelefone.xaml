@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../XAMLResources.xaml" />
+                <ResourceDictionary Source="../Resources/XAMLResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -34,7 +34,8 @@
             </Style>
             
         </StackPanel.Resources>
-        <fbd:OptionsÜberschrift Label="Einlesen der Telefoniedaten von der Fritz!Box"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="Einlesen der Telefoniedaten von der Fritz!Box"/>
+
         <Border BorderThickness="0.5" Margin="0,0,0,4">
             <StackPanel>
                 <Button x:Name="BTelefonie" Content="Start" Margin="4" IsEnabled="{Binding Path=EinlesenInaktiv, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -43,7 +44,7 @@
 
         </Border>
 
-        <fbd:OptionsÜberschrift Label="Telefoniegeräte"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="Telefoniegeräte"/>
         <Border BorderThickness="0.5" Margin="0,0,0,4">
             <Border.BorderBrush>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
@@ -77,7 +78,8 @@
             </DataGrid>
         </Border>
 
-        <fbd:OptionsÜberschrift Label="Telefonnummern"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="Telefonnummern"/>
+
         <fbd:OptionsTextBlock Label="Auswahl der Telefonnummern, auf die der Anrufmonitor reagiert"/>
         <Border BorderThickness="0.5" Margin="0,0,0,4">
             <Border.BorderBrush>

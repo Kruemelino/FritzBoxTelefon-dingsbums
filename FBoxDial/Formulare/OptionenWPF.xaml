@@ -13,7 +13,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="XAMLResources.xaml" />
+                <ResourceDictionary Source="Resources/Icons.xaml"/>
+                <ResourceDictionary Source="Resources/XAMLResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -31,58 +32,16 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Column="0" Grid.RowSpan="2">
             <StackPanel x:Name="SPMenuButtons" DockPanel.Dock="Left" Width="120" Orientation="Vertical">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type ToggleButton}" x:Key="ToggleButtonStyle">
-                        <Setter Property="Width" Value="Auto"/>
-                        <Setter Property="Height" Value="35"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                    <Border Background="{TemplateBinding Background}" BorderThickness ="0" Padding="4,0,0,0" Margin="0">
-                                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Foreground">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Foreground">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Resources>
-
-                <RadioButton x:Name="RBGrunde" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptBaseConfig}" Checked="RadioButton_Checked"/>
-                <RadioButton x:Name="RBAnrMon" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strAnrMon}" Checked="RadioButton_Checked"/>
-                <RadioButton x:Name="RBWählhilfe" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strDialer}" Checked="RadioButton_Checked"/>
-                <RadioButton x:Name="RBJournal" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptJournal}" Checked="RadioButton_Checked"/>
-                <RadioButton x:Name="RBKontaktSuche" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptSearchContact}" Checked="RadioButton_Checked"/>
-                <RadioButton x:Name="RBKontakterstellung" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptCreateContact}" Checked="RadioButton_Checked"/>
-                <RadioButton x:Name="RBTelefone" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptPhone}" Checked="RadioButton_Checked"/>
-                <RadioButton x:Name="RBPhoner" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptPhoner}" Checked="RadioButton_Checked"/>
-                <RadioButton x:Name="RBMicroSIP" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptMicroSIP}" Checked="RadioButton_Checked"/>
-                <RadioButton x:Name="RBInfo" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptInfo}" Checked="RadioButton_Checked"/>
+                <RadioButton x:Name="RBGrunde" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptBaseConfig}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
+                <RadioButton x:Name="RBAnrMon" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strAnrMon}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
+                <RadioButton x:Name="RBWählhilfe" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strDialer}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
+                <RadioButton x:Name="RBJournal" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptJournal}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
+                <RadioButton x:Name="RBKontaktSuche" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptSearchContact}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
+                <RadioButton x:Name="RBKontakterstellung" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptCreateContact}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
+                <RadioButton x:Name="RBTelefone" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptPhone}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
+                <RadioButton x:Name="RBPhoner" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptPhoner}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
+                <RadioButton x:Name="RBMicroSIP" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptMicroSIP}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
+                <RadioButton x:Name="RBInfo" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptInfo}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
             </StackPanel>
         </ScrollViewer>
 
@@ -106,31 +65,27 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Style="{StaticResource ButtonStyle}" IsDefault="true" Grid.Column="0" Click="BSave_Click">
-                <Button.Content>
-                    <Grid>
-                        <ContentControl Content="{DynamicResource Save_16x}" Grid.Column="0" HorizontalAlignment="Left" Margin="8,0" />
-                        <TextBlock Grid.Column="0" Text="{x:Static localize:resCommon.strSave}" HorizontalAlignment="Center" />
-                    </Grid>
-                </Button.Content>
-            </Button>
-            <Button Style="{StaticResource ButtonStyle}" IsCancel="false" Grid.Column="1" Click="BReset_Click">
-                <Button.Content>
-                    <Grid>
-                        <ContentControl Content="{DynamicResource Undo_16x}" Grid.Column="0" HorizontalAlignment="Left" Margin="8,0" />
-                        <TextBlock Grid.Column="0" Text="{x:Static localize:resCommon.strUndo}" HorizontalAlignment="Center" />
-                    </Grid>
-                </Button.Content>
-            </Button>
+            <Button Style="{StaticResource IconTextButton}"
+                    Content="{x:Static localize:resCommon.strSave}" 
+                    Tag="{DynamicResource Save_16x}"
+                    IsDefault="True" 
+                    Grid.Column="0"
+                    Click="BSave_Click"/>
 
-            <Button Style="{StaticResource ButtonStyle}" IsCancel="true" Grid.Column="2" Click="BCancel_Click">
-                <Button.Content>
-                    <Grid>
-                        <ContentControl Content="{DynamicResource Cancel_16x}" Grid.Column="0" HorizontalAlignment="Left" Margin="8,0" />
-                        <TextBlock Grid.Column="0" Text="{x:Static localize:resCommon.strCancel}" HorizontalAlignment="Center" />
-                    </Grid>
-                </Button.Content>
-            </Button>
+            <Button Style="{StaticResource IconTextButton}"
+                    Content="{x:Static localize:resCommon.strUndo}" 
+                    Tag="{DynamicResource Undo_16x}"
+                    IsCancel="False" 
+                    Grid.Column="1"
+                    Click="BReset_Click"/>
+
+            <Button Style="{StaticResource IconTextButton}"
+                    Content="{x:Static localize:resCommon.strCancel}" 
+                    Tag="{DynamicResource Cancel_16x}"
+                    IsCancel="True" 
+                    Grid.Column="2"
+                    Click="BCancel_Click"/>
+            
         </Grid>
     </Grid>
 

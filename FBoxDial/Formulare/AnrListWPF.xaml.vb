@@ -1,5 +1,4 @@
 ﻿Imports System.Threading
-Imports System.Threading.Tasks
 Imports System.Windows
 Imports System.Windows.Markup
 
@@ -16,7 +15,6 @@ Partial Public Class AnrListWPF
 
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
 
-        'Dim DCAnrListViewModel As New AnrListViewModel
 
         With CType(DataContext, AnrListViewModel)
             .StartDatum = XMLData.POptionen.LetzterJournalEintrag.Date
@@ -34,10 +32,8 @@ Partial Public Class AnrListWPF
 
     Private Async Sub LadeAnrufliste()
 
-        Dim getStringTask As Task(Of FritzBoxXMLCallList) = LadeFritzBoxAnrufliste()
-
         ' Anrufliste asynchron herunterladen
-        Anrufliste = Await getStringTask
+        Anrufliste = Await LadeFritzBoxAnrufliste()
 
         ' Anrufliste im korrekten Thread in das Datagrid laden
         Dispatcher.Invoke(Sub()

@@ -1,9 +1,20 @@
 ﻿Imports System.Xml.Serialization
 <Serializable()>
 <XmlRoot("phonebooks")> Public Class FritzBoxXMLTelefonbücher
-    <XmlElement("phonebook")> Public Property Telefonbuch As List(Of FritzBoxXMLTelefonbuch)
+    Inherits NotifyBase
 
-    Private ReadOnly Property AlleKontakte As List(Of FritzBoxXMLKontakt)
+    Private _Telefonbuch As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
+
+    <XmlElement("phonebook")> Public Property Telefonbuch As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
+        Get
+            Return _Telefonbuch
+        End Get
+        Set
+            SetProperty(_Telefonbuch, Value)
+        End Set
+    End Property
+
+    <XmlIgnore> Private ReadOnly Property AlleKontakte As List(Of FritzBoxXMLKontakt)
         Get
             Dim tmpKontakte As New List(Of FritzBoxXMLKontakt)
 
@@ -14,9 +25,9 @@
         End Get
     End Property
 
-    Public ReadOnly Property GetKontaktByTelNr(TelNr As Telefonnummer) As FritzBoxXMLKontakt
+    <XmlIgnore> Public ReadOnly Property GetKontaktByTelNr(TelNr As Telefonnummer) As FritzBoxXMLKontakt
         Get
-            Return AlleKontakte.Find(Function(TV) TV.Telefonie.Nummern.Exists(Function(AB) TelNr.Equals(AB.Nummer)))
+            Return AlleKontakte.Find(Function(TV) TV.Telefonie.Nummern.Where(Function(AB) TelNr.Equals(AB.Nummer)).Any)
         End Get
     End Property
 End Class

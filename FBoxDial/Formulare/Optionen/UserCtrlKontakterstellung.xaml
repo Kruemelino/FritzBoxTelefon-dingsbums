@@ -7,14 +7,24 @@
             mc:Ignorable="d" 
             d:DesignHeight="450" d:DesignWidth="400"
             d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
-
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/XAMLResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <StackPanel x:Name="MainStackPanel" Margin="8">
-
-        <fbd:OptionsÜberschrift Label="Einstellungen für die Kontakterstellung"/>
+        <TextBlock Style="{StaticResource OptHeader}" Text="Einstellungen für die Kontakterstellung"/>
         <fbd:OptionsHinweis Label="Hinweise zur Kontakterstellung:&#10;Sofern Kontakte automatisch erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Kontakte gespeichert werden sollen.&#10;Wird kein Ordner gewählt, wird der Outlook-Standardverwendet."/>
-        <fbd:OptionsCheckBox Label="Kontakte automatisch erstellen" Value="{Binding CBKErstellen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <fbd:OptionsOLFolderTV x:Name="OLFolderKontaktsErstellung" OutlookOlItemType="olContactItem" ÜberwachteOrdnerListe="{Binding OutlookOrdner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Verwendung="KontaktSpeichern"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="Kontakte automatisch erstellen" 
+                  IsChecked="{Binding CBKErstellen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <fbd:OptionsOLFolderTV x:Name="OLFolderKontaktsErstellung" OutlookOlItemType="olContactItem" ÜberwachteOrdnerListe="{Binding OutlookOrdnerListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Verwendung="KontaktSpeichern"/>
 
     </StackPanel>
 

@@ -101,6 +101,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Schließen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strClose() As String
+            Get
+                Return ResourceManager.GetString("strClose", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Einstellungen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strConfig() As String
@@ -137,6 +146,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Herunterladen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDownload() As String
+            Get
+                Return ResourceManager.GetString("strDownload", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Dauer ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strDuration() As String
@@ -151,6 +169,15 @@ Namespace Localize
         Public Shared ReadOnly Property strEndTime() As String
             Get
                 Return ResourceManager.GetString("strEndTime", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefonbücher ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strFritzBoxPhonebooks() As String
+            Get
+                Return ResourceManager.GetString("strFritzBoxPhonebooks", resourceCulture)
             End Get
         End Property
         
@@ -340,6 +367,15 @@ Namespace Localize
         Public Shared ReadOnly Property strUndo() As String
             Get
                 Return ResourceManager.GetString("strUndo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hochladen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strUpload() As String
+            Get
+                Return ResourceManager.GetString("strUpload", resourceCulture)
             End Get
         End Property
     End Class

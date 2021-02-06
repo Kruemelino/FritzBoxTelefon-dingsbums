@@ -182,7 +182,8 @@ Namespace My.Resources
         '''      &lt;tab idMso=&quot;TabJournal&quot;&gt;
         '''        &lt;group id=&quot;Tab_Journal&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
         '''          &lt;button id=&quot;btnDialInsp_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; getEnabled=&quot;EnableBtnJournal&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
-        '''          &lt;button id=&quot;btnRWS_J&quot; tag=&quot;RWSDasOertliche&quot; getLabe [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''          &lt;separator id=&quot;Seperator_J1&quot;/&gt;
+        '''          &lt;button i [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonInspectorJournal() As String
             Get
@@ -198,7 +199,8 @@ Namespace My.Resources
         '''      &lt;tab idMso=&quot;TabContact&quot;&gt;
         '''        &lt;group id=&quot;Tab_Contact&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
         '''          &lt;button id=&quot;btnDialInsp_C&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
-        '''          &lt;button id=&quot;btnRWS_C&quot; tag=&quot;RWSDasOertliche&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;Get [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''          &lt;separator id=&quot;Seperator_C1&quot;/&gt;
+        '''          &lt;dynamicMenu id=&quot;btnRWS_C&quot; tag=&quot;RWSDasO [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonInspectorKontakt() As String
             Get

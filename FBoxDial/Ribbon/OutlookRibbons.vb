@@ -381,6 +381,7 @@ Imports System.Xml
                 End With
 
             Case TaskToDo.FBoxTelBücher
+                'Dim fbt As New TelefonbücherWPF
 
         End Select
     End Sub
