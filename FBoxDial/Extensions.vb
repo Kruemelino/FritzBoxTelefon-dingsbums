@@ -357,11 +357,11 @@ Public Module Extensions
     ''' <param name="Text"></param>
     ''' <returns>Den konvertierten String. falls das nicht möglich ist, wird -1 zurückgegeben.</returns>
     <Extension> Public Function ToInt(Text As String) As Integer
-        Dim retVal As Integer = DfltIntErrorMinusOne
+        Dim retVal As Integer = -1
         If Integer.TryParse(Text, retVal) Then
             Return retVal
         Else
-            Return DfltIntErrorMinusOne
+            Return -1
         End If
     End Function
     <Extension> Public Function ToInt(sWert As Single) As Integer
@@ -683,6 +683,8 @@ Public Module Extensions
         End Try
 
     End Function
+
+
 #End Region
 
 End Module

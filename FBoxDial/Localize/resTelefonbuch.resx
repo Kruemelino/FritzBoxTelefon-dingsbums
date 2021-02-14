@@ -117,106 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="strAnrMon" xml:space="preserve">
-    <value>Anrufmonitor</value>
+  <data name="strBrowse" xml:space="preserve">
+    <value>Auswählen</value>
   </data>
   <data name="strCancel" xml:space="preserve">
-    <value>Abbrechen</value>
+    <value>Abbruch</value>
   </data>
-  <data name="strCancelClicked" xml:space="preserve">
-    <value>Abbrechen geklickt</value>
+  <data name="strFilter" xml:space="preserve">
+    <value>Filter</value>
   </data>
-  <data name="strCheckAll" xml:space="preserve">
-    <value>Alle auswählen</value>
+  <data name="strFritzBoxPhonebooks" xml:space="preserve">
+    <value>Fritz!Box Telefonbücher</value>
   </data>
-  <data name="strClose" xml:space="preserve">
-    <value>Schließen</value>
+  <data name="strHeaderMail" xml:space="preserve">
+    <value>E-Mails</value>
   </data>
-  <data name="strConfig" xml:space="preserve">
-    <value>Einstellungen</value>
+  <data name="strHeaderPhone" xml:space="preserve">
+    <value>Telefonnummern</value>
   </data>
-  <data name="strDate" xml:space="preserve">
-    <value>Datum</value>
+  <data name="strMailHome" xml:space="preserve">
+    <value>Privat</value>
   </data>
-  <data name="strDevice" xml:space="preserve">
-    <value>Gerät</value>
+  <data name="strMailWork" xml:space="preserve">
+    <value>Arbeit</value>
   </data>
-  <data name="strDialer" xml:space="preserve">
-    <value>Wählhilfe</value>
+  <data name="strPhonebooks" xml:space="preserve">
+    <value>Telefonbücher</value>
   </data>
-  <data name="strDownload" xml:space="preserve">
-    <value>Herunterladen</value>
+  <data name="strPhoneHome" xml:space="preserve">
+    <value>Privat</value>
   </data>
-  <data name="strDuration" xml:space="preserve">
-    <value>Dauer</value>
+  <data name="strPhoneMobile" xml:space="preserve">
+    <value>Mobil</value>
   </data>
-  <data name="strEndTime" xml:space="preserve">
-    <value>Endzeit</value>
+  <data name="strPhoneWork" xml:space="preserve">
+    <value>Arbeit</value>
   </data>
-  <data name="strImportCallerList" xml:space="preserve">
-    <value>Import der Anrufliste</value>
+  <data name="strQuestionBookDelete" xml:space="preserve">
+    <value>Soll das Telefonbuch '{0}' auf der Fritz!Box endgültig gelöscht werden?</value>
   </data>
-  <data name="strMyNumber" xml:space="preserve">
-    <value>Eingene Nr.</value>
-  </data>
-  <data name="strName" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="strNoEntriesSelected" xml:space="preserve">
-    <value>Keine Einträge markiert</value>
-  </data>
-  <data name="strOptBaseConfig" xml:space="preserve">
-    <value>Grundeinstellung</value>
-  </data>
-  <data name="strOptCreateContact" xml:space="preserve">
-    <value>Kontakterstellung</value>
-  </data>
-  <data name="strOptInfo" xml:space="preserve">
-    <value>Info</value>
-  </data>
-  <data name="strOptJournal" xml:space="preserve">
-    <value>Journal</value>
-  </data>
-  <data name="strOptMicroSIP" xml:space="preserve">
-    <value>MicroSIP</value>
-  </data>
-  <data name="strOptPhone" xml:space="preserve">
-    <value>Telefone</value>
-  </data>
-  <data name="strOptPhoner" xml:space="preserve">
-    <value>Phoner</value>
-  </data>
-  <data name="strOptSearchContact" xml:space="preserve">
-    <value>Kontaktsuche</value>
-  </data>
-  <data name="strPort" xml:space="preserve">
-    <value>Port</value>
-  </data>
-  <data name="strRemoteCaller" xml:space="preserve">
-    <value>Gegenstelle</value>
+  <data name="strQuestionBookDeleteID0" xml:space="preserve">
+    <value>Das Telefonbuch '{0}' kann auf der Fritz!Box nicht gelöscht werden. Stattdessen werden alle Kontakte gelöscht. Fortfahren?</value>
   </data>
   <data name="strSave" xml:space="preserve">
     <value>Speichern</value>
   </data>
-  <data name="strStartJounalImport" xml:space="preserve">
-    <value>Starte Jounalimport</value>
+  <data name="strToolTippKontaktAdd" xml:space="preserve">
+    <value>Ein neuen Kontakt hinzufügen...</value>
   </data>
-  <data name="strStartTime" xml:space="preserve">
-    <value>Startzeit</value>
+  <data name="strToolTippKontaktDel" xml:space="preserve">
+    <value>Diesen Kontakt löschen...</value>
   </data>
-  <data name="strStatus" xml:space="preserve">
-    <value>Status</value>
+  <data name="strToolTippKontaktEdit" xml:space="preserve">
+    <value>Diesen Kontakt bearbeiten...</value>
   </data>
-  <data name="strTime" xml:space="preserve">
-    <value>Zeit</value>
+  <data name="strToolTippTelBuchAdd" xml:space="preserve">
+    <value>Ein neues Telefonbuch hinzufügen...</value>
   </data>
-  <data name="strUncheckAll" xml:space="preserve">
-    <value>Keine auswählen</value>
+  <data name="strToolTippTelBuchDel" xml:space="preserve">
+    <value>Dieses Telefonbuch löschen...</value>
   </data>
-  <data name="strUndo" xml:space="preserve">
-    <value>Zurücksetzen</value>
+  <data name="strToolTippTelBuchDown" xml:space="preserve">
+    <value>Telefonbücher von der Fritz!Box herunterladen...</value>
   </data>
-  <data name="strUpload" xml:space="preserve">
-    <value>Hochladen</value>
+  <data name="strToolTippTelBuchRename" xml:space="preserve">
+    <value>Dieses Telefonbuch umbenennen...</value>
+  </data>
+  <data name="strToolTippTelBuchUp" xml:space="preserve">
+    <value>Telefonbücher zur Fritz!Box hochladen...</value>
   </data>
 </root>

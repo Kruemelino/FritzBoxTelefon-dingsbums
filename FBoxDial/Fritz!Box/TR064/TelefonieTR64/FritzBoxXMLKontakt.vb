@@ -3,21 +3,22 @@ Imports System.Xml
 Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop.Outlook
 
-<Serializable()> Public Class FritzBoxXMLKontakt
+<Serializable(), XmlType("contact")> Public Class FritzBoxXMLKontakt
     Inherits NotifyBase
 
-    Private _Kategorie As String
-    Private _Person As FritzBoxXMLPerson
-    Private _Uniqueid As String
-    Private _Telefonie As FritzBoxXMLTelefonie
-    Private _imagePath As String
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+
 
     Public Sub New()
         Person = New FritzBoxXMLPerson
         Telefonie = New FritzBoxXMLTelefonie
     End Sub
 
-    <XmlElement("category")> Public Property Kategorie As String
+    Private _Kategorie As Integer
+    ''' <summary>
+    ''' Wichtige Person = 1
+    ''' </summary>
+    <XmlElement("category")> Public Property Kategorie As Integer
         Get
             Return _Kategorie
         End Get
@@ -26,6 +27,7 @@ Imports Microsoft.Office.Interop.Outlook
         End Set
     End Property
 
+    Private _Person As FritzBoxXMLPerson
     <XmlElement("person")> Public Property Person As FritzBoxXMLPerson
         Get
             Return _Person
@@ -35,7 +37,11 @@ Imports Microsoft.Office.Interop.Outlook
         End Set
     End Property
 
-    <XmlElement("uniqueid")> Public Property Uniqueid As String
+    Private _Uniqueid As Integer
+    ''' <summary>
+    ''' Unique ID for a single contact (new since 2013-04-20) 
+    ''' </summary> 
+    <XmlElement("uniqueid")> Public Property Uniqueid As Integer
         Get
             Return _Uniqueid
         End Get
@@ -44,6 +50,7 @@ Imports Microsoft.Office.Interop.Outlook
         End Set
     End Property
 
+    Private _Telefonie As FritzBoxXMLTelefonie
     <XmlElement("telephony")> Public Property Telefonie As FritzBoxXMLTelefonie
         Get
             Return _Telefonie
@@ -53,25 +60,18 @@ Imports Microsoft.Office.Interop.Outlook
         End Set
     End Property
 
-    <XmlIgnore> Friend Property ImagePath As String
+    <XmlIgnore> Public ReadOnly Property IstTelefon As Boolean
         Get
-            Return _imagePath
-        End Get
-        Set
-            SetProperty(_imagePath, Value)
-        End Set
-    End Property
+            If Telefonie IsNot Nothing Then
+                If Telefonie.Nummern IsNot Nothing AndAlso Telefonie.Nummern.Any Then
+                    Return Telefonie.Nummern.Where(Function(N) N.Typ = XMLTelNrTyp.intern Or N.Nummer.StartsWith("*")).Any
+                End If
+            End If
 
-    Private _isFavorite As Boolean
-
-    Public Property IsFavorite As Boolean
-        Get
-            Return _isFavorite
+            Return False
         End Get
-        Set
-            SetProperty(_isFavorite, Value)
-        End Set
     End Property
+    '
     Friend Sub XMLKontaktOutlook(ByRef Kontakt As ContactItem)
         ' Werte übeführen
         With Kontakt
@@ -97,7 +97,7 @@ Imports Microsoft.Office.Interop.Outlook
                     ' Type = "work":    .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CompanyMainTelephoneNumber, .PrimaryTelephoneNumber
                     ' Type = "fax_work: .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber
                     Select Case TelNr.Typ
-                        Case "home"
+                        Case XMLTelNrTyp.home
                             If .HomeTelephoneNumber.IsStringNothingOrEmpty Then
                                 .HomeTelephoneNumber = tmpTelNr.Formatiert
                             ElseIf .Home2TelephoneNumber.IsStringNothingOrEmpty Then
@@ -111,7 +111,7 @@ Imports Microsoft.Office.Interop.Outlook
                             ElseIf .TTYTDDTelephoneNumber.IsStringNothingOrEmpty Then
                                 .TTYTDDTelephoneNumber = tmpTelNr.Formatiert
                             End If
-                        Case "mobile"
+                        Case XMLTelNrTyp.mobile
                             If .MobileTelephoneNumber.IsStringNothingOrEmpty Then
                                 .MobileTelephoneNumber = tmpTelNr.Formatiert
                             ElseIf .PagerNumber.IsStringNothingOrEmpty Then
@@ -119,7 +119,7 @@ Imports Microsoft.Office.Interop.Outlook
                             ElseIf .RadioTelephoneNumber.IsStringNothingOrEmpty Then
                                 .RadioTelephoneNumber = tmpTelNr.Formatiert
                             End If
-                        Case "work"
+                        Case XMLTelNrTyp.work
                             If .BusinessTelephoneNumber.IsStringNothingOrEmpty Then
                                 .BusinessTelephoneNumber = tmpTelNr.Formatiert
                             ElseIf .Business2TelephoneNumber.IsStringNothingOrEmpty Then
@@ -133,7 +133,7 @@ Imports Microsoft.Office.Interop.Outlook
                             ElseIf .PrimaryTelephoneNumber.IsStringNothingOrEmpty Then
                                 .PrimaryTelephoneNumber = tmpTelNr.Formatiert
                             End If
-                        Case "fax_work"
+                        Case XMLTelNrTyp.fax_work
                             If .BusinessFaxNumber.IsStringNothingOrEmpty Then
                                 .BusinessFaxNumber = tmpTelNr.Formatiert
                             ElseIf .HomeFaxNumber.IsStringNothingOrEmpty Then
@@ -160,4 +160,12 @@ Imports Microsoft.Office.Interop.Outlook
         End With
     End Sub
 
+    Friend Function GetXMLKontakt() As String
+        Dim XMLKontakt As String = DfltStringEmpty
+
+        XmlSerializeToString(Me, XMLKontakt)
+        NLogger.Debug($"Kontakt {Person.RealName} serialisiert: {XMLKontakt}")
+
+        Return XMLKontakt
+    End Function
 End Class

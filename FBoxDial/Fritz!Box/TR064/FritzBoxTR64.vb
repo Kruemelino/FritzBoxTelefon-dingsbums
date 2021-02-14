@@ -31,6 +31,7 @@ Friend Class FritzBoxTR64
         End If
 
     End Sub
+    <DebuggerStepThrough>
     Private Function GetService(SCPDURL As String) As Service
 
         If FBTR64Desc IsNot Nothing AndAlso FBTR64Desc.Device.ServiceList.Any Then
@@ -42,7 +43,7 @@ Friend Class FritzBoxTR64
 
     End Function
 
-    Private Overloads Function TR064Start(SCPDURL As String, ActionName As String, Optional InputHashTable As Hashtable = Nothing) As Hashtable
+    Private Function TR064Start(SCPDURL As String, ActionName As String, Optional InputHashTable As Hashtable = Nothing) As Hashtable
 
         If Ping(XMLData.POptionen.ValidFBAdr) Then
             Dim TR064Error As String
@@ -204,8 +205,8 @@ Friend Class FritzBoxTR64
     ''' <param name="PhonebookExtraID">The value of <paramref name="PhonebookExtraID"/> may be an empty string. </param>
     ''' <returns>True when success</returns>
     Friend Function GetPhonebook(PhonebookID As Integer, ByRef PhonebookURL As String,
-                                 Optional PhonebookName As String = "",
-                                 Optional PhonebookExtraID As String = "") As Boolean
+                                 Optional ByRef PhonebookName As String = "",
+                                 Optional ByRef PhonebookExtraID As String = "") As Boolean
 
         With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebook", New Hashtable From {{"NewPhonebookID", PhonebookID}})
 
@@ -215,14 +216,14 @@ Friend Class FritzBoxTR64
                 ' Phonebook Name auslesen
                 If .ContainsKey("NewPhonebookName") Then PhonebookName = .Item("NewPhonebookName").ToString
                 ' Phonebook ExtraID auslesen
-                If .ContainsKey("NewPhonebookExtraID") Then PhonebookName = .Item("NewPhonebookExtraID").ToString
+                If .ContainsKey("NewPhonebookExtraID") Then PhonebookExtraID = .Item("NewPhonebookExtraID").ToString
 
                 NLogger.Debug($"Pfad zum Telefonbuch '{PhonebookName}' der Fritz!Box: '{PhonebookURL}'")
 
                 GetPhonebook = True
 
             Else
-                NLogger.Warn($"GetPhonebook konnte für nicht aufgelößt werden.")
+                NLogger.Warn($"GetPhonebook konnte für das Telefonbuch {PhonebookID} nicht aufgelößt werden.")
                 PhonebookURL = DfltStringEmpty
 
                 GetPhonebook = False
@@ -267,33 +268,64 @@ Friend Class FritzBoxTR64
     End Function
 
     ''' <summary>
-    ''' Add a new or change an existing entry in a telephone book.
-    ''' Changes to online phonebooks are not allowed.
-    ''' <list type="bullet">
-    '''     <listheader>
-    '''         <term>Add new entry:</term>    
-    '''     </listheader>
-    '''     <item>set phonebook ID and an empty value for PhonebookEntryID and XML entry data Structure (Of without the unique ID tag)</item>
-    ''' </list>
-    ''' <list type="bullet">
-    '''     <listheader>
-    '''         <term>Change existing entry:</term>    
-    '''     </listheader>
-    '''     <item>set phonebook ID an entry ID and XML entry data (without the unique ID tag)</item>
-    '''     <item>set phonebook ID and an empty value for PhonebookEntryID and XML entry data Structure with the unique ID tag (Of e.g. <uniqueid>28</uniqueid>)</item>
-    ''' </list>
+    ''' Get a single telephone book entry from the specified book.
     ''' </summary>
-    ''' <param name="PhonebookID">ID of the phonebook.</param>
-    ''' <param name="PhonebookEntryID">Number for a single entry in a phonebook.</param>
-    ''' <param name="PhonebookEntryData">XML document with a single entry</param>
+    ''' <param name="PhonebookID">Number for a single phonebook.</param>
+    ''' <param name="PhonebookEntryID">Unique identifier (number) for a single entry in a phonebook.</param>
+    ''' <param name="PhonebookEntryData">XML document with a single entry. </param>
     ''' <returns>True when success</returns>
-    Friend Function SetPhonebookEntry(PhonebookID As Integer, PhonebookEntryID As Integer, PhonebookEntryData As String) As Boolean
+    Friend Function GetPhonebookEntry(PhonebookID As Integer, PhonebookEntryID As Integer, ByRef PhonebookEntryData As String) As Boolean
 
-        With TR064Start(Tr064Files.x_contactSCPD, "SetPhonebookEntry", New Hashtable From {{"NewPhonebookID", PhonebookID},
+        With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookEntry", New Hashtable From {{"NewPhonebookID", PhonebookID},
                                                                                            {"NewPhonebookEntryID", PhonebookEntryID},
                                                                                            {"NewPhonebookEntryData", PhonebookEntryData}})
 
-            Return Not .ContainsKey("Error")
+            If .ContainsKey("NewPhonebookEntryData") Then
+                ' Phonebook URL auslesen
+                PhonebookEntryData = .Item("NewPhonebookEntryData").ToString
+
+                NLogger.Debug($"Telefonbucheintrag '{PhonebookEntryID}' aus Telefonbuch {PhonebookID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
+
+                GetPhonebookEntry = True
+
+            Else
+                NLogger.Warn($"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryID}' aus Telefonbuch {PhonebookID} nicht aufgelößt werden.")
+                PhonebookEntryData = DfltStringEmpty
+
+                GetPhonebookEntry = False
+            End If
+
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Get a single telephone book entry from the specified book using the unique ID from the entry.
+    ''' </summary>
+    ''' <param name="PhonebookID">Number for a single phonebook.</param>
+    ''' <param name="PhonebookEntryUniqueID">Unique identifier (number) for a single entry in a phonebook.</param>
+    ''' <param name="PhonebookEntryData">XML document with a single entry. </param>
+    ''' <returns>True when success</returns>
+    Friend Function GetPhonebookEntryUID(PhonebookID As Integer, PhonebookEntryUniqueID As Integer, ByRef PhonebookEntryData As String) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookEntryUID", New Hashtable From {{"NewPhonebookID", PhonebookID},
+                                                                                              {"NewPhonebookEntryUniqueID", PhonebookEntryUniqueID},
+                                                                                              {"NewPhonebookEntryData", PhonebookEntryData}})
+
+            If .ContainsKey("NewPhonebookEntryData") Then
+                ' Phonebook URL auslesen
+                PhonebookEntryData = .Item("NewPhonebookEntryData").ToString
+
+                NLogger.Debug($"Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch {PhonebookID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
+
+                GetPhonebookEntryUID = True
+
+            Else
+                NLogger.Warn($"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch {PhonebookID} nicht aufgelößt werden.")
+                PhonebookEntryData = DfltStringEmpty
+
+                GetPhonebookEntryUID = False
+            End If
 
         End With
 
@@ -332,7 +364,7 @@ Friend Class FritzBoxTR64
 
             Else
                 NLogger.Warn($"SetPhonebookEntryUID konnte für nicht aufgelößt werden.")
-                PhonebookEntryUniqueID = DfltIntErrorMinusOne
+                PhonebookEntryUniqueID = -1
 
                 SetPhonebookEntryUID = False
             End If
@@ -350,7 +382,7 @@ Friend Class FritzBoxTR64
     Friend Function DeletePhonebookEntry(PhonebookID As Integer, PhonebookEntryID As Integer) As Boolean
 
         With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntry", New Hashtable From {{"NewPhonebookID", PhonebookID},
-                                                                                      {"NewPhonebookEntryID", PhonebookEntryID}})
+                                                                                              {"NewPhonebookEntryID", PhonebookEntryID}})
             Return Not .ContainsKey("Error")
 
         End With

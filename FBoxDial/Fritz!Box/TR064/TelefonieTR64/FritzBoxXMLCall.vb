@@ -1,5 +1,5 @@
 ﻿Imports System.Xml.Serialization
-<Serializable()> Public Class FritzBoxXMLCall
+<Serializable(), XmlType("Call")> Public Class FritzBoxXMLCall
     Inherits NotifyBase
 
 #Region "Fritz!Box Eigenschaften"

@@ -1,9 +1,14 @@
 ﻿Imports System.Xml.Serialization
-<Serializable()> Public Class FritzBoxXMLTelefonie
+<Serializable(), XmlType("telephony")> Public Class FritzBoxXMLTelefonie
     Inherits NotifyBase
 
     Private _Nummern As ObservableCollectionEx(Of FritzBoxXMLNummer)
     Private _Emails As ObservableCollectionEx(Of FritzBoxXMLEmail)
+
+    Public Sub New()
+        Emails = New ObservableCollectionEx(Of FritzBoxXMLEmail)
+        Nummern = New ObservableCollectionEx(Of FritzBoxXMLNummer)
+    End Sub
 
     <XmlArray("services"), XmlArrayItem("email")> Public Property Emails As ObservableCollectionEx(Of FritzBoxXMLEmail)
         Get

@@ -27,7 +27,10 @@
     <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
 
         <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
-            <Button x:Name="BContact" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource ContactCard_16x}" Click="BContact_Click"/>
+            <Button x:Name="BContact" 
+                                Style="{StaticResource MiniIconButton}"
+                                Content="{DynamicResource ContactCard_16x}" 
+                                Click="BContact_Click"/>
         </StackPanel>
 
         <Grid Margin="4,2,0,2">

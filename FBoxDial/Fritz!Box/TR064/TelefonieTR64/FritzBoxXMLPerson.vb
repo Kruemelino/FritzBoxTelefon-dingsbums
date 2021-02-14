@@ -1,5 +1,5 @@
 ﻿Imports System.Xml.Serialization
-<Serializable()> Public Class FritzBoxXMLPerson
+<Serializable(), XmlType("person")> Public Class FritzBoxXMLPerson
     Inherits NotifyBase
 
     Private _RealName As String

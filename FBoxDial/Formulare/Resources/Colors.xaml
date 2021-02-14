@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!--Gradient Brushes-->
+    <LinearGradientBrush x:Key="BlueGreyGradient" EndPoint="0,1">
+        <GradientStop Color="#FF4B6584" Offset="0.0" />
+        <GradientStop Color="#FF526B89" Offset="0.5" />
+        <GradientStop Color="#FF59718F" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="LightBlueGreyGradient" EndPoint="0,1">
+        <GradientStop Color="#FF778CA3" Offset="0.0" />
+        <GradientStop Color="#FF7B8FA4" Offset="0.5" />
+        <GradientStop Color="#FF8798AA" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!--System Default Button Colors (Palette from: https://stackoverflow.com/questions/42089140/style-wpf-radio-button-as-toggle-button-with-correct-isenabled-behaviour/54298173)-->
+    <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+    <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+    <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+    <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+
+    <!--Brushes (Palette from: https://flatuicolors.com/palette/de)-->
+    <SolidColorBrush x:Key="BlueHorizon" Color="#FF4B6584"/>
+    <SolidColorBrush x:Key="BlueGrey" Color="#FF778CA3"/>
+
+    <SolidColorBrush x:Key="Innuendo" Color="#FFA5b1C2"/>
+    <SolidColorBrush x:Key="TwinkleBlue" Color="#FFD1D8E0"/>
+
+    <SolidColorBrush x:Key="GloomyPurple" Color="#FF8854D0"/>
+    <SolidColorBrush x:Key="LighterPurple" Color="#FFA55EEA"/>
+
+    <SolidColorBrush x:Key="RoyalBlue" Color="#FF3867D6"/>
+    <SolidColorBrush x:Key="NTSC" Color="#FF4B7BEC"/>
+
+    <SolidColorBrush x:Key="BoyZone" Color="#FF2D98DA"/>
+    <SolidColorBrush x:Key="HighBlue" Color="#FF45AAF2"/>
+
+    <SolidColorBrush x:Key="AlgalFuel" Color="#FF20BF6B"/>
+    <SolidColorBrush x:Key="ReptileGreen" Color="#FF26DE81"/>
+
+    <SolidColorBrush x:Key="TurquioseTopaz" Color="#FF0FB9B1"/>
+    <SolidColorBrush x:Key="MaximumBlueGreen" Color="#FF2BCBBA"/>
+
+    <SolidColorBrush x:Key="AlmostBlack" Color="#FF131313"/>
+    
+    <SolidColorBrush x:Key="FusionRed" Color="#fc5c65"/>
+</ResourceDictionary>

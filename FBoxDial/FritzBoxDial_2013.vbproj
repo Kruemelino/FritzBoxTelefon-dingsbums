@@ -229,6 +229,7 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
+    <Compile Include="Formulare\Common\EnumBindingSourceExtension.vb" />
     <Compile Include="Formulare\Common\NotifyBase.vb" />
     <Compile Include="Formulare\Common\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\Common\RelayCommand.vb" />
@@ -327,7 +328,12 @@
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCallList.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
-    <Compile Include="Events\NotifyEventArgs.vb" />
+    <Compile Include="Formulare\Common\NotifyEventArgs.vb" />
+    <Compile Include="Localize\resTelefonbuch.Designer.vb">
+      <DependentUpon>resTelefonbuch.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Localize\resCommon.Designer.vb">
       <DependentUpon>resCommon.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -349,7 +355,6 @@
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLKontakt.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLNummer.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLPerson.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLServices.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbuch.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbücher.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonie.vb" />
@@ -376,6 +381,26 @@
     <Compile Include="Rijndael.vb" />
     <Compile Include="Fritz!Box\TR064\BaseFunctionsTR64.vb" />
     <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNr.vb" />
+    <Compile Include="Formulare\Common\Converters.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\IContactDataService.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\IDialogService.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\ContactDataService.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\WindowDialogService.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\AppViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\BookViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\ContactsViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\Views\BookView.xaml.vb">
+      <DependentUpon>BookView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\Views\ContactItemView.xaml.vb">
+      <DependentUpon>ContactItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\Views\DetailsView.xaml.vb">
+      <DependentUpon>DetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\FBKontakBuch.xaml.vb">
+      <DependentUpon>FBKontakBuch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
     <Compile Include="Telefonie\Telefonat.vb" />
@@ -398,6 +423,11 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <EmbeddedResource Include="Localize\resTelefonbuch.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resTelefonbuch.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localize\resCommon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
@@ -444,6 +474,10 @@
     <Page Include="Formulare\AnrMonWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Resources\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -537,10 +571,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Formulare\Resources\Book.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Views\BookView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Views\ContactItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Views\DetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\FBKontakBuch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Formulare\Telefonbuch\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

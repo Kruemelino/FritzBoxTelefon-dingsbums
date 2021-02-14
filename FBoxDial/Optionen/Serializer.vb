@@ -6,7 +6,7 @@ Imports System.Xml.Serialization
 Friend Module Serializer
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-    Friend Sub Laden(ByRef XMLData As OutlookXML)
+    Friend Sub Laden(ByRef objectData As OutlookXML)
 
         Dim DateiInfo As FileInfo
         Dim Pfad As String
@@ -16,13 +16,13 @@ Friend Module Serializer
         DateiInfo = New FileInfo(Pfad)
         DateiInfo.Directory.Create() ' If the directory already exists, this method does nothing.
 
-        If Not (File.Exists(Pfad) AndAlso DeserializeObject(Pfad, XMLData)) Then
-            XMLData = New OutlookXML
+        If Not (File.Exists(Pfad) AndAlso DeserializeObject(Pfad, objectData)) Then
+            objectData = New OutlookXML
         End If
 
         ' Setze einige Felder
-        If XMLData IsNot Nothing Then
-            With XMLData.POptionen
+        If objectData IsNot Nothing Then
+            With objectData.POptionen
                 ' .Arbeitsverzeichnis = DateiInfo.Directory.ToString
                 .ValidFBAdr = ValidIP(.TBFBAdr)
             End With
@@ -30,14 +30,14 @@ Friend Module Serializer
 
     End Sub
 
-    Friend Sub Speichern(Of T)(XMLData As T, Pfad As String)
-        If XMLData IsNot Nothing Then
+    Friend Sub Speichern(Of T)(objectData As T, Pfad As String)
+        If objectData IsNot Nothing Then
             Dim XmlSerializerNamespace As New XmlSerializerNamespaces()
             XmlSerializerNamespace.Add(DfltStringEmpty, DfltStringEmpty)
 
             Using XmlSchreiber As XmlWriter = XmlWriter.Create(Pfad, New XmlWriterSettings With {.Indent = True, .OmitXmlDeclaration = False})
                 With New XmlSerializer(GetType(T))
-                    .Serialize(XmlSchreiber, XMLData, XmlSerializerNamespace)
+                    .Serialize(XmlSchreiber, objectData, XmlSerializerNamespace)
                 End With
             End Using
         End If
@@ -74,8 +74,7 @@ Friend Module Serializer
 
                 Catch ex As InvalidOperationException
 
-                    NLogger.Fatal($"Fehler beim Deserialisieren: {Pfad}", ex)
-
+                    NLogger.Fatal(ex, $"Fehler beim Deserialisieren: '{Pfad}'")
                     Return False
                 End Try
             Else
@@ -99,7 +98,7 @@ Friend Module Serializer
 
                 Return True
             Catch ex As InvalidOperationException
-                NLogger.Fatal($"Fehler beim Deserialisieren von {GetType(T).FullName}: {objectData}", ex)
+                NLogger.Fatal(ex, $"Fehler beim Deserialisieren von {GetType(T).FullName}: {objectData}")
 
                 ' Gib Nothing zurück
                 result = Nothing
@@ -107,6 +106,47 @@ Friend Module Serializer
             End Try
 
         End Using
+
+    End Function
+
+    Friend Function XmlSerializeToString(Of T)(objectData As T, ByRef result As String) As Boolean
+
+        If objectData IsNot Nothing Then
+            Dim XmlSerializerNamespace As New XmlSerializerNamespaces()
+            XmlSerializerNamespace.Add(DfltStringEmpty, DfltStringEmpty)
+
+            Using XmlSchreiber As StringWriter = New StringWriter
+                With New XmlSerializer(GetType(T))
+                    Try
+                        .Serialize(XmlSchreiber, objectData, XmlSerializerNamespace)
+                        result = XmlSchreiber.ToString
+
+                        Return True
+                    Catch ex As InvalidOperationException
+                        NLogger.Fatal(ex, $"Fehler beim Serialisieren von {GetType(T).FullName}: {objectData}")
+
+                        Return False
+                    End Try
+
+                End With
+            End Using
+        End If
+
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Erzeugt einen Klone des übergebenen Objektes mittels XML Serialisierung und anschließender Deserialisierung.
+    ''' </summary>
+    ''' <typeparam name="T">Typ des Objektes.</typeparam>
+    ''' <param name="Objekt">Das zu klonende Objekt</param>
+    ''' <returns>Den Klon.</returns>
+    Friend Function XMLClone(Of T)(Objekt As T) As T
+        Dim tmp As String = DfltStringEmpty
+
+        If Not XmlSerializeToString(Objekt, tmp) OrElse Not XmlDeserializeFromString(tmp, XMLClone) Then
+            NLogger.Warn($"Fehler beim Klonen eines Objektes ({Objekt.GetType.Name}):  '{tmp}'")
+        End If
 
     End Function
 

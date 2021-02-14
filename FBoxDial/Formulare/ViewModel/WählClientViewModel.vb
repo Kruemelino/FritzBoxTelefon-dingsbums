@@ -76,6 +76,18 @@ Public Class WählClientViewModel
         End Set
     End Property
 
+    Public ReadOnly Property IsVIP As Boolean
+        Get
+            Return OKontakt IsNot Nothing AndAlso OKontakt.IsVIP
+        End Get
+    End Property
+
+    Public ReadOnly Property VIPEnabled As Boolean
+        Get
+            Return OKontakt IsNot Nothing
+        End Get
+    End Property
+
     Private _OExchangeNutzer As Outlook.ExchangeUser
     Public Property OExchangeNutzer As Outlook.ExchangeUser
         Get

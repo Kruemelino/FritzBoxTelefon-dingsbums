@@ -173,15 +173,6 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefonbücher ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strFritzBoxPhonebooks() As String
-            Get
-                Return ResourceManager.GetString("strFritzBoxPhonebooks", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Import der Anrufliste ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strImportCallerList() As String

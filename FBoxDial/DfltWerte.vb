@@ -18,11 +18,6 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property DfltStrErrorMinusOne() As String = "-1"
 
     ''' <summary>
-    ''' -1 als Integer
-    ''' </summary>
-    Public Shared ReadOnly Property DfltIntErrorMinusOne() As Integer = -1
-
-    ''' <summary>
     ''' vbCrLf
     ''' </summary>
     Public Shared ReadOnly Property Dflt1NeueZeile() As String = vbCrLf

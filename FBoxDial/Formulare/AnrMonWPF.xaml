@@ -24,21 +24,20 @@
     <Border BorderBrush="DimGray" BorderThickness="2">
         <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
-                <Button x:Name="bClose" Margin="0,4,4,0" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" IsCancel="True" Click="BClose_Click">
-                    <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,9 M0,9 L9,0"/>
+
+                <Button Style="{StaticResource MiniIconButton}" IsCancel="True" Click="BClose_Click">
+                    <Path Stroke="#FF424242" StrokeThickness="0.8" Data="M0,0 L9,9 M0,9 L9,0"/>
                 </Button>
+                <Button x:Name="BReCall" 
+                                Style="{StaticResource MiniIconButton}"
+                                Content="{DynamicResource CallTo_16x}" 
+                                Click="BReCall_Click"/>
 
-                <ToggleButton x:Name="bOptionen" Margin="0,4,4,0" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave">
-                    <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,0 M0,3 L9,3 M0,6 L9,6"/>
-                </ToggleButton>
+                <Button x:Name="BContact" 
+                                Style="{StaticResource MiniIconButton}"
+                                Content="{DynamicResource ContactCard_16x}" 
+                                Click="BContact_Click"/>
 
-                <Popup Name="OptionPopup" IsOpen="{Binding ElementName=bOptionen, Path=IsChecked}" PlacementTarget="{Binding ElementName=bOptionen}" AllowsTransparency="True" PopupAnimation="Slide" StaysOpen="False">
-                    <StackPanel>
-                        <Button x:Name="BReCall" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource CallTo_16x}" Click="BReCall_Click"/>
-                        <Button x:Name="BContact" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource ContactCard_16x}" Click="BContact_Click"/>
-                        <Button x:Name="BCopy" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource Copy_16x}" Click="BCopy_Click"/>
-                    </StackPanel>
-                </Popup>
             </StackPanel>
             <Grid x:Name="DataGrid" Margin="0,1,28,1">
                 <Grid.ColumnDefinitions>

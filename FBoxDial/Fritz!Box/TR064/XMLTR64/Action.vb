@@ -1,5 +1,6 @@
 ﻿Imports System.Collections
 Imports System.Xml.Serialization
+<DebuggerStepThrough>
 <Serializable()>
 Public Class Action
     <XmlElement("name")> Public Name As String

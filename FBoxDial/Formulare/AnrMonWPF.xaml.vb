@@ -190,7 +190,7 @@ Public Class AnrMonWPF
                           End Sub)
     End Sub
 
-    Private Sub BClose_Click(sender As Object, e As RoutedEventArgs) Handles bClose.Click
+    Private Sub BClose_Click(sender As Object, e As RoutedEventArgs)
         NLogger.Debug("Anrufmonitor manuell geschlossen")
         If AnrMonTimer IsNot Nothing Then
             AnrMonTimer.Stop()
@@ -207,26 +207,12 @@ Public Class AnrMonWPF
         'If AnrMonTimer IsNot Nothing Then AnrMonTimer.Dispose()
     End Sub
 
-    Private Sub BOptionen_MouseEnter(sender As Object, e As MouseEventArgs)
-        OptionPopup.StaysOpen = True
-    End Sub
-
-    Private Sub BOptionen_MouseLeave(sender As Object, e As MouseEventArgs)
-        OptionPopup.StaysOpen = False
-    End Sub
-
     Private Sub BReCall_Click(sender As Object, e As RoutedEventArgs)
         Tlfnt?.Rückruf()
     End Sub
 
     Private Sub BContact_Click(sender As Object, e As RoutedEventArgs)
         Tlfnt?.ZeigeKontakt()
-    End Sub
-
-    Private Sub BCopy_Click(sender As Object, e As RoutedEventArgs)
-        With CType(DataContext, AnrMonViewModel)
-            Clipboard.SetText(.AnrMonClipboard)
-        End With
     End Sub
 
     Private Sub Anrufer_PreviewMouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs)

@@ -23,15 +23,19 @@
     <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
 
         <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
-            <ToggleButton x:Name="bOptionen" Margin="0,4,4,0" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave">
-                <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,0 M0,3 L9,3 M0,6 L9,6"/>
-            </ToggleButton>            
-            <Popup Name="OptionPopup" IsOpen="{Binding ElementName=bOptionen, Path=IsChecked}" PlacementTarget="{Binding ElementName=bOptionen}" AllowsTransparency="True" PopupAnimation="Slide" StaysOpen="False">
-                <StackPanel>
-                    <Button x:Name="BContact" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource ContactCard_16x}" Click="BContact_Click"/>
-                    <ToggleButton x:Name="BVIP" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource Favorite_16x}" Click="BContact_Click"/>
-                </StackPanel>
-            </Popup>            
+
+            <Button x:Name="BContact" 
+                                Style="{StaticResource MiniIconButton}"
+                                Content="{DynamicResource ContactCard_16x}" 
+                                Click="BContact_Click"/>
+
+            <ToggleButton x:Name="BVIP" 
+                                  Style="{StaticResource MiniIconToggleButton}"
+                                  Content="{DynamicResource Favorite_16x}"
+                                  Click="BVIP_Click"
+                                  IsChecked="{Binding IsVIP, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                  IsEnabled="{Binding VIPEnabled}"/>
+            
         </StackPanel>
 
         <Grid x:Name="GrdTelefonat" DockPanel.Dock="Bottom" Margin="4,0,0,4">
@@ -43,7 +47,7 @@
             <GroupBox x:Name="GBoxOptionen" Header="Verbinden über .." Grid.Column="0">
                 <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                     <CheckBox x:Name="CBCLIR" DockPanel.Dock="Top" Margin="0,0,2,5" Content="Rufnummer unterdrücken" HorizontalAlignment="Left" IsChecked="{Binding Path=CLIR, UpdateSourceTrigger=PropertyChanged}" />
-                    <ComboBox x:Name="CBoxFon" DockPanel.Dock="Bottom" Margin="0,0,2,0" ItemsSource="{Binding DialDeviceList, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedValuePath="UPnPDialport" SelectedItem="{Binding TelGerät}"/>
+                    <ComboBox x:Name="CBoxFon" DockPanel.Dock="Bottom" Margin="0,0,2,0" ItemsSource="{Binding DialDeviceList, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedValuePath="TR064Dialport" SelectedItem="{Binding TelGerät}"/>
                 </DockPanel>
             </GroupBox>
             

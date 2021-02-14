@@ -215,7 +215,7 @@ Imports Microsoft.Office.Interop
         If XMLData.POptionen.CBKontaktSucheFritzBox Then
             If OlKontakt Is Nothing Then
                 If ThisAddIn.PhoneBookXML IsNot Nothing Then
-                    FBTelBookKontakt = ThisAddIn.PhoneBookXML.GetKontaktByTelNr(GegenstelleTelNr)
+                    FBTelBookKontakt = ThisAddIn.PhoneBookXML.Find(GegenstelleTelNr)
                 End If
             End If
 

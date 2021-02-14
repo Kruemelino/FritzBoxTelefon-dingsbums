@@ -48,7 +48,7 @@ Public NotInheritable Class ThisAddIn
         End If
 
         ' Lade alle Telefonbücher aus der Fritz!Box herunter
-        If XMLData.POptionen.CBKontaktSucheFritzBox Then PhoneBookXML = Await LadeFritzBoxTelefonbücher()
+        If XMLData.POptionen.CBKontaktSucheFritzBox Then PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher()
 
         ' Explorer Ereignishandler festlegen
         SetExplorer()

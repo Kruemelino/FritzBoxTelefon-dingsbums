@@ -346,27 +346,39 @@ Public Class Telefonnummer
         Return other IsNot Nothing AndAlso Unformatiert.AreEqual(other.Unformatiert)
     End Function
     Public Overloads Function Equals(other As String) As Boolean
+
+        ' Keine internen Nummenr der Box vergleichen
+        If other.StartsWith("*") Then Return False
+
+        ' Entferne erstmal alle unnötigen Zeichen:
+        Dim AndereNummer As String = NurZiffern(other)
+
+        ' Führe einen schnellen Vergleich durch, ob die unformatierte Nummer oder die Einwahl identisch sind.
         Select Case True
-            Case Unformatiert.AreEqual(NurZiffern(other))
-                'NLogger.Trace($"Telefonnummernvergleich Unformatiert true: '{other}'; {Unformatiert}")
+            Case Unformatiert.AreEqual(AndereNummer)
+                'NLogger.Trace($"Telefonnummernvergleich Unformatiert true: '{AndereNummer}'; {Unformatiert}")
                 Return True
 
-            Case Einwahl.AreEqual(NurZiffern(other))
-                'NLogger.Trace($"Telefonnummernvergleich Einwahl true : '{other}'; {Einwahl}")
+            Case Einwahl.AreEqual(AndereNummer)
+                'NLogger.Trace($"Telefonnummernvergleich Einwahl true : '{AndereNummer}'; {Einwahl}")
                 Return True
 
             Case Else
-                'Fallbach
-                'NLogger.Trace($"Telefonnummernvergleich Fallback: '{other}'")
-                '' Erstelle aus other eine Telefonnummer
-                '' Bei Vergleich eigenener Nummern, übergib die OKZ und LKZ
-                If EigeneNummer Then
-                    Return Equals(New Telefonnummer With {.EigeneNummer = EigeneNummer, .Landeskennzahl = Landeskennzahl, .Ortskennzahl = Ortskennzahl, .SetNummer = other})
+                ' Prüfe, ob die Nummern überhaupt gleich sein können:
+                If Unformatiert.Length.IsLargerOrEqual(3) And
+                    (Unformatiert.Contains(AndereNummer) Or AndereNummer.Contains(Unformatiert)) Then
+                    ' Führe den direkten Vergleich durch, in dem eine neue Telefonnummer angelegt wird
+                    ' Bei Vergleich eigenener Nummern, übergib die OKZ und LKZ
+                    If EigeneNummer Then
+                        Return Equals(New Telefonnummer With {.EigeneNummer = EigeneNummer, .Landeskennzahl = Landeskennzahl, .Ortskennzahl = Ortskennzahl, .SetNummer = AndereNummer})
+                    Else
+                        Return Equals(New Telefonnummer With {.SetNummer = AndereNummer})
+                    End If
                 Else
-                    Return Equals(New Telefonnummer With {.SetNummer = other})
+                    NLogger.Debug($"Telefonnummernvergleich false ({other}): '{AndereNummer}'; {Unformatiert}")
+                    Return False
                 End If
         End Select
-
 
     End Function
 #End Region

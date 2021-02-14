@@ -1,256 +1,195 @@
 ﻿Imports System.Threading.Tasks
 Imports System.Collections
 
-Friend Module FritzBoxTelefonbuch
-    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+Namespace Telefonbücher
+    Friend Module FritzBoxTelefonbuch
+        Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-    Friend Async Function LadeFritzBoxTelefonbücher() As Task(Of FritzBoxXMLTelefonbücher)
+        Friend Async Function LadeFritzBoxTelefonbücher() As Task(Of FritzBoxXMLTelefonbücher)
 
-        Using fbtr064 As New FritzBoxTR64
-            With fbtr064
-                ' Ermittle alle verfügbaren Telefonbücher
-                Dim PhonebookIDs As Integer() = {}
-                If .GetPhonebookList(PhonebookIDs) Then
+            Using fbtr064 As New FritzBoxTR64
+                With fbtr064
+                    ' Ermittle alle verfügbaren Telefonbücher
+                    Dim PhonebookIDs As Integer() = {}
+                    If .GetPhonebookList(PhonebookIDs) Then
 
-                    ' Initialiesiere die Gesamtliste der Telefonbücher
-                    Dim Telefonbücher As New FritzBoxXMLTelefonbücher With {.Telefonbuch = New ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)}
+                        ' Initialiesiere die Gesamtliste der Telefonbücher
+                        Dim AlleTelefonbücher As New FritzBoxXMLTelefonbücher With {.Telefonbücher = New ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)}
 
-                    ' Schleife durch alle ermittelten IDs
-                    For Each PhonebookID In PhonebookIDs
-                        Dim PhonebookURL As String = DfltStringEmpty
+                        ' Schleife durch alle ermittelten IDs
+                        For Each PhonebookID In PhonebookIDs
+                            Dim PhonebookURL As String = DfltStringEmpty
 
-                        ' Ermittle die URL zum Telefonbuch
-                        If .GetPhonebook(PhonebookID, PhonebookURL) Then
+                            ' Ermittle die URL zum Telefonbuch
+                            If .GetPhonebook(PhonebookID, PhonebookURL) Then
 
-                            Dim AktuellePhoneBookXML As FritzBoxXMLTelefonbücher
+                                Dim AktuellePhoneBookXML As FritzBoxXMLTelefonbücher
 
-                            NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: {PhonebookURL}")
+                                NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: '{PhonebookURL}'")
 
-                            ' Lade das Telefonbuch herunter
-                            AktuellePhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(PhonebookURL)
+                                ' Lade das Telefonbuch herunter
+                                AktuellePhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(PhonebookURL)
 
-                            ' Setze die ID
-                            For Each Telefonbuch In AktuellePhoneBookXML.Telefonbuch
-                                Telefonbuch.ID = PhonebookID
-                            Next
+                                If AktuellePhoneBookXML IsNot Nothing Then
+                                    ' Verarbeite die Telefonbücher
+                                    For Each Telefonbuch In AktuellePhoneBookXML.Telefonbücher
 
-                            ' Füge die Telefonbücher zusammen
-                            Telefonbücher.Telefonbuch.AddRange(AktuellePhoneBookXML.Telefonbuch)
+                                        ' Setze die ID
+                                        Telefonbuch.ID = PhonebookID
+
+                                    Next
+
+                                    ' Füge die Telefonbücher zusammen
+                                    AlleTelefonbücher.Telefonbücher.AddRange(AktuellePhoneBookXML.Telefonbücher)
+                                End If
+                            End If
+
+                        Next
+
+                        If AlleTelefonbücher.Telefonbücher.Count.AreDifferentTo(PhonebookIDs.Count) Then
+                            NLogger.Warn($"Es konnten nur {AlleTelefonbücher.Telefonbücher.Count} von {PhonebookIDs.Count} Telefonbüchern heruntergeladen werden.")
+                        End If
+
+                        Return AlleTelefonbücher
+                    End If
+                    Return Nothing
+                End With
+            End Using
+        End Function
+
+#Region "Aktionen für Telefonbuch"
+        ''' <summary>
+        ''' Erstellt ein neues Telefonbuch.
+        ''' </summary>
+        ''' <param name="TelefonbuchName">Übergabe des neuen Namens des Telefonbuches.</param>
+        ''' <returns>XML-Telefonbuch</returns>
+        Friend Async Function ErstelleTelefonbuch(TelefonbuchName As String) As Task(Of FritzBoxXMLTelefonbuch)
+            Using fboxTR064 As New FritzBoxTR64
+                With fboxTR064
+                    ' Hole die momentan verfügbaren Ids der Telefonbücher
+                    Dim IdsA As Integer() = {}
+                    Dim PhonebookURL As String = DfltStringEmpty
+                    Dim NameOK As Boolean = True
+                    If .GetPhonebookList(IdsA) Then
+
+                        ' Prüfe, ob bereits ein Telefonbuch mit dem Namen vorhanden ist.
+                        For Each ID In IdsA
+                            Dim Name As String = DfltStringEmpty
+
+                            If .GetPhonebook(ID, PhonebookURL, Name) Then
+                                If Name.AreEqual(TelefonbuchName) Then
+                                    NLogger.Warn($"Ein Telefonbuch mit dem Namen '{TelefonbuchName}' kann nicht angelegt werden, da bereits eins mit diesem Namen exisiert.")
+                                    NameOK = False
+                                End If
+                            End If
+                        Next
+
+                        ' Erzeuge ein neues Telefonbuch mit dem übergebenen Namen.
+                        If NameOK AndAlso .AddPhonebook(TelefonbuchName) Then
+                            ' Das neue Telefonbuch hat von der Fritz!Box eine ID zugewiesen bekommen.
+                            NLogger.Info($"Telefonbuch mit dem Namen '{TelefonbuchName}' auf der Fritz!Box erstellt.")
+                            ' Ermittle das neu angelegte Telefonbuch zur Rückgabe
+                            Dim IdsB As Integer() = {}
+                            If .GetPhonebookList(IdsB) Then
+                                Dim PhonebookID As Integer = IdsB.Except(IdsA).First
+
+                                ' Lade Ermittle URL des neuen Telefonbuches 
+                                If .GetPhonebook(PhonebookID, PhonebookURL, TelefonbuchName) Then
+
+                                    NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: {PhonebookURL}")
+
+                                    With Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(PhonebookURL)
+                                        ' Setze die ID
+                                        .Telefonbücher.First.ID = PhonebookID
+
+                                        ' Gib das Telefonbuch zurück
+                                        Return .Telefonbücher.First
+
+                                    End With
+
+
+                                End If
+
+                            End If
 
                         End If
 
-                    Next
+                    End If
 
-                    Return Telefonbücher
-                End If
-                Return Nothing
-            End With
-        End Using
-    End Function
+                    Return Nothing
+                End With
+            End Using
+        End Function
 
-    '#Region "Aktionen für Telefonbuch"
-    '    ''' <summary>
-    '    ''' Erstellt ein neues Telefonbuch.
-    '    ''' </summary>
-    '    ''' <param name="TelefonbuchName">Übergabe des neuen Namens des Telefonbuches.</param>
-    '    ''' <returns>XML-Telefonbuch</returns>
-    '    Friend Async Function ErstelleTelefonbuch(TelefonbuchName As String) As Task(Of FritzBoxXMLTelefonbücher)
-    '        Using fboxSOAP As New FritzBoxTR64
-    '            With fboxSOAP
-    '                ' Hole die aktuelle Liste an Telefonbüchern
-    '                Dim TelListeA As String() = .TelefonbuchListe
-    '                ' Erstelle ein neues Telefonbuch
-    '                .ErstelleNeuesTelefonbuch(TelefonbuchName)
-    '                ' Ermittle die neue ID des Telefonbuches
-    '                Dim TelListeb As String() = .TelefonbuchListe
+        ''' <summary>
+        ''' Löscht das Telefonbuch mit der <paramref name="TelefonbuchID"/>.
+        ''' </summary>
+        ''' <param name="TelefonbuchID">Die ID des zu löschenden Telefonbuches</param>
+        ''' <returns>Boolean, ob erfolgreich.</returns>
+        ''' <remarks>Wenn die ID nicht vorhanden ist, wird trotzdem <c>True</c> zurückgegeben.</remarks>
+        Friend Function LöscheTelefonbuch(TelefonbuchID As Integer) As Boolean
+            Using fbtr064 As New FritzBoxTR64
+                With fbtr064
+                    ' Hole die momentan verfügbaren Ids der Telefonbücher
+                    Dim IdsA As Integer() = {}
 
-    '                If TelListeA.Count.AreDifferentTo(TelListeb.Count) Then
-    '                    Dim TelListeC As List(Of String)
-    '                    TelListeC = TelListeb.Except(TelListeA).ToList
-    '                    TelefonbuchName = TelListeC.First
-    '                End If
+                    If .GetPhonebookList(IdsA) Then
+                        ' Prüfe, ob ein Telefonbuch mit der ID vorhanden ist, wenn nicht, muss auch nichts gelöscht werden.
+                        If IdsA.Contains(TelefonbuchID) Then
+                            ' Lösche das Telefonbuch
+                            If .DeletePhonebook(TelefonbuchID) Then
+                                NLogger.Info($"Telefonbuch mit der ID '{TelefonbuchID}' auf der Fritz!Box gelöscht.")
+                                Return True
 
-    '                ' Lade das Telefonbuch 
-    '                Return Await .Telefonbuch(TelefonbuchName)
-    '            End With
-    '        End Using
-    '    End Function
+                            Else
+                                NLogger.Warn($"Telefonbuch mit der ID '{TelefonbuchID}' auf der Fritz!Box nicht gelöscht.")
+                                Return False
 
-    '    Friend Sub LöscheTelefonbuch(TelefonbuchID As Integer)
-    '        Using fboxSOAP As New FritzBoxTR64
-    '            With fboxSOAP
-    '                .LöscheTelefonbuch(TelefonbuchID)
-    '            End With
-    '        End Using
-    '    End Sub
+                            End If
+                        End If
+                    End If
 
-    '    <Extension> Private Function TelefonbuchListe(fboxSOAP As FritzBoxTR64) As String()
-    '        Dim OutPutData As Hashtable
+                    Return True
+                End With
+            End Using
+        End Function
 
-    '        ' Ermittle alle verfügbaren Telefonbücher
-    '        OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookList")
+#End Region
 
-    '        If OutPutData.ContainsKey("NewPhonebookList") Then
+#Region "Aktionen für Telefonbucheinträge"
 
-    '            Return OutPutData.Item("NewPhonebookList").ToString.Split(",")
-    '        Else
-    '            Return Nothing
-    '        End If
+        Friend Function SetTelefonbuchEintrag(TelefonbuchID As Integer, XMLDaten As String) As Integer
 
-    '    End Function
+            If XMLDaten.IsNotStringEmpty Then
+                Using fbtr064 As New FritzBoxTR64
+                    With fbtr064
+                        Dim UID As Integer = -1
+                        If .SetPhonebookEntryUID(TelefonbuchID, XMLDaten, UID) Then
+                            NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box angelegt.")
+                            Return UID
+                        End If
+                    End With
+                End Using
+            End If
+            Return -1
+        End Function
 
-    '    <Extension> Private Async Function Telefonbuch(fboxSOAP As FritzBoxTR64, TelefonbuchID As String) As Task(Of FritzBoxXMLTelefonbücher)
-    '        Dim OutPutData As Hashtable
-    '        Dim InPutData As Hashtable
-    '        Dim PhoneBookXML As FritzBoxXMLTelefonbücher
+        Friend Function DeleteTelefonbuchEintrag(TelefonbuchID As Integer, UID As Integer) As Boolean
+            Using fbtr064 As New FritzBoxTR64
+                With fbtr064
+                    If .DeletePhonebookEntryUID(TelefonbuchID, UID) Then
+                        NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box gelöscht.")
+                        Return True
 
-    '        InPutData = New Hashtable From {{"NewPhonebookID", TelefonbuchID}}
-    '        OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "GetPhonebook", InPutData)
-    '        If OutPutData.ContainsKey("NewPhonebookURL") Then
-    '            ' Deserialisiere das Telefonbuch
-    '            PhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(OutPutData.Item("NewPhonebookURL").ToString())
-    '            ' Setze die ID
-    '            PhoneBookXML.Telefonbuch.ForEach(Sub(r) r.ID = TelefonbuchID)
-    '            Return PhoneBookXML
-    '        Else
-    '            Return Nothing
-    '        End If
-    '    End Function
+                    Else
+                        NLogger.Warn($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box nicht gelöscht.")
+                        Return False
 
-
-    '    ''' <summary>
-    '    ''' Erstellt ein neues Telfonbuch
-    '    ''' </summary>
-    '    ''' <param name="TelefonbuchName">Der Name des Telefonbuches</param>
-    '    <Extension> Private Function ErstelleNeuesTelefonbuch(fboxSOAP As FritzBoxTR64, TelefonbuchName As String) As Boolean
-    '        Dim OutPutData As Hashtable
-    '        Dim InPutData As Hashtable
-
-    '        If TelefonbuchName.IsNotStringEmpty Then
-
-    '            InPutData = New Hashtable From {{"NewPhonebookName", TelefonbuchName}, {"NewPhonebookExtraID", DfltStringEmpty}}
-    '            OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "AddPhonebook", InPutData)
-
-    '            ' Return code   Description         Related argument
-    '            ' 402           Invalid arguments   Any
-    '            ' 820           Internal Error
-    '            If OutPutData.ContainsKey("Error") Then
-    '                NLogger.Error(OutPutData.Item("Error"))
-    '                Return False
-    '            Else
-    '                Return True
-    '            End If
-    '        Else
-    '            Return False
-    '        End If
-    '    End Function
-
-    '    ''' <summary>
-    '    ''' Löscht das mit der <c>TelefonbuchID</c> angegebene Telefonbuch.
-    '    ''' </summary>
-    '    ''' <param name="TelefonbuchID">Number for a single phonebook.</param>
-    '    ''' <remarks>The default phonebook (PhonebookID = 0) is not deletable, but therefore, each entry will
-    '    ''' be deleted And the phonebook will be empty afterwards.</remarks>
-    '    ''' <returns></returns>
-    '    <Extension> Private Function LöscheTelefonbuch(fboxSOAP As FritzBoxTR64, TelefonbuchID As Integer) As Boolean
-    '        Dim OutPutData As Hashtable
-    '        Dim InPutData As Hashtable
-
-    '        InPutData = New Hashtable From {{"NewPhonebookID", TelefonbuchID}, {"NewPhonebookExtraID", DfltStringEmpty}}
-    '        OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebook", InPutData)
-
-    '        ' Return code   Description         Related argument
-    '        ' 402           Invalid arguments   Any
-    '        ' 713           Invalid array index Any input parameter
-    '        ' 820           Internal Error
-    '        If OutPutData.ContainsKey("Error") Then
-    '            NLogger.Error(OutPutData.Item("Error"))
-    '            Return False
-    '        Else
-    '            Return True
-    '        End If
-
-    '    End Function
-    '#End Region
-
-    '#Region "Aktionen für Telefonbucheinträge"
-    '    ''' <summary>
-    '    ''' Erstellt oder aktualisiert einen Telefonbucheintrag im mit der <c>TelefonbuchID</c> angegebene Telefonbuch.
-    '    ''' </summary>
-    '    ''' <param name="TelefonbuchID">Number for a single phonebook.</param>
-    '    ''' <param name="XMLDaten">XML document with a single entry. </param>
-    '    ''' <returns>The action returns the unique ID of the new or changed entry.</returns>
-    '    Friend Function UpdateTelefonbucheintrag(TelefonbuchID As UInteger, XMLDaten As String) As Integer
-    '        Dim OutPutData As Hashtable
-    '        Dim InPutData As Hashtable
-
-    '        If XMLDaten.IsNotStringEmpty Then
-    '            Using fboxSOAP As New FritzBoxTR64
-
-    '                ' SetPhonebookEntryUID
-    '                ' Add a new or change an existing entry in a telephone book using the unique ID of the entry.
-    '                ' Add new entry:
-    '                '   set phonebook ID and XML entry data structure (without the unique ID tag)
-    '                ' Change existing entry:
-    '                '   set phonebook ID and XML entry data structure with the unique ID tag (e.g. <uniqueid>28</uniqueid>)
-    '                ' The action returns the unique ID of the new or changed entry.
-
-    '                InPutData = New Hashtable From {
-    '                                                    {"NewPhonebookID", TelefonbuchID},
-    '                                                    {"NewPhonebookEntryData", XMLDaten}
-    '                                               }
-    '                OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "SetPhonebookEntryUID", InPutData)
-
-    '                ' Return code   Description         Related argument
-    '                ' 402           Invalid arguments   Any
-    '                ' 600           Argument invalid    PhonebookID
-    '                ' 713           Invalid array index PhonebookID
-    '                ' 820           Internal Error
-
-    '                If OutPutData.ContainsKey("NewPhonebookEntryUniqueID") Then
-
-    '                    Return CInt(OutPutData.Item("NewPhonebookEntryUniqueID"))
-    '                Else
-    '                    NLogger.Error("UpdateTelefonbucheintrag: {0}", OutPutData.Item("Error").ToString)
-    '                    Return DfltIntErrorMinusOne
-    '                End If
-    '            End Using
-    '        Else
-    '            Return DfltIntErrorMinusOne
-    '        End If
-    '    End Function
-    '    ''' <summary>
-    '    ''' Delete an existing telephone book entry using the unique ID from the entry.
-    '    ''' </summary>
-    '    ''' <param name="TelefonbuchID">>Number for a single phonebook.</param>
-    '    ''' <param name="UniqueID">Eindeutige ID des Kontaktes</param>
-    '    Friend Function LöscheTelefonbucheintrag(TelefonbuchID As UInteger, UniqueID As Integer) As Boolean
-    '        Dim OutPutData As Hashtable
-    '        Dim InPutData As Hashtable
-
-    '        Using fboxSOAP As New FritzBoxTR64
-
-    '            InPutData = New Hashtable From {
-    '                                                {"NewPhonebookID", TelefonbuchID},
-    '                                                {"NewPhonebookEntryUniqueID", UniqueID}
-    '                                           }
-    '            OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntryUID", InPutData)
-
-    '            ' Return code   Description         Related argument
-    '            ' 402           Invalid arguments   Any
-    '            ' 600           Argument invalid    PhonebookID
-    '            ' 713           Invalid array index PhonebookID
-    '            ' 820           Internal Error
-
-    '            If OutPutData.ContainsKey("Error") Then
-    '                NLogger.Error(OutPutData.Item("Error"))
-    '                Return False
-    '            Else
-    '                Return True
-    '            End If
-    '        End Using
-
-    '    End Function
-    '#End Region
-End Module
-
+                    End If
+                End With
+            End Using
+            Return True
+        End Function
+#End Region
+    End Module
+End Namespace

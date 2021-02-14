@@ -1,7 +1,5 @@
 ﻿Imports System.IO
 Imports System.Runtime.CompilerServices
-Imports System.Xml
-Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop.Outlook
 Friend Module KontaktFunktionen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger

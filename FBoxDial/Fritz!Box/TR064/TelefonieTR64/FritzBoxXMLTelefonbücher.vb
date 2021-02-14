@@ -1,33 +1,29 @@
 ﻿Imports System.Xml.Serialization
 <Serializable()>
-<XmlRoot("phonebooks")> Public Class FritzBoxXMLTelefonbücher
+<XmlRoot("phonebooks"), XmlType("phonebooks")> Public Class FritzBoxXMLTelefonbücher
     Inherits NotifyBase
 
-    Private _Telefonbuch As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
+    Private _Telefonbücher As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
 
-    <XmlElement("phonebook")> Public Property Telefonbuch As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
+    <XmlElement("phonebook")> Public Property Telefonbücher As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
         Get
-            Return _Telefonbuch
+            Return _Telefonbücher
         End Get
         Set
-            SetProperty(_Telefonbuch, Value)
+            SetProperty(_Telefonbücher, Value)
         End Set
     End Property
 
-    <XmlIgnore> Private ReadOnly Property AlleKontakte As List(Of FritzBoxXMLKontakt)
-        Get
-            Dim tmpKontakte As New List(Of FritzBoxXMLKontakt)
+    Friend Function Find(TelNr As Telefonnummer) As FritzBoxXMLKontakt
+        ' Suche alle Telefonbücher mit einem entsprechenden Kontakt
+        Dim Bücher As IEnumerable(Of FritzBoxXMLTelefonbuch) = Telefonbücher.Where(Function(B) B.ContainsNumber(TelNr))
 
-            For Each tmpTelefonbuch As FritzBoxXMLTelefonbuch In Telefonbuch
-                tmpKontakte.AddRange(tmpTelefonbuch.Kontakte)
-            Next
-            Return tmpKontakte
-        End Get
-    End Property
+        If Bücher.Any Then
+            ' Extrahiere einen Kontakt mit dieser Nummer
+            Return Bücher.First.FindbyNumber(TelNr).First
+        Else
+            Return Nothing
+        End If
 
-    <XmlIgnore> Public ReadOnly Property GetKontaktByTelNr(TelNr As Telefonnummer) As FritzBoxXMLKontakt
-        Get
-            Return AlleKontakte.Find(Function(TV) TV.Telefonie.Nummern.Where(Function(AB) TelNr.Equals(AB.Nummer)).Any)
-        End Get
-    End Property
+    End Function
 End Class

@@ -53,7 +53,7 @@ Partial Public Class AnrListWPF
 
 
 #Region "Eventhandlers"
-    Private Sub BtnStartJournalImport_Click(sender As Object, e As RoutedEventArgs) Handles btnStartJournalImport.Click
+    Private Sub BtnStartJournalImport_Click(sender As Object, e As RoutedEventArgs)
         With CType(DataContext, AnrListViewModel)
             Dim AusgewählteAnrufe As IEnumerable(Of FritzBoxXMLCall) = .CallList.Where(Function(x) x.Export = True)
 

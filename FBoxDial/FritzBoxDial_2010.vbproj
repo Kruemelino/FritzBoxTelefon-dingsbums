@@ -229,24 +229,20 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
+    <Compile Include="Formulare\Common\EnumBindingSourceExtension.vb" />
     <Compile Include="Formulare\Common\NotifyBase.vb" />
     <Compile Include="Formulare\Common\ObservableCollectionEx.vb" />
-    <Compile Include="Formulare\AnrListViewModel.vb" />
+    <Compile Include="Formulare\Common\RelayCommand.vb" />
+    <Compile Include="Formulare\ViewModel\AnrListViewModel.vb" />
     <Compile Include="Formulare\AnrList\TimePicker.vb" />
-    <Compile Include="Formulare\AnrMonViewModel.vb" />
+    <Compile Include="Formulare\ViewModel\AnrMonViewModel.vb" />
     <Compile Include="Formulare\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\OptionenViewModel.vb" />
+    <Compile Include="Formulare\ViewModel\OptionenViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Elemente\OlTreeViewItem.vb" />
     <Compile Include="Formulare\OptionenWPF.xaml.vb">
       <DependentUpon>OptionenWPF.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OlTreeViewItem.vb" />
-    <Compile Include="Formulare\Optionen\Elemente\OptionsCheckBox.xaml.vb">
-      <DependentUpon>OptionsCheckBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsComboBox.xaml.vb">
-      <DependentUpon>OptionsComboBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml.vb">
       <DependentUpon>OptionsPasswordBox.xaml</DependentUpon>
@@ -256,9 +252,6 @@
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml.vb">
       <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsTextBox.xaml.vb">
-      <DependentUpon>OptionsTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml.vb">
       <DependentUpon>OptionsHinweis.xaml</DependentUpon>
@@ -293,14 +286,11 @@
     <Compile Include="Formulare\Optionen\UserCtrlGrund.vb">
       <DependentUpon>UserCtrlGrund.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsÜberschrift.xaml.vb">
-      <DependentUpon>OptionsÜberschrift.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Formulare\Optionen\UserCtrlKontakterstellung.xaml.vb">
       <DependentUpon>UserCtrlKontakterstellung.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\StoppUhrViewModel.vb" />
-    <Compile Include="Formulare\WählClientViewModel.vb" />
+    <Compile Include="Formulare\ViewModel\StoppUhrViewModel.vb" />
+    <Compile Include="Formulare\ViewModel\WählClientViewModel.vb" />
     <Compile Include="Formulare\StoppUhrWPF.xaml.vb">
       <DependentUpon>StoppUhrWPF.xaml</DependentUpon>
     </Compile>
@@ -338,7 +328,12 @@
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCallList.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
-    <Compile Include="Events\NotifyEventArgs.vb" />
+    <Compile Include="Formulare\Common\NotifyEventArgs.vb" />
+    <Compile Include="Localize\resTelefonbuch.Designer.vb">
+      <DependentUpon>resTelefonbuch.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Localize\resCommon.Designer.vb">
       <DependentUpon>resCommon.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -360,7 +355,6 @@
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLKontakt.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLNummer.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLPerson.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLServices.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbuch.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbücher.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonie.vb" />
@@ -387,6 +381,26 @@
     <Compile Include="Rijndael.vb" />
     <Compile Include="Fritz!Box\TR064\BaseFunctionsTR64.vb" />
     <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNr.vb" />
+    <Compile Include="Formulare\Common\Converters.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\IContactDataService.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\IDialogService.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\ContactDataService.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\WindowDialogService.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\AppViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\BookViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\ContactsViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\Views\BookView.xaml.vb">
+      <DependentUpon>BookView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\Views\ContactItemView.xaml.vb">
+      <DependentUpon>ContactItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\Views\DetailsView.xaml.vb">
+      <DependentUpon>DetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\FBKontakBuch.xaml.vb">
+      <DependentUpon>FBKontakBuch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
     <Compile Include="Telefonie\Telefonat.vb" />
@@ -409,6 +423,11 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <EmbeddedResource Include="Localize\resTelefonbuch.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resTelefonbuch.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localize\resCommon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
@@ -456,17 +475,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Formulare\Resources\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Formulare\OptionenWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsCheckBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -477,10 +496,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -528,10 +543,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsÜberschrift.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Formulare\Optionen\UserCtrlKontakterstellung.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -556,9 +567,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\XAMLResources.xaml">
+    <Page Include="Formulare\Resources\XAMLResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Resources\Book.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Views\BookView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Views\ContactItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Views\DetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\FBKontakBuch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup />

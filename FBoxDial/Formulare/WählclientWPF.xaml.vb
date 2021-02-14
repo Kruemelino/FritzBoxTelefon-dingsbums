@@ -93,14 +93,6 @@ Public Class WählclientWPF
     End Sub
 
 #Region "WPF Events"
-    Private Sub BOptionen_MouseEnter(sender As Object, e As MouseEventArgs)
-        OptionPopup.StaysOpen = True
-    End Sub
-
-    Private Sub BOptionen_MouseLeave(sender As Object, e As MouseEventArgs)
-        OptionPopup.StaysOpen = False
-    End Sub
-
     Private Sub BContact_Click(sender As Object, e As RoutedEventArgs)
         With CType(DataContext, WählClientViewModel)
             .OKontakt?.Display()
@@ -115,6 +107,19 @@ Public Class WählclientWPF
     Private Sub KontaktWahl_Selected(sender As Object, e As RoutedEventArgs) Handles CtrlKontaktWahl.Dial, CtrlDirektWahl.Dial
         DialTelNr(False)
     End Sub
+
+    Private Sub BVIP_Click(sender As Object, e As RoutedEventArgs) Handles BVIP.Click
+        With CType(DataContext, WählClientViewModel)
+            If .OKontakt IsNot Nothing Then
+                If .OKontakt.IsVIP Then
+                    .OKontakt.RemoveVIP
+                Else
+                    .OKontakt.AddVIP
+                End If
+            End If
+        End With
+    End Sub
+
 
 #End Region
 
@@ -256,5 +261,6 @@ Public Class WählclientWPF
         TimerSchließen = KillTimer(TimerSchließen)
         Close()
     End Sub
+
 #End Region
 End Class

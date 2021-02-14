@@ -1,5 +1,5 @@
 ﻿Imports System.Xml.Serialization
-<Serializable()> Public Class FritzBoxXMLEmail
+<Serializable(), XmlType("email")> Public Class FritzBoxXMLEmail
     Inherits NotifyBase
 
     Private _Klassifizierer As String
