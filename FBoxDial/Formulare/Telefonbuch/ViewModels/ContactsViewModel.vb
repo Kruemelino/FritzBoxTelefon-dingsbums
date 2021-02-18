@@ -132,7 +132,7 @@ Public Class ContactsViewModel
 
     End Sub
 
-#Region "ICommad Callback"
+#Region "ICommand Callback"
     Private Sub Delete(o As Object)
         If _DialogService.ShowMessageBox($"Soll der Kontakt '{FBoxKontakt.Person.RealName}' im Telefonbuch '{FBoxTelefonbuch.Name}' auf der Fritz!Box endgültig gelöscht werden?") = Windows.MessageBoxResult.Yes Then
             ' lösche den Kontakt auf der Box

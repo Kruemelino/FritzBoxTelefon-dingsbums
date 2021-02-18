@@ -301,7 +301,7 @@
                 End If
 
                 If Type.AreEqual(1) Or Type.AreEqual(2) Or Type.AreEqual(3) Then
-                    .Aktiv = False
+                    '.Aktiv = False
                     ' Anrufer ermitteln
                     If Name.IsNotStringNothingOrEmpty Then .AnruferName = Name
 

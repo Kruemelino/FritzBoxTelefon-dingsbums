@@ -1,9 +1,10 @@
 ﻿Imports System.ComponentModel
 Imports System.Threading
+Imports System.Windows
 Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop
 <Serializable()> Public Class Telefonat
-    'Inherits BindableBase
+    Inherits NotifyBase
 
     Implements IEquatable(Of Telefonat)
     Implements IDisposable
@@ -11,37 +12,247 @@ Imports Microsoft.Office.Interop
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
+
+    Private _ID As Integer
     <XmlAttribute> Public Property ID As Integer
+        Get
+            Return _ID
+        End Get
+        Set
+            SetProperty(_ID, Value)
+        End Set
+    End Property
+
+    Private _EigeneTelNr As Telefonnummer
     <XmlIgnore> Public Property EigeneTelNr As Telefonnummer
+        Get
+            Return _EigeneTelNr
+        End Get
+        Set
+            SetProperty(_EigeneTelNr, Value)
+        End Set
+    End Property
+
+    Private _OutEigeneTelNr As String
     <XmlElement> Public Property OutEigeneTelNr As String
+        Get
+            Return _OutEigeneTelNr
+        End Get
+        Set
+            SetProperty(_OutEigeneTelNr, Value)
+        End Set
+    End Property
+
+    Private _GegenstelleTelNr As Telefonnummer
     <XmlElement> Public Property GegenstelleTelNr As Telefonnummer
+        Get
+            Return _GegenstelleTelNr
+        End Get
+        Set
+            SetProperty(_GegenstelleTelNr, Value)
+        End Set
+    End Property
+
+    Private _TelGerät As Telefoniegerät
     <XmlIgnore> Public Property TelGerät As Telefoniegerät
-    <XmlIgnore> Public Property RINGGeräte As List(Of Telefoniegerät)
+        Get
+            Return _TelGerät
+        End Get
+        Set
+            SetProperty(_TelGerät, Value)
+        End Set
+    End Property
+
+    <XmlIgnore> Public ReadOnly Property RINGGeräteString As String
+        Get
+            ' Funktioniert nicht!
+            Return String.Join(", ", XMLData.PTelefonie.Telefoniegeräte.Where(Function(Tel)
+                                                                                  Return Tel.StrEinTelNr.Contains(OutEigeneTelNr)
+                                                                              End Function).Select(Function(Gerät) Gerät.Name).ToList())
+        End Get
+    End Property
+
+    Private _NebenstellenNummer As Integer
     <XmlElement> Public Property NebenstellenNummer As Integer
+        Get
+            Return _NebenstellenNummer
+        End Get
+        Set
+            SetProperty(_NebenstellenNummer, Value)
+        End Set
+    End Property
+
+    Private _AnschlussID As String
     <XmlElement> Public Property AnschlussID As String
+        Get
+            Return _AnschlussID
+        End Get
+        Set
+            SetProperty(_AnschlussID, Value)
+        End Set
+    End Property
+
+    Private _ZeitBeginn As Date
     <XmlElement> Public Property ZeitBeginn As Date
+        Get
+            Return _ZeitBeginn
+        End Get
+        Set
+            SetProperty(_ZeitBeginn, Value)
+        End Set
+    End Property
+
+    Private _ZeitVerbunden As Date
     <XmlElement> Public Property ZeitVerbunden As Date
+        Get
+            Return _ZeitVerbunden
+        End Get
+        Set
+            SetProperty(_ZeitVerbunden, Value)
+        End Set
+    End Property
+
+    Private _ZeitEnde As Date
     <XmlElement> Public Property ZeitEnde As Date
+        Get
+            Return _ZeitEnde
+        End Get
+        Set
+            SetProperty(_ZeitEnde, Value)
+        End Set
+    End Property
+
+    Private _Dauer As Integer
     <XmlElement> Public Property Dauer As Integer
+        Get
+            Return _Dauer
+        End Get
+        Set
+            SetProperty(_Dauer, Value)
+        End Set
+    End Property
+
+    Private _AnrufRichtung As Integer
     <XmlElement> Public Property AnrufRichtung As Integer
-    <XmlIgnore> Public Property Aktiv As Boolean
+        Get
+            Return _AnrufRichtung
+        End Get
+        Set
+            SetProperty(_AnrufRichtung, Value)
+        End Set
+    End Property
+
+    Private _Beendet As Boolean
     <XmlIgnore> Public Property Beendet As Boolean
+        Get
+            Return _Beendet
+        End Get
+        Set
+            SetProperty(_Beendet, Value)
+        End Set
+    End Property
+
+    Private _NrUnterdrückt As Boolean
     <XmlAttribute> Public Property NrUnterdrückt As Boolean
+        Get
+            Return _NrUnterdrückt
+        End Get
+        Set
+            SetProperty(_NrUnterdrückt, Value)
+        End Set
+    End Property
+
+    Private _Angenommen As Boolean
     <XmlAttribute> Public Property Angenommen As Boolean
+        Get
+            Return _Angenommen
+        End Get
+        Set
+            SetProperty(_Angenommen, Value)
+        End Set
+    End Property
+
+    Private _OutlookKontaktID As String
     <XmlElement> Public Property OutlookKontaktID As String
+        Get
+            Return _OutlookKontaktID
+        End Get
+        Set
+            SetProperty(_OutlookKontaktID, Value)
+        End Set
+    End Property
+
+    Private _OutlookStoreID As String
     <XmlElement> Public Property OutlookStoreID As String
+        Get
+            Return _OutlookStoreID
+        End Get
+        Set
+            SetProperty(_OutlookStoreID, Value)
+        End Set
+    End Property
+
+    Private _VCard As String
     <XmlElement> Public Property VCard As String
+        Get
+            Return _VCard
+        End Get
+        Set
+            SetProperty(_VCard, Value)
+        End Set
+    End Property
+
+    Private _FBTelBookKontakt As FritzBoxXMLKontakt
     <XmlElement> Public Property FBTelBookKontakt As FritzBoxXMLKontakt
+        Get
+            Return _FBTelBookKontakt
+        End Get
+        Set
+            SetProperty(_FBTelBookKontakt, Value)
+        End Set
+    End Property
+
+    Private _AnruferName As String
     <XmlElement> Public Property AnruferName As String
+        Get
+            Return _AnruferName
+        End Get
+        Set
+            SetProperty(_AnruferName, Value)
+        End Set
+    End Property
+
+    Private _Firma As String
     <XmlElement> Public Property Firma As String
+        Get
+            Return _Firma
+        End Get
+        Set
+            SetProperty(_Firma, Value)
+        End Set
+    End Property
+
+    Private _OlKontakt As Outlook.ContactItem
     <XmlIgnore> Friend Property OlKontakt() As Outlook.ContactItem
+        Get
+            ' Ermittle den Outlook-Kontakt, falls dies noch nicht geschehen ist
+            If _OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringEmpty And OutlookStoreID.IsNotStringEmpty) Then
+                _OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
+                NLogger.Debug($"Outlook Kontakt {_OlKontakt.FullNameAndCompany} aus EntryID und KontaktID ermittelt.")
+            End If
+
+            Return _OlKontakt
+        End Get
+        Set
+            SetProperty(_OlKontakt, Value)
+        End Set
+    End Property
     '<XmlIgnore> Friend Property AnrMonPopUp As Popup
     <XmlIgnore> Friend Property AnrMonEingeblendet As Boolean = False
     <XmlIgnore> Friend Property StoppUhrEingeblendet As Boolean = False
 
-    Friend WithEvents PopUpAnrMonWPF As AnrMonWPF
-    Friend WithEvents PopupStoppUhrWPF As StoppUhrWPF
-    Private WithEvents BWKontaktsuche As BackgroundWorker
+    <XmlIgnore> Private Property PopUpAnrMonWPF As AnrMonWPF
+    <XmlIgnore> Private Property PopupStoppUhrWPF As StoppUhrWPF
 
 
     ''' <summary>
@@ -184,13 +395,8 @@ Imports Microsoft.Office.Interop
     End Sub
 
 #Region "Kontaktsuche"
-    Private Sub BWKontaktsuche_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWKontaktsuche.DoWork
+    Private Sub BWKontaktsuche_DoWork(sender As Object, e As DoWorkEventArgs)
         StarteKontaktsuche()
-    End Sub
-
-    Private Sub BWKontaktsuche_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWKontaktsuche.RunWorkerCompleted
-        ' Anrufmonitor aktualisieren
-        If PopUpAnrMonWPF IsNot Nothing Then UpdateAnrMon()
     End Sub
 
     Friend Async Sub StarteKontaktsuche()
@@ -244,6 +450,7 @@ Imports Microsoft.Office.Interop
                     VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.CBRWSIndex)
 
                     If VCard.IsNotStringEmpty Then
+                        NLogger.Info($"Rückwärtssuche erfolgreich: {VCard}")
                         If XMLData.POptionen.CBKErstellen Then
                             OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
                             With OlKontakt
@@ -393,11 +600,11 @@ Imports Microsoft.Office.Interop
 
         ' Starte die Kontaktsuche mit Hilfe eines Backgroundworkers, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
         ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        BWKontaktsuche = New BackgroundWorker
-        BWKontaktsuche.RunWorkerAsync()
+        StarteKontaktsuche()
 
-        ' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
-        RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr IsNot Nothing AndAlso Tel.StrEinTelNr.Contains(EigeneTelNr.Unformatiert))
+        '' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
+        'If RINGGeräte Is Nothing Then RINGGeräte = New ObservableCollectionEx(Of Telefoniegerät)
+        'RINGGeräte.AddRange(XMLData.PTelefonie.Telefoniegeräte.Where(Function(Tel) Tel.StrEinTelNr IsNot Nothing AndAlso Tel.StrEinTelNr.Contains(EigeneTelNr.Unformatiert)))
 
         ' Anrufmonitor einblenden, wenn Bedingungen erfüllt 
         If EigeneTelNr.Überwacht Then ShowAnrMon()
@@ -452,33 +659,36 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Private Property StoppUhrClosed As Integer
     Friend Sub AnrMonEinblenden()
 
-        PopUpAnrMonWPF = New AnrMonWPF
-
         If ThisAddIn.OffeneAnrMonWPF Is Nothing Then ThisAddIn.OffeneAnrMonWPF = New List(Of AnrMonWPF)
+
+        PopUpAnrMonWPF = New AnrMonWPF
 
         KeepoInspActivated(False)
 
-        PopUpAnrMonWPF.ShowAnrMon(Me)
+        With PopUpAnrMonWPF
 
+            With CType(.DataContext, AnrMonViewModel)
+                ' Übergib dieses Telefonat an das Viewmodel
+                .AnrMonTelefonat = Me
+            End With
+
+            .Show()
+        End With
         IAnrMonClosed = 0
 
         AnrMonEingeblendet = True
+
         ThisAddIn.OffeneAnrMonWPF.Add(PopUpAnrMonWPF)
 
-        'AddHandler PopUpAnrufMonitor.Schließen, AddressOf PopUpAnrMon_Close
         AddHandler PopUpAnrMonWPF.Geschlossen, AddressOf PopupAnrMonGeschlossen
-
-        'AddHandler PopUpAnrufMonitor.LinkClick, AddressOf AnrMonLink_Click
-        'AddHandler PopUpAnrufMonitor.ToolStripMenuItemClicked, AddressOf AnrMonToolStripMenuItem_Clicked
 
         KeepoInspActivated(True)
     End Sub
 
     Friend Sub StoppUhrEinblenden()
+        If ThisAddIn.OffeneStoppUhrWPF Is Nothing Then ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
 
         PopupStoppUhrWPF = New StoppUhrWPF
-
-        If ThisAddIn.OffeneStoppUhrWPF Is Nothing Then ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
 
         KeepoInspActivated(False)
 
@@ -495,10 +705,10 @@ Imports Microsoft.Office.Interop
     End Sub
 
     ''' <summary>
-    ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
+    ''' Wird durch das Auslösen des Closed Ereignis des <see cref="PopUpAnrMonWPF"/> aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
     ''' Das Closed-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
     ''' </summary>
-    Private Sub PopupAnrMonGeschlossen(sender As Object, e As EventArgs) Handles PopUpAnrMonWPF.Geschlossen
+    Private Sub PopupAnrMonGeschlossen(sender As Object, e As EventArgs)
         ' Führe die Arbeiten nur beim ersten Aufruf des Closed-Event des Popups durch.
         If IAnrMonClosed.IsZero Then
             NLogger.Debug("Anruffenster geschlossen: {0}", AnruferName)
@@ -512,10 +722,10 @@ Imports Microsoft.Office.Interop
     End Sub
 
     ''' <summary>
-    ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
+    ''' Wird durch das Auslösen des Closed Ereignis des <see cref="PopupStoppUhrWPF"/> aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
     ''' Das Closed-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
     ''' </summary>
-    Private Sub PopupStoppUhrGeschlossen(sender As Object, e As EventArgs) Handles PopupStoppUhrWPF.Geschlossen
+    Private Sub PopupStoppUhrGeschlossen(sender As Object, e As EventArgs)
         ' Führe die Arbeiten nur beim ersten Aufruf des Closed-Event des Popups durch.
         If StoppUhrClosed.IsZero Then
             NLogger.Debug("Stoppuhr geschlossen: {0}", AnruferName)
@@ -528,10 +738,6 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
-    Friend Sub UpdateAnrMon()
-        PopUpAnrMonWPF?.Update(Me)
-    End Sub
-
     Private Sub ShowAnrMon()
         Dim t = New Thread(Sub()
                                If Not VollBildAnwendungAktiv() Or XMLData.POptionen.CBAnrMonVollbildAnzeigen Then
@@ -541,14 +747,9 @@ Imports Microsoft.Office.Interop
                                        AnrMonEinblenden()
 
                                        While AnrMonEingeblendet
-                                           Windows.Forms.Application.DoEvents()
+                                           Forms.Application.DoEvents()
                                            Thread.Sleep(100)
                                        End While
-
-                                   Else
-                                       NLogger.Debug("Aktualisiere den Anrufmonitor")
-                                       ' Aktualisiere den Anrufmonitor
-                                       UpdateAnrMon()
                                    End If
                                End If
                            End Sub)
@@ -565,7 +766,7 @@ Imports Microsoft.Office.Interop
                                        StoppUhrEinblenden()
 
                                        While StoppUhrEingeblendet
-                                           Windows.Forms.Application.DoEvents()
+                                           Forms.Application.DoEvents()
                                            Thread.Sleep(100)
                                        End While
                                    End If

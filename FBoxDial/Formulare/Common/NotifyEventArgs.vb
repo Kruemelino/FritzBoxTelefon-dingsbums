@@ -1,7 +1,8 @@
 ﻿''' <summary>
 ''' Eventhandler, der den Sender ordentlich typisiert übermittelt
+''' https://activevb.de/tipps/vbnettipps/tipp0149.html
 ''' </summary>
-Public Delegate Sub EventHandlerEx(Of T0)(Sender As T0)
+Public Delegate Sub EventHandlerEx(Of T)(Sender As T)
 
 Public Class NotifyEventArgs(Of T) : Inherits EventArgs
     Public ReadOnly Value As T

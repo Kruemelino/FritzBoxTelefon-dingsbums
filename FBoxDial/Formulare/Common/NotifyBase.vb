@@ -58,4 +58,10 @@ Public MustInherit Class NotifyBase
         Catch
         End Try
     End Sub
+
+    Protected Sub RefreshAllProperties(Of T)(storage As T)
+        For Each prop In storage.GetType.GetProperties()
+            OnPropertyChanged(prop.Name)
+        Next
+    End Sub
 End Class

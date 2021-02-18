@@ -1,5 +1,5 @@
 ﻿Imports Microsoft.Office.Interop
-
+Imports System.Windows
 Friend Module Fenster
 #Region "Properties"
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -27,7 +27,7 @@ Friend Module Fenster
 
                 AppBounds = UnSaveMethods.GetWindowRect(hWnd)
                 'determine if window is fullscreen
-                screenBounds = Windows.Forms.Screen.FromHandle(hWnd).Bounds
+                screenBounds = Forms.Screen.FromHandle(hWnd).Bounds
                 If (AppBounds.Bottom - AppBounds.Top).AreEqual(screenBounds.Height) And (AppBounds.Right - AppBounds.Left).AreEqual(screenBounds.Width) Then
                     VollBildAnwendungAktiv = True
                     NLogger.Info("Eine aktive Vollbildanwendung wurde detektiert.")
@@ -68,4 +68,5 @@ Friend Module Fenster
             End If
         End If
     End Sub
+
 End Module

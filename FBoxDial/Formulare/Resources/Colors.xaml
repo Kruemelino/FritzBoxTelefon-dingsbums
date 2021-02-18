@@ -25,6 +25,8 @@
     <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
     <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
 
+    <SolidColorBrush x:Key="Gray26" Color="#FF424242"/>
+
     <!--Brushes (Palette from: https://flatuicolors.com/palette/de)-->
     <SolidColorBrush x:Key="BlueHorizon" Color="#FF4B6584"/>
     <SolidColorBrush x:Key="BlueGrey" Color="#FF778CA3"/>

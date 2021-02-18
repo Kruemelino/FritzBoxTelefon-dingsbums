@@ -1,9 +1,35 @@
-﻿Imports System.Windows.Media.Imaging
-Imports Microsoft.Office.Interop
+﻿Imports System.ComponentModel
+Imports System.Windows
+Imports System.Windows.Input
+Imports System.Windows.Media.Imaging
+Imports System.Windows.Threading
+
 Public Class AnrMonViewModel
     Inherits NotifyBase
 
-    Private _Zeit As Date '{Binding ZeitBeginn, Mode=OneWay, StringFormat=\{0:F\}}
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property TotalTimePaused As TimeSpan
+    Private Property StartTime As Date
+    Private Property PauseTime As Date
+
+#Region "Eigenschaften"
+
+    Private _AnrMonTelefonat As Telefonat
+    Public Property AnrMonTelefonat As Telefonat
+        Get
+            Return _AnrMonTelefonat
+        End Get
+        Set
+            SetProperty(_AnrMonTelefonat, Value)
+            ' Daten laden
+            LadeDaten()
+
+            ' Eventhandler für Veränderungen am Telefonat starten
+            AddHandler AnrMonTelefonat.PropertyChanged, AddressOf TelefonatChanged
+        End Set
+    End Property
+
+    Private _Zeit As Date
     Public Property Zeit As Date
         Get
             Return _Zeit
@@ -30,6 +56,7 @@ Public Class AnrMonViewModel
         End Get
         Set
             SetProperty(_AnrMonTelNr, Value)
+            OnPropertyChanged(NameOf(ZeigeTelNr))
         End Set
     End Property
 
@@ -40,6 +67,7 @@ Public Class AnrMonViewModel
         End Get
         Set
             SetProperty(_AnrMonAnrufer, Value)
+            OnPropertyChanged(NameOf(ZeigeAnruferName))
         End Set
     End Property
 
@@ -50,38 +78,9 @@ Public Class AnrMonViewModel
         End Get
         Set
             SetProperty(_AnrMonFirma, Value)
+            OnPropertyChanged(NameOf(ZeigeFirma))
         End Set
     End Property
-
-    Private _AnrMonClipboard As String
-    Public Property AnrMonClipboard As String
-        Get
-            Return _AnrMonClipboard
-        End Get
-        Set
-            SetProperty(_AnrMonClipboard, Value)
-        End Set
-    End Property
-
-    Private _OKontakt As Outlook.ContactItem
-    Public Property OKontakt As Outlook.ContactItem
-        Get
-            Return _OKontakt
-        End Get
-        Set
-            SetProperty(_OKontakt, Value)
-        End Set
-    End Property
-
-    'Private _OExchangeNutzer As Outlook.ExchangeUser
-    'Public Property OExchangeNutzer As Outlook.ExchangeUser
-    '    Get
-    '        Return _OExchangeNutzer
-    '    End Get
-    '    Set
-    '        SetProperty(_OExchangeNutzer, value)
-    '    End Set
-    'End Property
 
     Private _Kontaktbild As BitmapImage
     Public Property Kontaktbild As BitmapImage
@@ -90,6 +89,129 @@ Public Class AnrMonViewModel
         End Get
         Set
             SetProperty(_Kontaktbild, Value)
+            ' Veränderung der Visibility-Eigenschaft signalisieren
+            OnPropertyChanged(NameOf(ZeigeBild))
         End Set
     End Property
+
+#End Region
+
+#Region "Visibility Eigenschaften"
+    Public ReadOnly Property ZeigeBild As Boolean
+        Get
+            Return XMLData.POptionen.CBAnrMonContactImage And Kontaktbild IsNot Nothing
+        End Get
+    End Property
+    Public ReadOnly Property ZeigeTelNr As Boolean
+        Get
+            Return AnrMonTelefonat IsNot Nothing AndAlso (Not AnrMonTelefonat.NrUnterdrückt Or AnrMonTelefonat.AnruferName.IsNotStringNothingOrEmpty)
+        End Get
+    End Property
+    Public ReadOnly Property ZeigeAnruferName As Boolean
+        Get
+            Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.AnruferName.IsNotStringNothingOrEmpty
+        End Get
+    End Property
+    Public ReadOnly Property ZeigeFirma As Boolean
+        Get
+            Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.Firma.IsNotStringNothingOrEmpty
+        End Get
+    End Property
+
+    Public ReadOnly Property ReCallEnabled As Boolean
+        Get
+            Return AnrMonTelefonat IsNot Nothing AndAlso Not AnrMonTelefonat.NrUnterdrückt
+        End Get
+    End Property
+#End Region
+
+#Region "ICommand"
+    Public Property CloseCommand As RelayCommand
+    Public Property CallCommand As RelayCommand
+    Public Property ShowContactCommand As RelayCommand
+    Public Property ClosingCommand As RelayCommand
+
+#End Region
+
+    Public Sub New()
+
+        ' Init Command
+        CloseCommand = New RelayCommand(AddressOf Close)
+        CallCommand = New RelayCommand(AddressOf [Call], AddressOf CanCall)
+        ShowContactCommand = New RelayCommand(AddressOf ShowContact)
+        ' Window Command
+        ClosingCommand = New RelayCommand(AddressOf Closing)
+    End Sub
+
+    Private Sub LadeDaten()
+        ' Setze Anzuzeigende Werte
+
+        ' Anruferzeit festlegen: Beginn des Telefonates
+        Zeit = AnrMonTelefonat.ZeitBeginn
+
+        ' Anrufende Telefonnummer
+        AnrMonTelNr = AnrMonTelefonat.GegenstelleTelNr?.Formatiert
+
+        ' Anrufer Name setzen
+        AnrMonAnrufer = AnrMonTelefonat.AnruferName
+
+        ' Firmeninformationen setzen
+        AnrMonFirma = AnrMonTelefonat.Firma
+
+        ' Speichere das Kontaktbild in einem temporären Ordner
+        Dim BildPfad As String = KontaktFunktionen.KontaktBild(AnrMonTelefonat.OlKontakt)
+
+        ' Überführe das Bild in das BitmapImage
+        If BildPfad.IsNotStringNothingOrEmpty Then
+            ' Kontaktbild laden
+            Kontaktbild = New BitmapImage
+            With Kontaktbild
+                .BeginInit()
+                .CacheOption = BitmapCacheOption.OnLoad
+                .UriSource = New Uri(BildPfad)
+                .EndInit()
+            End With
+            'Lösche das Kontaktbild aus dem temprären Ordner
+            DelKontaktBild(BildPfad)
+        End If
+
+        ' Forcing the CommandManager to raise the RequerySuggested event
+        CommandManager.InvalidateRequerySuggested()
+
+    End Sub
+
+#Region "Event Callback"
+    Private Sub TelefonatChanged(sender As Object, e As PropertyChangedEventArgs)
+        NLogger.Debug($"AnrMonVM: Eigenschaft {e.PropertyName} verändert.")
+        Dispatcher.CurrentDispatcher.Invoke(Sub()
+                                                NLogger.Debug("Aktualisiere VM")
+                                                LadeDaten()
+                                            End Sub)
+    End Sub
+#End Region
+
+#Region "ICommand Callback"
+    Private Sub Close(o As Object)
+        NLogger.Debug("Anrufmonitor wird durch Nutzer geschlossen.")
+        CType(o, Window).Close()
+    End Sub
+
+
+    Private Sub [Call](o As Object)
+        AnrMonTelefonat?.Rückruf()
+    End Sub
+
+    Private Function CanCall(o As Object) As Boolean
+        Return ReCallEnabled
+    End Function
+    Private Sub ShowContact(o As Object)
+        AnrMonTelefonat?.ZeigeKontakt()
+    End Sub
+
+    Private Sub Closing(o As Object)
+        NLogger.Debug($"AnrMonViewModel Closing")
+        ' Entwas aufräumen
+        RemoveHandler AnrMonTelefonat.PropertyChanged, AddressOf TelefonatChanged
+    End Sub
+#End Region
 End Class

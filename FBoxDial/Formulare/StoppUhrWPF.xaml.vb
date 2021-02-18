@@ -8,10 +8,7 @@ Imports System.Windows.Threading
 Public Class StoppUhrWPF
     Inherits Window
 
-    Private WithEvents CtrlKontaktWahl As UserCtrlKontaktwahl
-    Private WithEvents CtrlDirektWahl As UserCtrlDirektwahl
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-
     Private Property Timer As DispatcherTimer
     Private Property StoppUhr As Stopwatch
 
@@ -106,7 +103,6 @@ Public Class StoppUhrWPF
                               End With
                           End Sub)
     End Sub
-
 
     Sub Timer_TickStoppUhr(sender As Object, e As EventArgs)
         If StoppUhr.IsRunning Then

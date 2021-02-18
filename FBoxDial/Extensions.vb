@@ -521,7 +521,7 @@ Public Module Extensions
                         .Headers.Add(HttpRequestHeader.KeepAlive, "False")
                         Try
                             retVal = Await .DownloadStringTaskAsync(UniformResourceIdentifier)
-                            NLogger.Debug("HTTPGet: {0} - {1}", Link, retVal)
+                            NLogger.Trace("HTTPGet: {0} - {1}", Link, retVal)
                         Catch exANE As ArgumentNullException
                             NLogger.Error(exANE)
                         Catch exWE As WebException

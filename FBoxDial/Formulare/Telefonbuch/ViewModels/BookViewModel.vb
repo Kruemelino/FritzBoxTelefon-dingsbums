@@ -114,7 +114,7 @@ Public Class BookViewModel
 
     End Sub
 
-#Region "ICommad Callback"
+#Region "ICommand Callback"
     Private Sub LadeKontakte(o As Object)
 
         Telefonbuch = CType(o, FritzBoxXMLTelefonbuch)
