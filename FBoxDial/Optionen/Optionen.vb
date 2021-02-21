@@ -211,17 +211,17 @@
         End Set
     End Property
 
-    ''' <summary>
-    ''' Angabe, ob der Anrufmonitor bei Vollbildanwendungen eingeblendet werden soll.
-    ''' </summary>
-    <XmlElement("CBAnrMonVollbildAnzeigen")> Public Property CBAnrMonVollbildAnzeigen As Boolean
-        Get
-            Return GetProperty(_CBAnrMonVollbildAnzeigen, DefaultWerte.DfltCBAnrMonVollBildAnzeigen)
-        End Get
-        Set
-            _CBAnrMonVollbildAnzeigen = Value
-        End Set
-    End Property
+    '''' <summary>
+    '''' Angabe, ob der Anrufmonitor bei Vollbildanwendungen eingeblendet werden soll.
+    '''' </summary>
+    '<XmlElement("CBAnrMonVollbildAnzeigen")> Public Property CBAnrMonVollbildAnzeigen As Boolean
+    '    Get
+    '        Return GetProperty(_CBAnrMonVollbildAnzeigen, DefaultWerte.DfltCBAnrMonVollBildAnzeigen)
+    '    End Get
+    '    Set
+    '        _CBAnrMonVollbildAnzeigen = Value
+    '    End Set
+    'End Property
 #End Region
 
 #Region "Stoppuhr"

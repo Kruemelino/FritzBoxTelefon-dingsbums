@@ -36,9 +36,9 @@
                   Content="Zeige Kontaktbild" 
                   IsChecked="{Binding CBAnrMonContactImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <CheckBox Style="{StaticResource OptCheckBox}"
+        <!--<CheckBox Style="{StaticResource OptCheckBox}"
                   Content="Bei Vollbildanwendungen einblenden" 
-                  IsChecked="{Binding CBAnrMonVollbildAnzeigen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding CBAnrMonVollbildAnzeigen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
         <TextBlock Style="{StaticResource OptHeader}" Text="Einstellungen für die Stoppuhr"/>
 
         <CheckBox Style="{StaticResource OptCheckBox}" 

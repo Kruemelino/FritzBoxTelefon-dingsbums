@@ -2,64 +2,43 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:fbd="clr-namespace:FBoxDial">
 
-
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Icons.xaml"/>
         <ResourceDictionary Source="Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <fbd:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    <fbd:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    <fbd:DateToVisibilityConverter x:Key="DateToVisibilityConverter"/>
 
-    <Style x:Key="AnrMonZeit" TargetType="{x:Type TextBlock}">
+    <Style x:Key="Gegenstelle" TargetType="{x:Type TextBlock}">
         <Setter Property="TextWrapping" Value="NoWrap" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="FontSize" Value="10" />        
+        <Setter Property="FontSize" Value="10" />
     </Style>
 
-    <Style x:Key="AnrMonEigeneNummer" TargetType="{x:Type TextBlock}">
+    <Style x:Key="EigeneNummer" TargetType="{x:Type TextBlock}">
         <Setter Property="TextWrapping" Value="NoWrap" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="FontSize" Value="10" />
         <Setter Property="TextAlignment" Value="Right" />
-        <Setter Property="TextTrimming" Value="CharacterEllipsis" />        
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
-    <Style x:Key="AnrMonFirma" TargetType="{x:Type TextBlock}">
+    <Style x:Key="Zeit" TargetType="{x:Type TextBlock}">
         <Setter Property="TextWrapping" Value="NoWrap" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="center" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
-    <Style x:Key="AnrMonMainInfo" TargetType="{x:Type TextBlock}">
+    <Style x:Key="Stoppuhr" TargetType="{x:Type TextBlock}">
         <Setter Property="TextWrapping" Value="NoWrap" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="center" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="20" />
         <Setter Property="FontWeight" Value="Bold" />
-        
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    
-    <Style x:Key="AnrMonNummer" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="NoWrap" />
-        <Setter Property="VerticalAlignment" Value="Bottom" />
-        <Setter Property="HorizontalAlignment" Value="center" />
-        <Setter Property="FontSize" Value="12" />
-    </Style>
-
-    <Style x:Key="AnrMonFirmenbezeichnung" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="NoWrap" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="HorizontalAlignment" Value="center" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextAlignment" Value="Center" />
     </Style>
 
     <Style x:Key="MiniIconButton" TargetType="{x:Type Button}" >
@@ -71,8 +50,7 @@
         <Setter Property="Margin" Value="0,4,4,0" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Width" Value="20" />
-        <Setter Property="Height" Value="20" />        
-
+        <Setter Property="Height" Value="20" />
     </Style>
-
+    
 </ResourceDictionary>

@@ -1,5 +1,4 @@
-﻿Imports System.ComponentModel
-Imports System.Threading
+﻿Imports System.Threading
 Imports System.Windows
 Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop
@@ -273,6 +272,7 @@ Imports Microsoft.Office.Interop
 
                     Case 3 ' Eingehende (anrufende) Telefonnummer
                         GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
+                        'GegenstelleTelNr = New Telefonnummer With {.SetNummer = "(03 52 08) 8 59-0"}
 
                         NrUnterdrückt = GegenstelleTelNr.Unbekannt
 
@@ -395,10 +395,6 @@ Imports Microsoft.Office.Interop
     End Sub
 
 #Region "Kontaktsuche"
-    Private Sub BWKontaktsuche_DoWork(sender As Object, e As DoWorkEventArgs)
-        StarteKontaktsuche()
-    End Sub
-
     Friend Async Sub StarteKontaktsuche()
 
         ' Kontaktsuche in den Outlook-Kontakten
@@ -646,8 +642,10 @@ Imports Microsoft.Office.Interop
     Private Sub AnrMonDISCONNECT()
         Beendet = True
 
-        ' Stoppuhr anhalten, wenn diese läuft
-        If StoppUhrEingeblendet Then PopupStoppUhrWPF.Stopp()
+        ' Stoppuhr ausblenden, wenn dies in den Einstellungen gesetzt ist
+        If StoppUhrEingeblendet And XMLData.POptionen.CBStoppUhrAusblenden Then
+            PopupStoppUhrWPF.StarteAusblendTimer(XMLData.POptionen.TBStoppUhrAusblendverzögerung)
+        End If
 
         If XMLData.POptionen.CBJournal Then ErstelleJournalEintrag()
     End Sub
@@ -659,49 +657,72 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Private Property StoppUhrClosed As Integer
     Friend Sub AnrMonEinblenden()
 
+        ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
         If ThisAddIn.OffeneAnrMonWPF Is Nothing Then ThisAddIn.OffeneAnrMonWPF = New List(Of AnrMonWPF)
 
+        ' Erstelle einen neues Popup
         PopUpAnrMonWPF = New AnrMonWPF
 
+        ' Merke den aktuell offenen Inspektor
         KeepoInspActivated(False)
 
         With PopUpAnrMonWPF
-
+            ' Übergib dieses Telefonat an das Viewmodel
             With CType(.DataContext, AnrMonViewModel)
                 ' Übergib dieses Telefonat an das Viewmodel
                 .AnrMonTelefonat = Me
             End With
-
+            ' Zeige den ANrufmonitor an
             .Show()
         End With
+        ' Zählvariable zum schließen des Anrufmonitors
         IAnrMonClosed = 0
 
         AnrMonEingeblendet = True
 
+        ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
         ThisAddIn.OffeneAnrMonWPF.Add(PopUpAnrMonWPF)
 
+        ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
         AddHandler PopUpAnrMonWPF.Geschlossen, AddressOf PopupAnrMonGeschlossen
 
         KeepoInspActivated(True)
     End Sub
 
     Friend Sub StoppUhrEinblenden()
+
+        ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
         If ThisAddIn.OffeneStoppUhrWPF Is Nothing Then ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
 
+        ' Erstelle einen neues Popup
         PopupStoppUhrWPF = New StoppUhrWPF
 
+        ' Merke den aktuell offenen Inspektor
         KeepoInspActivated(False)
 
-        PopupStoppUhrWPF.ShowStoppUhr(Me)
-
+        With PopupStoppUhrWPF
+            ' Übergib dieses Telefonat an das Viewmodel
+            With CType(.DataContext, StoppUhrViewModel)
+                ' Übergib dieses Telefonat an das Viewmodel
+                .StoppUhrTelefonat = Me
+            End With
+            ' Zeige den ANrufmonitor an
+            .Show()
+        End With
+        ' Zählvariable zum schließen des Anrufmonitors
         StoppUhrClosed = 0
 
         StoppUhrEingeblendet = True
+
+        ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
         ThisAddIn.OffeneStoppUhrWPF.Add(PopupStoppUhrWPF)
 
+        ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
         AddHandler PopupStoppUhrWPF.Geschlossen, AddressOf PopupStoppUhrGeschlossen
 
         KeepoInspActivated(True)
+
+
     End Sub
 
     ''' <summary>
@@ -740,18 +761,18 @@ Imports Microsoft.Office.Interop
 
     Private Sub ShowAnrMon()
         Dim t = New Thread(Sub()
-                               If Not VollBildAnwendungAktiv() Or XMLData.POptionen.CBAnrMonVollbildAnzeigen Then
-                                   If PopUpAnrMonWPF Is Nothing Then
-                                       NLogger.Debug("Blende einen neuen Anrufmonitor ein")
-                                       ' Blende einen neuen Anrufmonitor ein
-                                       AnrMonEinblenden()
+                               ' If Not VollBildAnwendungAktiv() Or XMLData.POptionen.CBAnrMonVollbildAnzeigen Then
+                               If PopUpAnrMonWPF Is Nothing Then
+                                   NLogger.Debug("Blende einen neuen Anrufmonitor ein")
+                                   ' Blende einen neuen Anrufmonitor ein
+                                   AnrMonEinblenden()
 
-                                       While AnrMonEingeblendet
-                                           Forms.Application.DoEvents()
-                                           Thread.Sleep(100)
-                                       End While
-                                   End If
+                                   While AnrMonEingeblendet
+                                       Forms.Application.DoEvents()
+                                       Thread.Sleep(100)
+                                   End While
                                End If
+                               ' End If
                            End Sub)
 
         t.SetApartmentState(ApartmentState.STA)
@@ -759,18 +780,18 @@ Imports Microsoft.Office.Interop
     End Sub
     Private Sub ShowStoppUhr()
         Dim t = New Thread(Sub()
-                               If Not VollBildAnwendungAktiv() Or XMLData.POptionen.CBAnrMonVollbildAnzeigen Then
-                                   If PopupStoppUhrWPF Is Nothing Then
-                                       NLogger.Debug("Blende einen neue StoppUhr ein")
-                                       ' Blende einen neuen Anrufmonitor ein
-                                       StoppUhrEinblenden()
+                               'If Not VollBildAnwendungAktiv() Or XMLData.POptionen.CBAnrMonVollbildAnzeigen Then
+                               If PopupStoppUhrWPF Is Nothing Then
+                                   NLogger.Debug("Blende einen neue StoppUhr ein")
+                                   ' Blende einen neuen Anrufmonitor ein
+                                   StoppUhrEinblenden()
 
-                                       While StoppUhrEingeblendet
-                                           Forms.Application.DoEvents()
-                                           Thread.Sleep(100)
-                                       End While
-                                   End If
+                                   While StoppUhrEingeblendet
+                                       Forms.Application.DoEvents()
+                                       Thread.Sleep(100)
+                                   End While
                                End If
+                               'End If
                            End Sub)
 
         t.SetApartmentState(ApartmentState.STA)

@@ -4,18 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fbd="clr-namespace:FBoxDial"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Focusable="False" IsTabStop="False" ResizeMode="NoResize" 
-        d:DesignHeight="120" d:DesignWidth="200" Height="120" Width="200"
+        d:DesignHeight="140" d:DesignWidth="200" Height="140" Width="200"
         d:DataContext="{d:DesignInstance Type=fbd:StoppUhrViewModel, IsDesignTimeCreatable=True}"         
         Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Icons.xaml"/>
-                <ResourceDictionary Source="Resources/XAMLResources.xaml"/>
+                <ResourceDictionary Source="Resources/Stoppuhr.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -27,27 +25,49 @@
     <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
 
         <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
-            <Button x:Name="BContact" 
-                    Style="{StaticResource MiniIconButton}"
+            <Button Style="{StaticResource MiniIconButton}"
                     Content="{DynamicResource ContactCard_16x}" 
-                    Click="BContact_Click"/>
+                    Command="{Binding ShowContactCommand}"/>
         </StackPanel>
 
         <Grid Margin="4,2,0,2">
             
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
                 <RowDefinition />
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" TextTrimming="CharacterEllipsis" TextAlignment="Center" Text="{Binding Path=Beginn, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="1" x:Name="clocktxtblock" VerticalAlignment="Center" TextAlignment="Center" FontSize="20">00:00:00</TextBlock>
 
-            <TextBlock Grid.Row="2" TextTrimming="CharacterEllipsis" TextAlignment="Center">
-                <TextBlock.Style>                    
-                    <Style TargetType="TextBlock">
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       Style="{StaticResource Gegenstelle}"
+                       Text="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+            <TextBlock Grid.Row="0" Grid.Column="1"
+                       Style="{StaticResource EigeneNummer}"
+                       Text="{Binding Path=EigeneTelNr}"/>
+            
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="2"
+                       Style="{StaticResource Zeit}"
+                       Text="{Binding Path=Beginn, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"/>
+
+            <TextBlock Grid.Row="2" Grid.ColumnSpan="2"
+                       Style="{StaticResource Stoppuhr}" FontSize="20"
+                       Text="{Binding Path=Dauer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=hh\\:mm\\:ss}"/>
+
+            <TextBlock Grid.Row="3" Grid.ColumnSpan="2"
+                       Style="{StaticResource Zeit}"
+                       Text="{Binding Path=Ende, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"
+                       Visibility="{Binding Ende, Converter={StaticResource DateToVisibilityConverter}}">
+                
+                <!--<TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource Zeit}">
                         <Setter Property="Text" Value="{Binding Path=Ende, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Ende}" Value="{x:Static sys:DateTime.MinValue}">
@@ -55,7 +75,8 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </TextBlock.Style>
+                </TextBlock.Style>-->
+                
             </TextBlock>
         </Grid> 
 

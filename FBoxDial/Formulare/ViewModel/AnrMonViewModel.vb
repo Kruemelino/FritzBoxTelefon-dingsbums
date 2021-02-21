@@ -39,13 +39,13 @@ Public Class AnrMonViewModel
         End Set
     End Property
 
-    Private _AnrMonTelName As String
-    Public Property AnrMonTelName As String
+    Private _AnrMonEigeneTelNr As String
+    Public Property AnrMonEigeneTelNr As String
         Get
-            Return _AnrMonTelName
+            Return _AnrMonEigeneTelNr
         End Get
         Set
-            SetProperty(_AnrMonTelName, Value)
+            SetProperty(_AnrMonEigeneTelNr, Value)
         End Set
     End Property
 
@@ -155,24 +155,30 @@ Public Class AnrMonViewModel
         ' Anrufer Name setzen
         AnrMonAnrufer = AnrMonTelefonat.AnruferName
 
+        ' Eigene Telefonnummer setzen
+        AnrMonEigeneTelNr = AnrMonTelefonat.EigeneTelNr?.Formatiert
+
         ' Firmeninformationen setzen
         AnrMonFirma = AnrMonTelefonat.Firma
 
-        ' Speichere das Kontaktbild in einem temporären Ordner
-        Dim BildPfad As String = KontaktFunktionen.KontaktBild(AnrMonTelefonat.OlKontakt)
+        ' Setze das Kontaktbild, falls ein Outlookkontakt verfügbar ist.
+        If Kontaktbild Is Nothing AndAlso AnrMonTelefonat.OlKontakt IsNot Nothing Then
+            ' Speichere das Kontaktbild in einem temporären Ordner
+            Dim BildPfad As String = KontaktFunktionen.KontaktBild(AnrMonTelefonat.OlKontakt)
 
-        ' Überführe das Bild in das BitmapImage
-        If BildPfad.IsNotStringNothingOrEmpty Then
-            ' Kontaktbild laden
-            Kontaktbild = New BitmapImage
-            With Kontaktbild
-                .BeginInit()
-                .CacheOption = BitmapCacheOption.OnLoad
-                .UriSource = New Uri(BildPfad)
-                .EndInit()
-            End With
-            'Lösche das Kontaktbild aus dem temprären Ordner
-            DelKontaktBild(BildPfad)
+            ' Überführe das Bild in das BitmapImage
+            If BildPfad.IsNotStringNothingOrEmpty Then
+                ' Kontaktbild laden
+                Kontaktbild = New BitmapImage
+                With Kontaktbild
+                    .BeginInit()
+                    .CacheOption = BitmapCacheOption.OnLoad
+                    .UriSource = New Uri(BildPfad)
+                    .EndInit()
+                End With
+                'Lösche das Kontaktbild aus dem temprären Ordner
+                DelKontaktBild(BildPfad)
+            End If
         End If
 
         ' Forcing the CommandManager to raise the RequerySuggested event
@@ -182,9 +188,9 @@ Public Class AnrMonViewModel
 
 #Region "Event Callback"
     Private Sub TelefonatChanged(sender As Object, e As PropertyChangedEventArgs)
-        NLogger.Debug($"AnrMonVM: Eigenschaft {e.PropertyName} verändert.")
+        NLogger.Trace($"AnrMonVM: Eigenschaft {e.PropertyName} verändert.")
         Dispatcher.CurrentDispatcher.Invoke(Sub()
-                                                NLogger.Debug("Aktualisiere VM")
+                                                NLogger.Trace("Aktualisiere VM")
                                                 LadeDaten()
                                             End Sub)
     End Sub
@@ -195,7 +201,6 @@ Public Class AnrMonViewModel
         NLogger.Debug("Anrufmonitor wird durch Nutzer geschlossen.")
         CType(o, Window).Close()
     End Sub
-
 
     Private Sub [Call](o As Object)
         AnrMonTelefonat?.Rückruf()

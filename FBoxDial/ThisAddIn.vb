@@ -28,6 +28,7 @@ Public NotInheritable Class ThisAddIn
 
         If OutookApplication.ActiveExplorer IsNot Nothing Then
             ' Ereignishandler für StandBy / Resume
+            NLogger.Debug("Für Ereignishandler für PowerModeChanged hinzu.")
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
             ' Starte die Funktionen des Addins
             StarteAddinFunktionen()
@@ -59,7 +60,7 @@ Public NotInheritable Class ThisAddIn
         ' Anrufliste auswerten
         If XMLData.POptionen.CBAutoAnrList Then AutoAnrListe()
 
-        NLogger.Info("{0} {1} gestartet.", My.Resources.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
+        NLogger.Info($"{My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} gestartet.")
 
     End Sub
 
@@ -71,7 +72,7 @@ Public NotInheritable Class ThisAddIn
         ' Anrufmonitor beenden
         If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.StoppAnrMon()
         ' Eintrag ins Log
-        NLogger.Info("{0} {1} beendet.", My.Resources.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
+        NLogger.Info($"{My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} beendet.")
         ' XML-Datei Speichern
         Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltConfigFileName))
 
@@ -84,7 +85,7 @@ Public NotInheritable Class ThisAddIn
     ''' </summary>
     Sub AnrMonRestartNachStandBy(sender As Object, e As Microsoft.Win32.PowerModeChangedEventArgs)
 
-        NLogger.Info("PowerMode: {0} ({1})", e.Mode.ToString, e.Mode)
+        NLogger.Info($"PowerMode: {e.Mode} ({e.Mode})")
 
         Select Case e.Mode
             Case Microsoft.Win32.PowerModes.Resume

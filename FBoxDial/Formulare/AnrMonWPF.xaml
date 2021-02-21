@@ -42,11 +42,11 @@
 
             </StackPanel>
 
-            <Image Width="72" Margin="4" 
+            <Image Width="72" Margin="4,4,4,0" 
                    Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                    Visibility="{Binding ZeigeBild, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         
-            <Grid Margin="2,1,0,1">
+            <Grid Margin="4,1,0,1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
@@ -54,9 +54,9 @@
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15"/>
-                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="22"/>
                     <RowDefinition/>
-                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="22"/>
                 </Grid.RowDefinitions>                
 
                 <!--Zeit-->
@@ -66,12 +66,12 @@
                 
                 <!--Gerät-->
                 <TextBlock Grid.Row="0" Grid.Column="1" 
-                           Style="{StaticResource AnrMonGerät}"
-                           Text="{Binding Path=AnrMonTelName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                           Style="{StaticResource AnrMonEigeneNummer}"
+                           Text="{Binding Path=AnrMonEigeneTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
                 <!--Telefonnummer-->
                 <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
-                           Style="{StaticResource AnrMonSubInfo}"
+                           Style="{StaticResource AnrMonNummer}"
                            Text="{Binding Path=AnrMonTelNr, 
                                           FallbackValue='', 
                                           UpdateSourceTrigger=PropertyChanged, 
@@ -103,7 +103,7 @@
                 
                 <!--Firma-->
                 <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
-                           Style="{StaticResource AnrMonSubInfo}"
+                           Style="{StaticResource AnrMonFirmenbezeichnung}"
                            Text="{Binding Path=AnrMonFirma, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            Visibility="{Binding ZeigeFirma, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </Grid>
