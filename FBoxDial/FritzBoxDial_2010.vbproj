@@ -229,6 +229,7 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
+    <Compile Include="Formulare\Common\WindowBehavior.vb" />
     <Compile Include="Formulare\Common\EnumBindingSourceExtension.vb" />
     <Compile Include="Formulare\Common\NotifyBase.vb" />
     <Compile Include="Formulare\Common\ObservableCollectionEx.vb" />
@@ -329,6 +330,11 @@
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Formulare\Common\NotifyEventArgs.vb" />
+    <Compile Include="Localize\resAnrMon.Designer.vb">
+      <DependentUpon>resAnrMon.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Localize\resTelefonbuch.Designer.vb">
       <DependentUpon>resTelefonbuch.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -423,6 +429,11 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <EmbeddedResource Include="Localize\resAnrMon.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resAnrMon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localize\resTelefonbuch.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resTelefonbuch.Designer.vb</LastGenOutput>
@@ -474,6 +485,10 @@
     <Page Include="Formulare\AnrMonWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Resources\Stoppuhr.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Resources\Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -551,6 +566,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Formulare\Resources\AnrMon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Formulare\StoppUhrWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -592,7 +611,6 @@
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
