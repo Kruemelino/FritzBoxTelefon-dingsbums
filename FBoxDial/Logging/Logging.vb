@@ -15,10 +15,10 @@ Friend Module NLogging
 
 
         Dim Ziel As New Targets.FileTarget With {.Name = "f",
-                                                      .Encoding = Encoding.UTF8,
-                                                      .KeepFileOpen = False,
-                                                      .FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltLogFileName),
-                                                      .Layout = LayoutText.Join("|")}
+                                                 .Encoding = Encoding.UTF8,
+                                                 .KeepFileOpen = False,
+                                                 .FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltLogFileName),
+                                                 .Layout = LayoutText.Join("|")}
 
         ' Level  Typical Use
         ' Fatal  Something bad happened; application Is going down
@@ -28,10 +28,11 @@ Friend Module NLogging
         ' Debug  For debugging; executed query, user authenticated, session expired
         ' Trace  For trace debugging; begin method X, end method X
 
-        Dim minLogLevel As LogLevel = If(XMLData IsNot Nothing, LogLevel.FromString(XMLData.POptionen.CBoxMinLogLevel), LogLevel.Debug)
-        Dim maxLogLevel As LogLevel = LogLevel.Fatal
+        'Dim minLogLevel As LogLevel = LogLevel.Trace
+        'Dim maxLogLevel As LogLevel = LogLevel.Fatal
 
-        config.AddRule(minLogLevel, maxLogLevel, Ziel)
+        config.AddTarget(Ziel)
+        'config.AddRule(minLogLevel, maxLogLevel, Ziel)
         Return config
     End Function
 End Module

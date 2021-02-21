@@ -414,6 +414,13 @@
         End Get
         Set
             _CBoxMinLogLevel = Value
+
+            With LogManager.Configuration
+                .LoggingRules.Clear()
+                LogManager.Configuration.AddRule(LogLevel.FromString(_CBoxMinLogLevel), LogLevel.Fatal, LogManager.Configuration.FindTargetByName("f"))
+                LogManager.ReconfigExistingLoggers()
+            End With
+
         End Set
     End Property
 #End Region
