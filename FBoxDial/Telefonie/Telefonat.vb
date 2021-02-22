@@ -62,14 +62,14 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    <XmlIgnore> Public ReadOnly Property RINGGeräteString As String
-        Get
-            ' Funktioniert nicht!
-            Return String.Join(", ", XMLData.PTelefonie.Telefoniegeräte.Where(Function(Tel)
-                                                                                  Return Tel.StrEinTelNr.Contains(OutEigeneTelNr)
-                                                                              End Function).Select(Function(Gerät) Gerät.Name).ToList())
-        End Get
-    End Property
+    '<XmlIgnore> Public ReadOnly Property RINGGeräteString As String
+    '    Get
+    '        ' Funktioniert nicht!
+    '        Return String.Join(", ", XMLData.PTelefonie.Telefoniegeräte.Where(Function(Tel)
+    '                                                                              Return Tel.StrEinTelNr.Contains(OutEigeneTelNr)
+    '                                                                          End Function).Select(Function(Gerät) Gerät.Name).ToList())
+    '    End Get
+    'End Property
 
     Private _NebenstellenNummer As Integer
     <XmlElement> Public Property NebenstellenNummer As Integer
@@ -663,9 +663,6 @@ Imports Microsoft.Office.Interop
         ' Erstelle einen neues Popup
         PopUpAnrMonWPF = New AnrMonWPF
 
-        ' Merke den aktuell offenen Inspektor
-        KeepoInspActivated(False)
-
         With PopUpAnrMonWPF
             ' Übergib dieses Telefonat an das Viewmodel
             With CType(.DataContext, AnrMonViewModel)
@@ -682,11 +679,9 @@ Imports Microsoft.Office.Interop
 
         ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
         ThisAddIn.OffeneAnrMonWPF.Add(PopUpAnrMonWPF)
-
         ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
         AddHandler PopUpAnrMonWPF.Geschlossen, AddressOf PopupAnrMonGeschlossen
 
-        KeepoInspActivated(True)
     End Sub
 
     Friend Sub StoppUhrEinblenden()

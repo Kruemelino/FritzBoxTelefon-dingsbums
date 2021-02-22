@@ -2,6 +2,7 @@
 Imports Microsoft.Office.Interop.Outlook
 
 Public NotInheritable Class ThisAddIn
+
     Friend Shared Property POutlookRibbons() As OutlookRibbons
     Friend Shared Property OutookApplication As Application
     Friend Shared Property PAnrufmonitor As Anrufmonitor
@@ -28,7 +29,7 @@ Public NotInheritable Class ThisAddIn
 
         If OutookApplication.ActiveExplorer IsNot Nothing Then
             ' Ereignishandler für StandBy / Resume
-            NLogger.Debug("Für Ereignishandler für PowerModeChanged hinzu.")
+            NLogger.Debug("Füge Ereignishandler für PowerModeChanged hinzu.")
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
             ' Starte die Funktionen des Addins
             StarteAddinFunktionen()

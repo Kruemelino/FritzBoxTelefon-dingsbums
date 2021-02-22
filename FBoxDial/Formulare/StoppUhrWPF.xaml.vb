@@ -37,21 +37,32 @@ Public Class StoppUhrWPF
     ''' in denen sich der Wert der <see cref="FrameworkElement.IsInitialized"/>-Eigenschaft von false (oder nicht definiert) in true ändert.
     ''' </summary>
     Private Sub StoppUhrWPF_Initialized(sender As Object, e As EventArgs) Handles Me.Initialized
-        NLogger.Debug("Initialized")
+        NLogger.Trace("Initialized")
 
+        ' Outlook Inspektoren beachten
+        KeepoInspActivated(False)
     End Sub
 
     ''' <summary>
     ''' Tritt auf, wenn das Element ausgerichtet und gerendert sowie zur Interaktion vorbereitet wurde.
     ''' </summary>
     Private Sub StoppUhrWPF_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        NLogger.Debug("Loaded")
+        NLogger.Trace("Loaded")
 
-    End Sub
+        ' Blende den Anrufmonitor Topmost, aber ohne Aktivierung, 
+        UnsafeNativeMethods.SetWindowPos(New Interop.WindowInteropHelper(Me).Handle,
+                                         HWndInsertAfterFlags.HWND_TOPMOST,
+                                         0, 0, 0, 0,
+                                         SetWindowPosFlags.DoNotActivate Or
+                                         SetWindowPosFlags.IgnoreMove Or
+                                         SetWindowPosFlags.IgnoreResize Or
+                                         SetWindowPosFlags.ShowWindow Or
+                                         SetWindowPosFlags.DoNotChangeOwnerZOrder)
 
-    Private Sub StoppUhrWPF_Activated(sender As Object, e As EventArgs) Handles Me.Activated
-        NLogger.Debug("Activated")
+        NLogger.Debug("Stoppuhr positioniert")
 
+        ' Outlook Inspektor reaktivieren
+        KeepoInspActivated(True)
     End Sub
 
     Private Sub StoppUhrWPF_Closed(sender As Object, e As EventArgs) Handles Me.Closed
@@ -150,5 +161,7 @@ Public Class StoppUhrWPF
             Close()
         End If
     End Sub
+
+
 #End Region
 End Class

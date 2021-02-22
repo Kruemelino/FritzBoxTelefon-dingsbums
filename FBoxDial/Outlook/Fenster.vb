@@ -54,7 +54,10 @@ Friend Module Fenster
             If Activate Then
                 If OInsp IsNot Nothing Then
                     If Not OInsp.WindowState = Outlook.OlWindowState.olMinimized Then
-                        OInsp.Activate()
+                        With OInsp
+                            NLogger.Debug($"Outlook Inspektor '{ .Caption}' reaktiviert.")
+                            .Activate()
+                        End With
                         OInsp = Nothing
                     End If
                 End If
@@ -63,6 +66,7 @@ Friend Module Fenster
                     With ThisAddIn.OutookApplication
                         If .ActiveWindow Is .ActiveInspector Then
                             If UnSaveMethods.GetWindowText(UnSaveMethods.GetForegroundWindow) = .ActiveInspector.Caption Then
+                                NLogger.Debug($"Aktiver Outlook Inspektor '{ .ActiveInspector.Caption}' detektiert.")
                                 OInsp = .ActiveInspector()
                             End If
                         End If

@@ -510,7 +510,7 @@ Public Class OptionenViewModel
 
                 If ViewModelPropertyInfo.CanWrite Then
                     ViewModelPropertyInfo.SetValue(Me,?.GetValue(XMLData.POptionen))
-                    'NLogger.Trace("Feld {0} mit Wert {1} geladen", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me))
+                    NLogger.Trace("Feld {0} mit Wert {1} geladen", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me))
                 End If
 
             End With
@@ -549,7 +549,7 @@ Public Class OptionenViewModel
             If OptionPropertyInfo IsNot Nothing Then
                 With OptionPropertyInfo
                     ?.SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
-                    ' NLogger.Trace("Feld {0} mit Wert {1} übergeben: {2}", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me),?.GetValue(XMLData.POptionen))
+                    NLogger.Trace("Feld {0} mit Wert {1} übergeben: {2}", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me),?.GetValue(XMLData.POptionen))
 
                 End With
             End If

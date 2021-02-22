@@ -55,12 +55,8 @@ Public Class AnrMonWPF
     ''' in denen sich der Wert der <see cref="FrameworkElement.IsInitialized"/>-Eigenschaft von false (oder nicht definiert) in true ändert.
     ''' </summary>
     Private Sub AnrMonWPF_Initialized(sender As Object, e As EventArgs) Handles Me.Initialized
-        NLogger.Debug("Initialized")
+        NLogger.Trace("Initialized")
         Const AbstandAnrMon As Integer = 10
-        ' Blende den Anrufmonitor Topmost, aber ohne Focus ein
-        'UnsafeNativeMethods.SetWindowPos(New Windows.Interop.WindowInteropHelper(Me).Handle,
-        '                                 HWndInsertAfterFlags.HWND_TOPMOST, 0, 0, 0, 0,
-        '                                 CType(SetWindowPosFlags.DoNotActivate + SetWindowPosFlags.IgnoreMove + SetWindowPosFlags.IgnoreResize + SetWindowPosFlags.DoNotChangeOwnerZOrder, SetWindowPosFlags))
 
         ' Setze Startposition
         ' X-Koordinate
@@ -68,13 +64,31 @@ Public Class AnrMonWPF
 
         ' Y-Koordinate
         Top = SystemParameters.WorkArea.Bottom - Height - AbstandAnrMon - ThisAddIn.OffeneAnrMonWPF.Count * (AbstandAnrMon + Height)
+
+        ' Outlook Inspektoren beachten
+        KeepoInspActivated(False)
     End Sub
 
     ''' <summary>
     ''' Tritt auf, wenn das Element ausgerichtet und gerendert sowie zur Interaktion vorbereitet wurde.
     ''' </summary>
     Private Sub AnrMonWPF_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        NLogger.Debug("Loaded")
+        NLogger.Trace("Loaded")
+
+        ' Blende den Anrufmonitor Topmost, aber ohne Aktivierung, 
+        UnsafeNativeMethods.SetWindowPos(New Interop.WindowInteropHelper(Me).Handle,
+                                         HWndInsertAfterFlags.HWND_TOPMOST,
+                                         0, 0, 0, 0,
+                                         SetWindowPosFlags.DoNotActivate Or
+                                         SetWindowPosFlags.IgnoreMove Or
+                                         SetWindowPosFlags.IgnoreResize Or
+                                         SetWindowPosFlags.ShowWindow Or
+                                         SetWindowPosFlags.DoNotChangeOwnerZOrder)
+
+        NLogger.Debug("Anrufmonitor positioniert")
+
+        ' Outlook Inspektor reaktivieren
+        KeepoInspActivated(True)
 
         ' Timer für das Ausblenden starten
         If XMLData.POptionen.CBAutoClose AndAlso AusblendTimer Is Nothing Then
