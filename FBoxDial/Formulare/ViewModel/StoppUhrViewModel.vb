@@ -92,6 +92,7 @@ Public Class StoppUhrViewModel
         End Get
         Set
             SetProperty(_StartStoppuhr, Value)
+
             If _StartStoppuhr Then
                 ' Starte die Stoppuhr
                 Start()
@@ -109,7 +110,7 @@ Public Class StoppUhrViewModel
 
 #Region "ICommand"
     Public Property ShowContactCommand As RelayCommand
-
+    Public Property ClosingCommand As RelayCommand
 #End Region
 
     Public Sub New()
@@ -117,6 +118,8 @@ Public Class StoppUhrViewModel
 
         ' Init Command
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)
+        ' Window Command
+        ClosingCommand = New RelayCommand(AddressOf Closing)
     End Sub
 
     Private Sub LadeDaten()
@@ -165,6 +168,16 @@ Public Class StoppUhrViewModel
 
                                                 LadeDaten()
                                             End Sub)
+    End Sub
+
+    Private Sub Closing(o As Object)
+        NLogger.Debug($"StoppuhrViewModel Closing")
+
+        ' Stoppuhr anhalten
+        StartStoppuhr = False
+
+        ' Ereignishandler entfernen
+        RemoveHandler StoppUhrTelefonat.PropertyChanged, AddressOf TelefonatChanged
     End Sub
 #End Region
 
