@@ -7,38 +7,27 @@ Friend Module Fenster
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property OInsp As Outlook.Inspector
 #End Region
-    '''' <summary>
-    '''' Prüft, ob ein Vollbildanwendung aktiv ist.
-    '''' </summary>
-    '''' <returns>True, wenn Vollbildanwendung erkannt, fals wenn nicht</returns>
-    'Public Function VollBildAnwendungAktiv() As Boolean
 
-    '    'Detect if the current app is running in full screen
-    '    Dim AppBounds As RECT
-    '    Dim screenBounds As Drawing.Rectangle
-    '    Dim hWnd As IntPtr
-
-    '    VollBildAnwendungAktiv = False
-
-    '    'get the dimensions of the active window
-    '    hWnd = UnSaveMethods.GetForegroundWindow()
-
-    '    If Not hWnd = IntPtr.Zero Then
-    '        ' Check we haven't picked up the desktop or the shell
-    '        If Not (hWnd.Equals(UnSaveMethods.GetDesktopWindow) Or hWnd.Equals(UnSaveMethods.GetShellWindow)) Then
-
-    '            AppBounds = UnSaveMethods.GetWindowRect(hWnd)
-    '            'determine if window is fullscreen
-    '            screenBounds = Forms.Screen.FromHandle(hWnd).Bounds
-    '            If (AppBounds.Bottom - AppBounds.Top).AreEqual(screenBounds.Height) And (AppBounds.Right - AppBounds.Left).AreEqual(screenBounds.Width) Then
-
-    '                VollBildAnwendungAktiv = True
-    '                NLogger.Info("Eine aktive Vollbildanwendung wurde detektiert.")
-    '            End If
-    '        End If
-    '    End If
-    'End Function
-
+    ''' <summary>
+    ''' Positioniert das Fenster mit dem <paramref name="hWnd"/> Topmost, jedoch mit folgenden Einschrängkungen:
+    ''' <list type="bullet">
+    ''' <item>DoNotActivate</item>
+    ''' <item>IgnoreMove</item>
+    ''' <item>IgnoreResize</item>
+    ''' <item>DoNotChangeOwnerZOrder</item>
+    ''' </list>
+    ''' </summary>
+    ''' <param name="hWnd">Window-Hanlde des einzublendenden Fensters</param>
+    Friend Sub SetWindowPosPopUp(hWnd As IntPtr)
+        ' Blende den Anrufmonitor Topmost, aber ohne Aktivierung, 
+        UnsafeNativeMethods.SetWindowPos(hWnd,
+                                         HWndInsertAfterFlags.HWND_TOPMOST,
+                                         0, 0, 0, 0,
+                                         SetWindowPosFlags.DoNotActivate Or
+                                         SetWindowPosFlags.IgnoreMove Or
+                                         SetWindowPosFlags.IgnoreResize Or
+                                         SetWindowPosFlags.DoNotChangeOwnerZOrder)
+    End Sub
     ''' <summary>
     ''' Sinn der Routine ist es einen aktiven Inspector wieder aktiv zu schalten, da der Anrufmonitor diesen deaktiviert.
     ''' Nachdem der Anrufmonitor eingeblendet wurde, muss der Inspector wieder aktiviert werden.
