@@ -215,7 +215,7 @@ Public Class AnrMonViewModel
 
     Private Sub Closing(o As Object)
         NLogger.Debug($"AnrMonViewModel Closing")
-        ' Entwas aufräumen
+        ' Ereignishandler entfernen
         RemoveHandler AnrMonTelefonat.PropertyChanged, AddressOf TelefonatChanged
     End Sub
 #End Region

@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fbd="clr-namespace:FBoxDial"
         mc:Ignorable="d"
-        Focusable="False" IsTabStop="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Focusable="False" IsTabStop="False" ResizeMode="NoResize"
         d:DesignHeight="140" d:DesignWidth="200" Height="140" Width="200"
         d:DataContext="{d:DesignInstance Type=fbd:StoppUhrViewModel, IsDesignTimeCreatable=True}"         
+        fbd:WindowBehavior.Closing="{Binding ClosingCommand}"
         Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
 
     <Window.Resources>

@@ -49,15 +49,8 @@ Public Class StoppUhrWPF
     Private Sub StoppUhrWPF_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         NLogger.Trace("Loaded")
 
-        ' Blende den Anrufmonitor Topmost, aber ohne Aktivierung, 
-        UnsafeNativeMethods.SetWindowPos(New Interop.WindowInteropHelper(Me).Handle,
-                                         HWndInsertAfterFlags.HWND_TOPMOST,
-                                         0, 0, 0, 0,
-                                         SetWindowPosFlags.DoNotActivate Or
-                                         SetWindowPosFlags.IgnoreMove Or
-                                         SetWindowPosFlags.IgnoreResize Or
-                                         SetWindowPosFlags.ShowWindow Or
-                                         SetWindowPosFlags.DoNotChangeOwnerZOrder)
+        ' Blende den Stoppuhr Topmost, aber ohne Aktivierung
+        SetWindowPosPopUp(New Interop.WindowInteropHelper(Me).Handle)
 
         NLogger.Debug("Stoppuhr positioniert")
 
