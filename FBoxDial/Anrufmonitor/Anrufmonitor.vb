@@ -29,7 +29,7 @@ Friend Class Anrufmonitor
 #End Region
 
 #Region "Timer"
-    Private WithEvents TimerAnrMonReStart As Timers.Timer
+    Private Property TimerAnrMonReStart As Timer
     Private Property RestartTimerIterations As Integer
 #End Region
     Private WithEvents AnrMonTCPClient As AnrMonClient
@@ -87,42 +87,50 @@ Friend Class Anrufmonitor
         ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
-    Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
-        'Aktiv = False
-        ThisAddIn.POutlookRibbons.RefreshRibbon()
-        NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.ValidFBAdr, FritzBoxDefault.DfltFBAnrMonPort)
-    End Sub
-
 #Region "Anrufmonitor Standby PowerMode"
-    Friend Sub RestartOnResume()
+    Friend Sub Reaktivieren()
         ' Falls der Anrufmonitor aktiv sein sollte, dann halte ihn sicherheitshalber an.
         If Aktiv Then StoppAnrMon()
 
         If TimerAnrMonReStart IsNot Nothing Then
-            NLogger.Debug("Timer für Reaktivierung nach Standby ist nicht Nothing und wird neu gestartet.")
+            NLogger.Debug("Timer für Reaktivierung ist nicht Nothing und wird neu gestartet.")
 
-            ' Timer stoppen und auf Nothing setzen
-            TimerAnrMonReStart = KillTimer(TimerAnrMonReStart)
+            ' Ereignishandler entfernen
+            RemoveHandler TimerAnrMonReStart.Elapsed, AddressOf TimerAnrMonReStart_Elapsed
+
+            ' Timer stoppen und auflösen
+            With TimerAnrMonReStart
+                .Stop()
+                .AutoReset = False
+                .Enabled = False
+                .Dispose()
+            End With
         End If
 
         ' Initiiere einen neuen Timer
-        NLogger.Debug("Timer für Reaktivierung nach Standby wird gestartet.")
+        NLogger.Debug("Timer für Reaktivierung wird gestartet.")
 
         ' Setze die Zählvariable auf 0
         RestartTimerIterations = 0
 
         ' Initiiere den Timer mit Intervall von 2 Sekunden
-        TimerAnrMonReStart = SetTimer(DfltReStartIntervall)
+        TimerAnrMonReStart = New Timer
+        With TimerAnrMonReStart
+            .Interval = DfltReStartIntervall
+            .AutoReset = True
+            .Enabled = True
+            ' Starte den Timer
+            .Start()
+        End With
 
-        ' Starte den Timer
-        TimerAnrMonReStart.Start()
-
+        ' Ereignishandler hinzufügen
+        AddHandler TimerAnrMonReStart.Elapsed, AddressOf TimerAnrMonReStart_Elapsed
     End Sub
 
-    Private Sub TimerAnrMonReStart_Elapsed(sender As Object, e As ElapsedEventArgs) Handles TimerAnrMonReStart.Elapsed
+    Private Sub TimerAnrMonReStart_Elapsed(sender As Object, e As ElapsedEventArgs)
         ' Prüfe, ob die maximale Anzahl an Durchläufen (15) noch nicht erreicht wurde
         If RestartTimerIterations.IsLess(DfltTryMaxRestart) Then
-            ' Wenn der Anrufmonitor aktiv ist, dann hat das wiederverbinden geklappt.
+            ' Wenn der Anrufmonitor aktiv ist, dann hat das Wiederverbinden geklappt.
             If Aktiv Then
                 ' Halte den TImer an und löse ihn auf
                 With TimerAnrMonReStart
@@ -130,28 +138,36 @@ Friend Class Anrufmonitor
                     .Dispose()
                 End With
                 ' Statusmeldung
-                NLogger.Info("Anrufmonitor konnte nach {0} Versuchen erfolgreich neu gestartet werden.", RestartTimerIterations)
+                NLogger.Info($"Anrufmonitor konnte nach {RestartTimerIterations} Versuchen erfolgreich neu gestartet werden.")
             Else
                 ' Erhöhe den Wert der durchgeführten Iterationen
                 RestartTimerIterations += 1
                 ' Statusmeldung
-                NLogger.Debug("Timer: Starte {0}. Versuch den Anrufmonitor zu starten.", RestartTimerIterations)
+                NLogger.Debug($"Timer: Starte {RestartTimerIterations}. Versuch den Anrufmonitor zu starten.")
                 ' Starte den nächsten Versuch den Anrufmonitor zu verbinden
                 StartAnrMon()
             End If
         Else
             ' Es konnte keine Verbindung zur Fritz!Box aufgebaut werden.
-            NLogger.Error("Anrufmonitor konnte nach {0} Versuchen nicht neu gestartet werden.", RestartTimerIterations)
+            NLogger.Warn($"Anrufmonitor konnte nach {RestartTimerIterations} Versuchen nicht neu gestartet werden.")
 
-            ' Halte den TImer an und löse ihn auf
-            TimerAnrMonReStart = KillTimer(TimerAnrMonReStart)
+            ' Ereignishandler entfernen
+            RemoveHandler TimerAnrMonReStart.Elapsed, AddressOf TimerAnrMonReStart_Elapsed
+
+            ' Timer stoppen und auflösen
+            With TimerAnrMonReStart
+                .Stop()
+                .AutoReset = False
+                .Enabled = False
+                .Dispose()
+            End With
         End If
         ' Ribbon aktualisieren
         ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 #End Region
 
-#Region "Anrufmonitor"
+#Region "Anrufmonitor Events"
     Private Sub AnrMonTCPClient_Message(sender As Object, e As NotifyEventArgs(Of String)) Handles AnrMonTCPClient.Message
 
         Dim AktivesTelefonat As Telefonat
@@ -159,7 +175,7 @@ Friend Class Anrufmonitor
         Dim FBStatusSplit As String() = FBStatus.Split(AnrMon_Delimiter)
 
         ' Hier die Daten des Fritz!Box Anrufmonitors weitergeben
-        NLogger.Info("AnrMonAktion: {0}", FBStatus)
+        NLogger.Info($"AnrMonAktion: {FBStatus}")
 
         'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
         Select Case FBStatusSplit(1)
@@ -190,6 +206,17 @@ Friend Class Anrufmonitor
         End Select
     End Sub
 
+    Private Sub AnrMonTCPClient_ErrorOccured(Sender As AnrMonClient) Handles AnrMonTCPClient.ErrorOccured
+        NLogger.Warn($"Anrufmonitor wurde unerwartet getrennt von {XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltFBAnrMonPort}")
+        ' Wieververbinden versuchen
+        Reaktivieren()
+    End Sub
+
+    Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
+        'Aktiv = False
+        ThisAddIn.POutlookRibbons.RefreshRibbon()
+        NLogger.Info($"Anrufmonitor getrennt von {XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltFBAnrMonPort}")
+    End Sub
 #End Region
 
 End Class

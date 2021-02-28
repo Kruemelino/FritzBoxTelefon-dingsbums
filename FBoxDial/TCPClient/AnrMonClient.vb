@@ -12,8 +12,15 @@ Friend Class AnrMonClient
     Private Property IsDisposed As Boolean = False
     Friend Property Verbunden As Boolean
 
-    Public Event Disposed As EventHandlerEx(Of AnrMonClient)
-    Public Event Message As EventHandler(Of NotifyEventArgs(Of String))
+    ' Event für das Disposed Ereignis
+    Friend Event Disposed As EventHandlerEx(Of AnrMonClient)
+
+    ' Event für den Fehlerfall Ereignis
+    Friend Event ErrorOccured As EventHandlerEx(Of AnrMonClient)
+
+    ' Event für die Meldungen des Anrufmonitors
+    Friend Event Message As EventHandler(Of NotifyEventArgs(Of String))
+
     Private ReadOnly Buf(&H400 - 1) As Byte
 
     Friend Sub New(TC As TcpClient)
@@ -40,7 +47,7 @@ Friend Class AnrMonClient
         ' TCP Client schließen
         AnrMonTcpClient.Close()
         ' Debug Log Message
-        NLogger.Debug("AnrMonClient gewollt getrennt")
+        NLogger.Debug("AnrMonClient getrennt")
         ' Auflösen
         Dispose()
     End Sub
@@ -50,7 +57,7 @@ Friend Class AnrMonClient
             Try ' Nach einem Standby kann es zu einem Fehler kommen.
                 Dim read As Integer = AnrMonStream.EndRead(ar)
                 If read.IsZero Then 'leere Datenübermittlung signalisiert Verbindungsabbruch
-                    Dispose()
+                    Dispose
                 Else
                     With New StringBuilder(Encoding.UTF8.GetString(Buf, 0, read))
                         Do While AnrMonStream.DataAvailable
@@ -64,6 +71,9 @@ Friend Class AnrMonClient
             Catch ex As Exception
                 NLogger.Error(ex)
                 Disconnect()
+
+                ' Löse Event für den Fehlerfall aus
+                RaiseEvent ErrorOccured(Me)
             End Try
 
         End If

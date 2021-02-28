@@ -10,6 +10,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property PCVorwahlen As CVorwahlen
     Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
     Friend Shared Property OffeneStoppUhrWPF As List(Of StoppUhrWPF)
+    Friend Shared Property AddinWindows As New List(Of Windows.Window)
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property AnrMonWarAktiv As Boolean
 
@@ -97,7 +98,7 @@ Public NotInheritable Class ThisAddIn
                     ' Eintrag ins Log
                     NLogger.Info("Anrufmonitor nach Standby gestartet.")
                     ' Anrufmonitor erneut starten
-                    PAnrufmonitor.RestartOnResume()
+                    PAnrufmonitor.Reaktivieren()
                 End If
 
             Case Microsoft.Win32.PowerModes.Suspend
@@ -138,6 +139,13 @@ Public NotInheritable Class ThisAddIn
     Private Sub OutlookExplorers_NewExplorer(Explorer As Explorer) Handles OutlookExplorers.NewExplorer
         NLogger.Debug("Ein neues Explorer-Fenster wird geöffnet")
         AddHandler Explorer.BeforeItemPaste, AddressOf OutlookExplorer_BeforeItemPaste
+
+        AddHandler Explorer.SelectionChange, AddressOf OutlookExplorer_SelectionChange
+    End Sub
+
+    Private Sub OutlookExplorer_SelectionChange() Handles OutlookMainExplorer.SelectionChange
+        POutlookRibbons.RefreshRibbon()
+
     End Sub
 
     ''' <summary>

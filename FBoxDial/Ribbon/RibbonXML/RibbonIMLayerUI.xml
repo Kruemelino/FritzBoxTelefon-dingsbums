@@ -2,7 +2,7 @@
   <contextMenus>
     <contextMenu idMso="ContextMenuContactCardRecipient">      
       <menuSeparator id="Seperator_CMR3"/>
-      <button id="rbtnDial_CMR" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction"/>
+      <button id="Dial_CMR" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction" getEnabled="DialEnabled"/>
     </contextMenu>
   </contextMenus>
 </customUI>

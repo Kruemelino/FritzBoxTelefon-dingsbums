@@ -631,7 +631,7 @@ Public Module Extensions
     ''' </summary>
     ''' <param name="Interval">Das Intervall des Timers.</param>
     ''' <returns>Den gerade erstellten Timer.</returns>
-    Public Function SetTimer(Interval As Double) As Timers.Timer
+    <Obsolete> Public Function SetTimer(Interval As Double) As Timers.Timer
         Dim aTimer As New Timers.Timer
 
         With aTimer
@@ -648,7 +648,7 @@ Public Module Extensions
     ''' </summary>
     ''' <param name="Timer">Der zu löschende Timer.</param>
     ''' <returns>Einen Timer, welcher <c>Nothing</c> ist.</returns>
-    Public Function KillTimer(Timer As Timers.Timer) As Timers.Timer
+    <Obsolete> Public Function KillTimer(Timer As Timers.Timer) As Timers.Timer
         If Timer IsNot Nothing Then
             With Timer
                 .Stop()
@@ -659,31 +659,6 @@ Public Module Extensions
         End If
         Return Nothing
     End Function
-
-    Public Function GetScaling() As Drawing.SizeF
-        Dim regAppliedDPI As Integer
-        Try
-            regAppliedDPI = CInt(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics", "AppliedDPI", Nothing))
-        Catch ex As Exception
-            regAppliedDPI = 96
-            NLogger.Warn(ex)
-        End Try
-        Return New Drawing.SizeF((regAppliedDPI / 96).ToSng, (regAppliedDPI / 96).ToSng)
-    End Function
-    Public Function BlankImage() As Drawing.Image
-        Static oBM As New Drawing.Bitmap(1, 1)
-        Try
-
-            If oBM Is Nothing Then
-                oBM.SetPixel(0, 0, Drawing.Color.Transparent)
-            End If
-            Return oBM
-        Catch ex As Exception
-            Return Nothing
-        End Try
-
-    End Function
-
 
 #End Region
 

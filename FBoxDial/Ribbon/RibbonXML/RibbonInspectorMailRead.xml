@@ -4,7 +4,7 @@
     <tabs>
       <tab idMso="TabReadMessage">
         <group id="Tab_ReadMessage" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
-          <button id="btnDialInsp_M" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnActionI"/>
+          <button id="Dial_M" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnActionI" getEnabled="DialEnabled"/>
         </group>
       </tab>
     </tabs>

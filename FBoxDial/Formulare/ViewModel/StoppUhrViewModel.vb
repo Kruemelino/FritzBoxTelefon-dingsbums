@@ -132,10 +132,10 @@ Public Class StoppUhrViewModel
         TelNr = StoppUhrTelefonat.GegenstelleTelNr?.Formatiert
 
         ' Eigene Telefonnummer
-        EigeneTelNr = StoppUhrTelefonat.EigeneTelNr?.Formatiert
+        EigeneTelNr = StoppUhrTelefonat.EigeneTelNr?.Einwahl
 
         ' Anrufer Name setzen
-        Name = StoppUhrTelefonat.AnruferName
+        Name = StoppUhrTelefonat.NameGegenstelle
 
         ' Starte die Stoppuhr
         If StoppUhr Is Nothing Then

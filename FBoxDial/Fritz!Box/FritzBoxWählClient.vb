@@ -87,16 +87,20 @@ Public Class FritzBoxWählClient
             Select Case True
                 Case TypeOf olAuswahl.Item(1) Is Outlook.ContactItem   ' ist aktuelles Fenster ein Kontakt?
                     Wählbox(CType(olAuswahl.Item(1), Outlook.ContactItem))
+
                 Case TypeOf olAuswahl.Item(1) Is Outlook.JournalItem   ' ist aktuelles Fenster ein Journal?
                     ' Es wurde ein Journaleintrag gewählt!
                     WählboxStart(CType(olAuswahl.Item(1), Outlook.JournalItem))
+
                 Case TypeOf olAuswahl.Item(1) Is Outlook.MailItem      ' ist aktuelles Fenster ein Mail?
                     ' Es wurde eine Mail ausgewählt
                     ' Den zur Email-Adresse gehörigen Kontakt suchen
                     WählboxStart(CType(olAuswahl.Item(1), Outlook.MailItem))
+
                 Case Else
                     ' Nix tun
                     MsgBox(WählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
+
             End Select
         Else
             MsgBox(WählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")

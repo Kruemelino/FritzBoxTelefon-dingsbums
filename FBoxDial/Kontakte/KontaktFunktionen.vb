@@ -432,35 +432,30 @@ Friend Module KontaktFunktionen
     End Function
 #Region "VIP"
     <Extension> Friend Function IsVIP(olKontakt As ContactItem) As Boolean
-
-        IsVIP = False
         ' Prüfe, ob sich der Kontakt in der Liste befindet.
         If XMLData.PTelListen.VIPListe IsNot Nothing Then
             With XMLData.PTelListen.VIPListe
-                IsVIP = .Exists(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
+                Return .Exists(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
             End With
         End If
+        Return False
     End Function
 
-    <Extension> Friend Sub AddVIP(olKontakt As ContactItem)
+    <Extension> Friend Function ToggleVIP(olKontakt As ContactItem) As Boolean
         If XMLData.PTelListen.VIPListe Is Nothing Then XMLData.PTelListen.VIPListe = New List(Of VIPEntry)
 
-        With XMLData.PTelListen.VIPListe
-            .Add(New VIPEntry With {.Name = olKontakt.FullNameAndCompany, .EntryID = olKontakt.EntryID, .StoreID = olKontakt.StoreID})
-        End With
-    End Sub
+        If olKontakt.IsVIP Then
+            ' Entferne den Kontakt von der Liste
+            XMLData.PTelListen.VIPListe.RemoveAll(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
 
-    <Extension> Friend Sub RemoveVIP(olKontakt As ContactItem)
-        Dim tmpVIPEntry As VIPEntry
+        Else
+            ' Füge einen neuen Eintrag hinzu
+            XMLData.PTelListen.VIPListe.Add(New VIPEntry With {.Name = olKontakt.FullNameAndCompany, .EntryID = olKontakt.EntryID, .StoreID = olKontakt.StoreID})
 
-        If XMLData.PTelListen.VIPListe Is Nothing Then XMLData.PTelListen.VIPListe = New List(Of VIPEntry)
+        End If
 
-        With XMLData.PTelListen.VIPListe
-            tmpVIPEntry = .Find(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
-
-            If tmpVIPEntry IsNot Nothing Then .Remove(tmpVIPEntry)
-        End With
-    End Sub
+        Return olKontakt.IsVIP
+    End Function
 
 #End Region
 

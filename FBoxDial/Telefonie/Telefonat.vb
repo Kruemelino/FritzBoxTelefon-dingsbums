@@ -218,6 +218,8 @@ Imports Microsoft.Office.Interop
         End Get
         Set
             SetProperty(_AnruferName, Value)
+
+            OnPropertyChanged(NameOf(NameGegenstelle))
         End Set
     End Property
 
@@ -246,7 +248,13 @@ Imports Microsoft.Office.Interop
             SetProperty(_OlKontakt, Value)
         End Set
     End Property
-    '<XmlIgnore> Friend Property AnrMonPopUp As Popup
+
+    <XmlElement> Public ReadOnly Property NameGegenstelle As String
+        Get
+            Return If(AnruferName.IsNotStringNothingOrEmpty, AnruferName, GegenstelleTelNr?.Formatiert)
+        End Get
+    End Property
+
     <XmlIgnore> Friend Property AnrMonEingeblendet As Boolean = False
     <XmlIgnore> Friend Property StoppUhrEingeblendet As Boolean = False
 
@@ -539,7 +547,7 @@ Imports Microsoft.Office.Interop
 
                     With olJournal
 
-                        .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, String.Format(" ({0})", GegenstelleTelNr.Formatiert)))}"
+                        .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
                         .Duration = Dauer.GetLarger(31) \ 60
                         .Body = DfltJournalBody(If(NrUnterdrückt, DfltStringUnbekannt, GegenstelleTelNr.Formatiert), Angenommen, VCard)
                         .Start = ZeitBeginn
@@ -573,7 +581,7 @@ Imports Microsoft.Office.Interop
                             '.Move(OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal))
                         End If
 
-                        NLogger.Info("Journaleintrag erstellt: {0}, {1}, {2}", .Start, .Subject, .Duration)
+                        NLogger.Info($"Journaleintrag erstellt: { .Start}, { .Subject}, { .Duration}")
 
                     End With
 
@@ -643,9 +651,7 @@ Imports Microsoft.Office.Interop
         Beendet = True
 
         ' Stoppuhr ausblenden, wenn dies in den Einstellungen gesetzt ist
-        If StoppUhrEingeblendet And XMLData.POptionen.CBStoppUhrAusblenden Then
-            PopupStoppUhrWPF.StarteAusblendTimer(XMLData.POptionen.TBStoppUhrAusblendverzögerung)
-        End If
+        If StoppUhrEingeblendet And XMLData.POptionen.CBStoppUhrAusblenden Then PopupStoppUhrWPF.StarteAusblendTimer()
 
         If XMLData.POptionen.CBJournal Then ErstelleJournalEintrag()
     End Sub
@@ -792,43 +798,6 @@ Imports Microsoft.Office.Interop
         t.SetApartmentState(ApartmentState.STA)
         t.Start()
     End Sub
-#End Region
-
-#Region "RibbonXML"
-    Friend Overloads Function CreateDynMenuButton(xDoc As Xml.XmlDocument, ID As Integer, Tag As String) As Xml.XmlElement
-        Dim XButton As Xml.XmlElement
-        Dim XAttribute As Xml.XmlAttribute
-
-        XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
-
-        XAttribute = xDoc.CreateAttribute("id")
-        XAttribute.Value = $"{Tag}_{ID}"
-        XButton.Attributes.Append(XAttribute)
-
-        XAttribute = xDoc.CreateAttribute("label")
-        XAttribute.Value = If(AnruferName.IsNotStringNothingOrEmpty, AnruferName, GegenstelleTelNr?.Formatiert).XMLMaskiereZeichen
-        XButton.Attributes.Append(XAttribute)
-
-        XAttribute = xDoc.CreateAttribute("onAction")
-        XAttribute.Value = "BtnOnAction"
-        XButton.Attributes.Append(XAttribute)
-
-        XAttribute = xDoc.CreateAttribute("tag")
-        XAttribute.Value = Tag.XMLMaskiereZeichen
-        XButton.Attributes.Append(XAttribute)
-
-        XAttribute = xDoc.CreateAttribute("supertip")
-        XAttribute.Value = $"Zeit: {ZeitBeginn}{Dflt1NeueZeile}Telefonnummer: {GegenstelleTelNr.Formatiert}"
-        XButton.Attributes.Append(XAttribute)
-
-        If Not Angenommen Then
-            XAttribute = xDoc.CreateAttribute("imageMso")
-            XAttribute.Value = "HighImportance"
-            XButton.Attributes.Append(XAttribute)
-        End If
-
-        Return XButton
-    End Function
 #End Region
 
 #Region "Equals, CompareTo"

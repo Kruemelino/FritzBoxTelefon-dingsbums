@@ -4,13 +4,11 @@
     <tabs>
       <tab idMso="TabContact">
         <group id="Tab_Contact" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
-          <button id="btnDialInsp_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnActionI"/>
+          <button id="Dial_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnActionI" getEnabled="DialEnabled"/>
           <separator id="Seperator_C1"/>
-          <dynamicMenu id="btnRWS_C" tag="RWSDasOertliche" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" getContent="FillDynamicRWSMenu"/>
-          <toggleButton id="tbtnVIP_C" getLabel="GetItemLabel" getImage="GetItemImageMsoVIP" getPressed="TBtnPressedVIP" size="normal" getScreentip="GetScreenTipVIP" onAction="TBtnOnAction"/>
-          <button id="btnNote_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getVisible="GetVisibleUploadFKT" size="normal" onAction="BtnOnActionI"/>
-          <button id="btnUpload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getVisible="GetVisibleUploadFKT" size="normal" onAction="BtnOnActionI"/>
-          <dynamicMenu id="MUpload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getContent="GetPhonebooks" invalidateContentOnDrop="true" getVisible="GetVisibleUploadFKT" getScreentip="GetItemScreenTipp"/>
+          <dynamicMenu id="RWS_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" getContent="FillDynamicMenuRWS"/>
+          <toggleButton id="VIP_C" getLabel="GetItemLabel" getImage="GetItemImageMsoVIP" getScreentip="GetItemScreenTipVIP" size="normal" getPressed="TBtnPressedVIP" onAction="ToggleBtnOnActionVIP"/>
+          <dynamicMenu id="Upload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="GetPhonebooks" invalidateContentOnDrop="true" />
         </group>
       </tab>
     </tabs>

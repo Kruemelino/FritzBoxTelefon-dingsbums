@@ -229,6 +229,7 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
+    <Compile Include="Formulare\Common\WindowHelper.vb" />
     <Compile Include="Formulare\Common\WindowBehavior.vb" />
     <Compile Include="Formulare\Common\EnumBindingSourceExtension.vb" />
     <Compile Include="Formulare\Common\NotifyBase.vb" />
@@ -330,6 +331,16 @@
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Formulare\Common\NotifyEventArgs.vb" />
+    <Compile Include="Localize\resImageMso.Designer.vb">
+      <DependentUpon>resImageMso.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Localize\resRibbon.Designer.vb">
+      <DependentUpon>resRibbon.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Localize\resAnrMon.Designer.vb">
       <DependentUpon>resAnrMon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -351,6 +362,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Outlook\OutlookFolder.vb" />
+    <Compile Include="Ribbon\RibbonData.vb" />
     <Compile Include="SoftPhone\MicroSIP.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
@@ -382,7 +394,6 @@
     <Compile Include="Optionen\OutlookXML.vb" />
     <Compile Include="Outlook\Fenster.vb" />
     <Compile Include="SoftPhone\Phoner.vb" />
-    <Compile Include="Ribbon\DefaultRibbon.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
     <Compile Include="Fritz!Box\TR064\BaseFunctionsTR64.vb" />
@@ -429,6 +440,15 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <EmbeddedResource Include="Localize\resImageMso.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resImageMso.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resRibbon.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resRibbon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localize\resAnrMon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resAnrMon.Designer.vb</LastGenOutput>

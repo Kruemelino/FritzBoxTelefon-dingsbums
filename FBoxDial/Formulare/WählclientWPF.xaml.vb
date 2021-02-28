@@ -1,7 +1,5 @@
 ﻿Imports System.Threading
-Imports System.Timers
 Imports System.Windows
-Imports System.Windows.Input
 Imports System.Windows.Markup
 
 Public Class WählclientWPF
@@ -10,10 +8,7 @@ Public Class WählclientWPF
     Private WithEvents CtrlKontaktWahl As UserCtrlKontaktwahl
     Private WithEvents CtrlDirektWahl As UserCtrlDirektwahl
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-
-#Region "WithEvents"
-    Private WithEvents TimerSchließen As Timers.Timer
-#End Region
+    Private Property WindowHelper As WindowHelper
 
     Public Sub New(ViewModel As WählClientViewModel)
 
@@ -25,6 +20,9 @@ Public Class WählclientWPF
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
+
+        ' Erzeuge die Klasse für das automatische Ausblenden
+        WindowHelper = New WindowHelper(Me, TimeSpan.FromSeconds(XMLData.POptionen.TBWClientEnblDauer))
 
         ' Initialisiere das ViewModel. Die Daten werden aus den Optionen geladen.
         DataContext = ViewModel
@@ -111,11 +109,7 @@ Public Class WählclientWPF
     Private Sub BVIP_Click(sender As Object, e As RoutedEventArgs) Handles BVIP.Click
         With CType(DataContext, WählClientViewModel)
             If .OKontakt IsNot Nothing Then
-                If .OKontakt.IsVIP Then
-                    .OKontakt.RemoveVIP
-                Else
-                    .OKontakt.AddVIP
-                End If
+                .OKontakt.ToggleVIP
             End If
         End With
     End Sub
@@ -142,9 +136,6 @@ Public Class WählclientWPF
                 NLogger.Debug(WählClientStatusAbbruch)
 
                 DialCode = DfltStringEmpty
-
-                ' Timmer abbrechen, falls er läuft
-                If TimerSchließen IsNot Nothing Then TimerSchließen.Stop()
 
             Else
                 ' Wenn es sich um eine Mobilnummer handelt, kann der Nutzer auswählen, ob er zunächst gefragt wird.
@@ -181,7 +172,7 @@ Public Class WählclientWPF
 
                                 If PhonerApp.PhonerReady Then
                                     ' Telefonat an Phoner übergeben
-                                    NLogger.Info("Wählclient an Phoner: {0} über {1}", DialCode, .TelGerät.Name)
+                                    NLogger.Info($"Wählclient an Phoner: {DialCode} über { .TelGerät.Name}")
                                     Erfolreich = PhonerApp.Dial(DialCode, AufbauAbbrechen)
                                 Else
                                     NLogger.Debug(WählClientSoftPhoneInaktiv("Phoner"))
@@ -200,7 +191,7 @@ Public Class WählclientWPF
 
                                 If MicroSIPApp.MicroSIPReady Then
                                     ' Telefonat an Phoner übergeben
-                                    NLogger.Info("Wählclient an MicroSIP: {0} über {1}", DialCode, .TelGerät.Name)
+                                    NLogger.Info($"Wählclient an MicroSIP: {DialCode} über { .TelGerät.Name}")
                                     Erfolreich = CBool((MicroSIPApp?.Dial(DialCode, AufbauAbbrechen)))
                                 Else
                                     NLogger.Debug(WählClientSoftPhoneInaktiv("MicroSIP"))
@@ -214,7 +205,7 @@ Public Class WählclientWPF
                 Else
                     ' Telefonat über TR064Dial an Fritz!Box weiterreichen
                     If .Wählclient IsNot Nothing Then
-                        NLogger.Info("Wählclient TR064Dial: '{0}', Dialport: '{1}'", DialCode, .TelGerät.TR064Dialport)
+                        NLogger.Info($"Wählclient TR064Dial: '{DialCode}', Dialport: '{ .TelGerät.TR064Dialport}'")
                         Erfolreich = .Wählclient.TR064Dial(DialCode, .TelGerät, AufbauAbbrechen)
                     Else
                         NLogger.Error("Wählclient ist Nothing")
@@ -247,7 +238,7 @@ Public Class WählclientWPF
                         .TelGerät.ZuletztGenutzt = True
                     End If
                     ' Timer zum automatischen Schließen des Fensters starten
-                    If XMLData.POptionen.CBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.TBWClientEnblDauer * 1000)
+                    If XMLData.POptionen.CBCloseWClient Then WindowHelper.StartTimer()
                 Else
                     .Status = WählClientDialFehler
                 End If
@@ -255,12 +246,4 @@ Public Class WählclientWPF
             End If
         End With
     End Sub
-
-#Region "Timer"
-    Private Sub TimerSchließen_Elapsed(sender As Object, e As ElapsedEventArgs) Handles TimerSchließen.Elapsed
-        TimerSchließen = KillTimer(TimerSchließen)
-        Close()
-    End Sub
-
-#End Region
 End Class

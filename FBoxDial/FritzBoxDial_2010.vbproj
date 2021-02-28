@@ -335,6 +335,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Localize\resRibbon.Designer.vb" />
     <Compile Include="Localize\resTelefonbuch.Designer.vb">
       <DependentUpon>resTelefonbuch.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -434,6 +435,7 @@
       <LastGenOutput>resAnrMon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resRibbon.resx" />
     <EmbeddedResource Include="Localize\resTelefonbuch.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resTelefonbuch.Designer.vb</LastGenOutput>

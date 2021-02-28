@@ -414,10 +414,12 @@
         End Get
         Set
             _CBoxMinLogLevel = Value
-
+            ' Regeln aktualsieren
             With LogManager.Configuration
                 .LoggingRules.Clear()
-                LogManager.Configuration.AddRule(LogLevel.FromString(_CBoxMinLogLevel), LogLevel.Fatal, LogManager.Configuration.FindTargetByName("f"))
+                For Each Target As Targets.Target In LogManager.Configuration.AllTargets
+                    .AddRule(LogLevel.FromString(_CBoxMinLogLevel), LogLevel.Fatal, Target)
+                Next
                 LogManager.ReconfigExistingLoggers()
             End With
 
