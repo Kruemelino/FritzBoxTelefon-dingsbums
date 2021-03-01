@@ -147,16 +147,8 @@ Imports Microsoft.Office.Interop.Outlook
                 End Using
             Next
             ' Body
-            Dim mySerializer As New XmlSerializer(GetType(FritzBoxXMLKontakt))
-            Dim settings As New XmlWriterSettings With {.Indent = True, .OmitXmlDeclaration = False}
-            Dim XmlSerializerNamespace As New XmlSerializerNamespaces()
+            XmlSerializeToString(Me, .Body)
 
-            XmlSerializerNamespace.Add(DfltStringEmpty, DfltStringEmpty)
-
-            Using TextSchreiber As New StringWriter
-                mySerializer.Serialize(TextSchreiber, Me, XmlSerializerNamespace)
-                .Body = TextSchreiber.ToString()
-            End Using
         End With
     End Sub
 

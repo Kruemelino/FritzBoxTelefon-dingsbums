@@ -1,6 +1,9 @@
 ﻿Imports System.Xml.Serialization
 <Serializable(), XmlType("phonebook")> Public Class FritzBoxXMLTelefonbuch
     Inherits NotifyBase
+    Public Sub New()
+        Kontakte = New ObservableCollectionEx(Of FritzBoxXMLKontakt)
+    End Sub
 
 #Region "Fritz!Box Eigenschaften"
 
@@ -125,7 +128,5 @@
     End Function
 #End Region
 
-    Public Sub New()
-        Kontakte = New ObservableCollectionEx(Of FritzBoxXMLKontakt)
-    End Sub
+
 End Class

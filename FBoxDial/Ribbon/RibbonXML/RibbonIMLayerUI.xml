@@ -1,9 +1,12 @@
-﻿<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="ribbonLoaded_" loadImage="getImages">
+﻿<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
   <contextMenus>
     <contextMenu idMso="ContextMenuContactCardRecipient">      
-      <menuSeparator id="Seperator_CMR3"/>
-      <button id="Dial_CMR" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction" getEnabled="DialEnabled"/>
+      <menuSeparator id="Seperator_CMR1"/>
+      <button id="Dial_CMR2" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction" getEnabled="DialEnabled"/>
     </contextMenu>
+    <!--<contextMenu idMso="ContextMenuContactCardOverflowDropdown">
+      <menuSeparator id="Seperator_CMR2"/>
+      <button id="Dial_CMR1" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction" getEnabled="DialEnabled"/>
+    </contextMenu>-->
   </contextMenus>
 </customUI>
-

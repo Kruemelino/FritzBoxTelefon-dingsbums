@@ -4,6 +4,33 @@ Imports Microsoft.Office.Interop.Outlook
 Friend Module KontaktFunktionen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
+    Friend Enum KontaktNummernTypen
+        AssistantTelephoneNumber = 2
+        BusinessTelephoneNumber = 2
+        Business2TelephoneNumber = 2
+        CallbackTelephoneNumber = 2
+        CarTelephoneNumber = 3
+        CompanyMainTelephoneNumber = 2
+        HomeTelephoneNumber = 3
+        Home2TelephoneNumber = 3
+        ISDNNumber = 3
+        MobileTelephoneNumber = 4
+        OtherTelephoneNumber = 3
+        PagerNumber = 4
+        PrimaryTelephoneNumber = 2
+        RadioTelephoneNumber = 4
+        BusinessFaxNumber = 5
+        HomeFaxNumber = 5
+        OtherFaxNumber = 5
+        TelexNumber = 5
+        TTYTDDTelephoneNumber = 3
+
+        '3 Type = "home":    .CarTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .TTYTDDTelephoneNumber, .OtherTelephoneNumber                           
+        '4 Type = "mobile":  .MobileTelephoneNumber, .PagerNumber, .RadioTelephoneNumber
+        '2 Type = "work":    .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CompanyMainTelephoneNumber, .PrimaryTelephoneNumber
+        '5 Type = "fax_work: .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber
+    End Enum
+
     ''' <summary>
     ''' Erstellt einen Kontakt aus einer vCard.
     ''' </summary>
@@ -289,35 +316,28 @@ Friend Module KontaktFunktionen
             End Try
         End If
 
-        'If GetOutlookFolder Is Nothing Then
-        '    GetOutlookFolder = P_DefContactFolder
-        '    FolderID = GetOutlookFolder.EntryID
-        '    StoreID = CType(GetOutlookFolder.Parent, Outlook.MAPIFolder).StoreID
-        '    XMLData.POptionen.PTVKontaktOrdnerEntryID = FolderID
-        '    XMLData.POptionen.PTVKontaktOrdnerStoreID = StoreID
-        'End If
     End Function
     Friend Function GetKontaktTelNrList(ByRef olContact As ContactItem) As List(Of Telefonnummer)
 
         Dim alleTelNr(14) As String ' alle im Kontakt enthaltenen Telefonnummern
-        Dim alleNrTypen(14) As String ' die Bezeichnungen der Telefonnummern
+        Dim alleNrTypen(14) As KontaktNummernTypen ' die Bezeichnungen der Telefonnummern
         Dim tmpTelNr As Telefonnummer
 
         With olContact
-            alleTelNr(1) = .AssistantTelephoneNumber : alleNrTypen(1) = "Assistent"
-            alleTelNr(2) = .BusinessTelephoneNumber : alleNrTypen(2) = "Geschäftlich"
-            alleTelNr(3) = .Business2TelephoneNumber : alleNrTypen(3) = "Geschäftlich2"
-            alleTelNr(4) = .CallbackTelephoneNumber : alleNrTypen(4) = "Rückmeldung"
-            alleTelNr(5) = .CarTelephoneNumber : alleNrTypen(5) = "Auto"
-            alleTelNr(6) = .CompanyMainTelephoneNumber : alleNrTypen(6) = "Firma"
-            alleTelNr(7) = .HomeTelephoneNumber : alleNrTypen(7) = "Privat"
-            alleTelNr(8) = .Home2TelephoneNumber : alleNrTypen(8) = "Privat2"
-            alleTelNr(9) = .ISDNNumber : alleNrTypen(9) = "ISDN"
-            alleTelNr(10) = .MobileTelephoneNumber : alleNrTypen(10) = "Mobiltelefon"
-            alleTelNr(11) = .OtherTelephoneNumber : alleNrTypen(11) = "Weitere"
-            alleTelNr(12) = .PagerNumber : alleNrTypen(12) = "Pager"
-            alleTelNr(13) = .PrimaryTelephoneNumber : alleNrTypen(13) = "Haupttelefon"
-            alleTelNr(14) = .RadioTelephoneNumber : alleNrTypen(14) = "Funkruf"
+            alleTelNr(1) = .AssistantTelephoneNumber : alleNrTypen(1) = KontaktNummernTypen.AssistantTelephoneNumber
+            alleTelNr(2) = .BusinessTelephoneNumber : alleNrTypen(2) = KontaktNummernTypen.BusinessTelephoneNumber
+            alleTelNr(3) = .Business2TelephoneNumber : alleNrTypen(3) = KontaktNummernTypen.Business2TelephoneNumber
+            alleTelNr(4) = .CallbackTelephoneNumber : alleNrTypen(4) = KontaktNummernTypen.CallbackTelephoneNumber
+            alleTelNr(5) = .CarTelephoneNumber : alleNrTypen(5) = KontaktNummernTypen.CarTelephoneNumber
+            alleTelNr(6) = .CompanyMainTelephoneNumber : alleNrTypen(6) = KontaktNummernTypen.CompanyMainTelephoneNumber
+            alleTelNr(7) = .HomeTelephoneNumber : alleNrTypen(7) = KontaktNummernTypen.HomeTelephoneNumber
+            alleTelNr(8) = .Home2TelephoneNumber : alleNrTypen(8) = KontaktNummernTypen.Home2TelephoneNumber
+            alleTelNr(9) = .ISDNNumber : alleNrTypen(9) = KontaktNummernTypen.ISDNNumber
+            alleTelNr(10) = .MobileTelephoneNumber : alleNrTypen(10) = KontaktNummernTypen.MobileTelephoneNumber
+            alleTelNr(11) = .OtherTelephoneNumber : alleNrTypen(11) = KontaktNummernTypen.OtherTelephoneNumber
+            alleTelNr(12) = .PagerNumber : alleNrTypen(12) = KontaktNummernTypen.PagerNumber
+            alleTelNr(13) = .PrimaryTelephoneNumber : alleNrTypen(13) = KontaktNummernTypen.PrimaryTelephoneNumber
+            alleTelNr(14) = .RadioTelephoneNumber : alleNrTypen(14) = KontaktNummernTypen.RadioTelephoneNumber
         End With
 
         GetKontaktTelNrList = New List(Of Telefonnummer)
@@ -332,12 +352,12 @@ Friend Module KontaktFunktionen
     Friend Function GetKontaktTelNrList(ByRef olExchangeNutzer As ExchangeUser) As List(Of Telefonnummer)
 
         Dim alleTelNr(2) As String ' alle im Exchangenutzer enthaltenen Telefonnummern
-        Dim alleNrTypen(2) As String ' die Bezeichnungen der Telefonnummern
+        Dim alleNrTypen(2) As KontaktNummernTypen ' die Bezeichnungen der Telefonnummern
         Dim tmpTelNr As Telefonnummer
 
         With olExchangeNutzer
-            alleTelNr(1) = .BusinessTelephoneNumber : alleNrTypen(1) = "Geschäftlich"
-            alleTelNr(2) = .MobileTelephoneNumber : alleNrTypen(2) = "Mobiltelefon"
+            alleTelNr(1) = .BusinessTelephoneNumber : alleNrTypen(1) = KontaktNummernTypen.BusinessTelephoneNumber
+            alleTelNr(2) = .MobileTelephoneNumber : alleNrTypen(2) = KontaktNummernTypen.MobileTelephoneNumber
         End With
 
         GetKontaktTelNrList = New List(Of Telefonnummer)
@@ -506,12 +526,48 @@ Friend Module KontaktFunktionen
             If vCard.IsStringNothingOrEmpty Then
                 .Body += $"{Dflt1NeueZeile}{DfltJournalRWSFehler} {TelNr.Formatiert}"
             Else
-                .Body += String.Format("{0}{2}{1}{3}", Dflt1NeueZeile, Dflt2NeueZeile, DfltJournalTextKontaktvCard, vCard)
+                .Body += String.Format($"{Dflt1NeueZeile}{Dflt2NeueZeile}{DfltJournalTextKontaktvCard}{vCard}")
 
                 DeserializevCard(vCard, olContact)
             End If
 
         End With
     End Sub
+
+    Friend Function ErstelleXMLKontakt(olContact As ContactItem) As FritzBoxXMLKontakt
+
+        ' Erstelle ein nen neuen XMLKontakt
+        Dim XMLKontakt As New FritzBoxXMLKontakt
+
+        With XMLKontakt
+            ' Weise den Namen zu
+            .Person.RealName = olContact.FullName
+
+            With .Telefonie
+                ' Weise die E-Mails zu
+                With .Emails
+                    If olContact.Email1Address.IsNotStringNothingOrEmpty Then
+                        .Add(New FritzBoxXMLEmail With {.EMail = olContact.Email1Address})
+                    End If
+                    If olContact.Email2Address.IsNotStringNothingOrEmpty Then
+                        .Add(New FritzBoxXMLEmail With {.EMail = olContact.Email2Address})
+                    End If
+                    If olContact.Email3Address.IsNotStringNothingOrEmpty Then
+                        .Add(New FritzBoxXMLEmail With {.EMail = olContact.Email3Address})
+                    End If
+                End With
+
+                ' Weise die Telefonnummern zu
+                With .Nummern
+                    For Each TelNr In GetKontaktTelNrList(olContact)
+                        .Add(New FritzBoxXMLNummer With {.Nummer = TelNr.Unformatiert, .Typ = CType(TelNr.OutlookTyp, XMLTelNrTyp)})
+                    Next
+                End With
+
+            End With
+
+        End With
+        Return XMLKontakt
+    End Function
 
 End Module

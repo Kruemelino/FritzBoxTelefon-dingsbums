@@ -1,5 +1,4 @@
 ﻿Imports System.Threading.Tasks
-Imports System.Collections
 
 Namespace Telefonbücher
     Friend Module FritzBoxTelefonbuch
@@ -14,7 +13,7 @@ Namespace Telefonbücher
                     If .GetPhonebookList(PhonebookIDs) Then
 
                         ' Initialiesiere die Gesamtliste der Telefonbücher
-                        Dim AlleTelefonbücher As New FritzBoxXMLTelefonbücher With {.Telefonbücher = New ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)}
+                        Dim AlleTelefonbücher As New FritzBoxXMLTelefonbücher With {.NurHeaderDaten = False}
 
                         ' Schleife durch alle ermittelten IDs
                         For Each PhonebookID In PhonebookIDs
@@ -49,6 +48,41 @@ Namespace Telefonbücher
                         If AlleTelefonbücher.Telefonbücher.Count.AreDifferentTo(PhonebookIDs.Count) Then
                             NLogger.Warn($"Es konnten nur {AlleTelefonbücher.Telefonbücher.Count} von {PhonebookIDs.Count} Telefonbüchern heruntergeladen werden.")
                         End If
+
+                        Return AlleTelefonbücher
+                    End If
+                    Return Nothing
+                End With
+            End Using
+        End Function
+
+        Friend Function LadeHeaderFritzBoxTelefonbücher() As FritzBoxXMLTelefonbücher
+            Using fbtr064 As New FritzBoxTR64
+                With fbtr064
+                    ' Ermittle alle verfügbaren Telefonbücher
+                    Dim PhonebookIDs As Integer() = {}
+                    If .GetPhonebookList(PhonebookIDs) Then
+
+                        ' Initialiesiere die Gesamtliste der Telefonbücher
+                        Dim AlleTelefonbücher As New FritzBoxXMLTelefonbücher With {.NurHeaderDaten = True}
+
+                        ' Schleife durch alle ermittelten IDs
+                        For Each PhonebookID In PhonebookIDs
+                            Dim PhonebookURL As String = DfltStringEmpty
+                            Dim PhonebookName As String = DfltStringEmpty
+                            ' Ermittle die URL und Namen zum Telefonbuch
+                            If .GetPhonebook(PhonebookID, PhonebookURL, PhonebookName) Then
+
+                                NLogger.Debug($"Name des Telefonbuches {PhonebookID} ermittelt: '{PhonebookName}'")
+
+                                Dim AktuellePhoneBookXML As New FritzBoxXMLTelefonbuch With {.ID = PhonebookID, .Name = PhonebookName}
+
+                                AlleTelefonbücher.Telefonbücher.Add(AktuellePhoneBookXML)
+
+                            End If
+                        Next
+                        ' Setze diese unvollständige Liste global.
+                        If ThisAddIn.PhoneBookXML Is Nothing Then ThisAddIn.PhoneBookXML = AlleTelefonbücher
 
                         Return AlleTelefonbücher
                     End If

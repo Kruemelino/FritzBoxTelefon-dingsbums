@@ -15,7 +15,4 @@ Public Module OutlookFolder
 
     End Function
 
-
-
-
 End Module

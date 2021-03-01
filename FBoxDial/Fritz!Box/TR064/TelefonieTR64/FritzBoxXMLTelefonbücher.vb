@@ -3,8 +3,11 @@
 <XmlRoot("phonebooks"), XmlType("phonebooks")> Public Class FritzBoxXMLTelefonbücher
     Inherits NotifyBase
 
-    Private _Telefonbücher As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
+    Public Sub New()
+        Telefonbücher = New ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
+    End Sub
 
+    Private _Telefonbücher As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
     <XmlElement("phonebook")> Public Property Telefonbücher As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
         Get
             Return _Telefonbücher
@@ -13,6 +16,8 @@
             SetProperty(_Telefonbücher, Value)
         End Set
     End Property
+
+    <XmlIgnore> Friend Property NurHeaderDaten As Boolean
 
     Friend Function Find(TelNr As Telefonnummer) As FritzBoxXMLKontakt
         ' Suche alle Telefonbücher mit einem entsprechenden Kontakt

@@ -110,18 +110,18 @@
   <contextMenus>
     <contextMenu idMso="ContextMenuContactItem">
       <menuSeparator id="Seperator_CM1"/>
-      <button id="Dial_CMC" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction" getEnabled="DialEnabled"/>
+      <button id="Dial_CMC" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled"/>
       <toggleButton id="VIP_CMC" getLabel="GetItemLabel" getImage="GetItemImageMsoVIP" getPressed="TBtnPressedVIP" onAction="ToggleBtnOnActionVIP"/>
-      <dynamicMenu id="Upload_CMC" getLabel="GetItemLabel" getContent="GetPhonebooks" invalidateContentOnDrop="true" getScreentip="GetItemScreenTipp" imageMso="ParentPermissions"/>
+      <dynamicMenu id="Upload_CMC" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="FillDynamicMenuTelBk" invalidateContentOnDrop="true" />
     </contextMenu>
     <contextMenu idMso="ContextMenuJournalItem">
       <menuSeparator id="Seperator_CM2"/>
-      <button id="Dial_CMJ" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction" getEnabled="DialEnabled"/>
+      <button id="Dial_CMJ" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled"/>
       <button id="Contact_CMJ" getLabel="GetItemLabelJournal" getImage="GetItemImageMsoJournal" getScreentip="GetItemScreenTipJournal" onAction="BtnOnAction"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuMailItem">
       <menuSeparator id="Seperator_CM3"/>
-      <button id="Dial_CMM" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction" getEnabled="DialEnabled"/>
+      <button id="Dial_CMM" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled"/>
     </contextMenu>
   </contextMenus>
 </customUI>

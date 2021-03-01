@@ -55,7 +55,6 @@ Imports FBoxDial.RibbonData
 
 #End Region
 
-
 #Region "Ribbon Inspector Office 2010 bis Office 2019" ' Ribbon Inspektorfenster
 
     ''' <summary>
@@ -249,6 +248,7 @@ Imports FBoxDial.RibbonData
 #End Region
 
 #Region "DynamicMenu"
+#Region "CALL RING VIP"
     Public Function DynMenuEnabled(control As IRibbonControl) As Boolean
         Return ListCRVEnabled(control.Id)
     End Function
@@ -260,10 +260,18 @@ Imports FBoxDial.RibbonData
     Public Function FillDynamicMenu(control As IRibbonControl) As String
         Return GetDynamicMenu(control.Id)
     End Function
+#End Region
 
+#Region "RWS"
     Public Function FillDynamicMenuRWS(control As IRibbonControl) As String
         Return GetDynamicMenuRWS(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem), control.Id)
     End Function
+#End Region
+#Region "Telefonbücher"
+    Public Function FillDynamicMenuTelBk(control As IRibbonControl) As String
+        Return GetDynamicMenuTelBk(control.Id)
+    End Function
+#End Region
 #End Region
 
 #Region "VIP-Ribbon"
@@ -316,5 +324,26 @@ Imports FBoxDial.RibbonData
 
 #End Region
 
+#Region "Telefonbücher"
+    Public Sub BtnOnActionBk(control As IRibbonControl)
+
+        Dim oKontakt As Outlook.ContactItem = Nothing
+
+        Select Case True
+            Case TypeOf control.Context Is Outlook.Selection
+                oKontakt = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+
+            Case TypeOf control.Context Is Outlook.Inspector
+                oKontakt = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
+
+        End Select
+
+        GetRibbonAction(control.Id, oKontakt, control.Tag)
+
+        ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
+        ' Zeichne Ribbon neu
+        RibbonObjekt.Invalidate()
+    End Sub
+#End Region
 
 End Class

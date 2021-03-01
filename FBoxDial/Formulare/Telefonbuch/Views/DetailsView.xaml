@@ -157,31 +157,6 @@
 
                                 </StackPanel>
 
-                                <!--<StackPanel>
-                                    <Label Style="{StaticResource DetailLabel}" Content="{Binding Typ, FallbackValue=N/A}"/>
-
-                                    <Label Style="{StaticResource ContentLabel}"
-                                           Content="{Binding Nummer, FallbackValue=N/A}"
-                                           Visibility="{Binding Path=DataContext.IsDisplayMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}"/>
-
-                                    <Grid Visibility="{Binding Path=DataContext.IsEditMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="30"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <TextBox Style="{StaticResource EditBox}" Grid.Column="0"
-                                                 Text="{Binding Nummer, FallbackValue=N/A, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                                        <Button  Grid.Column="1" Style="{StaticResource EditButton}"
-                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveNumber}"
-                                                CommandParameter="{Binding}">
-                                            
-                                            <ContentControl ContentTemplate="{StaticResource PhoneRemove}"/>
-                                        </Button>
-                                    </Grid>
-                                    
-                                </StackPanel>-->
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -209,36 +184,71 @@
                     </Grid>
                 </Border>
                 <StackPanel>
+
                     <ItemsControl ItemsSource="{Binding FBoxKontakt.Telefonie.Emails}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <Label Style="{StaticResource DetailLabel}" Content="{Binding Klassifizierer, FallbackValue=N/A}"/>
-                                    <Label Style="{StaticResource ContentLabel}"
-                                           Content="{Binding EMail, FallbackValue=N/A}"
-                                           Visibility="{Binding Path=DataContext.IsDisplayMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}"/>
-                                    
-                                    <Grid Visibility="{Binding Path=DataContext.IsEditMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}">
+                                <StackPanel Grid.Row="3">
+                                    <Grid Visibility="{Binding Path=DataContext.IsDisplayMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}">
                                         <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="30"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBox Style="{StaticResource EditBox}" Grid.Column="0" 
+
+                                        <!--Displaymode: Label Telefonnummer-->
+                                        <Label Grid.Column="0"
+                                               Style="{StaticResource ContentLabel}"
+                                               Content="{Binding EMail, FallbackValue=N/A}"/>
+
+                                        <!--Displaymode: Label Typ-->
+                                        <Label Grid.Column="1"
+                                               Style="{StaticResource DetailLabel}" 
+                                               Content="{Binding Klassifizierer, FallbackValue=notset, Converter={StaticResource EnumDescriptionConverter}}"/>
+
+                                    </Grid>
+
+
+                                    <Grid Visibility="{Binding Path=DataContext.IsEditMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="30"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--Editmode: Textbox Telefonnummer-->
+                                        <TextBox Style="{StaticResource EditBox}" Grid.Column="0"
                                                  Text="{Binding EMail, FallbackValue=N/A, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                        <Button Grid.Column="1" Style="{StaticResource EditButton}"
-                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveMail}"
+                                        <!--Editmode: Combobox Typ-->
+                                        <ComboBox Style="{StaticResource EditComboBox}" Grid.Column="1"
+                                                  ItemsSource="{Binding Source={fbd:EnumBindingSource {x:Type fbd:XMLEMailTyp}}}"
+                                                  SelectedValue="{Binding Klassifizierer, FallbackValue=notset}">
+
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+
+                                        <!--Editmode: Button Entfernen Telefonnummer-->
+                                        <Button  Grid.Column="2" Style="{StaticResource EditButton}"
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveNumber}"
                                                 CommandParameter="{Binding}">
 
                                             <ContentControl ContentTemplate="{StaticResource MailRemove}"/>
                                         </Button>
                                     </Grid>
+
                                 </StackPanel>
+
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
                 </StackPanel>
-            </StackPanel>
+            </StackPanel> 
         </StackPanel>
 
     </Grid>

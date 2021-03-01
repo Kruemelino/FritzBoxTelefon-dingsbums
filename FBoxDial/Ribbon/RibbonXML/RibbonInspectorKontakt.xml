@@ -8,7 +8,7 @@
           <separator id="Seperator_C1"/>
           <dynamicMenu id="RWS_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" getContent="FillDynamicMenuRWS"/>
           <toggleButton id="VIP_C" getLabel="GetItemLabel" getImage="GetItemImageMsoVIP" getScreentip="GetItemScreenTipVIP" size="normal" getPressed="TBtnPressedVIP" onAction="ToggleBtnOnActionVIP"/>
-          <dynamicMenu id="Upload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="GetPhonebooks" invalidateContentOnDrop="true" />
+          <dynamicMenu id="Upload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="FillDynamicMenuTelBk" invalidateContentOnDrop="true" />
         </group>
       </tab>
     </tabs>

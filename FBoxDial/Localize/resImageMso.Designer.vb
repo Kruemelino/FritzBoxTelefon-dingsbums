@@ -242,4 +242,13 @@ Public Class resImageMso
             Return ResourceManager.GetString("Upload_ImageMso", resourceCulture)
         End Get
     End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die AddressBook ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property UploadBk_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("UploadBk_ImageMso", resourceCulture)
+        End Get
+    End Property
 End Class

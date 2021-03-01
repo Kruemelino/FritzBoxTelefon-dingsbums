@@ -388,6 +388,22 @@ Namespace RibbonData
 
         End Sub
 
+        ''' <summary>
+        ''' Lädt den übergebenen Kontakt in die Fritz!Box hoch
+        ''' </summary>
+        ''' <param name="OutlookContactItem"></param>
+        ''' <param name="BookID"></param>
+        Private Sub UploadBk(OutlookContactItem As Outlook.ContactItem, BookID As String)
+            Dim NeuerKontakt As String = DfltStringEmpty
+
+            If XmlSerializeToString(ErstelleXMLKontakt(OutlookContactItem), NeuerKontakt) Then
+                ' Lödt den Kontakt in das Telefonbuch hoch
+                Telefonbücher.SetTelefonbuchEintrag(BookID.ToInt, NeuerKontakt)
+
+            End If
+
+        End Sub
+
 #End Region
 
 #Region "Control Enabled"
@@ -482,11 +498,17 @@ Namespace RibbonData
                     End With
 
                 Case TypeOf Context Is Microsoft.Office.Core.IMsoContactCard
-                    With CType(Context, Microsoft.Office.Core.IMsoContactCard)
-                        Stop
-                    End With
+
+                    ' Es gibt zwei Möglichkeiten:
+                    ' A: Ein klassischer Kontakt ist hinterlegt
+                    ' B: Ein Exchange-User existiert.
+
+                    ' Rekursiver Aufruf
+                    Return EnableDial(KontaktSuche(CType(Context, Microsoft.Office.Core.IMsoContactCard))) OrElse
+                           EnableDial(KontaktSucheExchangeUser(CType(Context, Microsoft.Office.Core.IMsoContactCard)))
 
                 Case TypeOf Context Is Outlook.ContactItem
+
                     ' Ermittelt, ob der Kontakt angerufen werden kann
                     With CType(Context, Outlook.ContactItem)
                         ' Hat der Kontakt Telefonnummern?
@@ -498,6 +520,11 @@ Namespace RibbonData
                     With CType(Context, Outlook.JournalItem)
                         Return Not .Body.StartsWith(String.Format($"{PfltJournalBodyStart} {Localize.resAnrMon.strUnknown}"))
                     End With
+
+                Case TypeOf Context Is Outlook.ExchangeUser
+                    ' Ermittelt, ob der Kontakt angerufen werden kann
+                    ' Hat der Kontakt Telefonnummern?
+                    Return GetKontaktTelNrList(CType(Context, Outlook.ExchangeUser)).Any
 
             End Select
 
@@ -591,7 +618,7 @@ Namespace RibbonData
             Return XDynaMenu.InnerXml
         End Function
 
-        Private Function CreateDynMenuButton(xDoc As XmlDocument, TelNr As Telefonnummer, ID As Integer, Tag As String) As Xml.XmlElement
+        Private Function CreateDynMenuButton(xDoc As XmlDocument, TelNr As Telefonnummer, ID As Integer, Tag As String) As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
             With TelNr
@@ -619,7 +646,66 @@ Namespace RibbonData
 
 #End Region
 
-#Region "DynMenuButton"
+#Region "Telefonbücher"
+        Friend Function GetDynamicMenuTelBk(ListName As String) As String
+
+            Dim XDynaMenu As New XmlDocument
+
+            ListName = ListName.RegExRemove("_.*")
+
+            With XDynaMenu
+                ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
+                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
+
+                ' Ermittle die verfügbaren Quellen für die Telefonbuchnamen
+                Dim TelBk As FritzBoxXMLTelefonbücher
+
+                If ThisAddIn.PhoneBookXML Is Nothing Then
+                    TelBk = Telefonbücher.LadeHeaderFritzBoxTelefonbücher
+                Else
+                    TelBk = ThisAddIn.PhoneBookXML
+                End If
+
+                ' Trage die einzelnen Bücher ein
+                For Each Buch In TelBk.Telefonbücher
+                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Name, Buch.ID, ListName))
+                Next
+            End With
+
+            Return XDynaMenu.InnerXml
+        End Function
+
+        Private Function CreateDynMenuButton(xDoc As XmlDocument, TelefonbuchName As String, BuchID As Integer, Tag As String) As XmlElement
+            Dim XButton As XmlElement
+            Dim XAttribute As XmlAttribute
+
+            XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
+
+            XAttribute = xDoc.CreateAttribute("id")
+            XAttribute.Value = $"{Tag}Bk_{BuchID}"
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("tag")
+            XAttribute.Value = BuchID.ToString
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("label")
+            XAttribute.Value = TelefonbuchName
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("onAction")
+            XAttribute.Value = "BtnOnActionBk"
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("getImage")
+            XAttribute.Value = "GetItemImageMso"
+            XButton.Attributes.Append(XAttribute)
+
+            Return XButton
+        End Function
+#End Region
+
+#Region "Listen für Wahlwiederholung, Rückruf, VIP"
         ''' <summary>
         ''' Erstelle die Liste der entsprechenden Einträge ausgehend vom <paramref name="ListName"/>.
         ''' </summary>

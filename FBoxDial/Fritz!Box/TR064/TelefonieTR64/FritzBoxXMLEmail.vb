@@ -1,11 +1,12 @@
-﻿Imports System.Xml.Serialization
+﻿Imports System.ComponentModel
+Imports System.Xml.Serialization
 <Serializable(), XmlType("email")> Public Class FritzBoxXMLEmail
     Inherits NotifyBase
 
-    Private _Klassifizierer As String
+    Private _Klassifizierer As XMLEMailTyp
     Private _EMail As String
 
-    <XmlAttribute("classifier")> Public Property Klassifizierer As String
+    <XmlAttribute("classifier")> Public Property Klassifizierer As XMLEMailTyp
         Get
             Return _Klassifizierer
         End Get
@@ -22,4 +23,19 @@
             SetProperty(_EMail, Value)
         End Set
     End Property
+
 End Class
+
+<TypeConverter(GetType(EnumDescriptionConverter))>
+Public Enum XMLEMailTyp
+    <Description("Sonstige")>
+    <XmlEnum("")> notset = 0
+
+    <Description("Privat")>
+    <XmlEnum("private")> [private] = 1
+
+    <Description("Arbeit")>
+    <XmlEnum("work")> work = 2
+
+
+End Enum

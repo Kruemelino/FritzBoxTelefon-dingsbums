@@ -20,7 +20,7 @@ Public Class Telefonnummer
     <XmlElement> Public Property Formatiert As String
     <XmlElement> Public Property Unformatiert As String
     <XmlElement> Public Property Unbekannt As Boolean
-    <XmlIgnore> Public Property OutlookTyp As String
+    <XmlIgnore> Friend Property OutlookTyp As KontaktNummernTypen
     <XmlElement> Public Property SIP As Integer
 
     Public Sub New()
