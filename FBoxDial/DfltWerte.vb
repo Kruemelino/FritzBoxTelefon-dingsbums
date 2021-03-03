@@ -2,6 +2,9 @@
 
 Public NotInheritable Class DfltWerteAllgemein
 
+    Public Shared ReadOnly Property DfltOptions As String = "Optionen"
+    Public Shared ReadOnly Property DfltDeCryptKey As String = "ZugangV5"
+
 #Region "Global Default Value Properties"
     ''' <summary>
     ''' Ein leerer String

@@ -34,17 +34,6 @@ Public MustInherit Class NotifyBase
 
     End Function
 
-    Protected Function GetProperty(Of T)(storage As T, DefaultValue As T, <CallerMemberName> Optional propertyName As String = Nothing) As T
-
-        If storage IsNot Nothing Then
-            Return storage
-        Else
-            OnPropertyChanged(propertyName)
-            Return DefaultValue
-        End If
-
-    End Function
-
     ''' <summary>
     '''    Notifies listeners that a property value has changed.
     ''' </summary>

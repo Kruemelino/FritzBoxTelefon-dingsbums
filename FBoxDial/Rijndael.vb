@@ -23,7 +23,7 @@ Friend Class Rijndael
             Dim EncryptionKey() As Byte = GetRndKey(32)
 
             ' Speichere den Salt und Key in der Registry ab
-            SaveSetting(My.Resources.strDefShortName, DefaultWerte.DfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
+            SaveSetting(My.Resources.strDefShortName, DfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
 
             ' Create the encryptor and write value to it after it is converted into a byte array
             Using rijAlg As New RijndaelManaged()
@@ -53,7 +53,7 @@ Friend Class Rijndael
     ''' <returns>Die entschlüsselte Zeichenfolge</returns>
     Friend Function DecryptString128Bit(vstrStringToBeDecrypted As String, vstrDeCryptKey As String) As String
         ' Lese den Key aus der Registry aus
-        Dim DecryptionSaltKey As String = GetSetting(My.Resources.strDefShortName, DefaultWerte.DfltOptions, vstrDeCryptKey, DfltStrErrorMinusOne)
+        Dim DecryptionSaltKey As String = GetSetting(My.Resources.strDefShortName, DfltOptions, vstrDeCryptKey, DfltStrErrorMinusOne)
         ' Standardwert
         DecryptString128Bit = DfltStrErrorMinusOne
         ' Test ob gültige Eingangsdaten vorhanden

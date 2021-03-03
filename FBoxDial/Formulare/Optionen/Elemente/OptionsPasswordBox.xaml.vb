@@ -58,7 +58,7 @@ Partial Public Class OptionsPasswordBox
         Else
             If PwBox.Password.AreNotEqual("1234") Then
                 Using Crypt As Rijndael = New Rijndael
-                    Value = Crypt.EncryptString128Bit(PwBox.Password, DefaultWerte.DfltDeCryptKey)
+                    Value = Crypt.EncryptString128Bit(PwBox.Password, DfltDeCryptKey)
                 End Using
             End If
         End If
