@@ -34,7 +34,7 @@
         <Grid Margin="4,2,0,2">
             
             <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="25"/>
                 <RowDefinition Height="20"/>
                 <RowDefinition />
                 <RowDefinition Height="20"/>
@@ -45,14 +45,16 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-
-            <TextBlock Grid.Row="0" Grid.Column="0"
+            <DockPanel Grid.Row="0" Grid.ColumnSpan="2" >
+                <TextBlock DockPanel.Dock="Left"
                        Style="{StaticResource Gegenstelle}"
                        Text="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
-            <TextBlock Grid.Row="0" Grid.Column="1"
-                       Style="{StaticResource EigeneNummer}"
-                       Text="{Binding Path=EigeneTelNr}"/>
+                <TextBlock DockPanel.Dock="Right"
+                           Style="{StaticResource EigeneNummer}"
+                           Text="{Binding Path=EigeneTelNr}"/>
+            </DockPanel>
+
             
             <TextBlock Grid.Row="1" Grid.ColumnSpan="2"
                        Style="{StaticResource Zeit}"
@@ -66,18 +68,7 @@
                        Style="{StaticResource Zeit}"
                        Text="{Binding Path=Ende, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"
                        Visibility="{Binding Ende, Converter={StaticResource DateToVisibilityConverter}}">
-                
-                <!--<TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource Zeit}">
-                        <Setter Property="Text" Value="{Binding Path=Ende, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Ende}" Value="{x:Static sys:DateTime.MinValue}">
-                                <Setter Property="Text" Value="" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>-->
-                
+                               
             </TextBlock>
         </Grid> 
 
