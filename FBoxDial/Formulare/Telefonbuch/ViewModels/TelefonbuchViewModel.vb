@@ -6,7 +6,7 @@ Imports FBoxDial.Localize.resTelefonbuch
 ''' https://github.com/Tosker/ContactBook-Tutorial
 ''' Es wurde duch Kruemelino zu Zwecken der Anzeige von Fritz!Box Kontakten angepasst und erweitert.
 ''' </summary>
-Public Class BookViewModel
+Public Class TelefonbuchViewModel
     Inherits NotifyBase
 
     Private Property DatenService As IContactDataService

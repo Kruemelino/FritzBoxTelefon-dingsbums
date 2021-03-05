@@ -29,13 +29,13 @@
             Value="{Binding Path=TBPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
         <TextBlock Style="{StaticResource OptHeader}" Text="Grundaten Telefonie"/>
-        <fbd:OptionsHinweis Label="Landes- und Ortskennzahl (jeweils ohne führende Null) werden beim Einlesen der Telefone automatisch aus der Fritz!Box ausgelesen."/>
+        <fbd:OptionsHinweis Label="Landes- und Ortskennzahl (jeweils ohne führende Null) werden beim Einlesen der Telefone automatisch aus der Fritz!Box ausgelesen.&#10;Falls keine Werte gefunden wurden, können die Werte hier eingetragen werden."/>
         <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="Ortskennzahl" IsEnabled="False"
+                 Tag="Ortskennzahl"
                  Text="{Binding TBOrtsKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="Landeskennzahl" IsEnabled="False"
+                 Tag="Landeskennzahl"
                  Text="{Binding TBLandesKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Style="{StaticResource OptHeader}" Text="Formatierung von Telefonnummern"/>

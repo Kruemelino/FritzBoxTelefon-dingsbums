@@ -28,11 +28,21 @@ Friend Module NLogging
         ' Debug  For debugging; executed query, user authenticated, session expired
         ' Trace  For trace debugging; begin method X, end method X
 
-        'Dim minLogLevel As LogLevel = LogLevel.Trace
+        'Dim minLogLevel As LogLevel = LogLevel.Debug
         'Dim maxLogLevel As LogLevel = LogLevel.Fatal
 
         config.AddTarget(Ziel)
         'config.AddRule(minLogLevel, maxLogLevel, Ziel)
         Return config
     End Function
+
+    Friend Sub SetLogLevel()
+        With LogManager.Configuration
+            .LoggingRules.Clear()
+            For Each Target As Targets.Target In LogManager.Configuration.AllTargets
+                .AddRule(LogLevel.FromString(XMLData.POptionen.CBoxMinLogLevel), LogLevel.Fatal, Target)
+            Next
+            LogManager.ReconfigExistingLoggers()
+        End With
+    End Sub
 End Module

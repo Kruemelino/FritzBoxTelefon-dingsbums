@@ -1,5 +1,4 @@
-﻿Imports System.ComponentModel
-Imports System.Xml.Serialization
+﻿Imports System.Xml.Serialization
 
 <Serializable(), XmlType("number")> Public Class FritzBoxXMLNummer
     Inherits NotifyBase
@@ -57,26 +56,3 @@ Imports System.Xml.Serialization
 
 End Class
 
-<TypeConverter(GetType(EnumDescriptionConverter))>
-Public Enum XMLTelNrTyp
-    <Description("Sonstige")>
-    <XmlEnum("")> notset = 0
-
-    <Description("Intern")>
-    <XmlEnum("intern")> intern = 1
-
-    <Description("Arbeit")>
-    <XmlEnum("work")> work = 2
-
-    <Description("Privat")>
-    <XmlEnum("home")> home = 3
-
-    <Description("Mobil")>
-    <XmlEnum("mobile")> mobile = 4
-
-    <Description("Fax")>
-    <XmlEnum("fax_work")> fax_work = 5
-
-    <Description("Anrufbeantworter")>
-    <XmlEnum("memo")> memo = 6
-End Enum

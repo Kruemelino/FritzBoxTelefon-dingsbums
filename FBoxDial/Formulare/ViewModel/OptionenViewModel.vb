@@ -586,6 +586,9 @@ Public Class OptionenViewModel
             .AddRange(OutlookOrdnerListe)
         End With
 
+        ' Loglevel Aktualisieren
+        SetLogLevel()
+
         ' Speichern in Datei anstoßen
         Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
     End Sub

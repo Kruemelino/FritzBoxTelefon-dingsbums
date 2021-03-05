@@ -26,7 +26,7 @@ Public Class StoppUhrWPF
     ''' </summary>
     Friend Sub StarteAusblendTimer()
         ' Timer für das Ausblenden starten
-        WindowHelper.StartTimer()
+        WindowHelper.StartTimer(False)
     End Sub
 
 #Region "Window Events"

@@ -305,7 +305,7 @@
                     ' Anrufer ermitteln
                     If Name.IsNotStringNothingOrEmpty Then .AnruferName = Name
 
-                    If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unbekannt Then .StarteKontaktsuche()
+                    If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unbekannt Then .Kontaktsuche()
                 End If
 
                 If Type.AreEqual(2) Then .Angenommen = False ' missed

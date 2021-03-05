@@ -20,7 +20,7 @@ Public Class Telefonnummer
     <XmlElement> Public Property Formatiert As String
     <XmlElement> Public Property Unformatiert As String
     <XmlElement> Public Property Unbekannt As Boolean
-    <XmlIgnore> Friend Property OutlookTyp As KontaktNummernTypen
+    <XmlIgnore> Public Property Typ As TelNrType
     <XmlElement> Public Property SIP As Integer
 
     Public Sub New()
@@ -350,7 +350,7 @@ Public Class Telefonnummer
                         Return Equals(New Telefonnummer With {.SetNummer = AndereNummer})
                     End If
                 Else
-                    NLogger.Debug($"Telefonnummernvergleich false ({other}): '{AndereNummer}'; {Unformatiert}")
+                    NLogger.Trace($"Telefonnummernvergleich false ({other}): '{AndereNummer}'; {Unformatiert}")
                     Return False
                 End If
         End Select

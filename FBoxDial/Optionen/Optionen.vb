@@ -106,8 +106,6 @@ Imports System.Xml.Serialization
 
     <XmlElement("CBUseLegacySearch")> Public Property CBUseLegacySearch As Boolean = False
 
-    <XmlElement("CBUseLegacyUserProp")> Public Property CBUseLegacyUserProp As Boolean = False
-
 #Region "Einstellungen für die Kontaktsuche - Kontaktsuche in Outlook (Indizierung)"
 
     <XmlElement("CBSucheUnterordner")> Public Property CBSucheUnterordner As Boolean = False
@@ -151,19 +149,6 @@ Imports System.Xml.Serialization
 
 #Region "Logging"
     <XmlElement("CBoxMinLogLevel")> Public Property CBoxMinLogLevel As String = LogLevel.Debug.Name
-    '    Set
-    '        _CBoxMinLogLevel = Value
-    '        ' Regeln aktualsieren
-    '        With LogManager.Configuration
-    '            .LoggingRules.Clear()
-    '            For Each Target As Targets.Target In LogManager.Configuration.AllTargets
-    '                .AddRule(LogLevel.FromString(_CBoxMinLogLevel), LogLevel.Fatal, Target)
-    '            Next
-    '            LogManager.ReconfigExistingLoggers()
-    '        End With
-
-    '    End Set
-    'End Property
 #End Region
 
 #Region "SoftPhones"

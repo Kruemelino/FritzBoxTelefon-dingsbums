@@ -62,15 +62,6 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    '<XmlIgnore> Public ReadOnly Property RINGGeräteString As String
-    '    Get
-    '        ' Funktioniert nicht!
-    '        Return String.Join(", ", XMLData.PTelefonie.Telefoniegeräte.Where(Function(Tel)
-    '                                                                              Return Tel.StrEinTelNr.Contains(OutEigeneTelNr)
-    '                                                                          End Function).Select(Function(Gerät) Gerät.Name).ToList())
-    '    End Get
-    'End Property
-
     Private _NebenstellenNummer As Integer
     <XmlElement> Public Property NebenstellenNummer As Integer
         Get
@@ -280,7 +271,6 @@ Imports Microsoft.Office.Interop
 
                     Case 3 ' Eingehende (anrufende) Telefonnummer
                         GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
-                        'GegenstelleTelNr = New Telefonnummer With {.SetNummer = "(03 52 08) 8 59-0"}
 
                         NrUnterdrückt = GegenstelleTelNr.Unbekannt
 
@@ -403,42 +393,68 @@ Imports Microsoft.Office.Interop
     End Sub
 
 #Region "Kontaktsuche"
-    Friend Async Sub StarteKontaktsuche()
+    ''' <summary>
+    ''' Führt die Kontaktsuche durch.
+    ''' 1. Outlook-Kontakte
+    ''' 2. Fritz!Box Telefonbücher
+    ''' 3. Rückwärtssuche
+    ''' </summary>
+    Friend Async Sub Kontaktsuche()
 
         ' Kontaktsuche in den Outlook-Kontakten
-        OlKontakt = KontaktSuche(GegenstelleTelNr)
+        OlKontakt = KontaktSucher.KontaktSuche(GegenstelleTelNr)
 
         If OlKontakt IsNot Nothing Then
             ' Ein Kontakt wurde gefunden
             With OlKontakt
                 ' Anrufernamen ermitteln
                 AnruferName = .FullName
+
                 ' Firma aus Kontaktdaten ermitteln
                 Firma = .CompanyName
+
                 ' KontaktID und StoreID speichern
                 OutlookKontaktID = .EntryID
                 OutlookStoreID = .StoreID
+
+                ' Log-Eintrag erzeugen
+                NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' in Outlook-Kontakten gefunden.")
             End With
         End If
 
         ' Kontaktsuche in den Fritz!Box Telefonbüchern
-        If XMLData.POptionen.CBKontaktSucheFritzBox Then
-            If OlKontakt Is Nothing Then
-                If ThisAddIn.PhoneBookXML IsNot Nothing Then
-                    FBTelBookKontakt = ThisAddIn.PhoneBookXML.Find(GegenstelleTelNr)
+        If OlKontakt Is Nothing Then
+            If XMLData.POptionen.CBKontaktSucheFritzBox Then
+
+                If ThisAddIn.PhoneBookXML Is Nothing OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                    ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
+                    ' Dann lade die Telefonbücher herunter
+                    NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
+
+                    ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher()
                 End If
-            End If
 
-            If FBTelBookKontakt IsNot Nothing Then
-                If XMLData.POptionen.CBKErstellen Then
-                    OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
-
-                    With OlKontakt
-                        AnruferName = .FullName
-                        Firma = .CompanyName
-                    End With
+                ' Wenn die Telefonbücher immer noch nicht zur Verfügung stehen, brich an dieser Stelle ab
+                If ThisAddIn.PhoneBookXML IsNot Nothing AndAlso Not ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                    FBTelBookKontakt = ThisAddIn.PhoneBookXML.Find(GegenstelleTelNr)
                 Else
-                    AnruferName = FBTelBookKontakt.Person.RealName
+                    NLogger.Warn("Kontaktsuche in Fritz!Box Telefonbüchern ist nicht möglich: Telefonbücher sind nicht heruntergeladen worden.")
+                End If
+
+                If FBTelBookKontakt IsNot Nothing Then
+                    If XMLData.POptionen.CBKErstellen Then
+                        OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
+
+                        With OlKontakt
+                            AnruferName = .FullName
+                            Firma = .CompanyName
+                        End With
+                    Else
+                        AnruferName = FBTelBookKontakt.Person.RealName
+                    End If
+
+                    ' Log-Eintrag erzeugen
+                    NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' im Fritz!Box Telefonbuch gefunden.")
                 End If
             End If
         End If
@@ -448,29 +464,37 @@ Imports Microsoft.Office.Interop
 
             ' Eine Rückwärtssuche braucht nur dann gemacht werden, wennd die Länge der Telefonnummer aussreichend ist.
             ' Ggf. muss der Wert angepasst werden.
-            If GegenstelleTelNr.Unformatiert.Length.IsLargerOrEqual(4) Then
+            If XMLData.POptionen.CBRWS AndAlso GegenstelleTelNr.Unformatiert.Length.IsLargerOrEqual(4) Then
 
-                If XMLData.POptionen.CBRWS Then
-                    VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.CBRWSIndex)
+                VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.CBRWSIndex)
 
-                    If VCard.IsNotStringEmpty Then
-                        NLogger.Info($"Rückwärtssuche erfolgreich: {VCard}")
-                        If XMLData.POptionen.CBKErstellen Then
-                            OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
-                            With OlKontakt
-                                AnruferName = .FullName
-                                Firma = .CompanyName
-                            End With
-                        Else
-                            With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
-                                AnruferName = .FormattedName
-                                Firma = .Organization
-                            End With
-                        End If
+                If VCard.IsNotStringEmpty Then
+
+                    NLogger.Info($"Rückwärtssuche für '{GegenstelleTelNr.Unformatiert}' erfolgreich: {VCard}")
+
+                    If XMLData.POptionen.CBKErstellen Then
+                        OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
+                        With OlKontakt
+                            AnruferName = .FullName
+                            Firma = .CompanyName
+                        End With
+
+                    Else
+                        With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
+                            AnruferName = .FormattedName
+                            Firma = .Organization
+                        End With
                     End If
+
+                    NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' per Rückwärtssuche gefunden.")
+
                 End If
             End If
+
         End If
+
+        ' Zeige Kontakt
+        If XMLData.POptionen.CBAnrMonZeigeKontakt Then ZeigeKontakt()
 
     End Sub
 #End Region
@@ -604,11 +628,7 @@ Imports Microsoft.Office.Interop
 
         ' Starte die Kontaktsuche mit Hilfe eines Backgroundworkers, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
         ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        StarteKontaktsuche()
-
-        '' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
-        'If RINGGeräte Is Nothing Then RINGGeräte = New ObservableCollectionEx(Of Telefoniegerät)
-        'RINGGeräte.AddRange(XMLData.PTelefonie.Telefoniegeräte.Where(Function(Tel) Tel.StrEinTelNr IsNot Nothing AndAlso Tel.StrEinTelNr.Contains(EigeneTelNr.Unformatiert)))
+        Kontaktsuche()
 
         ' Anrufmonitor einblenden, wenn Bedingungen erfüllt 
         If EigeneTelNr.Überwacht Then ShowAnrMon()
@@ -625,10 +645,27 @@ Imports Microsoft.Office.Interop
         Beendet = False
 
         ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        StarteKontaktsuche()
+        Kontaktsuche()
 
         ' Telefoniegerät ermitteln
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
+
+
+        ' Eigene Nummer prüfen. Mittels Wählpräfix (*10X#, *11X#, *12X#) kann die ausgehende Telefonnummer beeinflusst werden. 
+        ' Der Anrufmonitor gibt jedoch weiterhin die eigentlich genutzte eigene Nummer für diese Nebenstelle wieder.
+        ' Unterschiueden werden kann nur per AnschlussID
+        ' 03.03.21 15:48:18;CALL;1;4;123456;0049987654321#;SIP3; *124# 654321        '
+        ' 03.03.21 16:35:54;CALL;1;4;123456;0049987654321#;SIP1; *122# 123456
+        If AnschlussID.IsNotStringNothingOrEmpty Then
+            Dim tmpTel As Telefonnummer = XMLData.PTelefonie.GetEigeneTelNr(AnschlussID)
+            If Not EigeneTelNr.Equals(tmpTel) Then
+                ' Eintrag ins Log
+                NLogger.Debug($"Eigene Telefonnummer '{EigeneTelNr.Unformatiert}' mit '{tmpTel.Unformatiert}' überschrieben ({AnschlussID}).")
+
+                ' Telefonnummer ersetzen
+                EigeneTelNr = tmpTel
+            End If
+        End If
 
         ' CALL-Liste initialisieren, falls erforderlich
         If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
@@ -723,7 +760,6 @@ Imports Microsoft.Office.Interop
 
         KeepoInspActivated(True)
 
-
     End Sub
 
     ''' <summary>
@@ -733,7 +769,7 @@ Imports Microsoft.Office.Interop
     Private Sub PopupAnrMonGeschlossen(sender As Object, e As EventArgs)
         ' Führe die Arbeiten nur beim ersten Aufruf des Closed-Event des Popups durch.
         If IAnrMonClosed.IsZero Then
-            NLogger.Debug("Anruffenster geschlossen: {0}", AnruferName)
+            NLogger.Debug($"Anruffenster geschlossen: {AnruferName}")
             IAnrMonClosed += 1
             AnrMonEingeblendet = False
             ' Entferne den Anrufmonitor von der Liste der offenen Popups
@@ -750,19 +786,18 @@ Imports Microsoft.Office.Interop
     Private Sub PopupStoppUhrGeschlossen(sender As Object, e As EventArgs)
         ' Führe die Arbeiten nur beim ersten Aufruf des Closed-Event des Popups durch.
         If StoppUhrClosed.IsZero Then
-            NLogger.Debug("Stoppuhr geschlossen: {0}", AnruferName)
+            NLogger.Debug($"Stoppuhr geschlossen: {AnruferName}")
             StoppUhrClosed += 1
             StoppUhrEingeblendet = False
-            ' Entferne den Anrufmonitor von der Liste der offenen Popups
+            ' Entferne die Stoppuhr von der Liste der offenen Popups
             ThisAddIn.OffeneStoppUhrWPF.Remove(PopupStoppUhrWPF)
 
-            PopUpAnrMonWPF = Nothing
+            PopupStoppUhrWPF = Nothing
         End If
     End Sub
 
     Private Sub ShowAnrMon()
         Dim t = New Thread(Sub()
-                               ' If Not VollBildAnwendungAktiv() Or XMLData.POptionen.CBAnrMonVollbildAnzeigen Then
                                If PopUpAnrMonWPF Is Nothing Then
                                    NLogger.Debug("Blende einen neuen Anrufmonitor ein")
                                    ' Blende einen neuen Anrufmonitor ein
@@ -773,7 +808,6 @@ Imports Microsoft.Office.Interop
                                        Thread.Sleep(100)
                                    End While
                                End If
-                               ' End If
                            End Sub)
 
         t.SetApartmentState(ApartmentState.STA)
@@ -781,7 +815,6 @@ Imports Microsoft.Office.Interop
     End Sub
     Private Sub ShowStoppUhr()
         Dim t = New Thread(Sub()
-                               'If Not VollBildAnwendungAktiv() Or XMLData.POptionen.CBAnrMonVollbildAnzeigen Then
                                If PopupStoppUhrWPF Is Nothing Then
                                    NLogger.Debug("Blende einen neue StoppUhr ein")
                                    ' Blende einen neuen Anrufmonitor ein
@@ -792,7 +825,6 @@ Imports Microsoft.Office.Interop
                                        Thread.Sleep(100)
                                    End While
                                End If
-                               'End If
                            End Sub)
 
         t.SetApartmentState(ApartmentState.STA)

@@ -314,7 +314,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' Anruf: <paramref name="Kontakt"/>
     ''' </summary>
     ''' <param name="Kontakt">Die Kontaktdaten des anzurufenden Kontaktes</param>
-    Public Shared ReadOnly Property WählClientFormText(Kontakt As String) As String
+    <Obsolete> Public Shared ReadOnly Property WählClientFormText(Kontakt As String) As String
         Get
             Return $"Anruf: {Kontakt}"
         End Get

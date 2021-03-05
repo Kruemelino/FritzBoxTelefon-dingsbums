@@ -26,16 +26,4 @@ Imports System.Xml.Serialization
 
 End Class
 
-<TypeConverter(GetType(EnumDescriptionConverter))>
-Public Enum XMLEMailTyp
-    <Description("Sonstige")>
-    <XmlEnum("")> notset = 0
 
-    <Description("Privat")>
-    <XmlEnum("private")> [private] = 1
-
-    <Description("Arbeit")>
-    <XmlEnum("work")> work = 2
-
-
-End Enum

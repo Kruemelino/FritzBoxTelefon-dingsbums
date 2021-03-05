@@ -174,7 +174,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Border Background="{TemplateBinding Background}" BorderThickness ="0" Padding="4,0,0,0" Margin="0">
+                    <Border Background="{TemplateBinding Background}" BorderThickness ="0" Padding="8,0,0,0" Margin="0">
                         <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -319,7 +319,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+  
     <Style TargetType="{x:Type DataGrid}" x:Key="DataGridStyle">
         <Setter Property="AutoGenerateColumns" Value="False"/>
         <Setter Property="CanUserAddRows" Value="False"/>
@@ -344,21 +344,9 @@
         <Setter Property="Margin" Value="0,4,4,0" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Width" Value="20" />
-        <Setter Property="Height" Value="20" />        
-
-    </Style>
-
-    <Style x:Key="MiniIconToggleButton" TargetType="{x:Type ToggleButton}" >
-        <Setter Property="Margin" Value="0,4,4,0" />
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Top"/>
-        <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="Margin" Value="0,4,4,0" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="Width" Value="20" />
         <Setter Property="Height" Value="20" />
-        <Setter Property="Foreground" Value="#FF424242"/>
-
     </Style>
+
+    
+
 </ResourceDictionary>

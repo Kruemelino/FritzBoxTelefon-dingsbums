@@ -145,7 +145,7 @@ Public Class StoppUhrViewModel
             StartStoppuhr = True
         Else
             If StoppUhr.IsRunning AndAlso StoppUhrTelefonat.Beendet Then
-                NLogger.Debug($"Stoppuhr nach {StoppUhr.Elapsed} angehalten")
+                NLogger.Debug($"Stoppuhr nach {StoppUhr.Elapsed.TotalSeconds} angehalten")
 
                 ' Stoppuhr anhalten
                 StartStoppuhr = False

@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fbd="clr-namespace:FBoxDial"
         mc:Ignorable="d" 
-        MinHeight="400" MinWidth="600" Height="400" Width="600" Focusable="False" IsTabStop="False" Name="Optionen"      
+        MinHeight="450" MinWidth="600" Height="520" Width="700" Focusable="False" IsTabStop="False" Name="Optionen"      
         d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}"
         Title="{x:Static localize:resCommon.strConfig}">
 
@@ -19,11 +19,10 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="MainGrid">
+    <Grid x:Name="MainGrid" Margin="0,8,16,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="51*"/>
-            <ColumnDefinition Width="107*"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -31,7 +30,7 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Column="0" Grid.RowSpan="2">
-            <StackPanel x:Name="SPMenuButtons" DockPanel.Dock="Left" Width="120" Orientation="Vertical">
+            <StackPanel x:Name="SPMenuButtons" DockPanel.Dock="Left" Width="150" Orientation="Vertical">
                 <RadioButton x:Name="RBGrunde" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptBaseConfig}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
                 <RadioButton x:Name="RBAnrMon" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strAnrMon}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
                 <RadioButton x:Name="RBWählhilfe" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strDialer}" Checked="RadioButton_Checked" GroupName="SelOpt"/>

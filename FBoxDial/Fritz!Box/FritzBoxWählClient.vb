@@ -1,5 +1,4 @@
-﻿Imports System.Collections
-Imports Microsoft.Office.Interop
+﻿Imports Microsoft.Office.Interop
 
 Public Class FritzBoxWählClient
     Implements IDisposable
@@ -22,6 +21,14 @@ Public Class FritzBoxWählClient
         Dim PhoneName As String = DfltStringEmpty
 
         Using TR064 As New FritzBoxTR64
+
+            If Not TR064.DialGetConfig(PhoneName) Then
+                ' Es kann sein, dass die Fritz!Box Wählhilfe aktiviert ist, aber kein Telefon ausgewählt ist.
+                ' In diesem Fall: Versuche das gewünschte Telefon zu setzen
+                If TR064.DialSetConfig(Telefon.TR064Dialport) Then
+                    ' Das einstellen hat geklappt. Fahre normal Fort
+                End If
+            End If
 
             ' Ermittle das aktuell eingestellte Telefon.
             If TR064.DialGetConfig(PhoneName) Then
@@ -73,6 +80,114 @@ Public Class FritzBoxWählClient
     End Function
 
 #End Region
+
+    ''' <summary>
+    ''' Startet den Wählvorgang
+    ''' </summary>
+    Friend Function DialTelNr(TelNr As Telefonnummer, Telefon As Telefoniegerät, CLIR As Boolean, Abbruch As Boolean) As Boolean
+
+        Dim DialCode As String = DfltStringEmpty
+        Dim Erfolreich As Boolean = False
+
+        If Abbruch Then
+            NLogger.Debug(WählClientStatusAbbruch)
+
+            DialCode = DfltStringEmpty
+
+        Else
+            '' Wenn es sich um eine Mobilnummer handelt, kann der Nutzer auswählen, ob er zunächst gefragt wird.
+            'If .CheckMobil AndAlso .TelNr.IstMobilnummer Then
+            '    Fortsetzen = MessageBox.Show(WählClientFrageMobil(.TelNr.Formatiert), Title, MessageBoxButton.YesNo) = MessageBoxResult.Yes
+            'End If
+
+            ' Status setzen
+            '.Status = WählClientBitteWarten
+            NLogger.Debug(WählClientStatusVorbereitung)
+            ' Entferne 1x # am Ende
+            DialCode = TelNr.Unformatiert.RegExRemove("#{1}$")
+            ' Füge VAZ und LKZ hinzu, wenn gewünscht
+            If XMLData.POptionen.CBForceDialLKZ Then
+                DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
+            End If
+
+            ' Rufnummerunterdrückung
+            DialCode = $"{If(CLIR, "*31#", DfltStringEmpty)}{XMLData.POptionen.TBPräfix}{DialCode}#"
+
+            NLogger.Debug(WählClientStatusWählClient(DialCode))
+
+        End If
+
+        If Telefon.IsSoftPhone Then
+
+            If Telefon.IsPhoner Then
+                ' Initiere Phoner, wenn erforderlich
+                If XMLData.POptionen.CBPhoner Then
+
+                    Using PhonerApp = New Phoner
+
+                        If PhonerApp.PhonerReady Then
+                            ' Telefonat an Phoner übergeben
+                            NLogger.Info($"Wählclient an Phoner: {DialCode} über {Telefon.Name}")
+                            Erfolreich = PhonerApp.Dial(DialCode, Abbruch)
+                        Else
+                            NLogger.Debug(WählClientSoftPhoneInaktiv("Phoner"))
+                            Erfolreich = False
+                        End If
+
+                    End Using
+                End If
+            End If
+
+            If Telefon.IsMicroSIP Then
+                ' Initiere MicroSIP, wenn erforderlich
+                If XMLData.POptionen.CBMicroSIP Then
+
+                    Using MicroSIPApp = New MicroSIP
+
+                        If MicroSIPApp.MicroSIPReady Then
+                            ' Telefonat an Phoner übergeben
+                            NLogger.Info($"Wählclient an MicroSIP: {DialCode} über {Telefon.Name}")
+                            Erfolreich = MicroSIPApp.Dial(DialCode, Abbruch)
+                        Else
+                            NLogger.Debug(WählClientSoftPhoneInaktiv("MicroSIP"))
+                            Erfolreich = False
+                        End If
+
+                    End Using
+                End If
+            End If
+
+        Else
+            ' Telefonat über TR064Dial an Fritz!Box weiterreichen
+            NLogger.Info($"Wählclient TR064Dial: '{DialCode}', Dialport: '{Telefon.TR064Dialport}'")
+
+            Erfolreich = TR064Dial(DialCode, Telefon, Abbruch)
+
+        End If
+
+        ' Ergebnis auswerten 
+        If Erfolreich Then
+
+            ' Einstellungen (Welcher Anschluss, CLIR...) speichern
+            XMLData.POptionen.CBCLIR = CLIR
+            ' Standard-Gerät speichern
+
+            If Not Telefon.ZuletztGenutzt Then
+                ' Entferne das Flag bei allen anderen Geräten
+                ' (eigentlich reicht es, das Flag bei dem einen Gerät zu entfernen. Sicher ist sicher.
+                XMLData.PTelefonie.Telefoniegeräte.ForEach(Sub(TE) TE.ZuletztGenutzt = False)
+                ' Flag setzen
+                Telefon.ZuletztGenutzt = True
+            End If
+
+            ' Timer zum automatischen Schließen des Fensters starten
+            If Not Abbruch And XMLData.POptionen.CBCloseWClient Then WPFWindow.StarteAusblendTimer()
+
+        End If
+
+        Return Erfolreich
+    End Function
+
 
 #Region "Wähldialog"
     ''' <summary>
@@ -232,7 +347,7 @@ Public Class FritzBoxWählClient
                     End If
                 End If
 
-                If aktKontakt Is Nothing Then
+                If aktKontakt IsNot Nothing Then
                     Wählbox(aktKontakt)
                 Else
                     Wählbox(TelNr)
@@ -280,7 +395,7 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(oContact As Outlook.ContactItem)
 
         If oContact IsNot Nothing Then
-            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .OutlookKontakt = oContact})
+            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = True, .SetOutlookKontakt = oContact})
         Else
             NLogger.Error("Der Outlook-Kontakt ist nicht vorhanden.")
         End If
@@ -289,7 +404,7 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(oExchangeNutzer As Outlook.ExchangeUser)
 
         If oExchangeNutzer IsNot Nothing Then
-            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .ExchangeKontakt = oExchangeNutzer})
+            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = True, .SetOutlookExchangeUser = oExchangeNutzer})
         Else
             NLogger.Error("Der Outlook-oExchangeUser ist nicht vorhanden.")
         End If
@@ -302,7 +417,7 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(TelNr As Telefonnummer)
 
         If TelNr IsNot Nothing Then
-            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .Telefonnummer = TelNr})
+            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = False, .SetTelNr = TelNr})
         Else
             NLogger.Error("Die Telefonnummer ist nicht vorhanden.")
         End If
@@ -313,7 +428,7 @@ Public Class FritzBoxWählClient
     ''' </summary>
     Private Sub Wählbox()
 
-        WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .SetDirektwahl = True})
+        WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = False})
 
     End Sub
 #End Region

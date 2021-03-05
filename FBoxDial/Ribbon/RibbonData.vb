@@ -427,7 +427,7 @@ Namespace RibbonData
                         Return XMLData.PTelListen.VIPListe IsNot Nothing AndAlso XMLData.PTelListen.VIPListe.Any
 
                     Case Else
-
+                        Return False
                 End Select
             Else
                 Return False

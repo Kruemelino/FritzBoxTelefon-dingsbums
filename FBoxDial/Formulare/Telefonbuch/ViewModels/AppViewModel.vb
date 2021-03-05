@@ -7,7 +7,6 @@ Public Class AppViewModel
     Inherits NotifyBase
 
     Private _currentView As Object
-
     Public Property CurrentView As Object
         Get
             Return _currentView
@@ -17,9 +16,8 @@ Public Class AppViewModel
         End Set
     End Property
 
-    Private _bookVM As BookViewModel
-
-    Public Property BookVM As BookViewModel
+    Private _bookVM As TelefonbuchViewModel
+    Public Property BookVM As TelefonbuchViewModel
         Get
             Return _bookVM
         End Get
@@ -30,8 +28,8 @@ Public Class AppViewModel
 
     Public Sub New()
         Dim dataService = New ContactDataService()
-        Dim dialogService = New WindowDialogService()
-        BookVM = New BookViewModel(dataService, dialogService)
+        Dim dialogService = New DialogService()
+        BookVM = New TelefonbuchViewModel(dataService, dialogService)
         CurrentView = BookVM
     End Sub
 End Class

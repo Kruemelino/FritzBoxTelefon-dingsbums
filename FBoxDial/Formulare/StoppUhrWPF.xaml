@@ -40,12 +40,7 @@
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <DockPanel Grid.Row="0" Grid.ColumnSpan="2" >
+            <DockPanel Grid.Row="0">
                 <TextBlock DockPanel.Dock="Left"
                        Style="{StaticResource Gegenstelle}"
                        Text="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
@@ -56,15 +51,15 @@
             </DockPanel>
 
             
-            <TextBlock Grid.Row="1" Grid.ColumnSpan="2"
+            <TextBlock Grid.Row="1"
                        Style="{StaticResource Zeit}"
                        Text="{Binding Path=Beginn, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"/>
 
-            <TextBlock Grid.Row="2" Grid.ColumnSpan="2"
+            <TextBlock Grid.Row="2"
                        Style="{StaticResource Stoppuhr}" FontSize="20"
                        Text="{Binding Path=Dauer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=hh\\:mm\\:ss}"/>
 
-            <TextBlock Grid.Row="3" Grid.ColumnSpan="2"
+            <TextBlock Grid.Row="3"
                        Style="{StaticResource Zeit}"
                        Text="{Binding Path=Ende, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"
                        Visibility="{Binding Ende, Converter={StaticResource DateToVisibilityConverter}}">

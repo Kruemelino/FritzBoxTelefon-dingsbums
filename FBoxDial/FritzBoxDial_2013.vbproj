@@ -229,12 +229,14 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
-    <Compile Include="Formulare\Common\WindowHelper.vb" />
-    <Compile Include="Formulare\Common\WindowBehavior.vb" />
-    <Compile Include="Formulare\Common\EnumBindingSourceExtension.vb" />
-    <Compile Include="Formulare\Common\NotifyBase.vb" />
-    <Compile Include="Formulare\Common\ObservableCollectionEx.vb" />
-    <Compile Include="Formulare\Common\RelayCommand.vb" />
+    <Compile Include="Common\EnumDescriptionTypeConverter.vb" />
+    <Compile Include="Common\LocalizedDescriptionAttribute.vb" />
+    <Compile Include="Formulare\Common\Services\WindowHelper.vb" />
+    <Compile Include="Formulare\Common\Services\WindowBehavior.vb" />
+    <Compile Include="Common\EnumBindingSourceExtension.vb" />
+    <Compile Include="Formulare\Common\Services\NotifyBase.vb" />
+    <Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
+    <Compile Include="Formulare\Common\Services\RelayCommand.vb" />
     <Compile Include="Formulare\ViewModel\AnrListViewModel.vb" />
     <Compile Include="Formulare\AnrList\TimePicker.vb" />
     <Compile Include="Formulare\ViewModel\AnrMonViewModel.vb" />
@@ -292,18 +294,29 @@
       <DependentUpon>UserCtrlKontakterstellung.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\ViewModel\StoppUhrViewModel.vb" />
-    <Compile Include="Formulare\ViewModel\WählClientViewModel.vb" />
+    <Compile Include="Formulare\Wählclient\Resources\LocWählclient.Designer.vb">
+      <DependentUpon>LocWählclient.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\Wählclient\Services\Messenger.vb" />
+    <Compile Include="Formulare\Wählclient\Services\DialDataTemplateSelector.vb" />
+    <Compile Include="Formulare\Wählclient\Services\DialService.vb" />
+    <Compile Include="Formulare\Wählclient\Services\IDialService.vb" />
+    <Compile Include="Formulare\Wählclient\ViewModels\ContactDialViewModel.vb" />
+    <Compile Include="Formulare\Wählclient\ViewModels\DirectDialViewModel.vb" />
+    <Compile Include="Formulare\Wählclient\ViewModels\WählClientViewModel.vb" />
     <Compile Include="Formulare\StoppUhrWPF.xaml.vb">
       <DependentUpon>StoppUhrWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\WählclientWPF.xaml.vb">
+    <Compile Include="Formulare\Wählclient\WählclientWPF.xaml.vb">
       <DependentUpon>WählclientWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Wählclient\UserCtrlKontaktwahl.xaml.vb">
-      <DependentUpon>UserCtrlKontaktwahl.xaml</DependentUpon>
+    <Compile Include="Formulare\Wählclient\Views\ContactDialView.xaml.vb">
+      <DependentUpon>ContactDialView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Wählclient\UserCtrlDirektwahl.xaml.vb">
-      <DependentUpon>UserCtrlDirektwahl.xaml</DependentUpon>
+    <Compile Include="Formulare\Wählclient\Views\DirectDialView.xaml.vb">
+      <DependentUpon>DirectDialView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\AnrListWPF.xaml.vb">
       <DependentUpon>AnrListWPF.xaml</DependentUpon>
@@ -330,9 +343,14 @@
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCallList.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
-    <Compile Include="Formulare\Common\NotifyEventArgs.vb" />
+    <Compile Include="Formulare\Common\Services\NotifyEventArgs.vb" />
     <Compile Include="Localize\resImageMso.Designer.vb">
       <DependentUpon>resImageMso.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Localize\resEnum.Designer.vb">
+      <DependentUpon>resEnum.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -346,7 +364,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Localize\resTelefonbuch.Designer.vb">
+    <Compile Include="Formulare\Telefonbuch\Resources\resTelefonbuch.Designer.vb">
       <DependentUpon>resTelefonbuch.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -362,6 +380,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Outlook\OutlookFolder.vb" />
+    <Compile Include="Kontakte\NummernTypen.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />
     <Compile Include="SoftPhone\MicroSIP.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
@@ -386,7 +405,6 @@
     <Compile Include="Kontakte\VCard.vb" />
     <Compile Include="Logging\Logging.vb" />
     <Compile Include="Nutzerdaten.vb" />
-    <Compile Include="Optionen\DefaultWerte.vb" />
     <Compile Include="Optionen\OutlookOrdner.vb" />
     <Compile Include="Optionen\OutlookOrdnerListe.vb" />
     <Compile Include="Optionen\Serializer.vb" />
@@ -398,19 +416,19 @@
     <Compile Include="Rijndael.vb" />
     <Compile Include="Fritz!Box\TR064\BaseFunctionsTR64.vb" />
     <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNr.vb" />
-    <Compile Include="Formulare\Common\Converters.vb" />
+    <Compile Include="Formulare\Common\Services\Converters.vb" />
     <Compile Include="Formulare\Telefonbuch\Services\IContactDataService.vb" />
-    <Compile Include="Formulare\Telefonbuch\Services\IDialogService.vb" />
+    <Compile Include="Formulare\Common\Services\IDialogService.vb" />
     <Compile Include="Formulare\Telefonbuch\Services\ContactDataService.vb" />
-    <Compile Include="Formulare\Telefonbuch\Services\WindowDialogService.vb" />
+    <Compile Include="Formulare\Common\Services\DialogService.vb" />
     <Compile Include="Formulare\Telefonbuch\ViewModels\AppViewModel.vb" />
-    <Compile Include="Formulare\Telefonbuch\ViewModels\BookViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\TelefonbuchViewModel.vb" />
     <Compile Include="Formulare\Telefonbuch\ViewModels\ContactsViewModel.vb" />
-    <Compile Include="Formulare\Telefonbuch\Views\BookView.xaml.vb">
-      <DependentUpon>BookView.xaml</DependentUpon>
+    <Compile Include="Formulare\Telefonbuch\Views\TelefonbuchView.xaml.vb">
+      <DependentUpon>TelefonbuchView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Telefonbuch\Views\ContactItemView.xaml.vb">
-      <DependentUpon>ContactItemView.xaml</DependentUpon>
+    <Compile Include="Formulare\Telefonbuch\Views\KontaktView.xaml.vb">
+      <DependentUpon>KontaktView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Telefonbuch\Views\DetailsView.xaml.vb">
       <DependentUpon>DetailsView.xaml</DependentUpon>
@@ -440,9 +458,18 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <EmbeddedResource Include="Formulare\Wählclient\Resources\LocWählclient.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocWählclient.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localize\resImageMso.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resImageMso.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resEnum.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resEnum.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Localize\resRibbon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -454,7 +481,7 @@
       <LastGenOutput>resAnrMon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localize\resTelefonbuch.resx">
+    <EmbeddedResource Include="Formulare\Telefonbuch\Resources\resTelefonbuch.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resTelefonbuch.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
@@ -505,6 +532,10 @@
     <Page Include="Formulare\AnrMonWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Wählclient\Resources\WählClient.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Resources\Stoppuhr.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -594,15 +625,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\WählclientWPF.xaml">
+    <Page Include="Formulare\Wählclient\WählclientWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Formulare\Wählclient\UserCtrlKontaktwahl.xaml">
+    <Page Include="Formulare\Wählclient\Views\ContactDialView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Wählclient\UserCtrlDirektwahl.xaml">
+    <Page Include="Formulare\Wählclient\Views\DirectDialView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -610,15 +641,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Resources\Book.xaml">
+    <Page Include="Formulare\Telefonbuch\Resources\Telefonbuch.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-    <Page Include="Formulare\Telefonbuch\Views\BookView.xaml">
+    <Page Include="Formulare\Telefonbuch\Views\TelefonbuchView.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-    <Page Include="Formulare\Telefonbuch\Views\ContactItemView.xaml">
+    <Page Include="Formulare\Telefonbuch\Views\KontaktView.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
@@ -631,6 +662,7 @@
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

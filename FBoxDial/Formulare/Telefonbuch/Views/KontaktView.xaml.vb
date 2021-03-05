@@ -1,10 +1,8 @@
 ﻿Imports System.Windows.Controls
 
-Partial Public Class BookView
+Partial Public Class KontaktView
     Inherits UserControl
-
     Public Sub New()
-        Me.InitializeComponent()
+        InitializeComponent()
     End Sub
 End Class
-

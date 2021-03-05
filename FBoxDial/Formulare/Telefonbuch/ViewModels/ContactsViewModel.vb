@@ -10,8 +10,8 @@ Imports System.Windows.Data
 Public Class ContactsViewModel
     Inherits NotifyBase
 
-    Private Property _DatenService As IContactDataService
-    Private Property _DialogService As IDialogService
+    Private Property DatenService As IContactDataService
+    Private Property DialogService As IDialogService
 
 #Region "Fritz!Box Telefonbuch Kontakte"
 
@@ -82,7 +82,7 @@ Public Class ContactsViewModel
 #End Region
 
 #Region "Filtern"
-    Public Property view As ListCollectionView
+    Public Property View As ListCollectionView
 
     Private _FilterName As String
     Public Property FilterName As String
@@ -134,7 +134,7 @@ Public Class ContactsViewModel
 
 #Region "ICommand Callback"
     Private Sub Delete(o As Object)
-        If _DialogService.ShowMessageBox($"Soll der Kontakt '{FBoxKontakt.Person.RealName}' im Telefonbuch '{FBoxTelefonbuch.Name}' auf der Fritz!Box endgültig gelöscht werden?") = Windows.MessageBoxResult.Yes Then
+        If DialogService.ShowMessageBox($"Soll der Kontakt '{FBoxKontakt.Person.RealName}' im Telefonbuch '{FBoxTelefonbuch.Name}' auf der Fritz!Box endgültig gelöscht werden?") = Windows.MessageBoxResult.Yes Then
             ' lösche den Kontakt auf der Box
             If _DatenService.DeleteKontakt(FBoxTelefonbuch.ID, FBoxKontakt.Uniqueid) Then
                 FBoxTelefonbuch.DeleteKontakt(FBoxKontakt)
@@ -160,20 +160,20 @@ Public Class ContactsViewModel
     End Function
 
     Private Sub BrowseImage(o As Object)
-        Dim filePath = _DialogService.OpenFile("Image files|*.bmp;*.jpg;*.jpeg;*.png|All files")
+        Dim filePath = DialogService.OpenFile("Image files|*.bmp;*.jpg;*.jpeg;*.png|All files")
     End Sub
 
     Private Sub Update(o As Object)
         ' Hier wird das Favorite / Wichtiger Kontakt gespeichert.
         If IsDisplayMode Then
-            FBoxKontakt.Uniqueid = _DatenService.SetKontakt(FBoxTelefonbuch.ID, FBoxKontakt.GetXMLKontakt)
+            FBoxKontakt.Uniqueid = DatenService.SetKontakt(FBoxTelefonbuch.ID, FBoxKontakt.GetXMLKontakt)
         End If
 
     End Sub
 
     Private Sub Save(o As Object)
         ' Lade den Kontakt hoch und setze die UID
-        FBoxKontakt.Uniqueid = _DatenService.SetKontakt(FBoxTelefonbuch.ID, FBoxKontakt.GetXMLKontakt)
+        FBoxKontakt.Uniqueid = DatenService.SetKontakt(FBoxTelefonbuch.ID, FBoxKontakt.GetXMLKontakt)
 
         ' Lösche den Clone
         FBoxKontaktClone = Nothing

@@ -16,9 +16,7 @@ Public Class ContactDataService
     End Function
 
     Public Async Function AddPhonebook(Name As String) As Threading.Tasks.Task(Of FritzBoxXMLTelefonbuch) Implements IContactDataService.AddTelefonbuch
-
         Return Await Telefonbücher.ErstelleTelefonbuch(Name)
-
     End Function
 
     Public Function DeleteTelefonbuch(TelefonbuchID As Integer) As Boolean Implements IContactDataService.DeleteTelefonbuch

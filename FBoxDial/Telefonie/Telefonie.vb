@@ -18,7 +18,7 @@ Imports FBoxDial.FritzBoxDefault
     ''' <summary>
     ''' Landeskennzahl der Telefonanschlusses. Wird automatisch ermittelt. Kann in den Einstellungen überschrieben werden.
     ''' </summary>
-    <XmlElement("TBLandesKZ")> Public Property LKZ As String
+    <XmlElement("TBLandesKZ")> Public Property LKZ As String = "49"
 #End Region
 
 #Region "Events"
@@ -47,6 +47,13 @@ Imports FBoxDial.FritzBoxDefault
 
                     ' Ermittle die Landeskennzahl (LKZ) und die Ortskennzahl (OKZ)
                     If .GetVoIPCommonCountryCode(LKZ) And .GetVoIPCommonAreaCode(OKZ) Then
+
+                        If LKZ.IsStringNothingOrEmpty Then
+                            LKZ = If(XMLData.PTelefonie.LKZ.IsStringNothingOrEmpty, "49", XMLData.PTelefonie.LKZ)
+                            PushStatus(LogLevel.Warn, $"Landeskennzahl konnte nicht ermittelt werden (Setze Wert aus Einstellungen: '{LKZ}').")
+                        End If
+
+                        If OKZ.IsNotStringNothingOrEmpty Then PushStatus(LogLevel.Warn, $"Ortskennzahl konnte nicht ermittelt werden.")
 
                         PushStatus(LogLevel.Debug, $"Kennzahlen: {LKZ}; {OKZ}")
 
@@ -108,7 +115,7 @@ Imports FBoxDial.FritzBoxDefault
                                     Else
                                         ' Comma (,) separated list represents specific phone numbers.
                                         For Each T In TelNrArray
-                                            Telefon.StrEinTelNr.Add(GetEigeneTelNr(T).Einwahl)
+                                            Telefon.StrEinTelNr.Add(GetEigeneTelNr(T)?.Einwahl)
                                         Next
 
                                     End If
@@ -216,7 +223,8 @@ Imports FBoxDial.FritzBoxDefault
                                                         .Name = FONTelefon.Name,
                                                         .Intern = FONTelefon.Node.RegExRemove("^\D*").ToInt + 1,
                                                         .AnrMonID = AnrMonTelIDBase.FON + .Intern,
-                                                        .StrEinTelNr = New List(Of String)}
+                                                        .StrEinTelNr = New List(Of String),
+                                                        .IsFax = FONTelefon.Fax}
 
                 ' Abfrageliste leeren
                 TelQuery.Clear()

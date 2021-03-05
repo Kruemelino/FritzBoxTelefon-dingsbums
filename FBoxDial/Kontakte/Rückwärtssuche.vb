@@ -1,10 +1,13 @@
 ﻿Imports System.Threading.Tasks
 
 Public Module Rückwärtssuche
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Friend Async Function StartRWS(TelNr As Telefonnummer, RWSIndex As Boolean) As Task(Of String)
         Dim vCard As String = DfltStringEmpty
         Dim RWSIndexEintrag As RWSIndexEntry
+
+        NLogger.Debug($"Starte Kontaktsuche per Rückwärtssuche für Telefonnummer '{TelNr.Unformatiert}'.")
 
         If RWSIndex Then
             ' Prüfe ob im RWSIndex ein Eintrag vorhanden ist

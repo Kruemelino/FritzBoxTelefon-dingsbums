@@ -25,6 +25,7 @@ Friend Module Serializer
             With objectData.POptionen
                 ' .Arbeitsverzeichnis = DateiInfo.Directory.ToString
                 .ValidFBAdr = ValidIP(.TBFBAdr)
+
             End With
         End If
 

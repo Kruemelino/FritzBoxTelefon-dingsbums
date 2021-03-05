@@ -134,7 +134,7 @@
         </Rectangle>
     </Viewbox>
 
-    <Viewbox x:Key="Favorite_16x" x:Shared="false" Width="16" Height="16">
+    <Viewbox x:Key="FavoriteOutline_16x" x:Shared="false" Width="16" Height="16">
         <Rectangle Width="16" Height="16">
             <Rectangle.Fill>
                 <DrawingBrush>
@@ -142,8 +142,26 @@
                         <DrawingGroup>
                             <DrawingGroup.Children>
                                 <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M7.2729,-0.000199999999999534L5.6649,4.9998 -9.99999999997669E-05,4.9998 -9.99999999997669E-05,6.5148 4.2109,9.5218 2.1279,15.9998 3.8809,15.9998 7.9999,12.3378 12.1199,15.9998 13.8719,15.9998 11.7899,9.5218 15.9999,6.5148 15.9999,4.9998 10.3369,4.9998 8.7289,-0.000199999999999534z" />
-                                <GeometryDrawing Brush="#FF424242" Geometry="F1M10.6143,9.1328L12.5003,14.9998 8.0003,10.9998 3.5003,14.9998 5.3863,9.1328 1.0003,5.9998 6.3933,5.9998 8.0013,0.9998 9.6073,5.9998 15.0003,5.9998z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M7.2729,-0.000199999999999534L5.6649,4.9998 -9.99999999997669E-05,4.9998 -9.99999999997669E-05,6.5148 4.2109,9.5218 2.1279,15.9998 3.8809,15.9998 7.9999,12.3378 12.1199,15.9998 13.8719,15.9998 11.7899,9.5218 15.9999,6.5148 15.9999,4.9998 10.3369,4.9998 8.7289,-0.000199999999999534z" />
+                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M10.6143,9.1328L12.5003,14.9998 8.0003,10.9998 3.5003,14.9998 5.3863,9.1328 1.0003,5.9998 6.3933,5.9998 8.0013,0.9998 9.6073,5.9998 15.0003,5.9998z" />
+                            </DrawingGroup.Children>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Viewbox>
+
+    <Viewbox x:Key="FavoriteYellow_16x" x:Shared="false" Width="16" Height="16">
+        <Rectangle Width="16" Height="16">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <DrawingGroup.Children>
+                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                <GeometryDrawing Brush="#ED8733" Geometry="F1M7.2729,-0.000199999999999534L5.6649,4.9998 -9.99999999997669E-05,4.9998 -9.99999999997669E-05,6.5148 4.2109,9.5218 2.1279,15.9998 3.8809,15.9998 7.9999,12.3378 12.1199,15.9998 13.8719,15.9998 11.7899,9.5218 15.9999,6.5148 15.9999,4.9998 10.3369,4.9998 8.7289,-0.000199999999999534z" />
+                                <GeometryDrawing Brush="#F8DB8F" Geometry="F1M10.6143,9.1328L12.5003,14.9998 8.0003,10.9998 3.5003,14.9998 5.3863,9.1328 1.0003,5.9998 6.3933,5.9998 8.0013,0.9998 9.6073,5.9998 15.0003,5.9998z" />
                             </DrawingGroup.Children>
                         </DrawingGroup>
                     </DrawingBrush.Drawing>
@@ -241,7 +259,49 @@
             </Rectangle.Fill>
         </Rectangle>
     </Viewbox>
-    
+
+    <Viewbox x:Key="Timeline_16x" Width="16" Height="16">
+        <Rectangle Width="16" Height="16">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <DrawingGroup.Children>
+                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M0,3.0004L0,4.3624 0.531,5.0004 0,5.0004 0,6.0004 0,14.0004 16,14.0004 16,5.0004 6.468,5.0004 8.135,3.0004z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M5,11L2,11 2,10 5,10z M15,10L15,8 6,8 6,6 5,6 5,8 1,8 1,13 15,13 15,11 6,11 6,10z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M9,7L10,7 10,6 9,6z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M11,7L12,7 12,6 11,6z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M13,7L14.001,7 14.001,6 13,6z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M7,7L8,7 8,6 7,6z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M1,7L2,7 2,6 1,6z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M3.5,7L1,4 6,4z" />
+                            </DrawingGroup.Children>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Viewbox>
+
+    <!--<Viewbox x:Key="Call_16x" Width="16" Height="16">
+        <Rectangle Width="16" Height="16">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <DrawingGroup.Children>
+                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M10,11L10,9 6,9 6,11 1.013,11 0.712999999999999,10.602C0.246,9.985 0,9.258 0,8.5 0,6.57 1.57,5 3.5,5L12.5,5C14.43,5 16,6.57 16,8.5 16,9.258 15.754,9.985 15.287,10.602L14.987,11z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M15,8.5C15,9.065,14.806,9.581,14.489,10L11,10 11,8 10.051,8 5.949,8 5,8 5,10 1.511,10C1.194,9.581 1,9.065 1,8.5 1,7.119 2.119,6 3.5,6L12.5,6C13.881,6,15,7.119,15,8.5" />
+                            </DrawingGroup.Children>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Viewbox>-->
+
     <!--Nachfolgende Icons sind der MahApps.Metro.IconPacks entnommen
         https://github.com/MahApps/MahApps.Metro.IconPacks
         Copyright (c) 2016-2019 MahApps, Jan Karger-->
@@ -294,7 +354,6 @@
             <Path Fill="{StaticResource AlmostBlack}" Stretch="Uniform"  Data="M12,15.4V6.1L13.71,10.13L18.09,10.5L14.77,13.39L15.76,17.67M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" />
         </Grid>
     </DataTemplate>
-
 
     <DataTemplate x:Key="MailAdd">
         <Grid >

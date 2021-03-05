@@ -8,9 +8,6 @@ Public Class AnrMonViewModel
     Inherits NotifyBase
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private Property TotalTimePaused As TimeSpan
-    Private Property StartTime As Date
-    Private Property PauseTime As Date
 
 #Region "Eigenschaften"
 
@@ -156,7 +153,7 @@ Public Class AnrMonViewModel
         AnrMonAnrufer = AnrMonTelefonat.AnruferName
 
         ' Eigene Telefonnummer setzen
-        AnrMonEigeneTelNr = AnrMonTelefonat.EigeneTelNr?.Formatiert
+        AnrMonEigeneTelNr = AnrMonTelefonat.EigeneTelNr?.Einwahl
 
         ' Firmeninformationen setzen
         AnrMonFirma = AnrMonTelefonat.Firma

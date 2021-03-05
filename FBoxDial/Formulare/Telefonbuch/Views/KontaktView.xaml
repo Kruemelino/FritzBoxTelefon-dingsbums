@@ -1,18 +1,20 @@
 ﻿<!--Das Telefonbuch ist von Tosker erstellt worden und auf Youtube und Github bereitgestellt:
     https://github.com/Tosker/ContactBook-Tutorial
     Es wurde duch Kruemelino zu Zwecken der Anzeige von Fritz!Box Kontakten angepasst und erweitert.-->
-<UserControl x:Class="ContactItemView"
+<UserControl x:Class="KontaktView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fbd="clr-namespace:FBoxDial"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=fbd:FritzBoxXMLKontakt, IsDesignTimeCreatable=True}" 
              d:DesignHeight="48" d:DesignWidth="250">
 
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Resources/Book.xaml"/>
+                <ResourceDictionary Source="../Resources/Telefonbuch.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

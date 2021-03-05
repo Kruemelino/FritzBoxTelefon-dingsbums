@@ -57,7 +57,7 @@ Public Class AnrMonWPF
         KeepoInspActivated(True)
 
         ' Timer für das Ausblenden starten
-        WindowHelper.StartTimer()
+        If XMLData.POptionen.CBAutoClose Then WindowHelper.StartTimer(True)
 
     End Sub
     ''' <summary>

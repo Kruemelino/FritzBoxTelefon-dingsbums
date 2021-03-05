@@ -5,7 +5,7 @@ Friend Structure MSNEntry
     <JsonProperty("_Node")> Public Property Node As String
     Public Property AllIncomingCalls As Boolean
     Public Property Name As String
-    Public Property Fax As String
+    Public Property Fax As Boolean
 End Structure
 
 Friend Structure FBoxFON

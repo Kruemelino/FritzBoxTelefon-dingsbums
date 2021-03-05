@@ -159,7 +159,7 @@
             <Button x:Name="btnStartJournalImport" Grid.Column="0"
                     Style="{StaticResource IconTextButton}"
                     Content="{x:Static localize:resCommon.strStartJounalImport}"
-                    Tag="{DynamicResource Favorite_16x}"
+                    Tag="{DynamicResource Timeline_16x}"
                     IsCancel="False"
                     Click="BtnStartJournalImport_Click"/>  
         

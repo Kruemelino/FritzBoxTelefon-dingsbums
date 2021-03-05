@@ -5,14 +5,10 @@ Friend Module KontaktSucher
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Friend Function KontaktSuche(TelNr As Telefonnummer) As Outlook.ContactItem
-        NLogger.Debug("Kontaktsuche gestartet")
+        NLogger.Debug($"Starte Kontaktsuche in den Outlook Kontakten für Telefonnummer '{TelNr.Unformatiert}'.")
 
-        'If XMLData.POptionen.PCBUseLegacyUserProp Then
-        '    Return KontaktSucheUserProp(TelNr)
-        'Else
-        '    'Return KontaktSucheDASL(TelNr)
         Return KontaktSucheAuswahlDASL(TelNr)
-        'End If
+
     End Function
 
 #Region "Kontaktsuche DASL in Ordnerauswahl"
@@ -72,29 +68,23 @@ Friend Module KontaktSucher
 
         If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
 
-            If XMLData.POptionen.CBUseLegacySearch Then
-                olKontakt = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
-                If olKontakt IsNot Nothing Then
-                    NLogger.Debug("DASL Search erfolgreich: {0} in {1}", olKontakt.FullNameAndCompany, Ordner.Name)
-                End If
-            Else
-                Dim oTable As Outlook.Table
-                ' Die Suche erfolgt mittels einer gefilterten Outlook-Datentabelle, welche nur passende Kontakte enthalten.
-                ' Erstellung der Datentabelle
-                oTable = Ordner.GetTable(sFilter)
-                ' Festlegung der Spalten. Zunächst werden alle Spalten entfernt
-                With oTable.Columns
-                    .RemoveAll()
-                    .Add("EntryID")
-                End With
+            Dim oTable As Outlook.Table
+            ' Die Suche erfolgt mittels einer gefilterten Outlook-Datentabelle, welche nur passende Kontakte enthalten.
+            ' Erstellung der Datentabelle
+            oTable = Ordner.GetTable(sFilter)
+            ' Festlegung der Spalten. Zunächst werden alle Spalten entfernt
+            With oTable.Columns
+                .RemoveAll()
+                .Add("EntryID")
+            End With
 
-                If Not oTable.EndOfTable Then
-                    olKontakt = GetOutlookKontakt(oTable.GetNextRow("EntryID").ToString, Ordner.StoreID)
-                    NLogger.Debug("DASL Table erfolgreich: {0} in {1}", olKontakt.FullNameAndCompany, Ordner.Name)
-                End If
-                oTable.ReleaseComObject
+            If Not oTable.EndOfTable Then
+                olKontakt = GetOutlookKontakt(oTable.GetNextRow("EntryID").ToString, Ordner.StoreID)
+                NLogger.Debug($"DASL Table erfolgreich: {olKontakt.FullNameAndCompany} in {Ordner.Name}")
             End If
+            oTable.ReleaseComObject
         End If
+
 
         Return olKontakt
     End Function '(FindeKontakt)

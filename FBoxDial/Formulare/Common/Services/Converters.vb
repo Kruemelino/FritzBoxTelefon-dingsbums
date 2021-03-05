@@ -54,7 +54,7 @@ End Class
 Public Class EnumDescriptionConverter
     Implements IValueConverter
 
-    Private Function GetEnumDescription(ByVal enumObj As [Enum]) As String
+    Private Function GetEnumDescription(enumObj As [Enum]) As String
         Dim fieldInfo As FieldInfo = enumObj.[GetType]().GetField(enumObj.ToString())
         Dim attribArray As Object() = fieldInfo.GetCustomAttributes(False)
 
@@ -66,13 +66,13 @@ Public Class EnumDescriptionConverter
         End If
     End Function
 
-    Private Function Convert(ByVal value As Object, ByVal targetType As Type, ByVal parameter As Object, ByVal culture As CultureInfo) As Object Implements IValueConverter.Convert
+    Private Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
         Dim myEnum As [Enum] = CType(value, [Enum])
         Dim description As String = GetEnumDescription(myEnum)
         Return description
     End Function
 
-    Private Function ConvertBack(ByVal value As Object, ByVal targetType As Type, ByVal parameter As Object, ByVal culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
+    Private Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
         Return String.Empty
     End Function
 

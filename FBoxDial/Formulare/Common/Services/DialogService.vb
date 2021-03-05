@@ -4,7 +4,7 @@
 ''' https://github.com/Tosker/ContactBook-Tutorial
 ''' Es wurde duch Kruemelino zu Zwecken der Anzeige von Fritz!Box Kontakten angepasst und erweitert.
 ''' </summary>
-Public Class WindowDialogService
+Public Class DialogService
     Implements IDialogService
 
     Public Function OpenFile(filter As String) As String Implements IDialogService.OpenFile

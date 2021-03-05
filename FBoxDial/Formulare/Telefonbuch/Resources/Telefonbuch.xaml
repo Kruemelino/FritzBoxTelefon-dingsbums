@@ -6,12 +6,12 @@
                     xmlns:fbd="clr-namespace:FBoxDial">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Icons.xaml"/>
-        <ResourceDictionary Source="Colors.xaml"/>
+        <ResourceDictionary Source="../../Resources/Icons.xaml"/>
+        <ResourceDictionary Source="../../Resources/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <DataTemplate DataType="{x:Type fbd:BookViewModel}">
-        <fbd:BookView/>
+    <DataTemplate DataType="{x:Type fbd:TelefonbuchViewModel}">
+        <fbd:TelefonbuchView/>
     </DataTemplate>
 
     <fbd:BoolToVisibilityConverter x:Key="IsEditConverter"/>

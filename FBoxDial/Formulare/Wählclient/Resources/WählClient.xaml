@@ -1,0 +1,140 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:fbd="clr-namespace:FBoxDial">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../Resources/Icons.xaml"/>
+        <ResourceDictionary Source="../../Resources/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <fbd:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <fbd:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    <fbd:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+    
+    <DataTemplate DataType="{x:Type fbd:DirectDialViewModel}" x:Key="DirectDialTemplate">
+        <fbd:DirectDialView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:ContactDialViewModel}" x:Key="ContactDialTemplate">
+        <fbd:ContactDialView/>
+    </DataTemplate>
+
+    <fbd:DialDataTemplateSelector x:Key="DialTemplateSelector"
+                                  DirectDialTemplate="{StaticResource DirectDialTemplate}"
+                                  ContactDialTemplate="{StaticResource ContactDialTemplate}"/>
+
+
+    <Style x:Key="DGTelNr" TargetType="{x:Type DataGrid}">
+        <Setter Property="HeadersVisibility" Value="None" />
+        <Setter Property="AutoGenerateColumns" Value="False"  />
+        <Setter Property="HorizontalGridLinesBrush" Value="LightGray"  />
+        <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="CanUserSortColumns" Value="False" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+        <Setter Property="Margin" Value="4,4,4,0"/>
+    </Style>
+
+    <Style x:Key="MiniIconButton" TargetType="{x:Type Button}" >
+        <Setter Property="Margin" Value="0,4,4,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Margin" Value="0,4,4,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+    </Style>
+
+    <Style x:Key="MiniIconToggleButton" TargetType="{x:Type ToggleButton}" >
+        <Setter Property="Margin" Value="0,4,4,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Margin" Value="0,4,4,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Foreground" Value="#FF424242"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentControl>
+                        <ContentControl.Style>
+                            <Style TargetType="{x:Type ContentControl}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" Value="True">
+                                        <Setter Property="Content" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" Value="False">
+                                        <Setter Property="Content" Value="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Status" TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="0,0,2,5"/>
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="Red" />
+    </Style>
+    
+    <Style x:Key="DirektCallComboBox" TargetType="{x:Type ComboBox}">
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="IsEditable" Value="True"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    
+    <Style x:Key="IconTextButton" TargetType="{x:Type Button}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid Margin="0,0,24,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <ContentControl Content="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" 
+                                        Grid.Column="0" Margin="4,0"                                    
+                                        HorizontalAlignment="Left"/>
+
+                        <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Center"/>
+
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

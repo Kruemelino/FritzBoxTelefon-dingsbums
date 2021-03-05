@@ -1,6 +1,7 @@
 ﻿Imports System.Security.Cryptography
 
 ''' <remarks>http://www.freevbcode.com/ShowCode.asp?ID=4520</remarks>
+<DebuggerStepThrough>
 Friend Class Rijndael
     Implements IDisposable
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
