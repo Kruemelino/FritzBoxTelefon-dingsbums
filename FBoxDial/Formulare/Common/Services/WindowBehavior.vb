@@ -7,6 +7,37 @@ Imports System.Windows.Input
 ''' </summary>
 Public Class WindowBehavior
 
+#Region "Loaded"
+
+    Public Shared Function GetLoaded(obj As DependencyObject) As ICommand
+        Return CType(obj.GetValue(LoadedProperty), ICommand)
+    End Function
+
+    Public Shared Sub SetLoaded(obj As DependencyObject, value As ICommand)
+        obj.SetValue(LoadedProperty, value)
+    End Sub
+
+    Public Shared ReadOnly LoadedProperty As DependencyProperty = DependencyProperty.RegisterAttached("Loaded", GetType(ICommand), GetType(WindowBehavior), New UIPropertyMetadata(New PropertyChangedCallback(AddressOf LoadedChanged)))
+
+    Private Shared Sub LoadedChanged(target As DependencyObject, e As DependencyPropertyChangedEventArgs)
+        Dim window As Window = TryCast(target, Window)
+
+        If window IsNot Nothing Then
+
+            If e.NewValue IsNot Nothing Then
+                AddHandler window.Loaded, AddressOf Window_Loaded
+            Else
+                RemoveHandler window.Loaded, AddressOf Window_Loaded
+            End If
+        End If
+    End Sub
+    Private Shared Sub Window_Loaded(sender As Object, e As EventArgs)
+        Dim loaded As ICommand = GetLoaded(TryCast(sender, Window))
+
+        If loaded IsNot Nothing Then loaded.Execute(Nothing)
+    End Sub
+#End Region
+
 #Region "Closed"
     Public Shared Function GetClosed(obj As DependencyObject) As ICommand
         Return CType(obj.GetValue(ClosedProperty), ICommand)
@@ -33,9 +64,7 @@ Public Class WindowBehavior
     Private Shared Sub Window_Closed(sender As Object, e As EventArgs)
         Dim closed As ICommand = GetClosed(TryCast(sender, Window))
 
-        If closed IsNot Nothing Then
-            closed.Execute(Nothing)
-        End If
+        If closed IsNot Nothing Then closed.Execute(Nothing)
     End Sub
 #End Region
 
@@ -83,9 +112,7 @@ Public Class WindowBehavior
             Else
                 Dim cancelClosing As ICommand = GetCancelClosing(TryCast(sender, Window))
 
-                If cancelClosing IsNot Nothing Then
-                    cancelClosing.Execute(Nothing)
-                End If
+                If cancelClosing IsNot Nothing Then cancelClosing.Execute(Nothing)
 
                 e.Cancel = True
             End If

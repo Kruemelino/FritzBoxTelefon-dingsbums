@@ -323,7 +323,7 @@ Public Module Extensions
         'Liste.Add(item)
         Liste.Insert(0, item)
         ' Liste sortieren
-        Liste = Liste.OrderByDescending(Function(TF) TF.ZeitBeginn).ToList
+        Liste = Liste.OrderByDescending(Function(TF) TF?.ZeitBeginn).ToList
 
         ' Entferne alle überflüssigen Elemente
         With Liste

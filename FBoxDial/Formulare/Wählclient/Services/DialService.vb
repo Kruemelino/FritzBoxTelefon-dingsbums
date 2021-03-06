@@ -1,4 +1,6 @@
-﻿Public Class DialService
+﻿Imports System.Threading.Tasks
+
+Public Class DialService
     Implements IDialService
 
     ''' <summary>
@@ -86,13 +88,13 @@
     ''' <param name="CLIR">Rufnummernunterdrückung</param>
     ''' <param name="Abbruch">Angabe, ob der Wählvorgang abgebrochen werden soll</param>
     ''' <returns>Boolean, ob erfolgreich</returns>
-    Friend Function DialNumber(Wählclient As FritzBoxWählClient,
+    Friend Async Function DialNumber(Wählclient As FritzBoxWählClient,
                                TelNr As Telefonnummer,
                                Telefon As Telefoniegerät,
-                               CLIR As Boolean, Abbruch As Boolean) As Boolean Implements IDialService.DialNumber
+                               CLIR As Boolean, Abbruch As Boolean) As Task(Of Boolean) Implements IDialService.DialNumber
 
         ' Start den Wählvorgang
-        Return Wählclient.DialTelNr(TelNr, Telefon, CLIR, Abbruch)
+        Return Await Wählclient.DialTelNr(TelNr, Telefon, CLIR, Abbruch)
 
     End Function
 

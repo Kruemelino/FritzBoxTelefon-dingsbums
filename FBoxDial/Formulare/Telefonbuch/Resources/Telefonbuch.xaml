@@ -6,8 +6,7 @@
                     xmlns:fbd="clr-namespace:FBoxDial">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../../Resources/Icons.xaml"/>
-        <ResourceDictionary Source="../../Resources/Colors.xaml"/>
+        <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type fbd:TelefonbuchViewModel}">

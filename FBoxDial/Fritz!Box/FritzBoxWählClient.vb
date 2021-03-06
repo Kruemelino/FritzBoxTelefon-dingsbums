@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Office.Interop
+﻿Imports System.Threading.Tasks
+Imports Microsoft.Office.Interop
 
 Public Class FritzBoxWählClient
     Implements IDisposable
@@ -81,11 +82,114 @@ Public Class FritzBoxWählClient
 
 #End Region
 
-    ''' <summary>
-    ''' Startet den Wählvorgang
-    ''' </summary>
-    Friend Function DialTelNr(TelNr As Telefonnummer, Telefon As Telefoniegerät, CLIR As Boolean, Abbruch As Boolean) As Boolean
+    '''' <summary>
+    '''' Startet den Wählvorgang
+    '''' </summary>
+    'Friend Function DialTelNr(TelNr As Telefonnummer, Telefon As Telefoniegerät, CLIR As Boolean, Abbruch As Boolean) As Boolean
 
+    '    Dim DialCode As String = DfltStringEmpty
+    '    Dim Erfolreich As Boolean = False
+
+    '    If Abbruch Then
+    '        NLogger.Debug(WählClientStatusAbbruch)
+
+    '        DialCode = DfltStringEmpty
+
+    '    Else
+    '        '' Wenn es sich um eine Mobilnummer handelt, kann der Nutzer auswählen, ob er zunächst gefragt wird.
+    '        'If .CheckMobil AndAlso .TelNr.IstMobilnummer Then
+    '        '    Fortsetzen = MessageBox.Show(WählClientFrageMobil(.TelNr.Formatiert), Title, MessageBoxButton.YesNo) = MessageBoxResult.Yes
+    '        'End If
+
+    '        ' Status setzen
+    '        '.Status = WählClientBitteWarten
+    '        NLogger.Debug(WählClientStatusVorbereitung)
+    '        ' Entferne 1x # am Ende
+    '        DialCode = TelNr.Unformatiert.RegExRemove("#{1}$")
+    '        ' Füge VAZ und LKZ hinzu, wenn gewünscht
+    '        If XMLData.POptionen.CBForceDialLKZ Then
+    '            DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
+    '        End If
+
+    '        ' Rufnummerunterdrückung
+    '        DialCode = $"{If(CLIR, "*31#", DfltStringEmpty)}{XMLData.POptionen.TBPräfix}{DialCode}#"
+
+    '        NLogger.Debug(WählClientStatusWählClient(DialCode))
+
+    '    End If
+
+    '    If Telefon.IsSoftPhone Then
+
+    '        If Telefon.IsPhoner Then
+    '            ' Initiere Phoner, wenn erforderlich
+    '            If XMLData.POptionen.CBPhoner Then
+
+    '                Using PhonerApp = New Phoner
+
+    '                    If PhonerApp.PhonerReady Then
+    '                        ' Telefonat an Phoner übergeben
+    '                        NLogger.Info($"Wählclient an Phoner: {DialCode} über {Telefon.Name}")
+    '                        Erfolreich = PhonerApp.Dial(DialCode, Abbruch)
+    '                    Else
+    '                        NLogger.Debug(WählClientSoftPhoneInaktiv("Phoner"))
+    '                        Erfolreich = False
+    '                    End If
+
+    '                End Using
+    '            End If
+    '        End If
+
+    '        If Telefon.IsMicroSIP Then
+    '            ' Initiere MicroSIP, wenn erforderlich
+    '            If XMLData.POptionen.CBMicroSIP Then
+
+    '                Using MicroSIPApp = New MicroSIP
+
+    '                    If MicroSIPApp.MicroSIPReady Then
+    '                        ' Telefonat an Phoner übergeben
+    '                        NLogger.Info($"Wählclient an MicroSIP: {DialCode} über {Telefon.Name}")
+    '                        Erfolreich = MicroSIPApp.Dial(DialCode, Abbruch)
+    '                    Else
+    '                        NLogger.Debug(WählClientSoftPhoneInaktiv("MicroSIP"))
+    '                        Erfolreich = False
+    '                    End If
+
+    '                End Using
+    '            End If
+    '        End If
+
+    '    Else
+    '        ' Telefonat über TR064Dial an Fritz!Box weiterreichen
+    '        NLogger.Info($"Wählclient TR064Dial: '{DialCode}', Dialport: '{Telefon.TR064Dialport}'")
+
+    '        Erfolreich = TR064Dial(DialCode, Telefon, Abbruch)
+
+    '    End If
+
+    '    ' Ergebnis auswerten 
+    '    If Erfolreich Then
+
+    '        ' Einstellungen (Welcher Anschluss, CLIR...) speichern
+    '        XMLData.POptionen.CBCLIR = CLIR
+    '        ' Standard-Gerät speichern
+
+    '        If Not Telefon.ZuletztGenutzt Then
+    '            ' Entferne das Flag bei allen anderen Geräten
+    '            ' (eigentlich reicht es, das Flag bei dem einen Gerät zu entfernen. Sicher ist sicher.
+    '            XMLData.PTelefonie.Telefoniegeräte.ForEach(Sub(TE) TE.ZuletztGenutzt = False)
+    '            ' Flag setzen
+    '            Telefon.ZuletztGenutzt = True
+    '        End If
+
+    '        ' Timer zum automatischen Schließen des Fensters starten
+    '        If Not Abbruch And XMLData.POptionen.CBCloseWClient Then WPFWindow.StarteAusblendTimer()
+
+    '    End If
+
+    '    Return Erfolreich
+    'End Function
+
+    Friend Async Function DialTelNr(TelNr As Telefonnummer, Telefon As Telefoniegerät, CLIR As Boolean, Abbruch As Boolean) As Threading.Tasks.Task(Of Boolean)
         Dim DialCode As String = DfltStringEmpty
         Dim Erfolreich As Boolean = False
 
@@ -95,13 +199,8 @@ Public Class FritzBoxWählClient
             DialCode = DfltStringEmpty
 
         Else
-            '' Wenn es sich um eine Mobilnummer handelt, kann der Nutzer auswählen, ob er zunächst gefragt wird.
-            'If .CheckMobil AndAlso .TelNr.IstMobilnummer Then
-            '    Fortsetzen = MessageBox.Show(WählClientFrageMobil(.TelNr.Formatiert), Title, MessageBoxButton.YesNo) = MessageBoxResult.Yes
-            'End If
 
             ' Status setzen
-            '.Status = WählClientBitteWarten
             NLogger.Debug(WählClientStatusVorbereitung)
             ' Entferne 1x # am Ende
             DialCode = TelNr.Unformatiert.RegExRemove("#{1}$")
@@ -161,7 +260,9 @@ Public Class FritzBoxWählClient
             ' Telefonat über TR064Dial an Fritz!Box weiterreichen
             NLogger.Info($"Wählclient TR064Dial: '{DialCode}', Dialport: '{Telefon.TR064Dialport}'")
 
-            Erfolreich = TR064Dial(DialCode, Telefon, Abbruch)
+            Erfolreich = Await Task.Run(Function()
+                                            Return TR064Dial(DialCode, Telefon, Abbruch)
+                                        End Function)
 
         End If
 
@@ -187,8 +288,6 @@ Public Class FritzBoxWählClient
 
         Return Erfolreich
     End Function
-
-
 #Region "Wähldialog"
     ''' <summary>
     ''' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste ausgeführt

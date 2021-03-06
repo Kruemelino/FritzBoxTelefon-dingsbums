@@ -231,21 +231,28 @@
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
     <Compile Include="Common\EnumDescriptionTypeConverter.vb" />
     <Compile Include="Common\LocalizedDescriptionAttribute.vb" />
+    <Compile Include="Formulare\AnrList\Resources\LocAnrList.Designer.vb">
+      <DependentUpon>LocAnrList.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\AnrList\Services\AnrListService.vb" />
+    <Compile Include="Formulare\AnrList\Services\IAnrListService.vb" />
     <Compile Include="Formulare\Common\Services\WindowHelper.vb" />
     <Compile Include="Formulare\Common\Services\WindowBehavior.vb" />
     <Compile Include="Common\EnumBindingSourceExtension.vb" />
     <Compile Include="Formulare\Common\Services\NotifyBase.vb" />
     <Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\Common\Services\RelayCommand.vb" />
-    <Compile Include="Formulare\ViewModel\AnrListViewModel.vb" />
-    <Compile Include="Formulare\AnrList\TimePicker.vb" />
-    <Compile Include="Formulare\ViewModel\AnrMonViewModel.vb" />
-    <Compile Include="Formulare\AnrMonWPF.xaml.vb">
+    <Compile Include="Formulare\AnrList\ViewModels\AnrListViewModel.vb" />
+    <Compile Include="Formulare\AnrList\Resources\TimePicker.vb" />
+    <Compile Include="Formulare\AnrMon\ViewModel\AnrMonViewModel.vb" />
+    <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\ViewModel\OptionenViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptionenViewModel.vb" />
     <Compile Include="Formulare\Optionen\Elemente\OlTreeViewItem.vb" />
-    <Compile Include="Formulare\OptionenWPF.xaml.vb">
+    <Compile Include="Formulare\Optionen\OptionenWPF.xaml.vb">
       <DependentUpon>OptionenWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml.vb">
@@ -263,37 +270,37 @@
     <Compile Include="Formulare\Optionen\Elemente\OptionsOLFolderTV.xaml.vb">
       <DependentUpon>OptionsOLFolderTV.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlMicroSIP.xaml.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlMicroSIP.xaml.vb">
       <DependentUpon>UserCtrlMicroSIP.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlPhoner.xaml.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlPhoner.xaml.vb">
       <DependentUpon>UserCtrlPhoner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlTelefone.xaml.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlTelefone.xaml.vb">
       <DependentUpon>UserCtrlTelefone.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlInfo.xaml.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlInfo.xaml.vb">
       <DependentUpon>UserCtrlInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlJournalerstellung.xaml.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlJournalerstellung.xaml.vb">
       <DependentUpon>UserCtrlJournalerstellung.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlKontaktsuche.xaml.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlKontaktsuche.xaml.vb">
       <DependentUpon>UserCtrlKontaktsuche.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlWählhilfe.xaml.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlWählhilfe.xaml.vb">
       <DependentUpon>UserCtrlWählhilfe.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlAnrMon.xaml.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlAnrMon.xaml.vb">
       <DependentUpon>UserCtrlAnrMon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlGrund.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlGrund.vb">
       <DependentUpon>UserCtrlGrund.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\UserCtrlKontakterstellung.xaml.vb">
+    <Compile Include="Formulare\Optionen\Views\UserCtrlKontakterstellung.xaml.vb">
       <DependentUpon>UserCtrlKontakterstellung.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\ViewModel\StoppUhrViewModel.vb" />
+    <Compile Include="Formulare\Stoppuhr\ViewModel\StoppUhrViewModel.vb" />
     <Compile Include="Formulare\Wählclient\Resources\LocWählclient.Designer.vb">
       <DependentUpon>LocWählclient.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -306,7 +313,7 @@
     <Compile Include="Formulare\Wählclient\ViewModels\ContactDialViewModel.vb" />
     <Compile Include="Formulare\Wählclient\ViewModels\DirectDialViewModel.vb" />
     <Compile Include="Formulare\Wählclient\ViewModels\WählClientViewModel.vb" />
-    <Compile Include="Formulare\StoppUhrWPF.xaml.vb">
+    <Compile Include="Formulare\Stoppuhr\StoppUhrWPF.xaml.vb">
       <DependentUpon>StoppUhrWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Wählclient\WählclientWPF.xaml.vb">
@@ -318,7 +325,7 @@
     <Compile Include="Formulare\Wählclient\Views\DirectDialView.xaml.vb">
       <DependentUpon>DirectDialView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\AnrListWPF.xaml.vb">
+    <Compile Include="Formulare\AnrList\AnrListWPF.xaml.vb">
       <DependentUpon>AnrListWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\FritzBoxJSONStruct.vb" />
@@ -458,6 +465,11 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <EmbeddedResource Include="Formulare\AnrList\Resources\LocAnrList.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocAnrList.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formulare\Wählclient\Resources\LocWählclient.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocWählclient.Designer.vb</LastGenOutput>
@@ -517,19 +529,13 @@
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorKontakt.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
     <EmbeddedResource Include="Telefonie\Listen\Vorwahlen.xml" />
-    <Resource Include="Resources\call_received.png" />
-    <Resource Include="Resources\call_made.png" />
-    <Resource Include="Resources\call_missed.png" />
-    <EmbeddedResource Include="Resources\CallTo.png" />
-    <EmbeddedResource Include="Resources\Cancel.png" />
-    <Resource Include="Resources\Add.png" />
-    <EmbeddedResource Include="Resources\Download.png" />
-    <EmbeddedResource Include="Resources\Remove.png" />
-    <EmbeddedResource Include="Resources\Save.png" />
-    <EmbeddedResource Include="Resources\Upload.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Formulare\AnrMonWPF.xaml">
+    <Page Include="Formulare\AnrList\Resources\AnrList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\AnrMon\AnrMonWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -537,19 +543,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Resources\Stoppuhr.xaml">
+    <Page Include="Formulare\Stoppuhr\Resources\Stoppuhr.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Resources\Colors.xaml">
+    <Page Include="Formulare\Common\Resources\Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Resources\Icons.xaml">
+    <Page Include="Formulare\Common\Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\OptionenWPF.xaml">
+    <Page Include="Formulare\Optionen\OptionenWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -573,55 +579,55 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlMicroSIP.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlMicroSIP.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlPhoner.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlPhoner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlTelefone.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlTelefone.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlInfo.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlInfo.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlJournalerstellung.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlJournalerstellung.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlKontaktsuche.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlKontaktsuche.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlWählhilfe.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlWählhilfe.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlAnrMon.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlAnrMon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlGrund.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlGrund.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Formulare\Optionen\UserCtrlKontakterstellung.xaml">
+    <Page Include="Formulare\Optionen\Views\UserCtrlKontakterstellung.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\AnrListWPF.xaml">
+    <Page Include="Formulare\AnrList\AnrListWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Resources\AnrMon.xaml">
+    <Page Include="Formulare\AnrMon\Resources\AnrMon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\StoppUhrWPF.xaml">
+    <Page Include="Formulare\Stoppuhr\StoppUhrWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -637,7 +643,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Resources\XAMLResources.xaml">
+    <Page Include="Formulare\Common\Resources\Common.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

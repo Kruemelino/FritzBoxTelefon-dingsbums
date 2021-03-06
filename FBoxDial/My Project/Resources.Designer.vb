@@ -61,86 +61,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property Add() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Add", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property call_made() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("call_made", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property call_missed() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("call_missed", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property call_received() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("call_received", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property CallTo() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CallTo", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property Cancel() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Cancel", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property Download() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Download", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property Remove() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Remove", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         '''&lt;customUI xmlns=&quot;http://schemas.microsoft.com/office/2009/07/customui&quot; onLoad=&quot;Ribbon_Load&quot;&gt;
         '''  &lt;ribbon startFromScratch=&quot;false&quot;&gt;
@@ -148,7 +68,7 @@ Namespace My.Resources
         '''      &lt;tab idMso=&quot;TabCalendar&quot;&gt;
         '''        &lt;group id=&quot;Tab_Calendar&quot; getLabel=&quot;GetItemLabel&quot; autoScale=&quot;false&quot; imageMso=&quot;AutoDial&quot;&gt;
         '''          &lt;splitButton id=&quot;spb1_K&quot; size=&quot;large&quot;&gt;
-        '''            &lt;button id=&quot;btnDialExpl_K&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; onAction=&quot;BtnOnAction&quot;  getScreentip=&quot;GetItemScreenTipp&quot;/&gt;        ''' [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''            &lt;button id=&quot;Dial_K&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; onAction=&quot;BtnOnAction&quot; getScreentip=&quot;GetItemScreenTipp&quot; getEnabled [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonExplorer() As String
             Get
@@ -157,16 +77,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;customUI xmlns=&quot;http://schemas.microsoft.com/office/2009/07/customui&quot; onLoad=&quot;ribbonLoaded_&quot; loadImage=&quot;getImages&quot;&gt;
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;customUI xmlns=&quot;http://schemas.microsoft.com/office/2009/07/customui&quot;&gt;
         '''  &lt;contextMenus&gt;
         '''    &lt;contextMenu idMso=&quot;ContextMenuContactCardRecipient&quot;&gt;      
-        '''      &lt;menuSeparator id=&quot;Seperator_CMR3&quot;/&gt;
-        '''      &lt;button id=&quot;rbtnDial_CMR&quot; getLabel=&quot;GetItemLabel&quot; imageMso=&quot;AutoDial&quot; onAction=&quot;BtnOnAction&quot;/&gt;
+        '''      &lt;menuSeparator id=&quot;Seperator_CMR1&quot;/&gt;
+        '''      &lt;button id=&quot;Dial_CMR2&quot; getLabel=&quot;GetItemLabel&quot; imageMso=&quot;AutoDial&quot; onAction=&quot;BtnOnAction&quot; getEnabled=&quot;DialEnabled&quot;/&gt;
         '''    &lt;/contextMenu&gt;
-        '''  &lt;/contextMenus&gt;
-        '''&lt;/customUI&gt;
-        '''
-        ''' ähnelt.
+        '''    &lt;!--&lt;contextMenu idMso=&quot;ContextMenuContactCardOverflowDropdown&quot;&gt;
+        '''      &lt;menuSeparator id=&quot;Seperator_CMR2&quot;/&gt;
+        '''      &lt;button id=&quot;Dial_CMR1&quot; getLabel=&quot;GetItemLabel&quot; i [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonIMLayerUI() As String
             Get
@@ -181,9 +100,8 @@ Namespace My.Resources
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabJournal&quot;&gt;
         '''        &lt;group id=&quot;Tab_Journal&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
-        '''          &lt;button id=&quot;btnDialInsp_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; getEnabled=&quot;EnableBtnJournal&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
-        '''          &lt;separator id=&quot;Seperator_J1&quot;/&gt;
-        '''          &lt;button i [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''          &lt;button id=&quot;Dial_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;normal&quot; getEnabled=&quot;DialEnabled&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
+        '''          &lt;button id=&quot;RWS_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemIm [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonInspectorJournal() As String
             Get
@@ -198,9 +116,9 @@ Namespace My.Resources
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabContact&quot;&gt;
         '''        &lt;group id=&quot;Tab_Contact&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
-        '''          &lt;button id=&quot;btnDialInsp_C&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
+        '''          &lt;button id=&quot;Dial_C&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot; getEnabled=&quot;DialEnabled&quot;/&gt;
         '''          &lt;separator id=&quot;Seperator_C1&quot;/&gt;
-        '''          &lt;dynamicMenu id=&quot;btnRWS_C&quot; tag=&quot;RWSDasO [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''          &lt;dynamicMenu id=&quot;RWS_ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonInspectorKontakt() As String
             Get
@@ -215,28 +133,16 @@ Namespace My.Resources
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabReadMessage&quot;&gt;
         '''        &lt;group id=&quot;Tab_ReadMessage&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
-        '''          &lt;button id=&quot;btnDialInsp_M&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
+        '''          &lt;button id=&quot;Dial_M&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot; getEnabled=&quot;DialEnabled&quot;/&gt;
         '''        &lt;/group&gt;
         '''      &lt;/tab&gt;
         '''    &lt;/tabs&gt;
         '''  &lt;/ribbon&gt;
-        '''&lt;/customUI&gt;
-        '''
-        ''' ähnelt.
+        '''&lt;/custo [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonInspectorMailRead() As String
             Get
                 Return ResourceManager.GetString("RibbonInspectorMailRead", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property Save() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Save", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -255,16 +161,6 @@ Namespace My.Resources
         Public ReadOnly Property strDefShortName() As String
             Get
                 Return ResourceManager.GetString("strDefShortName", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property Upload() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Upload", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

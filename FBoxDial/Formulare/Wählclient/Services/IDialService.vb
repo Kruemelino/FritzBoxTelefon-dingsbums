@@ -50,6 +50,6 @@
     Function DialNumber(Wählclient As FritzBoxWählClient,
                         TelNr As Telefonnummer,
                         Telefon As Telefoniegerät,
-                        CLIR As Boolean, Abbruch As Boolean) As Boolean
+                        CLIR As Boolean, Abbruch As Boolean) As Threading.Tasks.Task(Of Boolean)
 
 End Interface

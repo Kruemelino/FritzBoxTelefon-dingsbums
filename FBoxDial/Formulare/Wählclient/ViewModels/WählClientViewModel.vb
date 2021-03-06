@@ -1,7 +1,7 @@
 ﻿Imports Microsoft.Office.Interop
 Public Class WählClientViewModel
     Inherits NotifyBase
-    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    ' Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend Property Wählclient As FritzBoxWählClient
     Private Property DatenService As IDialService
     Private Property DialogService As IDialogService
@@ -205,16 +205,16 @@ Public Class WählClientViewModel
 
 
 #Region "ICommand Callback"
-    Private Sub CancelCall(o As Object)
+    Private Async Sub CancelCall(o As Object)
         ' initialen Abbruch.Status setzen
         Status = Localize.LocWählclient.strStatusHangUp
 
         ' Breche den Wahlvorgang ab
-        IsDialing = Not Wählclient.DialTelNr(Nothing, TelGerät, CLIR, True)
+        IsDialing = Not Await Wählclient.DialTelNr(Nothing, TelGerät, CLIR, True)
 
     End Sub
 
-    Private Sub Dial(o As Object)
+    Private Async Sub Dial(o As Object)
 
         ' Telefonnummernobjekt generieren
         Dim DialTelNr As Telefonnummer
@@ -246,7 +246,7 @@ Public Class WählClientViewModel
             ' Wählvorgang einleiten
             If Wählclient IsNot Nothing And DialTelNr IsNot Nothing Then
 
-                IsDialing = Wählclient.DialTelNr(DialTelNr, TelGerät, CLIR, False)
+                IsDialing = Await Wählclient.DialTelNr(DialTelNr, TelGerät, CLIR, False)
 
                 Status = If(IsDialing, Localize.LocWählclient.strStatusPickUp, Localize.LocWählclient.strStatusError)
 
