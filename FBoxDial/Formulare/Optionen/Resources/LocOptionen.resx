@@ -1,0 +1,559 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="strAnrMon" xml:space="preserve">
+    <value>Anrufmonitor</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strAnrMonCBAnrMonAuto" xml:space="preserve">
+    <value>Anrufmonitor mit Outlook starten</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonCBAnrMonContactImage" xml:space="preserve">
+    <value>Zeige Kontaktbild</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonCBAnrMonZeigeKontakt" xml:space="preserve">
+    <value>Kontakt bei Anruf öffnen</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonCBAutoClose" xml:space="preserve">
+    <value>Anruffenster automatisch ausblenden</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonCBStoppUhrAusblenden" xml:space="preserve">
+    <value>Stoppuhr bei Beenden ausblenden</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonCBStoppUhrEinblenden" xml:space="preserve">
+    <value>Stoppuhr bei Verbindungsaufbau einblenden</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonHeadAnrMon" xml:space="preserve">
+    <value>Einstellungen für den Anrufmonitor</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonHeadStoppUhr" xml:space="preserve">
+    <value>Einstellungen für die Stoppuhr</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonTBEnblDauer" xml:space="preserve">
+    <value>Anzeigedauer bei Anruf in Sekunden</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonTBStoppUhrAusblendverzögerung" xml:space="preserve">
+    <value>Ausblendverzögerung in Sekunden</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strBaseCBintl" xml:space="preserve">
+    <value>Internationale Vorwahl ergänzen</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseCBoxLogLevel" xml:space="preserve">
+    <value>Level</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseCBTelNrGruppieren" xml:space="preserve">
+    <value>Gruppieren</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseConfig" xml:space="preserve">
+    <value>Grundeinstellung</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strBaseHeadFB" xml:space="preserve">
+    <value>Grundaten Fritz!Box</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseHeadFormatTel" xml:space="preserve">
+    <value>Formatierung von Telefonnummern</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseHeadList" xml:space="preserve">
+    <value>Anruflisten</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseHeadLog" xml:space="preserve">
+    <value>Protokollierung</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseHeadTel" xml:space="preserve">
+    <value>Grundaten Telefonie</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseInfoKZ" xml:space="preserve">
+    <value>Landes- und Ortskennzahl (jeweils ohne führende Null) werden beim Einlesen der Telefone automatisch aus der Fritz!Box ausgelesen.
+Falls keine Werte gefunden wurden, können die Werte hier eingetragen werden.</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseLinkOpen" xml:space="preserve">
+    <value>Öffnen</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTBBenutzer" xml:space="preserve">
+    <value>Fritz!Box Benutzername</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTBFBAdr" xml:space="preserve">
+    <value>Fritz!Box Adresse</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTBLandesKZ" xml:space="preserve">
+    <value>Landeskennzahl</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTBNumEntryList" xml:space="preserve">
+    <value>Anzahl der Listenelemente je Liste</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTBOrtsKZ" xml:space="preserve">
+    <value>Ortskennzahl</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTBPasswort" xml:space="preserve">
+    <value>Fritz!Box Passwort</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTBTelNrMaske" xml:space="preserve">
+    <value>Maske</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseWorkDir" xml:space="preserve">
+    <value>Arbeitsverzeichnis</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strCancel" xml:space="preserve">
+    <value>Abbrechen</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strConfig" xml:space="preserve">
+    <value>Einstellungen</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strCreateContact" xml:space="preserve">
+    <value>Kontakterstellung</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strCreateContactsCBKErstellen" xml:space="preserve">
+    <value>Kontakte automatisch erstellen</value>
+    <comment>OptCreateContactView</comment>
+  </data>
+  <data name="strCreateContactsHead" xml:space="preserve">
+    <value>Einstellungen für die Kontakterstellung</value>
+    <comment>OptCreateContactView</comment>
+  </data>
+  <data name="strCreateContactsInfo" xml:space="preserve">
+    <value>Hinweise zur Kontakterstellung:
+Sofern Kontakte automatisch erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Kontakte gespeichert werden sollen.
+Wird kein Ordner gewählt, wird der Outlook-Standard verwendet.</value>
+    <comment>OptCreateContactView</comment>
+  </data>
+  <data name="strDialer" xml:space="preserve">
+    <value>Wählhilfe</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strDialerCBCheckMobil" xml:space="preserve">
+    <value>Nachfrage beim Wählen von Mobilnummern</value>
+    <comment>OptDialerView</comment>
+  </data>
+  <data name="strDialerCBCloseWClient" xml:space="preserve">
+    <value>Wähldialog automatisch ausblenden</value>
+    <comment>OptDialerView</comment>
+  </data>
+  <data name="strDialerCBForceDialLKZ" xml:space="preserve">
+    <value>Landeskennzahl immer mitwählen</value>
+    <comment>OptDialerView</comment>
+  </data>
+  <data name="strDialerHead" xml:space="preserve">
+    <value>Einstellungen für den Wählhilfe</value>
+    <comment>OptDialerView</comment>
+  </data>
+  <data name="strDialerTBPräfix" xml:space="preserve">
+    <value>Präfix</value>
+    <comment>OptDialerView</comment>
+  </data>
+  <data name="strDialerTBWClientEnblDauer" xml:space="preserve">
+    <value>Anzeigedauer nach dem Wählen</value>
+    <comment>OptDialerView</comment>
+  </data>
+  <data name="strInfo" xml:space="preserve">
+    <value>Info</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strInfoDatenschutz" xml:space="preserve">
+    <value>Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
+Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
+Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgender Ausnahme:
+Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!</value>
+    <comment>OptInfoView</comment>
+  </data>
+  <data name="strInfoForum" xml:space="preserve">
+    <value>Forum</value>
+    <comment>OptInfoView</comment>
+  </data>
+  <data name="strInfoGithub" xml:space="preserve">
+    <value>Github</value>
+    <comment>OptInfoView</comment>
+  </data>
+  <data name="strInfoHaftung" xml:space="preserve">
+    <value>Ich übernehme keine Haftung für Schäden, die durch das Programm entstanden sind.
+Für fehlerhafte oder falsche Angaben, die Rückwärtssuche liefert wird keine Haftung übernommen.</value>
+    <comment>OptInfoView</comment>
+  </data>
+  <data name="strInfoHeadDatenschutz" xml:space="preserve">
+    <value>Hinweise zum Datenschutz</value>
+    <comment>OptInfoView</comment>
+  </data>
+  <data name="strInfoHeadHaftung" xml:space="preserve">
+    <value>Hinweise zum Haftungsausschluss</value>
+    <comment>OptInfoView</comment>
+  </data>
+  <data name="strInfoHeadMarkenrecht" xml:space="preserve">
+    <value>Hinweise zum Markenrecht</value>
+    <comment>OptInfoView</comment>
+  </data>
+  <data name="strInfoMail" xml:space="preserve">
+    <value>E-Mail</value>
+    <comment>OptInfoView</comment>
+  </data>
+  <data name="strInfoMarkenrecht" xml:space="preserve">
+    <value>Dieses Outlook-Addin wird vom Autor privat in der Freizeit als Hobby gepflegt. Mit der Bereitstellung des Outlook-Addins werden keine gewerblichen Interessen verfolgt. Es wird aus rein ideellen Gründen zum Gemeinwohl aller Nutzer einer Fritz!Box betrieben. Die Erstellung dieser Software erfolgt nicht im Auftrag oder mit Wissen der Firmen AVM GmbH bzw. Microsoft Corporation. Diese Software wurde unabhängig erstellt. Der Autor pflegt im Zusammenhang mit dieser Software keine Beziehungen zur Firma AVM GmbH oder Microsoft Corporation.</value>
+    <comment>OptInfoView</comment>
+  </data>
+  <data name="strJournal" xml:space="preserve">
+    <value>Journal</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strJournalCBAnrListeUpdateCallLists" xml:space="preserve">
+    <value>Anruflisten aktualisieren</value>
+    <comment>OptJournalView</comment>
+  </data>
+  <data name="strJournalCBAutoAnrList" xml:space="preserve">
+    <value>Journaleinträge bei Outlookstart importieren</value>
+    <comment>OptJournalView</comment>
+  </data>
+  <data name="strJournalCBJournal" xml:space="preserve">
+    <value>Journaleinträge erstellen</value>
+    <comment>OptJournalView</comment>
+  </data>
+  <data name="strJournalHead" xml:space="preserve">
+    <value>Einstellungen für die Journalerstellung</value>
+    <comment>OptJournalView</comment>
+  </data>
+  <data name="strJournalInfo" xml:space="preserve">
+    <value>Hinweise zur Outlook Journaleinträgen:
+Sofern Journaleinträge erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Einträge erstellt werden sollen.
+Wird kein Ordner gewählt, wird der Outlook-Standardverwendet.</value>
+    <comment>OptJournalView</comment>
+  </data>
+  <data name="strMicroSIP" xml:space="preserve">
+    <value>MicroSIP</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strMicroSIPCBMicroSIP" xml:space="preserve">
+    <value>MicroSIP verwenden</value>
+    <comment>OptMicroSIPView</comment>
+  </data>
+  <data name="strMicroSIPHeadConfig" xml:space="preserve">
+    <value>MicroSIP - Konfiguration</value>
+    <comment>OptMicroSIPView</comment>
+  </data>
+  <data name="strMicroSIPHeadInfo" xml:space="preserve">
+    <value>MicroSIP - Open Source SIP-Softphone</value>
+    <comment>OptMicroSIPView</comment>
+  </data>
+  <data name="strMicroSIPInfo" xml:space="preserve">
+    <value>Hinweise zur korrekten Konfiguration:
+Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
+Wähle Telefoniegerät aus, was mit MicroSIP registriert ist.</value>
+    <comment>OptMicroSIPView</comment>
+  </data>
+  <data name="strMicroSIPPhoneInfo" xml:space="preserve">
+    <value>Registriertes Telefon für MicroSIP</value>
+    <comment>OptMicroSIPView</comment>
+  </data>
+  <data name="strMicroSIPTBMicroSIPPath" xml:space="preserve">
+    <value>Pfad zu MicroSIP.exe</value>
+    <comment>OptMicroSIPView</comment>
+  </data>
+  <data name="strOutlookTreeView" xml:space="preserve">
+    <value>Lade Outlook-Ordner...</value>
+    <comment>OptionsOLFolderTV</comment>
+  </data>
+  <data name="strPhone" xml:space="preserve">
+    <value>Telefone</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strPhoner" xml:space="preserve">
+    <value>Phoner</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strPhonerCopyRight" xml:space="preserve">
+    <value>Phoner Copyright 2021 Heiko Sommerfeldt. Alle Rechte vorbehalten.</value>
+    <comment>OptPhonerView</comment>
+  </data>
+  <data name="strPhonerHeadConfig" xml:space="preserve">
+    <value>Phoner - Konfiguration</value>
+    <comment>OptPhonerView</comment>
+  </data>
+  <data name="strPhonerHeadInfo" xml:space="preserve">
+    <value>Phoner</value>
+    <comment>OptPhonerView</comment>
+  </data>
+  <data name="strPhonerInfo" xml:space="preserve">
+    <value>Die Software ermöglicht Gesprächsverbindungen in das Festnetz, zu Mobiltelefonen und zu VoIP-Gegenstellen. Phoner kann als Softphone an analogen Teilnehmeranschlüssen, an digitalen ISDN Teilnehmeranschlussleitungen und als IP-Softphone auf stationären und mobilen Computersystemen benutzt werden.</value>
+    <comment>OptPhonerView</comment>
+  </data>
+  <data name="strPhonerInfoConfig" xml:space="preserve">
+    <value>Hinweise zur korrekten Konfiguration:
+Stelle sicher, dass Phoner sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
+Lege ein Passwort für die Authentifizierung bei Phoner fest. Das gleiche Passwort muss bei Phoner unter "Optionen / Web" im Feld Passwort eingegeben werden.
+Prüfe, ob die Authentifizierung erfolgreich ist.
+Wähle Telefoniegerät aus, was mit Phoner registriert ist.</value>
+    <comment>OptPhonerView</comment>
+  </data>
+  <data name="strPhonerInfoLight" xml:space="preserve">
+    <value>PhonerLight wird nicht unterstützt!</value>
+    <comment>OptPhonerView</comment>
+  </data>
+  <data name="strPhonerOptCheckBox" xml:space="preserve">
+    <value>Phoner verwenden</value>
+    <comment>OptPhonerView</comment>
+  </data>
+  <data name="strPhonerstrPhonerPhoneInfo" xml:space="preserve">
+    <value>Registriertes Telefon für Phoner</value>
+    <comment>OptPhonerView</comment>
+  </data>
+  <data name="strPhonerTBPhonerPasswort" xml:space="preserve">
+    <value>Phoner Passwort</value>
+    <comment>OptPhonerView</comment>
+  </data>
+  <data name="strSave" xml:space="preserve">
+    <value>Speichern</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strSearchContact" xml:space="preserve">
+    <value>Kontaktsuche</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strSearchContactCBKontaktSucheFritzBox" xml:space="preserve">
+    <value>Fritz!Box Telefonbüchern einbeziehen</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactCBRWS" xml:space="preserve">
+    <value>Rückwärtsuche mit DasÖrtliche</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactCBRWSIndex" xml:space="preserve">
+    <value>Ergebnisse merken</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactCBSucheUnterordner" xml:space="preserve">
+    <value>Outlook Unterordner einbeziehen</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactDeIndex" xml:space="preserve">
+    <value>Deindizieren</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactHeadIndex" xml:space="preserve">
+    <value>Outlook Kontaktindizierung</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactHeadRWS" xml:space="preserve">
+    <value>Rückwärtssuche</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactHeadSearch" xml:space="preserve">
+    <value>Einstellungen für die Kontaktsuche</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactIndex" xml:space="preserve">
+    <value>Indizieren</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactIndexCancel" xml:space="preserve">
+    <value>Abbruch</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactIndexStart" xml:space="preserve">
+    <value>Start</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSearchContactInfo" xml:space="preserve">
+    <value>Hinweise zur Kontaktsuche:
+Kontakte von eingehenden Anrufen wird nur in den hier gewählten Ordnern durchgeführt.
+Dies verringert die Zeit, bis ein passender Kontakt gefunden wurde.
+Die Kontaktindizierung wird nur in den ausgewählten Ordnern automatisch beim Speichern durchgeführt. Sie kann aber auch manuell angestoßen werden.
+Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werden die Indizierungseinträge beim Speichern automatisch entfernt.</value>
+    <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strSoftPhoneHomepage" xml:space="preserve">
+    <value>Homepage</value>
+    <comment>OptMicroSIPView, OptPhonerView</comment>
+  </data>
+  <data name="strTelephonyHeadImport" xml:space="preserve">
+    <value>Einlesen der Telefoniedaten von der Fritz!Box</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyHeadNumbers" xml:space="preserve">
+    <value>Telefonnummern</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyHeadPhones" xml:space="preserve">
+    <value>Telefoniegeräte</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyImportStart" xml:space="preserve">
+    <value>Start</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyNumbersInfo" xml:space="preserve">
+    <value>Auswahl der Telefonnummern, auf die der Anrufmonitor reagiert</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneDialport" xml:space="preserve">
+    <value>Dialport</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneID" xml:space="preserve">
+    <value>ID</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneIncomming" xml:space="preserve">
+    <value>Eingehend</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneIntern" xml:space="preserve">
+    <value>Intern</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneName" xml:space="preserve">
+    <value>Name</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneType" xml:space="preserve">
+    <value>Typ</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strUndo" xml:space="preserve">
+    <value>Zurücksetzen</value>
+    <comment>MainView</comment>
+  </data>
+</root>

@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Controls
 
-Public Class UserCtrlAnrMon
+Public Class OptCreateContactView
     Inherits UserControl
 
 End Class

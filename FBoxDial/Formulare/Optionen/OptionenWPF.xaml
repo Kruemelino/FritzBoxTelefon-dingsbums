@@ -1,19 +1,24 @@
 ﻿<Window x:Class="OptionenWPF"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:localize="clr-namespace:FBoxDial.Localize"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"        
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fbd="clr-namespace:FBoxDial"
+        xmlns:localize="clr-namespace:FBoxDial.Localize"
         mc:Ignorable="d" 
-        MinHeight="450" MinWidth="600" Height="520" Width="700" Focusable="False" IsTabStop="False" Name="Optionen"      
-        d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}"
-        Title="{x:Static localize:resCommon.strConfig}">
-
+        MinHeight="450" MinWidth="600" Height="520" Width="700" Focusable="False" IsTabStop="False" Name="Optionen"
+        d:DataContext="{d:DesignInstance Type=fbd:OptionenViewModel, IsDesignTimeCreatable=True}"
+        fbd:WindowBehavior.Loaded="{Binding LoadedCommand}"
+        Title="{x:Static localize:LocOptionen.strConfig}">
+    
+    <Window.DataContext>
+        <fbd:OptionenViewModel/>
+    </Window.DataContext>
+    
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Common/Resources/Common.xaml"/>
+                <ResourceDictionary Source="Resources/Optionen.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -29,23 +34,23 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Column="0" Grid.RowSpan="2">
-            <StackPanel x:Name="SPMenuButtons" DockPanel.Dock="Left" Width="150" Orientation="Vertical">
-                <RadioButton x:Name="RBGrunde" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptBaseConfig}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-                <RadioButton x:Name="RBAnrMon" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strAnrMon}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-                <RadioButton x:Name="RBWählhilfe" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strDialer}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-                <RadioButton x:Name="RBJournal" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptJournal}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-                <RadioButton x:Name="RBKontaktSuche" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptSearchContact}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-                <RadioButton x:Name="RBKontakterstellung" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptCreateContact}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-                <RadioButton x:Name="RBTelefone" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptPhone}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-                <RadioButton x:Name="RBPhoner" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptPhoner}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-                <RadioButton x:Name="RBMicroSIP" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptMicroSIP}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-                <RadioButton x:Name="RBInfo" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptInfo}" Checked="RadioButton_Checked" GroupName="SelOpt"/>
-            </StackPanel>
+
+            <ItemsControl ItemsSource="{Binding PageViewModels}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton Style="{StaticResource ToggleButtonStyle}"
+                                     Content="{Binding Name}"
+                                     Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                     CommandParameter="{Binding }" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
         </ScrollViewer>
 
         <Border Grid.Column="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Grid.ColumnSpan="2">
             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <ContentControl x:Name="NavigationCtrl" />
+                <ContentControl Content="{Binding CurrentPageViewModel}"/>
             </ScrollViewer>
         </Border>
 
@@ -64,25 +69,26 @@
             </Grid.ColumnDefinitions>
 
             <Button Style="{StaticResource IconTextButton}"
-                    Content="{x:Static localize:resCommon.strSave}" 
+                    Content="{x:Static localize:LocOptionen.strSave}" 
                     Tag="{DynamicResource Save_16x}"
                     IsDefault="True" 
                     Grid.Column="0"
-                    Click="BSave_Click"/>
+                    Command="{Binding SaveCommand}" />
 
             <Button Style="{StaticResource IconTextButton}"
-                    Content="{x:Static localize:resCommon.strUndo}" 
+                    Content="{x:Static localize:LocOptionen.strUndo}" 
                     Tag="{DynamicResource Undo_16x}"
                     IsCancel="False" 
                     Grid.Column="1"
-                    Click="BReset_Click"/>
+                    Command="{Binding UndoCommand}" />
 
             <Button Style="{StaticResource IconTextButton}"
-                    Content="{x:Static localize:resCommon.strCancel}" 
+                    Content="{x:Static localize:LocOptionen.strCancel}" 
                     Tag="{DynamicResource Cancel_16x}"
                     IsCancel="True" 
                     Grid.Column="2"
-                    Click="BCancel_Click"/>
+                    Command="{Binding CancelCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
             
         </Grid>
     </Grid>

@@ -3,6 +3,7 @@ Imports System.Runtime.CompilerServices
 ''' <summary>
 ''' Implementation of <see cref="INotifyPropertyChanged" /> to simplify models.
 ''' </summary>
+<DebuggerStepThrough>
 Public MustInherit Class NotifyBase
     Implements INotifyPropertyChanged
 

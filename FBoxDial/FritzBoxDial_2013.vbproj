@@ -250,8 +250,27 @@
     <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\Optionen\Services\IPageViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Services\OptionenService.vb" />
+    <Compile Include="Formulare\Optionen\Services\IOptionenService.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptAnrMonViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptDialerViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptJournalViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptSearchContactViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptCreateContactViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptTelephonyViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptPhonerViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptInfoViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptMicroSIPViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptBaseViewModel.vb" />
+    <Compile Include="Localize\resCommon.Designer.vb">
+      <DependentUpon>resCommon.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Services\OptionenTemplateSelector.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptionenViewModel.vb" />
-    <Compile Include="Formulare\Optionen\Elemente\OlTreeViewItem.vb" />
+    <Compile Include="Formulare\Optionen\Resources\OlTreeViewItem.vb" />
     <Compile Include="Formulare\Optionen\OptionenWPF.xaml.vb">
       <DependentUpon>OptionenWPF.xaml</DependentUpon>
     </Compile>
@@ -270,35 +289,35 @@
     <Compile Include="Formulare\Optionen\Elemente\OptionsOLFolderTV.xaml.vb">
       <DependentUpon>OptionsOLFolderTV.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlMicroSIP.xaml.vb">
-      <DependentUpon>UserCtrlMicroSIP.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptMicroSIPView.xaml.vb">
+      <DependentUpon>OptMicroSIPView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlPhoner.xaml.vb">
-      <DependentUpon>UserCtrlPhoner.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptPhonerView.xaml.vb">
+      <DependentUpon>OptPhonerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlTelefone.xaml.vb">
-      <DependentUpon>UserCtrlTelefone.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptTelephonyView.xaml.vb">
+      <DependentUpon>OptTelephonyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlInfo.xaml.vb">
-      <DependentUpon>UserCtrlInfo.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptInfoView.xaml.vb">
+      <DependentUpon>OptInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlJournalerstellung.xaml.vb">
-      <DependentUpon>UserCtrlJournalerstellung.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptJournalView.xaml.vb">
+      <DependentUpon>OptJournalView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlKontaktsuche.xaml.vb">
-      <DependentUpon>UserCtrlKontaktsuche.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptSearchContactView.xaml.vb">
+      <DependentUpon>OptSearchContactView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlWählhilfe.xaml.vb">
-      <DependentUpon>UserCtrlWählhilfe.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptDialerView.xaml.vb">
+      <DependentUpon>OptDialerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlAnrMon.xaml.vb">
-      <DependentUpon>UserCtrlAnrMon.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptAnrMonView.xaml.vb">
+      <DependentUpon>OptAnrMonView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlGrund.vb">
-      <DependentUpon>UserCtrlGrund.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptBaseView.xaml.vb">
+      <DependentUpon>OptBaseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\UserCtrlKontakterstellung.xaml.vb">
-      <DependentUpon>UserCtrlKontakterstellung.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\OptCreateContactView.xaml.vb">
+      <DependentUpon>OptCreateContactView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Stoppuhr\ViewModel\StoppUhrViewModel.vb" />
     <Compile Include="Formulare\Wählclient\Resources\LocWählclient.Designer.vb">
@@ -376,8 +395,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Localize\resCommon.Designer.vb">
-      <DependentUpon>resCommon.resx</DependentUpon>
+    <Compile Include="Formulare\Optionen\Resources\LocOptionen.Designer.vb">
+      <DependentUpon>LocOptionen.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -470,6 +489,11 @@
       <LastGenOutput>LocAnrList.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resCommon.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formulare\Wählclient\Resources\LocWählclient.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocWählclient.Designer.vb</LastGenOutput>
@@ -498,9 +522,9 @@
       <LastGenOutput>resTelefonbuch.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localize\resCommon.resx">
+    <EmbeddedResource Include="Formulare\Optionen\Resources\LocOptionen.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
+      <LastGenOutput>LocOptionen.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -538,6 +562,10 @@
     <Page Include="Formulare\AnrMon\AnrMonWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Optionen\Resources\Optionen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Wählclient\Resources\WählClient.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -579,43 +607,43 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlMicroSIP.xaml">
+    <Page Include="Formulare\Optionen\Views\OptMicroSIPView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlPhoner.xaml">
+    <Page Include="Formulare\Optionen\Views\OptPhonerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlTelefone.xaml">
+    <Page Include="Formulare\Optionen\Views\OptTelephonyView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlInfo.xaml">
+    <Page Include="Formulare\Optionen\Views\OptInfoView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlJournalerstellung.xaml">
+    <Page Include="Formulare\Optionen\Views\OptJournalView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlKontaktsuche.xaml">
+    <Page Include="Formulare\Optionen\Views\OptSearchContactView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlWählhilfe.xaml">
+    <Page Include="Formulare\Optionen\Views\OptDialerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlAnrMon.xaml">
+    <Page Include="Formulare\Optionen\Views\OptAnrMonView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlGrund.xaml">
+    <Page Include="Formulare\Optionen\Views\OptBaseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Formulare\Optionen\Views\UserCtrlKontakterstellung.xaml">
+    <Page Include="Formulare\Optionen\Views\OptCreateContactView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

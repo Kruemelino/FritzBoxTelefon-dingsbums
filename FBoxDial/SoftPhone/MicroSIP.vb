@@ -92,16 +92,16 @@
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
             If disposing Then
-                ' TODO: Verwalteten Zustand (verwaltete Objekte) bereinigen
+                ' Verwalteten Zustand (verwaltete Objekte) bereinigen
             End If
 
-            ' TODO: Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalizer überschreiben
-            ' TODO: Große Felder auf NULL setzen
+            ' Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalizer überschreiben
+            ' Große Felder auf NULL setzen
             disposedValue = True
         End If
     End Sub
 
-    ' ' TODO: Finalizer nur überschreiben, wenn "Dispose(disposing As Boolean)" Code für die Freigabe nicht verwalteter Ressourcen enthält
+    ' Finalizer nur überschreiben, wenn "Dispose(disposing As Boolean)" Code für die Freigabe nicht verwalteter Ressourcen enthält
     ' Protected Overrides Sub Finalize()
     '     ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
     '     Dispose(disposing:=False)
@@ -111,6 +111,7 @@
     Public Sub Dispose() Implements IDisposable.Dispose
         ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
         Dispose(disposing:=True)
-        GC.SuppressFinalize(Me)
+        ' Auskommentierung der folgenden Zeile aufheben, wenn Finalize() oben überschrieben wird.
+        ' GC.SuppressFinalize(Me)
     End Sub
 End Class

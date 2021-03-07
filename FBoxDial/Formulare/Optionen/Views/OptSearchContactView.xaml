@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="OptSearchContactView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=fbd:OptSearchContactViewModel, IsDesignTimeCreatable=True}">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strSearchContactHeadSearch}"/>
+
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strSearchContactInfo}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strSearchContactCBSucheUnterordner}" 
+                  IsChecked="{Binding OptVM.CBSucheUnterordner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strSearchContactCBKontaktSucheFritzBox}" 
+                  IsChecked="{Binding OptVM.CBKontaktSucheFritzBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strSearchContactHeadIndex}"/>
+        
+        <fbd:OptionsOLFolderTV x:Name="OLFolderKontaktsSuche" 
+                               OutlookOlItemType="olContactItem" 
+                               ÜberwachteOrdnerListe="{Binding OptVM.OutlookOrdnerListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                               Verwendung="KontaktSuche"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>                
+            </Grid.RowDefinitions>
+
+            <RadioButton x:Name="RBErstellen" 
+                         Content="{x:Static localize:LocOptionen.strSearchContactIndex}" 
+                         Grid.Column="0" 
+                         Grid.Row="0" 
+                         HorizontalAlignment="Center" 
+                         IsChecked="True"/>           
+            
+            <RadioButton x:Name="RBEntfernen" 
+                         Content="{x:Static localize:LocOptionen.strSearchContactDeIndex}" 
+                         Grid.Column="1" 
+                         Grid.Row="0" 
+                         HorizontalAlignment="Center"/>
+            
+            <Button x:Name="BIndizierungStart" 
+                    Content="{x:Static localize:LocOptionen.strSearchContactIndexStart}" 
+                    Grid.Column="0" 
+                    Grid.Row="1"  
+                    Margin="4"/>
+            
+            <Button x:Name="BIndizierungAbbrechen" 
+                    Content="{x:Static localize:LocOptionen.strSearchContactIndexCancel}" 
+                    Grid.Column="1" 
+                    Grid.Row="1" 
+                    Margin="4" 
+                    IsEnabled="False"/>
+
+            <ProgressBar x:Name="ProgressBarIndex" 
+                         Height="16" 
+                         Grid.Column="0" 
+                         Grid.Row="2" 
+                         Margin="4"/>
+
+            <TextBlock x:Name="LabelAnzahl" 
+                       Grid.Column="1" 
+                       Grid.Row="2" 
+                       Margin="4"/>
+
+        </Grid>
+
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strSearchContactHeadRWS}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strSearchContactCBRWS}" 
+                  IsChecked="{Binding OptVM.CBRWS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strSearchContactCBRWSIndex}" 
+                  IsChecked="{Binding OptVM.CBRWSIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+    </StackPanel>
+
+
+</UserControl>

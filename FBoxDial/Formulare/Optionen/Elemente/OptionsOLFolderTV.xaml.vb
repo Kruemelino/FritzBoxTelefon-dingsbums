@@ -1,7 +1,7 @@
 ﻿Imports System.Windows
 Imports System.Windows.Controls
 Imports Microsoft.Office.Interop
-
+' TODO: Code in eigene Routine Klasse verschieben. ViewModel?
 Partial Public Class OptionsOLFolderTV
     Inherits UserControl
 
@@ -53,7 +53,6 @@ Partial Public Class OptionsOLFolderTV
 
     End Sub
 
-    'Private Sub AddOutlookBaseNodes(OutlookItemType As Outlook.OlItemType, Verwendung As OutlookOrdnerVerwendung, MultiSelect As Boolean, CheckSubNodes As Boolean)
     Private Sub AddOutlookBaseNodes()
 
         With olFldrTV
@@ -88,7 +87,7 @@ Partial Public Class OptionsOLFolderTV
     End Sub
 
     Private Function StoreTreeItem(OutlookStore As Outlook.Store) As OlTreeViewItem
-        ' Dim olTreeViewItem As New OlTreeViewItem(OutlookStore.GetRootFolder) With {.Title = $"{OutlookStore.GetRootFolder.Name} ({OutlookStore.ExchangeStoreType})"}
+
         Dim olTreeViewItem As New OlTreeViewItem() With {.Title = $"{OutlookStore.GetRootFolder.Name} ({OutlookStore.ExchangeStoreType})",
                                                          .OutlookFolder = OutlookStore.GetRootFolder,
                                                          .OutlookItemType = OutlookOlItemType.olTaskItem,

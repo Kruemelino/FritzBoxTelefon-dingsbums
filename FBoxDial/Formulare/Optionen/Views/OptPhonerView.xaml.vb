@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Controls
 
-Public Class UserCtrlPhoner
+Public Class OptPhonerView
     Inherits UserControl
 
 End Class

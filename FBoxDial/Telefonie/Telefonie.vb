@@ -4,7 +4,7 @@ Imports FBoxDial.DfltWerteTelefonie
 Imports FBoxDial.FritzBoxDefault
 
 <Serializable()> Public Class Telefonie
-    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
     <XmlElement("Telefonnummer")> Public Property Telefonnummern As List(Of Telefonnummer)
@@ -533,6 +533,7 @@ Imports FBoxDial.FritzBoxDefault
         NLogger.Log(Level, StatusMessage)
         RaiseEvent Status(Me, New NotifyEventArgs(Of String)(StatusMessage))
     End Sub
+
 #End Region
 
 End Class

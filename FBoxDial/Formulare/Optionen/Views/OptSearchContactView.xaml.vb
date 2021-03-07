@@ -1,10 +1,10 @@
 ﻿Imports System.ComponentModel
 Imports System.Windows.Controls
 Imports Microsoft.Office.Interop
-
-Public Class UserCtrlKontaktsuche
+Public Class OptSearchContactView
     Inherits UserControl
 
+    ' TODO: Code in eigene Routine Klasse verschieben
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private BWIndexerList As List(Of BackgroundWorker)
 
@@ -29,32 +29,32 @@ Public Class UserCtrlKontaktsuche
 
         If BWIndexerList Is Nothing Then BWIndexerList = New List(Of BackgroundWorker)
 
-            ' Schleife durch jeden Ordner der indiziert werden soll
-            For Each Ordner As OutlookOrdner In OrdnerListe
+        ' Schleife durch jeden Ordner der indiziert werden soll
+        For Each Ordner As OutlookOrdner In OrdnerListe
 
-                ' Buttons einschalten
-                BIndizierungAbbrechen.IsEnabled = True
-                BIndizierungStart.IsEnabled = False
+            ' Buttons einschalten
+            BIndizierungAbbrechen.IsEnabled = True
+            BIndizierungStart.IsEnabled = False
 
-                Dim BWIndexer As New BackgroundWorker
+            Dim BWIndexer As New BackgroundWorker
 
-                With BWIndexer
-                    ' Füge Ereignishandler hinzu
-                    AddHandler .DoWork, AddressOf BWIndexer_DoWork
-                    AddHandler .ProgressChanged, AddressOf BWIndexer_ProgressChanged
-                    AddHandler .RunWorkerCompleted, AddressOf BWIndexer_RunWorkerCompleted
+            With BWIndexer
+                ' Füge Ereignishandler hinzu
+                AddHandler .DoWork, AddressOf BWIndexer_DoWork
+                AddHandler .ProgressChanged, AddressOf BWIndexer_ProgressChanged
+                AddHandler .RunWorkerCompleted, AddressOf BWIndexer_RunWorkerCompleted
 
-                    ' Setze Flags
-                    .WorkerSupportsCancellation = True
-                    .WorkerReportsProgress = True
+                ' Setze Flags
+                .WorkerSupportsCancellation = True
+                .WorkerReportsProgress = True
                 ' Und los...
                 NLogger.Debug($"Starte {BWIndexerList.Count}. Backgroundworker für Kontaktindizierung im Ordner {Ordner.Name}.")
                 .RunWorkerAsync(New Indizierungsdaten With {.Erstellen = Erstellen, .olFolder = Ordner.MAPIFolder})
-                End With
+            End With
 
-                ' Füge dern Backgroundworker der Liste hinzu
-                BWIndexerList.Add(BWIndexer)
-            Next
+            ' Füge dern Backgroundworker der Liste hinzu
+            BWIndexerList.Add(BWIndexer)
+        Next
 
     End Sub
 

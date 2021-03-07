@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Controls
 
-Public Class UserCtrlInfo
+Public Class OptBaseView
     Inherits UserControl
 
 End Class

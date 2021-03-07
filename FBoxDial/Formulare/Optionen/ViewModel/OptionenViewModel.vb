@@ -1,10 +1,13 @@
 ﻿Imports System.Reflection
-
+Imports System.Windows
+''' <summary>
+''' https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/
+''' </summary>
 Public Class OptionenViewModel
     Inherits NotifyBase
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-#Region "Eigenschaften"
+#Region "Addin Eigenschaften"
 #Region "Grunddaten"
 #Region "Grunddaten Fritz!Box"
     Private _TBFBAdr As String
@@ -237,7 +240,7 @@ Public Class OptionenViewModel
 
 #Region "Einstellung für die Wählhilfe"
     Private _CBForceDialLKZ As Boolean
-    Private _TBAmt As String
+    Private _TBPräfix As String
     Private _CBCheckMobil As Boolean
     Private _CBCLIR As Boolean
     Private _CBCloseWClient As Boolean
@@ -255,12 +258,12 @@ Public Class OptionenViewModel
     ''' <summary>
     ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
     ''' </summary>
-    Public Property TBAmt As String
+    Public Property TBPräfix As String
         Get
-            Return _TBAmt
+            Return _TBPräfix
         End Get
         Set
-            SetProperty(_TBAmt, Value)
+            SetProperty(_TBPräfix, Value)
         End Set
     End Property
 
@@ -407,7 +410,6 @@ Public Class OptionenViewModel
 
 #Region "Telefoniegeräte"
     Private _TelGerListe As ObservableCollectionEx(Of Telefoniegerät)
-    Private _EinlesenInaktiv As Boolean
     Public Property TelGeräteListe As ObservableCollectionEx(Of Telefoniegerät)
         Get
             Return _TelGerListe
@@ -417,14 +419,6 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-    Public Property EinlesenInaktiv As Boolean
-        Get
-            Return _EinlesenInaktiv
-        End Get
-        Set
-            SetProperty(_EinlesenInaktiv, Value)
-        End Set
-    End Property
 #End Region
 
 #Region "SoftPhones"
@@ -493,27 +487,121 @@ Public Class OptionenViewModel
 
 #End Region
 
+#Region "Window Eigenschaften"
+
+    Private _pageViewModels As List(Of IPageViewModel)
+    Public ReadOnly Property PageViewModels As List(Of IPageViewModel)
+        Get
+            If _pageViewModels Is Nothing Then _pageViewModels = New List(Of IPageViewModel)()
+            Return _pageViewModels
+        End Get
+    End Property
+
+    Private _currentPageViewModel As IPageViewModel
+    Public Property CurrentPageViewModel As IPageViewModel
+        Get
+            Return _currentPageViewModel
+        End Get
+        Set
+            SetProperty(_currentPageViewModel, Value)
+        End Set
+    End Property
+#End Region
+
+#Region "ICommand"
+    Public Property SaveCommand As RelayCommand
+    Public Property CancelCommand As RelayCommand
+    Public Property UndoCommand As RelayCommand
+    Public Property LoadedCommand As RelayCommand
+    Public Property NavigateCommand As RelayCommand
+
+#End Region
+
     Public Sub New()
+        ' Commands
+        SaveCommand = New RelayCommand(AddressOf Save)
+        CancelCommand = New RelayCommand(AddressOf Cancel)
+        UndoCommand = New RelayCommand(AddressOf Undo)
+
+        ' Window Command
+        LoadedCommand = New RelayCommand(AddressOf LadeDaten)
+        NavigateCommand = New RelayCommand(AddressOf Navigate)
+
+        ' Chield Views
+        With PageViewModels
+            .Add(New OptBaseViewModel())
+            .Add(New OptAnrMonViewModel())
+            .Add(New OptDialerViewModel())
+            .Add(New OptJournalViewModel())
+            .Add(New OptSearchContactViewModel())
+            .Add(New OptCreateContactViewModel())
+            .Add(New OptTelephonyViewModel())
+            .Add(New OptPhonerViewModel())
+            .Add(New OptMicroSIPViewModel())
+            .Add(New OptInfoViewModel())
+        End With
+
+        ' Lade die Grundeinstellungen
+        Navigate(PageViewModels.First)
 
     End Sub
 
+#Region "ICommand Callback"
+    Private Sub Navigate(o As Object)
+        If TypeOf o Is IPageViewModel Then
+
+            ' Setze das gewählte ViewModel/View
+            CurrentPageViewModel = CType(o, IPageViewModel)
+
+            ' Weise dieses ViewModel zu
+            CurrentPageViewModel.OptVM = Me
+
+        End If
+    End Sub
+
+    Private Sub Save(o As Object)
+        NLogger.Debug("User: Optionen Speichern")
+
+        Speichern()
+
+        CType(o, Window).Close()
+    End Sub
+
+    Private Sub Undo(o As Object)
+        NLogger.Debug("User: Optionen Reset")
+
+        LadeDaten(o)
+    End Sub
+
+    Private Sub Cancel(o As Object)
+        NLogger.Debug("User: Optionen Cancel")
+        CType(o, Window).Close()
+    End Sub
+#End Region
+
+#Region "Laden/Speichern"
     ''' <summary>
     ''' Lädt die daten aus den <see cref="Optionen"/> in dieses Viewmodel.
     ''' </summary>
-    Friend Sub LadeDaten()
+    Friend Sub LadeDaten(o As Object)
         NLogger.Debug("Lade die Daten aus der XML-Datei in das ViewModel Optionen")
 
         ' Schleife durch alle Properties dieser Klasse
         For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
             ' Suche das passende Property in den Optionen
-            With Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
+            Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
 
-                If ViewModelPropertyInfo.CanWrite Then
-                    ViewModelPropertyInfo.SetValue(Me,?.GetValue(XMLData.POptionen))
-                    NLogger.Trace("Feld {0} mit Wert {1} geladen", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me))
-                End If
+            If OptionPropertyInfo IsNot Nothing Then
+                With OptionPropertyInfo
 
-            End With
+                    If ViewModelPropertyInfo.CanWrite Then
+                        ViewModelPropertyInfo.SetValue(Me, .GetValue(XMLData.POptionen))
+                        NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert {ViewModelPropertyInfo.GetValue(Me)} geladen.")
+                    End If
+
+                End With
+            End If
+
         Next
 
         ' Landes- und Ortskennzahl aus der Telefonie holen
@@ -532,8 +620,6 @@ Public Class OptionenViewModel
         OutlookOrdnerListe = New ObservableCollectionEx(Of OutlookOrdner)
         OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
 
-        ' Diverse Einstellungen zur Optik
-        EinlesenInaktiv = True
     End Sub
 
     ''' <summary>
@@ -548,8 +634,8 @@ Public Class OptionenViewModel
 
             If OptionPropertyInfo IsNot Nothing Then
                 With OptionPropertyInfo
-                    ?.SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
-                    NLogger.Trace("Feld {0} mit Wert {1} übergeben: {2}", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me),?.GetValue(XMLData.POptionen))
+                    .SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
+                    NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert { ViewModelPropertyInfo.GetValue(Me)} geschrieben.")
 
                 End With
             End If
@@ -592,4 +678,5 @@ Public Class OptionenViewModel
         ' Speichern in Datei anstoßen
         Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
     End Sub
+#End Region
 End Class

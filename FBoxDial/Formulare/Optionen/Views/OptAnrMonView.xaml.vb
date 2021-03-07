@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Controls
 
-Public Class UserCtrlMicroSIP
+Public Class OptAnrMonView
     Inherits UserControl
 
 End Class

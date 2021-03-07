@@ -1,5 +1,5 @@
 ﻿Imports Microsoft.Office.Interop
-
+' TODO: Dies ist das ViewModel!
 Public Class OlTreeViewItem
     Inherits NotifyBase
 

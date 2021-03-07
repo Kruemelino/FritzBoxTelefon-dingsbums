@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="OptDialerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=fbd:OptDialerViewModel, IsDesignTimeCreatable=True}">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strDialerHead}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strDialerCBForceDialLKZ}" 
+                  IsChecked="{Binding OptVM.CBForceDialLKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strDialerTBPräfix}"
+                 Text="{Binding OptVM.TBPräfix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>        
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strDialerCBCheckMobil}" 
+                  IsChecked="{Binding OptVM.CBCheckMobil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}"                   
+                  Content="{x:Static localize:LocOptionen.strDialerCBCloseWClient}" 
+                  IsChecked="{Binding OptVM.CBCloseWClient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strDialerTBWClientEnblDauer}"
+                 Text="{Binding OptVM.TBWClientEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    
+    </StackPanel>
+
+
+</UserControl>
