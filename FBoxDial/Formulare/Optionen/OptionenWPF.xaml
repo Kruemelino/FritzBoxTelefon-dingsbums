@@ -73,14 +73,16 @@
                     Tag="{DynamicResource Save_16x}"
                     IsDefault="True" 
                     Grid.Column="0"
-                    Command="{Binding SaveCommand}" />
+                    Command="{Binding SaveCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
 
             <Button Style="{StaticResource IconTextButton}"
                     Content="{x:Static localize:LocOptionen.strUndo}" 
                     Tag="{DynamicResource Undo_16x}"
                     IsCancel="False" 
                     Grid.Column="1"
-                    Command="{Binding UndoCommand}" />
+                    Command="{Binding UndoCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
 
             <Button Style="{StaticResource IconTextButton}"
                     Content="{x:Static localize:LocOptionen.strCancel}" 
