@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="strAnrListHead" xml:space="preserve">
+    <value>Auswertung der Fritz!Box Anrufliste</value>
+    <comment>OptJournalView</comment>
+  </data>
   <data name="strAnrMon" xml:space="preserve">
     <value>Anrufmonitor</value>
     <comment>MainView</comment>
@@ -345,7 +349,7 @@ Für fehlerhafte oder falsche Angaben, die Rückwärtssuche liefert wird keine H
     <comment>OptJournalView</comment>
   </data>
   <data name="strJournalCBAutoAnrList" xml:space="preserve">
-    <value>Journaleinträge bei Outlookstart importieren</value>
+    <value>Anrufe aus Fritz!Box bei Outlookstart auswerten</value>
     <comment>OptJournalView</comment>
   </data>
   <data name="strJournalCBJournal" xml:space="preserve">

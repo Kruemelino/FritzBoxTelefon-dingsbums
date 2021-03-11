@@ -65,6 +65,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Auswertung der Fritz!Box Anrufliste ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrListHead() As String
+            Get
+                Return ResourceManager.GetString("strAnrListHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Anrufmonitor ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMon() As String
@@ -567,7 +576,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Journaleinträge bei Outlookstart importieren ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufe aus Fritz!Box bei Outlookstart auswerten ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strJournalCBAutoAnrList() As String
             Get

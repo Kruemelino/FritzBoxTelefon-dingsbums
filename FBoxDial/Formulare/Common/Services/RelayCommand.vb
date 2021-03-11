@@ -46,7 +46,6 @@ Public Class RelayCommand : Implements ICommand
     ''' Benutzt DebuggerStepThrough from System.Diagnostics
     ''' Der Debugger überspringt diese Prozedur also, es sei den es wird explizit ein Haltepunkt gesetzt.
     ''' </remarks>
-
     Public Function CanExecute(parameter As Object) As Boolean Implements ICommand.CanExecute
         Return _canExecute Is Nothing OrElse _canExecute(parameter)
     End Function

@@ -270,7 +270,7 @@
     </Compile>
     <Compile Include="Formulare\Optionen\Services\OptionenTemplateSelector.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptionenViewModel.vb" />
-    <Compile Include="Formulare\Optionen\Resources\OlTreeViewItem.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\TreeViewViewModel.vb" />
     <Compile Include="Formulare\Optionen\OptionenWPF.xaml.vb">
       <DependentUpon>OptionenWPF.xaml</DependentUpon>
     </Compile>
@@ -696,7 +696,6 @@
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

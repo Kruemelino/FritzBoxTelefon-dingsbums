@@ -72,7 +72,7 @@ Partial Public Class OptionsOLFolderTV
         Dim olTreeViewItem As TreeViewItem = CType(e.OriginalSource, TreeViewItem)
 
         With olTreeViewItem
-            With CType(olTreeViewItem.DataContext, OlTreeViewItem)
+            With CType(olTreeViewItem.DataContext, TreeViewViewModel)
 
                 If .Unterordner.Count = 1 AndAlso .Unterordner.First.Title.AreEqual("Loading...") Then
                     .Unterordner.Clear()
@@ -86,29 +86,29 @@ Partial Public Class OptionsOLFolderTV
         End With
     End Sub
 
-    Private Function StoreTreeItem(OutlookStore As Outlook.Store) As OlTreeViewItem
+    Private Function StoreTreeItem(OutlookStore As Outlook.Store) As TreeViewViewModel
 
-        Dim olTreeViewItem As New OlTreeViewItem() With {.Title = $"{OutlookStore.GetRootFolder.Name} ({OutlookStore.ExchangeStoreType})",
+        Dim olTreeViewItem As New TreeViewViewModel() With {.Title = $"{OutlookStore.GetRootFolder.Name} ({OutlookStore.ExchangeStoreType})",
                                                          .OutlookFolder = OutlookStore.GetRootFolder,
                                                          .OutlookItemType = OutlookOlItemType.olTaskItem,
                                                          .TreeViewSelectionOutlookItemType = Nothing,
                                                          .Überwacht = False
                                                         }
 
-        If OutlookStore.GetRootFolder.Folders.Count.IsNotZero Then olTreeViewItem.Unterordner.Add(New OlTreeViewItem With {.Title = "Loading..."})
+        If OutlookStore.GetRootFolder.Folders.Count.IsNotZero Then olTreeViewItem.Unterordner.Add(New TreeViewViewModel With {.Title = "Loading..."})
 
         Return olTreeViewItem
     End Function
 
-    Private Function FolderTreeItem(OutlookFolder As Outlook.MAPIFolder) As OlTreeViewItem
-        Dim olTreeViewItem As New OlTreeViewItem With {.Title = $"{OutlookFolder.Name}",
+    Private Function FolderTreeItem(OutlookFolder As Outlook.MAPIFolder) As TreeViewViewModel
+        Dim olTreeViewItem As New TreeViewViewModel With {.Title = $"{OutlookFolder.Name}",
                                                        .OutlookFolder = OutlookFolder,
                                                        .OutlookItemType = OutlookFolder.DefaultItemType,
                                                        .TreeViewSelectionOutlookItemType = OutlookOlItemType,
                                                        .Überwacht = OrdnerÜberwacht(OutlookFolder)
                                                       }
 
-        If OutlookFolder.Folders.Count.IsNotZero Then olTreeViewItem.Unterordner.Add(New OlTreeViewItem With {.Title = "Loading..."})
+        If OutlookFolder.Folders.Count.IsNotZero Then olTreeViewItem.Unterordner.Add(New TreeViewViewModel With {.Title = "Loading..."})
         Return olTreeViewItem
     End Function
 
@@ -125,7 +125,7 @@ Partial Public Class OptionsOLFolderTV
         Dim CheckBoxNode As CheckBox = CType(sender, CheckBox)
 
         With CheckBoxNode
-            With CType(.DataContext, OlTreeViewItem)
+            With CType(.DataContext, TreeViewViewModel)
                 Dim tmpfold As OutlookOrdner = New OutlookOrdner(.OutlookFolder, Verwendung)
 
                 Select Case True
@@ -164,16 +164,16 @@ Partial Public Class OptionsOLFolderTV
 
     Sub UnCheckAllExeptFolder(Ordnerliste As ItemCollection, Folder As OutlookOrdner)
 
-        For Each Ornder As OlTreeViewItem In Ordnerliste
+        For Each Ornder As TreeViewViewModel In Ordnerliste
             Ornder.Überwacht = Folder.Equals(Ornder.OutlookFolder, Verwendung)
             UnCheckAllExeptFolder(Ornder.Unterordner, Folder)
         Next
 
     End Sub
 
-    Sub UnCheckAllExeptFolder(Ordnerliste As ObservableCollectionEx(Of OlTreeViewItem), Folder As OutlookOrdner)
+    Sub UnCheckAllExeptFolder(Ordnerliste As ObservableCollectionEx(Of TreeViewViewModel), Folder As OutlookOrdner)
 
-        For Each Ornder As OlTreeViewItem In Ordnerliste
+        For Each Ornder As TreeViewViewModel In Ordnerliste
             Ornder.Überwacht = Folder.Equals(Ornder.OutlookFolder, Verwendung)
             UnCheckAllExeptFolder(Ornder.Unterordner, Folder)
         Next

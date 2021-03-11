@@ -20,21 +20,25 @@
     <StackPanel x:Name="MainStackPanel" Margin="8">
 
         <TextBlock Style="{StaticResource OptHeader}" 
-                   Text="{x:Static localize:LocOptionen.strJournalHead}"/>
-
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strJournalInfo}"/>
+                   Text="{x:Static localize:LocOptionen.strAnrListHead}"/>
         
         <CheckBox Style="{StaticResource OptCheckBox}" 
-                  Content="{x:Static localize:LocOptionen.strJournalCBJournal}" 
-                  IsChecked="{Binding OptVM.CBJournal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strJournalCBAutoAnrList}" 
-                  IsChecked="{Binding OptVM.CBAutoAnrList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
+                  IsChecked="{Binding OptVM.CBAutoAnrList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/> 
+        
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strJournalCBAnrListeUpdateCallLists}" 
                   IsChecked="{Binding OptVM.CBAnrListeUpdateCallLists, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}"                   
+                  Content="{x:Static localize:LocOptionen.strJournalCBJournal}" 
+                  IsChecked="{Binding OptVM.CBJournal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strJournalHead}"/>
+        
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strJournalInfo}"/>     
+
 
         <fbd:OptionsOLFolderTV x:Name="OLFolderJournalErstellung" 
                                OutlookOlItemType="olJournalItem" 
