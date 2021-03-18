@@ -1,6 +1,18 @@
 ﻿Imports System.ComponentModel
 Imports System.Xml.Serialization
 
+Friend Structure EMailType
+    Friend Addresse As String
+
+    Friend OutlookTyp As OutlookEMailType
+End Structure
+
+Friend Enum OutlookEMailType
+    SMTP
+    EX
+End Enum
+
+
 Public Structure TelNrType
     Public Property TelNrType As OutlookNrType
 
@@ -109,18 +121,49 @@ Public Enum XMLTelNrTyp
 
     <LocalizedDescription("other", GetType(resEnum))>
     <XmlEnum("other")> other
+
+    ' Das AVM Telefonbuch nimmt es mit der Groß- und Kleinschreibung nicht so genau.
+    ' Für die XML - Deserialsierung ist dies aber extrem wichtig.
+
+    <LocalizedDescription("intern", GetType(resEnum))>
+    <XmlEnum("Intern")> intern2 = intern
+
+    <LocalizedDescription("work", GetType(resEnum))>
+    <XmlEnum("Work")> work2 = work
+
+    <LocalizedDescription("home", GetType(resEnum))>
+    <XmlEnum("Home")> home2 = home
+
+    <LocalizedDescription("mobile", GetType(resEnum))>
+    <XmlEnum("Mobile")> mobile2 = mobile
+
+    <LocalizedDescription("fax_work", GetType(resEnum))>
+    <XmlEnum("Fax_work")> fax_work2 = fax_work
+
+    <LocalizedDescription("memo", GetType(resEnum))>
+    <XmlEnum("Memo")> memo2 = memo
+
+    <LocalizedDescription("other", GetType(resEnum))>
+    <XmlEnum("Other")> other2 = other
 End Enum
 
 <TypeConverter(GetType(EnumDescriptionTypeConverter))>
 Public Enum XMLEMailTyp
     <LocalizedDescription("Sonstige", GetType(resEnum))>
-    <XmlEnum("")> notset = 0
+    <XmlEnum("")> notset
 
     <LocalizedDescription("private", GetType(resEnum))>
-    <XmlEnum("private")> [private] = 1
+    <XmlEnum("private")> [private]
 
     <LocalizedDescription("work", GetType(resEnum))>
-    <XmlEnum("work")> work = 2
+    <XmlEnum("work")> work
 
+    ' Das AVM Telefonbuch nimmt es mit der Groß- und Kleinschreibung nicht so genau.
+    ' Für die XML - Deserialsierung ist dies aber extrem wichtig.
 
+    <LocalizedDescription("work", GetType(resEnum))>
+    <XmlEnum("Work")> work2 = work
+
+    <LocalizedDescription("private", GetType(resEnum))>
+    <XmlEnum("Private")> private2 = [private]
 End Enum

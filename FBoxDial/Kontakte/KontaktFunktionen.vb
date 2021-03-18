@@ -460,35 +460,49 @@ Friend Module KontaktFunktionen
     ''' <param name="EMail"></param>
     ''' <remarks>https://docs.microsoft.com/de-de/office/client-developer/outlook/pia/how-to-get-the-smtp-address-of-the-sender-of-a-mail-item</remarks>
     ''' <returns></returns>
-    Friend Function GetSenderSMTPAddress(EMail As MailItem) As String
+    Friend Function GetSenderSMTPAddress(EMail As MailItem) As EMailType
+
+        GetSenderSMTPAddress = New EMailType With {.Addresse = DfltStringEmpty}
 
         If EMail IsNot Nothing Then
-            If EMail.SenderEmailType = "EX" Then
-                Dim Adresseintrag As AddressEntry = EMail.Sender
 
-                Select Case Adresseintrag?.AddressEntryUserType
-                    Case OlAddressEntryUserType.olExchangeUserAddressEntry, OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
-                        Dim ExchangeUser As ExchangeUser = Adresseintrag.GetExchangeUser()
+            With GetSenderSMTPAddress
 
-                        If ExchangeUser IsNot Nothing Then
-                            Return ExchangeUser.PrimarySmtpAddress
-                        Else
-                            Return DfltStringEmpty
-                        End If
-                        ExchangeUser.ReleaseComObject
+                If EMail.SenderEmailType = "EX" Then
 
-                    Case Else
-                        Return TryCast(Adresseintrag.PropertyAccessor.GetProperty(DfltDASLSMTPAdress), String)
+                    ' Exchange User
+                    .OutlookTyp = OutlookEMailType.EX
 
-                End Select
+                    Dim Adresseintrag As AddressEntry = EMail.Sender
 
-                Adresseintrag.ReleaseComObject
-            Else
-                Return EMail.SenderEmailAddress
-            End If
-        Else
-            Return DfltStringEmpty
+                    Select Case Adresseintrag?.AddressEntryUserType
+
+                        Case OlAddressEntryUserType.olExchangeUserAddressEntry, OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
+                            Dim ExchangeUser As ExchangeUser = Adresseintrag.GetExchangeUser()
+
+                            If ExchangeUser IsNot Nothing Then .Addresse = ExchangeUser.PrimarySmtpAddress
+
+                            ' COM Objekt freigeben
+                            ExchangeUser.ReleaseComObject
+
+                        Case Else
+                            .Addresse = TryCast(Adresseintrag.PropertyAccessor.GetProperty(DfltDASLSMTPAdress), String)
+
+                    End Select
+                    ' COM Objekt freigeben
+                    Adresseintrag.ReleaseComObject
+                Else
+
+                    ' SMTP Adresse (klassische E-Mail)
+                    GetSenderSMTPAddress.OutlookTyp = OutlookEMailType.SMTP
+
+                    .Addresse = EMail.SenderEmailAddress
+                End If
+            End With
+
         End If
+
+        Return GetSenderSMTPAddress
     End Function
 
     Friend Async Sub StartKontaktRWS(olContact As ContactItem, TelNr As Telefonnummer)

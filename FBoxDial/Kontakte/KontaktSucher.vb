@@ -97,11 +97,11 @@ Friend Module KontaktSucher
     ''' </summary>
     ''' <param name="SMTPAdresse">Mail-Addresse, die als Suchkriterium verwendet wird.</param>
     ''' <returns>Den gefundenen Kontakt als Outlook.ContactItem.</returns>
-    Friend Function KontaktSuche(SMTPAdresse As String) As Outlook.ContactItem
+    Friend Function KontaktSuche(SMTPAdresse As EMailType) As Outlook.ContactItem
 
-        If SMTPAdresse.IsNotStringEmpty Then
+        If SMTPAdresse.Addresse.IsNotStringEmpty Then
             ' Empfänger generieren
-            With ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse)
+            With ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
                 .Resolve()
                 Return .AddressEntry.GetContact
             End With
@@ -110,11 +110,11 @@ Friend Module KontaktSucher
         End If
     End Function
 
-    Friend Function KontaktSucheExchangeUser(SMTPAdresse As String) As Outlook.ExchangeUser
+    Friend Function KontaktSucheExchangeUser(SMTPAdresse As EMailType) As Outlook.ExchangeUser
 
-        If SMTPAdresse.IsNotStringEmpty Then
+        If SMTPAdresse.Addresse.IsNotStringEmpty Then
             ' Empfänger generieren
-            With ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse)
+            With ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
                 .Resolve()
                 Return .AddressEntry.GetExchangeUser
             End With
@@ -127,7 +127,7 @@ Friend Module KontaktSucher
     ''' Funktion die die Suche mit einer Kontaktkarte durchführt.
     ''' </summary>
     ''' <param name="Kontaktkarte">Kontaktkarte (ContactCard), die als Suchkriterium verwendet wird.</param>
-    ''' <returns>Den gefundenen Kontakt als Outlook.ContactItem.</returns>
+    ''' <returns>Den gefundenen Kontakt als Outlook.ContactItem</returns>
     Friend Function KontaktSuche(Kontaktkarte As Microsoft.Office.Core.IMsoContactCard) As Outlook.ContactItem
 
         If Kontaktkarte IsNot Nothing Then
@@ -135,7 +135,7 @@ Friend Module KontaktSucher
             Select Case Kontaktkarte.AddressType
                 Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeSMTP
                     ' über Kontaktkarte.Address wird die SMTP-Adresse zurückgegeben
-                    Return KontaktSuche(Kontaktkarte.Address)
+                    Return KontaktSuche(New EMailType With {.Addresse = Kontaktkarte.Address, .OutlookTyp = OutlookEMailType.SMTP})
 
                 Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeOutlook
                     Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.OutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
@@ -162,7 +162,7 @@ Friend Module KontaktSucher
     ''' Funktion die die Suche mit einer Kontaktkarte durchführt.
     ''' </summary>
     ''' <param name="Kontaktkarte">Kontaktkarte (ContactCard), die als Suchkriterium verwendet wird.</param>
-    ''' <returns>Den gefundenen Kontakt als Outlook.ExchangeUser.</returns>
+    ''' <returns>Den gefundenen Kontakt als Outlook.ExchangeUser</returns>
     Friend Function KontaktSucheExchangeUser(Kontaktkarte As Microsoft.Office.Core.IMsoContactCard) As Outlook.ExchangeUser
 
         If Kontaktkarte IsNot Nothing Then
@@ -170,7 +170,7 @@ Friend Module KontaktSucher
             Select Case Kontaktkarte.AddressType
                 Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeSMTP
                     ' über Kontaktkarte.Address wird die SMTP-Adresse zurückgegeben
-                    Return KontaktSucheExchangeUser(Kontaktkarte.Address)
+                    Return KontaktSucheExchangeUser(New EMailType With {.Addresse = Kontaktkarte.Address, .OutlookTyp = OutlookEMailType.EX})
 
                 Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeOutlook
                     Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.OutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)

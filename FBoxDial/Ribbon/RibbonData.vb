@@ -461,8 +461,18 @@ Namespace RibbonData
 
                             Case TypeOf .CurrentItem Is Outlook.MailItem
 
+                                Dim MailAdr As EMailType = GetSenderSMTPAddress(CType(.CurrentItem, Outlook.MailItem))
+
                                 ' Rekursiver Aufruf
-                                Return EnableDial(KontaktSuche(GetSenderSMTPAddress(CType(.CurrentItem, Outlook.MailItem))))
+                                If MailAdr.OutlookTyp = OutlookEMailType.SMTP Then
+
+                                    ' ContactItem
+                                    Return EnableDial(KontaktSuche(MailAdr))
+                                Else
+
+                                    ' ExchangeUser
+                                    Return EnableDial(KontaktSucheExchangeUser(MailAdr))
+                                End If
 
                             Case TypeOf .CurrentItem Is Outlook.JournalItem
 
@@ -483,9 +493,18 @@ Namespace RibbonData
                                     Return EnableDial(CType(.Item(1), Outlook.ContactItem))
 
                                 Case TypeOf .Item(1) Is Outlook.MailItem
+                                    Dim MailAdr As EMailType = GetSenderSMTPAddress(CType(.Item(1), Outlook.MailItem))
 
                                     ' Rekursiver Aufruf
-                                    Return EnableDial(KontaktSuche(GetSenderSMTPAddress(CType(.Item(1), Outlook.MailItem))))
+                                    If MailAdr.OutlookTyp = OutlookEMailType.SMTP Then
+
+                                        ' ContactItem
+                                        Return EnableDial(KontaktSuche(MailAdr))
+                                    Else
+
+                                        ' ExchangeUser
+                                        Return EnableDial(KontaktSucheExchangeUser(MailAdr))
+                                    End If
 
                                 Case TypeOf .Item(1) Is Outlook.JournalItem
 
