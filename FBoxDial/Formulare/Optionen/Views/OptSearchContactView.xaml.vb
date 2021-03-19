@@ -168,7 +168,10 @@ Public Class OptSearchContactView
     End Sub
 
     Private Sub BIndizierungStart_Click(sender As Object, e As Windows.RoutedEventArgs) Handles BIndizierungStart.Click
-        StarteIndizierung(OLFolderKontaktsSuche.ÜberwachteOrdnerListe.ToList, CBool(RBErstellen.IsChecked))
+        With CType(DataContext, OptionenViewModel)
+            StarteIndizierung(.OutlookOrdnerListe.ToList, CBool(RBErstellen.IsChecked))
+        End With
+
     End Sub
 
     Private Sub BIndizierungAbbrechen_Click(sender As Object, e As Windows.RoutedEventArgs) Handles BIndizierungAbbrechen.Click

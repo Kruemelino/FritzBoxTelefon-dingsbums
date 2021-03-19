@@ -307,8 +307,6 @@ Public Class OptionenViewModel
 #Region "Einstellungen für die Kontaktsuche"
 #Region "Einstellungen für die Kontaktsuche - Kontaktsuche in Outlook (Indizierung)"
     Private _CBSucheUnterordner As Boolean
-    Private _CBKontaktSucheFritzBox As Boolean
-    Private _OutlookOrdner As ObservableCollectionEx(Of OutlookOrdner)
     Public Property CBSucheUnterordner As Boolean
         Get
             Return _CBSucheUnterordner
@@ -318,6 +316,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBKontaktSucheFritzBox As Boolean
     Public Property CBKontaktSucheFritzBox As Boolean
         Get
             Return _CBKontaktSucheFritzBox
@@ -326,7 +325,9 @@ Public Class OptionenViewModel
             SetProperty(_CBKontaktSucheFritzBox, Value)
         End Set
     End Property
-    Public Property OutlookOrdnerListe As ObservableCollectionEx(Of OutlookOrdner)
+
+    Private _OutlookOrdner As List(Of OutlookOrdner)
+    Public Property OutlookOrdnerListe As List(Of OutlookOrdner)
         Get
             Return _OutlookOrdner
         End Get
@@ -532,9 +533,9 @@ Public Class OptionenViewModel
             .Add(New OptBaseViewModel())
             .Add(New OptAnrMonViewModel())
             .Add(New OptDialerViewModel())
-            .Add(New OptJournalViewModel())
-            .Add(New OptSearchContactViewModel())
-            .Add(New OptCreateContactViewModel())
+            .Add(New OptJournalViewModel() With {.OptVM = Me})
+            .Add(New OptSearchContactViewModel() With {.OptVM = Me})
+            .Add(New OptCreateContactViewModel() With {.OptVM = Me})
             .Add(New OptTelephonyViewModel())
             .Add(New OptPhonerViewModel())
             .Add(New OptMicroSIPViewModel())
@@ -617,7 +618,7 @@ Public Class OptionenViewModel
         TelGeräteListe.AddRange(XMLData.PTelefonie.Telefoniegeräte)
 
         ' Ornderliste überwachter Ordner
-        OutlookOrdnerListe = New ObservableCollectionEx(Of OutlookOrdner)
+        OutlookOrdnerListe = New List(Of OutlookOrdner)
         OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
 
     End Sub

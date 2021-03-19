@@ -27,11 +27,7 @@
                   Content="{x:Static localize:LocOptionen.strCreateContactsCBKErstellen}" 
                   IsChecked="{Binding OptVM.CBKErstellen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <fbd:OptionsOLFolderTV x:Name="OLFolderKontaktsErstellung" 
-                               OutlookOlItemType="olContactItem" 
-                               ÜberwachteOrdnerListe="{Binding OptVM.OutlookOrdnerListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                               Verwendung="KontaktSpeichern"/>
-
+        <fbd:OutlookFolderView DataContext="{Binding Root}" />
     </StackPanel>
 
 

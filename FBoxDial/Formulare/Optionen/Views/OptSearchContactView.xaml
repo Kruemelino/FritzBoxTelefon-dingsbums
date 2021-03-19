@@ -35,10 +35,7 @@
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strSearchContactHeadIndex}"/>
         
-        <fbd:OptionsOLFolderTV x:Name="OLFolderKontaktsSuche" 
-                               OutlookOlItemType="olContactItem" 
-                               ÜberwachteOrdnerListe="{Binding OptVM.OutlookOrdnerListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                               Verwendung="KontaktSuche"/>
+        <fbd:OutlookFolderView DataContext="{Binding Root}" />
 
         <Grid>
             <Grid.ColumnDefinitions>

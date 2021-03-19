@@ -141,7 +141,6 @@
     This section specifies references for the project.
   -->
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -152,7 +151,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.7\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.8\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -168,13 +167,15 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="TreeLib, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dirkster.TreeLib.1.2.0\lib\net40\TreeLib.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -250,9 +251,13 @@
     <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\Optionen\Services\BindingProxy.vb" />
+    <Compile Include="Formulare\Optionen\Services\IOlFolderViewModel.vb" />
     <Compile Include="Formulare\Optionen\Services\IPageViewModel.vb" />
     <Compile Include="Formulare\Optionen\Services\OptionenService.vb" />
     <Compile Include="Formulare\Optionen\Services\IOptionenService.vb" />
+    <Compile Include="Formulare\Optionen\Services\VirtualToggleButton.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OlFolderViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptAnrMonViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptDialerViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptJournalViewModel.vb" />
@@ -263,6 +268,10 @@
     <Compile Include="Formulare\Optionen\ViewModel\OptInfoViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptMicroSIPViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptBaseViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml.vb">
+      <DependentUpon>OptCtrlTV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
     <Compile Include="Localize\resCommon.Designer.vb">
       <DependentUpon>resCommon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -270,7 +279,6 @@
     </Compile>
     <Compile Include="Formulare\Optionen\Services\OptionenTemplateSelector.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptionenViewModel.vb" />
-    <Compile Include="Formulare\Optionen\ViewModel\TreeViewViewModel.vb" />
     <Compile Include="Formulare\Optionen\OptionenWPF.xaml.vb">
       <DependentUpon>OptionenWPF.xaml</DependentUpon>
     </Compile>
@@ -285,9 +293,6 @@
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml.vb">
       <DependentUpon>OptionsHinweis.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsOLFolderTV.xaml.vb">
-      <DependentUpon>OptionsOLFolderTV.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptMicroSIPView.xaml.vb">
       <DependentUpon>OptMicroSIPView.xaml</DependentUpon>
@@ -567,6 +572,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Formulare\Wählclient\Resources\WählClient.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -600,10 +609,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsOLFolderTV.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

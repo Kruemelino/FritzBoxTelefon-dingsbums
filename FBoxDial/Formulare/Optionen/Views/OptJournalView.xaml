@@ -39,12 +39,8 @@
         
         <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strJournalInfo}"/>     
 
-
-        <fbd:OptionsOLFolderTV x:Name="OLFolderJournalErstellung" 
-                               OutlookOlItemType="olJournalItem" 
-                               ÜberwachteOrdnerListe="{Binding OptVM.OutlookOrdnerListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                               Verwendung="JournalSpeichern"/>
-
+        <fbd:OutlookFolderView DataContext="{Binding Root}" />
+        
     </StackPanel>
 
 </UserControl>

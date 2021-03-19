@@ -178,9 +178,11 @@ Imports FBoxDial.RibbonData
 
 #Region "Ribbon: Label, ScreenTipp, ImageMso, OnAction"
 
+#Disable Warning IDE0060 ' Nicht verwendete Parameter entfernen
     Public Function GetPressed(control As IRibbonControl) As Boolean
         Return GetPressedAnrMon()
     End Function
+#Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
 
     ''' <summary>
     ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id für Explorer

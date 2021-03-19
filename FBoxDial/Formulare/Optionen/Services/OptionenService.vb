@@ -3,6 +3,7 @@ Friend Class OptionenService
     Implements IOptionenService
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
+#Region "Import Telefoniedaten"
     Private Property FritzBoxDaten As Telefonie
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Telefonie)) Implements IOptionenService.Beendet
     Friend Event Status As EventHandler(Of NotifyEventArgs(Of String)) Implements IOptionenService.Status
@@ -44,4 +45,6 @@ Friend Class OptionenService
 
         NLogger.Debug($"Einlesen der Telefoniedaten beendet")
     End Sub
+#End Region
+
 End Class

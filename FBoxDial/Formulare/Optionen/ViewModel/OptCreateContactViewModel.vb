@@ -1,4 +1,6 @@
-﻿Public Class OptCreateContactViewModel
+﻿Imports Microsoft.Office.Interop.Outlook
+
+Public Class OptCreateContactViewModel
     Inherits NotifyBase
     Implements IPageViewModel
 
@@ -15,6 +17,15 @@
     Public ReadOnly Property Name As String Implements IPageViewModel.Name
         Get
             Return Localize.LocOptionen.strCreateContact
+        End Get
+    End Property
+
+    Private Property RootVM As OutlookFolderViewModel = New OutlookFolderViewModel(OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSpeichern)
+
+    Public ReadOnly Property Root As OutlookFolderViewModel
+        Get
+            RootVM.OptVM = OptVM
+            Return RootVM
         End Get
     End Property
 End Class

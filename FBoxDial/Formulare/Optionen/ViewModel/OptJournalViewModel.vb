@@ -1,4 +1,5 @@
-﻿Public Class OptJournalViewModel
+﻿Imports Microsoft.Office.Interop.Outlook
+Public Class OptJournalViewModel
     Inherits NotifyBase
     Implements IPageViewModel
 
@@ -17,4 +18,15 @@
             Return Localize.LocOptionen.strJournal
         End Get
     End Property
+
+    Private Property RootVM As OutlookFolderViewModel = New OutlookFolderViewModel(OlItemType.olJournalItem, OutlookOrdnerVerwendung.JournalSpeichern)
+
+    Public ReadOnly Property Root As OutlookFolderViewModel
+        Get
+            RootVM.OptVM = OptVM
+
+            Return RootVM
+        End Get
+    End Property
+
 End Class
