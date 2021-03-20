@@ -98,7 +98,9 @@ Public Class Telefonnummer
                                     RegExReplace("^[+]", PDfltVAZ)
 
             ' Alles was jetzt keine Zahlen oder Steuerzeichen direkt entfernen
-            NurZiffern = NurZiffern.RegExRemove("[^0-9\#\*]")
+            ' NurZiffern = NurZiffern.RegExRemove("[^0-9\#\*]")
+            ' Anpassung 20.03.2021: Steuerzeichen werden ebenfalls entfernt
+            NurZiffern = NurZiffern.RegExRemove("[^0-9]")
 
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich ggf. vorhandener nachfolgender 0)
 
@@ -331,11 +333,11 @@ Public Class Telefonnummer
         ' Führe einen schnellen Vergleich durch, ob die unformatierte Nummer oder die Einwahl identisch sind.
         Select Case True
             Case Unformatiert.AreEqual(AndereNummer)
-                'NLogger.Trace($"Telefonnummernvergleich Unformatiert true: '{AndereNummer}'; {Unformatiert}")
+                NLogger.Trace($"Telefonnummernvergleich Unformatiert true: '{AndereNummer}'; {Unformatiert}")
                 Return True
 
             Case Einwahl.AreEqual(AndereNummer)
-                'NLogger.Trace($"Telefonnummernvergleich Einwahl true : '{AndereNummer}'; {Einwahl}")
+                NLogger.Trace($"Telefonnummernvergleich Einwahl true : '{AndereNummer}'; {Einwahl}")
                 Return True
 
             Case Else
