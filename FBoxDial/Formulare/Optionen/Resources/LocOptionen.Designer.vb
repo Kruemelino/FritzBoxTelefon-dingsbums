@@ -464,6 +464,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Status ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIndexStatus() As String
+            Get
+                Return ResourceManager.GetString("strIndexStatus", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Info ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strInfo() As String
@@ -909,7 +918,7 @@ Namespace Localize
         
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur Kontaktsuche:
-        '''Kontakte von eingehenden Anrufen wird nur in den hier gewählten Ordnern durchgeführt.
+        '''Es werden nur die hier ausgewählten Ordnern bei der Kontaktsuche berücksichtigt.
         '''Dies verringert die Zeit, bis ein passender Kontakt gefunden wurde.
         '''Die Kontaktindizierung wird nur in den ausgewählten Ordnern automatisch beim Speichern durchgeführt. Sie kann aber auch manuell angestoßen werden.
         '''Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werden die Indizierungseinträge beim Speichern automatisch entfernt. ähnelt.

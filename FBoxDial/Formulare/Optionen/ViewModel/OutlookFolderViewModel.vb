@@ -162,7 +162,7 @@ Public Class OutlookFolderViewModel
 
             NLogger.Debug($"Beginne das Setzen der Optionen im TreeView für '{Verwendung}' ({IsChecked}).")
 
-            For Each Ordner As OutlookOrdner In OptVM.OutlookOrdnerListe.Where(Function(o) o.Typ = Verwendung)
+            For Each Ordner As OutlookOrdner In OptVM.OutlookOrdnerListe.FindAll(Verwendung)
                 NLogger.Debug($"Verarbeite Ordner {Ordner.Name} für '{Verwendung}'.")
 
                 Dim node = TreeViewOutlookOrdner.Where(Function(olFolderNode) olFolderNode.Node.OutlookFolder.AreEqual(Ordner.MAPIFolder))
@@ -216,10 +216,9 @@ Public Class OutlookFolderViewModel
                     End If
 
                     ' Speichere den Ordner
-                    If Not OptVM.OutlookOrdnerListe.Where(Function(Ordner) Ordner.Equals(tmpfold)).Any Then
-                        OptVM.OutlookOrdnerListe.Add(tmpfold)
-                        NLogger.Debug($"Ordner '{tmpfold.Name}' für die Verwendung '{Verwendung}' hinzugefügt.")
-                    End If
+
+                    OptVM.OutlookOrdnerListe.Add(tmpfold)
+                    NLogger.Debug($"Ordner '{tmpfold.Name}' für die Verwendung '{Verwendung}' hinzugefügt.")
 
                 End If
 

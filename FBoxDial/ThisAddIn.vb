@@ -78,7 +78,7 @@ Public NotInheritable Class ThisAddIn
         ' XML-Datei Speichern
         Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltConfigFileName))
 
-        OutookApplication.Quit()
+        OutookApplication = Nothing
     End Sub
 
 #Region "Standby Wakeup"

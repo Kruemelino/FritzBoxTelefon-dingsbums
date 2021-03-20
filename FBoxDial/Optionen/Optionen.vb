@@ -1,7 +1,5 @@
-﻿Imports System.ComponentModel
-Imports System.Xml.Serialization
+﻿Imports System.Xml.Serialization
 <Serializable()> Public Class Optionen
-    Inherits NotifyBase
 
 #Region "Grundeinstellungen"
 #Region "Grundeinstellungen - Erforderliche Angaben"

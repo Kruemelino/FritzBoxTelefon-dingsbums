@@ -1,11 +1,13 @@
 ﻿Imports System.Reflection
 Imports System.Windows
+Imports System.Threading.Tasks
 ''' <summary>
 ''' https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/
 ''' </summary>
 Public Class OptionenViewModel
     Inherits NotifyBase
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property DatenService As IOptionenService
 
 #Region "Addin Eigenschaften"
 #Region "Grunddaten"
@@ -326,8 +328,8 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-    Private _OutlookOrdner As List(Of OutlookOrdner)
-    Public Property OutlookOrdnerListe As List(Of OutlookOrdner)
+    Private _OutlookOrdner As OutlookOrdnerListe
+    Public Property OutlookOrdnerListe As OutlookOrdnerListe
         Get
             Return _OutlookOrdner
         End Get
@@ -528,14 +530,17 @@ Public Class OptionenViewModel
         LoadedCommand = New RelayCommand(AddressOf LadeDaten)
         NavigateCommand = New RelayCommand(AddressOf Navigate)
 
+        ' Interface
+        DatenService = New OptionenService
+
         ' Chield Views
         With PageViewModels
             .Add(New OptBaseViewModel())
             .Add(New OptAnrMonViewModel())
             .Add(New OptDialerViewModel())
-            .Add(New OptJournalViewModel() With {.OptVM = Me})
-            .Add(New OptSearchContactViewModel() With {.OptVM = Me})
-            .Add(New OptCreateContactViewModel() With {.OptVM = Me})
+            .Add(New OptJournalViewModel())
+            .Add(New OptSearchContactViewModel())
+            .Add(New OptCreateContactViewModel())
             .Add(New OptTelephonyViewModel())
             .Add(New OptPhonerViewModel())
             .Add(New OptMicroSIPViewModel())
@@ -618,7 +623,7 @@ Public Class OptionenViewModel
         TelGeräteListe.AddRange(XMLData.PTelefonie.Telefoniegeräte)
 
         ' Ornderliste überwachter Ordner
-        OutlookOrdnerListe = New List(Of OutlookOrdner)
+        OutlookOrdnerListe = New OutlookOrdnerListe
         OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
 
     End Sub
@@ -626,7 +631,7 @@ Public Class OptionenViewModel
     ''' <summary>
     ''' Speichert die Daten aus diesem ViewModel zurück in die <see cref="Optionen"/>.
     ''' </summary>
-    Friend Sub Speichern()
+    Friend Async Sub Speichern()
         NLogger.Debug("Speichere die Daten aus dem ViewModel Optionen in die XML-Datei")
         ' Schleife durch alle Properties dieser Klasse
         For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
@@ -665,19 +670,38 @@ Public Class OptionenViewModel
             .AddRange(TelGeräteListe)
         End With
 
-        ' Ornderliste überwachter Ordner
-        With XMLData.POptionen.OutlookOrdner.OrdnerListe
-            ' Die Ordner in den Optionen löschen
-            .Clear()
-            ' Die Ordner aus den Viewmodel setzen
-            .AddRange(OutlookOrdnerListe)
+        Dim TL As New List(Of Task)
+
+        ' Ordnerliste überwachter Ordner
+        With XMLData.POptionen.OutlookOrdner
+
+            ' deindiziere:
+            For Each Folder In .FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche))
+                NLogger.Debug($"Deindiziere Odner {Folder.Name}")
+                TL.Add(Task.Run(Sub()
+                                    DatenService.Indexer(Folder.MAPIFolder, False, CBSucheUnterordner)
+                                End Sub))
+            Next
+
+            ' indiziere
+            For Each Folder In OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche))
+                NLogger.Debug($"Indiziere Odner {Folder.Name}")
+                TL.Add(Task.Run(Sub()
+                                    DatenService.Indexer(Folder.MAPIFolder, True, CBSucheUnterordner)
+                                End Sub))
+            Next
+
         End With
+
+        XMLData.POptionen.OutlookOrdner = OutlookOrdnerListe
 
         ' Loglevel Aktualisieren
         SetLogLevel()
 
         ' Speichern in Datei anstoßen
         Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
+
+        Await Task.WhenAll(tl)
     End Sub
 #End Region
 End Class

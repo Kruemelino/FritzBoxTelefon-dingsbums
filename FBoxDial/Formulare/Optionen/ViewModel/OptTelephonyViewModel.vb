@@ -107,7 +107,6 @@
         RemoveHandler DatenService.Status, AddressOf FritzBoxDaten_Status
     End Sub
 
-
     Private Sub FritzBoxDaten_Status(sender As Object, e As NotifyEventArgs(Of String))
         EinlesenStatus += e.Value & Environment.NewLine
     End Sub

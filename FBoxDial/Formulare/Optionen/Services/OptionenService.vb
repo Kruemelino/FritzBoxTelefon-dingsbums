@@ -1,4 +1,7 @@
-﻿Imports System.Windows.Threading
+﻿Imports System.Threading
+Imports System.Windows.Threading
+Imports Microsoft.Office.Interop.Outlook
+
 Friend Class OptionenService
     Implements IOptionenService
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -45,6 +48,60 @@ Friend Class OptionenService
 
         NLogger.Debug($"Einlesen der Telefoniedaten beendet")
     End Sub
+
+
 #End Region
 
+#Region "Indizierung"
+    Friend Event IndexStatus As EventHandler(Of NotifyEventArgs(Of Integer)) Implements IOptionenService.IndexStatus
+    Friend Property CancelationPending As Boolean Implements IOptionenService.CancelationPending
+
+    Public Function ZähleKontakte(olFolder As MAPIFolder) As Integer Implements IOptionenService.ZähleOutlookKontakte
+        Return ZähleOutlookKontakte(olFolder)
+    End Function
+
+    Friend Sub Indexer(Ordner As MAPIFolder, IndexModus As Boolean, Unterordner As Boolean) Implements IOptionenService.Indexer
+
+        For Each Item In Ordner.Items
+            If CancelationPending Then Exit For
+
+            If TypeOf Item Is ContactItem Then
+
+                Dim aktKontakt As ContactItem = CType(Item, ContactItem)
+
+                If IndexModus Then
+                    IndiziereKontakt(aktKontakt)
+                Else
+                    DeIndiziereKontakt(aktKontakt)
+                End If
+
+                aktKontakt.Speichern
+
+                aktKontakt.ReleaseComObject
+
+            End If
+
+            ' Erhöhe Wert für Progressbar
+            RaiseEvent IndexStatus(Me, New NotifyEventArgs(Of Integer)(1))
+        Next
+
+        If Not IndexModus Then
+            ' Entfernt alle Indizierungseinträge aus den Ordnern des Kontaktelementes.
+            DeIndizierungOrdner(Ordner)
+        End If
+
+        ' Unterordner werden rekursiv durchsucht und indiziert
+        If Unterordner Then
+            Dim iOrdner As Integer = 1
+
+            Do While (iOrdner.IsLessOrEqual(Ordner.Folders.Count)) And Not CancelationPending
+                Indexer(Ordner.Folders.Item(iOrdner), IndexModus, Unterordner)
+                iOrdner += 1
+            Loop
+        End If
+
+        NLogger.Info($"{If(IndexModus, "Indizierung", "Deindizierung")} des Ordners {Ordner.Name} ist abgeschlossen.")
+    End Sub
+
+#End Region
 End Class

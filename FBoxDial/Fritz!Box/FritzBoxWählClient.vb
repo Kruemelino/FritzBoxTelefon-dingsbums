@@ -85,7 +85,7 @@ Public Class FritzBoxWählClient
     '''' <summary>
     '''' Startet den Wählvorgang
     '''' </summary>
-    Friend Async Function DialTelNr(TelNr As Telefonnummer, Telefon As Telefoniegerät, CLIR As Boolean, Abbruch As Boolean) As Threading.Tasks.Task(Of Boolean)
+    Friend Async Function DialTelNr(TelNr As Telefonnummer, Telefon As Telefoniegerät, CLIR As Boolean, Abbruch As Boolean) As Task(Of Boolean)
         Dim DialCode As String = DfltStringEmpty
         Dim Erfolreich As Boolean = False
 

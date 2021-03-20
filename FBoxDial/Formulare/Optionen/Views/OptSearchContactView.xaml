@@ -49,42 +49,44 @@
                 <RowDefinition/>                
             </Grid.RowDefinitions>
 
-            <RadioButton x:Name="RBErstellen" 
-                         Content="{x:Static localize:LocOptionen.strSearchContactIndex}" 
+            <RadioButton Content="{x:Static localize:LocOptionen.strSearchContactIndex}" 
                          Grid.Column="0" 
                          Grid.Row="0" 
                          HorizontalAlignment="Center" 
-                         IsChecked="True"/>           
+                         IsChecked="{Binding IndexModus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         GroupName="Index"/>           
             
-            <RadioButton x:Name="RBEntfernen" 
-                         Content="{x:Static localize:LocOptionen.strSearchContactDeIndex}" 
+            <RadioButton Content="{x:Static localize:LocOptionen.strSearchContactDeIndex}" 
                          Grid.Column="1" 
                          Grid.Row="0" 
-                         HorizontalAlignment="Center"/>
+                         HorizontalAlignment="Center"
+                         GroupName="Index"/>
             
-            <Button x:Name="BIndizierungStart" 
-                    Content="{x:Static localize:LocOptionen.strSearchContactIndexStart}" 
+            <Button Content="{x:Static localize:LocOptionen.strSearchContactIndexStart}" 
                     Grid.Column="0" 
                     Grid.Row="1"  
-                    Margin="4"/>
+                    Margin="4"
+                    Command="{Binding IndexCommand}" 
+                    IsEnabled="{Binding Path=IsNotAktiv, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
             
-            <Button x:Name="BIndizierungAbbrechen" 
-                    Content="{x:Static localize:LocOptionen.strSearchContactIndexCancel}" 
+            <Button Content="{x:Static localize:LocOptionen.strSearchContactIndexCancel}" 
                     Grid.Column="1" 
                     Grid.Row="1" 
                     Margin="4" 
-                    IsEnabled="False"/>
+                    Command="{Binding CancelCommand}"
+                    IsEnabled="{Binding Path=IsAktiv, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
-            <ProgressBar x:Name="ProgressBarIndex" 
-                         Height="16" 
+            <ProgressBar Height="16" 
                          Grid.Column="0" 
                          Grid.Row="2" 
-                         Margin="4"/>
+                         Margin="4"
+                         Value="{Binding Path=IndexProgressValue, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                         Maximum="{Binding Path=IndexProgressMax, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
-            <TextBlock x:Name="LabelAnzahl" 
-                       Grid.Column="1" 
+            <TextBlock Grid.Column="1" 
                        Grid.Row="2" 
-                       Margin="4"/>
+                       Margin="4"
+                       Text="{Binding IndexStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
         </Grid>
 

@@ -296,6 +296,10 @@ Wird kein Ordner gewählt, wird der Outlook-Standard verwendet.</value>
     <value>Anzeigedauer nach dem Wählen</value>
     <comment>OptDialerView</comment>
   </data>
+  <data name="strIndexStatus" xml:space="preserve">
+    <value>Status</value>
+    <comment>OptSearchContactView</comment>
+  </data>
   <data name="strInfo" xml:space="preserve">
     <value>Info</value>
     <comment>MainView</comment>
@@ -502,7 +506,7 @@ Wähle Telefoniegerät aus, was mit Phoner registriert ist.</value>
   </data>
   <data name="strSearchContactInfo" xml:space="preserve">
     <value>Hinweise zur Kontaktsuche:
-Kontakte von eingehenden Anrufen wird nur in den hier gewählten Ordnern durchgeführt.
+Es werden nur die hier ausgewählten Ordnern bei der Kontaktsuche berücksichtigt.
 Dies verringert die Zeit, bis ein passender Kontakt gefunden wurde.
 Die Kontaktindizierung wird nur in den ausgewählten Ordnern automatisch beim Speichern durchgeführt. Sie kann aber auch manuell angestoßen werden.
 Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werden die Indizierungseinträge beim Speichern automatisch entfernt.</value>

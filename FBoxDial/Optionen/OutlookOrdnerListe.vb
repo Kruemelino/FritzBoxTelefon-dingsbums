@@ -3,11 +3,14 @@ Imports Microsoft.Office.Interop.Outlook
 
 <Serializable()>
 Public Class OutlookOrdnerListe
-
     <XmlElement("Ordner")> Public Property OrdnerListe As List(Of OutlookOrdner)
 
     Public Sub New()
         OrdnerListe = New List(Of OutlookOrdner)
+    End Sub
+
+    Friend Sub Add(OutlookOrdner As OutlookOrdner)
+        If Not Exists(OutlookOrdner.MAPIFolder, OutlookOrdner.Typ) Then OrdnerListe.Add(OutlookOrdner)
     End Sub
 
     Friend Sub AddRange(ListeOutlookOrdner As List(Of OutlookOrdner))
@@ -21,6 +24,7 @@ Public Class OutlookOrdnerListe
     Friend Function Exists(MAPIFolder As MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
         Return OrdnerListe.Exists(Function(fldr) fldr.MAPIFolder.AreEqual(MAPIFolder) And fldr.Typ = Verwendung)
     End Function
+
     Friend Function Find(Verwendung As OutlookOrdnerVerwendung) As OutlookOrdner
         Return OrdnerListe.Find(Function(fldr) fldr.Typ = Verwendung)
     End Function
@@ -35,6 +39,10 @@ Public Class OutlookOrdnerListe
 
     Friend Sub RemoveAll(Verwendung As OutlookOrdnerVerwendung)
         OrdnerListe.RemoveAll(Function(OlFldr) OlFldr.Typ = Verwendung)
+    End Sub
+
+    Friend Sub Remove(Folder As OutlookOrdner)
+        OrdnerListe.Remove(Folder)
     End Sub
 
     ''' <summary>
@@ -94,4 +102,5 @@ Public Class OutlookOrdnerListe
     Public Function GetDefaultMAPIFolder(FolderType As OlDefaultFolders) As MAPIFolder
         Return ThisAddIn.OutookApplication.Session.GetDefaultFolder(FolderType)
     End Function
+
 End Class
