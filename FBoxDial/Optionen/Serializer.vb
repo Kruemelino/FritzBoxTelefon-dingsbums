@@ -44,6 +44,37 @@ Friend Module Serializer
         End If
     End Sub
 
+    ''' <summary>
+    ''' Überprüft, ob die einzulesenden Daten überhaupt eine XML sind.
+    ''' </summary>
+    ''' <param name="InputData">Die einzulesenden Daten</param>
+    ''' <param name="IsPfad">Angabe, ob ein Dateipfad oder XML-Daten geprüft werden sollen.</param>
+    ''' <returns>Boolean</returns>
+    Private Function CheckXMLData(InputData As String, IsPfad As Boolean) As Boolean
+        Dim xDoc As New XmlDocument
+        Try
+            ' Versuche die Datei zu laden, wenn es keine Exception gibt, ist alles ok
+            If IsPfad Then
+                xDoc.Load(InputData)
+            Else
+                xDoc.LoadXml(InputData)
+            End If
+
+            Return True
+
+        Catch ex As XmlException
+            NLogger.Fatal(ex, $"Die XML-Datab weist einen Lade- oder Analysefehler auf: '{InputData}'")
+
+            Return False
+
+        Catch ex As FileNotFoundException
+            NLogger.Fatal(ex, $"Die XML-Datab kann nicht gefunden werden: '{InputData}'")
+
+            Return False
+
+        End Try
+    End Function
+
     Friend Function DeserializeObjectAsyc(Of T)(Pfad As String) As Task(Of T)
         Return Task.Run(Function()
                             Dim ReturnObj As T
@@ -64,25 +95,30 @@ Friend Module Serializer
     ''' <returns>True oder False, je nach Ergebnis</returns>
     Private Function DeserializeObject(Of T)(Pfad As String, ByRef ReturnObj As T) As Boolean
 
-        Dim Serializer As New XmlSerializer(GetType(T))
-        Using Reader As XmlReader = XmlReader.Create(Pfad)
-            If Serializer.CanDeserialize(Reader) Then
+        If CheckXMLData(Pfad, True) Then
+            Dim Serializer As New XmlSerializer(GetType(T))
+            Using Reader As XmlReader = XmlReader.Create(Pfad)
 
-                Try
-                    ReturnObj = CType(Serializer.Deserialize(Reader), T)
+                If Serializer.CanDeserialize(Reader) Then
 
-                    Return True
+                    Try
+                        ReturnObj = CType(Serializer.Deserialize(Reader), T)
 
-                Catch ex As InvalidOperationException
+                        Return True
 
-                    NLogger.Fatal(ex, $"Fehler beim Deserialisieren: '{Pfad}'")
+                    Catch ex As InvalidOperationException
+
+                        NLogger.Fatal(ex, $"Bei der Deserialisierung ist ein Fehler aufgetreten.: '{Pfad}'")
+                        Return False
+                    End Try
+                Else
+                    NLogger.Fatal($"Fehler beim Deserialisieren: {Pfad} kann nicht deserialisert werden.")
                     Return False
-                End Try
-            Else
-                NLogger.Fatal($"Fehler beim Deserialisieren: {Pfad} kann nicht deserialisert werden.")
-                Return False
-            End If
-        End Using
+                End If
+            End Using
+        Else
+            Return False
+        End If
 
     End Function
 
@@ -92,21 +128,26 @@ Friend Module Serializer
 
     Friend Function XmlDeserializeFromString(Of T)(objectData As String, ByRef result As T) As Boolean
 
-        Dim Serializer = New XmlSerializer(GetType(T))
-        Using Reader As TextReader = New StringReader(objectData)
-            Try
-                result = CType(Serializer.Deserialize(Reader), T)
+        If CheckXMLData(objectData, False) Then
 
-                Return True
-            Catch ex As InvalidOperationException
-                NLogger.Fatal(ex, $"Fehler beim Deserialisieren von {GetType(T).FullName}: {objectData}")
+            Dim Serializer = New XmlSerializer(GetType(T))
+            Using Reader As TextReader = New StringReader(objectData)
+                Try
+                    result = CType(Serializer.Deserialize(Reader), T)
 
-                ' Gib Nothing zurück
-                result = Nothing
-                Return False
-            End Try
+                    Return True
+                Catch ex As InvalidOperationException
+                    NLogger.Fatal(ex, $"Fehler beim Deserialisieren von {GetType(T).FullName}: {objectData}")
 
-        End Using
+                    ' Gib Nothing zurück
+                    result = Nothing
+                    Return False
+                End Try
+
+            End Using
+        Else
+            Return False
+        End If
 
     End Function
 
