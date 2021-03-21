@@ -10,6 +10,11 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Installer", "Installer\Inst
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FritzBoxDial_2013", "FBoxDial\FritzBoxDial_2013.vbproj", "{985D1FE4-4B82-4553-B487-E6C998671AAD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1BA86D89-2BC9-4E8E-9F02-E260548D3092}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU

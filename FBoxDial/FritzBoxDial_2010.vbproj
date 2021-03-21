@@ -1,6 +1,6 @@
 ﻿<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-	<!--
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--
     This section defines project-level properties.
 
     AssemblyName
@@ -17,65 +17,65 @@
       In C#, this specifies the namespace given to new files. In VB, all objects are
       wrapped in this namespace at runtime.
   -->
-	<PropertyGroup>
-		<ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProjectGuid>{985D1FE4-4B82-4553-B487-E6C998671AAD}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<RootNamespace>FBoxDial</RootNamespace>
-		<AssemblyName>Fritz!Box Telefon-Dingsbums</AssemblyName>
-		<TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-		<DefineConstants>VSTO40</DefineConstants>
-		<StartupObject>
-		</StartupObject>
-		<IsWebBootstrapper>False</IsWebBootstrapper>
-		<NuGetPackageImportStamp>
-		</NuGetPackageImportStamp>
-		<BootstrapperEnabled>true</BootstrapperEnabled>
-		<PublishUrl>Veröffentlichen\</PublishUrl>
-		<InstallUrl />
-		<TargetCulture>de</TargetCulture>
-		<ApplicationVersion>1.0.0.0</ApplicationVersion>
-		<AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
-		<UpdateEnabled>true</UpdateEnabled>
-		<UpdateInterval>7</UpdateInterval>
-		<UpdateIntervalUnits>days</UpdateIntervalUnits>
-		<ProductName>Fritz!Box Telefon-Dingsbums</ProductName>
-		<PublisherName />
-		<SupportUrl />
-		<FriendlyName>Fritz!Box Telefon-dingsbums</FriendlyName>
-		<OfficeApplicationDescription />
-		<LoadBehavior>3</LoadBehavior>
-	</PropertyGroup>
-	<ItemGroup>
-		<BootstrapperPackage Include=".NETFramework,Version=v4.8">
-			<Visible>False</Visible>
-			<ProductName>Microsoft .NET Framework 4.8 %28x86 und x64%29</ProductName>
-			<Install>true</Install>
-		</BootstrapperPackage>
-		<BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-			<Visible>False</Visible>
-			<ProductName>.NET Framework 3.5 SP1</ProductName>
-			<Install>false</Install>
-		</BootstrapperPackage>
-		<BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
-			<Visible>False</Visible>
-			<ProductName>Microsoft Visual Studio 2010-Tools für Office-Laufzeit %28x86 und x64%29</ProductName>
-			<Install>true</Install>
-		</BootstrapperPackage>
-	</ItemGroup>
-	<PropertyGroup>
-		<!--
+  <PropertyGroup>
+    <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{985D1FE4-4B82-4553-B487-E6C998671AAD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>FBoxDial</RootNamespace>
+    <AssemblyName>Fritz!Box Telefon-Dingsbums</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <DefineConstants>VSTO40</DefineConstants>
+    <StartupObject>
+    </StartupObject>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <PublishUrl>Veröffentlichen\</PublishUrl>
+    <InstallUrl />
+    <TargetCulture>de</TargetCulture>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <ProductName>Fritz!Box Telefon-Dingsbums</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>Fritz!Box Telefon-dingsbums</FriendlyName>
+    <OfficeApplicationDescription />
+    <LoadBehavior>3</LoadBehavior>
+  </PropertyGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 und x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Studio 2010-Tools für Office-Laufzeit %28x86 und x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <PropertyGroup>
+    <!--
       OfficeApplication
         Add-in host application
     -->
-		<OfficeApplication>Outlook</OfficeApplication>
-	</PropertyGroup>
-	<PropertyGroup>
-		<OptionInfer>On</OptionInfer>
-	</PropertyGroup>
-	<!--
+    <OfficeApplication>Outlook</OfficeApplication>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <!--
     This section defines properties that are set when the "Debug" configuration is selected.
 
     DebugSymbols
@@ -91,22 +91,22 @@
     WarningLevel
       Warning level for the compiler.
   -->
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DefineConstants>$(DefineConstants)</DefineConstants>
-		<DefineDebug>true</DefineDebug>
-		<DefineTrace>true</DefineTrace>
-		<DebugType>full</DebugType>
-		<DebugSymbols>true</DebugSymbols>
-		<Optimize>false</Optimize>
-		<OutputPath>bin\Debug2010\</OutputPath>
-		<DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
-		<RegisterForComInterop>false</RegisterForComInterop>
-		<RemoveIntegerChecks>false</RemoveIntegerChecks>
-		<NoWarn>
-		</NoWarn>
-		<WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-	</PropertyGroup>
-	<!--
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>$(DefineConstants)</DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug2013\</OutputPath>
+    <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <!--
     This section defines properties that are set when the "Release" configuration is selected.
 
     DebugSymbols
@@ -122,100 +122,101 @@
     WarningLevel
       Warning level for the compiler.
   -->
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DefineConstants>
-		</DefineConstants>
-		<DefineDebug>false</DefineDebug>
-		<DefineTrace>true</DefineTrace>
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\Release2010\</OutputPath>
-		<DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
-		<RegisterForComInterop>false</RegisterForComInterop>
-		<RemoveIntegerChecks>false</RemoveIntegerChecks>
-		<NoWarn>
-		</NoWarn>
-		<WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-	</PropertyGroup>
-	<!--
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release2013\</OutputPath>
+    <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <!--
     This section specifies references for the project.
   -->
-	<ItemGroup>
-		<Reference Include="Microsoft.CSharp" />
-		<Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-			<EmbedInteropTypes>True</EmbedInteropTypes>
-		</Reference>
-		<Reference Include="MixERP.Net.VCards, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
-			<HintPath>..\packages\MixERP.Net.VCards.1.0.7\lib\net461\MixERP.Net.VCards.dll</HintPath>
-		</Reference>
-		<Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-			<HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-		</Reference>
-		<Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-			<HintPath>..\packages\NLog.4.7.7\lib\net45\NLog.dll</HintPath>
-		</Reference>
-		<Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-			<EmbedInteropTypes>True</EmbedInteropTypes>
-		</Reference>
-		<Reference Include="PresentationCore" />
-		<Reference Include="PresentationFramework" />
-		<Reference Include="System" />
-		<Reference Include="System.Configuration" />
-		<Reference Include="System.Data" />
-		<Reference Include="System.Data.DataSetExtensions" />
-		<Reference Include="System.Drawing" />
-		<Reference Include="System.IO.Compression" />
-		<Reference Include="System.Management" />
-		<Reference Include="System.Runtime.Serialization" />
-		<Reference Include="System.ServiceModel" />
-		<Reference Include="System.Transactions" />
-		<Reference Include="System.Web.Services" />
-		<Reference Include="System.Windows.Forms" />
-		<Reference Include="System.Xaml" />
-		<Reference Include="System.Xml" />
-		<Reference Include="System.Core" />
-		<Reference Include="System.Xml.Linq" />
-		<Reference Include="WindowsBase" />
-	</ItemGroup>
-	<ItemGroup>
-		<Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Microsoft.Office.Tools.Outlook, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<Private>False</Private>
-		</Reference>
-	</ItemGroup>
-	<ItemGroup>
-		<Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<Private>True</Private>
-		</Reference>
-		<Reference Include="Microsoft.Office.Tools.Outlook.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<Private>True</Private>
-		</Reference>
-	</ItemGroup>
-	<!-- Visual Basic supports importing namespaces (equivalent to "using" statements in C#). -->
-	<ItemGroup>
-		<Import Include="FBoxDial.DfltWerteAllgemein" />
-		<Import Include="FboxDial.Nutzerdaten" />
-		<Import Include="Microsoft.VisualBasic" />
-		<Import Include="NLog" />
-		<Import Include="System" />
-		<Import Include="System.Collections.Generic" />
-		<Import Include="System.Diagnostics" />
-		<Import Include="System.Linq" />
-		<Import Include="System.Text" />
-		<Import Include="System.Xml.Linq" />
-	</ItemGroup>
-	<!--
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="MixERP.Net.VCards, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MixERP.Net.VCards.1.0.7\lib\net461\MixERP.Net.VCards.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.8\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="TreeLib, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dirkster.TreeLib.1.2.0\lib\net40\TreeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Outlook, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Outlook.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <!-- Visual Basic supports importing namespaces (equivalent to "using" statements in C#). -->
+  <ItemGroup>
+    <Import Include="FBoxDial.DfltWerteAllgemein" />
+    <Import Include="FboxDial.Nutzerdaten" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="NLog" />
+    <Import Include="System" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Text" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <!--
     This section defines the user source files that are part of the project.
      
     A "Compile" element specifies a source file to compile.
@@ -225,472 +226,503 @@
     The "AppDesigner" element specifies the directory where the application properties files
     can be found.
   -->
-	<ItemGroup>
-		<AppDesigner Include="My Project\" />
-		<Compile Include="Anrufmonitor\AnrMonClasses.vb" />
-		<Compile Include="Anrufmonitor\Anrufmonitor.vb" />
-		<Compile Include="Common\EnumDescriptionTypeConverter.vb" />
-		<Compile Include="Common\LocalizedDescriptionAttribute.vb" />
-		<Compile Include="Formulare\AnrList\Resources\LocAnrList.Designer.vb">
-			<DependentUpon>LocAnrList.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Formulare\AnrList\Services\AnrListService.vb" />
-		<Compile Include="Formulare\AnrList\Services\IAnrListService.vb" />
-		<Compile Include="Formulare\Common\Services\WindowHelper.vb" />
-		<Compile Include="Formulare\Common\Services\WindowBehavior.vb" />
-		<Compile Include="Common\EnumBindingSourceExtension.vb" />
-		<Compile Include="Formulare\Common\Services\NotifyBase.vb" />
-		<Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
-		<Compile Include="Formulare\Common\Services\RelayCommand.vb" />
-		<Compile Include="Formulare\AnrList\ViewModels\AnrListViewModel.vb" />
-		<Compile Include="Formulare\AnrList\Resources\TimePicker.vb" />
-		<Compile Include="Formulare\AnrMon\ViewModel\AnrMonViewModel.vb" />
-		<Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
-			<DependentUpon>AnrMonWPF.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\ViewModel\OptionenViewModel.vb" />
-		<Compile Include="Formulare\Optionen\Elemente\OlTreeViewItem.vb" />
-		<Compile Include="Formulare\Optionen\OptionenWPF.xaml.vb">
-			<DependentUpon>OptionenWPF.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml.vb">
-			<DependentUpon>OptionsPasswordBox.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Elemente\OptionsLink.xaml.vb">
-			<DependentUpon>OptionsLink.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml.vb">
-			<DependentUpon>OptionsTextBlock.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml.vb">
-			<DependentUpon>OptionsHinweis.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Elemente\OptionsOLFolderTV.xaml.vb">
-			<DependentUpon>OptionsOLFolderTV.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlMicroSIP.xaml.vb">
-			<DependentUpon>UserCtrlMicroSIP.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlPhoner.xaml.vb">
-			<DependentUpon>UserCtrlPhoner.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlTelefone.xaml.vb">
-			<DependentUpon>UserCtrlTelefone.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlInfo.xaml.vb">
-			<DependentUpon>UserCtrlInfo.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlJournalerstellung.xaml.vb">
-			<DependentUpon>UserCtrlJournalerstellung.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlKontaktsuche.xaml.vb">
-			<DependentUpon>UserCtrlKontaktsuche.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlWählhilfe.xaml.vb">
-			<DependentUpon>UserCtrlWählhilfe.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlAnrMon.xaml.vb">
-			<DependentUpon>UserCtrlAnrMon.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlGrund.vb">
-			<DependentUpon>UserCtrlGrund.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Optionen\Views\UserCtrlKontakterstellung.xaml.vb">
-			<DependentUpon>UserCtrlKontakterstellung.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Stoppuhr\ViewModel\StoppUhrViewModel.vb" />
-		<Compile Include="Formulare\Wählclient\Resources\LocWählclient.Designer.vb">
-			<DependentUpon>LocWählclient.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Formulare\Wählclient\Services\Messenger.vb" />
-		<Compile Include="Formulare\Wählclient\Services\DialDataTemplateSelector.vb" />
-		<Compile Include="Formulare\Wählclient\Services\DialService.vb" />
-		<Compile Include="Formulare\Wählclient\Services\IDialService.vb" />
-		<Compile Include="Formulare\Wählclient\ViewModels\ContactDialViewModel.vb" />
-		<Compile Include="Formulare\Wählclient\ViewModels\DirectDialViewModel.vb" />
-		<Compile Include="Formulare\Wählclient\ViewModels\WählClientViewModel.vb" />
-		<Compile Include="Formulare\Stoppuhr\StoppUhrWPF.xaml.vb">
-			<DependentUpon>StoppUhrWPF.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Wählclient\WählclientWPF.xaml.vb">
-			<DependentUpon>WählclientWPF.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Wählclient\Views\ContactDialView.xaml.vb">
-			<DependentUpon>ContactDialView.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Wählclient\Views\DirectDialView.xaml.vb">
-			<DependentUpon>DirectDialView.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\AnrList\AnrListWPF.xaml.vb">
-			<DependentUpon>AnrListWPF.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Fritz!Box\FritzBoxJSONStruct.vb" />
-		<Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNrList.vb" />
-		<Compile Include="Fritz!Box\TR064\SIP-TR64\SIPClientList.vb" />
-		<Compile Include="Fritz!Box\TR064\SIP-TR64\SIPClient.vb" />
-		<Compile Include="Fritz!Box\TR064\TAM-TR64\TAMList.vb" />
-		<Compile Include="Fritz!Box\TR064\TAM-TR64\TAMItem.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\Action.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\Argument.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\Device.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\Icon.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\SCPD.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\Service.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\SpecVersion.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\StateVariable.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\SystemVersion.vb" />
-		<Compile Include="Fritz!Box\TR064\XMLTR64\TR64Desc.vb" />
-		<Compile Include="Kontakte\KontaktInspector.vb" />
-		<Compile Include="Fritz!Box\FritzBoxAnrufliste.vb" />
-		<Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCall.vb" />
-		<Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCallList.vb" />
-		<Compile Include="DfltWerte.vb" />
-		<Compile Include="Extensions.vb" />
-		<Compile Include="Formulare\Common\Services\NotifyEventArgs.vb" />
-		<Compile Include="Localize\resImageMso.Designer.vb">
-			<DependentUpon>resImageMso.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Localize\resEnum.Designer.vb">
-			<DependentUpon>resEnum.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Localize\resRibbon.Designer.vb">
-			<DependentUpon>resRibbon.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Localize\resAnrMon.Designer.vb">
-			<DependentUpon>resAnrMon.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Formulare\Telefonbuch\Resources\resTelefonbuch.Designer.vb">
-			<DependentUpon>resTelefonbuch.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Localize\resCommon.Designer.vb">
-			<DependentUpon>resCommon.resx</DependentUpon>
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-		</Compile>
-		<Compile Include="My Project\Resources.Designer.vb">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Resources.resx</DependentUpon>
-		</Compile>
-		<Compile Include="Outlook\OutlookFolder.vb" />
-		<Compile Include="Kontakte\NummernTypen.vb" />
-		<Compile Include="Ribbon\RibbonData.vb" />
-		<Compile Include="SoftPhone\MicroSIP.vb" />
-		<Compile Include="TCPClient\AnrMonClient.vb" />
-		<Compile Include="Fritz!Box\FritzBoxDefault.vb" />
-		<Compile Include="Fritz!Box\TR064\FritzBoxTR64.vb" />
-		<Compile Include="Fritz!Box\TR064\FritzBoxInformations.vb" />
-		<Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
-		<Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLEmail.vb" />
-		<Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLKontakt.vb" />
-		<Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLNummer.vb" />
-		<Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLPerson.vb" />
-		<Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbuch.vb" />
-		<Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbücher.vb" />
-		<Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonie.vb" />
-		<Compile Include="Fritz!Box\FritzBoxTelefonbuch.vb" />
-		<Compile Include="Journal\Journal.vb" />
-		<Compile Include="Kontakte\KontaktFunktionen.vb" />
-		<Compile Include="Kontakte\KontaktIndizierer.vb" />
-		<Compile Include="Kontakte\KontaktNotiz.vb" />
-		<Compile Include="Kontakte\KontaktSucher.vb" />
-		<Compile Include="Kontakte\Rückwärtssuche.vb" />
-		<Compile Include="Kontakte\VCard.vb" />
-		<Compile Include="Logging\Logging.vb" />
-		<Compile Include="Nutzerdaten.vb" />
-		<Compile Include="Optionen\OutlookOrdner.vb" />
-		<Compile Include="Optionen\OutlookOrdnerListe.vb" />
-		<Compile Include="Optionen\Serializer.vb" />
-		<Compile Include="Optionen\Optionen.vb" />
-		<Compile Include="Optionen\OutlookXML.vb" />
-		<Compile Include="Outlook\Fenster.vb" />
-		<Compile Include="SoftPhone\Phoner.vb" />
-		<Compile Include="Ribbon\OutlookRibbons.vb" />
-		<Compile Include="Rijndael.vb" />
-		<Compile Include="Fritz!Box\TR064\BaseFunctionsTR64.vb" />
-		<Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNr.vb" />
-		<Compile Include="Formulare\Common\Services\Converters.vb" />
-		<Compile Include="Formulare\Telefonbuch\Services\IContactDataService.vb" />
-		<Compile Include="Formulare\Common\Services\IDialogService.vb" />
-		<Compile Include="Formulare\Telefonbuch\Services\ContactDataService.vb" />
-		<Compile Include="Formulare\Common\Services\DialogService.vb" />
-		<Compile Include="Formulare\Telefonbuch\ViewModels\AppViewModel.vb" />
-		<Compile Include="Formulare\Telefonbuch\ViewModels\TelefonbuchViewModel.vb" />
-		<Compile Include="Formulare\Telefonbuch\ViewModels\ContactsViewModel.vb" />
-		<Compile Include="Formulare\Telefonbuch\Views\TelefonbuchView.xaml.vb">
-			<DependentUpon>TelefonbuchView.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Telefonbuch\Views\KontaktView.xaml.vb">
-			<DependentUpon>KontaktView.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Telefonbuch\Views\DetailsView.xaml.vb">
-			<DependentUpon>DetailsView.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Formulare\Telefonbuch\FBKontakBuch.xaml.vb">
-			<DependentUpon>FBKontakBuch.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Telefonie\DfltWerteTelefonie.vb" />
-		<Compile Include="Telefonie\RWSIndex.vb" />
-		<Compile Include="Telefonie\Telefonat.vb" />
-		<Compile Include="Telefonie\Telefonie.vb" />
-		<Compile Include="Telefonie\Telefoniegerät.vb" />
-		<Compile Include="Telefonie\Telefonnummer.vb" />
-		<Compile Include="Telefonie\TelListen.vb" />
-		<Compile Include="Telefonie\VIPEntry.vb" />
-		<Compile Include="Telefonie\Vorwahlen.vb" />
-		<Compile Include="ThisAddIn.vb">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="UnSaveNativeMethods.vb" />
-		<None Include="packages.config" />
-		<None Include="Zertifikat\FritzBoxDial.pfx" />
-		<None Include="ThisAddIn.Designer.xml">
-			<DependentUpon>ThisAddIn.vb</DependentUpon>
-		</None>
-		<Compile Include="ThisAddIn.Designer.vb">
-			<DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
-		</Compile>
-		<Compile Include="My Project\AssemblyInfo.vb" />
-		<EmbeddedResource Include="Formulare\AnrList\Resources\LocAnrList.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>LocAnrList.Designer.vb</LastGenOutput>
-			<CustomToolNamespace>Localize</CustomToolNamespace>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Formulare\Wählclient\Resources\LocWählclient.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>LocWählclient.Designer.vb</LastGenOutput>
-			<CustomToolNamespace>Localize</CustomToolNamespace>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Localize\resImageMso.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>resImageMso.Designer.vb</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Localize\resEnum.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>resEnum.Designer.vb</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Localize\resRibbon.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>resRibbon.Designer.vb</LastGenOutput>
-			<CustomToolNamespace>Localize</CustomToolNamespace>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Localize\resAnrMon.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>resAnrMon.Designer.vb</LastGenOutput>
-			<CustomToolNamespace>Localize</CustomToolNamespace>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Formulare\Telefonbuch\Resources\resTelefonbuch.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>resTelefonbuch.Designer.vb</LastGenOutput>
-			<CustomToolNamespace>Localize</CustomToolNamespace>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Localize\resCommon.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>resCommon.Designer.vb</LastGenOutput>
-			<CustomToolNamespace>Localize</CustomToolNamespace>
-		</EmbeddedResource>
-		<EmbeddedResource Include="My Project\Resources.resx">
-			<Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
-			<CustomToolNamespace>My.Resources</CustomToolNamespace>
-			<SubType>Designer</SubType>
-			<LastGenOutput>Resources.Designer.vb</LastGenOutput>
-		</EmbeddedResource>
-		<None Include="My Project\Settings.settings">
-			<Generator>SettingsSingleFileGenerator</Generator>
-			<LastGenOutput>Settings.Designer.vb</LastGenOutput>
-		</None>
-		<Compile Include="My Project\Settings.Designer.vb">
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Settings.settings</DependentUpon>
-			<DesignTimeSharedInput>True</DesignTimeSharedInput>
-		</Compile>
-	</ItemGroup>
-	<ItemGroup>
-		<Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Ribbon\RibbonXML\RibbonExplorer.xml" />
-		<EmbeddedResource Include="Ribbon\RibbonXML\RibbonIMLayerUI.xml" />
-		<EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />
-		<EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorKontakt.xml" />
-		<EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
-		<EmbeddedResource Include="Telefonie\Listen\Vorwahlen.xml" />
-	</ItemGroup>
-	<ItemGroup>
-		<Page Include="Formulare\AnrList\Resources\AnrList.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\AnrMon\AnrMonWPF.xaml">
-			<SubType>Designer</SubType>
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Include="Formulare\Wählclient\Resources\WählClient.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Stoppuhr\Resources\Stoppuhr.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Common\Resources\Colors.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Common\Resources\Icons.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\OptionenWPF.xaml">
-			<SubType>Designer</SubType>
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Elemente\OptionsLink.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Elemente\OptionsOLFolderTV.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlMicroSIP.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlPhoner.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlTelefone.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlInfo.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlJournalerstellung.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlKontaktsuche.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlWählhilfe.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlAnrMon.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlGrund.xaml">
-			<SubType>Designer</SubType>
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Include="Formulare\Optionen\Views\UserCtrlKontakterstellung.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\AnrList\AnrListWPF.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\AnrMon\Resources\AnrMon.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Stoppuhr\StoppUhrWPF.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Wählclient\WählclientWPF.xaml">
-			<SubType>Designer</SubType>
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Include="Formulare\Wählclient\Views\ContactDialView.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Wählclient\Views\DirectDialView.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Common\Resources\Common.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Formulare\Telefonbuch\Resources\Telefonbuch.xaml">
-			<SubType>Designer</SubType>
-			<Generator>XamlIntelliSenseFileGenerator</Generator>
-		</Page>
-		<Page Include="Formulare\Telefonbuch\Views\TelefonbuchView.xaml">
-			<SubType>Designer</SubType>
-			<Generator>XamlIntelliSenseFileGenerator</Generator>
-		</Page>
-		<Page Include="Formulare\Telefonbuch\Views\KontaktView.xaml">
-			<SubType>Designer</SubType>
-			<Generator>XamlIntelliSenseFileGenerator</Generator>
-		</Page>
-		<Page Include="Formulare\Telefonbuch\Views\DetailsView.xaml">
-			<SubType>Designer</SubType>
-			<Generator>XamlIntelliSenseFileGenerator</Generator>
-		</Page>
-		<Page Include="Formulare\Telefonbuch\FBKontakBuch.xaml">
-			<SubType>Designer</SubType>
-			<Generator>XamlIntelliSenseFileGenerator</Generator>
-		</Page>
-	</ItemGroup>
-	<ItemGroup />
-	<PropertyGroup>
-		<VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-		<VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-	</PropertyGroup>
-	<PropertyGroup>
-		<OptionExplicit>On</OptionExplicit>
-	</PropertyGroup>
-	<PropertyGroup>
-		<OptionCompare>Binary</OptionCompare>
-	</PropertyGroup>
-	<PropertyGroup>
-		<OptionStrict>On</OptionStrict>
-	</PropertyGroup>
-	<PropertyGroup>
-		<SignManifests>true</SignManifests>
-	</PropertyGroup>
-	<PropertyGroup>
-		<ManifestKeyFile>FritzBoxDial.pfx</ManifestKeyFile>
-	</PropertyGroup>
-	<PropertyGroup>
-		<ManifestCertificateThumbprint>2D0955976091F4222A13E5EB76912871C33A16B3</ManifestCertificateThumbprint>
-	</PropertyGroup>
+  <ItemGroup>
+    <AppDesigner Include="My Project\" />
+    <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
+    <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
+    <Compile Include="Common\EnumDescriptionTypeConverter.vb" />
+    <Compile Include="Common\LocalizedDescriptionAttribute.vb" />
+    <Compile Include="Formulare\AnrList\Resources\LocAnrList.Designer.vb">
+      <DependentUpon>LocAnrList.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\AnrList\Services\AnrListService.vb" />
+    <Compile Include="Formulare\AnrList\Services\IAnrListService.vb" />
+    <Compile Include="Formulare\Common\Services\WindowHelper.vb" />
+    <Compile Include="Formulare\Common\Services\WindowBehavior.vb" />
+    <Compile Include="Common\EnumBindingSourceExtension.vb" />
+    <Compile Include="Formulare\Common\Services\NotifyBase.vb" />
+    <Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
+    <Compile Include="Formulare\Common\Services\RelayCommand.vb" />
+    <Compile Include="Formulare\AnrList\ViewModels\AnrListViewModel.vb" />
+    <Compile Include="Formulare\AnrList\Resources\TimePicker.vb" />
+    <Compile Include="Formulare\AnrMon\ViewModel\AnrMonViewModel.vb" />
+    <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
+      <DependentUpon>AnrMonWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Services\BindingProxy.vb" />
+    <Compile Include="Formulare\Optionen\Services\IOlFolderViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Services\IPageViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Services\OptionenService.vb" />
+    <Compile Include="Formulare\Optionen\Services\IOptionenService.vb" />
+    <Compile Include="Formulare\Optionen\Services\VirtualToggleButton.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OlFolderViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptAnrMonViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptDialerViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptJournalViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptSearchContactViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptCreateContactViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptTelephonyViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptPhonerViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptInfoViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptMicroSIPViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptBaseViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml.vb">
+      <DependentUpon>OptCtrlTV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
+    <Compile Include="Localize\resCommon.Designer.vb">
+      <DependentUpon>resCommon.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Services\OptionenTemplateSelector.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptionenViewModel.vb" />
+    <Compile Include="Formulare\Optionen\OptionenWPF.xaml.vb">
+      <DependentUpon>OptionenWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml.vb">
+      <DependentUpon>OptionsPasswordBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Elemente\OptionsLink.xaml.vb">
+      <DependentUpon>OptionsLink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml.vb">
+      <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml.vb">
+      <DependentUpon>OptionsHinweis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptMicroSIPView.xaml.vb">
+      <DependentUpon>OptMicroSIPView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptPhonerView.xaml.vb">
+      <DependentUpon>OptPhonerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptTelephonyView.xaml.vb">
+      <DependentUpon>OptTelephonyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptInfoView.xaml.vb">
+      <DependentUpon>OptInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptJournalView.xaml.vb">
+      <DependentUpon>OptJournalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptSearchContactView.xaml.vb">
+      <DependentUpon>OptSearchContactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptDialerView.xaml.vb">
+      <DependentUpon>OptDialerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptAnrMonView.xaml.vb">
+      <DependentUpon>OptAnrMonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptBaseView.xaml.vb">
+      <DependentUpon>OptBaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptCreateContactView.xaml.vb">
+      <DependentUpon>OptCreateContactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Stoppuhr\ViewModel\StoppUhrViewModel.vb" />
+    <Compile Include="Formulare\Wählclient\Resources\LocWählclient.Designer.vb">
+      <DependentUpon>LocWählclient.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\Wählclient\Services\Messenger.vb" />
+    <Compile Include="Formulare\Wählclient\Services\DialDataTemplateSelector.vb" />
+    <Compile Include="Formulare\Wählclient\Services\DialService.vb" />
+    <Compile Include="Formulare\Wählclient\Services\IDialService.vb" />
+    <Compile Include="Formulare\Wählclient\ViewModels\ContactDialViewModel.vb" />
+    <Compile Include="Formulare\Wählclient\ViewModels\DirectDialViewModel.vb" />
+    <Compile Include="Formulare\Wählclient\ViewModels\WählClientViewModel.vb" />
+    <Compile Include="Formulare\Stoppuhr\StoppUhrWPF.xaml.vb">
+      <DependentUpon>StoppUhrWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Wählclient\WählclientWPF.xaml.vb">
+      <DependentUpon>WählclientWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Wählclient\Views\ContactDialView.xaml.vb">
+      <DependentUpon>ContactDialView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Wählclient\Views\DirectDialView.xaml.vb">
+      <DependentUpon>DirectDialView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\AnrList\AnrListWPF.xaml.vb">
+      <DependentUpon>AnrListWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Fritz!Box\FritzBoxJSONStruct.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNrList.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPClientList.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPClient.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMList.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMItem.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Action.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Argument.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Device.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Icon.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\SCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Service.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\SpecVersion.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\StateVariable.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\SystemVersion.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\TR64Desc.vb" />
+    <Compile Include="Kontakte\KontaktInspector.vb" />
+    <Compile Include="Fritz!Box\FritzBoxAnrufliste.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCall.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCallList.vb" />
+    <Compile Include="DfltWerte.vb" />
+    <Compile Include="Extensions.vb" />
+    <Compile Include="Formulare\Common\Services\NotifyEventArgs.vb" />
+    <Compile Include="Localize\resImageMso.Designer.vb">
+      <DependentUpon>resImageMso.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Localize\resEnum.Designer.vb">
+      <DependentUpon>resEnum.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Localize\resRibbon.Designer.vb">
+      <DependentUpon>resRibbon.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Localize\resAnrMon.Designer.vb">
+      <DependentUpon>resAnrMon.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\Resources\resTelefonbuch.Designer.vb">
+      <DependentUpon>resTelefonbuch.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Resources\LocOptionen.Designer.vb">
+      <DependentUpon>LocOptionen.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Outlook\OutlookFolder.vb" />
+    <Compile Include="Kontakte\NummernTypen.vb" />
+    <Compile Include="Ribbon\RibbonData.vb" />
+    <Compile Include="SoftPhone\MicroSIP.vb" />
+    <Compile Include="TCPClient\AnrMonClient.vb" />
+    <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
+    <Compile Include="Fritz!Box\TR064\FritzBoxTR64.vb" />
+    <Compile Include="Fritz!Box\TR064\FritzBoxInformations.vb" />
+    <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLEmail.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLKontakt.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLNummer.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLPerson.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbuch.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbücher.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonie.vb" />
+    <Compile Include="Fritz!Box\FritzBoxTelefonbuch.vb" />
+    <Compile Include="Journal\Journal.vb" />
+    <Compile Include="Kontakte\KontaktFunktionen.vb" />
+    <Compile Include="Kontakte\KontaktIndizierer.vb" />
+    <Compile Include="Kontakte\KontaktNotiz.vb" />
+    <Compile Include="Kontakte\KontaktSucher.vb" />
+    <Compile Include="Kontakte\Rückwärtssuche.vb" />
+    <Compile Include="Kontakte\VCard.vb" />
+    <Compile Include="Logging\Logging.vb" />
+    <Compile Include="Nutzerdaten.vb" />
+    <Compile Include="Optionen\OutlookOrdner.vb" />
+    <Compile Include="Optionen\OutlookOrdnerListe.vb" />
+    <Compile Include="Optionen\Serializer.vb" />
+    <Compile Include="Optionen\Optionen.vb" />
+    <Compile Include="Optionen\OutlookXML.vb" />
+    <Compile Include="Outlook\Fenster.vb" />
+    <Compile Include="SoftPhone\Phoner.vb" />
+    <Compile Include="Ribbon\OutlookRibbons.vb" />
+    <Compile Include="Rijndael.vb" />
+    <Compile Include="Fritz!Box\TR064\BaseFunctionsTR64.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNr.vb" />
+    <Compile Include="Formulare\Common\Services\Converters.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\IContactDataService.vb" />
+    <Compile Include="Formulare\Common\Services\IDialogService.vb" />
+    <Compile Include="Formulare\Telefonbuch\Services\ContactDataService.vb" />
+    <Compile Include="Formulare\Common\Services\DialogService.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\AppViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\TelefonbuchViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\ViewModels\ContactsViewModel.vb" />
+    <Compile Include="Formulare\Telefonbuch\Views\TelefonbuchView.xaml.vb">
+      <DependentUpon>TelefonbuchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\Views\KontaktView.xaml.vb">
+      <DependentUpon>KontaktView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\Views\DetailsView.xaml.vb">
+      <DependentUpon>DetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Telefonbuch\FBKontakBuch.xaml.vb">
+      <DependentUpon>FBKontakBuch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
+    <Compile Include="Telefonie\RWSIndex.vb" />
+    <Compile Include="Telefonie\Telefonat.vb" />
+    <Compile Include="Telefonie\Telefonie.vb" />
+    <Compile Include="Telefonie\Telefoniegerät.vb" />
+    <Compile Include="Telefonie\Telefonnummer.vb" />
+    <Compile Include="Telefonie\TelListen.vb" />
+    <Compile Include="Telefonie\VIPEntry.vb" />
+    <Compile Include="Telefonie\Vorwahlen.vb" />
+    <Compile Include="ThisAddIn.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnSaveNativeMethods.vb" />
+    <None Include="packages.config" />
+    <None Include="Zertifikat\FritzBoxDial.pfx" />
+    <None Include="ThisAddIn.Designer.xml">
+      <DependentUpon>ThisAddIn.vb</DependentUpon>
+    </None>
+    <Compile Include="ThisAddIn.Designer.vb">
+      <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <EmbeddedResource Include="Formulare\AnrList\Resources\LocAnrList.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocAnrList.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resCommon.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\Wählclient\Resources\LocWählclient.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocWählclient.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resImageMso.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resImageMso.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resEnum.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resEnum.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resRibbon.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resRibbon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resAnrMon.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resAnrMon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\Telefonbuch\Resources\resTelefonbuch.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resTelefonbuch.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\Optionen\Resources\LocOptionen.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocOptionen.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonExplorer.xml" />
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonIMLayerUI.xml" />
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorKontakt.xml" />
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
+    <EmbeddedResource Include="Telefonie\Listen\Vorwahlen.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Formulare\AnrList\Resources\AnrList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\AnrMon\AnrMonWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Optionen\Resources\Optionen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Wählclient\Resources\WählClient.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Stoppuhr\Resources\Stoppuhr.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Common\Resources\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Common\Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\OptionenWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Elemente\OptionsLink.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptMicroSIPView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptPhonerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptTelephonyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptInfoView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptJournalView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptSearchContactView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptDialerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptAnrMonView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptBaseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptCreateContactView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\AnrList\AnrListWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\AnrMon\Resources\AnrMon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Stoppuhr\StoppUhrWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Wählclient\WählclientWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Wählclient\Views\ContactDialView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Wählclient\Views\DirectDialView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Common\Resources\Common.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Resources\Telefonbuch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Views\TelefonbuchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Views\KontaktView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\Views\DetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Formulare\Telefonbuch\FBKontakBuch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>FritzBoxDial.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>2D0955976091F4222A13E5EB76912871C33A16B3</ManifestCertificateThumbprint>
+  </PropertyGroup>
 	<!-- Include the build rules for a Visual Basic project. -->
 	<Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 	<!-- Include additional build rules for an Office application add-in. -->

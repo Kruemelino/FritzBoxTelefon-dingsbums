@@ -484,8 +484,9 @@ Namespace Localize
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
         '''Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
-        '''Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgender Ausnahme:
-        '''Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten! ähnelt.
+        '''Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmn:
+        '''Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
+        '''Bei der Nutzung der Software-Telefone Phoner und MicroSIP werden die zu wählenden Nummern an di [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strInfoDatenschutz() As String
             Get
