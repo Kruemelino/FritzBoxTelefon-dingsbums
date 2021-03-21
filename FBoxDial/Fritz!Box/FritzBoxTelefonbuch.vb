@@ -1,4 +1,6 @@
-﻿Imports System.Threading.Tasks
+﻿Imports System.Reflection
+Imports System.Threading.Tasks
+Imports System.Xml
 
 Namespace Telefonbücher
     Friend Module FritzBoxTelefonbuch
@@ -26,8 +28,12 @@ Namespace Telefonbücher
 
                                 NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: '{PhonebookURL}'")
 
+                                ' Lade die xslt Transformationsdatei
+                                Dim xslt As New Xsl.XslCompiledTransform
+                                xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
+
                                 ' Lade das Telefonbuch herunter
-                                AktuellePhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(PhonebookURL)
+                                AktuellePhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(PhonebookURL, xslt)
 
                                 If AktuellePhoneBookXML IsNot Nothing Then
                                     ' Verarbeite die Telefonbücher
@@ -132,7 +138,11 @@ Namespace Telefonbücher
 
                                     NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: {PhonebookURL}")
 
-                                    With Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(PhonebookURL)
+                                    ' Lade die xslt Transformationsdatei
+                                    Dim xslt As New Xsl.XslCompiledTransform
+                                    xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
+
+                                    With Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(PhonebookURL, xslt)
                                         ' Setze die ID
                                         .Telefonbücher.First.ID = PhonebookID
 

@@ -192,10 +192,9 @@
         End Set
     End Property
 
-
 #End Region
-#Region "Eigene Eigenschaften"
 
+#Region "Eigene Eigenschaften"
     Private _Export As Boolean
     <XmlIgnore> Public Property Export As Boolean
         Get
@@ -240,7 +239,6 @@
         End Get
     End Property
 #End Region
-
 
     Friend Function ErstelleTelefonat() As Telefonat
 

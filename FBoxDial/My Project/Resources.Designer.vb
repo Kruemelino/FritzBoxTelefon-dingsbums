@@ -165,6 +165,27 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        '''&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;
+        '''    xmlns:msxsl=&quot;urn:schemas-microsoft-com:xslt&quot; exclude-result-prefixes=&quot;msxsl&quot;
+        '''&gt;
+        '''    &lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot;/&gt;
+        '''
+        '''    &lt;xsl:template match=&quot;@* | node()&quot;&gt;
+        '''        &lt;xsl:copy&gt;
+        '''            &lt;xsl:apply-templates select=&quot;@* | node()&quot;/&gt;
+        '''        &lt;/xsl:copy&gt;
+        '''    &lt;/xsl:template&gt;
+        '''&lt;/xsl:stylesheet&gt;
+        ''' ähnelt.
+        '''</summary>
+        Public ReadOnly Property ToLower() As String
+            Get
+                Return ResourceManager.GetString("ToLower", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;KZ&gt;
         '''  &lt;LKZ n=&quot;1&quot;&gt;
         '''    &lt;ONKZ n=&quot;1809&quot;/&gt;
