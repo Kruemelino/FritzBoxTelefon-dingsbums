@@ -20,7 +20,7 @@ d.h. keine Modifikationen an der Fritz!Box müssen durchgeführt werden.
 * Protokollierung aller Telefonate
 * Signalisierung der aktuellen Gesprächsdauer (Stoppuhr)
 * Datentransfer zwischen Outlook und den Fritz!Box Telefonbüchern (aktuell noch im Aufbau)
-* Nutzung der Softwaretelefonen ([Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org))
+* Nutzung der Softwaretelefonen ([Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org)) (PhonerLite wird nicht unterstützt)
 * Rückruf- und Wahlwiederholungsliste
 * VIP-Liste für häufig anzurufende Kontakte
 #### Ausschlüsse (was nicht geht)
@@ -51,6 +51,7 @@ Es liegt mir fern fremden Code als meinen zu verkaufen. (Falls ich was vergessen
 *   WPF Telefonbuch: Tosker [ContactBook-Tutorial](https://github.com/Tosker/ContactBook-Tutorial), [WPF Contact Book - Part 1 [Getting Started]](https://www.youtube.com/watch?v=bmw68zxjwG4)
 *   WPF Navigation in Einstellungen: Rachel Lim [Navigation with MVVM](https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/)
 *	WPF RelayCommand: Nofear23m [Command's in WPF](https://www.vb-paradise.de/index.php/Thread/128963-Command-s-in-WPF/?postID=1116045#post1116045)
+*   Passwortverschlüsselung: [Rijndael Encryption in VB.NET](http://www.freevbcode.com/ShowCode.asp?ID=4520)
 
 ### Datenschutz
 Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
