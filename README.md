@@ -4,12 +4,12 @@ Dieses Projekt ist ein Addin für Microsoft Outlook.
 Das Projekt ist in den ersten Versionen bereits 2006 entstanden und wurde über die Jahre von einer Makrosammlung hin zu einem Office Addin überführt.
 
 Dieses Addin ist in meiner Freizeit entstanden. Ich erwarte keine Gegenleistung. Ein Danke ist ausreichend.
-#### Zielsetzung
+### Zielsetzung
 Ziel ist es, die Produkte der Firma AVM (Fritz!Box) aus Berlin besser mit Outlook zu verknüpfen. Hierbei soll nur auf die Standardfunktionen der Fritz!Box zurückgegriffen werden,
 d.h. keine Modifikationen an der Fritz!Box müssen durchgeführt werden.
 
-#### Funktionsumfang
-##### Unterstütze Funktionen (was geht)
+### Funktionsumfang
+#### Unterstütze Funktionen (was geht)
 * Starten von Telefonaten
 * Signalisierung eingehender Anrufer
 * Anzeige verfügbarer Informationen zum Gesprächspartner
@@ -23,11 +23,11 @@ d.h. keine Modifikationen an der Fritz!Box müssen durchgeführt werden.
 * Nutzung der Softwaretelefonen ([Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org))
 * Rückruf- und Wahlwiederholungsliste
 * VIP-Liste für häufig anzurufende Kontakte
-##### Ausschlüsse (was nicht geht)
+#### Ausschlüsse (was nicht geht)
 * Nutzung von angeschlossenen IP-Telefonen. Hier fehlt einfach die Unterstützung der Fritz!Box. Einzige Ausnahmen sind die Programme [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/), 
   da diese eine eigene Schnittstelle haben. 
 
-#### Vorraussetzungen
+### Vorraussetzungen
 Für die Nutzung des Addins wird benötigt: 
 1. eine (halbwegs) aktuelle AVM Fritz!Box mit Telefoniefunktion.
    1. Damit dieses Addin korrekt arbeiten kann, muss ein Nutzer mit Administratorrechten darauf zugreifen.
@@ -38,10 +38,10 @@ Für die Nutzung des Addins wird benötigt:
    1. [Microsoft .NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48)
    2. [Microsoft Visual Studio 2010 Tools for Office Runtime Redistributable (VSTO 2010)](https://www.microsoft.com/de-DE/download/details.aspx?id=48217)
 
-#### Links
+### Links
 Forum für Hilfestellungen ([IP Phone Forum](https://www.ip-phone-forum.de/)): [Fritz!Box Telefon-dingsbums (Ein MS Outlook Addin)](https://www.ip-phone-forum.de/threads/fritz-box-telefon-dingsbums-ein-ms-outlook-addin.237086/)
 
-#### Quellen
+### Quellen
 Ursprüngliche Thread von 2006 im [IP Phone Forum](https://www.ip-phone-forum.de/): [Outlook Wählhilfe (Makro) ohne Box zu modifizieren](https://www.ip-phone-forum.de/threads/outlook-w%C3%A4hlhilfe-makro-ohne-box-zu-modifizieren.102096/)
 
 Das Addin ist nicht ohne Hilfestellung anderer Entwickler und von denen zur Verfügung gestellten Programmcode entstanden. Im folgenden werde ich Quellen auflisten, bei denen ich Codefragmente, Lösungen und Ideen entnommen habe.
@@ -52,13 +52,13 @@ Es liegt mir fern fremden Code als meinen zu verkaufen. (Falls ich was vergessen
 *   WPF Navigation in Einstellungen: Rachel Lim [Navigation with MVVM](https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/)
 *	WPF RelayCommand: Nofear23m [Command's in WPF](https://www.vb-paradise.de/index.php/Thread/128963-Command-s-in-WPF/?postID=1116045#post1116045)
 
-#### Datenschutz
+### Datenschutz
 Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
 Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
 Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmen:
 * Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
 * Bei der Nutzung der Software-Telefone [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/) werden die zu wählenden Nummern an diese Programme übergeben. Die Datenschutzhinweise der Software-Telefone sind zu beachten!
 
-#### Markenrecht
+### Markenrecht
 Dieses Outlook-Addin wird vom Autor privat in der Freizeit als Hobby gepflegt. Mit der Bereitstellung des Outlook-Addins werden keine gewerblichen Interessen verfolgt. Es wird aus rein ideellen Gründen zum Gemeinwohl aller Nutzer einer Fritz!Box betrieben. 
 Die Erstellung dieser Software erfolgt nicht im Auftrag oder mit Wissen der Firmen AVM GmbH bzw. Microsoft Corporation. Diese Software wurde unabhängig erstellt. Der Autor pflegt im Zusammenhang mit dieser Software keine Beziehungen zur Firma AVM GmbH oder Microsoft Corporation.
