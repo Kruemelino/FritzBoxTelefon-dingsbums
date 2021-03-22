@@ -53,7 +53,7 @@ Imports FBoxDial.FritzBoxDefault
                             PushStatus(LogLevel.Warn, $"Landeskennzahl konnte nicht ermittelt werden (Setze Wert aus Einstellungen: '{LKZ}').")
                         End If
 
-                        If OKZ.IsNotStringNothingOrEmpty Then PushStatus(LogLevel.Warn, $"Ortskennzahl konnte nicht ermittelt werden.")
+                        If OKZ.IsStringNothingOrEmpty Then PushStatus(LogLevel.Warn, $"Ortskennzahl konnte nicht ermittelt werden.")
 
                         PushStatus(LogLevel.Debug, $"Kennzahlen: {LKZ}; {OKZ}")
 
@@ -176,7 +176,7 @@ Imports FBoxDial.FritzBoxDefault
                                     If Telefon IsNot Nothing Then
                                         With Telefon
                                             .TR064Dialport = Phoneport
-                                            PushStatus(LogLevel.Debug, $"Setze Phoneport für Telefon { .Name} ({ .TelTyp}): { .TR064Dialport}; Rückfallwert: { .GetDialPortFallback}")
+                                            PushStatus(LogLevel.Debug, $"Setze Phoneport für Telefon { .Name} ({ .TelTyp}): '{ .TR064Dialport}'; Rückfallwert: '{ .GetDialPortFallback}'")
                                         End With
                                     End If
                                 End If
