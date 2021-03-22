@@ -5,7 +5,6 @@ Imports FBoxDial.DfltWerteTelefonie
 Public Class Telefoniegerät
     Inherits NotifyBase
     Implements IEquatable(Of Telefoniegerät)
-    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Public Sub New()
 
@@ -59,7 +58,7 @@ Public Class Telefoniegerät
         Get
             Select Case TelTyp
                 Case TelTypen.FON
-                    Return $"{TelTypen.FON}{AnrMonID + 1}: {Name}"
+                    Return $"{TelTypen.FON}{Intern}: {Name}"
                 Case TelTypen.DECT
                     Return $"{TelTypen.DECT}: {Name}"
                 Case TelTypen.ISDN

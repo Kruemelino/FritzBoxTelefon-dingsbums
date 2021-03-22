@@ -176,7 +176,7 @@ Imports FBoxDial.FritzBoxDefault
                                     If Telefon IsNot Nothing Then
                                         With Telefon
                                             .TR064Dialport = Phoneport
-                                            PushStatus(LogLevel.Debug, $"Setze Phoneport für Telefon { .Name} ({ .TelTyp}): { .TR064Dialport}")
+                                            PushStatus(LogLevel.Debug, $"Setze Phoneport für Telefon { .Name} ({ .TelTyp}): { .TR064Dialport}; Rückfallwert: { .GetDialPortFallback}")
                                         End With
                                     End If
                                 End If
@@ -253,7 +253,6 @@ Imports FBoxDial.FritzBoxDefault
                     PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
                     FONList.Add(Telefon)
 
-                    NLogger.Debug($"Test Dialport Fallback FON: '{Telefon.GetDialPortFallback}'")
                 End With
             Next
         End With
@@ -314,7 +313,6 @@ Imports FBoxDial.FritzBoxDefault
                     PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
                     DECTList.Add(Telefon)
 
-                    NLogger.Debug($"Test Dialport Fallback DECT: '{Telefon.GetDialPortFallback}'")
                 End With
             Next
         End With
@@ -368,7 +366,6 @@ Imports FBoxDial.FritzBoxDefault
                     PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
                     S0List.Add(Telefon)
 
-                    NLogger.Debug($"Test Dialport Fallback S0: '{Telefon.GetDialPortFallback}'")
                 End If
             End With
         Next
@@ -443,7 +440,6 @@ Imports FBoxDial.FritzBoxDefault
                 PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
                 TelList.Add(Telefon)
 
-                NLogger.Debug($"Test Dialport Fallback FaxMail: '{Telefon.GetDialPortFallback}'")
             End If
         End With
 
