@@ -2,7 +2,7 @@
 Imports System.Xml
 Imports System.Xml.Serialization
 
-<DebuggerStepThrough>
+'<DebuggerStepThrough>
 <Serializable()>
 Public Class Service
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger

@@ -6,4 +6,5 @@ Public Class StateVariable
     <XmlElement("defaultValue")> Public Property DefaultValue As String
     <XmlAttribute("sendEvents")> Public Property SendEvents As String
     <XmlArray("allowedValueList")> <XmlArrayItem("allowedValue")> Public Property ServiceStateTable As List(Of String)
+    <XmlElement("allowedValueRange")> Public Property [AllowedValueRange] As AllowedValueRange
 End Class

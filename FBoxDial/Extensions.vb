@@ -423,7 +423,7 @@ Public Module Extensions
         Try
             PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
         Catch ex As Exception
-            NLogger.Warn(ex, "Ping zu {0} nicht erfolgreich", IPAdresse)
+            NLogger.Warn(ex, $"Ping zu {IPAdresse} nicht erfolgreich")
             Ping = False
         End Try
 
@@ -438,7 +438,7 @@ Public Module Extensions
                                 IPAdresse = _IPAddress.ToString
                                 ' Prüfen ob es eine generel gültige lokale IPv6 Adresse gibt: fd00::2665:11ff:fed8:6086
                                 ' und wie die zu ermitteln ist
-                                NLogger.Info("IPv6: {0}, IPv4: {1}", .Address.ToString, IPAdresse)
+                                NLogger.Info($"IPv6: { .Address.ToString}, IPv4: {IPAdresse}")
                                 Exit For
                             End If
                         Next
@@ -447,7 +447,7 @@ Public Module Extensions
                     End If
                     Ping = True
                 Else
-                    NLogger.Warn("Ping zu '{0}' nicht erfolgreich: {1}" & .Status, IPAdresse, .Status)
+                    NLogger.Warn($"Ping zu '{IPAdresse}' nicht erfolgreich: { .Status}")
                     Ping = False
                 End If
             End With
@@ -484,7 +484,7 @@ Public Module Extensions
                 Case Sockets.AddressFamily.InterNetwork
                     ValidIP = IPAddresse.ToString
                 Case Else
-                    NLogger.Warn("Die IP '{0}' kann nicht zugeordnet werden.", InputIP)
+                    NLogger.Warn($"Die IP '{InputIP}' kann nicht zugeordnet werden.")
                     ValidIP = InputIP
             End Select
         Else
@@ -496,7 +496,7 @@ Public Module Extensions
                     End If
                 Next
             Catch ex As Exception
-                NLogger.Warn(ex, "Die Adresse '{0}' kann nicht zugeordnet werden.", XMLData.POptionen.TBFBAdr)
+                NLogger.Warn(ex, $"Die Adresse '{XMLData.POptionen.TBFBAdr}' kann nicht zugeordnet werden.")
                 ValidIP = XMLData.POptionen.TBFBAdr
             End Try
         End If
@@ -521,16 +521,16 @@ Public Module Extensions
                         .Headers.Add(HttpRequestHeader.KeepAlive, "False")
                         Try
                             retVal = Await .DownloadStringTaskAsync(UniformResourceIdentifier)
-                            NLogger.Trace("HTTPGet: {0} - {1}", Link, retVal)
+                            NLogger.Trace($"HTTPGet: {Link} - {retVal}")
                         Catch exANE As ArgumentNullException
                             NLogger.Error(exANE)
                         Catch exWE As WebException
-                            NLogger.Error(exWE, "Link: {0}", Link)
+                            NLogger.Error(exWE, $"Link: {Link}")
                         End Try
                     End With
                 End Using
             Case Else
-                NLogger.Warn("Uri.Scheme: {0}", UniformResourceIdentifier.Scheme)
+                NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
         End Select
         Return retVal
     End Function
@@ -553,16 +553,16 @@ Public Module Extensions
                         .Headers.Add(HttpRequestHeader.KeepAlive, "False")
                         Try
                             retVal = .DownloadString(UniformResourceIdentifier)
-                            NLogger.Debug("HTTPGet: {0} - {1}", Link, retVal)
+                            NLogger.Debug($"HTTPGet: {Link} - {retVal}")
                         Catch exANE As ArgumentNullException
                             NLogger.Error(exANE)
                         Catch exWE As WebException
-                            NLogger.Error(exWE, "Link: {0}", Link)
+                            NLogger.Error(exWE, $"Link: {Link}")
                         End Try
                     End With
                 End Using
             Case Else
-                NLogger.Warn("Uri.Scheme: {0}", UniformResourceIdentifier.Scheme)
+                NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
         End Select
         Return retVal
     End Function
@@ -589,11 +589,11 @@ Public Module Extensions
 
                     Try
                         retVal = Await .UploadStringTaskAsync(UniformResourceIdentifier, Daten)
-                        NLogger.Debug("HTTPPost: {0} - {1} - {2}", Link, Daten, retVal)
+                        NLogger.Debug($"HTTPPost: '{Link}' - '{Daten}' - '{retVal}'")
                     Catch exANE As ArgumentNullException
                         NLogger.Error(exANE)
                     Catch exWE As WebException
-                        NLogger.Error(exWE, "Link: {0}", Link)
+                        NLogger.Error(exWE, $"Link: {Link}")
                     End Try
                 End With
             End Using
