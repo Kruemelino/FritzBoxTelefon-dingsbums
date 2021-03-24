@@ -9,7 +9,8 @@
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="450">
+             d:DesignHeight="800" d:DesignWidth="450"
+             d:DataContext="{d:DesignInstance Type=fbd:ContactsViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -24,7 +25,6 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <!--<RowDefinition/>-->
 
         </Grid.RowDefinitions>
 
@@ -68,6 +68,14 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Orientation="Vertical">
+                <Button Style="{StaticResource IconTextButton}" Background="{StaticResource FusionRed}"
+                        Content="{x:Static localize:resTelefonbuch.strDelete}" Tag="{DynamicResource ContactDelete}"
+                        Command="{Binding DeleteCommand}" IsCancel="False"/>
+                
+                <Button Style="{StaticResource IconTextButton}" Background="{StaticResource Flirtatious}"
+                        Content="{x:Static localize:resTelefonbuch.strEdit}" Tag="{DynamicResource ContactEdit}"
+                        Command="{Binding EditCommand}" IsCancel="False"/>
+
                 <Button Style="{StaticResource IconTextButton}" Background="{StaticResource FusionRed}"
                         Content="{x:Static localize:resTelefonbuch.strCancel}" Tag="{DynamicResource Cancel}"
                         Command="{Binding CancelCommand}" IsCancel="True"/>

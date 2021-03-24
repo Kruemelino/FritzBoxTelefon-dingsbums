@@ -120,8 +120,17 @@
   <data name="strBrowse" xml:space="preserve">
     <value>Auswählen</value>
   </data>
+  <data name="strCallBarringList" xml:space="preserve">
+    <value>Rufsperren</value>
+  </data>
   <data name="strCancel" xml:space="preserve">
     <value>Abbruch</value>
+  </data>
+  <data name="strDelete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="strEdit" xml:space="preserve">
+    <value>Bearbeiten</value>
   </data>
   <data name="strFilter" xml:space="preserve">
     <value>Filter</value>
@@ -158,6 +167,12 @@
   </data>
   <data name="strQuestionBookDeleteID0" xml:space="preserve">
     <value>Das Telefonbuch '{0}' kann auf der Fritz!Box nicht gelöscht werden. Stattdessen werden alle Kontakte gelöscht. Fortfahren?</value>
+  </data>
+  <data name="strQuestionDeleteCallBarring" xml:space="preserve">
+    <value>Soll diese Rufsperre auf der Fritz!Box endgültig gelöscht werden?</value>
+  </data>
+  <data name="strQuestionDeleteContact" xml:space="preserve">
+    <value>Soll der Kontakt '{0}' im Telefonbuch '{1}' auf der Fritz!Box endgültig gelöscht werden?</value>
   </data>
   <data name="strSave" xml:space="preserve">
     <value>Speichern</value>

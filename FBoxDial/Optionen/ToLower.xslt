@@ -14,7 +14,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="@*">
+  <xsl:template match="email/@classifier">
     <xsl:attribute name="{name()}" namespace="{namespace-uri()}">
       <xsl:value-of select="translate(., $vUpper, $vLower)"/>
     </xsl:attribute>

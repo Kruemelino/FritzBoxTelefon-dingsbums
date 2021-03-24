@@ -16,21 +16,21 @@ Namespace Telefonbücher
 
                         ' Initialiesiere die Gesamtliste der Telefonbücher
                         Dim AlleTelefonbücher As New FritzBoxXMLTelefonbücher With {.NurHeaderDaten = False}
+                        Dim PhonebookURL As String = DfltStringEmpty
+
+                        ' Lade die xslt Transformationsdatei
+                        Dim xslt As New Xsl.XslCompiledTransform
+                        xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
+
+                        Dim AktuellePhoneBookXML As FritzBoxXMLTelefonbücher
 
                         ' Schleife durch alle ermittelten IDs
                         For Each PhonebookID In PhonebookIDs
-                            Dim PhonebookURL As String = DfltStringEmpty
 
                             ' Ermittle die URL zum Telefonbuch
                             If .GetPhonebook(PhonebookID, PhonebookURL) Then
 
-                                Dim AktuellePhoneBookXML As FritzBoxXMLTelefonbücher
-
                                 NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: '{PhonebookURL}'")
-
-                                ' Lade die xslt Transformationsdatei
-                                Dim xslt As New Xsl.XslCompiledTransform
-                                xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
 
                                 ' Lade das Telefonbuch herunter
                                 AktuellePhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(PhonebookURL, xslt)
@@ -54,6 +54,34 @@ Namespace Telefonbücher
                         If AlleTelefonbücher.Telefonbücher.Count.AreDifferentTo(PhonebookIDs.Count) Then
                             NLogger.Warn($"Es konnten nur {AlleTelefonbücher.Telefonbücher.Count} von {PhonebookIDs.Count} Telefonbüchern heruntergeladen werden.")
                         End If
+
+                        ' TODO: Ergänze Rufsperren
+                        If .GetCallBarringList(PhonebookURL) Then
+                            NLogger.Debug($"Rufsperren heruntergeladen: '{PhonebookURL}'")
+
+                            ' Lade das Telefonbuch herunter
+                            AktuellePhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(PhonebookURL, xslt)
+
+
+                            If AktuellePhoneBookXML IsNot Nothing Then
+                                ' Verarbeite die Telefonbücher
+                                For Each Telefonbuch In AktuellePhoneBookXML.Telefonbücher
+
+                                    ' Angabe, dass es sich um die Rufsperren handelt
+                                    Telefonbuch.Rufsperren = True
+
+                                    ' ID Setzen 258
+                                    Telefonbuch.ID = Telefonbuch.Owner.ToInt
+
+                                    ' Ändere Namen
+                                    Telefonbuch.Name = Localize.resTelefonbuch.strCallBarringList
+                                Next
+
+                                ' Füge die Telefonbücher zusammen
+                                AlleTelefonbücher.Telefonbücher.AddRange(AktuellePhoneBookXML.Telefonbücher)
+                            End If
+                        End If
+
 
                         Return AlleTelefonbücher
                     End If

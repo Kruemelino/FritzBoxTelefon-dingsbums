@@ -169,10 +169,10 @@
     <value>Entfernt alle Einträge dieser Liste...</value>
   </data>
   <data name="JournalImport_Label" xml:space="preserve">
-    <value>Journalimport</value>
+    <value>Anrufliste</value>
   </data>
   <data name="JournalImport_ScreenTipp" xml:space="preserve">
-    <value>Importiert die Anrufliste der Fritz!Box als Journaleinträge...</value>
+    <value>Zeigt die Anrufliste der Fritz!Box an und ermöglicht das Importieren als Journaleinträge...</value>
   </data>
   <data name="PhoneBooks_Label" xml:space="preserve">
     <value>Fritz!Box Telefonbücher</value>

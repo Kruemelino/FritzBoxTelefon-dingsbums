@@ -17,4 +17,5 @@
     ''' <param name="Anruf">Der zu verarbeitende Anruf.</param>
     Sub ErstelleEintrag(Anruf As FritzBoxXMLCall)
 
+    Sub BlockNumbers(Anruf As IEnumerable(Of String))
 End Interface

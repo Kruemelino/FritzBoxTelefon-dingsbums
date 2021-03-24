@@ -1,7 +1,10 @@
-﻿Public Class AnrListViewModel
+﻿Imports System.Collections
+
+Public Class AnrListViewModel
     Inherits NotifyBase
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IAnrListService
+    Private Property DialogService As IDialogService
 #Region "Felder"
 
     ''' <summary>
@@ -106,6 +109,7 @@
     Public Property ImportCommand As RelayCommand
     Public Property LoadedCommand As RelayCommand
     Public Property SelectAllCommand As RelayCommand
+    Public Property BlockCommand As RelayCommand
 #End Region
 
     Public Sub New()
@@ -113,14 +117,17 @@
         CancelCommand = New RelayCommand(AddressOf CancelImport)
         ImportCommand = New RelayCommand(AddressOf Import)
         SelectAllCommand = New RelayCommand(AddressOf SelectAll)
-
+        BlockCommand = New RelayCommand(AddressOf BlockNumbers)
         ' Window Command
         LoadedCommand = New RelayCommand(AddressOf Loaded)
 
         ' Interface
         DatenService = New AnrListService
+        DialogService = New DialogService
 
     End Sub
+
+
 
     Private Sub SelectAll(obj As Object)
 
@@ -176,7 +183,7 @@
         ' Initiiere die Anrufliste
         CallList = New ObservableCollectionEx(Of FritzBoxXMLCall)
         ' Lade die Anrufliste
-        CallList.AddRange((Await DatenService.GetAnrufListe).Calls)
+        CallList.AddRange((Await DatenService.GetAnrufListe)?.Calls)
 
         ' Selektiere Alle Anrufe im Startzeitraum 
         SelectItems()
@@ -218,6 +225,17 @@
 
     End Sub
 
+    Private Sub BlockNumbers(o As Object)
+
+        Dim BlockNumbers As IEnumerable(Of String) = From a In CType(o, IList).Cast(Of FritzBoxXMLCall)().ToList Select a.Gegenstelle
+
+        String.Join(", ", BlockNumbers)
+
+        If DialogService.ShowMessageBox(String.Format(Localize.LocAnrList.strQuestionBlockNumber, String.Join(", ", BlockNumbers))) = Windows.MessageBoxResult.Yes Then
+            DatenService.BlockNumbers(BlockNumbers)
+        End If
+
+    End Sub
 #End Region
 
 End Class

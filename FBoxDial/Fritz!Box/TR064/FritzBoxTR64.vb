@@ -10,8 +10,6 @@ Friend Class FritzBoxTR64
     Public Sub New()
         Dim Response As String = DfltStringEmpty
 
-        ErrorHashTable = New Hashtable
-
         ' ByPass SSL Certificate Validation Checking
         ServicePointManager.ServerCertificateValidationCallback = Function(se As Object, cert As System.Security.Cryptography.X509Certificates.X509Certificate, chain As System.Security.Cryptography.X509Certificates.X509Chain, sslerror As Security.SslPolicyErrors) True
 
@@ -46,34 +44,22 @@ Friend Class FritzBoxTR64
     Private Function TR064Start(SCPDURL As String, ActionName As String, Optional InputHashTable As Hashtable = Nothing) As Hashtable
 
         If Ping(XMLData.POptionen.ValidFBAdr) Then
-            Dim TR064Error As String
 
             With GetService(SCPDURL)
                 If?.ActionExists(ActionName) Then
                     If .CheckInput(ActionName, InputHashTable) Then
                         Return .Start(.GetActionByName(ActionName), InputHashTable)
                     Else
-                        TR064Error = $"InputData for Action ""{ActionName}"" not valid!"
+                        NLogger.Error($"InputData for Action '{ActionName}' not valid!")
                     End If
                 Else
-                    TR064Error = $"Action ""{ActionName}"" does not exist!"
+                    NLogger.Error($"Action '{ActionName}'does not exist!")
                 End If
             End With
 
-            If TR064Error.IsNotStringEmpty Then
-                NLogger.Error(TR064Error)
-                With ErrorHashTable
-                    .Clear()
-                    .Add("Error", TR064Error)
-                End With
-            End If
-        Else
-            With ErrorHashTable
-                .Clear()
-                .Add("Error", $"Gegenstelle ({XMLData.POptionen.ValidFBAdr}) nicht erreichbar!")
-            End With
         End If
-        Return ErrorHashTable
+
+        Return New Hashtable From {{"Error", DfltStringEmpty}}
     End Function
 
 #Region "Abfragen"
@@ -94,13 +80,13 @@ Friend Class FritzBoxTR64
 
                 NLogger.Debug($"Aktuelle SessionID der Fritz!Box: {SessionID}")
 
-                GetSessionID = True
+                Return True
             Else
                 SessionID = FritzBoxDefault.DfltFritzBoxSessionID
 
                 NLogger.Warn($"Keine SessionID der Fritz!Box erhalten. Rückgabewert: {SessionID}")
 
-                GetSessionID = False
+                Return False
             End If
         End With
 
@@ -134,8 +120,7 @@ Friend Class FritzBoxTR64
     '''     The parameters timestamp and id have to be used in combination. If only one of both is used, the feature Is Not supported. 
     ''' </param>
     ''' <returns>True when success</returns>
-    ''' <remarks>
-    ''' 
+    ''' <remarks> 
     ''' </remarks>
     Friend Function GetCallList(ByRef CallListURL As String) As Boolean
 
@@ -147,13 +132,13 @@ Friend Class FritzBoxTR64
 
                 NLogger.Debug($"Pfad zur Anrufliste der Fritz!Box: '{CallListURL}'")
 
-                GetCallList = True
+                Return True
             Else
                 CallListURL = DfltStringEmpty
 
                 NLogger.Warn($"Pfad zur Anrufliste der Fritz!Box konnte nicht ermittelt.")
 
-                GetCallList = False
+                Return False
             End If
         End With
 
@@ -175,13 +160,13 @@ Friend Class FritzBoxTR64
 
                 NLogger.Debug($"Telefonbuchliste der Fritz!Box: '{String.Join(", ", PhonebookList)}'")
 
-                GetPhonebookList = True
+                Return True
             Else
                 PhonebookList = {}
 
                 NLogger.Warn($"Telefonbuchliste der Fritz!Box konnte nicht ermittelt.")
 
-                GetPhonebookList = False
+                Return False
             End If
         End With
 
@@ -220,13 +205,13 @@ Friend Class FritzBoxTR64
 
                 NLogger.Debug($"Pfad zum Telefonbuch '{PhonebookName}' der Fritz!Box: '{PhonebookURL}'")
 
-                GetPhonebook = True
+                Return True
 
             Else
                 NLogger.Warn($"GetPhonebook konnte für das Telefonbuch {PhonebookID} nicht aufgelößt werden.")
                 PhonebookURL = DfltStringEmpty
 
-                GetPhonebook = False
+                Return False
             End If
         End With
 
@@ -286,13 +271,13 @@ Friend Class FritzBoxTR64
 
                 NLogger.Debug($"Telefonbucheintrag '{PhonebookEntryID}' aus Telefonbuch {PhonebookID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
 
-                GetPhonebookEntry = True
+                Return True
 
             Else
                 NLogger.Warn($"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryID}' aus Telefonbuch {PhonebookID} nicht aufgelößt werden.")
                 PhonebookEntryData = DfltStringEmpty
 
-                GetPhonebookEntry = False
+                Return False
             End If
 
         End With
@@ -318,13 +303,13 @@ Friend Class FritzBoxTR64
 
                 NLogger.Debug($"Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch {PhonebookID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
 
-                GetPhonebookEntryUID = True
+                Return True
 
             Else
                 NLogger.Warn($"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch {PhonebookID} nicht aufgelößt werden.")
                 PhonebookEntryData = DfltStringEmpty
 
-                GetPhonebookEntryUID = False
+                Return False
             End If
 
         End With
@@ -360,13 +345,13 @@ Friend Class FritzBoxTR64
                 ' Phonebook URL auslesen
                 PhonebookEntryUniqueID = CInt(.Item("NewPhonebookEntryUniqueID"))
 
-                SetPhonebookEntryUID = True
+                Return True
 
             Else
-                NLogger.Warn($"SetPhonebookEntryUID konnte für nicht aufgelößt werden.")
+                NLogger.Warn($"SetPhonebookEntryUID konnte nicht aufgelößt werden.")
                 PhonebookEntryUniqueID = -1
 
-                SetPhonebookEntryUID = False
+                Return False
             End If
         End With
 
@@ -404,6 +389,138 @@ Friend Class FritzBoxTR64
         End With
 
     End Function
+
+    ''' <summary>
+    ''' Returns a call barring entry by its PhonebookEntryID of the specific call barring phonebook. 
+    ''' </summary>
+    ''' <param name="PhonebookEntryID">ID of the specific call barring phonebook.</param>
+    ''' <param name="PhonebookEntryData">A call barring entry</param>
+    ''' <returns>True when success</returns>
+    Friend Function GetCallBarringEntry(PhonebookEntryID As Integer, ByRef PhonebookEntryData As String) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "GetCallBarringEntry", New Hashtable From {{"NewPhonebookEntryID", PhonebookEntryID}})
+
+            If .ContainsKey("NewPhonebookEntryData") Then
+                ' Phonebook URL auslesen
+                PhonebookEntryData = .Item("NewPhonebookEntryData").ToString
+
+                NLogger.Debug($"Rufsperre aus Telefonbuch {PhonebookEntryID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
+
+                Return True
+
+            Else
+                NLogger.Warn($"GetCallBarringEntry konnte für die ID {PhonebookEntryID} nicht aufgelößt werden.")
+
+                PhonebookEntryData = DfltStringEmpty
+
+                Return False
+            End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Returns a call barring entry by its number. If the number exists in the internal phonebook 
+    ''' but not in the specific call barring phonebook, error code 714 Is returned.
+    ''' </summary>
+    ''' <param name="Number">phone number</param>
+    ''' <param name="PhonebookEntryData">XML document with a single call barring entry.</param>
+    ''' <returns>True when success</returns>
+    Friend Function GetCallBarringEntryByNum(Number As String, ByRef PhonebookEntryData As String) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "GetCallBarringEntryByNum", New Hashtable From {{"NewNumber", Number}})
+
+            If .ContainsKey("NewPhonebookEntryData") Then
+                ' Phonebook URL auslesen
+                PhonebookEntryData = .Item("NewPhonebookEntryData").ToString
+
+                NLogger.Debug($"Rufsperre für die Nummer {Number} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
+
+                Return True
+
+            Else
+                NLogger.Warn($"GetCallBarringEntryByNum konnte für die Nummer {Number} nicht aufgelößt werden.")
+
+                PhonebookEntryData = DfltStringEmpty
+
+                Return False
+            End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Returns a url which leads to an xml formatted file which contains all entries of the call barring phonebook.
+    ''' </summary>
+    ''' <param name="PhonebookURL">Url of the call barring phonebook</param>
+    ''' <returns>True when success</returns>
+    Friend Function GetCallBarringList(ByRef PhonebookURL As String) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "GetCallBarringList")
+
+            If .ContainsKey("NewPhonebookURL") Then
+                ' Phonebook URL auslesen
+                PhonebookURL = .Item("NewPhonebookURL").ToString
+
+                NLogger.Debug($"Pfad zur Rufsperre der Fritz!Box: '{PhonebookURL}'")
+
+                Return True
+
+            Else
+                NLogger.Warn($"GetCallBarringList konnte für die Rufsperre nicht aufgelößt werden.")
+                PhonebookURL = DfltStringEmpty
+
+                Return False
+            End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Add a phonebook entry to the specific call barring phonebook. When no uniqueid is given 
+    ''' a new entry is created. Even when an entry with the given number is already existing.
+    ''' When a uniqueid is set which already exist, this entry will be overwritten. When a uniqueid
+    ''' is given which does not exist, a new entry is created and the new uniqueid is returned in argument NewPhonebookEntryUniqueID.
+    ''' </summary>
+    ''' <param name="PhonebookEntryData">XML document with a single call barring entry.</param>
+    ''' <param name="PhonebookEntryUniqueID">Unique identifier (number) for a single entry in the specific call barring phonebook.</param>
+    ''' <returns>True when success</returns>
+    Friend Function SetCallBarringEntry(PhonebookEntryData As String, Optional ByRef PhonebookEntryUniqueID As Integer = 0) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "SetCallBarringEntry", New Hashtable From {{"NewPhonebookEntryData", PhonebookEntryData}})
+
+            If .ContainsKey("NewPhonebookEntryUniqueID") Then
+                ' Phonebook URL auslesen
+                PhonebookEntryUniqueID = CInt(.Item("NewPhonebookEntryUniqueID"))
+
+                NLogger.Debug($"Rufsperre in der Fritz!Box angelegt: '{PhonebookEntryUniqueID}'")
+
+                Return True
+
+            Else
+                NLogger.Warn($"SetCallBarringEntry konnte keinen Eintrag anlegen: '{PhonebookEntryData}'")
+
+                PhonebookEntryUniqueID = -1
+
+                Return False
+            End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Delete an entry of the call barring phonebook by its uniqueid.
+    ''' </summary>
+    ''' <param name="NewPhonebookEntryUniqueID">uniqueid of an entry</param>
+    ''' <returns>True when success</returns>
+    Friend Function DeleteCallBarringEntryUID(NewPhonebookEntryUniqueID As Integer) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "DeleteCallBarringEntryUID", New Hashtable From {{"NewPhonebookEntryUniqueID", NewPhonebookEntryUniqueID}})
+            Return Not .ContainsKey("Error")
+
+        End With
+
+    End Function
 #End Region
 
 #Region "x_tamSCPD"
@@ -424,13 +541,13 @@ Friend Class FritzBoxTR64
 
                 PhoneNumbers = .Item("NewPhoneNumbers").ToString.Split(",")
 
-                GetTAMInfo = True
+                Return True
 
             Else
                 NLogger.Warn($"GetInfo konnte für nicht aufgelößt werden.")
                 PhoneNumbers = {}
 
-                GetTAMInfo = False
+                Return False
             End If
         End With
 
@@ -456,13 +573,13 @@ Friend Class FritzBoxTR64
                 ' Wenn keine TAM angeschlossen wurden, gib eine leere Klasse zurück
                 If TAMListe Is Nothing Then TAMListe = New TAMList
 
-                GetTAMList = True
+                Return True
 
             Else
                 NLogger.Warn($"GetList (TAM) konnte für nicht aufgelößt werden.")
                 TAMListe = Nothing
 
-                GetTAMList = False
+                Return False
             End If
         End With
 
@@ -484,14 +601,14 @@ Friend Class FritzBoxTR64
                 LKZ = .Item("NewX_AVM-DE_LKZ").ToString
                 LKZPrefix = .Item("NewX_AVM-DE_LKZPrefix").ToString
 
-                GetVoIPCommonCountryCode = True
+                Return True
 
             Else
                 NLogger.Warn($"LKZ und LKZPrefix konnten nicht ermittelt werden.")
                 LKZ = If(LKZ.IsStringNothing, DfltStringEmpty, LKZ)
                 LKZPrefix = If(LKZPrefix.IsStringNothing, DfltStringEmpty, LKZPrefix)
 
-                GetVoIPCommonCountryCode = False
+                Return False
             End If
         End With
 
@@ -511,14 +628,14 @@ Friend Class FritzBoxTR64
                 OKZ = .Item("NewX_AVM-DE_OKZ").ToString
                 OKZPrefix = .Item("NewX_AVM-DE_OKZPrefix").ToString
 
-                GetVoIPCommonAreaCode = True
+                Return True
 
             Else
                 NLogger.Warn($"OKZ und OKZPrefix konnten nicht ermittelt werden.")
                 OKZ = If(OKZ.IsStringNothing, DfltStringEmpty, OKZ)
                 OKZPrefix = If(OKZPrefix.IsStringNothing, DfltStringEmpty, OKZPrefix)
 
-                GetVoIPCommonAreaCode = False
+                Return False
             End If
         End With
 
@@ -535,13 +652,13 @@ Friend Class FritzBoxTR64
             If .ContainsKey("NewX_AVM-DE_PhoneName") Then
                 PhoneName = .Item("NewX_AVM-DE_PhoneName").ToString
 
-                DialGetConfig = True
+                Return True
 
             Else
                 NLogger.Warn($"X_AVM-DE_DialGetConfig konnte nicht aufgelößt werden.")
                 PhoneName = DfltStringEmpty
 
-                DialGetConfig = False
+                Return False
             End If
         End With
     End Function
@@ -597,13 +714,13 @@ Friend Class FritzBoxTR64
                 ' Wenn keine Nummern angeschlossen wurden, gib eine leere Klasse zurück
                 If NumberList Is Nothing Then NumberList = New SIPTelNrList
 
-                GetNumbers = True
+                Return True
 
             Else
                 NLogger.Warn($"X_AVM-DE_GetNumbers konnte für nicht aufgelößt werden.")
                 NumberList = Nothing
 
-                GetNumbers = False
+                Return False
             End If
         End With
 
@@ -629,13 +746,13 @@ Friend Class FritzBoxTR64
             If .ContainsKey("NewX_AVM-DE_PhoneName") Then
                 PhoneName = .Item("NewX_AVM-DE_PhoneName").ToString
 
-                GetPhonePort = True
+                Return True
 
             Else
                 NLogger.Warn($"X_AVM-DE_GetPhonePort konnte für id {i} nicht aufgelößt werden.")
                 PhoneName = DfltStringEmpty
 
-                GetPhonePort = False
+                Return False
             End If
         End With
 
@@ -662,19 +779,17 @@ Friend Class FritzBoxTR64
                 ' Wenn keine SIP-Clients angeschlossen wurden, gib eine leere Klasse zurück
                 If ClientList Is Nothing Then ClientList = New SIPClientList
 
-                GetSIPClients = True
+                Return True
 
             Else
                 NLogger.Warn($"X_AVM-DE_GetClients konnte für nicht aufgelößt werden.")
                 ClientList = Nothing
 
-                GetSIPClients = False
+                Return False
             End If
         End With
 
     End Function
-
-
 
 #End Region
 

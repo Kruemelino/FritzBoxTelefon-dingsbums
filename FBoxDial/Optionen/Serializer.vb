@@ -296,10 +296,11 @@ Friend Module Serializer
     Friend Function XMLClone(Of T)(Objekt As T) As T
         Dim tmp As String = DfltStringEmpty
 
-        If Not XmlSerializeToString(Objekt, tmp) OrElse Not XmlDeserializeFromString(tmp, XMLClone) Then
-            NLogger.Warn($"Fehler beim Klonen eines Objektes ({Objekt.GetType.Name}):  '{tmp}'")
+        If Objekt IsNot Nothing Then
+            If Not XmlSerializeToString(Objekt, tmp) OrElse Not XmlDeserializeFromString(tmp, XMLClone) Then
+                NLogger.Warn($"Fehler beim Klonen eines Objektes ({Objekt.GetType.Name}):  '{tmp}'")
+            End If
         End If
-
     End Function
 
 End Module

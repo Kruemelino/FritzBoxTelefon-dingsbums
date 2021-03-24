@@ -2,10 +2,6 @@
 
 Public Module FritzBoxInformations
 
-#Region "Lokale Variablen"
-    Friend ErrorHashTable As Hashtable
-#End Region
-
 #Region "Properties"
     Friend ReadOnly Property TR064ContentType As String = "text/xml; charset=""utf-8"""
     Friend ReadOnly Property TR064UserAgent As String = "AVM UPnP/1.0 Client 1.0"

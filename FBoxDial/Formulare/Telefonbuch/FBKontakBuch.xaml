@@ -10,7 +10,8 @@
         xmlns:localize="clr-namespace:FBoxDial.Localize"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=fbd:AppViewModel, IsDesignTimeCreatable=True}" 
-        Title="{x:Static localize:resTelefonbuch.strFritzBoxPhonebooks}" Height="450" Width="800">
+        Title="{x:Static localize:resTelefonbuch.strFritzBoxPhonebooks}" Height="450" Width="800"
+        fbd:WindowBehavior.Loaded="{Binding BookVM.LoadedCommand}">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -30,7 +31,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Orientation="Horizontal" Height="40" >
@@ -138,7 +139,7 @@
                     </Button.Content>
                 </Button>
 
-                <!--Edit-->
+                <!--Edit--><!--
                 <Button Style="{StaticResource MenuToolButton}"
                         ToolTip="{x:Static localize:resTelefonbuch.strToolTippKontaktEdit}"
                         Command="{Binding BookVM.ContactsVM.EditCommand}">
@@ -146,17 +147,17 @@
                     <Button.Content>
                         <ContentControl ContentTemplate="{StaticResource ContactEdit}"/>
                     </Button.Content>
-                </Button>
+                </Button>-->
 
                 <!--Remove-->
-                <Button Style="{StaticResource MenuToolButton}"
+                <!--<Button Style="{StaticResource MenuToolButton}"
                         ToolTip="{x:Static localize:resTelefonbuch.strToolTippKontaktDel}"
                         Command="{Binding BookVM.ContactsVM.DeleteCommand}">
                     
                     <Button.Content>
                         <ContentControl ContentTemplate="{StaticResource ContactDelete}"/>
                     </Button.Content>
-                </Button>
+                </Button>-->
             </StackPanel>
 
             

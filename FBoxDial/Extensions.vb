@@ -438,7 +438,7 @@ Public Module Extensions
                                 IPAdresse = _IPAddress.ToString
                                 ' Prüfen ob es eine generel gültige lokale IPv6 Adresse gibt: fd00::2665:11ff:fed8:6086
                                 ' und wie die zu ermitteln ist
-                                NLogger.Info($"IPv6: { .Address.ToString}, IPv4: {IPAdresse}")
+                                NLogger.Info($"IPv6: { .Address}, IPv4: {IPAdresse}")
                                 Exit For
                             End If
                         Next

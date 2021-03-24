@@ -52,4 +52,7 @@
     <SolidColorBrush x:Key="AlmostBlack" Color="#FF131313"/>
     
     <SolidColorBrush x:Key="FusionRed" Color="#fc5c65"/>
+    <SolidColorBrush x:Key="Flirtatious" Color="#fed330"/>
+    
+    
 </ResourceDictionary>

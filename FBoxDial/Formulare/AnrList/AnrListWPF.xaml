@@ -88,7 +88,7 @@
                 <Button Grid.Column="0" Grid.Row="0"
                         Style="{StaticResource IconTextButton}"
                         Content="{x:Static localize:LocAnrList.strStartJounalImport}"
-                        Tag="{DynamicResource Timeline_16x}" 
+                        Tag="{DynamicResource ShowTrimmedCallTree_16x}" 
                         Command="{Binding ImportCommand}"/>
 
                 <Button Grid.Column="1" Grid.Row="0"
@@ -111,10 +111,21 @@
 
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="{x:Static localize:resCommon.strCheckAll}" 
-                              Command="{Binding SelectAllCommand}" CommandParameter="True"/>
-                    <MenuItem Header="{x:Static localize:resCommon.strUncheckAll}" 
-                              Command="{Binding SelectAllCommand}" CommandParameter="False"/>
+                    <MenuItem Header="{x:Static localize:LocAnrList.strCheckAll}" 
+                              Command="{Binding SelectAllCommand}" CommandParameter="True"
+                              Icon="{DynamicResource CheckBoxChecked_16x}"/>
+                    
+                    <MenuItem Header="{x:Static localize:LocAnrList.strUncheckAll}" 
+                              Command="{Binding SelectAllCommand}" CommandParameter="False"
+                              Icon="{DynamicResource CheckBoxUnchecked_16x}"/>        
+                    
+                    <Separator/>
+                    
+                    <MenuItem Header="{x:Static localize:LocAnrList.strAddBlockList}"
+                              Icon="{DynamicResource StatusNo_16x}"
+                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Command="{Binding BlockCommand}"/>
+                    
                 </ContextMenu>
             </DataGrid.ContextMenu>
 

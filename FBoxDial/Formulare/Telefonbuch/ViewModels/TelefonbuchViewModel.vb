@@ -46,55 +46,13 @@ Public Class TelefonbuchViewModel
 #End Region
 
 #Region "ICommand"
-    Private _LadeFritzBoxTelefonbücher As ICommand
+    Public Property LoadedCommand As ICommand
     Public Property LadeFritzBoxTelefonbücher As ICommand
-        Get
-            Return _LadeFritzBoxTelefonbücher
-        End Get
-        Private Set
-            _LadeFritzBoxTelefonbücher = Value
-        End Set
-    End Property
-
-    Private _LadeFritzBoxKontakte As ICommand
     Public Property LadeFritzBoxKontakte As ICommand
-        Get
-            Return _LadeFritzBoxKontakte
-        End Get
-        Private Set
-            _LadeFritzBoxKontakte = Value
-        End Set
-    End Property
-
-    Private _NeuesFritzBoxTelefonbuch As ICommand
     Public Property NeuesFritzBoxTelefonbuch As ICommand
-        Get
-            Return _NeuesFritzBoxTelefonbuch
-        End Get
-        Private Set
-            _NeuesFritzBoxTelefonbuch = Value
-        End Set
-    End Property
-
-    Private _LöscheFritzBoxTelefonbuch As ICommand
     Public Property LöscheFritzBoxTelefonbuch As ICommand
-        Get
-            Return _LöscheFritzBoxTelefonbuch
-        End Get
-        Private Set
-            _LöscheFritzBoxTelefonbuch = Value
-        End Set
-    End Property
-
-    Private _ReNameTelefonbuch As ICommand
     Public Property NeuerTelefonbuchName As ICommand
-        Get
-            Return _ReNameTelefonbuch
-        End Get
-        Private Set
-            _ReNameTelefonbuch = Value
-        End Set
-    End Property
+
 
 #End Region
 
@@ -109,10 +67,12 @@ Public Class TelefonbuchViewModel
         NeuesFritzBoxTelefonbuch = New RelayCommand(AddressOf NeuesTelefonbuch, AddressOf CanAdd)
         LöscheFritzBoxTelefonbuch = New RelayCommand(AddressOf LöscheTelefonbuch, AddressOf CanRemove)
         NeuerTelefonbuchName = New RelayCommand(AddressOf TelefonbuchErstellen, AddressOf CanName)
-
-        'LadeTelefonbücher(Nothing)
+        ' Window Command
+        LoadedCommand = New RelayCommand(AddressOf LadeTelefonbücher)
 
     End Sub
+
+
 
 #Region "ICommand Callback"
     Private Sub LadeKontakte(o As Object)
@@ -123,11 +83,9 @@ Public Class TelefonbuchViewModel
         End With
     End Sub
 
-
     Private Async Sub LadeTelefonbücher(o As Object)
         ' Lade Fritz!Box Telefonbücher herunter
         LoadTelefonbücher(Await DatenService.GetTelefonbücher())
-
     End Sub
 
     Public Sub LoadTelefonbücher(Bücher As FritzBoxXMLTelefonbücher)
@@ -168,7 +126,7 @@ Public Class TelefonbuchViewModel
         End With
     End Sub
     Private Function CanRemove(o As Object) As Boolean
-        Return True
+        Return Not CType(o, FritzBoxXMLTelefonbuch).Rufsperren
     End Function
 
     Private Async Sub TelefonbuchErstellen(o As Object)

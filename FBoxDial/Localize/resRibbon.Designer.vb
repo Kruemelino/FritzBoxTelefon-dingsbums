@@ -218,7 +218,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Journalimport ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufliste ähnelt.
         '''</summary>
         Public Shared ReadOnly Property JournalImport_Label() As String
             Get
@@ -227,7 +227,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Importiert die Anrufliste der Fritz!Box als Journaleinträge... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt die Anrufliste der Fritz!Box an und ermöglicht das Importieren als Journaleinträge... ähnelt.
         '''</summary>
         Public Shared ReadOnly Property JournalImport_ScreenTipp() As String
             Get

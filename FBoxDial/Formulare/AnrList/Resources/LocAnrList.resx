@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="strAddBlockList" xml:space="preserve">
+    <value>Nummer auf Anrufsperre der Fritz!Box setzen</value>
+  </data>
   <data name="strCancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="strPort" xml:space="preserve">
     <value>Port</value>
+  </data>
+  <data name="strQuestionBlockNumber" xml:space="preserve">
+    <value>Sollen die selektierten Nummern {0} zu den Rufsperren der Fritz!Box hinzugefügt werden?</value>
   </data>
   <data name="strRemoteCaller" xml:space="preserve">
     <value>Gegenstelle</value>

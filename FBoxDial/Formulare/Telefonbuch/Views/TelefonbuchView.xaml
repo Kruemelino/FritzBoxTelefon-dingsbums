@@ -9,7 +9,7 @@
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=fbd:TelefonbuchViewModel, IsDesignTimeCreatable=True}"  
+             d:DataContext="{d:DesignInstance Type=fbd:TelefonbuchViewModel, IsDesignTimeCreatable=False}"  
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
@@ -49,6 +49,8 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
+
+        <GridSplitter Grid.Column="0" Grid.Row="1" Width="1"  />
 
         <Grid Grid.Column="1" Grid.RowSpan="2">
             <Grid.RowDefinitions>

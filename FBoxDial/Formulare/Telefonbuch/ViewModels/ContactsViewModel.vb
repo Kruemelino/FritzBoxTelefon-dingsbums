@@ -112,6 +112,7 @@ Public Class ContactsViewModel
     End Function
 
 #End Region
+
     Public Sub New(dataService As IContactDataService, dialogService As IDialogService)
         _DatenService = dataService
         _DialogService = dialogService
@@ -134,12 +135,25 @@ Public Class ContactsViewModel
 
 #Region "ICommand Callback"
     Private Sub Delete(o As Object)
-        If DialogService.ShowMessageBox($"Soll der Kontakt '{FBoxKontakt.Person.RealName}' im Telefonbuch '{FBoxTelefonbuch.Name}' auf der Fritz!Box endgültig gelöscht werden?") = Windows.MessageBoxResult.Yes Then
-            ' lösche den Kontakt auf der Box
-            If _DatenService.DeleteKontakt(FBoxTelefonbuch.ID, FBoxKontakt.Uniqueid) Then
-                FBoxTelefonbuch.DeleteKontakt(FBoxKontakt)
+        If FBoxTelefonbuch.Rufsperren Then
+            If DialogService.ShowMessageBox(Localize.resTelefonbuch.strQuestionDeleteCallBarring) = Windows.MessageBoxResult.Yes Then
+                ' Lösche die Rufsperre auf der Fritz!Box
+                If DatenService.DeleteRufsperre(FBoxKontakt.Uniqueid) Then
+                    FBoxTelefonbuch.DeleteKontakt(FBoxKontakt)
+                End If
             End If
+
+            Else
+
+            If DialogService.ShowMessageBox(String.Format(Localize.resTelefonbuch.strQuestionDeleteContact, FBoxKontakt.Person.RealName, FBoxTelefonbuch.Name)) = Windows.MessageBoxResult.Yes Then
+                ' lösche den Kontakt auf der Box
+                If DatenService.DeleteKontakt(FBoxTelefonbuch.ID, FBoxKontakt.Uniqueid) Then
+                    FBoxTelefonbuch.DeleteKontakt(FBoxKontakt)
+                End If
+            End If
+
         End If
+
     End Sub
 
     Private Function CanDelete(o As Object) As Boolean
@@ -153,6 +167,8 @@ Public Class ContactsViewModel
         FBoxTelefonbuch.AddContact(NeuerKontakt)
 
         FBoxKontakt = NeuerKontakt
+
+        IsEditMode = True
     End Sub
 
     Private Function CanAddKontakt(o As Object) As Boolean
@@ -172,8 +188,12 @@ Public Class ContactsViewModel
     End Sub
 
     Private Sub Save(o As Object)
-        ' Lade den Kontakt hoch und setze die UID
-        FBoxKontakt.Uniqueid = DatenService.SetKontakt(FBoxTelefonbuch.ID, FBoxKontakt.GetXMLKontakt)
+        If FBoxTelefonbuch.Rufsperren Then
+            FBoxKontakt.Uniqueid = DatenService.SetRufsperre(FBoxKontakt)
+        Else
+            ' Lade den Kontakt hoch und setze die UID
+            FBoxKontakt.Uniqueid = DatenService.SetKontakt(FBoxTelefonbuch.ID, FBoxKontakt.GetXMLKontakt)
+        End If
 
         ' Lösche den Clone
         FBoxKontaktClone = Nothing
@@ -200,7 +220,7 @@ Public Class ContactsViewModel
     End Function
 
     Private Function CanEdit(o As Object) As Boolean
-        Return FBoxKontakt IsNot Nothing
+        Return FBoxKontakt IsNot Nothing And Not IsEditMode
         'Return Not IsEditMode
     End Function
 

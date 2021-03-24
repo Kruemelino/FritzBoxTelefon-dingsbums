@@ -16,9 +16,9 @@ Imports Microsoft.Office.Interop.Outlook
 
     Private _Kategorie As Integer
     ''' <summary>
-    ''' Wichtige Person = 1
+    ''' Wichtige Person = 1, Optional, VIP == 1
     ''' </summary>
-    <XmlElement("category")> Public Property Kategorie As Integer
+    <XmlElement("category", GetType(Integer))> Public Property Kategorie As Integer
         Get
             Return _Kategorie
         End Get
@@ -41,7 +41,7 @@ Imports Microsoft.Office.Interop.Outlook
     ''' <summary>
     ''' Unique ID for a single contact (new since 2013-04-20) 
     ''' </summary> 
-    <XmlElement("uniqueid")> Public Property Uniqueid As Integer
+    <XmlElement("uniqueid", GetType(Integer))> Public Property Uniqueid As Integer
         Get
             Return _Uniqueid
         End Get

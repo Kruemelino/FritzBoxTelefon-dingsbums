@@ -65,6 +65,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nummer auf Anrufsperre der Fritz!Box setzen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAddBlockList() As String
+            Get
+                Return ResourceManager.GetString("strAddBlockList", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Abbrechen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCancel() As String
@@ -187,6 +196,15 @@ Namespace Localize
         Public Shared ReadOnly Property strPort() As String
             Get
                 Return ResourceManager.GetString("strPort", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen die selektierten Nummern {0} zu den Rufsperren der Fritz!Box hinzugefügt werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strQuestionBlockNumber() As String
+            Get
+                Return ResourceManager.GetString("strQuestionBlockNumber", resourceCulture)
             End Get
         End Property
         

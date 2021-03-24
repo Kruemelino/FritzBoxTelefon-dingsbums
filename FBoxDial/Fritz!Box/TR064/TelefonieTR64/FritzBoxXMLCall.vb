@@ -165,7 +165,7 @@
             Return _XMLDuration
         End Get
         Set
-            _XMLDuration = Value
+            SetProperty(_XMLDuration, Value)
         End Set
     End Property
 
@@ -181,8 +181,20 @@
 
     Private _Path As String
     ''' <summary>
-    '''  URL path to TAM or FAX file. 
+    '''  A call list may contain URLs for telephone answering machine messages or fax messages.
+    '''  The content can be downloaded ising the protocol, hostname and port with the path URL.<br/>
+    '''  An example is described here:<br/>
+    '''  Protocol: https
+    '''  Hostname: fritz.box
+    '''  Port: 49443
+    '''  path URL :  /download.lua?path=/var/media/ftp/USB/FRITZ/voicebox/rec/rec.0.000
+    '''  The combination of<br/>
+    '''  Protocoll + :// + Hostname + : + Port + path URL<br/>
+    '''  will be the complete URL<br/>
+    '''  https://fritz.box:49443/download.lua?path=/var/media/ftp/USB/FRITZ/voicebox/rec/rec.0.000<br/>
+    '''  Please note, that this URL might require authentication. 
     ''' </summary>
+    ''' <returns>URL path to TAM or FAX file.</returns>
     <XmlElement("Path")> Public Property Path As String
         Get
             Return _Path

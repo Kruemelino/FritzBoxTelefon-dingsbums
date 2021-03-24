@@ -107,7 +107,7 @@
     </Style>
 
     <Style x:Key="DetailBorder" TargetType="Border">
-        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="Background" Value="{StaticResource LightBlueGreyGradient}"/>
     </Style>
 
@@ -133,7 +133,7 @@
             <Setter.Value>
                 <!-- What are control templates? Visit: https://dzone.com/articles/control-templates-wpf -->
                 <ControlTemplate TargetType="{x:Type TextBoxBase}">
-                    <Border Name="Border" CornerRadius="3" Padding="2" 
+                    <Border Name="Border" CornerRadius="0" Padding="2" 
                             Background="White" 
                             BorderBrush="{StaticResource BlueHorizon}" 
                             BorderThickness="1" >
@@ -183,7 +183,7 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Width" Value="100"/>
-        <Setter Property="Height" Value="40"/>
+        <Setter Property="Height" Value="30"/>
 
         <Setter Property="ContentTemplate">
             <Setter.Value>

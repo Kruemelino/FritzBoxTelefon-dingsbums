@@ -18,4 +18,10 @@ Public Interface IContactDataService
 
     Function DeleteKontakt(TelefonbuchID As Integer, UID As Integer) As Boolean
 #End Region
+
+#Region "Fritz!Box Rufsperren"
+    Function SetRufsperre(XMLDaten As FritzBoxXMLKontakt) As Integer
+
+    Function DeleteRufsperre(UID As Integer) As Boolean
+#End Region
 End Interface

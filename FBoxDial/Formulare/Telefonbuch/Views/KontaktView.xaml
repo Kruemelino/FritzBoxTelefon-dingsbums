@@ -26,20 +26,16 @@
             <!--<ColumnDefinition Width="16"/>-->
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-
         <!--<Image Grid.Column="0" Margin="5"
                Source="{Binding ImagePath, FallbackValue={StaticResource DefaultContactImage}, TargetNullValue={StaticResource DefaultContactImage}}"/>-->
-        <ContentControl Grid.Column="0" Grid.RowSpan="3" Margin="5"
+        <ContentControl Grid.Column="0" Margin="5"
                         ContentTemplate="{StaticResource DefaultContactImage}"/>
 
-        <StackPanel Grid.Column="1" Grid.RowSpan="3" Margin="5" VerticalAlignment="Center">
+        <StackPanel Grid.Column="1" Margin="5" VerticalAlignment="Center">
             <Label FontSize="16">
-                <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Person.RealName, FallbackValue=N/A}" FontSize="16"/>
+                <TextBlock Text="{Binding Person.RealName, FallbackValue=N/A}" 
+                           FontSize="12" 
+                           TextWrapping="Wrap"/>
             </Label>
         </StackPanel>
 

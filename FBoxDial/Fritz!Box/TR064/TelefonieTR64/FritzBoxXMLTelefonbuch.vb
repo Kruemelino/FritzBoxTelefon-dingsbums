@@ -77,6 +77,8 @@
         End Get
     End Property
 
+    <XmlIgnore> Friend Property Rufsperren As Boolean = False
+
 #End Region
 
 #Region "Funktionen"

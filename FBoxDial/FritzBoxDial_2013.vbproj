@@ -272,6 +272,7 @@
       <DependentUpon>OptCtrlTV.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
+    <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Fritz!Box\TR064\XMLTR64\AllowedValueRange.vb" />
     <Compile Include="Localize\resCommon.Designer.vb">
       <DependentUpon>resCommon.resx</DependentUpon>
