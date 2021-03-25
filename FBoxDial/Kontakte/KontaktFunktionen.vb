@@ -523,7 +523,7 @@ Friend Module KontaktFunktionen
         End With
     End Sub
 
-    Friend Function ErstelleXMLKontakt(olContact As ContactItem) As FritzBoxXMLKontakt
+    <Extension> Friend Function ErstelleXMLKontakt(olContact As ContactItem) As FritzBoxXMLKontakt
 
         ' Erstelle ein nen neuen XMLKontakt
         Dim XMLKontakt As New FritzBoxXMLKontakt
@@ -559,4 +559,21 @@ Friend Module KontaktFunktionen
         Return XMLKontakt
     End Function
 
+    ''' <summary>
+    ''' Überführt eine Auflistung von <see cref="ContactItem"/> zu einer Auflistung von XML_Strings (Fritz!Box Telefonbuch). 
+    ''' </summary>
+    ''' <param name="olContacts">Die Auflistung von <see cref="ContactItem"/></param>
+    ''' <returns>Auflistung von XML_Strings (Fritz!Box Telefonbuch)</returns>
+    ''' <remarks>Die Auflistung kann leere Strings enthalten.</remarks>
+    <Extension> Friend Function ErstelleXMLKontakte(olContacts As IEnumerable(Of ContactItem)) As IEnumerable(Of String)
+        Return olContacts.Select(Function(X)
+                                     Dim NeuerKontakt As String = DfltStringEmpty
+                                     If XmlSerializeToString(X.ErstelleXMLKontakt, NeuerKontakt) Then
+                                         Return NeuerKontakt
+                                     Else
+                                         NLogger.Warn($"Der Kontakt {X.FullNameAndCompany} kann nicht serialisiert werden.")
+                                         Return DfltStringEmpty
+                                     End If
+                                 End Function)
+    End Function
 End Module

@@ -237,7 +237,7 @@ Namespace Telefonbücher
                     With fbtr064
                         Dim UID As Integer = -1
                         If .SetPhonebookEntryUID(TelefonbuchID, XMLDaten, UID) Then
-                            NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box angelegt.")
+                            NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} der Fritz!Box angelegt.")
                             Return UID
                         End If
                     End With
@@ -245,6 +245,29 @@ Namespace Telefonbücher
             End If
             Return -1
         End Function
+
+        Friend Async Sub SetTelefonbuchEintrag(TelefonbuchID As Integer, XMLDaten As IEnumerable(Of String))
+
+            Using fbtr064 As New FritzBoxTR64
+                With fbtr064
+
+                    For Each Kontakt In XMLDaten
+                        If Kontakt.IsNotStringNothingOrEmpty Then
+                            Await Task.Run(Sub()
+                                               Dim UID As Integer = -1
+                                               If .SetPhonebookEntryUID(TelefonbuchID, Kontakt, UID) Then
+                                                   NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} der Fritz!Box angelegt.")
+                                               End If
+                                           End Sub)
+
+                        End If
+                    Next
+
+                End With
+            End Using
+
+        End Sub
+
 
         Friend Function DeleteTelefonbuchEintrag(TelefonbuchID As Integer, UID As Integer) As Boolean
             Using fbtr064 As New FritzBoxTR64

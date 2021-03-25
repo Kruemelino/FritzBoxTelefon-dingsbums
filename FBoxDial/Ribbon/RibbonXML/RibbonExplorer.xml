@@ -123,5 +123,9 @@
       <menuSeparator id="Seperator_CM3"/>
       <button id="Dial_CMM" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuMultipleItems">
+      <menuSeparator id="Seperator_CM4"/>
+      <dynamicMenu id="Upload_CMulti" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="FillDynamicMenuTelBk" invalidateContentOnDrop="true" getVisible="GetVisibleContextMenuMultipleItems"/>
+    </contextMenu>
   </contextMenus>
 </customUI>

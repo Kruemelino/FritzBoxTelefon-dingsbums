@@ -251,4 +251,13 @@ Public Class resImageMso
             Return ResourceManager.GetString("UploadBk_ImageMso", resourceCulture)
         End Get
     End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die JunkEmailAddToBlockedSendersList ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property UploadSl_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("UploadSl_ImageMso", resourceCulture)
+        End Get
+    End Property
 End Class

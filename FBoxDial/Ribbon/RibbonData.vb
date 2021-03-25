@@ -16,24 +16,6 @@ Namespace RibbonData
             ImageMso
         End Enum
 
-        ''' <summary>
-        ''' Mögliche Anwendungen, die durch den Klick auf ein Button/Ribbon ausgelöst werden können.
-        ''' Warum, die Englisch sind? Keine Ahnung.
-        ''' </summary>
-        Friend Enum RibbonTask
-            OpenConfig          ' Explorer: Einstellung Öffnen
-            OpenJournalimport   ' Explorer: Journalimport öffnen
-            ShowAnrMon          ' Explorer: Letzten Anrufer anzeigen
-            AnrMonAnAus         ' Explorer: Anrufmonitor Starten/Stoppen
-            DialExplorer        ' Explorer: Klassischen Wähldialog über das ausgewählte Objekt öffnen
-            DialDirekt          ' Explorer: Direktwahl öffnen
-            FBoxTelBücher       ' Explorer: Fritz!Box Telefonbücher
-            DialInspector       ' Inspector: Wähldialog öffnen 
-            DialIMLayer         ' IMLayer: Wähldialog öffnen 
-            CreateContact       ' Inspector: Journal, Kontakt erstellen
-            StartRWS            ' Inspector: Rückwärtssuche starten
-        End Enum
-
         Private Sub Window_Closed(sender As Object, e As EventArgs)
 
             ' Window der Variable zuweisen
@@ -134,10 +116,10 @@ Namespace RibbonData
                 ' Sucht nach der angegebenen Methode, deren Parameter den angegebenen Argumenttypen und -modifizierern entsprechen, und 
                 ' verwendet dabei die angegebenen Bindungseinschränkungen und die angegebene Aufrufkonvention.
                 mInfo = GetType(RibbonData).GetMethod(KeyRes,
-                                                  BindingFlags.NonPublic Or BindingFlags.Static,
-                                                  Nothing,
-                                                  TypeArray,
-                                                  Nothing)
+                                                      BindingFlags.NonPublic Or BindingFlags.Static,
+                                                      Nothing,
+                                                      TypeArray,
+                                                      Nothing)
 
             Catch ex As Exception
                 NLogger.Error(ex, $"GetMethod({KeyRes})")
@@ -389,21 +371,29 @@ Namespace RibbonData
         End Sub
 
         ''' <summary>
-        ''' Lädt den übergebenen Kontakt in die Fritz!Box hoch
+        ''' Lädt den übergebenen Kontakte in die Fritz!Box hoch
         ''' </summary>
-        ''' <param name="OutlookContactItem"></param>
+        ''' <param name="OutlookContactItems"></param>
         ''' <param name="BookID"></param>
-        Private Sub UploadBk(OutlookContactItem As Outlook.ContactItem, BookID As String)
-            Dim NeuerKontakt As String = DfltStringEmpty
+        Private Sub UploadBk(OutlookContactItems As IEnumerable(Of Outlook.ContactItem), BookID As String)
 
-            If XmlSerializeToString(ErstelleXMLKontakt(OutlookContactItem), NeuerKontakt) Then
-                ' Lödt den Kontakt in das Telefonbuch hoch
-                Telefonbücher.SetTelefonbuchEintrag(BookID.ToInt, NeuerKontakt)
+            NLogger.Debug($"Füge {OutlookContactItems.Count} Einträge zum Telefonbuch (ID{BookID}) hinzu.")
 
-            End If
+            Dim XmlContactItems As IEnumerable(Of String) = OutlookContactItems.ErstelleXMLKontakte
+            ' Lödt den Kontakt in das Telefonbuch hoch
+            If XmlContactItems.Any Then Telefonbücher.SetTelefonbuchEintrag(BookID.ToInt, XmlContactItems)
 
         End Sub
+        Private Sub UploadSl(OutlookContactItems As IEnumerable(Of Outlook.ContactItem), BookID As String)
 
+            NLogger.Debug($"Füge {OutlookContactItems.Count} Einträge zur Sperrliste (ID{BookID}) hinzu.")
+
+            Dim XmlContactItems As IEnumerable(Of String) = OutlookContactItems.ErstelleXMLKontakte
+            ' Lödt den Kontakt in das Telefonbuch der Rufsperre hoch
+            If XmlContactItems.Any Then AddToCallBarring(XmlContactItems)
+
+
+        End Sub
 #End Region
 
 #Region "Control Enabled"
@@ -687,25 +677,25 @@ Namespace RibbonData
 
                 ' Trage die einzelnen Bücher ein
                 For Each Buch In TelBk.Telefonbücher
-                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Name, Buch.ID, ListName))
+                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Name, Buch.ID, Buch.Rufsperren, ListName))
                 Next
             End With
 
             Return XDynaMenu.InnerXml
         End Function
 
-        Private Function CreateDynMenuButton(xDoc As XmlDocument, TelefonbuchName As String, BuchID As Integer, Tag As String) As XmlElement
+        Private Function CreateDynMenuButton(xDoc As XmlDocument, TelefonbuchName As String, BuchID As Integer, Sperrliste As Boolean, Tag As String) As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
 
             XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
 
             XAttribute = xDoc.CreateAttribute("id")
-            XAttribute.Value = $"{Tag}Bk_{BuchID}"
+            XAttribute.Value = $"{Tag}{If(Sperrliste, "Sl", "Bk")}_{BuchID}"
             XButton.Attributes.Append(XAttribute)
 
             XAttribute = xDoc.CreateAttribute("tag")
-            XAttribute.Value = BuchID.ToString
+            XAttribute.Value = $"{BuchID}"
             XButton.Attributes.Append(XAttribute)
 
             XAttribute = xDoc.CreateAttribute("label")

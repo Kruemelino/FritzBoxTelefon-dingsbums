@@ -55,7 +55,7 @@ Imports FBoxDial.RibbonData
 
 #End Region
 
-#Region "Ribbon Inspector Office 2010 bis Office 2019" ' Ribbon Inspektorfenster
+#Region "Ribbon Office 2010 bis Office 2019" ' Ribbon Inspektorfenster
 
     ''' <summary>
     ''' Funktion ermittelt anhand des Controls und dessen Context das JournalItem.
@@ -102,7 +102,6 @@ Imports FBoxDial.RibbonData
     Public Function GetItemImageMsoJournal(control As IRibbonControl) As String
         Return JournalRibbonContent(GetJournalItem(control), control.Id, Typ.ImageMso)
     End Function
-
 
     ''' <summary>
     ''' Gibt zurück, ob das Wählen möglich ist.
@@ -174,10 +173,22 @@ Imports FBoxDial.RibbonData
         Return AnrMonRibbonContent(control.Id, Typ.ImageMso)
     End Function
 
+    Public Function GetVisibleContextMenuMultipleItems(control As IRibbonControl) As Boolean
+
+        If TypeOf control.Context Is Outlook.Selection Then
+
+            With CType(control.Context, Outlook.Selection)
+                Return .OfType(Of Outlook.ContactItem).Any
+
+            End With
+
+        End If
+        Return False
+    End Function
+
 #End Region 'Ribbon Inspector
 
 #Region "Ribbon: Label, ScreenTipp, ImageMso, OnAction"
-
 #Disable Warning IDE0060 ' Nicht verwendete Parameter entfernen
     Public Function GetPressed(control As IRibbonControl) As Boolean
         Return GetPressedAnrMon()
@@ -269,6 +280,7 @@ Imports FBoxDial.RibbonData
         Return GetDynamicMenuRWS(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem), control.Id)
     End Function
 #End Region
+
 #Region "Telefonbücher"
     Public Function FillDynamicMenuTelBk(control As IRibbonControl) As String
         Return GetDynamicMenuTelBk(control.Id)
@@ -329,23 +341,28 @@ Imports FBoxDial.RibbonData
 #Region "Telefonbücher"
     Public Sub BtnOnActionBk(control As IRibbonControl)
 
-        Dim oKontakt As Outlook.ContactItem = Nothing
+        Dim oKontakte As New List(Of Outlook.ContactItem)
 
         Select Case True
             Case TypeOf control.Context Is Outlook.Selection
-                oKontakt = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+
+                With CType(control.Context, Outlook.Selection)
+                    oKontakte.AddRange(.OfType(Of Outlook.ContactItem))
+                End With
+
 
             Case TypeOf control.Context Is Outlook.Inspector
-                oKontakt = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
+                oKontakte.Add(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem))
 
         End Select
 
-        GetRibbonAction(control.Id, oKontakt, control.Tag)
+        GetRibbonAction(control.Id, oKontakte, control.Tag)
 
         ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
         ' Zeichne Ribbon neu
         RibbonObjekt.Invalidate()
     End Sub
+
 #End Region
 
 End Class

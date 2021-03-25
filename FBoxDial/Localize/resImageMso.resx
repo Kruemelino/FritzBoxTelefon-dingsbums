@@ -177,6 +177,9 @@
   <data name="UploadBk_ImageMso" xml:space="preserve">
     <value>AddressBook</value>
   </data>
+  <data name="UploadSl_ImageMso" xml:space="preserve">
+    <value>JunkEmailAddToBlockedSendersList</value>
+  </data>
   <data name="Upload_ImageMso" xml:space="preserve">
     <value>DistributionListAddNewMember</value>
   </data>
