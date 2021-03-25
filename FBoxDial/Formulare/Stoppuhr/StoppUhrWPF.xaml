@@ -55,9 +55,27 @@
                        Style="{StaticResource Zeit}"
                        Text="{Binding Path=Beginn, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"/>
 
-            <TextBlock Grid.Row="2"
-                       Style="{StaticResource Stoppuhr}" FontSize="20"
-                       Text="{Binding Path=Dauer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=hh\\:mm\\:ss}"/>
+            <Grid Grid.Row="2">
+                <ContentControl HorizontalAlignment="Left" Width="15" Margin="4">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="ContentTemplate" Value="{StaticResource CallMade}" />
+                            
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Eingehend, Mode=OneWay}" Value="True">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource CallReceived}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+
+                <TextBlock HorizontalAlignment="Center"
+                           Style="{StaticResource Stoppuhr}" FontSize="20"
+                           Text="{Binding Path=Dauer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=hh\\:mm\\:ss}"/>
+            </Grid>
+            
+
 
             <TextBlock Grid.Row="3"
                        Style="{StaticResource Zeit}"

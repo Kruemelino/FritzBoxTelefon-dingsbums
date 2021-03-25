@@ -105,7 +105,15 @@ Public Class StoppUhrViewModel
         End Set
     End Property
 
-
+    Private _Eingehend As Boolean
+    Public Property Eingehend As Boolean
+        Get
+            Return _Eingehend
+        End Get
+        Set
+            SetProperty(_Eingehend, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "ICommand"
@@ -136,6 +144,9 @@ Public Class StoppUhrViewModel
 
         ' Anrufer Name setzen
         Name = StoppUhrTelefonat.NameGegenstelle
+
+        ' Anrufrichtung festlegen
+        Eingehend = StoppUhrTelefonat.AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
 
         ' Starte die Stoppuhr
         If StoppUhr Is Nothing Then
