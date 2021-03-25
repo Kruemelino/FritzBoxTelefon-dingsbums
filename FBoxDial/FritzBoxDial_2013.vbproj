@@ -412,6 +412,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Optionen\Utf8StringWriter.vb" />
     <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="Kontakte\NummernTypen.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />

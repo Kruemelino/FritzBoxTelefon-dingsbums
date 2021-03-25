@@ -55,7 +55,6 @@ Namespace Telefonbücher
                             NLogger.Warn($"Es konnten nur {AlleTelefonbücher.Telefonbücher.Count} von {PhonebookIDs.Count} Telefonbüchern heruntergeladen werden.")
                         End If
 
-                        ' TODO: Ergänze Rufsperren
                         If .GetCallBarringList(PhonebookURL) Then
                             NLogger.Debug($"Rufsperren heruntergeladen: '{PhonebookURL}'")
 

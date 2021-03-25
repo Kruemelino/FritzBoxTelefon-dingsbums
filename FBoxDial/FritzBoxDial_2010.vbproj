@@ -98,7 +98,7 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug2013\</OutputPath>
+    <OutputPath>bin\Debug2010\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -129,7 +129,7 @@
     <DefineTrace>true</DefineTrace>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release2013\</OutputPath>
+    <OutputPath>bin\Release2010\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -272,6 +272,8 @@
       <DependentUpon>OptCtrlTV.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
+    <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\AllowedValueRange.vb" />
     <Compile Include="Localize\resCommon.Designer.vb">
       <DependentUpon>resCommon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -410,6 +412,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Optionen\Utf8StringWriter.vb" />
     <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="Kontakte\NummernTypen.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />
@@ -701,6 +704,9 @@
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Optionen\ToLower.xslt" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -723,19 +729,19 @@
   <PropertyGroup>
     <ManifestCertificateThumbprint>2D0955976091F4222A13E5EB76912871C33A16B3</ManifestCertificateThumbprint>
   </PropertyGroup>
-	<!-- Include the build rules for a Visual Basic project. -->
-	<Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
-	<!-- Include additional build rules for an Office application add-in. -->
-	<Import Project="$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" Condition="'$(VSToolsPath)' != ''" />
-	<!-- This section defines VSTO properties that describe the host-changeable project properties. -->
-	<ProjectExtensions>
-		<VisualStudio>
-			<FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-				<ProjectProperties HostName="Outlook" HostPackage="{20A848B8-E01F-4801-962E-25DB0FF57389}" OfficeVersion="14.0" VstxVersion="4.0" ApplicationType="Outlook" Language="vb" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\14.0\Outlook\InstallRoot\Path#outlook.exe" AddItemTemplatesGuid="{5D898164-AEB5-470F-97BA-9253F022FD71}" />
-				<Host Name="Outlook" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
-					<HostItem Name="ThisAddIn" Code="ThisAddIn.vb" CanonicalName="AddIn" PublishedHash="341B421006973DA6ECFF9E7771C273C5532C588D" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.vb" />
-				</Host>
-			</FlavorProperties>
-		</VisualStudio>
-	</ProjectExtensions>
+  <!-- Include the build rules for a Visual Basic project. -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- Include additional build rules for an Office application add-in. -->
+  <Import Project="$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- This section defines VSTO properties that describe the host-changeable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
+        <ProjectProperties HostName="Outlook" HostPackage="{20A848B8-E01F-4801-962E-25DB0FF57389}" OfficeVersion="14.0" VstxVersion="4.0" ApplicationType="Outlook" Language="vb" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\14.0\Outlook\InstallRoot\Path#outlook.exe" AddItemTemplatesGuid="{5D898164-AEB5-470F-97BA-9253F022FD71}" />
+        <Host Name="Outlook" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.vb" CanonicalName="AddIn" PublishedHash="341B421006973DA6ECFF9E7771C273C5532C588D" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.vb" />
+        </Host>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

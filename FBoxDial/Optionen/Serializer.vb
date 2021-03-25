@@ -241,7 +241,7 @@ Friend Module Serializer
         If CheckXMLData(objectData, False) Then
 
             Dim Serializer = New XmlSerializer(GetType(T))
-            Using Reader As TextReader = New StringReader(objectData)
+            Using Reader As New StringReader(objectData)
                 Try
                     result = CType(Serializer.Deserialize(Reader), T)
 
@@ -267,7 +267,8 @@ Friend Module Serializer
             Dim XmlSerializerNamespace As New XmlSerializerNamespaces()
             XmlSerializerNamespace.Add(DfltStringEmpty, DfltStringEmpty)
 
-            Using XmlSchreiber As StringWriter = New StringWriter
+            Using XmlSchreiber As New Utf8StringWriter
+
                 With New XmlSerializer(GetType(T))
                     Try
                         .Serialize(XmlSchreiber, objectData, XmlSerializerNamespace)
