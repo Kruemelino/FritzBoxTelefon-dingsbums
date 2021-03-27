@@ -262,8 +262,7 @@ Friend Class FritzBoxTR64
     Friend Function GetPhonebookEntry(PhonebookID As Integer, PhonebookEntryID As Integer, ByRef PhonebookEntryData As String) As Boolean
 
         With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookEntry", New Hashtable From {{"NewPhonebookID", PhonebookID},
-                                                                                           {"NewPhonebookEntryID", PhonebookEntryID},
-                                                                                           {"NewPhonebookEntryData", PhonebookEntryData}})
+                                                                                           {"NewPhonebookEntryID", PhonebookEntryID}})
 
             If .ContainsKey("NewPhonebookEntryData") Then
                 ' Phonebook URL auslesen
@@ -294,8 +293,7 @@ Friend Class FritzBoxTR64
     Friend Function GetPhonebookEntryUID(PhonebookID As Integer, PhonebookEntryUniqueID As Integer, ByRef PhonebookEntryData As String) As Boolean
 
         With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookEntryUID", New Hashtable From {{"NewPhonebookID", PhonebookID},
-                                                                                              {"NewPhonebookEntryUniqueID", PhonebookEntryUniqueID},
-                                                                                              {"NewPhonebookEntryData", PhonebookEntryData}})
+                                                                                              {"NewPhonebookEntryUniqueID", PhonebookEntryUniqueID}})
 
             If .ContainsKey("NewPhonebookEntryData") Then
                 ' Phonebook URL auslesen
@@ -306,7 +304,7 @@ Friend Class FritzBoxTR64
                 Return True
 
             Else
-                NLogger.Warn($"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch {PhonebookID} nicht aufgelößt werden.")
+                NLogger.Warn($"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch '{PhonebookID}' nicht aufgelößt werden.")
                 PhonebookEntryData = DfltStringEmpty
 
                 Return False
@@ -605,8 +603,8 @@ Friend Class FritzBoxTR64
 
             Else
                 NLogger.Warn($"LKZ und LKZPrefix konnten nicht ermittelt werden.")
-                LKZ = If(LKZ.IsStringNothing, DfltStringEmpty, LKZ)
-                LKZPrefix = If(LKZPrefix.IsStringNothing, DfltStringEmpty, LKZPrefix)
+                LKZ = If(LKZ.IsStringNothingOrEmpty, DfltStringEmpty, LKZ)
+                LKZPrefix = If(LKZPrefix.IsStringNothingOrEmpty, DfltStringEmpty, LKZPrefix)
 
                 Return False
             End If
@@ -632,8 +630,8 @@ Friend Class FritzBoxTR64
 
             Else
                 NLogger.Warn($"OKZ und OKZPrefix konnten nicht ermittelt werden.")
-                OKZ = If(OKZ.IsStringNothing, DfltStringEmpty, OKZ)
-                OKZPrefix = If(OKZPrefix.IsStringNothing, DfltStringEmpty, OKZPrefix)
+                OKZ = If(OKZ.IsStringNothingOrEmpty, DfltStringEmpty, OKZ)
+                OKZPrefix = If(OKZPrefix.IsStringNothingOrEmpty, DfltStringEmpty, OKZPrefix)
 
                 Return False
             End If
