@@ -76,7 +76,6 @@ Public Class Telefonnummer
     ''' Bereinigt die Telefunnummer von Sonderzeichen wie Klammern und Striche.
     ''' Buchstaben werden wie auf der Telefontastatur in Zahlen übertragen.
     ''' </summary>
-    ''' <remarks>Achtung! "*", "#" bleiben bestehen!</remarks>
     Private Function NurZiffern(Nr As String) As String
         NurZiffern = Nr
 
@@ -86,7 +85,7 @@ Public Class Telefonnummer
             ' Entferne jeden String, der vor einem Doppelpunkt steht (einschließlich :)
             NurZiffern = NurZiffern.ToLower.RegExRemove("^.+:+")
 
-            '' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
+            ' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
             NurZiffern = NurZiffern.RegExReplace("[abc]", "2").
                                     RegExReplace("[def]", "3").
                                     RegExReplace("[ghi]", "4").
@@ -102,13 +101,17 @@ Public Class Telefonnummer
             ' Anpassung 20.03.2021: Steuerzeichen werden ebenfalls entfernt
             NurZiffern = NurZiffern.RegExRemove("[^0-9]")
 
-            ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich ggf. vorhandener nachfolgender 0)
+            ' Die Landeskennzahl wurde noch nicht ermittelt
+            If Landeskennzahl.IsNotStringNothingOrEmpty Then Landeskennzahl = XMLData.PTelefonie.LKZ
 
-            NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{If(Landeskennzahl.IsStringNothingOrEmpty, XMLData.PTelefonie.LKZ, Landeskennzahl)}{{1}}[0]?", "0")
+            ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich ggf. vorhandener nachfolgender 0)
+            If Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Then NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{Landeskennzahl}{{1}}[0]?", "0")
+
+            'NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{If(Landeskennzahl.IsStringNothingOrEmpty, XMLData.PTelefonie.LKZ, Landeskennzahl)}{{1}}[0]?", "0")
 
             ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
             NurZiffern = NurZiffern.RegExReplace("^[0]{3}", "0")
-            End If
+        End If
     End Function
 
     ''' <summary>
@@ -137,7 +140,7 @@ Public Class Telefonnummer
                     Landeskennzahl = LKZObj.Landeskennzahl
                 Else
                     ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt, oder die LKZ ist nicht in der Liste 
-                    NLogger.Warn("Landeskennzahl der Telefonnummer {0} kann nicht ermittelt werden.", Unformatiert)
+                    NLogger.Warn($"Landeskennzahl der Telefonnummer {Unformatiert} kann nicht ermittelt werden.")
                     If Not EigeneNummer Then Landeskennzahl = XMLData.PTelefonie.LKZ
                     ' Wähle die LKZ für das Default-Land aus, damit die Routine die Ortskennzahl ermitteln kann
                     LKZObj = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
@@ -161,7 +164,7 @@ Public Class Telefonnummer
                 ' Es muss eine Landeskennzahl ermittelt sein.
                 ' Hier ist irgendwo ein Bug, dass die ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen leer ist. Vielleicht war das Addin zu schnell beim automatischen Journalimport.
                 If LKZObj Is Nothing Then
-                    NLogger.Error("Es konnte keine Landeskennzahl für {0} ermittet werden. Das Laden der Vorwahlen ist{1} abgeschlossen.", TelNr, If(ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Any, DfltStringEmpty, " nicht"))
+                    NLogger.Error($"Es konnte keine Landeskennzahl für {TelNr} ermittet werden. Das Laden der Vorwahlen ist{If(ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Any, DfltStringEmpty, " nicht")} abgeschlossen.")
                     Ortskennzahl = DfltStringEmpty
                 Else
                     i = 0
