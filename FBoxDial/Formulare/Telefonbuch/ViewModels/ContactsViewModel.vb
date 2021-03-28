@@ -72,7 +72,7 @@ Public Class ContactsViewModel
     Public Property SaveCommand As ICommand
     Public Property CancelCommand As ICommand
     Public Property UpdateCommand As ICommand
-    Public Property BrowseImageCommand As ICommand
+    'Public Property BrowseImageCommand As ICommand
     Public Property AddContact As ICommand
     Public Property DeleteCommand As ICommand
     Public Property AddNumber As ICommand
@@ -121,7 +121,7 @@ Public Class ContactsViewModel
         SaveCommand = New RelayCommand(AddressOf Save, AddressOf IsEdit)
         CancelCommand = New RelayCommand(AddressOf CancelEdit, AddressOf IsEdit)
         UpdateCommand = New RelayCommand(AddressOf Update)
-        BrowseImageCommand = New RelayCommand(AddressOf BrowseImage, AddressOf IsEdit)
+        'BrowseImageCommand = New RelayCommand(AddressOf BrowseImage, AddressOf IsEdit)
         DeleteCommand = New RelayCommand(AddressOf Delete, AddressOf CanDelete)
 
         AddContact = New RelayCommand(AddressOf AddKontakt, AddressOf CanAddKontakt)
@@ -133,7 +133,17 @@ Public Class ContactsViewModel
 
     End Sub
 
+    Public Sub LadeKontakte(Telefonbuch As FritzBoxXMLTelefonbuch)
+
+        FBoxTelefonbuch = Telefonbuch
+
+        View = CType(CollectionViewSource.GetDefaultView(FBoxTelefonbuch.Kontakte), ListCollectionView)
+
+        View.Filter = New Predicate(Of Object)(AddressOf Filter)
+    End Sub
+
 #Region "ICommand Callback"
+#Region "Kontakt löschen"
     Private Sub Delete(o As Object)
         If FBoxTelefonbuch.Rufsperren Then
             If DialogService.ShowMessageBox(Localize.resTelefonbuch.strQuestionDeleteCallBarring) = Windows.MessageBoxResult.Yes Then
@@ -143,7 +153,7 @@ Public Class ContactsViewModel
                 End If
             End If
 
-            Else
+        Else
 
             If DialogService.ShowMessageBox(String.Format(Localize.resTelefonbuch.strQuestionDeleteContact, FBoxKontakt.Person.RealName, FBoxTelefonbuch.Name)) = Windows.MessageBoxResult.Yes Then
                 ' lösche den Kontakt auf der Box
@@ -155,11 +165,12 @@ Public Class ContactsViewModel
         End If
 
     End Sub
-
     Private Function CanDelete(o As Object) As Boolean
         Return FBoxKontakt IsNot Nothing
     End Function
+#End Region
 
+#Region "Kontakt hinzufügen"
     Private Sub AddKontakt(o As Object)
         Dim NeuerKontakt = New FritzBoxXMLKontakt
         NeuerKontakt.Person.RealName = "N/A"
@@ -174,11 +185,9 @@ Public Class ContactsViewModel
     Private Function CanAddKontakt(o As Object) As Boolean
         Return IsDisplayMode AndAlso FBoxTelefonbuch IsNot Nothing AndAlso FBoxTelefonbuch.Kontakte IsNot Nothing
     End Function
+#End Region
 
-    Private Sub BrowseImage(o As Object)
-        Dim filePath = DialogService.OpenFile("Image files|*.bmp;*.jpg;*.jpeg;*.png|All files")
-    End Sub
-
+#Region "Kontakt aktualisieren"
     Private Sub Update(o As Object)
         ' Hier wird das Favorite / Wichtiger Kontakt gespeichert.
         If IsDisplayMode Then
@@ -186,7 +195,9 @@ Public Class ContactsViewModel
         End If
 
     End Sub
+#End Region
 
+#Region "Kontakt speichern"
     Private Sub Save(o As Object)
         If FBoxTelefonbuch.Rufsperren Then
             FBoxKontakt.Uniqueid = DatenService.SetRufsperre(FBoxKontakt)
@@ -202,7 +213,9 @@ Public Class ContactsViewModel
         IsEditMode = False
         OnPropertyChanged(NameOf(FBoxKontakt))
     End Sub
+#End Region
 
+#Region "Kontakt editieren"
     Private Sub CancelEdit(o As Object)
         ' Setze den Clone zurück
         FBoxKontakt = XMLClone(FBoxKontaktClone)
@@ -236,39 +249,41 @@ Public Class ContactsViewModel
         End If
 
     End Sub
+#End Region
 
+#Region "Kontakt Telefonnummer hinzufügen/entfernen"
     Private Sub AddTelNr(o As Object)
         If FBoxKontakt.Telefonie Is Nothing Then FBoxKontakt.Telefonie = New FritzBoxXMLTelefonie
         If FBoxKontakt.Telefonie.Nummern Is Nothing Then FBoxKontakt.Telefonie.Nummern = New ObservableCollectionEx(Of FritzBoxXMLNummer)
 
         FBoxKontakt.Telefonie.Nummern.Add(New FritzBoxXMLNummer)
     End Sub
+    Private Sub RemoveTelNr(o As Object)
+        FBoxKontakt.Telefonie.Nummern.Remove(CType(o, FritzBoxXMLNummer))
+    End Sub
+#End Region
 
+#Region "Kontakt E-Mail hinzufügen/entfernen"
     Private Sub AddEMail(o As Object)
         If FBoxKontakt.Telefonie Is Nothing Then FBoxKontakt.Telefonie = New FritzBoxXMLTelefonie
         If FBoxKontakt.Telefonie.Emails Is Nothing Then FBoxKontakt.Telefonie.Emails = New ObservableCollectionEx(Of FritzBoxXMLEmail)
 
         FBoxKontakt.Telefonie.Emails.Add(New FritzBoxXMLEmail)
     End Sub
-
-    Private Sub RemoveTelNr(o As Object)
-        FBoxKontakt.Telefonie.Nummern.Remove(CType(o, FritzBoxXMLNummer))
-    End Sub
-
     Private Sub RemoveEMail(o As Object)
         FBoxKontakt.Telefonie.Emails.Remove(CType(o, FritzBoxXMLEmail))
     End Sub
 
 #End Region
 
-    Public Sub LadeKontakte(Telefonbuch As FritzBoxXMLTelefonbuch)
+#Region "Kontaktbild"
+    'Private Sub BrowseImage(o As Object)
+    '    Dim filePath = DialogService.OpenFile("Image files|*.bmp;*.jpg;*.jpeg;*.png|All files")
+    'End Sub
+#End Region
 
-        FBoxTelefonbuch = Telefonbuch
+#End Region
 
-        view = CType(CollectionViewSource.GetDefaultView(FBoxTelefonbuch.Kontakte), ListCollectionView)
-
-        view.Filter = New Predicate(Of Object)(AddressOf Filter)
-    End Sub
 
 
 End Class

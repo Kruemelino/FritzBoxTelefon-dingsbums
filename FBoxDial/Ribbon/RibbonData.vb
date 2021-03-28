@@ -379,21 +379,20 @@ Namespace RibbonData
 
             NLogger.Debug($"Füge {OutlookContactItems.Count} Einträge zum Telefonbuch (ID{BookID}) hinzu.")
 
-            Dim XmlContactItems As IEnumerable(Of String) = OutlookContactItems.ErstelleXMLKontakte
-            ' Lödt den Kontakt in das Telefonbuch hoch
-            If XmlContactItems.Any Then Telefonbücher.SetTelefonbuchEintrag(BookID.ToInt, XmlContactItems)
-
+            ' Lädt die Kontakte in das Telefonbuch hoch
+            Telefonbücher.SetTelefonbuchEintrag(BookID.ToInt, OutlookContactItems)
         End Sub
+
         Private Sub UploadSl(OutlookContactItems As IEnumerable(Of Outlook.ContactItem), BookID As String)
 
             NLogger.Debug($"Füge {OutlookContactItems.Count} Einträge zur Sperrliste (ID{BookID}) hinzu.")
 
-            Dim XmlContactItems As IEnumerable(Of String) = OutlookContactItems.ErstelleXMLKontakte
-            ' Lödt den Kontakt in das Telefonbuch der Rufsperre hoch
-            If XmlContactItems.Any Then AddToCallBarring(XmlContactItems)
-
+            ' Lädt die Kontakte in das Telefonbuch der Rufsperre hoch
+            AddToCallBarring(OutlookContactItems)
 
         End Sub
+
+
 #End Region
 
 #Region "Control Enabled"

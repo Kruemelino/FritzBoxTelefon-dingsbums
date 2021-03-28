@@ -271,6 +271,7 @@ Friend Module KontaktFunktionen
             End Try
         End If
     End Function
+
     ''' <summary>
     ''' Ermittelt aus der FolderID (EntryID) und der StoreID den zugehörigen Ordner.
     ''' </summary>
@@ -423,6 +424,7 @@ Friend Module KontaktFunktionen
     <Extension> Friend Function AreNotEqual(Ordner1 As MAPIFolder, Ordner2 As MAPIFolder) As Boolean
         Return Ordner1.StoreID.AreNotEqual(Ordner2.StoreID) Or Ordner1.EntryID.AreNotEqual(Ordner2.EntryID)
     End Function
+
 #Region "VIP"
     <Extension> Friend Function IsVIP(olKontakt As ContactItem) As Boolean
         ' Prüfe, ob sich der Kontakt in der Liste befindet.
@@ -523,7 +525,13 @@ Friend Module KontaktFunktionen
         End With
     End Sub
 
-    <Extension> Friend Function ErstelleXMLKontakt(olContact As ContactItem) As FritzBoxXMLKontakt
+    ''' <summary>
+    ''' Überführt einen Outlook-Kontakt in einen Kontakt für das Fritz!Box Telefondingsbums
+    ''' </summary>
+    ''' <param name="olContact">Der Outlook Kontakt, der überführt werden soll.</param>
+    ''' <param name="UID">Falls bekannt, die Uniqueid des Kontaktes im Fritz!Box Telefonbuch.</param>
+    ''' <returns></returns>
+    <Extension> Friend Function ErstelleFBoxKontakt(olContact As ContactItem, Optional UID As Integer = -1) As FritzBoxXMLKontakt
 
         ' Erstelle ein nen neuen XMLKontakt
         Dim XMLKontakt As New FritzBoxXMLKontakt
@@ -531,6 +539,8 @@ Friend Module KontaktFunktionen
         With XMLKontakt
             ' Weise den Namen zu
             .Person.RealName = olContact.FullName
+
+            If UID.AreDifferentTo(-1) Then .Uniqueid = UID
 
             With .Telefonie
                 ' Weise die E-Mails zu
@@ -565,15 +575,80 @@ Friend Module KontaktFunktionen
     ''' <param name="olContacts">Die Auflistung von <see cref="ContactItem"/></param>
     ''' <returns>Auflistung von XML_Strings (Fritz!Box Telefonbuch)</returns>
     ''' <remarks>Die Auflistung kann leere Strings enthalten.</remarks>
-    <Extension> Friend Function ErstelleXMLKontakte(olContacts As IEnumerable(Of ContactItem)) As IEnumerable(Of String)
-        Return olContacts.Select(Function(X)
-                                     Dim NeuerKontakt As String = DfltStringEmpty
-                                     If XmlSerializeToString(X.ErstelleXMLKontakt, NeuerKontakt) Then
-                                         Return NeuerKontakt
-                                     Else
-                                         NLogger.Warn($"Der Kontakt {X.FullNameAndCompany} kann nicht serialisiert werden.")
-                                         Return DfltStringEmpty
-                                     End If
-                                 End Function)
+    <Extension> Friend Function ErstelleXMLKontakt(olContacts As ContactItem, Optional UID As Integer = -1) As String
+
+        Dim NeuerKontakt As String = DfltStringEmpty
+        If XmlSerializeToString(olContacts.ErstelleFBoxKontakt(UID), NeuerKontakt) Then
+            Return NeuerKontakt
+        Else
+            NLogger.Warn($"Der Kontakt {olContacts.FullNameAndCompany} kann nicht serialisiert werden.")
+            Return DfltStringEmpty
+        End If
+
     End Function
+
+    <Extension> Friend Function GetUniqueID(olContacts As ContactItem, TelefonbuchID As Integer) As Integer
+        With olContacts
+
+            ' Überprüfe, ob es in diesem Kontakt Daten zu einem Eintrag in einem Telefonbuch gibt
+            Dim colArgs() As Object = CType(.PropertyAccessor.GetProperties(DASLTagFBTelBuch), Object())
+
+            ' Wenn es keine Fehler gab (Einträge sind vorhanden) und die TelefonbuchID übereinstimmt. dann gib die ID zurück
+            If Not colArgs.Contains(DfltErrorvalue) Then
+
+                Dim i As Integer = Array.IndexOf(Split(colArgs(0).ToString, ","), TelefonbuchID.ToString)
+                If i.AreEqual(-1) Then
+                    Return -1
+                Else
+                    Return Split(colArgs(1).ToString, ",").ToList(i).ToInt
+                End If
+
+
+            Else
+                Return -1
+            End If
+        End With
+    End Function
+
+    <Extension> Friend Sub SetUniqueID(olContacts As ContactItem, TelefonbuchID As String, UniqueID As String)
+        With olContacts
+
+            ' Ermittle alle bisherigen Verknüpfungen
+            Dim colArgs() As Object = CType(.PropertyAccessor.GetProperties(DASLTagFBTelBuch), Object())
+            Dim BookIDs As List(Of String)
+            Dim UniqueIDs As List(Of String)
+
+            If colArgs.Contains(DfltErrorvalue) Then
+                BookIDs = New List(Of String)
+                UniqueIDs = New List(Of String)
+            Else
+                BookIDs = Split(colArgs(0).ToString, ",").ToList
+                UniqueIDs = Split(colArgs(1).ToString, ",").ToList
+            End If
+
+            Dim i As Integer = Array.IndexOf(Split(colArgs(0).ToString, ","), TelefonbuchID)
+
+            If i.AreEqual(-1) Then
+                ' Es gibt noch keinen Eintrag
+                BookIDs.Add(TelefonbuchID)
+                UniqueIDs.Add(UniqueID)
+            Else
+                ' Es gibt bereits einen Eintrag: Überschreibe den Wert
+                UniqueIDs(i) = UniqueID
+            End If
+
+            ' Entferne etwaige vorhandene 
+            .PropertyAccessor.DeleteProperties(DASLTagFBTelBuch)
+
+            colArgs(0) = String.Join(",", BookIDs)
+            colArgs(1) = String.Join(",", UniqueIDs)
+
+            ' Verknüpfe Outlook-Kontakt mit dem Fritz!Box Telefonbucheintrag
+            .PropertyAccessor.SetProperties(DASLTagFBTelBuch, colArgs)
+
+            ' Speichere den Kontakt
+            .Save()
+        End With
+    End Sub
+
 End Module

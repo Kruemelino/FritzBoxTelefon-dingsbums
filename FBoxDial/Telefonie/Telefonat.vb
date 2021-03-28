@@ -580,7 +580,7 @@ Imports Microsoft.Office.Interop
                         ' Bei verpassten Anrufen ist TelGerät ggf. leer
                         .Categories = $"{If(TelGerät Is Nothing, "Verpasst", TelGerät.Name)};{String.Join("; ", DfltJournalDefCategories.ToArray)}"
 
-                        ' Testweise: Speichern der EntryID und StoreID in Benutzerdefinierten Feldern
+                        ' Speichern der EntryID und StoreID in Benutzerdefinierten Feldern
                         If OlKontakt IsNot Nothing Then
 
                             Dim colArgs(1) As Object

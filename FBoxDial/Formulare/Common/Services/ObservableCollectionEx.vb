@@ -74,7 +74,7 @@ Public Class ObservableCollectionEx(Of T)
         End If
     End Sub
 
-    Public Sub RemoveRange(ListRemove As IEnumerable(Of T))
+    Public Sub RemoveRange(ListRemove As List(Of T))
         If ListRemove IsNot Nothing Then
             For Each Item As T In ListRemove
                 Remove(Item)

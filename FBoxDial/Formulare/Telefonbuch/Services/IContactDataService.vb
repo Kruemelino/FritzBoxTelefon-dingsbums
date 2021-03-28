@@ -7,21 +7,19 @@ Public Interface IContactDataService
 
 #Region "Fritz!Box Telefonbücher"
     Function GetTelefonbücher() As Threading.Tasks.Task(Of FritzBoxXMLTelefonbücher)
-
     Function AddTelefonbuch(Name As String) As Threading.Tasks.Task(Of FritzBoxXMLTelefonbuch)
-
     Function DeleteTelefonbuch(TelefonbuchID As Integer) As Boolean
 #End Region
 
 #Region "Fritz!Box Kontakte"
     Function SetKontakt(TelefonbuchID As Integer, XMLDaten As String) As Integer
-
     Function DeleteKontakt(TelefonbuchID As Integer, UID As Integer) As Boolean
+    Function DeleteKontakte(TelefonbuchID As Integer, Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean
 #End Region
 
 #Region "Fritz!Box Rufsperren"
     Function SetRufsperre(XMLDaten As FritzBoxXMLKontakt) As Integer
-
     Function DeleteRufsperre(UID As Integer) As Boolean
+    Function DeleteRufsperren(Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean
 #End Region
 End Interface

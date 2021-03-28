@@ -29,7 +29,6 @@ Friend Module KontaktSucher
                 Next
                 sFilter = $"@SQL={String.Join(" OR ", Filter)}"
 
-
                 With XMLData.POptionen.OutlookOrdner.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
                     ' Füge den Standardkontaktordner hinzu, falls keine anderen Ordner definiert wurden.
                     If Not .Any Then

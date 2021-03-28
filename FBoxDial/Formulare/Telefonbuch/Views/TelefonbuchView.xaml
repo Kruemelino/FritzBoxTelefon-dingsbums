@@ -41,6 +41,17 @@
             <ListView ItemsSource="{Binding ContactsVM.FBoxTelefonbuch.Kontakte}" 
                       SelectedItem="{Binding ContactsVM.FBoxKontakt}"
                       BorderThickness="0">
+
+                <ListView.ContextMenu>
+                    <ContextMenu>
+
+                        <MenuItem Header="{x:Static localize:resTelefonbuch.strDelete}"
+                              Icon="{DynamicResource Cancel_16x}"
+                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Command="{Binding LöscheFritzBoxKontakte}"/>
+
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 
                 <ListView.ItemTemplate>
                     <DataTemplate>

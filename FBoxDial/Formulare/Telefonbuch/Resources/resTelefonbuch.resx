@@ -171,8 +171,14 @@
   <data name="strQuestionDeleteCallBarring" xml:space="preserve">
     <value>Soll diese Rufsperre auf der Fritz!Box endgültig gelöscht werden?</value>
   </data>
+  <data name="strQuestionDeleteCallBarrings" xml:space="preserve">
+    <value>Sollen die (0) ausgewählte(n) Einträg(e) aus der Rufsperre endgültig gelöscht werden?</value>
+  </data>
   <data name="strQuestionDeleteContact" xml:space="preserve">
     <value>Soll der Kontakt '{0}' im Telefonbuch '{1}' auf der Fritz!Box endgültig gelöscht werden?</value>
+  </data>
+  <data name="strQuestionDeleteContacts" xml:space="preserve">
+    <value>Sollen die {0} ausgewählte(n) Kontakt(e) im Telefonbuch '{1}' auf der Fritz!Box endgültig gelöscht werden?</value>
   </data>
   <data name="strSave" xml:space="preserve">
     <value>Speichern</value>

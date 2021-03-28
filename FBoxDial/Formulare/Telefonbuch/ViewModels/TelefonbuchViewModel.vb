@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Input
+﻿Imports System.Collections
+Imports System.Windows.Input
 Imports FBoxDial.Localize.resTelefonbuch
 
 ''' <summary>
@@ -52,7 +53,7 @@ Public Class TelefonbuchViewModel
     Public Property NeuesFritzBoxTelefonbuch As ICommand
     Public Property LöscheFritzBoxTelefonbuch As ICommand
     Public Property NeuerTelefonbuchName As ICommand
-
+    Public Property LöscheFritzBoxKontakte As ICommand
 
 #End Region
 
@@ -66,23 +67,15 @@ Public Class TelefonbuchViewModel
 
         NeuesFritzBoxTelefonbuch = New RelayCommand(AddressOf NeuesTelefonbuch, AddressOf CanAdd)
         LöscheFritzBoxTelefonbuch = New RelayCommand(AddressOf LöscheTelefonbuch, AddressOf CanRemove)
-        NeuerTelefonbuchName = New RelayCommand(AddressOf TelefonbuchErstellen, AddressOf CanName)
+        NeuerTelefonbuchName = New RelayCommand(AddressOf TelefonbuchUmbenennen, AddressOf CanName)
+        LöscheFritzBoxKontakte = New RelayCommand(AddressOf LöscheKontakte, AddressOf CanDelete)
+
         ' Window Command
         LoadedCommand = New RelayCommand(AddressOf LadeTelefonbücher)
-
     End Sub
-
-
 
 #Region "ICommand Callback"
-    Private Sub LadeKontakte(o As Object)
-
-        Telefonbuch = CType(o, FritzBoxXMLTelefonbuch)
-        With ContactsVM
-            .LadeKontakte(Telefonbuch)
-        End With
-    End Sub
-
+#Region "Telefonbücher Laden"
     Private Async Sub LadeTelefonbücher(o As Object)
         ' Lade Fritz!Box Telefonbücher herunter
         LoadTelefonbücher(Await DatenService.GetTelefonbücher())
@@ -97,7 +90,9 @@ Public Class TelefonbuchViewModel
 
         End If
     End Sub
+#End Region
 
+#Region "Telefonbuch anlegen"
     Private Sub NeuesTelefonbuch(o As Object)
 
         ' Füge im Viewmodel ein neues Telefonbuch hinzu.
@@ -107,29 +102,10 @@ Public Class TelefonbuchViewModel
     Private Function CanAdd(o As Object) As Boolean
         Return Telefonbücher IsNot Nothing
     End Function
+#End Region
 
-    Private Sub LöscheTelefonbuch(o As Object)
-        With CType(o, FritzBoxXMLTelefonbuch)
-            Dim Löschen As Boolean = False
-
-            If .ID.IsZero Then
-                Löschen = DialogService.ShowMessageBox(String.Format(strQuestionBookDeleteID0, .Name)) = Windows.MessageBoxResult.Yes
-            Else
-                Löschen = DialogService.ShowMessageBox(String.Format(strQuestionBookDelete, .Name)) = Windows.MessageBoxResult.Yes
-            End If
-
-            If Löschen Then
-                If DatenService.DeleteTelefonbuch(.ID) Then
-                    Telefonbücher.Remove(CType(o, FritzBoxXMLTelefonbuch))
-                End If
-            End If
-        End With
-    End Sub
-    Private Function CanRemove(o As Object) As Boolean
-        Return Not CType(o, FritzBoxXMLTelefonbuch).Rufsperren
-    End Function
-
-    Private Async Sub TelefonbuchErstellen(o As Object)
+#Region "Telefonbuch umbenennen"
+    Private Async Sub TelefonbuchUmbenennen(o As Object)
         With CType(o, FritzBoxXMLTelefonbuch)
             ' Schalte den Editiermodus aus.
             .IsBookEditMode = Not .IsBookEditMode
@@ -159,4 +135,68 @@ Public Class TelefonbuchViewModel
     End Function
 #End Region
 
+#Region "Telefonbuch löschen"
+    Private Sub LöscheTelefonbuch(o As Object)
+        With CType(o, FritzBoxXMLTelefonbuch)
+            Dim Löschen As Boolean = False
+
+            If .ID.IsZero Then
+                Löschen = DialogService.ShowMessageBox(String.Format(strQuestionBookDeleteID0, .Name)) = Windows.MessageBoxResult.Yes
+            Else
+                Löschen = DialogService.ShowMessageBox(String.Format(strQuestionBookDelete, .Name)) = Windows.MessageBoxResult.Yes
+            End If
+
+            If Löschen Then
+                If DatenService.DeleteTelefonbuch(.ID) Then
+                    Telefonbücher.Remove(CType(o, FritzBoxXMLTelefonbuch))
+                End If
+            End If
+        End With
+    End Sub
+    Private Function CanRemove(o As Object) As Boolean
+        Return Not CType(o, FritzBoxXMLTelefonbuch).Rufsperren
+    End Function
+#End Region
+
+#Region "Kontakte Laden"
+    Private Sub LadeKontakte(o As Object)
+
+        Telefonbuch = CType(o, FritzBoxXMLTelefonbuch)
+        ContactsVM.LadeKontakte(Telefonbuch)
+
+    End Sub
+
+#End Region
+
+#Region "Kontakte löschen"
+    Private Function CanDelete(obj As Object) As Boolean
+        Return Telefonbuch IsNot Nothing
+    End Function
+
+    Private Sub LöscheKontakte(o As Object)
+        Dim Kontakte As IEnumerable(Of FritzBoxXMLKontakt) = From a In CType(o, IList).Cast(Of FritzBoxXMLKontakt)
+
+        If Telefonbuch.Rufsperren Then
+            If DialogService.ShowMessageBox(String.Format(Localize.resTelefonbuch.strQuestionDeleteCallBarrings, Kontakte.Count)) = Windows.MessageBoxResult.Yes Then
+                ' Lösche die Einträge der Rufsperre auf der Fritz!Box
+                If DatenService.DeleteRufsperren(Kontakte) Then
+                    Telefonbuch.DeleteKontakte(Kontakte.ToList)
+                End If
+            End If
+
+        Else
+
+            If DialogService.ShowMessageBox(String.Format(Localize.resTelefonbuch.strQuestionDeleteContacts, Kontakte.Count, Telefonbuch.Name)) = Windows.MessageBoxResult.Yes Then
+                ' lösche die Kontakte auf der Fritz!Box
+                If DatenService.DeleteKontakte(Telefonbuch.ID, Kontakte) Then
+                    ' Entferne die Kontate aus dem Datenobjekt
+                    Telefonbuch.DeleteKontakte(Kontakte.ToList)
+                End If
+            End If
+
+        End If
+
+    End Sub
+#End Region
+#End Region
 End Class

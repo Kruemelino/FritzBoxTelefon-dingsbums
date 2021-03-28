@@ -1,5 +1,6 @@
 ﻿Imports System.Reflection
 Imports System.Threading.Tasks
+Imports Microsoft.Office.Interop.Outlook
 Imports System.Xml
 
 Namespace Telefonbücher
@@ -245,28 +246,39 @@ Namespace Telefonbücher
             Return -1
         End Function
 
-        Friend Async Sub SetTelefonbuchEintrag(TelefonbuchID As Integer, XMLDaten As IEnumerable(Of String))
+        Friend Async Sub SetTelefonbuchEintrag(TelefonbuchID As Integer, OutlookKontakte As IEnumerable(Of ContactItem))
 
             Using fbtr064 As New FritzBoxTR64
-                With fbtr064
 
-                    For Each Kontakt In XMLDaten
-                        If Kontakt.IsNotStringNothingOrEmpty Then
-                            Await Task.Run(Sub()
-                                               Dim UID As Integer = -1
-                                               If .SetPhonebookEntryUID(TelefonbuchID, Kontakt, UID) Then
-                                                   NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} der Fritz!Box angelegt.")
-                                               End If
-                                           End Sub)
+                ' Schleife durch alle Kontakte
+                For Each Kontakt In OutlookKontakte
+                    Await Task.Run(Sub()
+                                       With Kontakt
+                                           ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
+                                           Dim UID As Integer = Kontakt.GetUniqueID(TelefonbuchID)
 
-                        End If
-                    Next
+                                           If UID.AreEqual(-1) Then
+                                               NLogger.Debug($"Kontakt { .FullName} wird neu angelegt.")
+                                           Else
+                                               NLogger.Debug($"Kontakt { .FullName} wird überschrieben ({UID}).")
+                                           End If
 
-                End With
+                                           ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
+
+                                           If fbtr064.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
+                                               ' Stelle die Verknüpfung her
+                                               .SetUniqueID(TelefonbuchID.ToString, UID.ToString)
+
+                                               NLogger.Info($"Kontakt { .FullName} mit der ID '{UID}' im Telefonbuch {TelefonbuchID} der Fritz!Box angelegt.")
+
+                                           End If
+                                       End With
+                                   End Sub)
+                Next
+
             End Using
 
         End Sub
-
 
         Friend Function DeleteTelefonbuchEintrag(TelefonbuchID As Integer, UID As Integer) As Boolean
             Using fbtr064 As New FritzBoxTR64
@@ -280,6 +292,25 @@ Namespace Telefonbücher
                         Return False
 
                     End If
+                End With
+            End Using
+            Return True
+        End Function
+
+        Friend Function DeleteTelefonbuchEinträge(TelefonbuchID As Integer, Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean
+            Using fbtr064 As New FritzBoxTR64
+                With fbtr064
+                    For Each Kontakt In Einträge
+                        If .DeletePhonebookEntryUID(TelefonbuchID, Kontakt.Uniqueid) Then
+                            NLogger.Info($"Kontakt mit der ID '{Kontakt.Uniqueid}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box gelöscht.")
+                            Return True
+
+                        Else
+                            NLogger.Warn($"Kontakt mit der ID '{Kontakt.Uniqueid}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box nicht gelöscht.")
+                            Return False
+
+                        End If
+                    Next
                 End With
             End Using
             Return True

@@ -191,14 +191,8 @@ Public Module Extensions
     <Extension> Public Function IsNotStringEmpty(Str1 As String) As Boolean
         Return Str1 IsNot Nothing AndAlso Not Str1.IsStringEmpty
     End Function
-    <Extension> Public Function IsStringNothing(Str1 As String) As Boolean
-        Return Str1 Is Nothing
-    End Function
-    <Extension> Public Function IsNotStringNothing(Str1 As String) As Boolean
-        Return Not Str1.IsStringNothing
-    End Function
     <Extension> Public Function IsStringNothingOrEmpty(Str1 As String) As Boolean
-        Return Str1.IsStringNothing OrElse Str1.IsStringEmpty
+        Return Str1 Is Nothing OrElse Str1.IsStringEmpty
     End Function
     <Extension> Public Function IsNotStringNothingOrEmpty(Str1 As String) As Boolean
         Return Not Str1.IsStringNothingOrEmpty

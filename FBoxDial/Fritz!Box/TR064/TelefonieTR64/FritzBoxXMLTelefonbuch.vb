@@ -107,6 +107,17 @@
     End Sub
 
     ''' <summary>
+    ''' Entfernt eine Auflistung von Kontakten aus dem Telefonbuch
+    ''' </summary>
+    ''' <param name="RemoveKontakte">Liste der zu entfernenden Kontakte.</param>
+    Friend Sub DeleteKontakte(RemoveKontakte As List(Of FritzBoxXMLKontakt))
+        With Kontakte
+            ' Kontake entfernen
+            .RemoveRange(RemoveKontakte)
+        End With
+    End Sub
+
+    ''' <summary>
     ''' Durchsucht die Kontakte nach der übergebenen Telefonnummer.
     ''' </summary>
     ''' <param name="TelNr">Zu suchende Telefonnummer</param>

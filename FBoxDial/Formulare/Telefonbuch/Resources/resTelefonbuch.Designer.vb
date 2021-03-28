@@ -227,11 +227,29 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen die (0) ausgewählte(n) Einträg(e) aus der Rufsperre endgültig gelöscht werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strQuestionDeleteCallBarrings() As String
+            Get
+                Return ResourceManager.GetString("strQuestionDeleteCallBarrings", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Soll der Kontakt &apos;{0}&apos; im Telefonbuch &apos;{1}&apos; auf der Fritz!Box endgültig gelöscht werden? ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strQuestionDeleteContact() As String
             Get
                 Return ResourceManager.GetString("strQuestionDeleteContact", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen die {0} ausgewählte(n) Kontakt(e) im Telefonbuch &apos;{1}&apos; auf der Fritz!Box endgültig gelöscht werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strQuestionDeleteContacts() As String
+            Get
+                Return ResourceManager.GetString("strQuestionDeleteContacts", resourceCulture)
             End Get
         End Property
         
