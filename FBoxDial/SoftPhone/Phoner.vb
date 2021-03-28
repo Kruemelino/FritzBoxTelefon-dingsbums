@@ -15,32 +15,32 @@ Friend Class Phoner
     ''' <summary>
     ''' Login
     ''' </summary>
-    Private ReadOnly Property PhonerLogin As String = "Login"
+    Private Const PhonerLogin As String = "Login"
 
     ''' <summary>
     ''' Welcome to Phoner
     ''' </summary>
-    Private ReadOnly Property PhonerWelcomeMessage As String = "Welcome to Phoner"
+    Private Const PhonerWelcomeMessage As String = "Welcome to Phoner"
 
     ''' <summary>
     ''' Challenge=
     ''' </summary>
-    Private ReadOnly Property PhonerChallenge As String = "Challenge="
+    Private Const PhonerChallenge As String = "Challenge="
 
     ''' <summary>
     ''' Response=
     ''' </summary>
-    Private ReadOnly Property PhonerResponse As String = "Response="
+    Private Const PhonerResponse As String = "Response="
 
     ''' <summary>
     ''' CONNECT
     ''' </summary>
-    Private ReadOnly Property PhonerCONNECT As String = "CONNECT"
+    Private Const PhonerCONNECT As String = "CONNECT"
 
     ''' <summary>
     ''' DISCONNECT
     ''' </summary>
-    Private ReadOnly Property PhonerDISCONNECT As String = "DISCONNECT"
+    Private Const PhonerDISCONNECT As String = "DISCONNECT"
 #End Region
 
 #Region "Event"
@@ -93,7 +93,7 @@ Friend Class Phoner
                                     ' Bei Phoner Authentifizieren md5(ChallengePasswort)
                                     Dim Response As String
                                     Using Crypter As New Rijndael
-                                        Response = Crypter.GetMd5Hash(Challange & Crypter.DecryptString128Bit(XMLData.POptionen.TBPhonerPasswort, DfltDeCryptKey), Encoding.ASCII).ToUpper
+                                        Response = Crypter.GetMd5Hash(Challange & Crypter.DecryptString128Bit(XMLData.POptionen.TBPhonerPasswort, DfltPhonerDeCryptKey), Encoding.ASCII).ToUpper
                                     End Using
                                     NLogger.Debug($"Phoner-Challange: {Challange}, Phoner-Response: {Response}")
 

@@ -37,7 +37,7 @@ Public Class ContactDataService
 
 #End Region
 
-#Region "Fritz!Box Kontakte"
+#Region "Fritz!Box Rufsperre"
 
     Public Function SetRufsperre(XMLDaten As FritzBoxXMLKontakt) As Integer Implements IContactDataService.SetRufsperre
         Dim UID As Integer = 0

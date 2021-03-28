@@ -4,6 +4,7 @@ Public NotInheritable Class DfltWerteAllgemein
 
     Public Shared ReadOnly Property DfltOptions As String = "Optionen"
     Public Shared ReadOnly Property DfltDeCryptKey As String = "ZugangV5"
+    Public Shared ReadOnly Property DfltPhonerDeCryptKey As String = "ZugangPhoner"
 
 #Region "Global Default Value Properties"
     ''' <summary>
@@ -162,6 +163,15 @@ Public NotInheritable Class DfltWerteAllgemein
         End Get
     End Property
 
+    Friend Shared ReadOnly Property DASLTagFBTelBuch As Object()
+        Get
+            Dim tmpDASLTag(1) As Object
+            tmpDASLTag(0) = DfltDASLSchema & "FBDB-PhonebookID"
+            tmpDASLTag(1) = DfltDASLSchema & "FBDB-PhonebookEntryID"
+            Return tmpDASLTag
+        End Get
+    End Property
+
     ''' <summary>
     ''' Ein Array, welches den Namen der UserProperties, die die unformatierte Telefonnummer enthält.
     ''' </summary>
@@ -195,34 +205,6 @@ Public NotInheritable Class DfltWerteAllgemein
         End Get
     End Property
 
-
-    'Friend Shared ReadOnly Property DASLTagTelNr As Object()
-    '    Get
-    '        Dim tmpDASLTag(18) As Object
-    '        tmpDASLTag(0) = "urn:schemas:contacts:secretaryphone" ' .AssistantTelephoneNumber
-    '        tmpDASLTag(1) = "urn:schemas:contacts:officetelephonenumber" ' .BusinessTelephoneNumber
-    '        tmpDASLTag(2) = "urn:schemas:contacts:office2telephonenumber" ' .Business2TelephoneNumber
-    '        tmpDASLTag(3) = "urn:schemas:contacts:callbackphone" ' .CallbackTelephoneNumber
-    '        tmpDASLTag(4) = "urn:schemas:contacts:othermobile" ' .CarTelephoneNumber
-    '        tmpDASLTag(5) = "urn:schemas:contacts:organizationmainphone" ' .CompanyMainTelephoneNumber
-    '        tmpDASLTag(6) = "urn:schemas:contacts:homePhone" ' .HomeTelephoneNumber
-    '        tmpDASLTag(7) = "urn:schemas:contacts:homePhone2" ' .Home2TelephoneNumber
-    '        tmpDASLTag(8) = "urn:schemas:contacts:internationalisdnnumber" ' .ISDNNumber
-    '        tmpDASLTag(9) = "http://schemas.microsoft.com/mapi/proptag/0x3a1c001f" ' .MobileTelephoneNumber
-    '        tmpDASLTag(10) = "urn:schemas:contacts:otherTelephone" ' .OtherTelephoneNumber
-    '        tmpDASLTag(11) = "urn:schemas:contacts:pager" ' .PagerNumber
-    '        tmpDASLTag(12) = "http://schemas.microsoft.com/mapi/proptag/0x3a1a001f" ' .PrimaryTelephoneNumber
-    '        tmpDASLTag(13) = "http://schemas.microsoft.com/mapi/proptag/0x3a1d001f" ' .RadioTelephoneNumber
-    '        tmpDASLTag(14) = "urn:schemas:contacts:facsimiletelephonenumber" ' .BusinessFaxNumber
-    '        tmpDASLTag(15) = "urn:schemas:contacts:homefax" ' .HomeFaxNumber
-    '        tmpDASLTag(16) = "urn:schemas:contacts:otherfax" ' .OtherFaxNumber
-    '        tmpDASLTag(17) = "urn:schemas:contacts:telexnumber" ' .TelexNumber
-    '        tmpDASLTag(18) = "urn:schemas:contacts:ttytddphone" ' .TTYTDDTelephoneNumber
-
-    '        Return tmpDASLTag
-    '    End Get
-    'End Property
-
     Friend Shared ReadOnly Property DASLTagTelNrIndex As Object()
         Get
             Dim tmpDASLTag(18) As Object
@@ -246,34 +228,6 @@ Public NotInheritable Class DfltWerteAllgemein
             tmpDASLTag(17) = DfltDASLSchema & "FBDB-Telex"
             tmpDASLTag(18) = DfltDASLSchema & "FBDB-TTYTDDTelephoneNumber"
             Return tmpDASLTag
-        End Get
-    End Property
-
-    Public Shared ReadOnly Property DfltolTelNrTypen() As ReadOnlyCollection(Of String)
-        Get
-            Dim tmp As New List(Of String) From {
-                "Assistent",
-                "Geschäftlich",
-                "Geschäftlich 2",
-                "Rückmeldung",
-                "Auto",
-                "Firma",
-                "Privat",
-                "Privat 2",
-                "ISDN",
-                "Mobiltelefon",
-                "Weitere",
-                "Pager",
-                "Haupttelefon",
-                "Funkruf",
-                "Fax geschäftl.",
-                "Fax privat",
-                "Weiteres Fax",
-                "Telex",
-                "Texttelefon"
-            }
-
-            Return New ReadOnlyCollection(Of String)(tmp)
         End Get
     End Property
 

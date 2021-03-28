@@ -37,9 +37,30 @@ Partial Public Class OptionsPasswordBox
     End Property
 
     ''' <summary>
-    ''' Identified the Label dependency property
+    ''' Identified the Value dependency property
     ''' </summary>
     Public Shared ReadOnly ValueProperty As DependencyProperty = DependencyProperty.Register(NameOf(Value), GetType(String), GetType(OptionsPasswordBox), New PropertyMetadata(""))
+
+#End Region
+
+#Region "DeCryptKey"
+
+    ''' <summary>
+    ''' Gets or sets the DeCryptKey which is being displayed
+    ''' </summary>
+    Public Property DeCryptKey As String
+        Get
+            Return CStr(GetValue(DeCryptKeyProperty))
+        End Get
+        Set
+            SetValue(DeCryptKeyProperty, Value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Identified the DeCryptKey dependency property
+    ''' </summary>
+    Public Shared ReadOnly DeCryptKeyProperty As DependencyProperty = DependencyProperty.Register(NameOf(DeCryptKey), GetType(String), GetType(OptionsPasswordBox), New PropertyMetadata(""))
 
 #End Region
 
@@ -58,7 +79,7 @@ Partial Public Class OptionsPasswordBox
         Else
             If PwBox.Password.AreNotEqual("1234") Then
                 Using Crypt As Rijndael = New Rijndael
-                    Value = Crypt.EncryptString128Bit(PwBox.Password, DfltDeCryptKey)
+                    Value = Crypt.EncryptString128Bit(PwBox.Password, DeCryptKey)
                 End Using
             End If
         End If

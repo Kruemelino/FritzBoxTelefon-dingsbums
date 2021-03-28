@@ -39,7 +39,8 @@
                   IsChecked="{Binding OptVM.CBPhoner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strPhonerTBPhonerPasswort}"
-                                Value="{Binding Path=OptVM.TBPhonerPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                Value="{Binding Path=OptVM.TBPhonerPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                DeCryptKey="{Binding Path=OptVM.DfltPhonerDeCryptKey, Mode=OneWay}"/>
 
         <fbd:OptionsTextBlock Label="{x:Static localize:LocOptionen.strPhonerstrPhonerPhoneInfo}"/>
         
