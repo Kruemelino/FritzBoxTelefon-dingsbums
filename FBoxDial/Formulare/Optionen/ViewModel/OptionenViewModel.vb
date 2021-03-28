@@ -44,6 +44,9 @@ Public Class OptionenViewModel
     End Property
 
     Public ReadOnly Property AddinVersion As String = $"Info V{Assembly.GetExecutingAssembly.GetName.Version}"
+
+    Public ReadOnly Property DfltDeCryptKey As String = DfltWerteAllgemein.DfltDeCryptKey
+    Public ReadOnly Property DfltPhonerDeCryptKey As String = DfltWerteAllgemein.DfltPhonerDeCryptKey
 #End Region
 
 #Region "Grunddaten Telefonie"

@@ -30,7 +30,8 @@
                  Text="{Binding OptVM.TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         
         <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strBaseTBPasswort}"
-                                Value="{Binding Path= OptVM.TBPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                Value="{Binding Path=OptVM.TBPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                DeCryptKey="{Binding Path=OptVM.DfltDeCryptKey, Mode=OneWay}"/>
 
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strBaseHeadTel}"/>
