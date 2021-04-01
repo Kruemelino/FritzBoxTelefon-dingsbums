@@ -1,5 +1,6 @@
 ﻿Imports System.Collections
 Imports System.Net
+Imports System.Web.Services.Protocols
 
 Friend Class FritzBoxTR64
     Implements IDisposable
@@ -143,6 +144,7 @@ Friend Class FritzBoxTR64
         End With
 
     End Function
+
 
     ''' <summary>
     ''' Ermittelt die Liste der Telefonbocher. 

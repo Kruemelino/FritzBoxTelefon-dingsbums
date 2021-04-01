@@ -167,7 +167,6 @@ Friend Module Serializer
 
                 ' Erstelle einen XMLWriter
                 Using transformedData As XmlWriter = XmlWriter.Create(TransformationOutput, writerSettings)
-
                     ' Transformiere das XML-Objekt
                     xslt.Transform(Reader, transformedData)
 

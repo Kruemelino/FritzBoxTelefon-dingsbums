@@ -6,7 +6,8 @@ Imports System.Windows.Threading
 
 Public Class AnrMonViewModel
     Inherits NotifyBase
-
+    Private Property DialogService As IDialogService
+    Private Property DatenService As IAnrMonService
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
@@ -127,6 +128,7 @@ Public Class AnrMonViewModel
     Public Property CallCommand As RelayCommand
     Public Property ShowContactCommand As RelayCommand
     Public Property ClosingCommand As RelayCommand
+    Public Property BlockCommand As RelayCommand
 #End Region
 
     Public Sub New()
@@ -135,8 +137,14 @@ Public Class AnrMonViewModel
         CloseCommand = New RelayCommand(AddressOf Close)
         CallCommand = New RelayCommand(AddressOf [Call], AddressOf CanCall)
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)
+        BlockCommand = New RelayCommand(AddressOf BlockNumber, AddressOf CanBlock)
+
         ' Window Command
         ClosingCommand = New RelayCommand(AddressOf Closing)
+
+        ' Interface
+        DatenService = New AnrMonService
+        DialogService = New DialogService
     End Sub
 
     Private Sub LadeDaten()
@@ -214,5 +222,16 @@ Public Class AnrMonViewModel
         ' Ereignishandler entfernen
         RemoveHandler AnrMonTelefonat.PropertyChanged, AddressOf TelefonatChanged
     End Sub
+
+    Private Sub BlockNumber(o As Object)
+
+        If DialogService.ShowMessageBox(String.Format(Localize.LocAnrMon.strQuestionBlockNumber, AnrMonTelefonat.GegenstelleTelNr.Formatiert)) = Windows.MessageBoxResult.Yes Then
+            DatenService.BlockNumbers(AnrMonTelefonat.GegenstelleTelNr)
+        End If
+
+    End Sub
+    Private Function CanBlock(o As Object) As Boolean
+        Return AnrMonTelefonat IsNot Nothing AndAlso (Not AnrMonTelefonat.NrUnterdrückt And AnrMonTelefonat.AnruferName.IsStringNothingOrEmpty)
+    End Function
 #End Region
 End Class

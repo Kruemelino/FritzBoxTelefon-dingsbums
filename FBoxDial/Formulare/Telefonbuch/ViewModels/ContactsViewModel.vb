@@ -1,5 +1,4 @@
 ﻿Imports System.Windows.Input
-Imports System.ComponentModel
 Imports System.Windows.Data
 
 ''' <summary>
@@ -91,7 +90,7 @@ Public Class ContactsViewModel
         End Get
         Set
             SetProperty(_FilterName, Value)
-            view?.Refresh()
+            View?.Refresh()
         End Set
     End Property
 
@@ -274,12 +273,6 @@ Public Class ContactsViewModel
         FBoxKontakt.Telefonie.Emails.Remove(CType(o, FritzBoxXMLEmail))
     End Sub
 
-#End Region
-
-#Region "Kontaktbild"
-    'Private Sub BrowseImage(o As Object)
-    '    Dim filePath = DialogService.OpenFile("Image files|*.bmp;*.jpg;*.jpeg;*.png|All files")
-    'End Sub
 #End Region
 
 #End Region

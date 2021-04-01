@@ -6,9 +6,9 @@
         xmlns:fbd="clr-namespace:FBoxDial"
         xmlns:localize="clr-namespace:FBoxDial.Localize"
         mc:Ignorable="d"
-        Height="100" Width="400" Focusable="False" IsTabStop="False" WindowStyle="None" 
+        Height="104" Width="400" Focusable="False" IsTabStop="False" WindowStyle="None" 
         MinWidth="400" MinHeight="100" ResizeMode="NoResize"
-        d:DataContext="{d:DesignInstance Type=fbd:AnrMonViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=fbd:AnrMonViewModel, IsDesignTimeCreatable=False}"
         fbd:WindowBehavior.Closing="{Binding ClosingCommand}">
     
     <Window.Resources>
@@ -34,12 +34,15 @@
                         
                 <Button Style="{StaticResource MiniIconButton}"
                         Content="{DynamicResource CallTo_16x}" 
-                        Command="{Binding CallCommand}"/>
+                        Command="{Binding CallCommand}" />
 
                 <Button Style="{StaticResource MiniIconButton}"
                         Content="{DynamicResource ContactCard_16x}" 
-                        Command="{Binding ShowContactCommand}"/>
-
+                        Command="{Binding ShowContactCommand}" />
+                
+                <Button Style="{StaticResource MiniIconButton}"
+                        Content="{DynamicResource StatusNo_16x}" 
+                        Command="{Binding BlockCommand}" />
             </StackPanel>
 
             <Image Width="72" Margin="4,4,4,0" 

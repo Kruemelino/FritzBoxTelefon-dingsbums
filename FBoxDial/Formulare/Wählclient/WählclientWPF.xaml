@@ -7,9 +7,10 @@
         xmlns:localize="clr-namespace:FBoxDial.Localize"
         mc:Ignorable="d"
         d:DesignHeight="250" d:DesignWidth="450"
-        d:DataContext="{d:DesignInstance Type=fbd:WählClientViewModel, IsDesignTimeCreatable=True}"  
+        d:DataContext="{d:DesignInstance Type=fbd:WählClientViewModel, IsDesignTimeCreatable=False}"  
         Focusable="False" IsTabStop="False" ResizeMode="NoResize"
         MinHeight="250" MinWidth="400" Height="250" Width="450"
+        Style="{DynamicResource CustomWindowStyle}"
         Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
 
     <Window.Resources>

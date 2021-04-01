@@ -160,4 +160,5 @@ Imports Microsoft.Office.Interop.Outlook
 
         Return XMLKontakt
     End Function
+
 End Class

@@ -10,3 +10,4 @@ Public Class Utf8StringWriter
         End Get ' in real code I'll cache this encoding.
     End Property
 End Class
+
