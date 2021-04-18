@@ -395,6 +395,10 @@ Public Class FritzBoxWählClient
         End With
     End Sub
 
+    Friend Overloads Sub WählboxStart(Kontakt As FritzBoxXMLKontakt)
+        WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = True, .SetOutlookFBoxXMLKontakt = Kontakt})
+    End Sub
+
     ''' <summary>
     ''' Startet das Wählen auf Basis eines Outlook Kontaktes
     ''' </summary>
@@ -408,6 +412,10 @@ Public Class FritzBoxWählClient
         End If
     End Sub
 
+    ''' <summary>
+    ''' Startet das Wählen auf Basis eines Outlook Exchange Users
+    ''' </summary>
+    ''' <param name="oExchangeNutzer">Der Exchange User, welcher angerufen werden soll</param>
     Private Sub Wählbox(oExchangeNutzer As Outlook.ExchangeUser)
 
         If oExchangeNutzer IsNot Nothing Then

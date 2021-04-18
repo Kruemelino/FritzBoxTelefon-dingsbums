@@ -561,6 +561,62 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Typ</value>
     <comment>OptTelephonyView</comment>
   </data>
+  <data name="strTest" xml:space="preserve">
+    <value>Testbereich</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strTestLKZ" xml:space="preserve">
+    <value>Landeskennzahl</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestLKZID" xml:space="preserve">
+    <value>ID des Landes</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestLKZName" xml:space="preserve">
+    <value>Name des Landes</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestONKZ" xml:space="preserve">
+    <value>Ortsnetzkennzahl</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestONKZName" xml:space="preserve">
+    <value>Name des Ortsnetzes</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestTelNrDurchwahl" xml:space="preserve">
+    <value>Durchwahl der Telefonnummer</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestTelNrEinwahl" xml:space="preserve">
+    <value>Einwahl der Telefonnummer</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestTelNrFormatiert" xml:space="preserve">
+    <value>Formatierte Telefonnummer</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestTelNrHead" xml:space="preserve">
+    <value>Test: Telefonnummern</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestTelNrInfo" xml:space="preserve">
+    <value>Im folgenden kann die korrekte Umsetzung der Telefonnummernformatierung getestet werden. Telefonnummern müssen korrekt erfasst werden. Zunächst werden alle nicht zur Telefonnummer gehörenden Zeichen entfernt. Danach wird die Telefonnummer hinsichtlich der Kennzahlen (Landeskennzahl, Ortsnetzkenzahl) untersucht. Im letzen Schritt wird die Telefonnummer neu zusammengefügt.</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestTelNrInput" xml:space="preserve">
+    <value>Eingabe der Telefonnummer</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestTelNrStart" xml:space="preserve">
+    <value>Telefonnummer auswerten</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestTelNrUnformatiert" xml:space="preserve">
+    <value>Unformatierte Telefonnummer</value>
+    <comment>OptTestView</comment>
+  </data>
   <data name="strUndo" xml:space="preserve">
     <value>Zurücksetzen</value>
     <comment>MainView</comment>

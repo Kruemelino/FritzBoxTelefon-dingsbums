@@ -50,6 +50,10 @@
         <fbd:OptInfoView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type fbd:OptTestViewModel}">
+        <fbd:OptTestView />
+    </DataTemplate>
+
     <Style x:Key="ToggleButtonStyle" TargetType="{x:Type RadioButton}" >
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="35"/>
@@ -117,6 +121,8 @@
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
+    
+    
 
     <Style x:Key="OptComboBox" TargetType="{x:Type ComboBox}" >
         <Setter Property="Template">
@@ -142,7 +148,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <Style x:Key="OptCheckBox" TargetType="{x:Type CheckBox}" >
         <Setter Property="Template">

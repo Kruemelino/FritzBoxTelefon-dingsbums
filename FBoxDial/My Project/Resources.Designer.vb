@@ -165,19 +165,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        '''&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;
-        '''    xmlns:msxsl=&quot;urn:schemas-microsoft-com:xslt&quot; exclude-result-prefixes=&quot;msxsl&quot;
-        '''&gt;
-        '''    &lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot;/&gt;
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
+        '''  &lt;xsl:output omit-xml-declaration=&quot;yes&quot; indent=&quot;yes&quot;/&gt;
+        '''  &lt;xsl:strip-space elements=&quot;*&quot;/&gt;
         '''
-        '''    &lt;xsl:template match=&quot;@* | node()&quot;&gt;
-        '''        &lt;xsl:copy&gt;
-        '''            &lt;xsl:apply-templates select=&quot;@* | node()&quot;/&gt;
-        '''        &lt;/xsl:copy&gt;
-        '''    &lt;/xsl:template&gt;
-        '''&lt;/xsl:stylesheet&gt;
-        ''' ähnelt.
+        '''  &lt;xsl:variable name=&quot;vUpper&quot; select=
+        ''' &quot;&apos;ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸŽŠŒ&apos;&quot;/&gt;
+        '''
+        '''  &lt;xsl:variable name=&quot;vLower&quot; select=
+        ''' &quot;&apos;abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿžšœ&apos;&quot;/&gt;
+        '''
+        '''  &lt;xsl:template match=&quot;node()|@*&quot;&gt;
+        '''    &lt;xsl:copy&gt;
+        '''      &lt;xsl:apply-templates select=&quot;node()|@*&quot;/&gt;
+        '''    &lt;/xsl:copy&gt;        ''' [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property ToLower() As String
             Get
@@ -186,32 +187,23 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;KZ&gt;
-        '''  &lt;LKZ n=&quot;1&quot;&gt;
-        '''    &lt;ONKZ n=&quot;1809&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;201&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;202&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;203&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;204&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;205&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;206&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;207&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;208&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;209&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;210&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;212&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;213&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;214&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;215&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;216&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;217&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;226&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;236&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;242&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;246&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;249&quot;/&gt;
-        '''    &lt;ONKZ n=&quot;250&quot;/&gt;
-        '''    &lt;ON [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
+        '''&lt;KZ&gt;
+        '''	&lt;LKZ n=&quot;376&quot; Code=&quot;AD&quot;&gt;
+        '''		&lt;ONKZ n=&quot;3&quot; Name=&quot;Mobile Phones&quot;/&gt;
+        '''		&lt;ONKZ n=&quot;4&quot; Name=&quot;Mobile Phones&quot;/&gt;
+        '''		&lt;ONKZ n=&quot;6&quot; Name=&quot;Mobile Phones&quot;/&gt;
+        '''		&lt;ONKZ n=&quot;7&quot; Name=&quot;Andorra la Vella&quot;/&gt;
+        '''		&lt;ONKZ n=&quot;8&quot; Name=&quot;Andorra la Vella&quot;/&gt;
+        '''	&lt;/LKZ&gt;
+        '''  &lt;LKZ n=&quot;971&quot; Code=&quot;AE&quot;&gt;
+        '''    &lt;ONKZ n=&quot;2&quot; Name=&quot;Abu Dhabi&quot;/&gt;
+        '''    &lt;ONKZ n=&quot;3&quot; Name=&quot;Al-Ain&quot;/&gt;
+        '''    &lt;ONKZ n=&quot;4&quot; Name=&quot;Dubai&quot;/&gt;
+        '''    &lt;ONKZ n=&quot;48&quot;/&gt;
+        '''    &lt;ONKZ n=&quot;50&quot; Name=&quot;Etisalat&quot;/&gt;
+        '''    &lt;ONKZ n=&quot;52&quot; Name=&quot;Du&quot;/&gt;
+        '''     [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property Vorwahlen() As String
             Get

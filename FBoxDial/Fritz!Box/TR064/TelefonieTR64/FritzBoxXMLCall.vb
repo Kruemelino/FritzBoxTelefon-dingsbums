@@ -281,7 +281,7 @@
                     .OutEigeneTelNr = .EigeneTelNr.Unformatiert
                     ' Number of calling party 
                     .GegenstelleTelNr = New Telefonnummer With {.SetNummer = Caller}
-                    .NrUnterdrückt = .GegenstelleTelNr.Unbekannt
+                    .NrUnterdrückt = .GegenstelleTelNr.Unterdrückt
                     ' Ring-List
                     If XMLData.POptionen.CBAnrListeUpdateCallLists Then
                         ' RING-Liste initialisieren, falls erforderlich
@@ -315,7 +315,7 @@
                     ' Anrufer ermitteln
                     If Name.IsNotStringNothingOrEmpty Then .AnruferName = Name
 
-                    If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unbekannt Then .Kontaktsuche()
+                    If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unterdrückt Then .Kontaktsuche()
                 End If
 
                 If Type.AreEqual(2) Then .Angenommen = False ' missed
@@ -335,6 +335,5 @@
         End If
 
     End Function
-
 
 End Class

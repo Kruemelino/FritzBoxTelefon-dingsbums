@@ -1,7 +1,6 @@
 ﻿Public Class OptTelephonyViewModel
     Inherits NotifyBase
     Implements IPageViewModel
-
     Private Property DatenService As IOptionenService
 
 #Region "Eigenschaften"

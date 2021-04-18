@@ -41,7 +41,7 @@
                         <RadioButton Style="{StaticResource ToggleButtonStyle}"
                                      Content="{Binding Name}"
                                      Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                     CommandParameter="{Binding }" />
+                                     CommandParameter="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

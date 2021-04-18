@@ -10,46 +10,17 @@ Friend Class Phoner
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property PhonerEndpoint As IPAddress = IPAddress.Loopback
     Private ReadOnly Property PhonerEndpointPort As Integer = 2012
-    Friend ReadOnly Property PhonerReady As Boolean = Process.GetProcessesByName("phoner").Length.IsNotZero
+    Friend ReadOnly Property PhonerReady As Boolean = Process.GetProcessesByName(PhonerProgressName).Length.IsNotZero
 #Region "Phoner Strings"
-    ''' <summary>
-    ''' Login
-    ''' </summary>
+    Private Const PhonerProgressName As String = "phoner"
     Private Const PhonerLogin As String = "Login"
-
-    ''' <summary>
-    ''' Welcome to Phoner
-    ''' </summary>
     Private Const PhonerWelcomeMessage As String = "Welcome to Phoner"
-
-    ''' <summary>
-    ''' Challenge=
-    ''' </summary>
     Private Const PhonerChallenge As String = "Challenge="
-
-    ''' <summary>
-    ''' Response=
-    ''' </summary>
     Private Const PhonerResponse As String = "Response="
-
-    ''' <summary>
-    ''' CONNECT
-    ''' </summary>
     Private Const PhonerCONNECT As String = "CONNECT"
-
-    ''' <summary>
-    ''' DISCONNECT
-    ''' </summary>
     Private Const PhonerDISCONNECT As String = "DISCONNECT"
 #End Region
 
-#Region "Event"
-    ''' <summary>
-    ''' Event zum setzen des Status
-    ''' </summary>
-    ''' <param name="Status">Text, welcher Angezeigt werden soll</param>
-    Friend Event SetStatus(Status As String)
-#End Region
     Friend Function CheckPhonerAuth() As Boolean
         Return DialPhoner(DfltStringEmpty, False, True)
     End Function
@@ -106,29 +77,26 @@ Friend Class Phoner
                                             If Hangup Then
                                                 ' Abbruch des Rufaufbaues mittels DISCONNECT
                                                 SW.WriteLine(PhonerDISCONNECT)
-                                                NLogger.Debug(SoftPhoneAbbruch)
+                                                NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
                                             Else
                                                 ' Aufbau des Telefonates mittels CONNECT
                                                 SW.WriteLine($"{PhonerCONNECT} {DialCode}")
-                                                NLogger.Debug(SoftPhoneErfolgreich(DialCode, "Phoner"))
+                                                NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneAbbruch, DialCode, PhonerProgressName))
                                             End If
                                         End If
                                         DialPhoner = True
 
                                     Else
-                                        NLogger.Warn(PhonerPasswortFalsch)
-                                        RaiseEvent SetStatus(PhonerPasswortFalsch)
+                                        NLogger.Warn(Localize.LocWählclient.strPhonerPasswortFalsch)
                                     End If
                                 Else
-                                    NLogger.Warn(PhonerZuAlt)
-                                    RaiseEvent SetStatus(PhonerZuAlt)
+                                    NLogger.Warn(Localize.LocWählclient.strPhonerZuAlt)
                                 End If
 
                             End Using
                         End Using
                     Else
-                        NLogger.Error(PhonerReadonly)
-                        RaiseEvent SetStatus(PhonerReadonly)
+                        NLogger.Error(Localize.LocWählclient.strPhonerReadonly)
                     End If
                     ' Datenstrom schließen und aufräumen
                     .Close()
@@ -142,8 +110,7 @@ Friend Class Phoner
             End Using
         Else
             ' Phoner nicht verfügbar
-            RaiseEvent SetStatus(PhonerNichtBereit)
-            NLogger.Warn(PhonerNichtBereit)
+            NLogger.Warn(Localize.LocWählclient.strPhonerNichtBereit)
         End If
     End Function
 

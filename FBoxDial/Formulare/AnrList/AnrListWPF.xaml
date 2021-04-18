@@ -46,10 +46,10 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localize:resCommon.strDate}" VerticalAlignment="Center"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localize:resCommon.strTime}" VerticalAlignment="Center"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static localize:resCommon.strStartTime}" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static localize:resCommon.strEndTime}" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localize:LocAnrList.strDate}" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localize:LocAnrList.strTime}" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static localize:LocAnrList.strStartTime}" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static localize:LocAnrList.strEndTime}" HorizontalAlignment="Center"/>
 
                 <DatePicker x:Name="DPSDatum" Grid.Row="1" Grid.Column="1" Margin="2"
                         SelectedDateFormat="Short" FirstDayOfWeek="Monday" HorizontalAlignment="Left" 

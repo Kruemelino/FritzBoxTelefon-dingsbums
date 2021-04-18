@@ -7,7 +7,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property OutookApplication As Application
     Friend Shared Property PAnrufmonitor As Anrufmonitor
     Friend Shared Property PhoneBookXML As FritzBoxXMLTelefonbücher
-    Friend Shared Property PCVorwahlen As CVorwahlen
+    Friend Shared Property PVorwahlen As Vorwahlen
     Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
     Friend Shared Property OffeneStoppUhrWPF As List(Of StoppUhrWPF)
     Friend Shared Property AddinWindows As New List(Of Windows.Window)
@@ -40,9 +40,8 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Async Sub StarteAddinFunktionen()
-
         ' Initialisiere die Landes- und Ortskennzahlen
-        PCVorwahlen = New CVorwahlen
+        PVorwahlen = New Vorwahlen
 
         ' Anrufmonitor starten
         If XMLData.POptionen.CBAnrMonAuto Then
@@ -68,8 +67,8 @@ Public NotInheritable Class ThisAddIn
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         ' Listen leeren
-        If PCVorwahlen IsNot Nothing Then
-            PCVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
+        If PVorwahlen IsNot Nothing Then
+            PVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
         End If
         ' Anrufmonitor beenden
         If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.StoppAnrMon()

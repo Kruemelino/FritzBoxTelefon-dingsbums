@@ -107,8 +107,8 @@
                 <!--Firma-->
                 <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
                            Style="{StaticResource AnrMonFirmenbezeichnung}"
-                           Text="{Binding Path=AnrMonFirma, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                           Visibility="{Binding ZeigeFirma, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                           Text="{Binding Path=AnrMonExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                           Visibility="{Binding ZeigeExInfo, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </Grid>
         </DockPanel>
     </Border>

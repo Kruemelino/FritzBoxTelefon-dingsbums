@@ -25,7 +25,7 @@ Namespace Localize
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
-    Public Class resCommon
+    Public Class LocAnrMon
         
         Private Shared resourceMan As Global.System.Resources.ResourceManager
         
@@ -43,7 +43,7 @@ Namespace Localize
         Public Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("FBoxDial.resCommon", GetType(resCommon).Assembly)
+                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("FBoxDial.LocAnrMon", GetType(LocAnrMon).Assembly)
                     resourceMan = temp
                 End If
                 Return resourceMan
@@ -65,47 +65,11 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Land ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Soll die Nummer {0} zu den Rufsperren der Fritz!Box hinzugefügt werden? ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strArea() As String
+        Public Shared ReadOnly Property strQuestionBlockNumber() As String
             Get
-                Return ResourceManager.GetString("strArea", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Datum ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strDate() As String
-            Get
-                Return ResourceManager.GetString("strDate", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Ort ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strLocation() As String
-            Get
-                Return ResourceManager.GetString("strLocation", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Nummer ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTelNr() As String
-            Get
-                Return ResourceManager.GetString("strTelNr", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Zeit ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTime() As String
-            Get
-                Return ResourceManager.GetString("strTime", resourceCulture)
+                Return ResourceManager.GetString("strQuestionBlockNumber", resourceCulture)
             End Get
         End Property
     End Class

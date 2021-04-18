@@ -248,6 +248,21 @@ Imports Microsoft.Office.Interop
 
     <XmlIgnore> Friend Property AnrMonEingeblendet As Boolean = False
     <XmlIgnore> Friend Property StoppUhrEingeblendet As Boolean = False
+    <XmlIgnore> Friend ReadOnly Property AnrMonExInfo As String
+        Get
+            If Firma.IsNotStringNothingOrEmpty Then
+                ' Gib die Firmeninformation zurück
+                Return Firma
+            Else
+                If Not GegenstelleTelNr.Unterdrückt Then
+                    Return $"{GegenstelleTelNr.Location}" & If(GegenstelleTelNr.IstInland, DfltStringEmpty, $" ({Localize.Länder.ResourceManager.GetString(GegenstelleTelNr.AreaCode)})")
+                Else
+                    ' Gib ein leeren String zurück
+                    Return DfltStringEmpty
+                End If
+            End If
+        End Get
+    End Property
 
     <XmlIgnore> Private Property PopUpAnrMonWPF As AnrMonWPF
     <XmlIgnore> Private Property PopupStoppUhrWPF As StoppUhrWPF
@@ -272,7 +287,7 @@ Imports Microsoft.Office.Interop
                     Case 3 ' Eingehende (anrufende) Telefonnummer
                         GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
 
-                        NrUnterdrückt = GegenstelleTelNr.Unbekannt
+                        NrUnterdrückt = GegenstelleTelNr.Unterdrückt
 
                     Case 4 ' Eigene (angerufene) Telefonnummer, MSN
 

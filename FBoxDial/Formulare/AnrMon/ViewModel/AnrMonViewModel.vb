@@ -69,14 +69,14 @@ Public Class AnrMonViewModel
         End Set
     End Property
 
-    Private _AnrMonFirma As String
-    Public Property AnrMonFirma As String
+    Private _AnrMonExInfo As String
+    Public Property AnrMonExInfo As String
         Get
-            Return _AnrMonFirma
+            Return _AnrMonExInfo
         End Get
         Set
-            SetProperty(_AnrMonFirma, Value)
-            OnPropertyChanged(NameOf(ZeigeFirma))
+            SetProperty(_AnrMonExInfo, Value)
+            OnPropertyChanged(NameOf(ZeigeExInfo))
         End Set
     End Property
 
@@ -110,9 +110,9 @@ Public Class AnrMonViewModel
             Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.AnruferName.IsNotStringNothingOrEmpty
         End Get
     End Property
-    Public ReadOnly Property ZeigeFirma As Boolean
+    Public ReadOnly Property ZeigeExInfo As Boolean
         Get
-            Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.Firma.IsNotStringNothingOrEmpty
+            Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.AnrMonExInfo.IsNotStringNothingOrEmpty
         End Get
     End Property
 
@@ -162,8 +162,8 @@ Public Class AnrMonViewModel
         ' Eigene Telefonnummer setzen
         AnrMonEigeneTelNr = AnrMonTelefonat.EigeneTelNr?.Einwahl
 
-        ' Firmeninformationen setzen
-        AnrMonFirma = AnrMonTelefonat.Firma
+        ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)
+        AnrMonExInfo = AnrMonTelefonat.AnrMonExInfo
 
         ' Setze das Kontaktbild, falls ein Outlookkontakt verfügbar ist.
         If Kontaktbild Is Nothing AndAlso AnrMonTelefonat.OlKontakt IsNot Nothing Then

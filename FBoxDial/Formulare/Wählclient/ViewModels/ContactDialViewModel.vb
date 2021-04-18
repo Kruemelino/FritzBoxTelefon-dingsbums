@@ -61,6 +61,19 @@ Public Class ContactDialViewModel
         End Set
     End Property
 
+    Private _FBoxXMLKontakt As FritzBoxXMLKontakt
+    Public Property FBoxXMLKontakt As FritzBoxXMLKontakt
+        Get
+            Return _FBoxXMLKontakt
+        End Get
+        Set
+            SetProperty(_FBoxXMLKontakt, Value)
+
+            SetData(_FBoxXMLKontakt)
+        End Set
+    End Property
+
+
     Public ReadOnly Property IsVIP As Boolean
         Get
             Return OKontakt IsNot Nothing AndAlso OKontakt.IsVIP
@@ -89,7 +102,7 @@ Public Class ContactDialViewModel
         DatenService = DS
         ' Init Command
 
-        ShowContactCommand = New RelayCommand(AddressOf ShowContact)
+        ShowContactCommand = New RelayCommand(AddressOf ShowContact, AddressOf CanShow)
         VIPCommand = New RelayCommand(AddressOf ToggleVIP)
 
     End Sub
@@ -136,7 +149,22 @@ Public Class ContactDialViewModel
         End With
     End Sub
 
+    Private Sub SetData(FBoxXMLKontakt As FritzBoxXMLKontakt)
+        With FBoxXMLKontakt
+
+            ' Telefonnummern des Kontaktes setzen 
+            DialNumberList.AddRange(.GetKontaktTelNrList)
+
+            ' Kopfdaten setzen
+            DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .Person.RealName}")
+        End With
+    End Sub
+
 #Region "ICommand Callback"
+    Private Function CanShow(obj As Object) As Boolean
+        Return OKontakt IsNot Nothing Or OExchangeNutzer IsNot Nothing
+    End Function
+
 
     Private Sub ShowContact(o As Object)
         OKontakt?.Display()

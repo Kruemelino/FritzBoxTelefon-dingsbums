@@ -16,8 +16,7 @@ Friend Module KontaktFunktionen
     Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, vCard As String, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
         Dim olKontakt As ContactItem
 
-
-        If Not TelNr.Unbekannt Then
+        If Not TelNr.Unterdrückt Then
 
             olKontakt = CType(ThisAddIn.OutookApplication.CreateItem(OlItemType.olContactItem), ContactItem)
 
@@ -84,7 +83,7 @@ Friend Module KontaktFunktionen
     Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, XMLKontakt As FritzBoxXMLKontakt, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
         Dim olKontakt As ContactItem
 
-        If Not TelNr.Unbekannt Then
+        If Not TelNr.Unterdrückt Then
 
             olKontakt = CType(ThisAddIn.OutookApplication.CreateItem(OlItemType.olContactItem), ContactItem)
 
@@ -172,7 +171,7 @@ Friend Module KontaktFunktionen
                     TelNr.SetNummer = .Body.GetSubString(PfltJournalBodyStart, "Status: ")
 
                     ' Prüfe ob TelNr unterdrückt
-                    If TelNr.Unbekannt Then
+                    If TelNr.Unterdrückt Then
                         olKontakt = ErstelleKontakt(TelNr, False)
                     Else
                         ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.

@@ -1039,6 +1039,132 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Testbereich ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTest() As String
+            Get
+                Return ResourceManager.GetString("strTest", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Landeskennzahl ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestLKZ() As String
+            Get
+                Return ResourceManager.GetString("strTestLKZ", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ID des Landes ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestLKZID() As String
+            Get
+                Return ResourceManager.GetString("strTestLKZID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Name des Landes ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestLKZName() As String
+            Get
+                Return ResourceManager.GetString("strTestLKZName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Ortsnetzkennzahl ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestONKZ() As String
+            Get
+                Return ResourceManager.GetString("strTestONKZ", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Name des Ortsnetzes ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestONKZName() As String
+            Get
+                Return ResourceManager.GetString("strTestONKZName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Durchwahl der Telefonnummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTelNrDurchwahl() As String
+            Get
+                Return ResourceManager.GetString("strTestTelNrDurchwahl", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Einwahl der Telefonnummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTelNrEinwahl() As String
+            Get
+                Return ResourceManager.GetString("strTestTelNrEinwahl", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Formatierte Telefonnummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTelNrFormatiert() As String
+            Get
+                Return ResourceManager.GetString("strTestTelNrFormatiert", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Test: Telefonnummern ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTelNrHead() As String
+            Get
+                Return ResourceManager.GetString("strTestTelNrHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Im folgenden kann die korrekte Umsetzung der Telefonnummernformatierung getestet werden. Telefonnummern müssen korrekt erfasst werden. Zunächst werden alle nicht zur Telefonnummer gehörenden Zeichen entfernt. Danach wird die Telefonnummer hinsichtlich der Kennzahlen (Landeskennzahl, Ortsnetzkenzahl) untersucht. Im letzen Schritt wird die Telefonnummer neu zusammengefügt. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTelNrInfo() As String
+            Get
+                Return ResourceManager.GetString("strTestTelNrInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Eingabe der Telefonnummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTelNrInput() As String
+            Get
+                Return ResourceManager.GetString("strTestTelNrInput", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Telefonnummer auswerten ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTelNrStart() As String
+            Get
+                Return ResourceManager.GetString("strTestTelNrStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Unformatierte Telefonnummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTelNrUnformatiert() As String
+            Get
+                Return ResourceManager.GetString("strTestTelNrUnformatiert", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Zurücksetzen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strUndo() As String

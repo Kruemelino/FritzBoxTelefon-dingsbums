@@ -242,7 +242,7 @@
     </Compile>
     <Compile Include="Formulare\AnrList\Services\AnrListService.vb" />
     <Compile Include="Formulare\AnrList\Services\IAnrListService.vb" />
-    <Compile Include="Formulare\AnrMon\Resources\LocAnrMon.Designer.vb">
+    <Compile Include="Formulare\AnrMon\Services\LocAnrMon.Designer.vb">
       <DependentUpon>LocAnrMon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -281,9 +281,18 @@
     <Compile Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml.vb">
       <DependentUpon>OptCtrlTV.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\Optionen\ViewModel\OptTestViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Views\OptTestView.xaml.vb">
+      <DependentUpon>OptTestView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Fritz!Box\TR064\XMLTR64\AllowedValueRange.vb" />
+    <Compile Include="Localize\Länder.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Länder.resx</DependentUpon>
+    </Compile>
     <Compile Include="Localize\resCommon.Designer.vb">
       <DependentUpon>resCommon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -342,7 +351,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Formulare\Wählclient\Services\Messenger.vb" />
     <Compile Include="Formulare\Wählclient\Services\DialDataTemplateSelector.vb" />
     <Compile Include="Formulare\Wählclient\Services\DialService.vb" />
     <Compile Include="Formulare\Wählclient\Services\IDialService.vb" />
@@ -402,7 +410,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Localize\resAnrMon.Designer.vb">
+    <Compile Include="Anrufmonitor\resAnrMon.Designer.vb">
       <DependentUpon>resAnrMon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -494,6 +502,9 @@
     </Compile>
     <Compile Include="UnSaveNativeMethods.vb" />
     <None Include="packages.config" />
+    <None Include="Telefonie\Listen\Vorwahlen.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Zertifikat\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>
@@ -507,9 +518,14 @@
       <LastGenOutput>LocAnrList.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\AnrMon\Resources\LocAnrMon.resx">
+    <EmbeddedResource Include="Formulare\AnrMon\Services\LocAnrMon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocAnrMon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localize\Länder.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Länder.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Localize\resCommon.resx">
@@ -535,7 +551,7 @@
       <LastGenOutput>resRibbon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localize\resAnrMon.resx">
+    <EmbeddedResource Include="Anrufmonitor\resAnrMon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resAnrMon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
@@ -575,7 +591,6 @@
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorKontakt.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
-    <EmbeddedResource Include="Telefonie\Listen\Vorwahlen.xml" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Formulare\AnrList\Resources\AnrList.xaml">
@@ -591,6 +606,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptTestView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -721,6 +740,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Optionen\ToLower.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Telefonie\Listen\Vorwahlen.xml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

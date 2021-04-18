@@ -117,106 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="strAnrMon" xml:space="preserve">
-    <value>Anrufmonitor</value>
-  </data>
-  <data name="strCancel" xml:space="preserve">
-    <value>Abbrechen</value>
-  </data>
-  <data name="strCancelClicked" xml:space="preserve">
-    <value>Abbrechen geklickt</value>
-  </data>
-  <data name="strCheckAll" xml:space="preserve">
-    <value>Alle auswählen</value>
-  </data>
-  <data name="strClose" xml:space="preserve">
-    <value>Schließen</value>
-  </data>
-  <data name="strConfig" xml:space="preserve">
-    <value>Einstellungen</value>
+  <data name="strArea" xml:space="preserve">
+    <value>Land</value>
   </data>
   <data name="strDate" xml:space="preserve">
     <value>Datum</value>
   </data>
-  <data name="strDevice" xml:space="preserve">
-    <value>Gerät</value>
+  <data name="strLocation" xml:space="preserve">
+    <value>Ort</value>
   </data>
-  <data name="strDialer" xml:space="preserve">
-    <value>Wählhilfe</value>
-  </data>
-  <data name="strDownload" xml:space="preserve">
-    <value>Herunterladen</value>
-  </data>
-  <data name="strDuration" xml:space="preserve">
-    <value>Dauer</value>
-  </data>
-  <data name="strEndTime" xml:space="preserve">
-    <value>Endzeit</value>
-  </data>
-  <data name="strImportCallerList" xml:space="preserve">
-    <value>Import der Anrufliste</value>
-  </data>
-  <data name="strMyNumber" xml:space="preserve">
-    <value>Eingene Nr.</value>
-  </data>
-  <data name="strName" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="strNoEntriesSelected" xml:space="preserve">
-    <value>Keine Einträge markiert</value>
-  </data>
-  <data name="strOptBaseConfig" xml:space="preserve">
-    <value>Grundeinstellung</value>
-  </data>
-  <data name="strOptCreateContact" xml:space="preserve">
-    <value>Kontakterstellung</value>
-  </data>
-  <data name="strOptInfo" xml:space="preserve">
-    <value>Info</value>
-  </data>
-  <data name="strOptJournal" xml:space="preserve">
-    <value>Journal</value>
-  </data>
-  <data name="strOptMicroSIP" xml:space="preserve">
-    <value>MicroSIP</value>
-  </data>
-  <data name="strOptPhone" xml:space="preserve">
-    <value>Telefone</value>
-  </data>
-  <data name="strOptPhoner" xml:space="preserve">
-    <value>Phoner</value>
-  </data>
-  <data name="strOptSearchContact" xml:space="preserve">
-    <value>Kontaktsuche</value>
-  </data>
-  <data name="strPort" xml:space="preserve">
-    <value>Port</value>
-  </data>
-  <data name="strRemoteCaller" xml:space="preserve">
-    <value>Gegenstelle</value>
-  </data>
-  <data name="strSave" xml:space="preserve">
-    <value>Speichern</value>
-  </data>
-  <data name="strStartJounalImport" xml:space="preserve">
-    <value>Starte Jounalimport</value>
-  </data>
-  <data name="strStartTime" xml:space="preserve">
-    <value>Startzeit</value>
-  </data>
-  <data name="strStatus" xml:space="preserve">
-    <value>Status</value>
+  <data name="strTelNr" xml:space="preserve">
+    <value>Nummer</value>
   </data>
   <data name="strTime" xml:space="preserve">
     <value>Zeit</value>
-  </data>
-  <data name="strUncheckAll" xml:space="preserve">
-    <value>Keine auswählen</value>
-  </data>
-  <data name="strUndo" xml:space="preserve">
-    <value>Zurücksetzen</value>
-  </data>
-  <data name="strUpload" xml:space="preserve">
-    <value>Hochladen</value>
   </data>
 </root>

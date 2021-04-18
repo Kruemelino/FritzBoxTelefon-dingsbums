@@ -10,7 +10,6 @@
         d:DataContext="{d:DesignInstance Type=fbd:WählClientViewModel, IsDesignTimeCreatable=False}"  
         Focusable="False" IsTabStop="False" ResizeMode="NoResize"
         MinHeight="250" MinWidth="400" Height="250" Width="450"
-        Style="{DynamicResource CustomWindowStyle}"
         Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
 
     <Window.Resources>
@@ -51,7 +50,7 @@
                                Text="{Binding Path=Status, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
                     <Button Style="{StaticResource IconTextButton}"
-                            Content="{x:Static localize:resCommon.strCancel}" 
+                            Content="{x:Static localize:LocWählclient.strCancel}" 
                             Tag="{DynamicResource Cancel_16x}"
                             Command="{Binding CancelCommand}"
                             DockPanel.Dock="Bottom" Margin="0,0,2,0"

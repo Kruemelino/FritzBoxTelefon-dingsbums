@@ -74,6 +74,7 @@ Public Class ContactsViewModel
     'Public Property BrowseImageCommand As ICommand
     Public Property AddContact As ICommand
     Public Property DeleteCommand As ICommand
+    Public Property DialCommand As ICommand
     Public Property AddNumber As ICommand
     Public Property AddMail As ICommand
     Public Property RemoveNumber As ICommand
@@ -122,7 +123,7 @@ Public Class ContactsViewModel
         UpdateCommand = New RelayCommand(AddressOf Update)
         'BrowseImageCommand = New RelayCommand(AddressOf BrowseImage, AddressOf IsEdit)
         DeleteCommand = New RelayCommand(AddressOf Delete, AddressOf CanDelete)
-
+        DialCommand = New RelayCommand(AddressOf Dial, AddressOf CanDial)
         AddContact = New RelayCommand(AddressOf AddKontakt, AddressOf CanAddKontakt)
 
         AddNumber = New RelayCommand(AddressOf AddTelNr)
@@ -275,8 +276,16 @@ Public Class ContactsViewModel
 
 #End Region
 
+#Region "Kontakt anrufen"
+    Private Sub Dial(o As Object)
+        DatenService.Dial(FBoxKontakt)
+    End Sub
+
+    Private Function CanDial(o As Object) As Boolean
+        Return IsDisplayMode AndAlso FBoxTelefonbuch IsNot Nothing AndAlso FBoxTelefonbuch.Kontakte IsNot Nothing
+    End Function
 #End Region
 
-
+#End Region
 
 End Class

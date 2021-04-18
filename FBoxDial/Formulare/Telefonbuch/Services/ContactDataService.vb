@@ -5,6 +5,7 @@
 ''' </summary>
 Public Class ContactDataService
     Implements IContactDataService
+
 #Region "Fritz!Box Telefonbücher"
     Public Async Function GetFBContacts() As Threading.Tasks.Task(Of FritzBoxXMLTelefonbücher) Implements IContactDataService.GetTelefonbücher
         'If ThisAddIn.PhoneBookXML Is Nothing OrElse ThisAddIn.PhoneBookXML.Telefonbücher Is Nothing Then
@@ -58,5 +59,13 @@ Public Class ContactDataService
     End Function
 
 #End Region
+
+#Region "Kontakt anrufen"
+    Public Sub Dial(XMLDaten As FritzBoxXMLKontakt) Implements IContactDataService.Dial
+        Dim WählClient As New FritzBoxWählClient
+        WählClient.WählboxStart(XMLDaten)
+    End Sub
+#End Region
+
 End Class
 

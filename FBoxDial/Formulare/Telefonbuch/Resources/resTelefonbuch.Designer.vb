@@ -101,6 +101,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDial() As String
+            Get
+                Return ResourceManager.GetString("strDial", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Bearbeiten ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strEdit() As String

@@ -30,14 +30,6 @@
     '    Private Const CommandExit As String = "/exit"
 #End Region
 
-#Region "Event"
-    ''' <summary>
-    ''' Event zum setzen des Status
-    ''' </summary>
-    ''' <param name="Status">Text, welcher Angezeigt werden soll</param>
-    Friend Event SetStatus(Status As String)
-#End Region
-
     Public Sub New()
 
         Dim ProcressMicroSIP As Process()
@@ -45,20 +37,20 @@
 
         If ProcressMicroSIP.Length.IsNotZero Then
 
-            NLogger.Debug(MicroSIPBereit)
+            NLogger.Debug(Localize.LocWählclient.strMicroSIPBereit)
 
             ' Ermittle Pfad zur ausgeführten MicroSIP.exe
             XMLData.POptionen.TBMicroSIPPath = ProcressMicroSIP.First.MainModule.FileName
 
-            NLogger.Debug(MicroSIPgestartet(XMLData.POptionen.TBMicroSIPPath))
+            NLogger.Debug(String.Format(Localize.LocWählclient.strMicroSIPgestartetPfad, XMLData.POptionen.TBMicroSIPPath))
 
         Else
-            NLogger.Debug(MicroSIPNichtBereit)
+            NLogger.Debug(Localize.LocWählclient.strMicroSIPNichtBereit)
 
             If XMLData.POptionen.TBMicroSIPPath.IsNotStringNothingOrEmpty Then
                 ' Starte MicroSIP
                 Process.Start(XMLData.POptionen.TBMicroSIPPath)
-                NLogger.Info(MicroSIPgestartet)
+                NLogger.Info(Localize.LocWählclient.strMicroSIPgestartet)
             End If
         End If
 
@@ -74,18 +66,17 @@
                 ' Abbruch des Rufaufbaues mittels Parameter
                 Process.Start(XMLData.POptionen.TBMicroSIPPath, CommandHangUpAll)
 
-                NLogger.Debug(SoftPhoneAbbruch)
+                NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
             Else
                 ' Aufbau des Telefonates mittels Parameter 
                 Process.Start(XMLData.POptionen.TBMicroSIPPath, DialCode)
 
-                NLogger.Debug(SoftPhoneErfolgreich(DialCode, MicroSIPProgressName))
+                NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneAbbruch, DialCode, MicroSIPProgressName))
             End If
 
         Else
             ' Phoner nicht verfügbar
-            RaiseEvent SetStatus(MicroSIPNichtBereit)
-            NLogger.Warn(MicroSIPNichtBereit)
+            NLogger.Warn(Localize.LocWählclient.strMicroSIPNichtBereit)
         End If
     End Function
 

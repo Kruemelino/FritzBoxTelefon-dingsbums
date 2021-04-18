@@ -65,6 +65,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Abbrechen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCancel() As String
+            Get
+                Return ResourceManager.GetString("strCancel", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Rufnummer unterdrücken ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCLIR() As String
@@ -119,11 +128,110 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property String1() As String
+            Get
+                Return ResourceManager.GetString("String1", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP ist bereit. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strMicroSIPBereit() As String
+            Get
+                Return ResourceManager.GetString("strMicroSIPBereit", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP gestartet ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strMicroSIPgestartet() As String
+            Get
+                Return ResourceManager.GetString("strMicroSIPgestartet", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Pfad zu MicroSIP ermittelt: {0} ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strMicroSIPgestartetPfad() As String
+            Get
+                Return ResourceManager.GetString("strMicroSIPgestartetPfad", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP ist nicht bereit. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strMicroSIPNichtBereit() As String
+            Get
+                Return ResourceManager.GetString("strMicroSIPNichtBereit", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner ist nicht bereit. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPhonerNichtBereit() As String
+            Get
+                Return ResourceManager.GetString("strPhonerNichtBereit", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Das Phoner-Passwort ist falsch. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPhonerPasswortFalsch() As String
+            Get
+                Return ResourceManager.GetString("strPhonerPasswortFalsch", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zu Phoner können keine Daten gesendet werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPhonerReadonly() As String
+            Get
+                Return ResourceManager.GetString("strPhonerReadonly", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Die Phoner-Verson ist zu alt. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPhonerZuAlt() As String
+            Get
+                Return ResourceManager.GetString("strPhonerZuAlt", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Sie sind dabei eine Mobilnummer ({0}) anzurufen. Fortsetzen? ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strQMobil() As String
             Get
                 Return ResourceManager.GetString("strQMobil", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Abbruch des Rufaufbaues erfolgreich übermittelt. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSoftPhoneAbbruch() As String
+            Get
+                Return ResourceManager.GetString("strSoftPhoneAbbruch", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Telefonnummer {0} erfolgreich an {1} übermittelt. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSoftPhoneErfolgreich() As String
+            Get
+                Return ResourceManager.GetString("strSoftPhoneErfolgreich", resourceCulture)
             End Get
         End Property
         

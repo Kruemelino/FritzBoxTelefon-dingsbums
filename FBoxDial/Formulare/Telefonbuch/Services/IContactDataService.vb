@@ -22,4 +22,8 @@ Public Interface IContactDataService
     Function DeleteRufsperre(UID As Integer) As Boolean
     Function DeleteRufsperren(Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean
 #End Region
+
+#Region "Kontakt anrufen"
+    Sub Dial(XMLDaten As FritzBoxXMLKontakt)
+#End Region
 End Interface

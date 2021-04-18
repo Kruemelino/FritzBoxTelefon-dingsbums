@@ -31,8 +31,10 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
 Für die Nutzung des Addins wird benötigt: 
 1. eine (halbwegs) aktuelle AVM Fritz!Box mit Telefoniefunktion.
    1. Damit dieses Addin korrekt arbeiten kann, muss ein Nutzer mit Administratorrechten darauf zugreifen.
-   2. Der Fritz!Box CallMonitor muss aktiviert sein: Hierzu den Telefoncode `#96*5*` per Telefon wählen.
-   3. Zur Kommunikation mit der Fritz!Box wird u. a. die TR064-Schnittstelle verwendet. Daher darf diese nicht deaktiviert werden.
+   2. Die Zweifaktor-Authentifizierung der Fritz!Box muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist. In der Fritz!Box muss die Option 
+      `Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen` unter `System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz` deaktiviert sein.
+   3. Der Fritz!Box CallMonitor muss aktiviert sein: Hierzu den Telefoncode `#96*5*` per Telefon wählen.
+   4. Zur Kommunikation mit der Fritz!Box wird u. a. die TR064-Schnittstelle verwendet. Daher darf diese nicht deaktiviert werden.
 2. Microsoft Outlook (2010 bis 2019 inkl. 365)
 3. Gegebenenfalls vorab installieren:
    1. [Microsoft .NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48)

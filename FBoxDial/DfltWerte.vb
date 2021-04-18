@@ -374,31 +374,6 @@ Public NotInheritable Class DfltWerteAllgemein
 
 #End Region
 
-#Region "Literale Rückwärtssuche"
-    Public Shared ReadOnly Property RWSTest(TelNr As String, Ergebnis As String) As String
-        Get
-            Return $"Die Rückwärtssuche mit der Nummer {TelNr} brachte folgendes Ergebnis:{Dflt2NeueZeile}{Ergebnis}"
-        End Get
-    End Property
-    Public Shared ReadOnly Property RWSTestKeinEintrag() As String
-        Get
-            Return "Kein Eintrag gefunden."
-        End Get
-    End Property
-
-#End Region
-
-#Region "Literale Warnungen"
-    ''' <summary>
-    ''' Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist.
-    ''' In der Fritz!Box:
-    ''' System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz
-    ''' Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.
-    ''' </summary>
-    Public Shared ReadOnly Property Warnung2FA As String = $"Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist.{Dflt2NeueZeile}In der Fritz!Box:{Dflt1NeueZeile}System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz{Dflt1NeueZeile}Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'"
-
-#End Region
-
 #Region "Literale Journal"
     ''' <summary>
     ''' Fritz!Box Anrufmonitor
@@ -450,73 +425,5 @@ Public NotInheritable Class DfltWerteAllgemein
     End Property
 #End Region
 
-#Region "Literale Telefonbücher"
-    Public Shared ReadOnly Property DfltTelBNameNeuBuch As String = "Name für das neue Telefonbuch:"
-
-    Public Shared ReadOnly Property DfltTelBFrageLöschen(TB_Name As String, TB_ID As String) As String
-        Get
-            Return $"Soll das Telefonbuch {TB_Name} ({TB_ID}) von der Fritz!Box gelöscht werden?"
-        End Get
-    End Property
-    Public Shared ReadOnly Property DfltTelBFrageLöschenID0(TB_Name As String, TB_ID As String) As String
-        Get
-            Return $"Soll das Telefonbuch {TB_Name} mit der ID {TB_ID} kann nicht gelöscht werden. Stattdessen werden alle Einträge entfernt. Fortfahren?"
-        End Get
-    End Property
-#End Region
-
-#Region "DatagridView"
-    Public Shared ReadOnly Property PfltCheckBackColor As Drawing.Color = Drawing.Color.LightGreen
-#End Region
-
-#Region "Literale Phoner"
-    ''' <summary>
-    ''' Das Phoner-Passwort ist falsch!
-    ''' </summary>
-    Public Shared ReadOnly Property PhonerPasswortFalsch As String = "Das Phoner-Passwort ist falsch."
-    ''' <summary>
-    ''' Die Phoner-Verson ist zu alt!"
-    ''' </summary>
-    Public Shared ReadOnly Property PhonerZuAlt As String = "Die Phoner-Verson ist zu alt."
-    ''' <summary>   
-    ''' Zu dem Datenstrom können keine Daten gesendet werden!
-    ''' </summary>
-    Public Shared ReadOnly Property PhonerReadonly As String = "Zu dem Datenstrom können keine Daten gesendet werden."
-    ''' <summary>   
-    ''' Phoner oder PhonerLite ist nicht bereit!
-    ''' </summary>
-    Public Shared ReadOnly Property PhonerNichtBereit As String = "Phoner ist nicht bereit."
-    ''' <summary>
-    ''' Telefonnummer <paramref name="Dialcode"/> erfolgreich an Phoner übermittelt
-    ''' </summary>
-    ''' <param name="Dialcode">Der übermittelte Dialcode</param>
-    ''' <returns></returns>
-    Public Shared ReadOnly Property SoftPhoneErfolgreich(Dialcode As String, Softphone As String) As String
-        Get
-            Return $"Telefonnummer {Dialcode} erfolgreich an {Softphone} übermittelt."
-        End Get
-    End Property
-    ''' <summary>
-    ''' Abbruch des Rufaufbaues erfolgreich übermittelt.
-    ''' </summary>
-    Public Shared ReadOnly Property SoftPhoneAbbruch As String = "Abbruch des Rufaufbaues erfolgreich übermittelt."
-#End Region
-
-#Region "Literale MicroSIP"
-    Public Shared ReadOnly Property MicroSIPBereit As String = "MicroSIP ist bereit."
-    Public Shared ReadOnly Property MicroSIPNichtBereit As String = "MicroSIP ist nicht bereit."
-    Public Shared ReadOnly Property MicroSIPgestartet(Pfad As String) As String
-        Get
-            Return $"Pfad zu MicroSIP ermittelt: {Pfad}"
-        End Get
-    End Property
-    Public Shared ReadOnly Property MicroSIPgestartet As String
-        Get
-            Return "MicroSIP gestartet"
-        End Get
-    End Property
-
-
-#End Region
 End Class
 

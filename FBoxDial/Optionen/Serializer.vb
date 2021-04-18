@@ -260,6 +260,28 @@ Friend Module Serializer
 
     End Function
 
+    Friend Async Function XmlDeserializeFromStringAsync(Of T)(objectData As String) As Task(Of T)
+        Return Await Task.Run(Function()
+                                  If CheckXMLData(objectData, False) Then
+
+                                      Dim Serializer = New XmlSerializer(GetType(T))
+                                      Using Reader As New StringReader(objectData)
+                                          Try
+                                              Return CType(Serializer.Deserialize(Reader), T)
+                                          Catch ex As InvalidOperationException
+                                              NLogger.Fatal(ex, $"Fehler beim Deserialisieren von {GetType(T).FullName}: {objectData}")
+
+                                              ' Gib Nothing zurück
+                                              Return Nothing
+                                          End Try
+
+                                      End Using
+                                  Else
+                                      Return Nothing
+                                  End If
+                              End Function)
+    End Function
+
     Friend Function XmlSerializeToString(Of T)(objectData As T, ByRef result As String) As Boolean
 
         If objectData IsNot Nothing Then

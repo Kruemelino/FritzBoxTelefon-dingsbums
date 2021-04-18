@@ -68,6 +68,10 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Orientation="Vertical">
+                <Button Style="{StaticResource IconTextButton}" Background="{StaticResource ReptileGreen}"
+                        Content="{x:Static localize:resTelefonbuch.strDial}" Tag="{DynamicResource Phone}"
+                        Command="{Binding DialCommand}" IsCancel="False"/>
+                
                 <Button Style="{StaticResource IconTextButton}" Background="{StaticResource FusionRed}"
                         Content="{x:Static localize:resTelefonbuch.strDelete}" Tag="{DynamicResource ContactDelete}"
                         Command="{Binding DeleteCommand}" IsCancel="False"/>

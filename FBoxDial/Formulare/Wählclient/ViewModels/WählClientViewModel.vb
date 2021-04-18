@@ -152,6 +152,11 @@ Public Class WählClientViewModel
             ContactDialVM.OExchangeNutzer = Value
         End Set
     End Property
+    Friend WriteOnly Property SetOutlookFBoxXMLKontakt As FritzBoxXMLKontakt
+        Set
+            ContactDialVM.FBoxXMLKontakt = Value
+        End Set
+    End Property
     Friend WriteOnly Property SetTelNr As Telefonnummer
         Set
             DirectDialVM.TelNr = Value

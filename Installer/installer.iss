@@ -261,7 +261,7 @@ function Outlookx64: boolean;
                2010: RegOutlook := 'SOFTWARE\Microsoft\Office\14.0\Outlook';
                2013: RegOutlook := 'SOFTWARE\Microsoft\Office\15.0\Outlook';
                2016: RegOutlook := 'SOFTWARE\Microsoft\Office\16.0\Outlook';
-               2019: RegOutlook := 'SOFTWARE\Microsoft\Office\17.0\Outlook';
+               2019: RegOutlook := 'SOFTWARE\Microsoft\Office\16.0\Outlook';
            END; // CASE
      
            if RegQueryStringValue(GetHKLM, RegOutlook, 'Bitness', x86) then 

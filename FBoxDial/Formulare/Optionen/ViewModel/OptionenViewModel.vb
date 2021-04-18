@@ -548,6 +548,7 @@ Public Class OptionenViewModel
             .Add(New OptPhonerViewModel())
             .Add(New OptMicroSIPViewModel())
             .Add(New OptInfoViewModel())
+            .Add(New OptTestViewModel())
         End With
 
         ' Lade die Grundeinstellungen

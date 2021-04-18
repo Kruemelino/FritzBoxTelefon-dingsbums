@@ -15,8 +15,7 @@ End Enum
 
 Public Structure TelNrType
     Public Property TelNrType As OutlookNrType
-
-    Friend ReadOnly Property XML As XMLTelNrTyp
+    Friend Property XML As XMLTelNrTyp
         Get
             Select Case TelNrType
                 Case OutlookNrType.CarTelephoneNumber, OutlookNrType.HomeTelephoneNumber, OutlookNrType.Home2TelephoneNumber, OutlookNrType.ISDNNumber, OutlookNrType.TTYTDDTelephoneNumber, OutlookNrType.OtherTelephoneNumber
@@ -32,6 +31,22 @@ Public Structure TelNrType
             End Select
 
         End Get
+        Set
+            Select Case Value
+                Case XMLTelNrTyp.notset, XMLTelNrTyp.other, XMLTelNrTyp.intern
+                    TelNrType = OutlookNrType.OtherFaxNumber
+                Case XMLTelNrTyp.work
+                    TelNrType = OutlookNrType.BusinessTelephoneNumber
+                Case XMLTelNrTyp.home
+                    TelNrType = OutlookNrType.HomeTelephoneNumber
+                Case XMLTelNrTyp.mobile
+                    TelNrType = OutlookNrType.MobileTelephoneNumber
+                Case XMLTelNrTyp.fax_work
+                    TelNrType = OutlookNrType.HomeFaxNumber
+                Case XMLTelNrTyp.memo
+                    TelNrType = OutlookNrType.CallbackTelephoneNumber
+            End Select
+        End Set
     End Property
 
 End Structure

@@ -129,6 +129,9 @@
   <data name="strDelete" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="strDial" xml:space="preserve">
+    <value>Anrufen</value>
+  </data>
   <data name="strEdit" xml:space="preserve">
     <value>Bearbeiten</value>
   </data>

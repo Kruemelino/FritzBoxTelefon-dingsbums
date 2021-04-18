@@ -6,7 +6,6 @@ Public NotInheritable Class DfltWerteTelefonie
     ''' </summary>
     Friend Shared ReadOnly Property PDfltVAZ As String = "00"
     Friend Shared ReadOnly Property PDfltAmt As String = "0"
-    Friend Shared ReadOnly Property PDfltLandesKZ As String = "49"
     Friend Shared ReadOnly Property PDfltMaskeNANP As String = "%L (%O) %N-%D"
 
     ''' <summary>

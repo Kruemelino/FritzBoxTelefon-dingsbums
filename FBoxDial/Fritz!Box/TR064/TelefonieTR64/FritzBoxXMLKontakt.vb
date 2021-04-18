@@ -8,7 +8,6 @@ Imports Microsoft.Office.Interop.Outlook
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-
     Public Sub New()
         Person = New FritzBoxXMLPerson
         Telefonie = New FritzBoxXMLTelefonie
@@ -71,7 +70,13 @@ Imports Microsoft.Office.Interop.Outlook
             Return False
         End Get
     End Property
-    '
+
+    <XmlIgnore> Public ReadOnly Property GetKontaktTelNrList As List(Of Telefonnummer)
+        Get
+            Return Telefonie.Nummern.Select(Function(TelNr) New Telefonnummer With {.SetNummer = TelNr.Nummer, .Typ = New TelNrType With {.XML = TelNr.Typ}}).ToList
+        End Get
+    End Property
+
     Friend Sub XMLKontaktOutlook(ByRef Kontakt As ContactItem)
         ' Werte übeführen
         With Kontakt

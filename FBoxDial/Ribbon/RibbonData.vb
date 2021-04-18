@@ -813,7 +813,12 @@ Namespace RibbonData
                 XButton.Attributes.Append(XAttribute)
 
                 XAttribute = xDoc.CreateAttribute("supertip")
-                XAttribute.Value = $"Zeit: { .ZeitBeginn}{Dflt1NeueZeile}Telefonnummer: { .GegenstelleTelNr.Formatiert}"
+                XAttribute.Value = $"{Localize.resCommon.strTime}: { .ZeitBeginn}{Dflt1NeueZeile}"
+                XAttribute.Value += $"{Localize.resCommon.strTelNr}: { .GegenstelleTelNr.Formatiert}"
+
+                If .GegenstelleTelNr.AreaCode.IsNotStringNothingOrEmpty Then XAttribute.Value += $"{Dflt1NeueZeile}{Localize.resCommon.strArea}: {Localize.Länder.ResourceManager.GetString(.GegenstelleTelNr.AreaCode)}"
+                If .GegenstelleTelNr.Location.IsNotStringNothingOrEmpty Then XAttribute.Value += $"{Dflt1NeueZeile}{Localize.resCommon.strLocation}: { .GegenstelleTelNr.Location}"
+
                 XButton.Attributes.Append(XAttribute)
 
                 If Not .Angenommen Then
