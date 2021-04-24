@@ -232,7 +232,7 @@ function GetOutlookVersion(): String;
                 14: Version := '2010';
                 15: Version := '2013';
                 16: Version := '2016';
-                17: Version := '2019'
+                16: Version := '2019'
             END; // CASE
 
     Result := Version;    

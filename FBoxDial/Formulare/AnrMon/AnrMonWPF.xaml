@@ -87,10 +87,6 @@
                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource AnrMonMainInfo}">
                             <Style.Triggers>
 
-                                <DataTrigger Binding="{Binding Path=AnrMonTelefonat.NrUnterdrückt}" Value="True">
-                                    <Setter Property="Text" Value="{x:Static localize:resAnrMon.strUnknown}"/>
-                                </DataTrigger>
-
                                 <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="True">
                                     <Setter Property="Text" Value="{Binding Path=AnrMonAnrufer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                 </DataTrigger>

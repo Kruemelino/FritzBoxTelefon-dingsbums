@@ -65,6 +65,114 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Ausgehender Anruf zu ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalAusgehend() As String
+            Get
+                Return ResourceManager.GetString("strJournalAusgehend", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Tel.-Nr.: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalBodyStart() As String
+            Get
+                Return ResourceManager.GetString("strJournalBodyStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Telefonanrufe ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalCatCalls() As String
+            Get
+                Return ResourceManager.GetString("strJournalCatCalls", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Anrufmonitor ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalCatDefault() As String
+            Get
+                Return ResourceManager.GetString("strJournalCatDefault", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Verpasst ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalCatVerpasst() As String
+            Get
+                Return ResourceManager.GetString("strJournalCatVerpasst", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Eingehender Anruf von ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalEingehend() As String
+            Get
+                Return ResourceManager.GetString("strJournalEingehend", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Journaleintrag konnte nicht erstellt werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalFehler() As String
+            Get
+                Return ResourceManager.GetString("strJournalFehler", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nicht erfolgreicher Anruf zu ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalNichterfolgreich() As String
+            Get
+                Return ResourceManager.GetString("strJournalNichterfolgreich", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Rückwärtssuche nicht erfolgreich: Es wurden keine Einträge gefunden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalRWSFehler() As String
+            Get
+                Return ResourceManager.GetString("strJournalRWSFehler", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kontaktdaten (vCard): ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalTextvCard() As String
+            Get
+                Return ResourceManager.GetString("strJournalTextvCard", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Verpasster Anruf von ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalVerpasst() As String
+            Get
+                Return ResourceManager.GetString("strJournalVerpasst", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Rufnummer unterdrückt ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strNrUnterdrückt() As String
+            Get
+                Return ResourceManager.GetString("strNrUnterdrückt", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Soll die Nummer {0} zu den Rufsperren der Fritz!Box hinzugefügt werden? ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strQuestionBlockNumber() As String

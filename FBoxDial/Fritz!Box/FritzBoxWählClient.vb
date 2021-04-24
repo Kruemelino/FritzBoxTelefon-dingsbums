@@ -332,13 +332,13 @@ Public Class FritzBoxWählClient
     Friend Overloads Sub WählboxStart(olJournal As Outlook.JournalItem)
 
         With olJournal
-            If Not .Body.Contains(DfltStringUnbekannt) And .Categories.Contains(DfltJournalKategorie) Then
+            If Not .Body.Contains(Localize.LocAnrMon.strNrUnterdrückt) And .Categories.Contains(Localize.LocAnrMon.strJournalCatDefault) Then
                 Dim aktKontakt As Outlook.ContactItem
                 Dim vCard As String
                 Dim TelNr As Telefonnummer
 
                 ' Telefonnummer aus dem Body ermitteln
-                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(PfltJournalBodyStart, Dflt1NeueZeile)}
+                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, Dflt1NeueZeile)}
 
                 ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
                 aktKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object()))

@@ -117,6 +117,42 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="strJournalAusgehend" xml:space="preserve">
+    <value>Ausgehender Anruf zu</value>
+  </data>
+  <data name="strJournalBodyStart" xml:space="preserve">
+    <value>Tel.-Nr.:</value>
+  </data>
+  <data name="strJournalCatCalls" xml:space="preserve">
+    <value>Telefonanrufe</value>
+  </data>
+  <data name="strJournalCatDefault" xml:space="preserve">
+    <value>Fritz!Box Anrufmonitor</value>
+  </data>
+  <data name="strJournalCatVerpasst" xml:space="preserve">
+    <value>Verpasst</value>
+  </data>
+  <data name="strJournalEingehend" xml:space="preserve">
+    <value>Eingehender Anruf von</value>
+  </data>
+  <data name="strJournalFehler" xml:space="preserve">
+    <value>Journaleintrag konnte nicht erstellt werden.</value>
+  </data>
+  <data name="strJournalNichterfolgreich" xml:space="preserve">
+    <value>Nicht erfolgreicher Anruf zu</value>
+  </data>
+  <data name="strJournalRWSFehler" xml:space="preserve">
+    <value>Rückwärtssuche nicht erfolgreich: Es wurden keine Einträge gefunden.</value>
+  </data>
+  <data name="strJournalTextvCard" xml:space="preserve">
+    <value>Kontaktdaten (vCard):</value>
+  </data>
+  <data name="strJournalVerpasst" xml:space="preserve">
+    <value>Verpasster Anruf von</value>
+  </data>
+  <data name="strNrUnterdrückt" xml:space="preserve">
+    <value>Rufnummer unterdrückt</value>
+  </data>
   <data name="strQuestionBlockNumber" xml:space="preserve">
     <value>Soll die Nummer {0} zu den Rufsperren der Fritz!Box hinzugefügt werden?</value>
   </data>

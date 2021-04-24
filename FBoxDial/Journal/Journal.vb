@@ -29,19 +29,19 @@ Module Journal
     Friend Async Sub StartJournalRWS(olJournal As Outlook.JournalItem)
         With olJournal
 
-            If Not .Body.Contains(DfltStringUnbekannt) And .Categories.Contains(DfltJournalKategorie) Then
+            If Not .Body.Contains(Localize.LocAnrMon.strNrUnterdrückt) And .Categories.Contains(Localize.LocAnrMon.strJournalCatDefault) Then
 
                 Dim vCard As String
                 Dim TelNr As Telefonnummer
 
                 ' Telefonnummer aus dem Body ermitteln
-                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(PfltJournalBodyStart, Dflt1NeueZeile)}
+                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, Dflt1NeueZeile)}
                 vCard = Await StartRWS(TelNr, False)
 
                 If vCard.IsStringNothingOrEmpty Then
-                    .Body += String.Format("{0}{1}", Dflt1NeueZeile, DfltJournalRWSFehler)
+                    .Body += String.Format("{0}{1}", Dflt1NeueZeile, Localize.LocAnrMon.strJournalFehler)
                 Else
-                    .Body += String.Format("{0}{2}{1}{3}", Dflt1NeueZeile, Dflt2NeueZeile, DfltJournalTextKontaktvCard, vCard)
+                    .Body += String.Format("{0}{2}{1}{3}", Dflt1NeueZeile, Dflt2NeueZeile, Localize.LocAnrMon.strJournalTextvCard, vCard)
                 End If
 
             End If

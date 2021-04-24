@@ -267,7 +267,6 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Private Property PopUpAnrMonWPF As AnrMonWPF
     <XmlIgnore> Private Property PopupStoppUhrWPF As StoppUhrWPF
 
-
     ''' <summary>
     '''         0        ; 1  ;2;    3     ;  4   ; 5  ; 6
     ''' 23.06.18 13:20:24;RING;1;0123456789;987654;SIP4;
@@ -416,101 +415,106 @@ Imports Microsoft.Office.Interop
     ''' </summary>
     Friend Async Sub Kontaktsuche()
 
-        ' Kontaktsuche in den Outlook-Kontakten
-        OlKontakt = KontaktSucher.KontaktSuche(GegenstelleTelNr)
+        ' Führe keine Kontaktsuche durch, wenn die Nummer unterdrückt ist
+        If Not NrUnterdrückt Then
 
-        If OlKontakt IsNot Nothing Then
-            ' Ein Kontakt wurde gefunden
-            With OlKontakt
-                ' Anrufernamen ermitteln
-                AnruferName = .FullName
+            ' Kontaktsuche in den Outlook-Kontakten
+            OlKontakt = KontaktSucher.KontaktSuche(GegenstelleTelNr)
 
-                ' Firma aus Kontaktdaten ermitteln
-                Firma = .CompanyName
+            If OlKontakt IsNot Nothing Then
+                ' Ein Kontakt wurde gefunden
+                With OlKontakt
+                    ' Anrufernamen ermitteln
+                    AnruferName = .FullName
 
-                ' KontaktID und StoreID speichern
-                OutlookKontaktID = .EntryID
-                OutlookStoreID = .StoreID
+                    ' Firma aus Kontaktdaten ermitteln
+                    Firma = .CompanyName
 
-                ' Log-Eintrag erzeugen
-                NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' in Outlook-Kontakten gefunden.")
-            End With
-        End If
-
-        ' Kontaktsuche in den Fritz!Box Telefonbüchern
-        If OlKontakt Is Nothing Then
-            If XMLData.POptionen.CBKontaktSucheFritzBox Then
-
-                If ThisAddIn.PhoneBookXML Is Nothing OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
-                    ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
-                    ' Dann lade die Telefonbücher herunter
-                    NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
-
-                    ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher()
-                End If
-
-                ' Wenn die Telefonbücher immer noch nicht zur Verfügung stehen, brich an dieser Stelle ab
-                If ThisAddIn.PhoneBookXML IsNot Nothing AndAlso Not ThisAddIn.PhoneBookXML.NurHeaderDaten Then
-                    FBTelBookKontakt = ThisAddIn.PhoneBookXML.Find(GegenstelleTelNr)
-                Else
-                    NLogger.Warn("Kontaktsuche in Fritz!Box Telefonbüchern ist nicht möglich: Telefonbücher sind nicht heruntergeladen worden.")
-                End If
-
-                If FBTelBookKontakt IsNot Nothing Then
-                    If XMLData.POptionen.CBKErstellen Then
-                        OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
-
-                        With OlKontakt
-                            AnruferName = .FullName
-                            Firma = .CompanyName
-                        End With
-                    Else
-                        AnruferName = FBTelBookKontakt.Person.RealName
-                    End If
+                    ' KontaktID und StoreID speichern
+                    OutlookKontaktID = .EntryID
+                    OutlookStoreID = .StoreID
 
                     ' Log-Eintrag erzeugen
-                    NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' im Fritz!Box Telefonbuch gefunden.")
-                End If
+                    NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' in Outlook-Kontakten gefunden.")
+                End With
             End If
-        End If
 
-        ' Kontaktsuche über die Rückwärtssuche
-        If FBTelBookKontakt Is Nothing And OlKontakt Is Nothing Then
+            ' Kontaktsuche in den Fritz!Box Telefonbüchern
+            If OlKontakt Is Nothing Then
+                If XMLData.POptionen.CBKontaktSucheFritzBox Then
 
-            ' Eine Rückwärtssuche braucht nur dann gemacht werden, wennd die Länge der Telefonnummer aussreichend ist.
-            ' Ggf. muss der Wert angepasst werden.
-            If XMLData.POptionen.CBRWS AndAlso GegenstelleTelNr.Unformatiert.Length.IsLargerOrEqual(4) Then
+                    If ThisAddIn.PhoneBookXML Is Nothing OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                        ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
+                        ' Dann lade die Telefonbücher herunter
+                        NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
 
-                VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.CBRWSIndex)
-
-                If VCard.IsNotStringEmpty Then
-
-                    NLogger.Info($"Rückwärtssuche für '{GegenstelleTelNr.Unformatiert}' erfolgreich: {VCard}")
-
-                    If XMLData.POptionen.CBKErstellen Then
-                        OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
-                        With OlKontakt
-                            AnruferName = .FullName
-                            Firma = .CompanyName
-                        End With
-
-                    Else
-                        With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
-                            AnruferName = .FormattedName
-                            Firma = .Organization
-                        End With
+                        ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher()
                     End If
 
-                    NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' per Rückwärtssuche gefunden.")
+                    ' Wenn die Telefonbücher immer noch nicht zur Verfügung stehen, brich an dieser Stelle ab
+                    If ThisAddIn.PhoneBookXML IsNot Nothing AndAlso Not ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                        FBTelBookKontakt = ThisAddIn.PhoneBookXML.Find(GegenstelleTelNr)
+                    Else
+                        NLogger.Warn("Kontaktsuche in Fritz!Box Telefonbüchern ist nicht möglich: Telefonbücher sind nicht heruntergeladen worden.")
+                    End If
 
+                    If FBTelBookKontakt IsNot Nothing Then
+                        If XMLData.POptionen.CBKErstellen Then
+                            OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
+
+                            With OlKontakt
+                                AnruferName = .FullName
+                                Firma = .CompanyName
+                            End With
+                        Else
+                            AnruferName = FBTelBookKontakt.Person.RealName
+                        End If
+
+                        ' Log-Eintrag erzeugen
+                        NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' im Fritz!Box Telefonbuch gefunden.")
+                    End If
                 End If
             End If
 
+            ' Kontaktsuche über die Rückwärtssuche
+            If FBTelBookKontakt Is Nothing And OlKontakt Is Nothing Then
+
+                ' Eine Rückwärtssuche braucht nur dann gemacht werden, wennd die Länge der Telefonnummer aussreichend ist.
+                ' Ggf. muss der Wert angepasst werden.
+                If XMLData.POptionen.CBRWS AndAlso GegenstelleTelNr.Unformatiert.Length.IsLargerOrEqual(4) Then
+
+                    VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.CBRWSIndex)
+
+                    If VCard.IsNotStringEmpty Then
+
+                        NLogger.Info($"Rückwärtssuche für '{GegenstelleTelNr.Unformatiert}' erfolgreich: {VCard}")
+
+                        If XMLData.POptionen.CBKErstellen Then
+                            OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
+                            With OlKontakt
+                                AnruferName = .FullName
+                                Firma = .CompanyName
+                            End With
+
+                        Else
+                            With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
+                                AnruferName = .FormattedName
+                                Firma = .Organization
+                            End With
+                        End If
+
+                        NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' per Rückwärtssuche gefunden.")
+
+                    End If
+                End If
+
+            End If
+
+            ' Zeige Kontakt
+            If XMLData.POptionen.CBAnrMonZeigeKontakt Then ZeigeKontakt()
+        Else
+            AnruferName = Localize.LocAnrMon.strNrUnterdrückt
         End If
-
-        ' Zeige Kontakt
-        If XMLData.POptionen.CBAnrMonZeigeKontakt Then ZeigeKontakt()
-
     End Sub
 #End Region
 
@@ -572,15 +576,15 @@ Imports Microsoft.Office.Interop
 
                     If Angenommen Then
                         If AnrufRichtung = AnrufRichtungen.Ausgehend Then
-                            tmpSubject = DfltJournalTextAusgehend
+                            tmpSubject = Localize.LocAnrMon.strJournalAusgehend
                         Else
-                            tmpSubject = DfltJournalTextEingehend
+                            tmpSubject = Localize.LocAnrMon.strJournalEingehend
                         End If
                     Else 'Verpasst
                         If AnrufRichtung = AnrufRichtungen.Ausgehend Then
-                            tmpSubject = DfltJournalTextNichtErfolgreich
+                            tmpSubject = Localize.LocAnrMon.strJournalNichterfolgreich
                         Else
-                            tmpSubject = DfltJournalTextVerpasst
+                            tmpSubject = Localize.LocAnrMon.strJournalVerpasst
                         End If
                     End If
 
@@ -588,12 +592,12 @@ Imports Microsoft.Office.Interop
 
                         .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
                         .Duration = Dauer.GetLarger(31) \ 60
-                        .Body = DfltJournalBody(If(NrUnterdrückt, DfltStringUnbekannt, GegenstelleTelNr.Formatiert), Angenommen, VCard)
+                        .Body = DfltJournalBody(If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert), Angenommen, VCard)
                         .Start = ZeitBeginn
                         .Companies = Firma
 
                         ' Bei verpassten Anrufen ist TelGerät ggf. leer
-                        .Categories = $"{If(TelGerät Is Nothing, "Verpasst", TelGerät.Name)};{String.Join("; ", DfltJournalDefCategories.ToArray)}"
+                        .Categories = $"{If(TelGerät Is Nothing, Localize.LocAnrMon.strJournalCatVerpasst, TelGerät.Name)};{String.Join("; ", DfltJournalDefCategories.ToArray)}"
 
                         ' Speichern der EntryID und StoreID in Benutzerdefinierten Feldern
                         If OlKontakt IsNot Nothing Then
@@ -632,7 +636,7 @@ Imports Microsoft.Office.Interop
                 End If
             End If
         Else
-            NLogger.Info(DfltJournalFehler)
+            NLogger.Info(Localize.LocAnrMon.strJournalFehler)
         End If
     End Sub
 
@@ -641,7 +645,7 @@ Imports Microsoft.Office.Interop
         Angenommen = False
         Beendet = False
 
-        ' Starte die Kontaktsuche mit Hilfe eines Backgroundworkers, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
+        ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
         ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
         Kontaktsuche()
 

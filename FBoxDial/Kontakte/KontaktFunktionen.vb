@@ -160,7 +160,7 @@ Friend Module KontaktFunktionen
         Dim TelNr As Telefonnummer
 
         With olJournal
-            If .Categories.Contains(DfltJournalKategorie) Then
+            If .Categories.Contains(Localize.LocAnrMon.strJournalCatDefault) Then
 
                 olKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object()))
 
@@ -168,7 +168,7 @@ Friend Module KontaktFunktionen
 
                     TelNr = New Telefonnummer
                     'Telefonnummer aus dem .Body herausfiltern
-                    TelNr.SetNummer = .Body.GetSubString(PfltJournalBodyStart, "Status: ")
+                    TelNr.SetNummer = .Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, "Status: ")
 
                     ' Prüfe ob TelNr unterdrückt
                     If TelNr.Unterdrückt Then
@@ -514,9 +514,9 @@ Friend Module KontaktFunktionen
             vCard = Await StartRWS(TelNr, False)
 
             If vCard.IsStringNothingOrEmpty Then
-                .Body += $"{Dflt1NeueZeile}{DfltJournalRWSFehler} {TelNr.Formatiert}"
+                .Body += $"{Dflt1NeueZeile}{Localize.LocAnrMon.strJournalRWSFehler} {TelNr.Formatiert}"
             Else
-                .Body += String.Format($"{Dflt1NeueZeile}{Dflt2NeueZeile}{DfltJournalTextKontaktvCard}{vCard}")
+                .Body += String.Format($"{Dflt1NeueZeile}{Dflt2NeueZeile}{Localize.LocAnrMon.strJournalTextvCard}{vCard}")
 
                 DeserializevCard(vCard, olContact)
             End If

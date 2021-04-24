@@ -242,7 +242,7 @@
     </Compile>
     <Compile Include="Formulare\AnrList\Services\AnrListService.vb" />
     <Compile Include="Formulare\AnrList\Services\IAnrListService.vb" />
-    <Compile Include="Formulare\AnrMon\Services\LocAnrMon.Designer.vb">
+    <Compile Include="Formulare\AnrMon\Resources\LocAnrMon.Designer.vb">
       <DependentUpon>LocAnrMon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -410,11 +410,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Anrufmonitor\resAnrMon.Designer.vb">
-      <DependentUpon>resAnrMon.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Formulare\Telefonbuch\Resources\resTelefonbuch.Designer.vb">
       <DependentUpon>resTelefonbuch.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -518,7 +513,7 @@
       <LastGenOutput>LocAnrList.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\AnrMon\Services\LocAnrMon.resx">
+    <EmbeddedResource Include="Formulare\AnrMon\Resources\LocAnrMon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocAnrMon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
@@ -549,11 +544,6 @@
     <EmbeddedResource Include="Localize\resRibbon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resRibbon.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>Localize</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Anrufmonitor\resAnrMon.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>resAnrMon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\Telefonbuch\Resources\resTelefonbuch.resx">

@@ -32,26 +32,6 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property Dflt2NeueZeile() As String = Dflt1NeueZeile & Dflt1NeueZeile
 
     ''' <summary>
-    ''' String: unbekannt
-    ''' </summary>
-    Public Shared ReadOnly Property DfltStringUnbekannt() As String = "unbekannt"
-
-    '''' <summary>
-    '''' 0000000000000000
-    '''' </summary>
-    'Public Shared ReadOnly Property PDfltSessionID() As String = "0000000000000000"
-
-    ''' <summary>
-    ''' Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)
-    ''' </summary>
-    Public Shared ReadOnly Property DfltHeader_UserAgent() As String = "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
-
-    ''' <summary>
-    ''' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-    ''' </summary>
-    Public Shared ReadOnly Property DfltHeader_Accept() As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-
-    ''' <summary>
     ''' 2000
     ''' </summary>
     Public Shared ReadOnly Property DfltReStartIntervall() As Integer = 2000
@@ -60,36 +40,6 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' 15
     ''' </summary>
     Public Shared ReadOnly Property DfltTryMaxRestart() As Integer = 15
-
-    '''' <summary>
-    '''' [-&gt;]
-    '''' </summary>
-    'Public Shared ReadOnly Property PDfltAnrMonDirection_Call() As String = "[->]"
-
-    '''' <summary>
-    '''' [&lt;-]
-    '''' </summary>
-    'Public Shared ReadOnly Property PDfltAnrMonDirection_Ring() As String = "[<-]"
-
-    '''' <summary>
-    '''' [&lt;&gt;]
-    '''' </summary>
-    'Public Shared ReadOnly Property PDfltAnrMonDirection_Default() As String = "[<>]"
-
-    ''' <summary>
-    ''' FBDB-AnrMonDirection
-    ''' </summary>
-    Public Shared ReadOnly Property DfltAnrMonDirection_UserProperty_Name() As String = "FBDB-AnrMonDirection"
-
-    ''' <summary>
-    ''' FBDB-AnrMonZeit
-    ''' </summary>
-    Public Shared ReadOnly Property DfltAnrMonDirection_UserProperty_Zeit() As String = "FBDB-AnrMonZeit"
-
-    ''' <summary>
-    ''' FBDB_Note_Table
-    ''' </summary>
-    Public Shared ReadOnly Property DfltNote_Table() As String = "FBDB_Note_Table"
 
     ''' <summary>
     ''' BEGIN:VCARD
@@ -136,15 +86,6 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <returns>FritzOutlookV5.log</returns>
     ''' <remarks>Wird mit Ressource "PDfltAddin_KurzName" erstellt.</remarks>
     Public Shared ReadOnly Property DfltLogFileName() As String = $"{My.Resources.strDefShortName}.log"
-
-    ''' <summary>
-    ''' Gibt den default Dialport für Mobilgeräte an. 
-    ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>99</returns>
-    Public Shared ReadOnly Property DfltMobilDialPort() As Integer = 99
-
-    Public Shared ReadOnly Property DfltDirectorySeparatorChar() As String = IO.Path.DirectorySeparatorChar
 
     Friend Shared ReadOnly Property DfltErrorvalue As Integer = -2147221233
 
@@ -375,43 +316,12 @@ Public NotInheritable Class DfltWerteAllgemein
 #End Region
 
 #Region "Literale Journal"
-    ''' <summary>
-    ''' Fritz!Box Anrufmonitor
-    ''' </summary>
-    Public Shared ReadOnly Property DfltJournalKategorie As String = "Fritz!Box Anrufmonitor"
 
     Public Shared ReadOnly Property DfltJournalDefCategories() As ReadOnlyCollection(Of String)
         Get
-            Return New ReadOnlyCollection(Of String)({DfltJournalKategorie, "Telefonanrufe"})
+            Return New ReadOnlyCollection(Of String)({Localize.LocAnrMon.strJournalCatDefault, Localize.LocAnrMon.strJournalCatCalls})
         End Get
     End Property
-
-    ''' <summary>
-    ''' Journaleintrag konnte nicht erstellt werden.
-    ''' </summary>
-    Public Shared ReadOnly Property DfltJournalFehler As String = "Journaleintrag konnte nicht erstellt werden."
-
-    Public Shared ReadOnly Property DfltJournalTextEingehend() As String = "Eingehender Anruf von"
-    Public Shared ReadOnly Property DfltJournalTextAusgehend() As String = "Ausgehender Anruf zu"
-    Public Shared ReadOnly Property DfltJournalTextVerpasst() As String = "Verpasster Anruf von"
-    Public Shared ReadOnly Property DfltJournalTextNichtErfolgreich() As String = "Nicht erfolgreicher Anruf zu"
-
-    Public Shared ReadOnly Property DfltJournalRWSFehler As String = "Rückwärtssuche nicht erfolgreich: Es wurden keine Einträge gefunden."
-
-    '''' <summary>
-    '''' Kontaktdaten:
-    '''' </summary>
-    'Public Shared ReadOnly Property PDfltJournalTextKontaktdaten As String = "Kontaktdaten:"
-
-    ''' <summary>
-    ''' Kontaktdaten (vCard):
-    ''' </summary>
-    Public Shared ReadOnly Property DfltJournalTextKontaktvCard As String = "Kontaktdaten (vCard):"
-
-    ''' <summary>
-    ''' Tel.-Nr.:
-    ''' </summary>
-    Public Shared ReadOnly Property PfltJournalBodyStart As String = "Tel.-Nr.:"
 
     ''' <summary>
     ''' Tel.-Nr.: TelNr Status: (nicht) angenommen    
@@ -420,7 +330,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <param name="Angenommen">Boolean, ob das Telefon angenommen wurde oder nicht</param>
     Public Shared ReadOnly Property DfltJournalBody(TelNr As String, Angenommen As Boolean, vCard As String) As String
         Get
-            Return $"{PfltJournalBodyStart} {TelNr}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{vCard}"
+            Return $"{Localize.LocAnrMon.strJournalBodyStart} {TelNr}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{vCard}"
         End Get
     End Property
 #End Region

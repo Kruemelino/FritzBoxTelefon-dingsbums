@@ -516,9 +516,6 @@ Imports FBoxDial.FritzBoxDefault
     Private Async Function FritzBoxAsyncQuery(SessionID As String, Abfrage As List(Of String)) As Task(Of String)
         Return Await HTTPAsyncGet($"{FBLinkBasis}/query.lua?{SessionID}&{String.Join("&", Abfrage.ToArray)}", Encoding.GetEncoding(DfltCodePageFritzBox))
     End Function
-    Private Function FritzBoxQuery(SessionID As String, Abfrage As List(Of String)) As String
-        Return HTTPGet($"{FBLinkBasis}/query.lua?{SessionID}&{String.Join("&", Abfrage.ToArray)}", Encoding.GetEncoding(DfltCodePageFritzBox))
-    End Function
 
     ''' <summary>
     ''' Gibt eine Statusmeldung (<paramref name="StatusMessage"/>) als Event aus. Gleichzeitig wird in das Log mit vorgegebenem <paramref name="Level"/> geschrieben.

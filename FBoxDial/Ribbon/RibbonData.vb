@@ -526,7 +526,7 @@ Namespace RibbonData
                 Case TypeOf Context Is Outlook.JournalItem
                     ' Ermittelt, ob dem Journaleintrag ein Kontakthinterlegt ist, oder eine vCard, oder eine Telefonnummer
                     With CType(Context, Outlook.JournalItem)
-                        Return Not .Body.StartsWith(String.Format($"{PfltJournalBodyStart} {Localize.resAnrMon.strUnknown}"))
+                        Return Not .Body.StartsWith(String.Format($"{Localize.LocAnrMon.strJournalBodyStart} {Localize.LocAnrMon.strNrUnterdrückt}"))
                     End With
 
                 Case TypeOf Context Is Outlook.ExchangeUser
