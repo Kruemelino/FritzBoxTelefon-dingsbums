@@ -314,22 +314,27 @@ Public Module Extensions
         ' Liste initialisieren, falls erforderlich
         If Liste Is Nothing Then Liste = New List(Of Telefonat)
 
-        'Liste.Add(item)
-        Liste.Insert(0, item)
-        ' Liste sortieren
-        Liste = Liste.OrderByDescending(Function(TF) TF?.ZeitBeginn).ToList
+        ' Überprüfe, ob eigene Nummer überhaupt überwacht wird
+        If item.EigeneTelNr.Überwacht Then
 
-        ' Entferne alle überflüssigen Elemente
-        With Liste
-            ' PTBNumEntryList = 10
-            ' .Count = 11
-            ' Start = PTBNumEntryList (Nullbasiert), Anzahl an zu löschenden Elementen = .Count - PTBNumEntryList
-            ' Start = 10, Anzahl = 11 - 10 = 1
-            If .Count.IsLarger(XMLData.POptionen.TBNumEntryList) Then
-                .RemoveRange(XMLData.POptionen.TBNumEntryList, .Count - XMLData.POptionen.TBNumEntryList)
-            End If
+            ' Eintrag hinzufügen
+            Liste.Insert(0, item)
+            ' Liste sortieren
+            Liste = Liste.OrderByDescending(Function(TF) TF?.ZeitBeginn).ToList
 
-        End With
+            ' Entferne alle überflüssigen Elemente
+            With Liste
+                ' PTBNumEntryList = 10
+                ' .Count = 11
+                ' Start = PTBNumEntryList (Nullbasiert), Anzahl an zu löschenden Elementen = .Count - PTBNumEntryList
+                ' Start = 10, Anzahl = 11 - 10 = 1
+                If .Count.IsLarger(XMLData.POptionen.TBNumEntryList) Then
+                    .RemoveRange(XMLData.POptionen.TBNumEntryList, .Count - XMLData.POptionen.TBNumEntryList)
+                End If
+
+            End With
+        End If
+
         ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
