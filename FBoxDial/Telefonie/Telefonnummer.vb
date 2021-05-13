@@ -63,6 +63,7 @@ Public Class Telefonnummer
             End If
         End Get
     End Property
+
     ''' <summary>
     ''' Gibt an, ob es sich um eine inländische Nummer handelt.
     ''' </summary>
@@ -71,6 +72,7 @@ Public Class Telefonnummer
             Return Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ)
         End Get
     End Property
+
     ''' <summary>
     ''' Gibt an, ob es sich um eine Nummer aus dem eigenen Ortsnetz handelt
     ''' </summary>
