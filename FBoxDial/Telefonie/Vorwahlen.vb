@@ -20,13 +20,19 @@ Friend Class Vorwahlen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property GetDefaultLKZ() As LKZ
         Get
-            Return Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = XMLData.PTelefonie.LKZ)
+            Return GetDefaultLKZ(XMLData.PTelefonie.LKZ) ' TODO: Hier ist ein Fehler: XMLData.PTelefonie.LKZ kann leer sein
+        End Get
+    End Property
+    Private ReadOnly Property GetDefaultLKZ(LKZString As String) As LKZ
+        Get
+            If LKZString.IsStringNothingOrEmpty Then NLogger.Warn("Übergebener String ist Null oder Nothing.")
+            Return Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = LKZString)
         End Get
     End Property
 
     Private ReadOnly Property GetDefaultONKZ() As ONKZ
         Get
-            Return GetDefaultLKZ.Ortsnetzkennzahlen.Find(Function(OKZ) OKZ.Ortsnetzkennzahl = XMLData.PTelefonie.OKZ)
+            Return GetDefaultLKZ?.Ortsnetzkennzahlen.Find(Function(OKZ) OKZ.Ortsnetzkennzahl = XMLData.PTelefonie.OKZ)
         End Get
     End Property
 
@@ -64,29 +70,34 @@ Friend Class Vorwahlen
         Dim LKZListe As New List(Of LKZ)
 
         With TelNr
-            ' Beginnt die Nummer mit der Verkehrsausscheidungsziffer (VAZ)
-            If .Unformatiert.StartsWith(PDfltVAZ) Then
-                ' Die maximale Länge einer LKZ ist 3
-                i = 3
+            ' Prüfe, ob die Telefonnummer eine Landeskennzahl enthält
+            If .Landeskennzahl.IsNotStringNothingOrEmpty Then
+                LKZListe.Add(GetDefaultLKZ(.Landeskennzahl))
+            Else
+                ' Beginnt die Nummer mit der Verkehrsausscheidungsziffer (VAZ)
+                If .Unformatiert.StartsWith(PDfltVAZ) Then
+                    ' Die maximale Länge einer LKZ ist 3
+                    i = 3
 
-                ' Es kann mehrere geben
-                Do
-                    LKZListe = Kennzahlen.Landeskennzahlen.FindAll(Function(laKZ) laKZ.Landeskennzahl = .Unformatiert.Substring(2, i))
-                    i -= 1
-                Loop Until LKZListe.Any Or i.IsZero
+                    ' Es kann mehrere geben
+                    Do
+                        LKZListe = Kennzahlen.Landeskennzahlen.FindAll(Function(laKZ) laKZ.Landeskennzahl = .Unformatiert.Substring(2, i))
+                        i -= 1
+                    Loop Until LKZListe.Any Or i.IsZero
 
-                If LKZListe.Any Then
-                    ' Es wurden Einträge gefunden
-                    If LKZListe.Count.AreEqual(1) Then
-                        NLogger.Debug($"Eine Landeskennzahl der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}' ({LKZListe.First.Code})")
+                    If LKZListe.Any Then
+                        ' Es wurden Einträge gefunden
+                        If LKZListe.Count.AreEqual(1) Then
+                            NLogger.Debug($"Eine Landeskennzahl der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}' ({LKZListe.First.Code})")
+                        Else
+                            NLogger.Debug($"{LKZListe.Count} Landeskennzahlen der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}'")
+                        End If
+
                     Else
-                        NLogger.Debug($"{LKZListe.Count} Landeskennzahlen der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}'")
+                        ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt, oder die LKZ ist nicht in der Liste 
+                        NLogger.Warn($"Landeskennzahl der Telefonnummer '{ .Unformatiert}' kann nicht ermittelt werden.")
+                        'If Not TelNr.EigeneNummer Then TelNr.Landeskennzahl = XMLData.PTelefonie.LKZ
                     End If
-
-                Else
-                    ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt, oder die LKZ ist nicht in der Liste 
-                    NLogger.Warn($"Landeskennzahl der Telefonnummer '{ .Unformatiert}' kann nicht ermittelt werden.")
-                    'If Not TelNr.EigeneNummer Then TelNr.Landeskennzahl = XMLData.PTelefonie.LKZ
                 End If
             End If
 

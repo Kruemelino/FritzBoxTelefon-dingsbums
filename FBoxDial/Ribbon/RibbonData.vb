@@ -435,9 +435,16 @@ Namespace RibbonData
             Select Case True
                 Case TypeOf Context Is Outlook.Explorer
                     ' Werte die Selection des Explorer aus
+
                     With CType(Context, Outlook.Explorer)
                         ' Rekursiver Aufruf
-                        Return EnableDial(.Selection)
+                        Try
+                            Return EnableDial(.Selection)
+                        Catch ex As Exception
+                            NLogger.Warn(ex, "Wird Oulook mit 'Outlook Heute' gestartet?")
+                            Return False
+                        End Try
+
                     End With
 
                 Case TypeOf Context Is Outlook.Inspector
