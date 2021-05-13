@@ -13,13 +13,6 @@ Friend Module NLogging
                                       "${message}",
                                       "${onexception:${newline}Exception\: ${exception:format=type,message,method,properties,stackTrace :maxInnerExceptionLevel=50 :innerFormat=shortType,message,method,stackTrace :separator=\r\n}}"}
 
-
-        Dim Ziel As New Targets.FileTarget With {.Name = "f",
-                                                 .Encoding = Encoding.UTF8,
-                                                 .KeepFileOpen = False,
-                                                 .FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltLogFileName),
-                                                 .Layout = LayoutText.Join("|")}
-
         ' Level  Typical Use
         ' Fatal  Something bad happened; application Is going down
         ' Error  Something failed; application may Or may Not Continue
@@ -28,11 +21,12 @@ Friend Module NLogging
         ' Debug  For debugging; executed query, user authenticated, session expired
         ' Trace  For trace debugging; begin method X, end method X
 
-        'Dim minLogLevel As LogLevel = LogLevel.Debug
-        'Dim maxLogLevel As LogLevel = LogLevel.Fatal
+        config.AddTarget(New Targets.FileTarget With {.Name = "f",
+                                                      .Encoding = Encoding.UTF8,
+                                                      .KeepFileOpen = False,
+                                                      .FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltLogFileName),
+                                                      .Layout = LayoutText.Join("|")})
 
-        config.AddTarget(Ziel)
-        'config.AddRule(minLogLevel, maxLogLevel, Ziel)
         Return config
     End Function
 

@@ -141,23 +141,25 @@
     This section specifies references for the project.
   -->
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="MixERP.Net.VCards, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MixERP.Net.VCards.1.0.7\lib\net461\MixERP.Net.VCards.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.8\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.9\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -167,6 +169,7 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
@@ -239,6 +242,13 @@
     </Compile>
     <Compile Include="Formulare\AnrList\Services\AnrListService.vb" />
     <Compile Include="Formulare\AnrList\Services\IAnrListService.vb" />
+    <Compile Include="Formulare\AnrMon\Resources\LocAnrMon.Designer.vb">
+      <DependentUpon>LocAnrMon.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\AnrMon\Services\AnrMonService.vb" />
+    <Compile Include="Formulare\AnrMon\Services\IAnrMonService.vb" />
     <Compile Include="Formulare\Common\Services\WindowHelper.vb" />
     <Compile Include="Formulare\Common\Services\WindowBehavior.vb" />
     <Compile Include="Common\EnumBindingSourceExtension.vb" />
@@ -271,9 +281,18 @@
     <Compile Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml.vb">
       <DependentUpon>OptCtrlTV.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\Optionen\ViewModel\OptTestViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Views\OptTestView.xaml.vb">
+      <DependentUpon>OptTestView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Fritz!Box\TR064\XMLTR64\AllowedValueRange.vb" />
+    <Compile Include="Localize\Länder.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Länder.resx</DependentUpon>
+    </Compile>
     <Compile Include="Localize\resCommon.Designer.vb">
       <DependentUpon>resCommon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -332,7 +351,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Formulare\Wählclient\Services\Messenger.vb" />
     <Compile Include="Formulare\Wählclient\Services\DialDataTemplateSelector.vb" />
     <Compile Include="Formulare\Wählclient\Services\DialService.vb" />
     <Compile Include="Formulare\Wählclient\Services\IDialService.vb" />
@@ -389,11 +407,6 @@
     </Compile>
     <Compile Include="Localize\resRibbon.Designer.vb">
       <DependentUpon>resRibbon.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Localize\resAnrMon.Designer.vb">
-      <DependentUpon>resAnrMon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -484,6 +497,9 @@
     </Compile>
     <Compile Include="UnSaveNativeMethods.vb" />
     <None Include="packages.config" />
+    <None Include="Telefonie\Listen\Vorwahlen.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Zertifikat\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>
@@ -495,6 +511,16 @@
     <EmbeddedResource Include="Formulare\AnrList\Resources\LocAnrList.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocAnrList.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\AnrMon\Resources\LocAnrMon.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocAnrMon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localize\Länder.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Länder.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Localize\resCommon.resx">
@@ -518,11 +544,6 @@
     <EmbeddedResource Include="Localize\resRibbon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resRibbon.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>Localize</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Localize\resAnrMon.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>resAnrMon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\Telefonbuch\Resources\resTelefonbuch.resx">
@@ -560,7 +581,6 @@
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorKontakt.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
-    <EmbeddedResource Include="Telefonie\Listen\Vorwahlen.xml" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Formulare\AnrList\Resources\AnrList.xaml">
@@ -576,6 +596,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptTestView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -706,6 +730,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Optionen\ToLower.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Telefonie\Listen\Vorwahlen.xml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

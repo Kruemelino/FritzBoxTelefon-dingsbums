@@ -144,7 +144,11 @@
 #End Region
 
 #Region "Logging"
+#If DEBUG Then
     <XmlElement("CBoxMinLogLevel")> Public Property CBoxMinLogLevel As String = LogLevel.Debug.Name
+#Else
+    <XmlElement("CBoxMinLogLevel")> Public Property CBoxMinLogLevel As String = LogLevel.Info.Name
+#End If
 #End Region
 
 #Region "SoftPhones"

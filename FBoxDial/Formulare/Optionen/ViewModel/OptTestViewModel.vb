@@ -23,10 +23,10 @@
 #End Region
     Public Sub New()
         ' Commands
-        TestTelNrCommand = New RelayCommand(AddressOf StartImport)
+        TestTelNrCommand = New RelayCommand(AddressOf StartTelNrTest)
     End Sub
 
-    Private Sub StartImport(o As Object)
+    Private Sub StartTelNrTest(o As Object)
         TestTelNr.SetNummer = _TBTestTelNrInput
 
         OnPropertyChanged(NameOf(TBTestTelNrUnformatiert))

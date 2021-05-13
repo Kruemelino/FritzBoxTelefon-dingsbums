@@ -98,7 +98,7 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug2013\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -129,7 +129,7 @@
     <DefineTrace>true</DefineTrace>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release2013\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
