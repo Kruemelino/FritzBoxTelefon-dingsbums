@@ -14,7 +14,7 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
 * Signalisierung eingehender Anrufer
 * Anzeige verfügbarer Informationen zum Gesprächspartner
 * Ermittlung der Kontaktdaten erfolgt verschiedenen Quellen
-  * Outlook Addressbüchern
+  * Outlook Adressbüchern
   * Telefonbücher der Fritz!Box
   * Rückwärtssuche
 * Protokollierung aller Telefonate
@@ -27,7 +27,7 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
 * Nutzung von angeschlossenen IP-Telefonen. Hier fehlt einfach die Unterstützung der Fritz!Box. Einzige Ausnahmen sind die Programme [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/), 
   da diese eine eigene Schnittstelle haben. 
 
-### Vorraussetzungen
+### Voraussetzungen
 Für die Nutzung des Addins wird benötigt: 
 1. eine (halbwegs) aktuelle AVM Fritz!Box mit Telefoniefunktion.
    1. Damit dieses Addin korrekt arbeiten kann, muss ein Nutzer mit Administratorrechten darauf zugreifen.
@@ -62,7 +62,7 @@ Es liegt mir fern, fremden Code als meinen zu verkaufen. (Falls ich was vergesse
 Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
 Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
 Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmen:
-* Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
+* Bei der Rückwärtssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
 * Bei der Nutzung der Software-Telefone [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/) werden die zu wählenden Nummern an diese Programme übergeben. Die Datenschutzhinweise der Software-Telefone sind zu beachten!
 
 ### Markenrecht
