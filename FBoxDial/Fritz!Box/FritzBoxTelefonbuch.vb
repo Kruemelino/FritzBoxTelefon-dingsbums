@@ -9,7 +9,7 @@ Namespace Telefonbücher
 
         Friend Async Function LadeFritzBoxTelefonbücher() As Task(Of FritzBoxXMLTelefonbücher)
 
-            Using fbtr064 As New FritzBoxTR64
+            Using fbtr064 As New SOAP.FritzBoxTR64
                 With fbtr064
                     ' Ermittle alle verfügbaren Telefonbücher
                     Dim PhonebookIDs As Integer() = {}
@@ -91,7 +91,7 @@ Namespace Telefonbücher
         End Function
 
         Friend Function LadeHeaderFritzBoxTelefonbücher() As FritzBoxXMLTelefonbücher
-            Using fbtr064 As New FritzBoxTR64
+            Using fbtr064 As New SOAP.FritzBoxTR64
                 With fbtr064
                     ' Ermittle alle verfügbaren Telefonbücher
                     Dim PhonebookIDs As Integer() = {}
@@ -132,7 +132,7 @@ Namespace Telefonbücher
         ''' <param name="TelefonbuchName">Übergabe des neuen Namens des Telefonbuches.</param>
         ''' <returns>XML-Telefonbuch</returns>
         Friend Async Function ErstelleTelefonbuch(TelefonbuchName As String) As Task(Of FritzBoxXMLTelefonbuch)
-            Using fboxTR064 As New FritzBoxTR64
+            Using fboxTR064 As New SOAP.FritzBoxTR64
                 With fboxTR064
                     ' Hole die momentan verfügbaren Ids der Telefonbücher
                     Dim IdsA As Integer() = {}
@@ -200,7 +200,7 @@ Namespace Telefonbücher
         ''' <returns>Boolean, ob erfolgreich.</returns>
         ''' <remarks>Wenn die ID nicht vorhanden ist, wird trotzdem <c>True</c> zurückgegeben.</remarks>
         Friend Function LöscheTelefonbuch(TelefonbuchID As Integer) As Boolean
-            Using fbtr064 As New FritzBoxTR64
+            Using fbtr064 As New SOAP.FritzBoxTR64
                 With fbtr064
                     ' Hole die momentan verfügbaren Ids der Telefonbücher
                     Dim IdsA As Integer() = {}
@@ -233,7 +233,7 @@ Namespace Telefonbücher
         Friend Function SetTelefonbuchEintrag(TelefonbuchID As Integer, XMLDaten As String) As Integer
 
             If XMLDaten.IsNotStringEmpty Then
-                Using fbtr064 As New FritzBoxTR64
+                Using fbtr064 As New SOAP.FritzBoxTR64
                     With fbtr064
                         Dim UID As Integer = -1
                         If .SetPhonebookEntryUID(TelefonbuchID, XMLDaten, UID) Then
@@ -248,7 +248,7 @@ Namespace Telefonbücher
 
         Friend Async Sub SetTelefonbuchEintrag(TelefonbuchID As Integer, OutlookKontakte As IEnumerable(Of ContactItem))
 
-            Using fbtr064 As New FritzBoxTR64
+            Using fbtr064 As New SOAP.FritzBoxTR64
 
                 ' Schleife durch alle Kontakte
                 For Each Kontakt In OutlookKontakte
@@ -281,7 +281,7 @@ Namespace Telefonbücher
         End Sub
 
         Friend Function DeleteTelefonbuchEintrag(TelefonbuchID As Integer, UID As Integer) As Boolean
-            Using fbtr064 As New FritzBoxTR64
+            Using fbtr064 As New SOAP.FritzBoxTR64
                 With fbtr064
                     If .DeletePhonebookEntryUID(TelefonbuchID, UID) Then
                         NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box gelöscht.")
@@ -298,7 +298,7 @@ Namespace Telefonbücher
         End Function
 
         Friend Function DeleteTelefonbuchEinträge(TelefonbuchID As Integer, Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean
-            Using fbtr064 As New FritzBoxTR64
+            Using fbtr064 As New SOAP.FritzBoxTR64
                 With fbtr064
                     For Each Kontakt In Einträge
                         If .DeletePhonebookEntryUID(TelefonbuchID, Kontakt.Uniqueid) Then
@@ -315,6 +315,7 @@ Namespace Telefonbücher
             End Using
             Return True
         End Function
+
 #End Region
     End Module
 End Namespace

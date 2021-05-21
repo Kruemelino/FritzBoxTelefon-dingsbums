@@ -21,7 +21,7 @@ Public Class FritzBoxWählClient
 
         Dim PhoneName As String = DfltStringEmpty
 
-        Using TR064 As New FritzBoxTR64
+        Using TR064 As New SOAP.FritzBoxTR64
 
             With Telefon
                 If Not TR064.DialGetConfig(PhoneName) Then

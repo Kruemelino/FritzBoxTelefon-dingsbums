@@ -1,7 +1,8 @@
-﻿Imports System.IO
-Imports System.Xml
+﻿Imports System.Drawing
+Imports System.IO
 Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop.Outlook
+Imports System.Windows.Media
 
 <Serializable(), XmlType("contact")> Public Class FritzBoxXMLKontakt
     Inherits NotifyBase
@@ -76,6 +77,7 @@ Imports Microsoft.Office.Interop.Outlook
             Return Telefonie.Nummern.Select(Function(TelNr) New Telefonnummer With {.SetNummer = TelNr.Nummer, .Typ = New TelNrType With {.XML = TelNr.Typ}}).ToList
         End Get
     End Property
+
 
     Friend Sub XMLKontaktOutlook(ByRef Kontakt As ContactItem)
         ' Werte übeführen
@@ -165,5 +167,6 @@ Imports Microsoft.Office.Interop.Outlook
 
         Return XMLKontakt
     End Function
+
 
 End Class

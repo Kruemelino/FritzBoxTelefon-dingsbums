@@ -1,4 +1,5 @@
-﻿Imports System.Xml.Serialization
+﻿Imports System.Windows.Media
+Imports System.Xml.Serialization
 <Serializable(), XmlType("person")> Public Class FritzBoxXMLPerson
     Inherits NotifyBase
 
@@ -36,6 +37,17 @@
         End Get
         Set
             SetProperty(_ImageURL, Value)
+        End Set
+    End Property
+
+
+    Private _ImageData As ImageSource
+    <XmlIgnore> Public Property ImageData As ImageSource
+        Get
+            Return _ImageData
+        End Get
+        Set
+            SetProperty(_ImageData, Value)
         End Set
     End Property
 End Class

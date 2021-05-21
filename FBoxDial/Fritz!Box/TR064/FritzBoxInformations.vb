@@ -1,6 +1,4 @@
-﻿Imports System.Collections
-
-Public Module FritzBoxInformations
+﻿Public Module FritzBoxInformations
 
 #Region "Properties"
     Friend ReadOnly Property TR064ContentType As String = "text/xml; charset=""utf-8"""

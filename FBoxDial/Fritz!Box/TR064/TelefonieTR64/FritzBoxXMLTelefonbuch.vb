@@ -1,4 +1,6 @@
-﻿Imports System.Xml.Serialization
+﻿Imports System.Threading.Tasks
+Imports System.Windows.Media
+Imports System.Xml.Serialization
 <Serializable(), XmlType("phonebook")> Public Class FritzBoxXMLTelefonbuch
     Inherits NotifyBase
     Public Sub New()
@@ -139,6 +141,49 @@
                                   Return Not K.IstTelefon AndAlso K.Telefonie.Nummern.Where(Function(N) TelNr.Equals(N.Nummer)).Any
                               End Function).Any
     End Function
+
+    Friend Async Sub LadeKonaktBilder()
+
+        Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
+
+        Using fbtr064 As New SOAP.FritzBoxTR64
+
+            If fbtr064.GetSessionID(SessionID) Then
+
+                ' Schleife duch alle Kontakte
+                For Each Kontakt In Kontakte
+                    With Kontakt
+                        If .Person IsNot Nothing AndAlso .Person.ImageURL.IsNotStringNothingOrEmpty Then
+                            ' Setze den Pfad zum Bild zusammen
+                            Dim u As New Uri($"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{ .Person.ImageURL}&{SessionID}")
+                            Dim b As Byte() = {}
+
+                            ' Lade das Bild herunter
+                            b = Await SOAP.DownloadDataTaskAsync(u)
+                            If b.Any Then
+                                Dim biImg As Imaging.BitmapImage = New Imaging.BitmapImage()
+                                Dim ms As IO.MemoryStream = New IO.MemoryStream(b)
+                                .Person.ImageData = New Imaging.BitmapImage()
+
+                                With biImg
+                                    .BeginInit()
+                                    .StreamSource = ms
+                                    .EndInit()
+                                End With
+
+                                .Person.ImageData = biImg
+                            End If
+
+                        End If
+                    End With
+
+                Next
+
+            End If
+        End Using
+
+    End Sub
+
 #End Region
 
 End Class
