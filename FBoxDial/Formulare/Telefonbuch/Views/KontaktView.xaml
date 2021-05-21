@@ -23,13 +23,11 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40"/>
             <ColumnDefinition/>
-            <!--<ColumnDefinition Width="16"/>-->
         </Grid.ColumnDefinitions>
 
-        <!--<Image Grid.Column="0" Margin="5"
-               Source="{Binding ImagePath, FallbackValue={StaticResource DefaultContactImage}, TargetNullValue={StaticResource DefaultContactImage}}"/>-->
-        <ContentControl Grid.Column="0" Margin="5"
-                        ContentTemplate="{StaticResource DefaultContactImage}"/>
+        <Image Grid.Column="0" 
+               Margin="5"
+               Source="{Binding Person.ImageData, IsAsync=True, FallbackValue={StaticResource DefaultContactImage}, TargetNullValue={StaticResource DefaultContactImage}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <StackPanel Grid.Column="1" Margin="5" VerticalAlignment="Center">
             <Label FontSize="16">
@@ -38,9 +36,6 @@
                            TextWrapping="Wrap"/>
             </Label>
         </StackPanel>
-
-        <!--<Button Grid.Column="2" Grid.Row="1"
-                Style="{StaticResource EditButton}" ContentTemplate="{StaticResource Phone}"/>-->
 
     </Grid>
 </UserControl>

@@ -54,16 +54,9 @@
                 </StackPanel>
                 
                 <Grid Height="125" Width="125" HorizontalAlignment="Left">
-
-                    <ContentControl Height="100" Width="100"
-                        ContentTemplate="{StaticResource DefaultContactImage}"/>
-
-                    <!--<Button Style="{StaticResource MenuIconButton}" Background="{StaticResource GloomyPurple}"
-                            Command="{Binding BrowseImageCommand}"
-                            Visibility="{Binding IsEditMode, Converter={StaticResource IsEditConverter}}"
-                            VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                            Foreground="Black" FontWeight="DemiBold" Content="{x:Static localize:resTelefonbuch.strBrowse}"/>-->
-                    
+                    <Border BorderBrush="{StaticResource AlmostBlack}" BorderThickness="1">
+                        <Image Height="100" Width="100" Source="{Binding FBoxKontakt.Person.ImageData, IsAsync=True, FallbackValue={StaticResource DefaultContactImage}, TargetNullValue={StaticResource DefaultContactImage}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Border>                    
                 </Grid>
             </StackPanel>
 

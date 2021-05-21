@@ -37,7 +37,7 @@
         </GroupBox>
 
         <Grid Grid.Column="0" Grid.Row="1">
-            <!--<ListView ItemsSource="{Binding ContactsVM.ContactView}" SelectedItem="{Binding ContactsVM.FBoxKontakt}">-->
+
             <ListView ItemsSource="{Binding ContactsVM.FBoxTelefonbuch.Kontakte}" 
                       SelectedItem="{Binding ContactsVM.FBoxKontakt}"
                       BorderThickness="0">

@@ -1,5 +1,7 @@
 ﻿Imports System.Windows.Input
 Imports System.Windows.Data
+Imports System.Windows.Media
+Imports System.Drawing
 
 ''' <summary>
 ''' Das Telefonbuch ist von Tosker erstellt worden und auf Youtube und Github bereitgestellt:
@@ -121,7 +123,7 @@ Public Class ContactsViewModel
         SaveCommand = New RelayCommand(AddressOf Save, AddressOf IsEdit)
         CancelCommand = New RelayCommand(AddressOf CancelEdit, AddressOf IsEdit)
         UpdateCommand = New RelayCommand(AddressOf Update)
-        'BrowseImageCommand = New RelayCommand(AddressOf BrowseImage, AddressOf IsEdit)
+
         DeleteCommand = New RelayCommand(AddressOf Delete, AddressOf CanDelete)
         DialCommand = New RelayCommand(AddressOf Dial, AddressOf CanDial)
         AddContact = New RelayCommand(AddressOf AddKontakt, AddressOf CanAddKontakt)
@@ -137,9 +139,12 @@ Public Class ContactsViewModel
 
         FBoxTelefonbuch = Telefonbuch
 
+        Telefonbuch.LadeKonaktbilder()
+
         View = CType(CollectionViewSource.GetDefaultView(FBoxTelefonbuch.Kontakte), ListCollectionView)
 
         View.Filter = New Predicate(Of Object)(AddressOf Filter)
+
     End Sub
 
 #Region "ICommand Callback"
@@ -285,7 +290,6 @@ Public Class ContactsViewModel
         Return IsDisplayMode AndAlso FBoxTelefonbuch IsNot Nothing AndAlso FBoxTelefonbuch.Kontakte IsNot Nothing
     End Function
 #End Region
-
 #End Region
 
 End Class

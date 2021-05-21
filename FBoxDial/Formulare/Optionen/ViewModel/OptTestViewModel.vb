@@ -27,7 +27,7 @@
     End Sub
 
     Private Sub StartTelNrTest(o As Object)
-        TestTelNr.SetNummer = _TBTestTelNrInput
+        TestTelNr = New Telefonnummer With {.SetNummer = _TBTestTelNrInput}
 
         OnPropertyChanged(NameOf(TBTestTelNrUnformatiert))
         OnPropertyChanged(NameOf(TBTestTelNrLKZ))
@@ -41,7 +41,7 @@
     End Sub
 
 #Region "Telefonnummerntest"
-    Private Property TestTelNr As New Telefonnummer
+    Private Property TestTelNr As Telefonnummer
 
     Private _TBTestTelNrInput As String
     Public Property TBTestTelNrInput As String
@@ -55,25 +55,25 @@
 
     Public ReadOnly Property TBTestTelNrUnformatiert As String
         Get
-            Return TestTelNr.Unformatiert
+            Return TestTelNr?.Unformatiert
         End Get
     End Property
 
     Public ReadOnly Property TBTestTelNrLKZ As String
         Get
-            Return TestTelNr.Landeskennzahl
+            Return TestTelNr?.Landeskennzahl
         End Get
     End Property
 
     Public ReadOnly Property TBTestTelNrLKZID As String
         Get
-            Return TestTelNr.AreaCode
+            Return TestTelNr?.AreaCode
         End Get
     End Property
 
     Public ReadOnly Property TBTestTelNrLKZName As String
         Get
-            If TestTelNr.AreaCode.IsNotStringNothingOrEmpty Then
+            If TestTelNr?.AreaCode.IsNotStringNothingOrEmpty Then
                 Return Localize.Länder.ResourceManager.GetString(TestTelNr.AreaCode)
             Else
                 Return DfltStringEmpty
@@ -83,31 +83,31 @@
 
     Public ReadOnly Property TBTestTelNrONKZ As String
         Get
-            Return TestTelNr.Ortskennzahl
+            Return TestTelNr?.Ortskennzahl
         End Get
     End Property
 
     Public ReadOnly Property TBTestTelNrONKZName As String
         Get
-            Return TestTelNr.Location
+            Return TestTelNr?.Location
         End Get
     End Property
 
     Public ReadOnly Property TBTestTelNrEinwahl As String
         Get
-            Return TestTelNr.Einwahl
+            Return TestTelNr?.Einwahl
         End Get
     End Property
 
     Public ReadOnly Property TBTestTelNrDurchwahl As String
         Get
-            Return TestTelNr.Durchwahl
+            Return TestTelNr?.Durchwahl
         End Get
     End Property
 
     Public ReadOnly Property TBTestTelNrFormatiert As String
         Get
-            Return TestTelNr.Formatiert
+            Return TestTelNr?.Formatiert
         End Get
     End Property
 #End Region
