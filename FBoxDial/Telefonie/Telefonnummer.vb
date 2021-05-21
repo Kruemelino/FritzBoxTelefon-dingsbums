@@ -116,9 +116,6 @@ Public Class Telefonnummer
             ' Anpassung 20.03.2021: Steuerzeichen werden ebenfalls entfernt
             NurZiffern = NurZiffern.RegExRemove("[^0-9]")
 
-            ' Die Landeskennzahl wurde noch nicht ermittelt
-            If Landeskennzahl.IsStringNothingOrEmpty Then Landeskennzahl = XMLData.PTelefonie.LKZ
-
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich ggf. vorhandener nachfolgender 0)
             If Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Then NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{Landeskennzahl}{{1}}[0]?", "0")
 
