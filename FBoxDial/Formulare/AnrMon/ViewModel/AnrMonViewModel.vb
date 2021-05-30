@@ -230,8 +230,13 @@ Public Class AnrMonViewModel
         End If
 
     End Sub
+    ''' <summary>
+    ''' Gibt zurück, ob der Anrufer auf die Sperrliste gesetzt werden kann.
+    ''' Dies ist nicht möglich, wenn der Kontakt in Outlook oder den Fritz!Box Telefonbüchern gefunden wurde.
+    ''' Ebenso ist es nicht möglich, wenn die Nummer unterdrückt ist.
+    ''' </summary>
     Private Function CanBlock(o As Object) As Boolean
-        Return AnrMonTelefonat IsNot Nothing AndAlso (Not AnrMonTelefonat.NrUnterdrückt And AnrMonTelefonat.AnruferName.IsStringNothingOrEmpty)
+        Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.AnruferBekannt
     End Function
 #End Region
 End Class
