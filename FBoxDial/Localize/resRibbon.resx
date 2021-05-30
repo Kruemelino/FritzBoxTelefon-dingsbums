@@ -213,6 +213,21 @@
   <data name="Tab_ScreenTipp" xml:space="preserve">
     <value />
   </data>
+  <data name="UploadCreateContact" xml:space="preserve">
+    <value>angelegt</value>
+  </data>
+  <data name="UploadError" xml:space="preserve">
+    <value>Fehler: Der Kontakt {0} konnte nicht im Telefonbuch {1} der Fritz!Box {2} werden.</value>
+  </data>
+  <data name="UploadOverwriteContact" xml:space="preserve">
+    <value>überschrieben</value>
+  </data>
+  <data name="UploadResultMessageHeader" xml:space="preserve">
+    <value>Upload von {0} Kontakten abgeschlossen. Ergebnis: {1}{2}</value>
+  </data>
+  <data name="UploadSuccess" xml:space="preserve">
+    <value>Der Kontakt {0} wurde im Telefonbuch {1} der Fritz!Box {2} (ID {3}).</value>
+  </data>
   <data name="Upload_Label" xml:space="preserve">
     <value>Hochladen</value>
   </data>

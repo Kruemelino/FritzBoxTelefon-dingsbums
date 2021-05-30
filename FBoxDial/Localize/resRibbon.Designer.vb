@@ -371,6 +371,51 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die angelegt ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property UploadCreateContact() As String
+            Get
+                Return ResourceManager.GetString("UploadCreateContact", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fehler: Der Kontakt {0} konnte nicht im Telefonbuch {1} der Fritz!Box {2} werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property UploadError() As String
+            Get
+                Return ResourceManager.GetString("UploadError", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die überschrieben ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property UploadOverwriteContact() As String
+            Get
+                Return ResourceManager.GetString("UploadOverwriteContact", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Upload von {0} Kontakten abgeschlossen. Ergebnis: {1}{2} ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property UploadResultMessageHeader() As String
+            Get
+                Return ResourceManager.GetString("UploadResultMessageHeader", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Kontakt {0} wurde im Telefonbuch {1} der Fritz!Box {2} (ID {3}). ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property UploadSuccess() As String
+            Get
+                Return ResourceManager.GetString("UploadSuccess", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die VIP ähnelt.
         '''</summary>
         Public Shared ReadOnly Property VIP_Label() As String

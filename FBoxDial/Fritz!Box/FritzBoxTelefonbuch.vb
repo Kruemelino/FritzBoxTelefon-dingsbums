@@ -230,8 +230,14 @@ Namespace Telefonbücher
 
 #Region "Aktionen für Telefonbucheinträge"
 
+        ''' <summary>
+        ''' Startet das Hochladen eines Kontaktes.
+        ''' </summary>
+        ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
+        ''' <param name="XMLDaten">Passender XML String des Kontaktes</param>
+        ''' <returns>Die einzigartige ID des Kontaktes im Fritz!Box Telefonbuch mit der <paramref name="TelefonbuchID"/>.</returns>
+        ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
         Friend Function SetTelefonbuchEintrag(TelefonbuchID As Integer, XMLDaten As String) As Integer
-
             If XMLDaten.IsNotStringEmpty Then
                 Using fbtr064 As New SOAP.FritzBoxTR64
                     With fbtr064
@@ -246,40 +252,60 @@ Namespace Telefonbücher
             Return -1
         End Function
 
+        ''' <summary>
+        ''' Startet das Hochladen mehrerer Outlook-Kontakte mittels asynchroner Aufgaben (<see cref="Task"/>).
+        ''' </summary>
+        ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
+        ''' <param name="OutlookKontakte">Auflistung der hochzuladenden Outlook Kontakte</param>
+        ''' <remarks>Wird durch die Ribbons des Addins aufgerufen.</remarks>
         Friend Async Sub SetTelefonbuchEintrag(TelefonbuchID As Integer, OutlookKontakte As IEnumerable(Of ContactItem))
+            ' Generiere eine Liste an Task
+            Dim TaskList As New List(Of Task(Of String))
 
             Using fbtr064 As New SOAP.FritzBoxTR64
-
                 ' Schleife durch alle Kontakte
                 For Each Kontakt In OutlookKontakte
-                    Await Task.Run(Sub()
-                                       With Kontakt
-                                           ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
-                                           Dim UID As Integer = Kontakt.GetUniqueID(TelefonbuchID)
+                    TaskList.Add(Task.Run(Function() As String
+                                              With Kontakt
+                                                  ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
+                                                  Dim UID As Integer = Kontakt.GetUniqueID(TelefonbuchID)
+                                                  Dim retVal As String = If(UID.AreEqual(-1), Localize.resRibbon.UploadCreateContact, Localize.resRibbon.UploadOverwriteContact)
 
-                                           If UID.AreEqual(-1) Then
-                                               NLogger.Debug($"Kontakt { .FullName} wird neu angelegt.")
-                                           Else
-                                               NLogger.Debug($"Kontakt { .FullName} wird überschrieben ({UID}).")
-                                           End If
+                                                  ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
+                                                  If fbtr064.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
+                                                      ' Stelle die Verknüpfung her
+                                                      .SetUniqueID(TelefonbuchID.ToString, UID.ToString)
 
-                                           ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
+                                                      ' Statusmeldung
+                                                      retVal = String.Format(Localize.resRibbon.UploadSuccess, .FullName, TelefonbuchID, retVal, UID)
 
-                                           If fbtr064.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
-                                               ' Stelle die Verknüpfung her
-                                               .SetUniqueID(TelefonbuchID.ToString, UID.ToString)
+                                                  Else
+                                                      ' Statusmeldung
+                                                      retVal = String.Format(Localize.resRibbon.UploadError, .FullName, TelefonbuchID, retVal)
+                                                  End If
+                                                  NLogger.Info(retVal)
+                                                  Return retVal
+                                              End With
+                                          End Function))
 
-                                               NLogger.Info($"Kontakt { .FullName} mit der ID '{UID}' im Telefonbuch {TelefonbuchID} der Fritz!Box angelegt.")
-
-                                           End If
-                                       End With
-                                   End Sub)
+                    ' Die einzelnen Vorgänge müssen nacheinander erfolgen, da es sonst zu einer WebException kommt: Die zugrunde liegende Verbindung wurde geschlossen: Für den geschützten SSL/TLS-Kanal konnte keine Vertrauensstellung hergestellt werden.
+                    Await TaskList.Last
                 Next
-
             End Using
 
-        End Sub
+            Await Task.WhenAll(TaskList)
+            ' Gib eine finale Statusmeldung heraus
 
+            Windows.MessageBox.Show(String.Format(Localize.resRibbon.UploadResultMessageHeader, OutlookKontakte.Count, Dflt2NeueZeile, String.Join(Dflt1NeueZeile, TaskList.Select(Function(R) R.Result))), My.Resources.strDefLongName, Windows.MessageBoxButton.OK)
+
+        End Sub
+        ''' <summary>
+        ''' Startet das Löschen eines Kontaktes.
+        ''' </summary>
+        ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
+        ''' <param name="UID">Einzigartige ID des zu löschenden Kontaktes</param>
+        ''' <returns>Boolean, ob erfolgreich, oder nicht.</returns>
+        ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
         Friend Function DeleteTelefonbuchEintrag(TelefonbuchID As Integer, UID As Integer) As Boolean
             Using fbtr064 As New SOAP.FritzBoxTR64
                 With fbtr064
@@ -297,6 +323,13 @@ Namespace Telefonbücher
             Return True
         End Function
 
+        ''' <summary>
+        ''' Startet das Löschen eines Kontaktes.
+        ''' </summary>
+        ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
+        ''' <param name="Einträge">Auflistung der zu löschenden Kontakte</param>
+        ''' <returns>Boolean, ob erfolgreich, oder nicht.</returns>
+        ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
         Friend Function DeleteTelefonbuchEinträge(TelefonbuchID As Integer, Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean
             Using fbtr064 As New SOAP.FritzBoxTR64
                 With fbtr064
