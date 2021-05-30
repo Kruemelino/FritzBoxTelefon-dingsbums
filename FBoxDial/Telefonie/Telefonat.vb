@@ -242,7 +242,7 @@ Imports Microsoft.Office.Interop
 
     <XmlElement> Public ReadOnly Property NameGegenstelle As String
         Get
-            Return If(AnruferName.IsNotStringNothingOrEmpty, AnruferName, GegenstelleTelNr?.Formatiert)
+            Return If(AnruferName.IsNotStringNothingOrEmpty, AnruferName, If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert))
         End Get
     End Property
 
@@ -264,6 +264,11 @@ Imports Microsoft.Office.Interop
         End Get
     End Property
 
+    <XmlIgnore> Friend ReadOnly Property AnruferBekannt As Boolean
+        Get
+            Return OlKontakt IsNot Nothing OrElse FBTelBookKontakt IsNot Nothing
+        End Get
+    End Property
     <XmlIgnore> Private Property PopUpAnrMonWPF As AnrMonWPF
     <XmlIgnore> Private Property PopupStoppUhrWPF As StoppUhrWPF
 
