@@ -674,7 +674,6 @@ Imports Microsoft.Office.Interop
         ' Telefoniegerät ermitteln
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
-
         ' Eigene Nummer prüfen. Mittels Wählpräfix (*10X#, *11X#, *12X#) kann die ausgehende Telefonnummer beeinflusst werden. 
         ' Der Anrufmonitor gibt jedoch weiterhin die eigentlich genutzte eigene Nummer für diese Nebenstelle wieder.
         ' Unterschiueden werden kann nur per AnschlussID
@@ -717,107 +716,86 @@ Imports Microsoft.Office.Interop
         If XMLData.POptionen.CBJournal Then ErstelleJournalEintrag()
     End Sub
 
-    ''' <summary>
-    ''' Das Closed-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
-    ''' </summary>
-    <XmlIgnore> Private Property IAnrMonClosed As Integer
-    <XmlIgnore> Private Property StoppUhrClosed As Integer
     Friend Sub AnrMonEinblenden()
+        ' Zeige den Anrufmonitor nur an, wenn gerade nicht schon eingeblendet.
+        If Not AnrMonEingeblendet Then
 
-        ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
-        If ThisAddIn.OffeneAnrMonWPF Is Nothing Then ThisAddIn.OffeneAnrMonWPF = New List(Of AnrMonWPF)
+            ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
+            If ThisAddIn.OffeneAnrMonWPF Is Nothing Then ThisAddIn.OffeneAnrMonWPF = New List(Of AnrMonWPF)
 
-        ' Erstelle einen neues Popup
-        PopUpAnrMonWPF = New AnrMonWPF
+            ' Erstelle einen neues Popup
+            PopUpAnrMonWPF = New AnrMonWPF
 
-        With PopUpAnrMonWPF
-            ' Übergib dieses Telefonat an das Viewmodel
-            With CType(.DataContext, AnrMonViewModel)
+            With PopUpAnrMonWPF
                 ' Übergib dieses Telefonat an das Viewmodel
-                .AnrMonTelefonat = Me
+                With CType(.DataContext, AnrMonViewModel)
+                    ' Übergib dieses Telefonat an das Viewmodel
+                    .AnrMonTelefonat = Me
+                End With
+                ' Zeige den ANrufmonitor an
+                .Show()
             End With
-            ' Zeige den ANrufmonitor an
-            .Show()
-        End With
-        ' Zählvariable zum schließen des Anrufmonitors
-        IAnrMonClosed = 0
 
-        AnrMonEingeblendet = True
+            AnrMonEingeblendet = True
 
-        ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
-        ThisAddIn.OffeneAnrMonWPF.Add(PopUpAnrMonWPF)
-        ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
-        AddHandler PopUpAnrMonWPF.Geschlossen, AddressOf PopupAnrMonGeschlossen
-
+            ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
+            ThisAddIn.OffeneAnrMonWPF.Add(PopUpAnrMonWPF)
+            ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
+            AddHandler PopUpAnrMonWPF.Geschlossen, AddressOf PopupAnrMonGeschlossen
+        End If
     End Sub
 
     Friend Sub StoppUhrEinblenden()
+        If Not StoppUhrEingeblendet Then
+            ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
+            If ThisAddIn.OffeneStoppUhrWPF Is Nothing Then ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
 
-        ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
-        If ThisAddIn.OffeneStoppUhrWPF Is Nothing Then ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
+            ' Erstelle einen neues Popup
+            PopupStoppUhrWPF = New StoppUhrWPF
 
-        ' Erstelle einen neues Popup
-        PopupStoppUhrWPF = New StoppUhrWPF
+            ' Merke den aktuell offenen Inspektor
+            KeepoInspActivated(False)
 
-        ' Merke den aktuell offenen Inspektor
-        KeepoInspActivated(False)
-
-        With PopupStoppUhrWPF
-            ' Übergib dieses Telefonat an das Viewmodel
-            With CType(.DataContext, StoppUhrViewModel)
+            With PopupStoppUhrWPF
                 ' Übergib dieses Telefonat an das Viewmodel
-                .StoppUhrTelefonat = Me
+                With CType(.DataContext, StoppUhrViewModel)
+                    ' Übergib dieses Telefonat an das Viewmodel
+                    .StoppUhrTelefonat = Me
+                End With
+                ' Zeige den ANrufmonitor an
+                .Show()
             End With
-            ' Zeige den ANrufmonitor an
-            .Show()
-        End With
-        ' Zählvariable zum schließen des Anrufmonitors
-        StoppUhrClosed = 0
 
-        StoppUhrEingeblendet = True
+            StoppUhrEingeblendet = True
 
-        ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
-        ThisAddIn.OffeneStoppUhrWPF.Add(PopupStoppUhrWPF)
+            ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
+            ThisAddIn.OffeneStoppUhrWPF.Add(PopupStoppUhrWPF)
 
-        ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
-        AddHandler PopupStoppUhrWPF.Geschlossen, AddressOf PopupStoppUhrGeschlossen
+            ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
+            AddHandler PopupStoppUhrWPF.Geschlossen, AddressOf PopupStoppUhrGeschlossen
 
-        KeepoInspActivated(True)
-
+            KeepoInspActivated(True)
+        End If
     End Sub
 
-    ''' <summary>
-    ''' Wird durch das Auslösen des Closed Ereignis des <see cref="PopUpAnrMonWPF"/> aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
-    ''' Das Closed-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
-    ''' </summary>
     Private Sub PopupAnrMonGeschlossen(sender As Object, e As EventArgs)
-        ' Führe die Arbeiten nur beim ersten Aufruf des Closed-Event des Popups durch.
-        If IAnrMonClosed.IsZero Then
-            NLogger.Debug($"Anruffenster geschlossen: {AnruferName}")
-            IAnrMonClosed += 1
-            AnrMonEingeblendet = False
-            ' Entferne den Anrufmonitor von der Liste der offenen Popups
-            ThisAddIn.OffeneAnrMonWPF.Remove(PopUpAnrMonWPF)
 
-            PopUpAnrMonWPF = Nothing
-        End If
+        AnrMonEingeblendet = False
+        ' Entferne den Anrufmonitor von der Liste der offenen Popups
+        ThisAddIn.OffeneAnrMonWPF.Remove(PopUpAnrMonWPF)
+        NLogger.Debug($"Anruffenster geschlossen: {AnruferName}: Noch {ThisAddIn.OffeneAnrMonWPF.Count} offene Anrufmonitor")
+
+        PopUpAnrMonWPF = Nothing
     End Sub
 
-    ''' <summary>
-    ''' Wird durch das Auslösen des Closed Ereignis des <see cref="PopupStoppUhrWPF"/> aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
-    ''' Das Closed-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
-    ''' </summary>
     Private Sub PopupStoppUhrGeschlossen(sender As Object, e As EventArgs)
-        ' Führe die Arbeiten nur beim ersten Aufruf des Closed-Event des Popups durch.
-        If StoppUhrClosed.IsZero Then
-            NLogger.Debug($"Stoppuhr geschlossen: {AnruferName}")
-            StoppUhrClosed += 1
-            StoppUhrEingeblendet = False
-            ' Entferne die Stoppuhr von der Liste der offenen Popups
-            ThisAddIn.OffeneStoppUhrWPF.Remove(PopupStoppUhrWPF)
 
-            PopupStoppUhrWPF = Nothing
-        End If
+        StoppUhrEingeblendet = False
+        ' Entferne die Stoppuhr von der Liste der offenen Popups
+        ThisAddIn.OffeneStoppUhrWPF.Remove(PopupStoppUhrWPF)
+        NLogger.Debug($"Stoppuhr geschlossen: {AnruferName}: Noch {ThisAddIn.OffeneStoppUhrWPF.Count} offene Stoppuhren")
+
+        PopupStoppUhrWPF = Nothing
     End Sub
 
     Private Sub ShowAnrMon()
