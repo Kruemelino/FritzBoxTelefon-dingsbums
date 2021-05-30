@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.Windows
 Imports System.Windows.Input
+Imports System.Windows.Media
 Imports System.Windows.Media.Imaging
 Imports System.Windows.Threading
 
@@ -80,8 +81,8 @@ Public Class AnrMonViewModel
         End Set
     End Property
 
-    Private _Kontaktbild As BitmapImage
-    Public Property Kontaktbild As BitmapImage
+    Private _Kontaktbild As ImageSource
+    Public Property Kontaktbild As ImageSource
         Get
             Return _Kontaktbild
         End Get
@@ -165,23 +166,37 @@ Public Class AnrMonViewModel
         ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)
         AnrMonExInfo = AnrMonTelefonat.AnrMonExInfo
 
-        ' Setze das Kontaktbild, falls ein Outlookkontakt verfügbar ist.
-        If Kontaktbild Is Nothing AndAlso AnrMonTelefonat.OlKontakt IsNot Nothing Then
-            ' Speichere das Kontaktbild in einem temporären Ordner
-            Dim BildPfad As String = KontaktFunktionen.KontaktBild(AnrMonTelefonat.OlKontakt)
+        If XMLData.POptionen.CBAnrMonContactImage AndAlso Kontaktbild Is Nothing Then
+            ' Setze das Kontaktbild, falls ein Outlookkontakt verfügbar ist.
+            If AnrMonTelefonat.OlKontakt IsNot Nothing Then
+                ' Speichere das Kontaktbild in einem temporären Ordner
+                Dim BildPfad As String = KontaktFunktionen.KontaktBild(AnrMonTelefonat.OlKontakt)
 
-            ' Überführe das Bild in das BitmapImage
-            If BildPfad.IsNotStringNothingOrEmpty Then
-                ' Kontaktbild laden
-                Kontaktbild = New BitmapImage
-                With Kontaktbild
-                    .BeginInit()
-                    .CacheOption = BitmapCacheOption.OnLoad
-                    .UriSource = New Uri(BildPfad)
-                    .EndInit()
-                End With
-                'Lösche das Kontaktbild aus dem temprären Ordner
-                DelKontaktBild(BildPfad)
+                ' Überführe das Bild in das BitmapImage
+                If BildPfad.IsNotStringNothingOrEmpty Then
+                    ' Kontaktbild laden
+                    Dim biImg As New BitmapImage
+                    With biImg
+                        .BeginInit()
+                        .CacheOption = BitmapCacheOption.OnLoad
+                        .UriSource = New Uri(BildPfad)
+                        .EndInit()
+                    End With
+                    ' Weise das Bild zu
+                    Kontaktbild = biImg
+                    'Lösche das Kontaktbild aus dem temprären Ordner
+                    DelKontaktBild(BildPfad)
+                End If
+            End If
+
+            ' Setze das Kontaktbild, falls ein Eintrag aus einem Fritz!Box Telefonbuch verfügbar ist.
+            If AnrMonTelefonat.FBTelBookKontakt IsNot Nothing Then
+                ' Lade das Kontaktbild von der Fritz!Box herunter und weise es zu 
+                Dispatcher.CurrentDispatcher.Invoke(Async Function()
+                                                        Kontaktbild = Await AnrMonTelefonat.FBTelBookKontakt.Person.LadeKontaktbild()
+                                                    End Function)
+
+
             End If
         End If
 
