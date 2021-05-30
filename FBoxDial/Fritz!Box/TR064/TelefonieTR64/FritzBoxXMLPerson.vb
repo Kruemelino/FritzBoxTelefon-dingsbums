@@ -40,7 +40,6 @@ Imports System.Xml.Serialization
         End Set
     End Property
 
-
     Private _ImageData As ImageSource
     <XmlIgnore> Public Property ImageData As ImageSource
         Get
@@ -50,4 +49,38 @@ Imports System.Xml.Serialization
             SetProperty(_ImageData, Value)
         End Set
     End Property
+
+    Friend Async Function LadeKontaktbild() As Threading.Tasks.Task(Of Imaging.BitmapImage)
+        Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
+
+        Using fbtr064 As New SOAP.FritzBoxTR64
+
+            If fbtr064.GetSessionID(SessionID) Then
+
+                If ImageURL.IsNotStringNothingOrEmpty Then
+                    ' Setze den Pfad zum Bild zusammen
+                    Dim u As New Uri($"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{ImageURL}&{SessionID}")
+                    Dim b As Byte() = {}
+
+                    ' Lade das Bild herunter
+                    b = Await SOAP.DownloadDataTaskAsync(u)
+                    If b.Any Then
+                        Dim biImg As New Imaging.BitmapImage()
+                        Dim ms As New IO.MemoryStream(b)
+
+                        With biImg
+                            .BeginInit()
+                            .StreamSource = ms
+                            .EndInit()
+                        End With
+
+                        Return biImg
+
+                    End If
+
+                End If
+            End If
+        End Using
+        Return Nothing
+    End Function
 End Class
