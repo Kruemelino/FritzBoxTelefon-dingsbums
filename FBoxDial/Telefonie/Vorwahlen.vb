@@ -20,13 +20,18 @@ Friend Class Vorwahlen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property GetDefaultLKZ() As LKZ
         Get
-            Return GetDefaultLKZ(XMLData.PTelefonie.LKZ) ' TODO: Hier ist ein Fehler: XMLData.PTelefonie.LKZ kann leer sein
+            Return GetDefaultLKZ(XMLData.PTelefonie.LKZ)
         End Get
     End Property
     Private ReadOnly Property GetDefaultLKZ(LKZString As String) As LKZ
         Get
-            If LKZString.IsStringNothingOrEmpty Then NLogger.Warn("Übergebener String ist Null oder Nothing.")
-            Return Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = LKZString)
+            If LKZString.IsStringNothingOrEmpty Then
+                NLogger.Warn("Übergebener String ist Null oder Nothing.")
+                Return New LKZ With {.Landeskennzahl = DfltStringEmpty,
+                                     .Ortsnetzkennzahlen = New List(Of ONKZ)}
+            Else
+                Return Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = LKZString)
+            End If
         End Get
     End Property
 
@@ -39,7 +44,6 @@ Friend Class Vorwahlen
     Public Sub New()
         NLogger.Debug("Starte Einlesen der Landes- und Ortskennzahlen")
         LadeVorwahlen()
-
     End Sub
 
     Private Async Sub LadeVorwahlen()

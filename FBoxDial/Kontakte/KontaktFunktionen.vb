@@ -602,7 +602,6 @@ Friend Module KontaktFunktionen
                     Return Split(colArgs(1).ToString, ",").ToList(i).ToInt
                 End If
 
-
             Else
                 Return -1
             End If

@@ -1,7 +1,5 @@
 ﻿Imports System.Windows.Input
 Imports System.Windows.Data
-Imports System.Windows.Media
-Imports System.Drawing
 
 ''' <summary>
 ''' Das Telefonbuch ist von Tosker erstellt worden und auf Youtube und Github bereitgestellt:

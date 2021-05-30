@@ -383,6 +383,11 @@ Namespace RibbonData
             Telefonbücher.SetTelefonbuchEintrag(BookID.ToInt, OutlookContactItems)
         End Sub
 
+        ''' <summary>
+        ''' Lädt den übergebenen Kontakte in die Fritz!Box Sperrliste hoch
+        ''' </summary>
+        ''' <param name="OutlookContactItems"></param>
+        ''' <param name="BookID"></param>
         Private Sub UploadSl(OutlookContactItems As IEnumerable(Of Outlook.ContactItem), BookID As String)
 
             NLogger.Debug($"Füge {OutlookContactItems.Count} Einträge zur Sperrliste (ID{BookID}) hinzu.")
@@ -741,13 +746,9 @@ Namespace RibbonData
                 .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
 
                 If ListName.AreEqual(DfltNameListCALL) Or ListName.AreEqual(DfltNameListRING) Then
-                    If ListName.AreEqual(DfltNameListCALL) Then
-                        ListevonTelefonaten = XMLData.PTelListen.CALLListe
-                    Else
-                        ListevonTelefonaten = XMLData.PTelListen.RINGListe
-                    End If
+                    ListevonTelefonaten = If(ListName.AreEqual(DfltNameListCALL), XMLData.PTelListen.CALLListe, XMLData.PTelListen.RINGListe)
 
-                    For Each TelFt As Telefonat In ListevonTelefonaten
+                    For Each TelFt As Telefonat In ListevonTelefonaten.Where(Function(Tf) Not Tf.NrUnterdrückt)
                         .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, TelFt, ListevonTelefonaten.IndexOf(TelFt), ListName))
                     Next
 

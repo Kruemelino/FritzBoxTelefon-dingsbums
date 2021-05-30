@@ -161,8 +161,8 @@ Imports System.Xml.Serialization
                             ' Lade das Bild herunter
                             b = Await SOAP.DownloadDataTaskAsync(u)
                             If b.Any Then
-                                Dim biImg As Imaging.BitmapImage = New Imaging.BitmapImage()
-                                Dim ms As IO.MemoryStream = New IO.MemoryStream(b)
+                                Dim biImg As New Imaging.BitmapImage()
+                                Dim ms As New IO.MemoryStream(b)
                                 .Person.ImageData = New Imaging.BitmapImage()
 
                                 With biImg

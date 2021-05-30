@@ -10,37 +10,32 @@ Public MustInherit Class NotifyBase
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     ''' <summary>
-    '''     Checks if a property already matches a desired value. 
-    '''     Sets the property And notifies listeners only when necessary.
+    ''' Checks if a property already matches a desired value. 
+    ''' Sets the property And notifies listeners only when necessary.
     ''' </summary>
     ''' <typeparam name="T">Type of the property.</typeparam>
     ''' <param name="storage">Reference to a property with both getter And setter.</param>
     ''' <param name="value">Desired value for the property.</param>
     ''' <param name="propertyName">
-    '''     Name of the property used to notify listeners.
-    '''     This value Is optional And can be provided automatically when invoked from compilers that support CallerMemberName.    
+    ''' Name of the property used to notify listeners.
+    ''' This value Is optional And can be provided automatically when invoked from compilers that support CallerMemberName.    
     ''' </param>
-    ''' <returns>
-    '''     True if the value was changed, false if the existing value matched the sesired value.
-    ''' </returns>
-    Protected Function SetProperty(Of T)(ByRef storage As T, value As T, <CallerMemberName> Optional propertyName As String = Nothing) As Boolean
+    Protected Sub SetProperty(Of T)(ByRef storage As T, value As T, <CallerMemberName> Optional propertyName As String = Nothing)
 
         If Equals(storage, value) Then
-            Return False
         Else
             storage = value
             OnPropertyChanged(propertyName)
-            Return True
         End If
 
-    End Function
+    End Sub
 
     ''' <summary>
-    '''    Notifies listeners that a property value has changed.
+    ''' Notifies listeners that a property value has changed.
     ''' </summary>
     ''' <param name="propertyName">
-    '''     Name of the property used to notify listeners.
-    '''     This value Is optional And can be provided automatically when invoked from compilers that support <see cref="CallerMemberNameAttribute" />.    '''     
+    ''' Name of the property used to notify listeners.
+    ''' This value Is optional And can be provided automatically when invoked from compilers that support <see cref="CallerMemberNameAttribute" />.    '''     
     ''' </param>
     Protected Sub OnPropertyChanged(<CallerMemberName> Optional propertyName As String = Nothing)
         Try
@@ -49,9 +44,4 @@ Public MustInherit Class NotifyBase
         End Try
     End Sub
 
-    Protected Sub RefreshAllProperties(Of T)(storage As T)
-        For Each prop In storage.GetType.GetProperties()
-            OnPropertyChanged(prop.Name)
-        Next
-    End Sub
 End Class

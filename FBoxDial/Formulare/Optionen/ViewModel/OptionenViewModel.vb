@@ -674,7 +674,7 @@ Public Class OptionenViewModel
             .AddRange(TelGeräteListe)
         End With
 
-        Dim TL As New List(Of Task)
+        Dim TaskList As New List(Of Task)
 
         ' Ordnerliste überwachter Ordner
         With XMLData.POptionen.OutlookOrdner
@@ -682,17 +682,17 @@ Public Class OptionenViewModel
             ' deindiziere:
             For Each Folder In .FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche))
                 NLogger.Debug($"Deindiziere Odner {Folder.Name}")
-                TL.Add(Task.Run(Sub()
-                                    DatenService.Indexer(Folder.MAPIFolder, False, CBSucheUnterordner)
-                                End Sub))
+                TaskList.Add(Task.Run(Sub()
+                                          DatenService.Indexer(Folder.MAPIFolder, False, CBSucheUnterordner)
+                                      End Sub))
             Next
 
-            ' indiziere
+            ' indiziere:
             For Each Folder In OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche))
                 NLogger.Debug($"Indiziere Odner {Folder.Name}")
-                TL.Add(Task.Run(Sub()
-                                    DatenService.Indexer(Folder.MAPIFolder, True, CBSucheUnterordner)
-                                End Sub))
+                TaskList.Add(Task.Run(Sub()
+                                          DatenService.Indexer(Folder.MAPIFolder, True, CBSucheUnterordner)
+                                      End Sub))
             Next
 
         End With
@@ -705,7 +705,7 @@ Public Class OptionenViewModel
         ' Speichern in Datei anstoßen
         Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
 
-        Await Task.WhenAll(tl)
+        Await Task.WhenAll(TaskList)
     End Sub
 #End Region
 End Class

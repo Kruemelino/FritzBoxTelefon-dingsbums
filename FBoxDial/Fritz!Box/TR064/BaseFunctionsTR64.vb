@@ -149,7 +149,7 @@ Namespace SOAP
                         FritzBoxPOST = False
 
                     Catch ex As WebException When ex.Message.Contains("820")
-                        Response = $"TR-064 Interner-Fehler 820: {SOAPAction} ""Internal Error """
+                        Response = $"TR-064 Interner-Fehler 820: {SOAPAction} ""Internal Error"""
                         NLogger.Error(ex)
                         FritzBoxPOST = False
 
@@ -160,7 +160,7 @@ Namespace SOAP
 
                     Catch exWE As WebException
                         Response = $"WebException: {exWE.Message}"
-                        NLogger.Error(exWE, $"Link: {SOAPAction}")
+                        NLogger.Error(exWE, $"Action: {SOAPAction}")
                         FritzBoxPOST = False
 
                     Catch ex As Exception
