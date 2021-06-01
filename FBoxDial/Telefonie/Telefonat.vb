@@ -465,7 +465,7 @@ Imports Microsoft.Office.Interop
 
                     If FBTelBookKontakt IsNot Nothing Then
                         If XMLData.POptionen.CBKErstellen Then
-                            OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
+                            OlKontakt = ErstelleKontakt(FBTelBookKontakt, GegenstelleTelNr, True)
 
                             With OlKontakt
                                 AnruferName = .FullName
@@ -495,7 +495,7 @@ Imports Microsoft.Office.Interop
                         NLogger.Info($"Rückwärtssuche für '{GegenstelleTelNr.Unformatiert}' erfolgreich: {VCard}")
 
                         If XMLData.POptionen.CBKErstellen Then
-                            OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
+                            OlKontakt = ErstelleKontakt(VCard, GegenstelleTelNr, True)
                             With OlKontakt
                                 AnruferName = .FullName
                                 Firma = .CompanyName
@@ -539,13 +539,17 @@ Imports Microsoft.Office.Interop
             OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
         End If
 
+        If OlKontakt Is Nothing AndAlso FBTelBookKontakt IsNot Nothing Then
+            OlKontakt = ErstelleKontakt(FBTelBookKontakt, GegenstelleTelNr, False)
+        End If
+
         If OlKontakt Is Nothing Then
             If VCard.IsNotStringNothingOrEmpty Then
                 ' wenn nicht, dann neuen Kontakt mit TelNr öffnen
                 OlKontakt = ErstelleKontakt(GegenstelleTelNr, False)
             Else
                 'vCard gefunden
-                OlKontakt = ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, VCard, GegenstelleTelNr, False)
+                OlKontakt = ErstelleKontakt(VCard, GegenstelleTelNr, False)
             End If
         End If
 

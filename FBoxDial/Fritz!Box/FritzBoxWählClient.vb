@@ -350,7 +350,7 @@ Public Class FritzBoxWählClient
                     'Wenn keine vCard im Body gefunden
                     If vCard.AreNotEqual(DfltBegin_vCard & DfltStrErrorMinusOne & DfltEnd_vCard) Then
                         'vCard gefunden
-                        aktKontakt = ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, vCard, TelNr, False)
+                        aktKontakt = ErstelleKontakt(vCard, TelNr, False)
                     End If
                 End If
 

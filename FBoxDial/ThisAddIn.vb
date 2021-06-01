@@ -23,7 +23,7 @@ Public NotInheritable Class ThisAddIn
         ' Logging konfigurieren
         LogManager.Configuration = DefaultNLogConfig()
 
-        Dim UserData As NutzerDaten = New NutzerDaten
+        Dim UserData As New NutzerDaten
 
         ' Outlook.Application initialisieren
         If OutookApplication Is Nothing Then OutookApplication = Application
