@@ -7,13 +7,11 @@ Friend Module KontaktFunktionen
     ''' <summary>
     ''' Erstellt einen Kontakt aus einer vCard.
     ''' </summary>
-    ''' <param name="KontaktID">Rückgabewert: KontaktID des neu erstellten Kontaktes.</param>
-    ''' <param name="StoreID">Rückgabewert: StoreID des Ordners, in dem sich der neu erstellte Kontaktes befindet.</param>
     ''' <param name="vCard">Kontaktdaten im vCard-Format.</param>
     ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
     ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
     ''' <returns>Den erstellten Kontakt als Outlook.ContactItem.</returns>
-    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, vCard As String, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
+    Friend Function ErstelleKontakt(vCard As String, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
         Dim olKontakt As ContactItem
 
         If Not TelNr.Unterdrückt Then
@@ -58,14 +56,15 @@ Friend Module KontaktFunktionen
                     End If
 
                     .Categories = My.Resources.strDefLongName 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                    .Body = .Body & vbCrLf & "Erstellt durch das " & My.Resources.strDefLongName & " am " & Now & Dflt2NeueZeile & "vCard:" & Dflt2NeueZeile & vCard
+                    ' TODO: Localizieren
+                    .Body = $"{ .Body}{Dflt2NeueZeile}Erstellt durch das {My.Resources.strDefLongName} am {Now}{Dflt2NeueZeile}vCard:{Dflt2NeueZeile}{vCard}"
                 End If
 
             End With
 
             If AutoSave Then SpeichereKontakt(olKontakt)
 
-            ErstelleKontakt = olKontakt
+            Return olKontakt
         Else
             Return Nothing
         End If
@@ -74,18 +73,15 @@ Friend Module KontaktFunktionen
     ''' <summary>
     ''' Erstellt einen Kontakt aus einer Fritz!Box Telefonbucheintrag.
     ''' </summary>
-    ''' <param name="KontaktID">Rückgabewert: KontaktID des neu erstellten Kontaktes</param>
-    ''' <param name="StoreID">Rückgabewert: StoreID des Ordners, in dem sich der neu erstellte Kontaktes befindet.</param>
     ''' <param name="XMLKontakt">Kontaktdaten als Fritz!Box Telefonbucheintrag</param>
     ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
     ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
     ''' <returns>Den erstellten Kontakt als Outlook.ContactItem.</returns>
-    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, XMLKontakt As FritzBoxXMLKontakt, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
-        Dim olKontakt As ContactItem
+    Friend Function ErstelleKontakt(XMLKontakt As FritzBoxXMLKontakt, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
 
         If Not TelNr.Unterdrückt Then
 
-            olKontakt = CType(ThisAddIn.OutookApplication.CreateItem(OlItemType.olContactItem), ContactItem)
+            Dim olKontakt As ContactItem = CType(ThisAddIn.OutookApplication.CreateItem(OlItemType.olContactItem), ContactItem)
 
             With olKontakt
 
@@ -99,7 +95,8 @@ Friend Module KontaktFunktionen
                     XMLKontakt.XMLKontaktOutlook(olKontakt)
 
                     .Categories = My.Resources.strDefLongName ' 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                    .Body = .Body & vbCrLf & "Erstellt durch das " & My.Resources.strDefLongName & " am " & Now
+                    ' TODO: Localizieren
+                    .Body = $"{ .Body}{Dflt2NeueZeile}Erstellt durch das {My.Resources.strDefLongName} am {Now}"
                 End If
 
             End With
@@ -107,9 +104,20 @@ Friend Module KontaktFunktionen
             If AutoSave Then SpeichereKontakt(olKontakt)
 
             Return olKontakt
-        Else
-            Return Nothing
+
         End If
+
+        Return Nothing
+    End Function
+
+    ''' <summary>
+    ''' Erstellt einen leeren Kontakt und ergänzt eine Telefonnummer.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer, die eingefügt werden soll.</param>
+    ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
+    ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
+    Friend Function ErstelleKontakt(TelNr As Telefonnummer, Speichern As Boolean) As ContactItem
+        Return ErstelleKontakt(DfltStringEmpty, TelNr, Speichern)
     End Function
 
     ''' <summary>
@@ -130,8 +138,9 @@ Friend Module KontaktFunktionen
 
             Else
                 ' Speichere den Kontakt im Kontakthauptordner
-                If olKontakt.Speichern Then NLogger.Info($"Kontakt {olKontakt.FullName} wurde Hauptkontaktordner gespeichert.")
+                ' Speichern ist überflüssig, da der Kontakt bein nachfolgenden Indizieren/deindizieren ohnehin stets gespeichert wird.
 
+                'If olKontakt.Speichern Then NLogger.Info($"Kontakt {olKontakt.FullName} wurde Hauptkontaktordner gespeichert.")
             End If
 
             ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
@@ -140,16 +149,6 @@ Friend Module KontaktFunktionen
         End With
 
     End Sub
-
-    ''' <summary>
-    ''' Erstellt einen leeren Kontakt und ergänzt eine Telefonnummer.
-    ''' </summary>
-    ''' <param name="TelNr">Telefonnummer, die eingefügt werden soll.</param>
-    ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
-    ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
-    Friend Function ErstelleKontakt(TelNr As Telefonnummer, Speichern As Boolean) As ContactItem
-        Return ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, DfltStringEmpty, TelNr, Speichern)
-    End Function
 
     ''' <summary>
     ''' Erstellt einen Kontakt aus einem Inspectorfenster (Journal)
@@ -184,7 +183,7 @@ Friend Module KontaktFunktionen
                             olKontakt = ErstelleKontakt(TelNr, False)
                         Else
                             'vCard gefunden
-                            olKontakt = ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, vCard, TelNr, False)
+                            olKontakt = ErstelleKontakt(vCard, TelNr, False)
                         End If
                     End If
                 End If
@@ -203,15 +202,6 @@ Friend Module KontaktFunktionen
         End If
     End Sub ' (ZeigeKontaktAusInspector)
 
-    Friend Sub ZeigeKontaktAusSelection(olSelection As Selection)
-        If olSelection IsNot Nothing Then
-
-            If TypeOf olSelection.Item(1) Is JournalItem Then
-                ZeigeKontaktAusJournal(CType(olSelection.Item(1), JournalItem))
-            End If
-        End If
-    End Sub ' (ZeigeKontaktAusSelection)
-
     ''' <summary>
     ''' Speichert das Kontaktbild in den Arbeitsorder. 
     ''' </summary>
@@ -223,13 +213,26 @@ Friend Module KontaktFunktionen
             With olContact
                 With .Attachments
                     If .Item("ContactPicture.jpg") IsNot Nothing Then
-                        KontaktBild = Path.GetTempPath() & Path.GetRandomFileName()
-                        KontaktBild = Left(KontaktBild, Len(KontaktBild) - 3) & "jpg"
+                        KontaktBild = $"{Path.GetTempPath}{Path.GetRandomFileName}".RegExReplace(".{3}$", "jpg")
                         .Item("ContactPicture.jpg").SaveAsFile(KontaktBild)
+
+                        NLogger.Debug($"Bild des Kontaktes {olContact.FullName} unter Pfad {KontaktBild} gespeichert.")
                     End If
                 End With
             End With
         End If
+    End Function
+
+    <Extension> Friend Async Function KontaktBild(FBoxContact As FritzBoxXMLKontakt) As Threading.Tasks.Task(Of String)
+        Dim Pfad As String = DfltStringEmpty
+        If FBoxContact IsNot Nothing Then
+            Pfad = $"{Path.GetTempPath}{Path.GetRandomFileName}".RegExReplace(".{3}$", "jpg")
+
+            NLogger.Debug($"Bild des Kontaktes {FBoxContact.Person.RealName} unter Pfad {Pfad} gespeichert.")
+
+            Await SOAP.DownloadToFileTaskAsync(New Uri(FBoxContact.Person.CompleteImageURL), Pfad)
+        End If
+        Return Pfad
     End Function
     ''' <summary>
     ''' Löscht das Kontaktbild in den Arbeitsorder. 
@@ -240,6 +243,7 @@ Friend Module KontaktFunktionen
             With My.Computer.FileSystem
                 If .FileExists(PfadKontaktBild) Then
                     .DeleteFile(PfadKontaktBild, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                    NLogger.Debug($"Kontaktbild {PfadKontaktBild} gelöscht.")
                 End If
             End With
         End If
@@ -290,7 +294,7 @@ Friend Module KontaktFunktionen
         End If
 
     End Function
-    <Extension> Friend Function GetKontaktTelNrList(ByRef olContact As ContactItem) As List(Of Telefonnummer)
+    <Extension> Friend Function GetKontaktTelNrList(olContact As ContactItem) As List(Of Telefonnummer)
 
         Dim alleTelNr(14) As String ' alle im Kontakt enthaltenen Telefonnummern
         Dim alleNrTypen(14) As TelNrType ' die Bezeichnungen der Telefonnummern
@@ -322,7 +326,7 @@ Friend Module KontaktFunktionen
         Next
     End Function
 
-    <Extension> Friend Function GetKontaktTelNrList(ByRef olExchangeNutzer As ExchangeUser) As List(Of Telefonnummer)
+    <Extension> Friend Function GetKontaktTelNrList(olExchangeNutzer As ExchangeUser) As List(Of Telefonnummer)
 
         Dim alleTelNr(2) As String ' alle im Exchangenutzer enthaltenen Telefonnummern
         Dim alleNrTypen(2) As TelNrType ' die Bezeichnungen der Telefonnummern
@@ -393,17 +397,17 @@ Friend Module KontaktFunktionen
 
     End Function
 
-    <Extension> Friend Function Speichern(ByRef olKontakt As ContactItem) As Boolean
+    <Extension> Friend Function Speichern(olKontakt As ContactItem) As Boolean
         Try
             olKontakt.Save()
             Return True
         Catch ex As System.Exception
-            NLogger.Error(ex, "Kontakt {0} kann nicht gespeichert werden.", olKontakt.FullNameAndCompany)
+            NLogger.Error(ex, $"Kontakt {olKontakt.FullNameAndCompany} kann nicht gespeichert werden.")
             Return False
         End Try
     End Function
 
-    <Extension> Friend Function ParentFolder(ByRef olKontakt As ContactItem) As MAPIFolder
+    <Extension> Friend Function ParentFolder(olKontakt As ContactItem) As MAPIFolder
         If olKontakt.Parent IsNot Nothing Then
             Return CType(olKontakt.Parent, MAPIFolder)
         Else

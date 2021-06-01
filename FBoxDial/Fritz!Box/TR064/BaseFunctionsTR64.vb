@@ -106,6 +106,55 @@ Namespace SOAP
                 NLogger.Warn($"Ping zur Fritz!Box '{UniformResourceIdentifier.Host}'  nicht erfolgreich")
             End If
         End Function
+
+        Friend Async Function DownloadToFileTaskAsync(UniformResourceIdentifier As Uri, DateiName As String) As Threading.Tasks.Task
+
+            ' Ping zur Fritz!Box
+            If Ping(UniformResourceIdentifier.Host) Then
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
+                Select Case UniformResourceIdentifier.Scheme
+                    Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
+
+                        Using webClient As New WebClient
+                            With webClient
+                                ' kein Proxy
+                                .Proxy = Nothing
+
+                                ' kein Cache
+                                .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+
+                                ' Header festlegen
+                                .Headers.Add(HttpRequestHeader.KeepAlive, "False")
+
+                                ' Zeichencodierung auf das Fritz!Box default setzen
+                                .Encoding = Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox)
+
+                                Try
+                                    Await .DownloadFileTaskAsync(UniformResourceIdentifier, DateiName)
+
+                                Catch exANE As ArgumentNullException
+                                    NLogger.Error(exANE)
+
+                                Catch exWE As WebException
+                                    NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+
+                                Catch exIOE As InvalidOperationException
+                                    NLogger.Error(exIOE)
+
+                                End Try
+                            End With
+                        End Using
+                    Case Else
+                        NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
+
+                End Select
+            Else
+                NLogger.Warn($"Ping zur Fritz!Box '{UniformResourceIdentifier.Host}'  nicht erfolgreich")
+            End If
+        End Function
+
         Friend Function FritzBoxPOST(UniformResourceIdentifier As Uri, SOAPAction As String, ServiceType As String, SOAPXML As XmlDocument, ByRef Response As String) As Boolean
 
             Response = DfltStringEmpty
@@ -170,7 +219,6 @@ Namespace SOAP
                     End Try
                 End With
             End Using
-
 
         End Function
 

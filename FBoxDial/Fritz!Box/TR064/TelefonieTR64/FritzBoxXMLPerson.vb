@@ -49,38 +49,44 @@ Imports System.Xml.Serialization
             SetProperty(_ImageData, Value)
         End Set
     End Property
+    <XmlIgnore> Friend ReadOnly Property CompleteImageURL As String
+        Get
+            Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
+            Using fbtr064 As New SOAP.FritzBoxTR64
+                If fbtr064.GetSessionID(SessionID) Then
+                    Return $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{ImageURL}&{SessionID}"
+                Else
+                    Return DfltStringEmpty
+                End If
+            End Using
+        End Get
+
+    End Property
 
     Friend Async Function LadeKontaktbild() As Threading.Tasks.Task(Of Imaging.BitmapImage)
-        Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
 
-        Using fbtr064 As New SOAP.FritzBoxTR64
+        If ImageURL.IsNotStringNothingOrEmpty Then
+            ' Setze den Pfad zum Bild zusammen
+            Dim u As New Uri(CompleteImageURL)
+            Dim b As Byte() = {}
 
-            If fbtr064.GetSessionID(SessionID) Then
+            ' Lade das Bild herunter
+            b = Await SOAP.DownloadDataTaskAsync(u)
+            If b.Any Then
+                Dim biImg As New Imaging.BitmapImage()
+                Dim ms As New IO.MemoryStream(b)
 
-                If ImageURL.IsNotStringNothingOrEmpty Then
-                    ' Setze den Pfad zum Bild zusammen
-                    Dim u As New Uri($"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{ImageURL}&{SessionID}")
-                    Dim b As Byte() = {}
+                With biImg
+                    .BeginInit()
+                    .StreamSource = ms
+                    .EndInit()
+                End With
 
-                    ' Lade das Bild herunter
-                    b = Await SOAP.DownloadDataTaskAsync(u)
-                    If b.Any Then
-                        Dim biImg As New Imaging.BitmapImage()
-                        Dim ms As New IO.MemoryStream(b)
-
-                        With biImg
-                            .BeginInit()
-                            .StreamSource = ms
-                            .EndInit()
-                        End With
-
-                        Return biImg
-
-                    End If
-
-                End If
+                Return biImg
             End If
-        End Using
+        End If
+
         Return Nothing
     End Function
+
 End Class

@@ -1,8 +1,5 @@
-﻿Imports System.Drawing
-Imports System.IO
-Imports System.Xml.Serialization
+﻿Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop.Outlook
-Imports System.Windows.Media
 
 <Serializable(), XmlType("contact")> Public Class FritzBoxXMLKontakt
     Inherits NotifyBase
@@ -78,12 +75,16 @@ Imports System.Windows.Media
         End Get
     End Property
 
-
-    Friend Sub XMLKontaktOutlook(ByRef Kontakt As ContactItem)
+    Friend Async Sub XMLKontaktOutlook(Kontakt As ContactItem)
+        Dim HerunterladenKontaktBild As Threading.Tasks.Task(Of String) = Nothing
         ' Werte übeführen
         With Kontakt
             ' Name
             .FullName = Person.RealName
+
+            ' Kontaktbild asynchron herunterladen
+            If Person.ImageURL.IsNotStringNothingOrEmpty Then HerunterladenKontaktBild = KontaktBild
+
             ' E-Mail Adressen (Es gibt in Outlook maximal 3 E-Mail Adressen)
             For i = 1 To Math.Min(Telefonie.Emails.Count, 3)
                 Select Case i
@@ -93,8 +94,11 @@ Imports System.Windows.Media
                         .Email2Address = Telefonie.Emails.Item(i - 1).EMail
                     Case 3
                         .Email3Address = Telefonie.Emails.Item(i - 1).EMail
+                    Case Else
+                        Exit Select
                 End Select
             Next
+
             ' Telefonnummern
             For Each TelNr As FritzBoxXMLNummer In Telefonie.Nummern
                 Using tmpTelNr As New Telefonnummer With {.SetNummer = TelNr.Nummer}
@@ -156,6 +160,24 @@ Imports System.Windows.Media
             ' Body
             XmlSerializeToString(Me, .Body)
 
+            If Person.ImageURL.IsNotStringNothingOrEmpty And HerunterladenKontaktBild IsNot Nothing Then
+                ' Kontaktbild
+                Dim Pfad As String = Await HerunterladenKontaktBild
+                Dim Kontaktspeichern As Boolean = .Saved
+                ' Kontaktbild hinzufügen
+                Try
+                    ' Füge das Kontaktbild hinzu. Der Kontakt muss danach neu gespeichert werden
+                    .AddPicture(Pfad)
+                    ' Wenn der Kontakt bereits gespeichert war, dann speichere ihn erneut.
+                    If .Speichern Then NLogger.Debug($"Kontakt { .FullNameAndCompany} nach hinzufügen des Kontaktbildes gespeichert")
+                Catch ex As System.Exception
+                    NLogger.Warn(ex)
+                Finally
+                    ' Lösche das Bild auf dem Dateisystem
+                    DelKontaktBild(Pfad)
+                End Try
+            End If
+
         End With
     End Sub
 
@@ -167,6 +189,5 @@ Imports System.Windows.Media
 
         Return XMLKontakt
     End Function
-
 
 End Class

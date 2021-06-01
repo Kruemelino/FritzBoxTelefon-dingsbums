@@ -5,10 +5,30 @@ Friend Module KontaktIndizierer
 #Region "Kontaktindizierung"
 
     ''' <summary>
+    ''' Indiziert oder deindiziert ein Kontaktelement, ne nach dem, ob der Ordner für die Kontaktsuche ausgewählt wurde
+    ''' </summary>
+    ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
+    ''' <param name="Ordner">Der Ordner in dem Der Kontakt gespeichert werden soll.</param>
+    Friend Sub IndiziereKontakt(olKontakt As ContactItem, Ordner As MAPIFolder)
+
+        ' Wird der Zielordner für, die Kontaktsuche verwendet?
+        If Ordner.OrdnerAusgewählt(OutlookOrdnerVerwendung.KontaktSuche) Then
+            ' Indiziere den Kontakt
+            IndiziereKontakt(olKontakt)
+
+        Else
+            ' Deindiziere den Kontakt
+            DeIndiziereKontakt(olKontakt)
+
+        End If
+
+    End Sub
+
+    ''' <summary>
     ''' Indiziert ein Kontaktelement.
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
-    Friend Sub IndiziereKontakt(ByRef olKontakt As ContactItem)
+    Friend Sub IndiziereKontakt(olKontakt As ContactItem)
 
         With olKontakt
 
@@ -41,33 +61,14 @@ Friend Module KontaktIndizierer
             Try
                 .PropertyAccessor.SetProperties(DASLTagTelNrIndex, colArgs)
             Catch ex As System.Exception
-                NLogger.Error(ex, $"Kontakt: {olKontakt.FullNameAndCompany}")
+                NLogger.Error(ex, $"Kontakt: { .FullNameAndCompany}")
             End Try
 
             ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
 
-            If .Speichern Then NLogger.Trace($"Kontakt { olKontakt.FullNameAndCompany} gespeichert")
+            If .Speichern Then NLogger.Debug($"Kontakt { .FullNameAndCompany} gespeichert")
 
         End With
-    End Sub
-    ''' <summary>
-    ''' Indiziert oder deindiziert ein Kontaktelement, ne nach dem, ob der Ordner für die Kontaktsuche ausgewählt wurde
-    ''' </summary>
-    ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
-    ''' <param name="Ordner">Der Ordner in dem Der Kontakt gespeichert werden soll.</param>
-    Friend Sub IndiziereKontakt(ByRef olKontakt As ContactItem, Ordner As MAPIFolder)
-
-        ' Wird der Zielordner für, die Kontaktsuche verwendet?
-        If Ordner.OrdnerAusgewählt(OutlookOrdnerVerwendung.KontaktSuche) Then
-            ' Indiziere den Kontakt
-            IndiziereKontakt(olKontakt)
-
-        Else
-            ' Deindiziere den Kontakt
-            DeIndiziereKontakt(olKontakt)
-
-        End If
-
     End Sub
 
     ''' <summary>
@@ -76,7 +77,7 @@ Friend Module KontaktIndizierer
     ''' <param name="olKontakt">Der Kontakt der deindiziert werden soll.</param>
     ''' <remarks>Funktion wird in Teilen nicht benötigt, da mit aktuellen Programmversionen keine benutzerdefinierten Kontaktfelder erstellt werden.
     ''' Die Funktion dient zum bereinigen von Kontakten, die mit älteren Programmversionen indiziert wurden.</remarks>
-    Friend Sub DeIndiziereKontakt(ByRef olKontakt As ContactItem)
+    Friend Sub DeIndiziereKontakt(olKontakt As ContactItem)
         ' Ab hier Code zum bereinigen, der alten Indizierungsspuren
         Dim UserEigenschaft As UserProperty
         With olKontakt
@@ -87,9 +88,8 @@ Friend Module KontaktIndizierer
                         UserEigenschaft = .Find(UserProperty)
                     Catch
                         UserEigenschaft = Nothing
-                    Finally
-
                     End Try
+
                     If UserEigenschaft IsNot Nothing Then UserEigenschaft.Delete()
                     UserEigenschaft = Nothing
                 Next
@@ -99,10 +99,9 @@ Friend Module KontaktIndizierer
 
             .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
 
-            If .Speichern Then NLogger.Trace("Kontakt {0} gespeichert", .FullNameAndCompany)
+            If .Speichern Then NLogger.Debug($"Kontakt { .FullNameAndCompany} gespeichert")
         End With
     End Sub
-
 
     ''' <summary>
     ''' Entfernt alle Indizierungseinträge aus den Ordnern aus einem Kontaktelement.
