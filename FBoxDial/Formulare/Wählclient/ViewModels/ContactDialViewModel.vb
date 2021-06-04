@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Media.Imaging
+Imports System.Windows.Threading
 Imports Microsoft.Office.Interop
 
 Public Class ContactDialViewModel
@@ -118,9 +119,7 @@ Public Class ContactDialViewModel
             DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .FullName}{If(.CompanyName.IsNotStringEmpty, $" ({ .CompanyName})", DfltStringEmpty)}")
 
             ' Kontaktbild anzeigen
-            Dim BildPfad As String
-
-            BildPfad = .KontaktBild
+            Dim BildPfad As String = .KontaktBild
 
             If BildPfad.IsNotStringEmpty Then
                 ' Kontaktbild laden
@@ -157,18 +156,29 @@ Public Class ContactDialViewModel
 
             ' Kopfdaten setzen
             DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .Person.RealName}")
+
+            ' Kontaktbild anzeigen
+            Dispatcher.CurrentDispatcher.Invoke(Async Function()
+                                                    Kontaktbild = Await FBoxXMLKontakt.Person.LadeKontaktbild()
+                                                    OnPropertyChanged(NameOf(ZeigeBild))
+                                                End Function)
         End With
     End Sub
 
 #Region "ICommand Callback"
     Private Function CanShow(obj As Object) As Boolean
+        ' Nur für Outlook Kontakte und ExchangeUser
         Return OKontakt IsNot Nothing Or OExchangeNutzer IsNot Nothing
     End Function
 
 
     Private Sub ShowContact(o As Object)
-        OKontakt?.Display()
-        OExchangeNutzer?.Details()
+        ' Outlook Kontakt anzeigen
+        If OKontakt IsNot Nothing Then OKontakt.Display()
+        ' Outlook ExchangeUser anzeigen
+        If OExchangeNutzer IsNot Nothing Then OExchangeNutzer.Details()
+        ' Fritz!Box XML Kontakte
+        ' TODO: Anzeige von XML-Kontakten ermöglichen
     End Sub
 
     Private Sub ToggleVIP(o As Object)

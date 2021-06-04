@@ -263,7 +263,7 @@ Friend Module KontaktFunktionen
         End Try
     End Function
 
-    Friend Function GetOutlookKontakt(ByRef KontaktIDStoreID As Object()) As ContactItem
+    Friend Function GetOutlookKontakt(KontaktIDStoreID As Object()) As ContactItem
         GetOutlookKontakt = Nothing
 
         If Not KontaktIDStoreID.Contains(DfltErrorvalue) Then
@@ -282,7 +282,7 @@ Friend Module KontaktFunktionen
     ''' <param name="StoreID">StoreID des Ordners</param>
     ''' <returns>Erfolg: Ordner, Misserfolg: Standard-Kontaktordner</returns>
     ''' <remarks>In Office 2003 ist Outlook.Folder unbekannt, daher Outlook.MAPIFolder</remarks>
-    Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As MAPIFolder
+    Friend Function GetOutlookFolder(FolderID As String, StoreID As String) As MAPIFolder
         GetOutlookFolder = Nothing
 
         If FolderID.IsNotErrorString And StoreID.IsNotErrorString Then

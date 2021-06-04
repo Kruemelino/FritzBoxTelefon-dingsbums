@@ -6,7 +6,7 @@
             xmlns:fbd="clr-namespace:FBoxDial"
             mc:Ignorable="d" 
             d:DesignHeight="200" d:DesignWidth="400"
-            d:DataContext="{d:DesignInstance Type=fbd:ContactDialViewModel, IsDesignTimeCreatable=True}">
+            d:DataContext="{d:DesignInstance Type=fbd:ContactDialViewModel, IsDesignTimeCreatable=false}">
 
     <UserControl.Resources>
         <ResourceDictionary>
