@@ -30,7 +30,8 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
 ### Voraussetzungen
 Für die Nutzung des Addins wird benötigt: 
 1. eine (halbwegs) aktuelle AVM Fritz!Box mit Telefoniefunktion.
-   1. Damit dieses Addin korrekt arbeiten kann, muss ein Nutzer mit Administratorrechten darauf zugreifen.
+   1. Damit dieses Addin korrekt arbeiten kann, muss ein Nutzer mit Administratorrechten darauf zugreifen. 
+   2. Das Loginverfahren ohne Benutzername wird seitens AVM nicht mehr unterstützt. Das heißt ab FRITZ!OS 7.25 muss ein Benutzer angegeben werden, da ansonsten die Fritz!Box jeden Zugriff verweigert. ([Info AVM](https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/Empfehlungen%20zur%20Benutzerfu%CC%88hrung%20bei%20der%20Anmeldung%20an%20einer%20FRITZ%21Box_v1.1.pdf))
    2. Die Zweifaktor-Authentifizierung der Fritz!Box muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist. In der Fritz!Box muss die Option 
       `Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen` unter `System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz` deaktiviert sein.
    3. Der Fritz!Box CallMonitor muss aktiviert sein: Hierzu den Telefoncode `#96*5*` per Telefon wählen.
