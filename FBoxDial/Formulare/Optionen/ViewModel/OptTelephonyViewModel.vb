@@ -70,14 +70,14 @@
         IsAktiv = True
 
         ' Ereignishandler hinzufügen
-        AddHandler DatenService.Beendet, AddressOf FritzBoxDaten_Beendet
-        AddHandler DatenService.Status, AddressOf FritzBoxDaten_Status
+        AddHandler DatenService.Beendet, AddressOf FritzBoxDatenBeendet
+        AddHandler DatenService.Status, AddressOf FritzBoxDatenStatus
 
         DatenService.StartImport()
 
     End Sub
 
-    Private Sub FritzBoxDaten_Beendet(sender As Object, e As NotifyEventArgs(Of Telefonie))
+    Private Sub FritzBoxDatenBeendet(sender As Object, e As NotifyEventArgs(Of Telefonie))
 
         ' Überführe die neu eingelesenen Daten in das Optionen-Viewmodel
         With e.Value
@@ -102,11 +102,11 @@
         IsAktiv = False
 
         ' Ereignishandler entfernen
-        RemoveHandler DatenService.Beendet, AddressOf FritzBoxDaten_Beendet
-        RemoveHandler DatenService.Status, AddressOf FritzBoxDaten_Status
+        RemoveHandler DatenService.Beendet, AddressOf FritzBoxDatenBeendet
+        RemoveHandler DatenService.Status, AddressOf FritzBoxDatenStatus
     End Sub
 
-    Private Sub FritzBoxDaten_Status(sender As Object, e As NotifyEventArgs(Of String))
+    Private Sub FritzBoxDatenStatus(sender As Object, e As NotifyEventArgs(Of String))
         EinlesenStatus += e.Value & Environment.NewLine
     End Sub
 

@@ -1093,6 +1093,42 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Test: Rückwärtssuche ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestRWS() As String
+            Get
+                Return ResourceManager.GetString("strTestRWS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Im folgenden kann die korrekte Umsetzung der Rückwärtssuche (Inverssuche) getestet werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestRWSInfo() As String
+            Get
+                Return ResourceManager.GetString("strTestRWSInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kein Ergebnis für {0} ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestRWSNoResult() As String
+            Get
+                Return ResourceManager.GetString("strTestRWSNoResult", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Starte die Rückwärtssuche ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestRWSStart() As String
+            Get
+                Return ResourceManager.GetString("strTestRWSStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Durchwahl der Telefonnummer ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestTelNrDurchwahl() As String

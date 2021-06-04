@@ -1,5 +1,4 @@
-﻿Imports System.Threading
-Imports System.Windows.Threading
+﻿Imports System.Windows.Threading
 Imports Microsoft.Office.Interop.Outlook
 
 Friend Class OptionenService
@@ -11,7 +10,6 @@ Friend Class OptionenService
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Telefonie)) Implements IOptionenService.Beendet
     Friend Event Status As EventHandler(Of NotifyEventArgs(Of String)) Implements IOptionenService.Status
 
-
     Friend Sub StartImport() Implements IOptionenService.StartImport
 
         ' Neue Telefonie erstellen
@@ -19,7 +17,7 @@ Friend Class OptionenService
 
         ' Ereignishandler hinzufügen
         AddHandler FritzBoxDaten.Beendet, AddressOf FritzBoxDatenImportBeendet
-        AddHandler FritzBoxDaten.Status, AddressOf FritzBoxDatenStatus
+        AddHandler FritzBoxDaten.Status, AddressOf SetStatus
 
         NLogger.Debug($"Einlesen der Telefoniedaten gestartet")
 
@@ -33,7 +31,7 @@ Friend Class OptionenService
 
     End Sub
 
-    Private Sub FritzBoxDatenStatus(sender As Object, e As NotifyEventArgs(Of String))
+    Private Sub SetStatus(sender As Object, e As NotifyEventArgs(Of String))
         RaiseEvent Status(Me, e)
     End Sub
 
@@ -44,7 +42,7 @@ Friend Class OptionenService
 
         ' Ereignishandler entfernen
         RemoveHandler FritzBoxDaten.Beendet, AddressOf FritzBoxDatenImportBeendet
-        RemoveHandler FritzBoxDaten.Status, AddressOf FritzBoxDatenStatus
+        RemoveHandler FritzBoxDaten.Status, AddressOf SetStatus
 
         NLogger.Debug($"Einlesen der Telefoniedaten beendet")
     End Sub
@@ -104,4 +102,31 @@ Friend Class OptionenService
     End Sub
 
 #End Region
+
+#Region "Test Rückwärtssuche"
+    'Friend Event StatusRWS As EventHandler(Of NotifyEventArgs(Of String)) Implements IOptionenService.StatusRWS
+    Friend Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetRWS
+    Friend Async Sub StartRWSTest(TelNr As String) Implements IOptionenService.StartRWSTest
+
+        ' Ereignishandler hinzufügen
+        AddHandler Rückwärtssuche.Beendet, AddressOf RWSTestBeendet
+        AddHandler Rückwärtssuche.Status, AddressOf SetStatus
+
+        NLogger.Debug($"Test der Rückwärtssuche für '{TelNr}' gestartet")
+
+        Await StartRWS(New Telefonnummer With {.SetNummer = TelNr}, False)
+
+    End Sub
+
+    Private Sub RWSTestBeendet(sender As Object, e As NotifyEventArgs(Of Boolean))
+        RaiseEvent BeendetRWS(Me, New NotifyEventArgs(Of Boolean)(e.Value))
+
+        ' Ereignishandler hinzufügen
+        RemoveHandler Rückwärtssuche.Beendet, AddressOf RWSTestBeendet
+        RemoveHandler Rückwärtssuche.Status, AddressOf SetStatus
+
+        NLogger.Debug($"Test der Rückwärtssuche beendet")
+    End Sub
+#End Region
+
 End Class

@@ -120,9 +120,7 @@
         <Setter Property="Margin" Value="0,2,0,4"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-    </Style>
-    
-    
+    </Style>     
 
     <Style x:Key="OptComboBox" TargetType="{x:Type ComboBox}" >
         <Setter Property="Template">
@@ -230,5 +228,14 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    <Style x:Key="ResultTextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="MaxHeight" Value="150"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
     </Style>
 </ResourceDictionary>

@@ -2,6 +2,8 @@
 
 Public Module Rückwärtssuche
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
+    Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Boolean))
 
     Friend Async Function StartRWS(TelNr As Telefonnummer, RWSIndex As Boolean) As Task(Of String)
         Dim vCard As String = DfltStringEmpty
@@ -58,13 +60,15 @@ Public Module Rückwärtssuche
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
-        ' Schleife wird maximall drei mal durchlaufen
+        ' Schleife wird maximal drei mal durchlaufen
         i = 0
 
         baseurl = "https://www.dasoertliche.de?form_name="
 
         tmpTelNr = TelNr.Unformatiert
         Do
+            PushStatus(LogLevel.Debug, $"Start RWS{i}: {baseurl}search_inv&ph={tmpTelNr}")
+
             htmlRWS = Await HTTPAsyncGet($"{baseurl}search_inv&ph={tmpTelNr}", Encoding.Default)
 
             If htmlRWS.IsNotStringEmpty Then
@@ -72,22 +76,36 @@ Public Module Rückwärtssuche
                 ' Link zum Herunterladen der vCard suchen
                 EintragsID = htmlRWS.GetSubString("form_name=detail&amp;action=58&amp;page=78&amp;context=11&amp;id=", "&")
                 If EintragsID.IsNotErrorString Then
-                    VCard = Await HTTPAsyncGet(baseurl & "vcard&id=" & EintragsID, Encoding.Default)
+                    PushStatus(LogLevel.Debug, $"Link vCard: {baseurl}vcard&id={EintragsID}")
+                    VCard = Await HTTPAsyncGet($"{baseurl}vcard&id={EintragsID}", Encoding.Default)
                 End If
             End If
 
             If VCard.StartsWith(DfltBegin_vCard) Then
                 Gefunden = True
+                PushStatus(LogLevel.Debug, VCard)
             Else
                 VCard = DfltStringEmpty
             End If
             i += 1
-            tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
+            ' Ersetze die letzten beiden Zeichen durch eine Null.
+            tmpTelNr = tmpTelNr.RegExReplace(".{2}$", "0")
 
         Loop Until Gefunden Or i = 3
 
-        Threading.Thread.Sleep(2000)
+        ' Event für das Beenden dieser Routine 
+        RaiseEvent Beendet(Nothing, New NotifyEventArgs(Of Boolean)(Gefunden))
+
         Return VCard
     End Function
 
+    ''' <summary>
+    ''' Gibt eine Statusmeldung (<paramref name="StatusMessage"/>) als Event aus. Gleichzeitig wird in das Log mit vorgegebenem <paramref name="Level"/> geschrieben.
+    ''' </summary>
+    ''' <param name="Level">NLog LogLevel</param>
+    ''' <param name="StatusMessage">Die auszugebende Statusmeldung.</param>
+    Private Sub PushStatus(Level As LogLevel, StatusMessage As String)
+        NLogger.Log(Level, StatusMessage)
+        RaiseEvent Status(Nothing, New NotifyEventArgs(Of String)(StatusMessage))
+    End Sub
 End Module
