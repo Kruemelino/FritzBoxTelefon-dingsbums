@@ -4,6 +4,24 @@ Imports Microsoft.Office.Interop.Outlook
 Friend Class OptionenService
     Implements IOptionenService
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+#Region "Grunddaten"
+    Friend Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FritzBoxXMLUser) Implements IOptionenService.LadeFBoxUser
+
+        Dim UserList As New ObservableCollectionEx(Of FritzBoxXMLUser)
+
+        Using FBoxTr064 As New SOAP.FritzBoxTR64(IPAdresse, Nothing)
+            Dim XMLString As String = DfltStringEmpty
+            Dim FritzBoxUsers As New FritzBoxXMLUserList
+
+            If FBoxTr064.GetUserList(XMLString) AndAlso XmlDeserializeFromString(XMLString, FritzBoxUsers) Then
+                UserList = New ObservableCollectionEx(Of FritzBoxXMLUser)
+                UserList.AddRange(FritzBoxUsers.UserListe)
+            End If
+        End Using
+
+        Return UserList
+    End Function
+#End Region
 
 #Region "Import Telefoniedaten"
     Private Property FritzBoxDaten As Telefonie

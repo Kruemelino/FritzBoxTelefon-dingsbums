@@ -159,8 +159,8 @@ Friend Module Serializer
         If xslt IsNot Nothing AndAlso CheckXMLData(Pfad, True) Then
             Dim Serializer As New XmlSerializer(GetType(T))
 
-            Dim TransformationOutput As StringBuilder = New StringBuilder()
-            Dim writerSettings As XmlWriterSettings = New XmlWriterSettings With {.OmitXmlDeclaration = True}
+            Dim TransformationOutput As New StringBuilder
+            Dim writerSettings As New XmlWriterSettings With {.OmitXmlDeclaration = True}
 
             ' Erstelle einen XMLReader
             Using Reader As XmlReader = XmlReader.Create(Pfad)

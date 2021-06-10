@@ -1,4 +1,6 @@
-﻿Imports System.Security.Cryptography
+﻿Imports System.Runtime.InteropServices
+Imports System.Security
+Imports System.Security.Cryptography
 
 ''' <remarks>http://www.freevbcode.com/ShowCode.asp?ID=4520</remarks>
 <DebuggerStepThrough>
@@ -11,9 +13,9 @@ Friend Class Rijndael
     ''' </summary>
     ''' <param name="vstrTextToBeEncrypted">Verschlüsselte Zeichenfolge</param>
     ''' <returns>Die verschlüsselte Zeichenfolge</returns>
-    Friend Function EncryptString128Bit(vstrTextToBeEncrypted As String, vstrDeCryptKey As String) As String
+    Friend Function EncryptString(vstrTextToBeEncrypted As String, vstrDeCryptKey As String) As String
         ' Standardwert
-        EncryptString128Bit = DfltStrErrorMinusOne
+        EncryptString = DfltStrErrorMinusOne
 
         ' Test ob gültige Eingangsdaten vorhanden
         If vstrTextToBeEncrypted.IsNotErrorString And vstrTextToBeEncrypted.IsNotStringEmpty Then
@@ -33,8 +35,8 @@ Friend Class Rijndael
                     .BlockSize = 256
                     .Mode = CipherMode.CBC
                     Using rfc = New Rfc2898DeriveBytes(EncryptionKey, Salt, 1000)
-                        .IV = rfc.GetBytes(CInt(.BlockSize \ 8))
-                        .Key = rfc.GetBytes(CInt(.KeySize \ 8))
+                        .IV = rfc.GetBytes(.BlockSize \ 8)
+                        .Key = rfc.GetBytes(.KeySize \ 8)
                     End Using
 
                     ' Create a encrytor to perform the stream transform. 
@@ -47,16 +49,80 @@ Friend Class Rijndael
         End If
     End Function
 
+    Private Function GetSecureString(ByRef decryptedBuffer As Byte()) As SecureString
+        Dim output As New SecureString
+
+        Dim outputBuffer As Char() = Encoding.Unicode.GetChars(decryptedBuffer)
+
+        For i As Integer = 0 To outputBuffer.Length - 1
+            output.AppendChar(outputBuffer(i))
+        Next
+
+        output.MakeReadOnly()
+
+        If outputBuffer IsNot Nothing Then Array.Clear(outputBuffer, 0, outputBuffer.Length)
+
+        If decryptedBuffer IsNot Nothing Then Array.Clear(decryptedBuffer, 0, decryptedBuffer.Length)
+
+        Return output
+    End Function
+
+    Friend Function GetUnSecureString(secstrPassword As SecureString) As String
+        Dim unmanagedString As IntPtr = IntPtr.Zero
+
+        Try
+            unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(secstrPassword)
+            Return Marshal.PtrToStringUni(unmanagedString)
+        Finally
+            Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString)
+        End Try
+    End Function
+
+    '<Obsolete> Friend Function DecryptString128Bit(vstrStringToBeDecrypted As String, vstrDeCryptKey As String) As String
+    '    ' Lese den Key aus der Registry aus
+    '    Dim DecryptionSaltKey As String = GetSetting(My.Resources.strDefShortName, DfltOptions, vstrDeCryptKey, DfltStrErrorMinusOne)
+    '    ' Standardwert
+    '    DecryptString128Bit = DfltStrErrorMinusOne
+    '    ' Test ob gültige Eingangsdaten vorhanden
+    '    If vstrStringToBeDecrypted.IsNotErrorString And vstrStringToBeDecrypted.IsNotStringEmpty And DecryptionSaltKey.IsNotErrorString Then
+    '        ' Extrahiere aus dem DecryptionSaltKey den Salt und den Key
+    '        Dim SaltKey As Byte()() = DecryptionSaltKey.FromBase64String.SplitByte(16)
+
+    '        Try
+    '            Using rijAlg As New RijndaelManaged
+    '                With rijAlg
+    '                    .KeySize = 256
+    '                    .BlockSize = 256
+    '                    .Mode = CipherMode.CBC
+    '                    Using rfc = New Rfc2898DeriveBytes(SaltKey(1), SaltKey(0), 1000)
+    '                        .IV = rfc.GetBytes(.BlockSize \ 8)
+    '                        .Key = rfc.GetBytes(.KeySize \ 8)
+    '                    End Using
+
+    '                    ' Create a decrytor to perform the stream transform. 
+    '                    Using decryptor = rijAlg.CreateDecryptor(.Key, .IV)
+    '                        Dim buffer() As Byte = vstrStringToBeDecrypted.FromBase64String
+    '                        Return Encoding.Unicode.GetString(decryptor.TransformFinalBlock(buffer, 0, buffer.Length))
+    '                    End Using
+    '                End With
+    '            End Using
+    '        Catch ex As Exception
+    '            ' Die Ausnahme tritt ein, wenn die Entschlüsselung nicht möglich ist.
+    '            NLogger.Error(ex)
+    '        End Try
+    '    End If
+    'End Function
+
     ''' <summary>
     ''' Entschlüsselungsroutine
     ''' </summary>
     ''' <param name="vstrStringToBeDecrypted">Verschlüsselte Zeichenfolge</param>
-    ''' <returns>Die entschlüsselte Zeichenfolge</returns>
-    Friend Function DecryptString128Bit(vstrStringToBeDecrypted As String, vstrDeCryptKey As String) As String
+    ''' <returns>Die entschlüsselte Zeichenfolge als <see cref="SecureString"/></returns>
+    Friend Function DecryptString(vstrStringToBeDecrypted As String, vstrDeCryptKey As String) As SecureString
         ' Lese den Key aus der Registry aus
         Dim DecryptionSaltKey As String = GetSetting(My.Resources.strDefShortName, DfltOptions, vstrDeCryptKey, DfltStrErrorMinusOne)
-        ' Standardwert
-        DecryptString128Bit = DfltStrErrorMinusOne
+        Dim buffer() As Byte = Nothing
+
         ' Test ob gültige Eingangsdaten vorhanden
         If vstrStringToBeDecrypted.IsNotErrorString And vstrStringToBeDecrypted.IsNotStringEmpty And DecryptionSaltKey.IsNotErrorString Then
             ' Extrahiere aus dem DecryptionSaltKey den Salt und den Key
@@ -69,25 +135,28 @@ Friend Class Rijndael
                         .BlockSize = 256
                         .Mode = CipherMode.CBC
                         Using rfc = New Rfc2898DeriveBytes(SaltKey(1), SaltKey(0), 1000)
-                            .IV = rfc.GetBytes(CInt(.BlockSize \ 8))
-                            .Key = rfc.GetBytes(CInt(.KeySize \ 8))
+                            .IV = rfc.GetBytes(.BlockSize \ 8)
+                            .Key = rfc.GetBytes(.KeySize \ 8)
                         End Using
 
                         ' Create a decrytor to perform the stream transform. 
                         Using decryptor = rijAlg.CreateDecryptor(.Key, .IV)
-                            Dim buffer() As Byte = vstrStringToBeDecrypted.FromBase64String
-                            Return Encoding.Unicode.GetString(decryptor.TransformFinalBlock(buffer, 0, buffer.Length))
+                            buffer = vstrStringToBeDecrypted.FromBase64String
+                            Return GetSecureString(decryptor.TransformFinalBlock(buffer, 0, buffer.Length))
                         End Using
                     End With
                 End Using
             Catch ex As Exception
                 ' Die Ausnahme tritt ein, wenn die Entschlüsselung nicht möglich ist.
                 NLogger.Error(ex)
+            Finally
+                ' Bereinige den Buffer
+                If buffer IsNot Nothing Then Array.Clear(buffer, 0, buffer.Length)
             End Try
         End If
+        Return Nothing
     End Function
 
-    <DebuggerStepThrough>
     Private Function GetRndKey(maximumSaltLength As Integer) As Byte()
         Dim RndKey(maximumSaltLength - 1) As Byte
         Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider
@@ -95,7 +164,7 @@ Friend Class Rijndael
         End Using
         Return RndKey
     End Function
-    <DebuggerStepThrough>
+
     Private Function GetSalt(maximumSaltLength As Integer) As Byte()
         Dim Salt(maximumSaltLength - 1) As Byte
         Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider

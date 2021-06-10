@@ -39,7 +39,7 @@ Imports FBoxDial.FritzBoxDefault
         Dim SessionID As String = DfltFritzBoxSessionID
 
         ' Starte die TR-064 Schnittstelle zur Fritz!Box
-        Using fbtr064 As New SOAP.FritzBoxTR64
+        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
 
             With fbtr064
                 ' Ermittle die SessionID für Fritz!Box Query
@@ -76,7 +76,7 @@ Imports FBoxDial.FritzBoxDefault
                                                                         .Intern = SIPClient.InternalNumber}
                                 With Telefon
 
-                                    If SIPClient.InComingNumbers.First.Type = eType.eAllCalls Then
+                                    If SIPClient.InComingNumbers.First.Type = EType.eAllCalls Then
                                         ' füge alle bekannten Nummern hinzu
                                         Telefonnummern.ForEach(Sub(TelNr) .StrEinTelNr.Add(TelNr.Einwahl))
                                     Else
@@ -514,7 +514,7 @@ Imports FBoxDial.FritzBoxDefault
     ''' <param name="Abfrage">Die auszuführende Abfrage.</param>
     ''' <returns></returns>
     Private Async Function FritzBoxAsyncQuery(SessionID As String, Abfrage As List(Of String)) As Task(Of String)
-        Return Await HTTPAsyncGet($"{FBLinkBasis}/query.lua?{SessionID}&{String.Join("&", Abfrage.ToArray)}", Encoding.GetEncoding(DfltCodePageFritzBox))
+        Return Await HTTPAsyncGet($"http://{XMLData.POptionen.ValidFBAdr}/query.lua?{SessionID}&{String.Join("&", Abfrage.ToArray)}", Encoding.GetEncoding(DfltCodePageFritzBox))
     End Function
 
     ''' <summary>

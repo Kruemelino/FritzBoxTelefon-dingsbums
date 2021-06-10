@@ -4,7 +4,7 @@ Module FritzBoxAnrufliste
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "Anrufliste Laden"
     Friend Async Function LadeFritzBoxAnrufliste() As Task(Of FritzBoxXMLCallList)
-        Using fboxTR064 As New SOAP.FritzBoxTR64
+        Using fboxTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
             Dim Pfad As String = DfltStringEmpty
 
             ' Ermittle Pfad zur Anrufliste

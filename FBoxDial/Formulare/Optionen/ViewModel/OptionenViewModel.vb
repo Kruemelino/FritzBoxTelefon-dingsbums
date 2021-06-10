@@ -34,6 +34,16 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBoxBenutzer As ObservableCollectionEx(Of FritzBoxXMLUser)
+    Public Property CBoxBenutzer As ObservableCollectionEx(Of FritzBoxXMLUser)
+        Get
+            Return _CBoxBenutzer
+        End Get
+        Set
+            SetProperty(_CBoxBenutzer, Value)
+        End Set
+    End Property
+
     Public Property TBPasswort As String
         Get
             Return _TBPasswort
@@ -44,7 +54,6 @@ Public Class OptionenViewModel
     End Property
 
     Public ReadOnly Property AddinVersion As String = $"Info V{Assembly.GetExecutingAssembly.GetName.Version}"
-
     Public ReadOnly Property DfltDeCryptKey As String = DfltWerteAllgemein.DfltDeCryptKey
     Public ReadOnly Property DfltPhonerDeCryptKey As String = DfltWerteAllgemein.DfltPhonerDeCryptKey
 #End Region
@@ -199,7 +208,6 @@ Public Class OptionenViewModel
     ''' Returns Or sets a list as Telefonnummern             
     ''' </summary>
     Private _TelNrListe As ObservableCollectionEx(Of Telefonnummer)
-
     Public Property TelNrListe As ObservableCollectionEx(Of Telefonnummer)
         Get
             Return _TelNrListe
@@ -213,8 +221,6 @@ Public Class OptionenViewModel
 
 #Region "Stoppuhr"
     Private _CBStoppUhrEinblenden As Boolean
-    Private _CBStoppUhrAusblenden As Boolean
-    Private _TBStoppUhrAusblendverzögerung As Integer
     Public Property CBStoppUhrEinblenden As Boolean
         Get
             Return _CBStoppUhrEinblenden
@@ -224,6 +230,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBStoppUhrAusblenden As Boolean
     Public Property CBStoppUhrAusblenden As Boolean
         Get
             Return _CBStoppUhrAusblenden
@@ -233,6 +240,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _TBStoppUhrAusblendverzögerung As Integer
     Public Property TBStoppUhrAusblendverzögerung As Integer
         Get
             Return _TBStoppUhrAusblendverzögerung
@@ -611,7 +619,6 @@ Public Class OptionenViewModel
 
                 End With
             End If
-
         Next
 
         ' Landes- und Ortskennzahl aus der Telefonie holen
@@ -629,6 +636,9 @@ Public Class OptionenViewModel
         ' Ornderliste überwachter Ordner
         OutlookOrdnerListe = New OutlookOrdnerListe
         OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
+
+        ' Fritz!Box Benutzer laden
+        CBoxBenutzer = DatenService.LadeFBoxUser(TBFBAdr)
 
     End Sub
 

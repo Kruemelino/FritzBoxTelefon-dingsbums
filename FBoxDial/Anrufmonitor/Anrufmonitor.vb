@@ -26,6 +26,7 @@ Friend Class Anrufmonitor
     Private Const AnrMon_CONNECT As String = "CONNECT"
     Private Const AnrMon_DISCONNECT As String = "DISCONNECT"
     Private Const AnrMon_Delimiter As String = ";"
+    Private Const AnrMon_Port As Integer = 1012
 #End Region
 
 #Region "Timer"
@@ -46,7 +47,7 @@ Friend Class Anrufmonitor
             Dim TC As New TcpClient With {.ExclusiveAddressUse = False}
 
             Try
-                TC.Connect(New IPEndPoint(IP, FritzBoxDefault.DfltFBAnrMonPort))
+                TC.Connect(New IPEndPoint(IP, AnrMon_Port))
             Catch ex As SocketException
                 ' Connection refused.
                 ' No Connection could be made because the target computer actively refused it. This usually results from trying To connect To a service that Is inactive On the foreign host—that Is, one with no server application running.
@@ -60,7 +61,7 @@ Friend Class Anrufmonitor
 
             If TC.Connected Then
                 ' Info Message für das Log
-                NLogger.Info($"Anrufmonitor verbunden zu {IP}:{FritzBoxDefault.DfltFBAnrMonPort}")
+                NLogger.Info($"Anrufmonitor verbunden zu {IP}:{AnrMon_Port}")
                 AnrMonTCPClient = New AnrMonClient(TC)
 
                 ' Verbinden
@@ -68,7 +69,7 @@ Friend Class Anrufmonitor
             Else
                 TC.Close()
                 ' Info Message für das Log
-                NLogger.Warn($"Anrufmonitor nicht verbunden zu {IP}:{FritzBoxDefault.DfltFBAnrMonPort}")
+                NLogger.Warn($"Anrufmonitor nicht verbunden zu {IP}:{AnrMon_Port}")
             End If
         End If
         ' Ribbon aktualisieren
@@ -207,7 +208,7 @@ Friend Class Anrufmonitor
     End Sub
 
     Private Sub AnrMonTCPClient_ErrorOccured(Sender As AnrMonClient) Handles AnrMonTCPClient.ErrorOccured
-        NLogger.Warn($"Anrufmonitor wurde unerwartet getrennt von {XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltFBAnrMonPort}")
+        NLogger.Warn($"Anrufmonitor wurde unerwartet getrennt von {XMLData.POptionen.ValidFBAdr}:{AnrMon_Port}")
         ' Wieververbinden versuchen
         Reaktivieren()
     End Sub
@@ -215,7 +216,7 @@ Friend Class Anrufmonitor
     Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
         'Aktiv = False
         ThisAddIn.POutlookRibbons.RefreshRibbon()
-        NLogger.Info($"Anrufmonitor getrennt von {XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltFBAnrMonPort}")
+        NLogger.Info($"Anrufmonitor getrennt von {XMLData.POptionen.ValidFBAdr}:{AnrMon_Port}")
     End Sub
 #End Region
 

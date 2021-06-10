@@ -64,7 +64,8 @@ Friend Class Phoner
                                     ' Bei Phoner Authentifizieren md5(ChallengePasswort)
                                     Dim Response As String
                                     Using Crypter As New Rijndael
-                                        Response = Crypter.GetMd5Hash(Challange & Crypter.DecryptString128Bit(XMLData.POptionen.TBPhonerPasswort, DfltPhonerDeCryptKey), Encoding.ASCII).ToUpper
+                                        ' TODO: Testen
+                                        Response = Crypter.GetMd5Hash(Challange & Crypter.GetUnSecureString(Crypter.DecryptString(XMLData.POptionen.TBPhonerPasswort, DfltPhonerDeCryptKey)), Encoding.ASCII).ToUpper
                                     End Using
                                     NLogger.Debug($"Phoner-Challange: {Challange}, Phoner-Response: {Response}")
 
@@ -125,13 +126,6 @@ Friend Class Phoner
             disposedValue = True
         End If
     End Sub
-
-    ' Finalizer nur überschreiben, wenn "Dispose(disposing As Boolean)" Code für die Freigabe nicht verwalteter Ressourcen enthält
-    ' Protected Overrides Sub Finalize()
-    '     ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
-    '     Dispose(disposing:=False)
-    '     MyBase.Finalize()
-    ' End Sub
 
     Public Sub Dispose() Implements IDisposable.Dispose
         ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.

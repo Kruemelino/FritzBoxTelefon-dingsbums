@@ -52,9 +52,9 @@ Imports System.Xml.Serialization
     <XmlIgnore> Friend ReadOnly Property CompleteImageURL As String
         Get
             Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
-            Using fbtr064 As New SOAP.FritzBoxTR64
+            Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
                 If fbtr064.GetSessionID(SessionID) Then
-                    Return $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{ImageURL}&{SessionID}"
+                    Return $"https://{XMLData.POptionen.ValidFBAdr}:{SOAP.DfltTR064PortSSL}{ImageURL}&{SessionID}"
                 Else
                     Return DfltStringEmpty
                 End If

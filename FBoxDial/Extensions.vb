@@ -479,7 +479,7 @@ Public Module Extensions
         If IPAddress.TryParse(InputIP, IPAddresse) Then
             Select Case IPAddresse.AddressFamily
                 Case Sockets.AddressFamily.InterNetworkV6
-                    ValidIP = "[" & IPAddresse.ToString & "]"
+                    ValidIP = $"[{IPAddresse}]"
                 Case Sockets.AddressFamily.InterNetwork
                     ValidIP = IPAddresse.ToString
                 Case Else

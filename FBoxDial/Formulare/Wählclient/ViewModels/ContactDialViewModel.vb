@@ -177,8 +177,6 @@ Public Class ContactDialViewModel
         If OKontakt IsNot Nothing Then OKontakt.Display()
         ' Outlook ExchangeUser anzeigen
         If OExchangeNutzer IsNot Nothing Then OExchangeNutzer.Details()
-        ' Fritz!Box XML Kontakte
-        ' TODO: Anzeige von XML-Kontakten ermöglichen
     End Sub
 
     Private Sub ToggleVIP(o As Object)

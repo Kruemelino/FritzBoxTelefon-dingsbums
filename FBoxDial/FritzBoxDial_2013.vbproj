@@ -287,6 +287,8 @@
       <DependentUpon>OptTestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
+    <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUser.vb" />
+    <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUserList.vb" />
     <Compile Include="Fritz!Box\TR064\XMLTR64\AllowedValueRange.vb" />
     <Compile Include="Localize\Länder.Designer.vb">
       <AutoGen>True</AutoGen>

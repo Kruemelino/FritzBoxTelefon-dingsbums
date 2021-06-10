@@ -1,6 +1,4 @@
 ﻿Imports System.Net
-Imports System.Net.Security
-Imports System.Security.Cryptography.X509Certificates
 Imports System.Xml
 
 Namespace SOAP
@@ -34,27 +32,28 @@ Namespace SOAP
 
                                 Try
                                     Response = .DownloadString(UniformResourceIdentifier)
-                                    FritzBoxGet = True
+                                    Return True
 
                                 Catch exANE As ArgumentNullException
                                     NLogger.Error(exANE)
-                                    FritzBoxGet = False
+                                    Return False
 
                                 Catch exWE As WebException
-                                    FritzBoxGet = False
                                     NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+                                    Return False
 
                                 End Try
                             End With
                         End Using
                     Case Else
-                        FritzBoxGet = False
                         NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
+                        Return False
 
                 End Select
             Else
-                FritzBoxGet = False
                 NLogger.Warn($"Ping zur Fritz!Box '{UniformResourceIdentifier.Host}'  nicht erfolgreich")
+                Return False
+
             End If
         End Function
 
@@ -155,7 +154,7 @@ Namespace SOAP
             End If
         End Function
 
-        Friend Function FritzBoxPOST(UniformResourceIdentifier As Uri, SOAPAction As String, ServiceType As String, SOAPXML As XmlDocument, ByRef Response As String) As Boolean
+        Friend Function FritzBoxPOST(UniformResourceIdentifier As Uri, SOAPAction As String, ServiceType As String, SOAPXML As XmlDocument, NC As NetworkCredential, ByRef Response As String) As Boolean
 
             Response = DfltStringEmpty
 
@@ -172,55 +171,48 @@ Namespace SOAP
                     ' Zeichencodierung auf das Fritz!Box default setzen
                     .Encoding = Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox)
 
-                    ' Zugangsdaten felstlegen
-                    Using Crypter As New Rijndael
-                        ' Wenn der UserName leer ist muss der Default-Wert ermittelt werden.
-                        .Credentials = New NetworkCredential(If(XMLData.POptionen.TBBenutzer.IsStringNothingOrEmpty, FritzBoxDefault.DfltFritzBoxUser, XMLData.POptionen.TBBenutzer), Crypter.DecryptString128Bit(XMLData.POptionen.TBPasswort, DfltDeCryptKey))
-                    End Using
+                    ' Zugangsdaten festlegen. Es kann sein, dass ein Login nicht immer notwendig ist.
+                    If NC IsNot Nothing Then .Credentials = NC
 
                     Try
                         Response = .UploadString(UniformResourceIdentifier, SOAPXML.InnerXml)
-                        FritzBoxPOST = True
+                        Return True
 
                     Catch ex As WebException When ex.Message.Contains("606")
                         Response = $"TR-064 Interner-Fehler 606: {SOAPAction} ""Action not authorized"""
                         NLogger.Error(ex, Response)
-                        FritzBoxPOST = False
 
                     Catch ex As WebException When ex.Message.Contains("500")
                         Response = $"TR-064 Interner-Fehler 500: {SOAPAction}"
                         NLogger.Error(ex, Response)
-                        FritzBoxPOST = False
 
                     Catch ex As WebException When ex.Message.Contains("713")
                         Response = $"TR-064 Interner-Fehler 713: {SOAPAction} ""Invalid array index"""
                         NLogger.Error(ex, Response)
-                        FritzBoxPOST = False
 
                     Catch ex As WebException When ex.Message.Contains("820")
                         Response = $"TR-064 Interner-Fehler 820: {SOAPAction} ""Internal Error"""
                         NLogger.Error(ex)
-                        FritzBoxPOST = False
 
                     Catch ex As WebException When ex.Message.Contains("401")
                         Response = $"TR-064 Login-Fehler 401: {SOAPAction} ""Unauthorized"""
                         NLogger.Error(ex, Response)
-                        FritzBoxPOST = False
 
                     Catch exWE As WebException
                         Response = $"WebException: {exWE.Message}"
                         NLogger.Error(exWE, $"Action: {SOAPAction}")
-                        FritzBoxPOST = False
 
                     Catch ex As Exception
                         Response = ex.Message
                         NLogger.Error(ex)
-                        FritzBoxPOST = False
+
                     End Try
                 End With
             End Using
 
+            Return False
         End Function
+
 
 #End Region
 

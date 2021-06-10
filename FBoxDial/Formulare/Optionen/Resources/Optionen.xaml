@@ -139,6 +139,7 @@
                             SelectedValue="{Binding Path=SelectedValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
                             DisplayMemberPath="{Binding Path=DisplayMemberPath, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
                             SelectedValuePath="{Binding Path=SelectedValuePath, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
+                            IsEditable="{Binding Path=IsEditable, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
                             Grid.Column="1"/>
 
                     </Grid>

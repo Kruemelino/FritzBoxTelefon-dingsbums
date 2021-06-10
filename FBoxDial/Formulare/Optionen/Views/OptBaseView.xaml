@@ -25,10 +25,30 @@
                  Tag="{x:Static localize:LocOptionen.strBaseTBFBAdr}"
                  Text="{Binding OptVM.TBFBAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         
-        <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strBaseTBBenutzer}"
-                 Text="{Binding OptVM.TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
+        <Grid Margin="0,0,0,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="{x:Static localize:LocOptionen.strBaseTBBenutzer}"/>
+
+            <Button Grid.Column="1" Margin="2"
+                    Content="{DynamicResource Refresh_16x}" 
+                    Style="{StaticResource MiniIconButton}"
+                    Command="{Binding UpdateUserListCommand}"/>
+
+            <ComboBox Grid.Column="2"
+                      ItemsSource="{Binding Path=OptVM.CBoxBenutzer}"
+                      SelectedValue="{Binding OptVM.TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      DisplayMemberPath="UserName"
+                      SelectedValuePath="UserName"
+                      IsEditable="False"/>
+
+        </Grid>
+
         <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strBaseTBPasswort}"
                                 Value="{Binding Path=OptVM.TBPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 DeCryptKey="{Binding Path=OptVM.DfltDeCryptKey, Mode=OneWay}"/>
@@ -75,7 +95,8 @@
                   ItemsSource="{Binding Path=OptVM.CBoxLogLevel}"
                   SelectedValue="{Binding OptVM.CBoxMinLogLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   DisplayMemberPath="Name"
-                  SelectedValuePath="Name"/>
+                  SelectedValuePath="Name"
+                  IsEditable="False" />
 
         <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strBaseWorkDir}" 
                          LinkLabel="{x:Static localize:LocOptionen.strBaseLinkOpen}"

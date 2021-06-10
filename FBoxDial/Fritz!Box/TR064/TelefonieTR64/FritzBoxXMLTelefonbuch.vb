@@ -146,7 +146,7 @@ Imports System.Xml.Serialization
 
         Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
 
-        Using fbtr064 As New SOAP.FritzBoxTR64
+        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
 
             If fbtr064.GetSessionID(SessionID) Then
 
@@ -155,7 +155,7 @@ Imports System.Xml.Serialization
                     With Kontakt
                         If .Person IsNot Nothing AndAlso .Person.ImageURL.IsNotStringNothingOrEmpty Then
                             ' Setze den Pfad zum Bild zusammen
-                            Dim u As New Uri($"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{ .Person.ImageURL}&{SessionID}")
+                            Dim u As New Uri($"https://{XMLData.POptionen.ValidFBAdr}:{SOAP.DfltTR064PortSSL}{ .Person.ImageURL}&{SessionID}")
                             Dim b As Byte() = {}
 
                             ' Lade das Bild herunter

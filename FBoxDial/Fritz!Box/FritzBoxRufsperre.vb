@@ -13,7 +13,7 @@ Module FritzBoxRufsperre
 
         Dim strXMLEintrag As String = DfltStringEmpty
 
-        Using fboxTR064 As New SOAP.FritzBoxTR64
+        Using fboxTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
 
             Return fboxTR064.SetCallBarringEntry(Sperreintrag.GetXMLKontakt, UID)
 
@@ -27,7 +27,7 @@ Module FritzBoxRufsperre
     ''' <param name="OutlookKontakte">Auflistung von Sperrlisteneinträgen</param>
     Friend Async Sub AddToCallBarring(OutlookKontakte As IEnumerable(Of ContactItem))
         Const SperrlistenID As Integer = 258
-        Using fbtr064 As New SOAP.FritzBoxTR64
+        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
 
             ' Erzeuge für jeden Kontakt einen Eintrag
             For Each Kontakt In OutlookKontakte
@@ -68,7 +68,7 @@ Module FritzBoxRufsperre
 
         Dim strXMLEintrag As String = DfltStringEmpty
 
-        Using fboxTR064 As New SOAP.FritzBoxTR64
+        Using fboxTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
 
             Return fboxTR064.DeleteCallBarringEntryUID(UID)
 
@@ -82,7 +82,7 @@ Module FritzBoxRufsperre
     ''' <param name="Einträge">Zu entferndende Sperrlisteneinträge.</param>
     ''' <returns>True, wenn erfolgreich</returns>
     Friend Function DeleteCallBarrings(Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean
-        Using fbtr064 As New SOAP.FritzBoxTR64
+        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
             With fbtr064
                 For Each Kontakt In Einträge
                     If .DeleteCallBarringEntryUID(Kontakt.Uniqueid) Then
