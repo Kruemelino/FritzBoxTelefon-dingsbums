@@ -51,7 +51,13 @@ Namespace SOAP
         Private Function GetService(SCPDURL As String) As Service
 
             If FBTR64Desc IsNot Nothing AndAlso FBTR64Desc.Device.ServiceList.Any Then
-                Return FBTR64Desc.Device.ServiceList.Find(Function(Service) Service.SCPDURL.AreEqual(SCPDURL))
+                ' Suche den angeforderten Service
+                Dim FBoxService As Service = FBTR64Desc.Device.ServiceList.Find(Function(Service) Service.SCPDURL.AreEqual(SCPDURL))
+
+                ' Weise die Fritz!Box IP-Adresse zu
+                If FBoxService IsNot Nothing Then FBoxService.FBoxIPAdresse = FBoxIPAdresse
+
+                Return FBoxService
             Else
                 NLogger.Error($"SOAP zur Fritz!Box ist nicht bereit: {FBoxIPAdresse}")
                 Return Nothing
@@ -59,14 +65,14 @@ Namespace SOAP
 
         End Function
 
-        Private Function TR064Start(SCPDURL As String, ActionName As String, AuthRequired As Boolean, Optional InputHashTable As Hashtable = Nothing) As Hashtable
+        Private Function TR064Start(SCPDURL As String, ActionName As String, Optional InputHashTable As Hashtable = Nothing) As Hashtable
 
             If Ping(FBoxIPAdresse) Then
 
                 With GetService(SCPDURL)
                     If?.ActionExists(ActionName) Then
                         If .CheckInput(ActionName, InputHashTable) Then
-                            Return .Start(.GetActionByName(ActionName), InputHashTable, FBoxIPAdresse, Credential)
+                            Return .Start(.GetActionByName(ActionName), InputHashTable, Credential)
                         Else
                             NLogger.Error($"InputData for Action '{ActionName}' not valid!")
                         End If
@@ -90,7 +96,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetSessionID(ByRef SessionID As String) As Boolean
 
-            With TR064Start(Tr064Files.deviceconfigSCPD, "X_AVM-DE_CreateUrlSID", True)
+            With TR064Start(Tr064Files.deviceconfigSCPD, "X_AVM-DE_CreateUrlSID")
 
                 If .ContainsKey("NewX_AVM-DE_UrlSID") Then
 
@@ -119,7 +125,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetUserList(ByRef UserList As String) As Boolean
 
-            With TR064Start(Tr064Files.lanconfigsecuritySCPD, "X_AVM-DE_GetUserList", False)
+            With TR064Start(Tr064Files.lanconfigsecuritySCPD, "X_AVM-DE_GetUserList")
 
                 If .ContainsKey("NewX_AVM-DE_UserList") Then
 
@@ -171,7 +177,7 @@ Namespace SOAP
         ''' </remarks>
         Friend Function GetCallList(ByRef CallListURL As String) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "GetCallList", True)
+            With TR064Start(Tr064Files.x_contactSCPD, "GetCallList")
 
                 If .ContainsKey("NewCallListURL") Then
 
@@ -199,7 +205,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetPhonebookList(ByRef PhonebookList As Integer()) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookList", True)
+            With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookList")
 
                 If .ContainsKey("NewPhonebookList") Then
                     ' Comma separated list of PhonebookID 
@@ -241,7 +247,7 @@ Namespace SOAP
                                      Optional ByRef PhonebookName As String = "",
                                      Optional ByRef PhonebookExtraID As String = "") As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebook", True, New Hashtable From {{"NewPhonebookID", PhonebookID}})
+            With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebook", New Hashtable From {{"NewPhonebookID", PhonebookID}})
 
                 If .ContainsKey("NewPhonebookURL") Then
                     ' Phonebook URL auslesen
@@ -273,7 +279,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function AddPhonebook(PhonebookName As String, Optional PhonebookExtraID As String = "") As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "AddPhonebook", True, New Hashtable From {{"NewPhonebookName", PhonebookName},
+            With TR064Start(Tr064Files.x_contactSCPD, "AddPhonebook", New Hashtable From {{"NewPhonebookName", PhonebookName},
                                                                                           {"NewPhonebookExtraID", PhonebookExtraID}})
 
                 Return Not .ContainsKey("Error")
@@ -291,7 +297,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function DeletePhonebook(NewPhonebookID As Integer, Optional PhonebookExtraID As String = "") As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebook", True, New Hashtable From {{"NewPhonebookID", NewPhonebookID},
+            With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebook", New Hashtable From {{"NewPhonebookID", NewPhonebookID},
                                                                                              {"NewPhonebookExtraID", PhonebookExtraID}})
 
                 Return Not .ContainsKey("Error")
@@ -309,7 +315,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetPhonebookEntry(PhonebookID As Integer, PhonebookEntryID As Integer, ByRef PhonebookEntryData As String) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookEntry", True, New Hashtable From {{"NewPhonebookID", PhonebookID},
+            With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookEntry", New Hashtable From {{"NewPhonebookID", PhonebookID},
                                                                                                {"NewPhonebookEntryID", PhonebookEntryID}})
 
                 If .ContainsKey("NewPhonebookEntryData") Then
@@ -340,7 +346,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetPhonebookEntryUID(PhonebookID As Integer, PhonebookEntryUniqueID As Integer, ByRef PhonebookEntryData As String) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookEntryUID", True, New Hashtable From {{"NewPhonebookID", PhonebookID},
+            With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookEntryUID", New Hashtable From {{"NewPhonebookID", PhonebookID},
                                                                                                   {"NewPhonebookEntryUniqueID", PhonebookEntryUniqueID}})
 
                 If .ContainsKey("NewPhonebookEntryData") Then
@@ -384,7 +390,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function SetPhonebookEntryUID(PhonebookID As Integer, PhonebookEntryData As String, ByRef PhonebookEntryUniqueID As Integer) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "SetPhonebookEntryUID", True, New Hashtable From {{"NewPhonebookID", PhonebookID},
+            With TR064Start(Tr064Files.x_contactSCPD, "SetPhonebookEntryUID", New Hashtable From {{"NewPhonebookID", PhonebookID},
                                                                                                   {"NewPhonebookEntryData", PhonebookEntryData}})
 
                 If .ContainsKey("NewPhonebookEntryUniqueID") Then
@@ -412,7 +418,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function DeletePhonebookEntry(PhonebookID As Integer, PhonebookEntryID As Integer) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntry", True, New Hashtable From {{"NewPhonebookID", PhonebookID},
+            With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntry", New Hashtable From {{"NewPhonebookID", PhonebookID},
                                                                                                   {"NewPhonebookEntryID", PhonebookEntryID}})
                 Return Not .ContainsKey("Error")
 
@@ -428,7 +434,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function DeletePhonebookEntryUID(PhonebookID As Integer, NewPhonebookEntryUniqueID As Integer) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntryUID", True, New Hashtable From {{"NewPhonebookID", PhonebookID},
+            With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntryUID", New Hashtable From {{"NewPhonebookID", PhonebookID},
                                                                                                      {"NewPhonebookEntryUniqueID", NewPhonebookEntryUniqueID}})
                 Return Not .ContainsKey("Error")
 
@@ -444,7 +450,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetCallBarringEntry(PhonebookEntryID As Integer, ByRef PhonebookEntryData As String) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "GetCallBarringEntry", True, New Hashtable From {{"NewPhonebookEntryID", PhonebookEntryID}})
+            With TR064Start(Tr064Files.x_contactSCPD, "GetCallBarringEntry", New Hashtable From {{"NewPhonebookEntryID", PhonebookEntryID}})
 
                 If .ContainsKey("NewPhonebookEntryData") Then
                     ' Phonebook URL auslesen
@@ -474,7 +480,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetCallBarringEntryByNum(Number As String, ByRef PhonebookEntryData As String) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "GetCallBarringEntryByNum", True, New Hashtable From {{"NewNumber", Number}})
+            With TR064Start(Tr064Files.x_contactSCPD, "GetCallBarringEntryByNum", New Hashtable From {{"NewNumber", Number}})
 
                 If .ContainsKey("NewPhonebookEntryData") Then
                     ' Phonebook URL auslesen
@@ -502,7 +508,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetCallBarringList(ByRef PhonebookURL As String) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "GetCallBarringList", True)
+            With TR064Start(Tr064Files.x_contactSCPD, "GetCallBarringList")
 
                 If .ContainsKey("NewPhonebookURL") Then
                     ' Phonebook URL auslesen
@@ -533,7 +539,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function SetCallBarringEntry(PhonebookEntryData As String, Optional ByRef PhonebookEntryUniqueID As Integer = 0) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "SetCallBarringEntry", True, New Hashtable From {{"NewPhonebookEntryData", PhonebookEntryData}})
+            With TR064Start(Tr064Files.x_contactSCPD, "SetCallBarringEntry", New Hashtable From {{"NewPhonebookEntryData", PhonebookEntryData}})
 
                 If .ContainsKey("NewPhonebookEntryUniqueID") Then
                     ' Phonebook URL auslesen
@@ -561,7 +567,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function DeleteCallBarringEntryUID(NewPhonebookEntryUniqueID As Integer) As Boolean
 
-            With TR064Start(Tr064Files.x_contactSCPD, "DeleteCallBarringEntryUID", True, New Hashtable From {{"NewPhonebookEntryUniqueID", NewPhonebookEntryUniqueID}})
+            With TR064Start(Tr064Files.x_contactSCPD, "DeleteCallBarringEntryUID", New Hashtable From {{"NewPhonebookEntryUniqueID", NewPhonebookEntryUniqueID}})
                 Return Not .ContainsKey("Error")
 
             End With
@@ -579,7 +585,7 @@ Namespace SOAP
         ''' <remarks>Weitere felder verfügbar: NewEnable, NewName, NewTAMRunning, NewStick, NewStatus, NewCapacity, NewMode, NewRingSeconds </remarks>
         Friend Function GetTAMInfo(ByRef PhoneNumbers As String(), i As Integer) As Boolean
 
-            With TR064Start(Tr064Files.x_tamSCPD, "GetInfo", True, New Hashtable From {{"NewIndex", i}})
+            With TR064Start(Tr064Files.x_tamSCPD, "GetInfo", New Hashtable From {{"NewIndex", i}})
 
                 If .ContainsKey("NewPhoneNumbers") Then
 
@@ -606,7 +612,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetTAMList(ByRef TAMListe As TAMList) As Boolean
 
-            With TR064Start(Tr064Files.x_tamSCPD, "GetList", True)
+            With TR064Start(Tr064Files.x_tamSCPD, "GetList")
 
                 If .ContainsKey("NewTAMList") Then
 
@@ -641,7 +647,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetVoIPCommonCountryCode(ByRef LKZ As String, Optional ByRef LKZPrefix As String = "") As Boolean
 
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetVoIPCommonCountryCode", True)
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetVoIPCommonCountryCode")
 
                 If .ContainsKey("NewX_AVM-DE_LKZ") And .ContainsKey("NewX_AVM-DE_LKZPrefix") Then
                     LKZ = .Item("NewX_AVM-DE_LKZ").ToString
@@ -668,7 +674,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetVoIPCommonAreaCode(ByRef OKZ As String, Optional ByRef OKZPrefix As String = "") As Boolean
 
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetVoIPCommonAreaCode", True)
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetVoIPCommonAreaCode")
 
                 If .ContainsKey("NewX_AVM-DE_OKZ") And .ContainsKey("NewX_AVM-DE_OKZPrefix") Then
                     OKZ = .Item("NewX_AVM-DE_OKZ").ToString
@@ -693,7 +699,7 @@ Namespace SOAP
         ''' <param name="PhoneName">Phoneport des ausgewählten Telefones.</param>
         ''' <returns>True when success</returns>
         Friend Function DialGetConfig(ByRef PhoneName As String) As Boolean
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig", True)
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
 
                 If .ContainsKey("NewX_AVM-DE_PhoneName") Then
                     PhoneName = .Item("NewX_AVM-DE_PhoneName").ToString
@@ -714,7 +720,7 @@ Namespace SOAP
         ''' </summary>
         ''' <returns>True</returns>
         Friend Function DialHangup() As Boolean
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialHangup", True)
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialHangup")
                 Return Not .ContainsKey("Error")
             End With
         End Function
@@ -724,7 +730,7 @@ Namespace SOAP
         ''' </summary>
         ''' <param name="PhoneNumber">Die zu wählende Telefonnummer.</param>
         Friend Function DialNumber(PhoneNumber As String) As Boolean
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialNumber", True, New Hashtable From {{"NewX_AVM-DE_PhoneNumber", PhoneNumber}})
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialNumber", New Hashtable From {{"NewX_AVM-DE_PhoneNumber", PhoneNumber}})
                 Return Not .ContainsKey("Error")
             End With
         End Function
@@ -734,7 +740,7 @@ Namespace SOAP
         ''' </summary>
         ''' <param name="PhoneName">Phoneport des Telefones.</param>
         Friend Function DialSetConfig(PhoneName As String) As Boolean
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialSetConfig", True, New Hashtable From {{"NewX_AVM-DE_PhoneName", PhoneName}})
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialSetConfig", New Hashtable From {{"NewX_AVM-DE_PhoneName", PhoneName}})
                 Return Not .ContainsKey("Error")
             End With
         End Function
@@ -747,7 +753,7 @@ Namespace SOAP
         ''' <remarks>The list contains all configured numbers for all number types. The index can be used to see how many numbers are configured For one type. </remarks>
         Friend Function GetNumbers(ByRef NumberList As SIPTelNrList) As Boolean
 
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetNumbers", True)
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetNumbers")
 
                 If .ContainsKey("NewNumberList") Then
 
@@ -787,7 +793,7 @@ Namespace SOAP
         ''' <returns>True when success</returns>
         Friend Function GetPhonePort(ByRef PhoneName As String, i As Integer) As Boolean
 
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetPhonePort", True, New Hashtable From {{"NewIndex", i}})
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetPhonePort", New Hashtable From {{"NewIndex", i}})
 
                 If .ContainsKey("NewX_AVM-DE_PhoneName") Then
                     PhoneName = .Item("NewX_AVM-DE_PhoneName").ToString
@@ -812,7 +818,7 @@ Namespace SOAP
         ''' <remarks>The list contains all configured SIP client accounts a XML list.</remarks>
         Friend Function GetSIPClients(ByRef ClientList As SIPClientList) As Boolean
 
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetClients", True)
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetClients")
 
                 If .ContainsKey("NewX_AVM-DE_ClientList") Then
 

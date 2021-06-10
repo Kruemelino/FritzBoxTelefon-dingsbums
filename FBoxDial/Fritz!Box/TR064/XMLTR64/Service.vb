@@ -3,7 +3,7 @@ Imports System.Xml
 Imports System.Xml.Serialization
 
 Namespace SOAP
-    <DebuggerStepThrough>
+    ' <DebuggerStepThrough>
     <Serializable()>
     Public Class Service
 
@@ -16,6 +16,7 @@ Namespace SOAP
         <XmlElement("SCPDURL")> Public Property SCPDURL As String
 
         <XmlIgnore> Friend Property SCPD As ServiceControlProtocolDefinition
+        <XmlIgnore> Friend Property FBoxIPAdresse As String
 
         Friend Function GetActionByName(ActionName As String) As Action
             Return SCPD?.ActionList.Find(Function(Action) Action.Name = ActionName)
@@ -28,7 +29,7 @@ Namespace SOAP
         ''' <returns>Boolean</returns>
         Friend Function ActionExists(ActionName As String) As Boolean
 
-            If SCPD Is Nothing Then DeserializeObject(New UriBuilder(Uri.UriSchemeHttp, XMLData.POptionen.ValidFBAdr, DfltTR064Port, SCPDURL).Uri, SCPD)
+            If SCPD Is Nothing Then DeserializeObject(New UriBuilder(Uri.UriSchemeHttp, FBoxIPAdresse, DfltTR064Port, SCPDURL).Uri, SCPD)
 
             Return SCPD IsNot Nothing AndAlso SCPD.ActionList.Exists(Function(Action) Action.Name = ActionName)
 
@@ -58,13 +59,13 @@ Namespace SOAP
             ActionInputData.Clear()
         End Function
 
-        Friend Function Start([Action] As Action, InputArguments As Hashtable, FritzBoxAdresse As String, NetworkCredential As Net.NetworkCredential) As Hashtable
+        Friend Function Start([Action] As Action, InputArguments As Hashtable, NetworkCredential As Net.NetworkCredential) As Hashtable
             Dim ReturnXMLDoc As New XmlDocument
             Dim OutputHashTable As New Hashtable
             Dim Response As String = DfltStringEmpty
 
             With OutputHashTable
-                If FritzBoxPOST(New UriBuilder(Uri.UriSchemeHttps, FritzBoxAdresse, DfltTR064PortSSL, ControlURL).Uri,
+                If FritzBoxPOST(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, ControlURL).Uri,
                                 Action.Name,
                                 ServiceType,
                                 GetRequest(Action, InputArguments),
