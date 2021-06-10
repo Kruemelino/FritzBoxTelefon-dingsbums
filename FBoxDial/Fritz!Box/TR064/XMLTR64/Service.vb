@@ -29,7 +29,18 @@ Namespace SOAP
         ''' <returns>Boolean</returns>
         Friend Function ActionExists(ActionName As String) As Boolean
 
-            If SCPD Is Nothing Then DeserializeObject(New UriBuilder(Uri.UriSchemeHttp, FBoxIPAdresse, DfltTR064Port, SCPDURL).Uri, SCPD)
+            ' Wenn ServiceControlProtocolDefinition noch nicht geladen wurde, dann lade sie von der Fritz!Box
+            If SCPD Is Nothing Then
+                ' Wenn keine IPAddresse vorhanden ist, was eigentlich nicht möglich ist, dann wirf einen Fehler aus.
+                If FBoxIPAdresse.IsStringNothingOrEmpty Then
+                    NLogger.Error($"Action '{ActionName}': IP Adresse nicht vorhanden.")
+                Else
+                    If Not DeserializeObject(New UriBuilder(Uri.UriSchemeHttp, FBoxIPAdresse, DfltTR064Port, SCPDURL).Uri, SCPD) Then
+                        ' Fehlerfall
+                        NLogger.Error($"Action '{ActionName}': ServiceControlProtocolDefinition nicht geladen.")
+                    End If
+                End If
+            End If
 
             Return SCPD IsNot Nothing AndAlso SCPD.ActionList.Exists(Function(Action) Action.Name = ActionName)
 
@@ -65,26 +76,35 @@ Namespace SOAP
             Dim Response As String = DfltStringEmpty
 
             With OutputHashTable
-                If FritzBoxPOST(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, ControlURL).Uri,
-                                Action.Name,
-                                ServiceType,
-                                GetRequest(Action, InputArguments),
-                                NetworkCredential,
-                                Response) Then
 
-                    ' XML Laden
-                    ReturnXMLDoc.LoadXml(Response)
+                If FBoxIPAdresse.IsStringNothingOrEmpty Then
+                    ' Wenn keine IPAddresse vorhanden ist, was eigentlich nicht möglich ist, dann wirf einen Fehler aus.
+                    NLogger.Error($"Action '{[Action]}': IP Adresse nicht vorhanden.")
+                    .Add("Error", DfltStringEmpty)
+                Else
 
-                    If ReturnXMLDoc.InnerXml.IsNotStringEmpty Then
-                        For Each OUTArguments As Argument In Action.ArgumentList.FindAll(Function(GetbyDirection) GetbyDirection.Direction = ArgumentDirection.OUT)
-                            .Add(OUTArguments.Name, ReturnXMLDoc.GetElementsByTagName(OUTArguments.Name).Item(0).InnerText)
-                        Next
+                    If FritzBoxPOST(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, ControlURL).Uri,
+                                    Action.Name,
+                                    ServiceType,
+                                    GetRequest(Action, InputArguments),
+                                    NetworkCredential,
+                                    Response) Then
+
+                        ' XML Laden
+                        ReturnXMLDoc.LoadXml(Response)
+
+                        If ReturnXMLDoc.InnerXml.IsNotStringEmpty Then
+                            For Each OUTArguments As Argument In Action.ArgumentList.FindAll(Function(GetbyDirection) GetbyDirection.Direction = ArgumentDirection.OUT)
+                                .Add(OUTArguments.Name, ReturnXMLDoc.GetElementsByTagName(OUTArguments.Name).Item(0).InnerText)
+                            Next
+                        End If
+
+                    Else
+                        ' Fehlerfall
+                        .Add("Error", Response)
+                        NLogger.Error(Response)
                     End If
 
-                Else
-                    ' Fehlerfall
-                    .Add("Error", Response)
-                    NLogger.Error(Response)
                 End If
             End With
 
