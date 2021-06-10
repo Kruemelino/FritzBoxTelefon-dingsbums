@@ -47,7 +47,6 @@ Namespace SOAP
 
         End Sub
 
-        <DebuggerStepThrough>
         Private Function GetService(SCPDURL As String) As Service
 
             If FBTR64Desc IsNot Nothing AndAlso FBTR64Desc.Device.ServiceList.Any Then
