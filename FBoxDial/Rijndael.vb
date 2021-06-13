@@ -3,7 +3,7 @@ Imports System.Security
 Imports System.Security.Cryptography
 
 ''' <remarks>http://www.freevbcode.com/ShowCode.asp?ID=4520</remarks>
-'<DebuggerStepThrough>
+<DebuggerStepThrough>
 Friend Class Rijndael
     Implements IDisposable
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -21,9 +21,9 @@ Friend Class Rijndael
         If vstrTextToBeEncrypted IsNot Nothing Then
 
             ' Erstelle einen Zufälligen Zeichenfolge als Salt
-            Dim Salt() As Byte = GetSalt(16)
+            Dim Salt() As Byte = GetRndByteArray(16)
             ' Erstelle einen Zufälligen Schlüssel
-            Dim EncryptionKey() As Byte = GetRndKey(32)
+            Dim EncryptionKey() As Byte = GetRndByteArray(32)
 
             ' Speichere den Salt und Key in der Registry ab
             SaveSetting(My.Resources.strDefShortName, DfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
@@ -73,8 +73,6 @@ Friend Class Rijndael
 
     End Function
 
-
-
     Private Function GetSecureString(ByRef decryptedBuffer As Byte()) As SecureString
         Dim output As New SecureString
 
@@ -103,41 +101,6 @@ Friend Class Rijndael
             Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString)
         End Try
     End Function
-
-    '<Obsolete> Friend Function DecryptString128Bit(vstrStringToBeDecrypted As String, vstrDeCryptKey As String) As String
-    '    ' Lese den Key aus der Registry aus
-    '    Dim DecryptionSaltKey As String = GetSetting(My.Resources.strDefShortName, DfltOptions, vstrDeCryptKey, DfltStrErrorMinusOne)
-    '    ' Standardwert
-    '    DecryptString128Bit = DfltStrErrorMinusOne
-    '    ' Test ob gültige Eingangsdaten vorhanden
-    '    If vstrStringToBeDecrypted.IsNotErrorString And vstrStringToBeDecrypted.IsNotStringEmpty And DecryptionSaltKey.IsNotErrorString Then
-    '        ' Extrahiere aus dem DecryptionSaltKey den Salt und den Key
-    '        Dim SaltKey As Byte()() = DecryptionSaltKey.FromBase64String.SplitByte(16)
-
-    '        Try
-    '            Using rijAlg As New RijndaelManaged
-    '                With rijAlg
-    '                    .KeySize = 256
-    '                    .BlockSize = 256
-    '                    .Mode = CipherMode.CBC
-    '                    Using rfc = New Rfc2898DeriveBytes(SaltKey(1), SaltKey(0), 1000)
-    '                        .IV = rfc.GetBytes(.BlockSize \ 8)
-    '                        .Key = rfc.GetBytes(.KeySize \ 8)
-    '                    End Using
-
-    '                    ' Create a decrytor to perform the stream transform. 
-    '                    Using decryptor = rijAlg.CreateDecryptor(.Key, .IV)
-    '                        Dim buffer() As Byte = vstrStringToBeDecrypted.FromBase64String
-    '                        Return Encoding.Unicode.GetString(decryptor.TransformFinalBlock(buffer, 0, buffer.Length))
-    '                    End Using
-    '                End With
-    '            End Using
-    '        Catch ex As Exception
-    '            ' Die Ausnahme tritt ein, wenn die Entschlüsselung nicht möglich ist.
-    '            NLogger.Error(ex)
-    '        End Try
-    '    End If
-    'End Function
 
     ''' <summary>
     ''' Entschlüsselungsroutine
@@ -183,20 +146,12 @@ Friend Class Rijndael
         Return Nothing
     End Function
 
-    Private Function GetRndKey(maximumSaltLength As Integer) As Byte()
-        Dim RndKey(maximumSaltLength - 1) As Byte
+    Private Function GetRndByteArray(maximumLength As Integer) As Byte()
+        Dim RndByte(maximumLength - 1) As Byte
         Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider
-            rng.GetNonZeroBytes(RndKey)
+            rng.GetNonZeroBytes(RndByte)
         End Using
-        Return RndKey
-    End Function
-
-    Private Function GetSalt(maximumSaltLength As Integer) As Byte()
-        Dim Salt(maximumSaltLength - 1) As Byte
-        Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider
-            rng.GetNonZeroBytes(Salt)
-        End Using
-        Return Salt
+        Return RndByte
     End Function
 
     Friend Function GetMd5Hash(input As String, Enkodierung As Encoding) As String
