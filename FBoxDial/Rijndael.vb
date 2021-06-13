@@ -3,7 +3,7 @@ Imports System.Security
 Imports System.Security.Cryptography
 
 ''' <remarks>http://www.freevbcode.com/ShowCode.asp?ID=4520</remarks>
-<DebuggerStepThrough>
+'<DebuggerStepThrough>
 Friend Class Rijndael
     Implements IDisposable
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -13,12 +13,12 @@ Friend Class Rijndael
     ''' </summary>
     ''' <param name="vstrTextToBeEncrypted">Verschlüsselte Zeichenfolge</param>
     ''' <returns>Die verschlüsselte Zeichenfolge</returns>
-    Friend Function EncryptString(vstrTextToBeEncrypted As String, vstrDeCryptKey As String) As String
+    Friend Function EncryptString(vstrTextToBeEncrypted As SecureString, vstrDeCryptKey As String) As String
         ' Standardwert
         EncryptString = DfltStrErrorMinusOne
 
         ' Test ob gültige Eingangsdaten vorhanden
-        If vstrTextToBeEncrypted.IsNotErrorString And vstrTextToBeEncrypted.IsNotStringEmpty Then
+        If vstrTextToBeEncrypted IsNot Nothing Then
 
             ' Erstelle einen Zufälligen Zeichenfolge als Salt
             Dim Salt() As Byte = GetSalt(16)
@@ -41,13 +41,39 @@ Friend Class Rijndael
 
                     ' Create a encrytor to perform the stream transform. 
                     Using encryptor As ICryptoTransform = rijAlg.CreateEncryptor(.Key, .IV)
-                        Dim buffer() As Byte = Encoding.Unicode.GetBytes(vstrTextToBeEncrypted)
-                        Return encryptor.TransformFinalBlock(buffer, 0, buffer.Length).ToBase64String
+                        Dim Buffer As Byte() = ToByteArray(vstrTextToBeEncrypted, Encoding.Unicode)
+                        Try
+                            Return encryptor.TransformFinalBlock(Buffer, 0, Buffer.Length).ToBase64String
+                        Finally
+                            If Buffer IsNot Nothing Then Array.Clear(Buffer, 0, Buffer.Length)
+                        End Try
                     End Using
                 End With
             End Using
+
         End If
     End Function
+
+    ''' <summary>
+    ''' Wandelt einen <see cref="SecureString"/> in ein Array von <see cref="Byte"/> um.
+    ''' </summary>
+    ''' <param name="secureString">Die Zeichenfolge als <see cref="SecureString"/>, welche umgewandelt werden soll. </param>
+    ''' <param name="encoding">Zeichencodierung</param>
+    ''' <returns>ByteArray</returns>
+    Private Function ToByteArray(secureString As SecureString, encoding As Encoding) As Byte()
+
+        Dim unmanagedString As IntPtr = IntPtr.Zero
+
+        Try
+            unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(secureString)
+            Return encoding.GetBytes(Marshal.PtrToStringUni(unmanagedString))
+        Finally
+            Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString)
+        End Try
+
+    End Function
+
+
 
     Private Function GetSecureString(ByRef decryptedBuffer As Byte()) As SecureString
         Dim output As New SecureString
