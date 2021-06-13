@@ -10,13 +10,21 @@ Friend Class OptionenService
         Dim UserList As New ObservableCollectionEx(Of FritzBoxXMLUser)
 
         Using FBoxTr064 As New SOAP.FritzBoxTR64(IPAdresse, Nothing)
+            AddHandler FBoxTr064.Status, AddressOf SetStatus
+
             Dim XMLString As String = DfltStringEmpty
             Dim FritzBoxUsers As New FritzBoxXMLUserList
 
             If FBoxTr064.GetUserList(XMLString) AndAlso XmlDeserializeFromString(XMLString, FritzBoxUsers) Then
                 UserList = New ObservableCollectionEx(Of FritzBoxXMLUser)
                 UserList.AddRange(FritzBoxUsers.UserListe)
+
+                RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(True))
+            Else
+                RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(False))
             End If
+
+            RemoveHandler FBoxTr064.Status, AddressOf SetStatus
         End Using
 
         Return UserList
@@ -122,8 +130,8 @@ Friend Class OptionenService
 #End Region
 
 #Region "Test Rückwärtssuche"
-    'Friend Event StatusRWS As EventHandler(Of NotifyEventArgs(Of String)) Implements IOptionenService.StatusRWS
     Friend Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetRWS
+
     Friend Async Sub StartRWSTest(TelNr As String) Implements IOptionenService.StartRWSTest
 
         ' Ereignishandler hinzufügen
@@ -147,4 +155,20 @@ Friend Class OptionenService
     End Sub
 #End Region
 
+#Region "Test Login"
+    Public Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetLogin
+
+    Friend Sub StartLoginTest(FbAdr As String, User As String, Password As Security.SecureString) Implements IOptionenService.StartLoginTest
+
+        Using fboxTR064 As New SOAP.FritzBoxTR64(FbAdr, New Net.NetworkCredential(User, Password))
+            AddHandler fboxTR064.Status, AddressOf SetStatus
+
+            Dim SessionID As String = DfltStringEmpty
+
+            RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(fboxTR064.GetSessionID(SessionID)))
+
+            RemoveHandler fboxTR064.Status, AddressOf SetStatus
+        End Using
+    End Sub
+#End Region
 End Class

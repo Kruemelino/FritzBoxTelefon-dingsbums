@@ -132,7 +132,7 @@
         </Rectangle>
     </Viewbox>
 
-    <Viewbox x:Key="Refresh_16x" Width="16" Height="16">
+    <Viewbox x:Key="Refresh_16x" x:Shared="false" Width="16" Height="16">
         <Rectangle Width="16" Height="16">
             <Rectangle.Fill>
                 <DrawingBrush>
@@ -303,6 +303,27 @@
             </Rectangle.Fill>
         </Rectangle>
     </Viewbox>
+
+    <Viewbox x:Key="Login_16x" x:Shared="false"  Width="16" Height="16">
+        <Rectangle Width="16" Height="16">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <DrawingGroup.Children>
+                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M16,12L9.875,12C10.531,12.82,10.957,13.821,11.074,14.892L11.195,16 0,16 0,14.539C0.236000000000001,13.201 0.933999999999999,11.988 1.977,11.142 1.389,10.377 1.059,9.432 1.059,8.441 1.059,6.011 3.021,4 5.445,4L8,4C8,2 9.57,0.5 11.5,0.5 13.43,0.5 15,2.07 15,4L16,4z" />
+                                <GeometryDrawing Brush="#FFEFEFF0" Geometry="F1M12,9L11,9 11,7 12,7z M9.204,6C9.668,6.701 9.941,7.539 9.941,8.441 9.941,8.983 9.835,9.508 9.649,10L14,10 14,6z" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M13,5L10,5 10,4C10,3.173 10.673,2.5 11.5,2.5 12.327,2.5 13,3.173 13,4z M14,5L14,4C14,2.622 12.879,1.5 11.5,1.5 10.121,1.5 9,2.622 9,4L9,5 8.273,5C8.629,5.288,8.95,5.617,9.204,6L14,6 14,10 9.649,10C9.515,10.355,9.335,10.69,9.115,11L15,11 15,5z M5.5,10.882C4.154,10.882 3.059,9.787 3.059,8.441 3.059,7.095 4.154,6 5.5,6 6.846,6 7.941,7.095 7.941,8.441 7.941,9.787 6.846,10.882 5.5,10.882 M7.404,11.305C8.329,10.687 8.941,9.635 8.941,8.441 8.941,6.544 7.398,5 5.5,5 3.603,5 2.059,6.544 2.059,8.441 2.059,9.635 2.671,10.687 3.597,11.305 2.146,11.966 1.1,13.353 0.919,15L1.933,15C2.179,13.243 3.677,11.882 5.5,11.882 7.323,11.882 8.821,13.243 9.067,15L10.08,15C9.9,13.353,8.854,11.966,7.404,11.305" />
+                                <GeometryDrawing Brush="#FF424242" Geometry="F1M11,9L12,9 12,7 11,7z" />
+                            </DrawingGroup.Children>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Viewbox>
+
 
     <!--Nachfolgende Icons sind der MahApps.Metro.IconPacks entnommen
         https://github.com/MahApps/MahApps.Metro.IconPacks

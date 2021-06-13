@@ -1075,6 +1075,34 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Test: Login Fritz!Box ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestLoginHead() As String
+            Get
+                Return ResourceManager.GetString("strTestLoginHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Im Folgenden kann das Login-Verfahren getestet werden.
+        '''Seit FRITZ!OS 7.24 ist eine Anmeldung auf der Fritz!Box nur noch mit Benutzername und Kennwort möglich. Wenn bisher nur eine Anmeldung allein mit Passwort erfolgte, wurde automatisch ein Benutzer erstellt. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestLoginInfo() As String
+            Get
+                Return ResourceManager.GetString("strTestLoginInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Lade eingerichtete Benutzer der Fritz!Box ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestLoginLoadUserList() As String
+            Get
+                Return ResourceManager.GetString("strTestLoginLoadUserList", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Ortsnetzkennzahl ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestONKZ() As String
@@ -1102,7 +1130,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Im folgenden kann die korrekte Umsetzung der Rückwärtssuche (Inverssuche) getestet werden. ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Im Folgenden kann die korrekte Umsetzung der Rückwärtssuche (Inverssuche) getestet werden. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestRWSInfo() As String
             Get
@@ -1125,6 +1153,15 @@ Namespace Localize
         Public Shared ReadOnly Property strTestRWSStart() As String
             Get
                 Return ResourceManager.GetString("strTestRWSStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Starte Login Test ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestStartLogin() As String
+            Get
+                Return ResourceManager.GetString("strTestStartLogin", resourceCulture)
             End Get
         End Property
         
@@ -1165,7 +1202,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Im folgenden kann die korrekte Umsetzung der Telefonnummernformatierung getestet werden. Telefonnummern müssen korrekt erfasst werden. Zunächst werden alle nicht zur Telefonnummer gehörenden Zeichen entfernt. Danach wird die Telefonnummer hinsichtlich der Kennzahlen (Landeskennzahl, Ortsnetzkenzahl) untersucht. Im letzen Schritt wird die Telefonnummer neu zusammengefügt. ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Im Folgenden kann die korrekte Umsetzung der Telefonnummernformatierung getestet werden. Telefonnummern müssen korrekt erfasst werden. Zunächst werden alle nicht zur Telefonnummer gehörenden Zeichen entfernt. Danach wird die Telefonnummer hinsichtlich der Kennzahlen (Landeskennzahl, Ortsnetzkenzahl) untersucht. Im letzen Schritt wird die Telefonnummer neu zusammengefügt. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestTelNrInfo() As String
             Get

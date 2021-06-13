@@ -38,14 +38,14 @@
             <Button Grid.Column="1" Margin="2"
                     Content="{DynamicResource Refresh_16x}" 
                     Style="{StaticResource MiniIconButton}"
-                    Command="{Binding UpdateUserListCommand}"/>
+                    Command="{Binding UpdateUserListCommand}" />
 
             <ComboBox Grid.Column="2"
                       ItemsSource="{Binding Path=OptVM.CBoxBenutzer}"
                       SelectedValue="{Binding OptVM.TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       DisplayMemberPath="UserName"
                       SelectedValuePath="UserName"
-                      IsEditable="False"/>
+                      IsEditable="True"/>
 
         </Grid>
 
@@ -95,8 +95,7 @@
                   ItemsSource="{Binding Path=OptVM.CBoxLogLevel}"
                   SelectedValue="{Binding OptVM.CBoxMinLogLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   DisplayMemberPath="Name"
-                  SelectedValuePath="Name"
-                  IsEditable="False" />
+                  SelectedValuePath="Name" />
 
         <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strBaseWorkDir}" 
                          LinkLabel="{x:Static localize:LocOptionen.strBaseLinkOpen}"

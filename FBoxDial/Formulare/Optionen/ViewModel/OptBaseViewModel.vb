@@ -24,7 +24,7 @@
 
     Public Sub New()
         ' Commands
-        UpdateUserListCommand = New RelayCommand(AddressOf UpdateUserList)
+        UpdateUserListCommand = New RelayCommand(AddressOf UpdateUserList, AddressOf CanUpdateUserList)
 
         ' Interface
         DatenService = New OptionenService

@@ -127,12 +127,10 @@ Public Class AnrListViewModel
 
     End Sub
 
-
-
-    Private Sub SelectAll(obj As Object)
+    Private Sub SelectAll(o As Object)
 
         For Each Anruf In CallList
-            Anruf.Export = CBool(obj)
+            Anruf.Export = CBool(o)
         Next
 
     End Sub
@@ -170,7 +168,7 @@ Public Class AnrListViewModel
     ''' <summary>
     ''' Tritt auf, wenn das Element ausgerichtet und gerendert sowie zur Interaktion vorbereitet wurde.
     ''' </summary>
-    Private Async Sub Loaded(obj As Object)
+    Private Async Sub Loaded(o As Object)
 
         ' Setze Startzeitpunkt = Zeitpunkt letzter Import
         StartDatum = DatenService.GetLastImport

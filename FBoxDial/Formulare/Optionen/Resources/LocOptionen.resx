@@ -577,6 +577,19 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Name des Landes</value>
     <comment>OptTestView</comment>
   </data>
+  <data name="strTestLoginHead" xml:space="preserve">
+    <value>Test: Login Fritz!Box</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestLoginInfo" xml:space="preserve">
+    <value>Im Folgenden kann das Login-Verfahren getestet werden.
+Seit FRITZ!OS 7.24 ist eine Anmeldung auf der Fritz!Box nur noch mit Benutzername und Kennwort möglich. Wenn bisher nur eine Anmeldung allein mit Passwort erfolgte, wurde automatisch ein Benutzer erstellt.</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestLoginLoadUserList" xml:space="preserve">
+    <value>Lade eingerichtete Benutzer der Fritz!Box</value>
+    <comment>OptTestView</comment>
+  </data>
   <data name="strTestONKZ" xml:space="preserve">
     <value>Ortsnetzkennzahl</value>
     <comment>OptTestView</comment>
@@ -590,7 +603,7 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <comment>OptTestView</comment>
   </data>
   <data name="strTestRWSInfo" xml:space="preserve">
-    <value>Im folgenden kann die korrekte Umsetzung der Rückwärtssuche (Inverssuche) getestet werden.</value>
+    <value>Im Folgenden kann die korrekte Umsetzung der Rückwärtssuche (Inverssuche) getestet werden.</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestRWSNoResult" xml:space="preserve">
@@ -599,6 +612,10 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
   </data>
   <data name="strTestRWSStart" xml:space="preserve">
     <value>Starte die Rückwärtssuche</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestStartLogin" xml:space="preserve">
+    <value>Starte Login Test</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestTelNrDurchwahl" xml:space="preserve">
@@ -618,7 +635,7 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <comment>OptTestView</comment>
   </data>
   <data name="strTestTelNrInfo" xml:space="preserve">
-    <value>Im folgenden kann die korrekte Umsetzung der Telefonnummernformatierung getestet werden. Telefonnummern müssen korrekt erfasst werden. Zunächst werden alle nicht zur Telefonnummer gehörenden Zeichen entfernt. Danach wird die Telefonnummer hinsichtlich der Kennzahlen (Landeskennzahl, Ortsnetzkenzahl) untersucht. Im letzen Schritt wird die Telefonnummer neu zusammengefügt.</value>
+    <value>Im Folgenden kann die korrekte Umsetzung der Telefonnummernformatierung getestet werden. Telefonnummern müssen korrekt erfasst werden. Zunächst werden alle nicht zur Telefonnummer gehörenden Zeichen entfernt. Danach wird die Telefonnummer hinsichtlich der Kennzahlen (Landeskennzahl, Ortsnetzkenzahl) untersucht. Im letzen Schritt wird die Telefonnummer neu zusammengefügt.</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestTelNrInput" xml:space="preserve">

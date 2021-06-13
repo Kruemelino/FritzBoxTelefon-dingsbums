@@ -12,10 +12,8 @@ Public Class OptionenViewModel
 #Region "Addin Eigenschaften"
 #Region "Grunddaten"
 #Region "Grunddaten Fritz!Box"
-    Private _TBFBAdr As String
-    Private _TBBenutzer As String
-    Private _TBPasswort As String
 
+    Private _TBFBAdr As String
     Public Property TBFBAdr As String
         Get
             Return _TBFBAdr
@@ -25,6 +23,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _TBBenutzer As String
     Public Property TBBenutzer As String
         Get
             Return _TBBenutzer
@@ -44,6 +43,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _TBPasswort As String
     Public Property TBPasswort As String
         Get
             Return _TBPasswort

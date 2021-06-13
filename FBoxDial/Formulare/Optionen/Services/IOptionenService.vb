@@ -29,4 +29,9 @@ Friend Interface IOptionenService
     Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean))
     Sub StartRWSTest(TelNr As String)
 #End Region
+
+#Region "Test Login"
+    Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean))
+    Sub StartLoginTest(FbAdr As String, User As String, Password As Security.SecureString)
+#End Region
 End Interface

@@ -2,9 +2,10 @@
 Imports System.Net
 
 Namespace SOAP
-
     Friend Class FritzBoxTR64
         Implements IDisposable
+
+        Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
 
         Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
         Private Property FBTR64Desc As TR64Desc
@@ -38,13 +39,17 @@ Namespace SOAP
             If FritzBoxGet(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, Tr064Files.tr64desc).Uri, Response) Then
                 ' Deserialisieren
                 If Not XmlDeserializeFromString(Response, FBTR64Desc) Then
-                    NLogger.Error($"FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Deserialisieren der FBTR64Desc.")
+                    PushStatus(LogLevel.Error, "FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Deserialisieren der FBTR64Desc.")
                 End If
             Else
-                NLogger.Error($"FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Herunterladen der FBTR64Desc.")
+                PushStatus(LogLevel.Error, "FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Herunterladen der FBTR64Desc.")
             End If
 
+        End Sub
 
+        Private Sub PushStatus(Level As LogLevel, StatusMessage As String)
+            NLogger.Log(Level, StatusMessage)
+            RaiseEvent Status(Me, New NotifyEventArgs(Of String)(StatusMessage))
         End Sub
 
         Private Function GetService(SCPDURL As String) As Service
@@ -58,7 +63,8 @@ Namespace SOAP
 
                 Return FBoxService
             Else
-                NLogger.Error($"SOAP zur Fritz!Box ist nicht bereit: {FBoxIPAdresse}")
+
+                PushStatus(LogLevel.Error, $"SOAP zur Fritz!Box ist nicht bereit: {FBoxIPAdresse}")
                 Return Nothing
             End If
 
@@ -73,10 +79,10 @@ Namespace SOAP
                         If .CheckInput(ActionName, InputHashTable) Then
                             Return .Start(.GetActionByName(ActionName), InputHashTable, Credential)
                         Else
-                            NLogger.Error($"InputData for Action '{ActionName}' not valid!")
+                            PushStatus(LogLevel.Error, $"InputData for Action '{ActionName}' not valid!")
                         End If
                     Else
-                        NLogger.Error($"Action '{ActionName}'does not exist!")
+                        PushStatus(LogLevel.Error, $"Action '{ActionName}'does not exist!")
                     End If
                 End With
 
@@ -101,13 +107,13 @@ Namespace SOAP
 
                     SessionID = .Item("NewX_AVM-DE_UrlSID").ToString
 
-                    NLogger.Debug($"Aktuelle SessionID der Fritz!Box: {SessionID}")
+                    PushStatus(LogLevel.Debug, $"Aktuelle SessionID der Fritz!Box: {SessionID}")
 
                     Return True
                 Else
                     SessionID = FritzBoxDefault.DfltFritzBoxSessionID
 
-                    NLogger.Warn($"Keine SessionID der Fritz!Box erhalten. Rückgabewert: {SessionID}")
+                    PushStatus(LogLevel.Warn, $"Keine SessionID der Fritz!Box erhalten. Rückgabewert: '{SessionID}' '{ .Item("Error")}'")
 
                     Return False
                 End If
@@ -130,13 +136,13 @@ Namespace SOAP
 
                     UserList = .Item("NewX_AVM-DE_UserList").ToString
 
-                    NLogger.Debug($"Userliste der Fritz!Box: '{UserList}'")
+                    PushStatus(LogLevel.Debug, $"Userliste der Fritz!Box: '{UserList}'")
 
                     Return True
                 Else
                     UserList = DfltStringEmpty
 
-                    NLogger.Warn($"Userliste der Fritz!Box konnte nicht ermittelt.")
+                    PushStatus(LogLevel.Warn, $"Userliste der Fritz!Box konnte nicht ermittelt. '{ .Item("Error")}'")
 
                     Return False
                 End If
@@ -182,13 +188,13 @@ Namespace SOAP
 
                     CallListURL = .Item("NewCallListURL").ToString
 
-                    NLogger.Debug($"Pfad zur Anrufliste der Fritz!Box: '{CallListURL}'")
+                    PushStatus(LogLevel.Debug, $"Pfad zur Anrufliste der Fritz!Box: '{CallListURL}'")
 
                     Return True
                 Else
                     CallListURL = DfltStringEmpty
 
-                    NLogger.Warn($"Pfad zur Anrufliste der Fritz!Box konnte nicht ermittelt.")
+                    PushStatus(LogLevel.Warn, $"Pfad zur Anrufliste der Fritz!Box konnte nicht ermittelt. '{ .Item("Error")}'")
 
                     Return False
                 End If
@@ -211,13 +217,13 @@ Namespace SOAP
                     PhonebookList = Array.ConvertAll(.Item("NewPhonebookList").ToString.Split(","),
                                                      New Converter(Of String, Integer)(AddressOf Integer.Parse))
 
-                    NLogger.Debug($"Telefonbuchliste der Fritz!Box: '{String.Join(", ", PhonebookList)}'")
+                    PushStatus(LogLevel.Debug, $"Telefonbuchliste der Fritz!Box: '{String.Join(", ", PhonebookList)}'")
 
                     Return True
                 Else
                     PhonebookList = {}
 
-                    NLogger.Warn($"Telefonbuchliste der Fritz!Box konnte nicht ermittelt.")
+                    PushStatus(LogLevel.Warn, $"Telefonbuchliste der Fritz!Box konnte nicht ermittelt. '{ .Item("Error")}'")
 
                     Return False
                 End If
@@ -256,12 +262,12 @@ Namespace SOAP
                     ' Phonebook ExtraID auslesen
                     If .ContainsKey("NewPhonebookExtraID") Then PhonebookExtraID = .Item("NewPhonebookExtraID").ToString
 
-                    NLogger.Debug($"Pfad zum Telefonbuch '{PhonebookName}' der Fritz!Box: '{PhonebookURL}'")
+                    PushStatus(LogLevel.Debug, $"Pfad zum Telefonbuch '{PhonebookName}' der Fritz!Box: '{PhonebookURL}'")
 
                     Return True
 
                 Else
-                    NLogger.Warn($"GetPhonebook konnte für das Telefonbuch {PhonebookID} nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"GetPhonebook konnte für das Telefonbuch {PhonebookID} nicht aufgelößt werden. '{ .Item("Error")}'")
                     PhonebookURL = DfltStringEmpty
 
                     Return False
@@ -321,12 +327,12 @@ Namespace SOAP
                     ' Phonebook URL auslesen
                     PhonebookEntryData = .Item("NewPhonebookEntryData").ToString
 
-                    NLogger.Debug($"Telefonbucheintrag '{PhonebookEntryID}' aus Telefonbuch {PhonebookID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
+                    PushStatus(LogLevel.Debug, $"Telefonbucheintrag '{PhonebookEntryID}' aus Telefonbuch {PhonebookID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
 
                     Return True
 
                 Else
-                    NLogger.Warn($"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryID}' aus Telefonbuch {PhonebookID} nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryID}' aus Telefonbuch {PhonebookID} nicht aufgelößt werden. '{ .Item("Error")}'")
                     PhonebookEntryData = DfltStringEmpty
 
                     Return False
@@ -352,12 +358,12 @@ Namespace SOAP
                     ' Phonebook URL auslesen
                     PhonebookEntryData = .Item("NewPhonebookEntryData").ToString
 
-                    NLogger.Debug($"Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch {PhonebookID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
+                    PushStatus(LogLevel.Debug, $"Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch {PhonebookID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
 
                     Return True
 
                 Else
-                    NLogger.Warn($"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch '{PhonebookID}' nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"GetPhonebookEntry für konnte für den Telefonbucheintrag '{PhonebookEntryUniqueID}' aus Telefonbuch '{PhonebookID}' nicht aufgelößt werden. '{ .Item("Error")}'")
                     PhonebookEntryData = DfltStringEmpty
 
                     Return False
@@ -399,7 +405,7 @@ Namespace SOAP
                     Return True
 
                 Else
-                    NLogger.Warn($"SetPhonebookEntryUID konnte nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"SetPhonebookEntryUID konnte nicht aufgelöst werden. '{ .Item("Error")}'")
                     PhonebookEntryUniqueID = -1
 
                     Return False
@@ -455,12 +461,12 @@ Namespace SOAP
                     ' Phonebook URL auslesen
                     PhonebookEntryData = .Item("NewPhonebookEntryData").ToString
 
-                    NLogger.Debug($"Rufsperre aus Telefonbuch {PhonebookEntryID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
+                    PushStatus(LogLevel.Debug, $"Rufsperre aus Telefonbuch {PhonebookEntryID} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
 
                     Return True
 
                 Else
-                    NLogger.Warn($"GetCallBarringEntry konnte für die ID {PhonebookEntryID} nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"GetCallBarringEntry konnte für die ID {PhonebookEntryID} nicht aufgelöst werden. '{ .Item("Error")}'")
 
                     PhonebookEntryData = DfltStringEmpty
 
@@ -485,12 +491,12 @@ Namespace SOAP
                     ' Phonebook URL auslesen
                     PhonebookEntryData = .Item("NewPhonebookEntryData").ToString
 
-                    NLogger.Debug($"Rufsperre für die Nummer {Number} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
+                    PushStatus(LogLevel.Debug, $"Rufsperre für die Nummer {Number} der Fritz!Box ausgelesen: '{PhonebookEntryData}'")
 
                     Return True
 
                 Else
-                    NLogger.Warn($"GetCallBarringEntryByNum konnte für die Nummer {Number} nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"GetCallBarringEntryByNum konnte für die Nummer {Number} nicht aufgelöst werden. '{ .Item("Error")}'")
 
                     PhonebookEntryData = DfltStringEmpty
 
@@ -513,12 +519,12 @@ Namespace SOAP
                     ' Phonebook URL auslesen
                     PhonebookURL = .Item("NewPhonebookURL").ToString
 
-                    NLogger.Debug($"Pfad zur Rufsperre der Fritz!Box: '{PhonebookURL}'")
+                    PushStatus(LogLevel.Debug, $"Pfad zur Rufsperre der Fritz!Box: '{PhonebookURL}'")
 
                     Return True
 
                 Else
-                    NLogger.Warn($"GetCallBarringList konnte für die Rufsperre nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"GetCallBarringList konnte für die Rufsperre nicht aufgelöst werden. '{ .Item("Error")}'")
                     PhonebookURL = DfltStringEmpty
 
                     Return False
@@ -544,12 +550,12 @@ Namespace SOAP
                     ' Phonebook URL auslesen
                     PhonebookEntryUniqueID = CInt(.Item("NewPhonebookEntryUniqueID"))
 
-                    NLogger.Debug($"Rufsperre in der Fritz!Box angelegt: '{PhonebookEntryUniqueID}'")
+                    PushStatus(LogLevel.Debug, $"Rufsperre in der Fritz!Box angelegt: '{PhonebookEntryUniqueID}'")
 
                     Return True
 
                 Else
-                    NLogger.Warn($"SetCallBarringEntry konnte keinen Eintrag anlegen: '{PhonebookEntryData}'")
+                    PushStatus(LogLevel.Warn, $"SetCallBarringEntry konnte keinen Eintrag anlegen: '{PhonebookEntryData}' '{ .Item("Error")}'")
 
                     PhonebookEntryUniqueID = -1
 
@@ -595,7 +601,7 @@ Namespace SOAP
                     Return True
 
                 Else
-                    NLogger.Warn($"GetInfo konnte für nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"GetInfo konnte für nicht aufgelößt werden. '{ .Item("Error")}'")
                     PhoneNumbers = {}
 
                     Return False
@@ -618,7 +624,7 @@ Namespace SOAP
                     NLogger.Trace(.Item("NewTAMList"))
 
                     If Not XmlDeserializeFromString(.Item("NewTAMList").ToString(), TAMListe) Then
-                        NLogger.Warn($"GetList (TAM) konnte für nicht deserialisiert werden.")
+                        PushStatus(LogLevel.Warn, $"GetList (TAM) konnte für nicht deserialisiert werden.")
                     End If
 
                     ' Wenn keine TAM angeschlossen wurden, gib eine leere Klasse zurück
@@ -627,7 +633,7 @@ Namespace SOAP
                     Return True
 
                 Else
-                    NLogger.Warn($"GetList (TAM) konnte für nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"GetList (TAM) konnte für nicht aufgelößt werden. '{ .Item("Error")}'")
                     TAMListe = Nothing
 
                     Return False
@@ -655,7 +661,7 @@ Namespace SOAP
                     Return True
 
                 Else
-                    NLogger.Warn($"LKZ und LKZPrefix konnten nicht ermittelt werden.")
+                    PushStatus(LogLevel.Warn, $"LKZ und LKZPrefix konnten nicht ermittelt werden. '{ .Item("Error")}'")
                     LKZ = If(LKZ.IsStringNothingOrEmpty, DfltStringEmpty, LKZ)
                     LKZPrefix = If(LKZPrefix.IsStringNothingOrEmpty, DfltStringEmpty, LKZPrefix)
 
@@ -682,7 +688,7 @@ Namespace SOAP
                     Return True
 
                 Else
-                    NLogger.Warn($"OKZ und OKZPrefix konnten nicht ermittelt werden.")
+                    PushStatus(LogLevel.Warn, $"OKZ und OKZPrefix konnten nicht ermittelt werden. '{ .Item("Error")}'")
                     OKZ = If(OKZ.IsStringNothingOrEmpty, DfltStringEmpty, OKZ)
                     OKZPrefix = If(OKZPrefix.IsStringNothingOrEmpty, DfltStringEmpty, OKZPrefix)
 
@@ -706,7 +712,7 @@ Namespace SOAP
                     Return True
 
                 Else
-                    NLogger.Warn($"X_AVM-DE_DialGetConfig konnte nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"X_AVM-DE_DialGetConfig konnte nicht aufgelößt werden. '{ .Item("Error")}'")
                     PhoneName = DfltStringEmpty
 
                     Return False
@@ -759,7 +765,7 @@ Namespace SOAP
                     NLogger.Trace(.Item("NewNumberList"))
 
                     If Not XmlDeserializeFromString(.Item("NewNumberList").ToString(), NumberList) Then
-                        NLogger.Warn($"X_AVM-DE_GetNumbers konnte für nicht deserialisiert werden.")
+                        PushStatus(LogLevel.Warn, $"X_AVM-DE_GetNumbers konnte für nicht deserialisiert werden. '{ .Item("Error")}'")
                     End If
 
                     ' Wenn keine Nummern angeschlossen wurden, gib eine leere Klasse zurück
@@ -768,7 +774,7 @@ Namespace SOAP
                     Return True
 
                 Else
-                    NLogger.Warn($"X_AVM-DE_GetNumbers konnte für nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"X_AVM-DE_GetNumbers konnte für nicht aufgelößt werden.")
                     NumberList = Nothing
 
                     Return False
@@ -800,7 +806,7 @@ Namespace SOAP
                     Return True
 
                 Else
-                    NLogger.Warn($"X_AVM-DE_GetPhonePort konnte für id {i} nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"X_AVM-DE_GetPhonePort konnte für id {i} nicht aufgelößt werden. '{ .Item("Error")}'")
                     PhoneName = DfltStringEmpty
 
                     Return False
@@ -824,7 +830,7 @@ Namespace SOAP
                     NLogger.Trace(.Item("NewX_AVM-DE_ClientList"))
 
                     If Not XmlDeserializeFromString(.Item("NewX_AVM-DE_ClientList").ToString(), ClientList) Then
-                        NLogger.Warn($"X_AVM-DE_GetNumbers konnte für nicht deserialisiert werden.")
+                        PushStatus(LogLevel.Warn, $"X_AVM-DE_GetNumbers konnte für nicht deserialisiert werden.")
                     End If
 
                     ' Wenn keine SIP-Clients angeschlossen wurden, gib eine leere Klasse zurück
@@ -833,7 +839,7 @@ Namespace SOAP
                     Return True
 
                 Else
-                    NLogger.Warn($"X_AVM-DE_GetClients konnte für nicht aufgelößt werden.")
+                    PushStatus(LogLevel.Warn, $"X_AVM-DE_GetClients konnte für nicht aufgelößt werden. '{ .Item("Error")}'")
                     ClientList = Nothing
 
                     Return False

@@ -22,12 +22,16 @@
 #Region "ICommand"
     Public Property TestTelNrCommand As RelayCommand
     Public Property TestRWSCommand As RelayCommand
+    Public Property TestUserListCommand As RelayCommand
+    Public Property TestLoginCommand As RelayCommand
+
 #End Region
     Public Sub New()
         ' Commands
         TestTelNrCommand = New RelayCommand(AddressOf StartTelNrTest)
         TestRWSCommand = New RelayCommand(AddressOf StartRWSTest, AddressOf CanRunTestRWS)
-
+        TestUserListCommand = New RelayCommand(AddressOf StartLoadUserListTest, AddressOf CanLoadUserList)
+        TestLoginCommand = New RelayCommand(AddressOf StartLoginTest, AddressOf CanStartLoginTest)
         ' Interface
         DatenService = New OptionenService
     End Sub
@@ -167,5 +171,85 @@
             TBTestRWSOutput += Environment.NewLine & String.Format(Localize.LocOptionen.strTestRWSNoResult, TBTestRWSInput)
         End If
     End Sub
+#End Region
+
+#Region "Test Login"
+    Private _CBoxBenutzer As ObservableCollectionEx(Of FritzBoxXMLUser)
+    Public Property CBoxBenutzer As ObservableCollectionEx(Of FritzBoxXMLUser)
+        Get
+            Return _CBoxBenutzer
+        End Get
+        Set
+            SetProperty(_CBoxBenutzer, Value)
+        End Set
+    End Property
+
+    Private _TBFBAdr As String
+    Public Property TBFBAdr As String
+        Get
+            Return _TBFBAdr
+        End Get
+        Set
+            SetProperty(_TBFBAdr, Value)
+        End Set
+    End Property
+
+    Private _TBBenutzer As String
+    Public Property TBBenutzer As String
+        Get
+            Return _TBBenutzer
+        End Get
+        Set
+            SetProperty(_TBBenutzer, Value)
+        End Set
+    End Property
+
+    Private _TBTestLoginOutput As String
+    Public Property TBTestLoginOutput As String
+        Get
+            Return _TBTestLoginOutput
+        End Get
+        Set
+            SetProperty(_TBTestLoginOutput, Value)
+        End Set
+    End Property
+
+    Private Function CanLoadUserList(o As Object) As Boolean
+        Return TBFBAdr.IsNotStringNothingOrEmpty
+    End Function
+
+    Private Function CanStartLoginTest(o As Object) As Boolean
+        Return TBBenutzer.IsNotStringNothingOrEmpty
+    End Function
+
+    Private Sub StartLoadUserListTest(o As Object)
+        ' Vorheriges Ergebnis löschen
+        TBTestLoginOutput = DfltStringEmpty
+
+        ' Ereignishandler hinzufügen
+        AddHandler DatenService.Status, AddressOf LoginTestStatus
+        AddHandler DatenService.BeendetLogin, AddressOf LoginTestBeendet
+        ' Lade die aktuellen Nutzernamen herunter
+        CBoxBenutzer = DatenService.LadeFBoxUser(ValidIP(TBFBAdr))
+
+    End Sub
+
+    Private Sub StartLoginTest(o As Object)
+        ' Ereignishandler hinzufügen
+        AddHandler DatenService.Status, AddressOf LoginTestStatus
+        AddHandler DatenService.BeendetLogin, AddressOf LoginTestBeendet
+
+        DatenService.StartLoginTest(ValidIP(TBFBAdr), TBBenutzer, CType(o, Windows.Controls.PasswordBox).SecurePassword)
+    End Sub
+    Private Sub LoginTestStatus(sender As Object, e As NotifyEventArgs(Of String))
+        TBTestLoginOutput += e.Value & Environment.NewLine
+    End Sub
+
+    Private Sub LoginTestBeendet(sender As Object, e As NotifyEventArgs(Of Boolean))
+        ' Ereignishandler entfernen
+        RemoveHandler DatenService.Status, AddressOf LoginTestStatus
+        RemoveHandler DatenService.BeendetLogin, AddressOf LoginTestBeendet
+    End Sub
+
 #End Region
 End Class

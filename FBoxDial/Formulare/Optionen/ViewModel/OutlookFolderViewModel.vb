@@ -199,7 +199,7 @@ Public Class OutlookFolderViewModel
         If OptVM IsNot Nothing Then
             With ChangedItem
 
-                Dim tmpfold As OutlookOrdner = New OutlookOrdner(.OutlookFolder, Verwendung)
+                Dim tmpfold As New OutlookOrdner(.OutlookFolder, Verwendung)
                 ' Überprüfe, ob dieser Ordner noch verwendet werden soll
                 If Not .IsChecked Then
                     ' Entferne den Ordner von der Liste
