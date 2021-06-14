@@ -64,8 +64,9 @@ Friend Class Phoner
                                     ' Bei Phoner Authentifizieren md5(ChallengePasswort)
                                     Dim Response As String
                                     Using Crypter As New Rijndael
-                                        ' TODO: Testen
-                                        Response = Crypter.GetMd5Hash(Challange & Crypter.GetUnSecureString(Crypter.DecryptString(XMLData.POptionen.TBPhonerPasswort, DfltPhonerDeCryptKey)), Encoding.ASCII).ToUpper
+                                        With Crypter
+                                            Response = .SecureStringToMD5(.DecryptString(XMLData.POptionen.TBPhonerPasswort, DfltPhonerDeCryptKey), Encoding.ASCII, Challange).ToUpper
+                                        End With
                                     End Using
                                     NLogger.Debug($"Phoner-Challange: {Challange}, Phoner-Response: {Response}")
 

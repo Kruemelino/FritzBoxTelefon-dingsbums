@@ -11,14 +11,14 @@ Friend Class Rijndael
     ''' <summary>
     ''' Verschlüsselungsroutine
     ''' </summary>
-    ''' <param name="vstrTextToBeEncrypted">Verschlüsselte Zeichenfolge</param>
+    ''' <param name="ToBeEncrypted">Verschlüsselte Zeichenfolge</param>
     ''' <returns>Die verschlüsselte Zeichenfolge</returns>
-    Friend Function EncryptString(vstrTextToBeEncrypted As SecureString, vstrDeCryptKey As String) As String
+    Friend Function EncryptString(ToBeEncrypted As SecureString, vstrDeCryptKey As String) As String
         ' Standardwert
         EncryptString = DfltStrErrorMinusOne
 
         ' Test ob gültige Eingangsdaten vorhanden
-        If vstrTextToBeEncrypted IsNot Nothing Then
+        If ToBeEncrypted IsNot Nothing Then
 
             ' Erstelle einen Zufälligen Zeichenfolge als Salt
             Dim Salt() As Byte = GetRndByteArray(16)
@@ -41,7 +41,7 @@ Friend Class Rijndael
 
                     ' Create a encrytor to perform the stream transform. 
                     Using encryptor As ICryptoTransform = rijAlg.CreateEncryptor(.Key, .IV)
-                        Dim Buffer As Byte() = ToByteArray(vstrTextToBeEncrypted, Encoding.Unicode)
+                        Dim Buffer As Byte() = ToByteArray(ToBeEncrypted, Encoding.Unicode)
                         Try
                             Return encryptor.TransformFinalBlock(Buffer, 0, Buffer.Length).ToBase64String
                         Finally
@@ -154,15 +154,28 @@ Friend Class Rijndael
         Return RndByte
     End Function
 
-    Friend Function GetMd5Hash(input As String, Enkodierung As Encoding) As String
+    Friend Function SecureStringToMD5(secureString As SecureString, Zeichencodierung As Encoding, Optional Präfix As String = "") As String
 
-        Using md5 As MD5 = New MD5CryptoServiceProvider
-            Dim sBuilder As New StringBuilder()
-            For Each b As Byte In md5.ComputeHash(Enkodierung.GetBytes(input.ToCharArray))
-                sBuilder.Append(b.ToString("x2"))
-            Next
-            Return sBuilder.ToString()
-        End Using
+        Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
+        Dim BufferPräfix As Byte() = Zeichencodierung.GetBytes(Präfix)
+        Dim Buffer(BufferSecuredString.Length + BufferPräfix.Length - 1) As Byte
+        Try
+
+            BufferPräfix.CopyTo(Buffer, 0)
+            BufferSecuredString.CopyTo(Buffer, BufferPräfix.Length)
+
+            Using md5 As MD5 = New MD5CryptoServiceProvider
+                Dim sBuilder As New StringBuilder()
+                For Each b As Byte In md5.ComputeHash(Buffer)
+                    sBuilder.Append(b.ToString("x2"))
+                Next
+                Return sBuilder.ToString()
+            End Using
+
+        Finally
+            If BufferSecuredString IsNot Nothing Then Array.Clear(BufferSecuredString, 0, BufferSecuredString.Length)
+            If Buffer IsNot Nothing Then Array.Clear(Buffer, 0, Buffer.Length)
+        End Try
 
     End Function
 
@@ -201,4 +214,3 @@ Friend Class Rijndael
 #End Region
 
 End Class
-
