@@ -39,7 +39,7 @@ Imports FBoxDial.FritzBoxDefault
         Dim SessionID As String = DfltFritzBoxSessionID
 
         ' Starte die TR-064 Schnittstelle zur Fritz!Box
-        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
+        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
             With fbtr064
                 ' Ermittle die SessionID für Fritz!Box Query

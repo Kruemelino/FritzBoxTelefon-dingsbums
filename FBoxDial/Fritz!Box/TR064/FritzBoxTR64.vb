@@ -93,6 +93,81 @@ Namespace SOAP
 
 #Region "Abfragen"
 
+#Region "TR64Desc"
+        ''' <summary>
+        ''' Gibt die Firmware der Fritz!Box aus der TR-064 Description zurück.
+        ''' </summary>
+        ''' <returns>Fritz!Box Firmware Version</returns>
+        Friend ReadOnly Property DisplayVersion As String
+            Get
+                Return FBTR64Desc.SystemVersion.Display
+            End Get
+        End Property
+
+        Friend ReadOnly Property HardwareVersion As Integer
+            Get
+                Return FBTR64Desc.SystemVersion.HW
+            End Get
+        End Property
+
+        Friend ReadOnly Property Major As Integer
+            Get
+                Return FBTR64Desc.SystemVersion.Major
+            End Get
+        End Property
+
+        Friend ReadOnly Property Minor As Integer
+            Get
+                Return FBTR64Desc.SystemVersion.Minor
+            End Get
+        End Property
+
+#End Region
+
+#Region "deviceinfoSCPD"
+        Friend Function GetInfo(Optional ByRef ManufacturerName As String = "",
+                                Optional ByRef ManufacturerOUI As String = "",
+                                Optional ByRef ModelName As String = "",
+                                Optional ByRef Description As String = "",
+                                Optional ByRef ProductClass As String = "",
+                                Optional ByRef SerialNumber As String = "",
+                                Optional ByRef SoftwareVersion As String = "",
+                                Optional ByRef HardwareVersion As String = "",
+                                Optional ByRef SpecVersion As String = "",
+                                Optional ByRef ProvisioningCode As String = "",
+                                Optional ByRef UpTime As String = "",
+                                Optional ByRef DeviceLog As String = "") As Boolean
+
+            With TR064Start(Tr064Files.deviceinfoSCPD, "GetInfo")
+
+                If .ContainsKey("NewSoftwareVersion") Then
+
+                    ManufacturerName = .Item("NewManufacturerName").ToString
+                    ManufacturerOUI = .Item("NewManufacturerOUI").ToString
+                    ModelName = .Item("NewModelName").ToString
+                    Description = .Item("NewDescription").ToString
+                    ProductClass = .Item("NewProductClass").ToString
+                    SerialNumber = .Item("NewSerialNumber").ToString
+                    SoftwareVersion = .Item("NewSoftwareVersion").ToString
+                    HardwareVersion = .Item("NewHardwareVersion").ToString
+                    SpecVersion = .Item("NewSpecVersion").ToString
+                    ProvisioningCode = .Item("NewProvisioningCode").ToString
+                    UpTime = .Item("NewUpTime").ToString
+                    DeviceLog = .Item("NewDeviceLog").ToString
+
+                    PushStatus(LogLevel.Debug, $"Geräteinformationen der Fritz!Box: {Description}")
+
+                    Return True
+                Else
+                    PushStatus(LogLevel.Warn, $"Keine Geräteinformationen der Fritz!Box erhalten. '{ .Item("Error")}'")
+
+                    Return False
+                End If
+            End With
+
+        End Function
+#End Region
+
 #Region "deviceconfigSCPD"
         ''' <summary>
         ''' Generate a temporary URL session ID. The session ID is need for accessing URLs like phone book, call list, FAX message, answering machine messages Or phone book images.

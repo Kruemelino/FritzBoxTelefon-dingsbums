@@ -23,20 +23,6 @@
     ''' </summary>
     <XmlElement("TBPasswort")> Public Property TBPasswort As String
 
-    ''' <summary>
-    ''' Anmeldeinformationen für die Fritz!Box
-    ''' </summary>
-    ''' <returns><see cref="Net.NetworkCredential"/></returns>
-    <XmlIgnore> Friend ReadOnly Property Anmeldeinformationen As Net.NetworkCredential
-        Get
-            Using Crypter As New Rijndael
-                ' Wenn der UserName leer ist muss der Default-Wert ermittelt werden.
-                ' TODO: Hier den Fritz!Box Benutzer sinnvoll setzen
-                Return New Net.NetworkCredential(If(TBBenutzer.IsStringNothingOrEmpty, "admin", TBBenutzer), Crypter.DecryptString(TBPasswort, DfltDeCryptKey))
-            End Using
-        End Get
-    End Property
-
 #End Region
 
 #Region "Grundeinstellungen - Formatierung von Telefonnummern"

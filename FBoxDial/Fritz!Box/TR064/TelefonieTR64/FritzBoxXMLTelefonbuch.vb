@@ -146,7 +146,7 @@ Imports System.Xml.Serialization
 
         Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
 
-        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.Anmeldeinformationen)
+        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
             If fbtr064.GetSessionID(SessionID) Then
 
