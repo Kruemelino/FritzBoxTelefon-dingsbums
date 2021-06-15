@@ -12,6 +12,7 @@ Friend Class Rijndael
     ''' Verschlüsselungsroutine
     ''' </summary>
     ''' <param name="ToBeEncrypted">Verschlüsselte Zeichenfolge</param>
+    ''' <param name="vstrDeCryptKey">Generierter Schlüsselzeichenfolge</param>
     ''' <returns>Die verschlüsselte Zeichenfolge</returns>
     Friend Function EncryptString(ToBeEncrypted As SecureString, vstrDeCryptKey As String) As String
         ' Standardwert
@@ -55,57 +56,10 @@ Friend Class Rijndael
     End Function
 
     ''' <summary>
-    ''' Wandelt einen <see cref="SecureString"/> in ein Array von <see cref="Byte"/> um.
-    ''' </summary>
-    ''' <param name="secureString">Die Zeichenfolge als <see cref="SecureString"/>, welche umgewandelt werden soll. </param>
-    ''' <param name="encoding">Zeichencodierung</param>
-    ''' <returns>ByteArray</returns>
-    Private Function ToByteArray(secureString As SecureString, encoding As Encoding) As Byte()
-
-        Dim unmanagedString As IntPtr = IntPtr.Zero
-
-        Try
-            unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(secureString)
-            Return encoding.GetBytes(Marshal.PtrToStringUni(unmanagedString))
-        Finally
-            Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString)
-        End Try
-
-    End Function
-
-    Private Function GetSecureString(ByRef decryptedBuffer As Byte()) As SecureString
-        Dim output As New SecureString
-
-        Dim outputBuffer As Char() = Encoding.Unicode.GetChars(decryptedBuffer)
-
-        For i As Integer = 0 To outputBuffer.Length - 1
-            output.AppendChar(outputBuffer(i))
-        Next
-
-        output.MakeReadOnly()
-
-        If outputBuffer IsNot Nothing Then Array.Clear(outputBuffer, 0, outputBuffer.Length)
-
-        If decryptedBuffer IsNot Nothing Then Array.Clear(decryptedBuffer, 0, decryptedBuffer.Length)
-
-        Return output
-    End Function
-
-    Friend Function GetUnSecureString(secstrPassword As SecureString) As String
-        Dim unmanagedString As IntPtr = IntPtr.Zero
-
-        Try
-            unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(secstrPassword)
-            Return Marshal.PtrToStringUni(unmanagedString)
-        Finally
-            Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString)
-        End Try
-    End Function
-
-    ''' <summary>
     ''' Entschlüsselungsroutine
     ''' </summary>
     ''' <param name="vstrStringToBeDecrypted">Verschlüsselte Zeichenfolge</param>
+    ''' <param name="vstrDeCryptKey">Schlüsselzeichenfolge</param>
     ''' <returns>Die entschlüsselte Zeichenfolge als <see cref="SecureString"/></returns>
     Friend Function DecryptString(vstrStringToBeDecrypted As String, vstrDeCryptKey As String) As SecureString
         ' Lese den Key aus der Registry aus
@@ -131,7 +85,7 @@ Friend Class Rijndael
                         ' Create a decrytor to perform the stream transform. 
                         Using decryptor = rijAlg.CreateDecryptor(.Key, .IV)
                             buffer = vstrStringToBeDecrypted.FromBase64String
-                            Return GetSecureString(decryptor.TransformFinalBlock(buffer, 0, buffer.Length))
+                            Return GetSecureString(decryptor.TransformFinalBlock(buffer, 0, buffer.Length), Encoding.Unicode)
                         End Using
                     End With
                 End Using
@@ -146,6 +100,55 @@ Friend Class Rijndael
         Return Nothing
     End Function
 
+    ''' <summary>
+    ''' Wandelt einen <see cref="SecureString"/> in ein Array von <see cref="Byte"/> um.
+    ''' </summary>
+    ''' <param name="secureString">Die Zeichenfolge als <see cref="SecureString"/>, welche umgewandelt werden soll.</param>
+    ''' <param name="encoding">Zeichencodierung</param>
+    ''' <returns>ByteArray</returns>
+    Private Function ToByteArray(secureString As SecureString, encoding As Encoding) As Byte()
+
+        Dim unmanagedString As IntPtr = IntPtr.Zero
+
+        Try
+            unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(secureString)
+            Return encoding.GetBytes(Marshal.PtrToStringUni(unmanagedString))
+        Finally
+            Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString)
+        End Try
+
+    End Function
+
+    ''' <summary>
+    ''' Wandelt ein Array von <see cref="Byte"/> in ein <see cref="SecureString"/> um.
+    ''' </summary>
+    ''' <param name="decryptedBuffer"><see cref="Byte"/>-Array, welches umgewandelt werden soll.</param>
+    ''' <param name="encoding">Zeichencodierung</param>
+    ''' <returns>SecureString</returns>
+    Private Function GetSecureString(ByRef decryptedBuffer As Byte(), encoding As Encoding) As SecureString
+        Dim output As New SecureString
+
+        Dim outputBuffer As Char() = encoding.GetChars(decryptedBuffer)
+
+        For i As Integer = 0 To outputBuffer.Length - 1
+            output.AppendChar(outputBuffer(i))
+        Next
+
+        output.MakeReadOnly()
+
+        If outputBuffer IsNot Nothing Then Array.Clear(outputBuffer, 0, outputBuffer.Length)
+
+        If decryptedBuffer IsNot Nothing Then Array.Clear(decryptedBuffer, 0, decryptedBuffer.Length)
+
+        Return output
+    End Function
+
+
+    ''' <summary>
+    ''' Generiert ein <see cref="Byte"/>-Array mit zufälligen Werten.
+    ''' </summary>
+    ''' <param name="maximumLength">Länge des <see cref="Byte"/>-Array</param>
+    ''' <returns>ByteArray</returns>
     Private Function GetRndByteArray(maximumLength As Integer) As Byte()
         Dim RndByte(maximumLength - 1) As Byte
         Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider
@@ -154,6 +157,13 @@ Friend Class Rijndael
         Return RndByte
     End Function
 
+    ''' <summary>
+    ''' Erstellt einen MD4-Hash eines <see cref="SecureString"/> durch.
+    ''' </summary>
+    ''' <param name="secureString">Verschlüsselte Zeichenfolge</param>
+    ''' <param name="Zeichencodierung">Zeichencodierung</param>
+    ''' <param name="Präfix">Optionaler Präfix, welcher vor dem erstellen des Hashes dem <see cref="SecureString"/> vorangestellt wird.</param>
+    ''' <returns></returns>
     Friend Function SecureStringToMD5(secureString As SecureString, Zeichencodierung As Encoding, Optional Präfix As String = "") As String
 
         Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
