@@ -117,7 +117,11 @@ Public Class Telefonnummer
             NurZiffern = NurZiffern.RegExRemove("[^0-9]")
 
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich ggf. vorhandener nachfolgender 0)
-            If Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Then NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{Landeskennzahl}{{1}}[0]?", "0")
+            If Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Then
+
+
+                NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{Landeskennzahl}{{1}}[0]?", "0")
+            End If
 
             ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
             NurZiffern = NurZiffern.RegExReplace("^[0]{3}", "0")

@@ -29,7 +29,11 @@ Public Class OutlookOrdner
     <XmlElement> Public Property StoreID As String
     <XmlAttribute> Public Property Name As String
     <XmlAttribute> Public Property Typ As OutlookOrdnerVerwendung
-
+    <XmlIgnore> Friend ReadOnly Property Exists As Boolean
+        Get
+            Return GetOutlookFolder(FolderID, StoreID) IsNot Nothing
+        End Get
+    End Property
     <XmlIgnore> Friend Property MAPIFolder As Outlook.MAPIFolder
         Get
             Return GetOutlookFolder(FolderID, StoreID)

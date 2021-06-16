@@ -128,8 +128,10 @@ Friend Class Vorwahlen
                 ' Schleife durch alle Landeskennzahlen
                 For Each LKZ In _LKZ
                     i = 0
+
                     If .StartsWith(PDfltAmt) Then i = 1
-                    If .StartsWith($"{PDfltVAZ}{LKZ.Landeskennzahl}") Then i = ($"{PDfltVAZ}{LKZ.Landeskennzahl}").Length
+                    If .StartsWith($"{PDfltVAZ}{LKZ.Landeskennzahl}") Then i = $"{PDfltVAZ}{LKZ.Landeskennzahl}".Length
+                    If .StartsWith($"{PDfltVAZ}{LKZ.Landeskennzahl}{PDfltAmt}") Then i = $"{PDfltVAZ}{LKZ.Landeskennzahl}{PDfltAmt}".Length
 
                     j = .Length - i
                     Do

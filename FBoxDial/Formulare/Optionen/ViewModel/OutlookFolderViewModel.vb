@@ -164,22 +164,23 @@ Public Class OutlookFolderViewModel
 
             For Each Ordner As OutlookOrdner In OptVM.OutlookOrdnerListe.FindAll(Verwendung)
                 NLogger.Debug($"Verarbeite Ordner {Ordner.Name} für '{Verwendung}'.")
+                If Ordner.Exists Then
 
-                Dim node = TreeViewOutlookOrdner.Where(Function(olFolderNode) olFolderNode.Node.OutlookFolder.AreEqual(Ordner.MAPIFolder))
+                    Dim node = TreeViewOutlookOrdner.Where(Function(olFolderNode) olFolderNode.Node.OutlookFolder.AreEqual(Ordner.MAPIFolder))
 
-                If node IsNot Nothing Then
-                    NLogger.Debug($"Knoten im TreeView gefunden.")
-                    With node.First
+                    If node IsNot Nothing AndAlso node.Any Then
+                        NLogger.Debug($"Knoten im TreeView gefunden.")
+                        With node.First
 
-                        ' Setze das Checkmark
-                        .Node.IsChecked = IsChecked
+                            ' Setze das Checkmark
+                            .Node.IsChecked = IsChecked
 
-                        ' Führe das Setzen aller benachbarter Knoten aus.
-                        CheckItemCommand_Executed(CType(.Node, OlFolderViewModel), False)
-                    End With
+                            ' Führe das Setzen aller benachbarter Knoten aus.
+                            CheckItemCommand_Executed(CType(.Node, OlFolderViewModel), False)
+                        End With
 
+                    End If
                 End If
-
             Next
         Else
             NLogger.Debug($"Die gewählten Outlook-Ordner für '{Verwendung}' können nicht geladen werden.")

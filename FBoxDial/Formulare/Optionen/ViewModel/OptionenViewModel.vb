@@ -689,6 +689,10 @@ Public Class OptionenViewModel
         ' Ordnerliste überwachter Ordner
         With XMLData.POptionen.OutlookOrdner
 
+            ' Lösche alle nichtmehr existenten Ordner
+            .ClearNotExisting()
+            OutlookOrdnerListe.ClearNotExisting()
+
             ' deindiziere:
             For Each Folder In .FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche))
                 NLogger.Debug($"Deindiziere Odner {Folder.Name}")

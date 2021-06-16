@@ -287,6 +287,9 @@ Friend Module KontaktFunktionen
 
         If FolderID.IsNotErrorString And StoreID.IsNotErrorString Then
             Try
+                ' Überprüfe, ob der Store vorhanden ist
+                Dim store = ThisAddIn.OutookApplication.Session.GetStoreFromID(StoreID)
+                ' Ermittle den Folder
                 GetOutlookFolder = ThisAddIn.OutookApplication.Session.GetFolderFromID(FolderID, StoreID)
             Catch ex As System.Exception
                 NLogger.Error(ex)
@@ -350,7 +353,7 @@ Friend Module KontaktFunktionen
         Dim retval As Integer = 0
 
         ' Die Anzahl der Elemente dieses Ordners zählen
-        If olFolder.DefaultItemType = OlItemType.olContactItem Then
+        If olFolder IsNot Nothing AndAlso olFolder.DefaultItemType = OlItemType.olContactItem Then
             retval = olFolder.Items.Count
 
             ' Unterordner werden rekursiv mitgezählt
@@ -422,10 +425,10 @@ Friend Module KontaktFunktionen
     ''' <param name="Ordner2">Zweiter MAPIFolder</param>
     ''' <returns></returns>
     <Extension> Friend Function AreEqual(Ordner1 As MAPIFolder, Ordner2 As MAPIFolder) As Boolean
-        Return Ordner1.StoreID.AreEqual(Ordner2.StoreID) And Ordner1.EntryID.AreEqual(Ordner2.EntryID)
+        Return Ordner1 IsNot Nothing AndAlso Ordner2 IsNot Nothing AndAlso (Ordner1.StoreID.AreEqual(Ordner2.StoreID) And Ordner1.EntryID.AreEqual(Ordner2.EntryID))
     End Function
     <Extension> Friend Function AreNotEqual(Ordner1 As MAPIFolder, Ordner2 As MAPIFolder) As Boolean
-        Return Ordner1.StoreID.AreNotEqual(Ordner2.StoreID) Or Ordner1.EntryID.AreNotEqual(Ordner2.EntryID)
+        Return Ordner1 IsNot Nothing AndAlso Ordner2 IsNot Nothing AndAlso (Ordner1.StoreID.AreNotEqual(Ordner2.StoreID) Or Ordner1.EntryID.AreNotEqual(Ordner2.EntryID))
     End Function
 
 #Region "VIP"

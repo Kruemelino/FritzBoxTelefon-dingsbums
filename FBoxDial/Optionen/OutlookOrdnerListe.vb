@@ -41,6 +41,10 @@ Public Class OutlookOrdnerListe
         OrdnerListe.RemoveAll(Function(OlFldr) OlFldr.Typ = Verwendung)
     End Sub
 
+    Friend Sub ClearNotExisting()
+        OrdnerListe.RemoveAll(Function(OlFldr) Not OlFldr.Exists)
+    End Sub
+
     Friend Sub Remove(Folder As OutlookOrdner)
         OrdnerListe.Remove(Folder)
     End Sub
