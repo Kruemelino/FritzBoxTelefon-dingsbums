@@ -100,8 +100,6 @@
 
     <XmlElement("OutlookOrdner")> Public Property OutlookOrdner As OutlookOrdnerListe
 
-    <XmlElement("CBUseLegacySearch")> Public Property CBUseLegacySearch As Boolean = False
-
 #Region "Einstellungen für die Kontaktsuche - Kontaktsuche in Outlook (Indizierung)"
 
     <XmlElement("CBSucheUnterordner")> Public Property CBSucheUnterordner As Boolean = False
