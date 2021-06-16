@@ -174,7 +174,7 @@ Public Class WählClientViewModel
     Public Sub New()
         ' Commands
         CancelCommand = New RelayCommand(AddressOf CancelCall)
-        DialCommand = New RelayCommand(AddressOf Dial)
+        DialCommand = New RelayCommand(AddressOf Dial, AddressOf CanDial)
         ' Interface
         DatenService = New DialService
         DialogService = New DialogService
@@ -208,7 +208,6 @@ Public Class WählClientViewModel
 
     End Sub
 
-
 #Region "ICommand Callback"
     Private Async Sub CancelCall(o As Object)
         ' initialen Abbruch.Status setzen
@@ -219,6 +218,9 @@ Public Class WählClientViewModel
 
     End Sub
 
+    Private Function CanDial(obj As Object) As Boolean
+        Return TelGerät IsNot Nothing
+    End Function
     Private Async Sub Dial(o As Object)
 
         ' Telefonnummernobjekt generieren
@@ -264,6 +266,5 @@ Public Class WählClientViewModel
 
     End Sub
 #End Region
-
 
 End Class
