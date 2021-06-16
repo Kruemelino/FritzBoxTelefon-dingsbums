@@ -83,11 +83,14 @@ Friend Class Vorwahlen
                     ' Die maximale Länge einer LKZ ist 3
                     i = 3
 
-                    ' Es kann mehrere geben
-                    Do
-                        LKZListe = Kennzahlen.Landeskennzahlen.FindAll(Function(laKZ) laKZ.Landeskennzahl = .Unformatiert.Substring(2, i))
-                        i -= 1
-                    Loop Until LKZListe.Any Or i.IsZero
+                    ' Stelle sicher, dass die Telefonnummer ausreichend lang ist.
+                    If .Unformatiert.Length.IsLargerOrEqual(2 + i) Then
+                        ' Es kann mehrere Treffer geben
+                        Do
+                            LKZListe = Kennzahlen.Landeskennzahlen.FindAll(Function(laKZ) laKZ.Landeskennzahl = .Unformatiert.Substring(2, i))
+                            i -= 1
+                        Loop Until LKZListe.Any Or i.IsZero
+                    End If
 
                     If LKZListe.Any Then
                         ' Es wurden Einträge gefunden

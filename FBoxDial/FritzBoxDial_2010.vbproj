@@ -98,7 +98,7 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug2010\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -129,7 +129,7 @@
     <DefineTrace>true</DefineTrace>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release2010\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -287,6 +287,8 @@
       <DependentUpon>OptTestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
+    <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUser.vb" />
+    <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUserList.vb" />
     <Compile Include="Fritz!Box\TR064\XMLTR64\AllowedValueRange.vb" />
     <Compile Include="Localize\Länder.Designer.vb">
       <AutoGen>True</AutoGen>
