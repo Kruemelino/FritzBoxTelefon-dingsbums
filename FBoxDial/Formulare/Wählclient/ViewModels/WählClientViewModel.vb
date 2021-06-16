@@ -218,8 +218,24 @@ Public Class WählClientViewModel
 
     End Sub
 
-    Private Function CanDial(obj As Object) As Boolean
-        Return TelGerät IsNot Nothing
+    Private Function CanDial(o As Object) As Boolean
+
+        If TelGerät IsNot Nothing Then
+            Select Case True
+                Case TypeOf o Is String
+                    Return CStr(o).IsNotStringNothingOrEmpty
+
+                Case TypeOf o Is Telefonnummer
+                    Return CType(o, Telefonnummer) IsNot Nothing
+
+                Case Else
+                    Return False
+
+            End Select
+        Else
+            Return False
+        End If
+
     End Function
     Private Async Sub Dial(o As Object)
 
