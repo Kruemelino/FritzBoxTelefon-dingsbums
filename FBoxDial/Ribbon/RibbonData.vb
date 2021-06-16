@@ -445,8 +445,9 @@ Namespace RibbonData
                         ' Rekursiver Aufruf
                         Try
                             Return EnableDial(.Selection)
-                        Catch ex As Exception
-                            NLogger.Warn(ex, "Wird Oulook mit 'Outlook Heute' gestartet?")
+                        Catch ' ex As Runtime.InteropServices.COMException
+                            ' https://social.msdn.microsoft.com/Forums/en-US/1d6aa6df-53db-42d6-946d-130e642ddacb/comexception-when-checking-activeexplorerselection?forum=outlookdev
+                            NLogger.Warn("Start mit 'Outlook Heute' gestartet.")
                             Return False
                         End Try
 
