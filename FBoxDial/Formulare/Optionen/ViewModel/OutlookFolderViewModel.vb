@@ -8,7 +8,7 @@ Imports Microsoft.Office.Interop.Outlook
 ''' </summary>
 Public Class OutlookFolderViewModel
     Inherits NotifyBase
-    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Friend Property OutlookItemType As OlItemType
     Friend Property Verwendung As OutlookOrdnerVerwendung

@@ -51,7 +51,7 @@ Namespace SOAP
 
                 End Select
             Else
-                NLogger.Warn($"Ping zur Fritz!Box '{UniformResourceIdentifier.Host}'  nicht erfolgreich")
+                NLogger.Warn($"Ping zur Fritz!Box '{UniformResourceIdentifier.Host}' nicht erfolgreich")
                 Return False
 
             End If

@@ -1,5 +1,5 @@
-﻿Friend Class FritzBoxDefault
-    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+﻿Friend NotInheritable Class FritzBoxDefault
+    Friend Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Friend Const DfltFritzBoxAdress As String = "fritz.box"
     Friend Const DfltFritzBoxSessionID As String = "0000000000000000"

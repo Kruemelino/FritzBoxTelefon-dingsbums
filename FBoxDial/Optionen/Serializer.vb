@@ -17,16 +17,17 @@ Friend Module Serializer
         DateiInfo = New FileInfo(Pfad)
         DateiInfo.Directory.Create() ' If the directory already exists, this method does nothing.
 
-        If Not (File.Exists(Pfad) AndAlso DeserializeObject(Pfad, objectData)) Then
+        If File.Exists(Pfad) AndAlso DeserializeObject(Pfad, objectData) Then
+            NLogger.Debug($"Einstellungsdatei eigelesen: {Pfad}")
+        Else
+            NLogger.Debug($"Einstellungsdatei generiert")
             objectData = New OutlookXML
         End If
 
         ' Setze einige Felder
         If objectData IsNot Nothing Then
             With objectData.POptionen
-                ' .Arbeitsverzeichnis = DateiInfo.Directory.ToString
                 .ValidFBAdr = ValidIP(.TBFBAdr)
-
             End With
         End If
 
@@ -42,6 +43,8 @@ Friend Module Serializer
                     .Serialize(XmlSchreiber, objectData, XmlSerializerNamespace)
                 End With
             End Using
+
+            NLogger.Debug($"Einstellungsdatei gespeichert: {Pfad}")
         End If
     End Sub
 
@@ -75,6 +78,7 @@ Friend Module Serializer
 
         End Try
     End Function
+
     ''' <summary>
     ''' Deserialisiert die XML-Datei, die unter <paramref name="UniformResourceIdentifier"/> gespeichert ist.
     ''' </summary>
@@ -112,11 +116,7 @@ Friend Module Serializer
     Friend Function DeserializeObjectAsyc(Of T)(Pfad As String) As Task(Of T)
         Return Task.Run(Function()
                             Dim ReturnObj As T
-                            If DeserializeObject(Pfad, ReturnObj) Then
-                                Return ReturnObj
-                            Else
-                                Return Nothing
-                            End If
+                            Return If(DeserializeObject(Pfad, ReturnObj), ReturnObj, Nothing)
                         End Function)
     End Function
 

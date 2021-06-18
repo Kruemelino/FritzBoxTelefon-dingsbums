@@ -7,7 +7,7 @@ Namespace SOAP
 
         Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
 
-        Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+        Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
         Private Property FBTR64Desc As TR64Desc
         Private Property Credential As NetworkCredential
         Private Property FBoxIPAdresse As String
@@ -100,7 +100,7 @@ Namespace SOAP
         ''' <returns>Fritz!Box Firmware Version</returns>
         Friend ReadOnly Property DisplayVersion As String
             Get
-                Return FBTR64Desc.SystemVersion.Display
+                Return If(FBTR64Desc IsNot Nothing AndAlso FBTR64Desc.SystemVersion IsNot Nothing, FBTR64Desc.SystemVersion.Display, DfltStringEmpty)
             End Get
         End Property
 
@@ -119,6 +119,12 @@ Namespace SOAP
         Friend ReadOnly Property Minor As Integer
             Get
                 Return FBTR64Desc.SystemVersion.Minor
+            End Get
+        End Property
+
+        Friend ReadOnly Property FriendlyName As String
+            Get
+                Return If(FBTR64Desc IsNot Nothing AndAlso FBTR64Desc.Device IsNot Nothing, FBTR64Desc.Device.FriendlyName, "Keine Verbindung zu einer Fritz!Box hergestellt.")
             End Get
         End Property
 

@@ -5,7 +5,7 @@ Public Class FritzBoxWählClient
     Implements IDisposable
 
 #Region "Properties"
-    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend Property WPFWindow As WählclientWPF
 #End Region
 

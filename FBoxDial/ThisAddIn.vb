@@ -11,7 +11,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
     Friend Shared Property OffeneStoppUhrWPF As List(Of StoppUhrWPF)
     Friend Shared Property AddinWindows As New List(Of Windows.Window)
-    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property AnrMonWarAktiv As Boolean
 
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
@@ -22,8 +22,6 @@ Public NotInheritable Class ThisAddIn
     Private Sub ThisAddIn_Startup() Handles Me.Startup
         ' Logging konfigurieren
         LogManager.Configuration = DefaultNLogConfig()
-
-        Dim UserData As New NutzerDaten
 
         ' Outlook.Application initialisieren
         If OutookApplication Is Nothing Then OutookApplication = Application
@@ -40,28 +38,46 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Async Sub StarteAddinFunktionen()
+        NLogger.Info($"Starte {My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version}...")
+
         ' Initialisiere die Landes- und Ortskennzahlen
         PVorwahlen = New Vorwahlen
+        NLogger.Debug("Kennzahlen geladen...")
+
+        Dim UserData As New NutzerDaten
+        NLogger.Debug("Nutzererinstellungen geladen...")
+
+        ' Lade alle Telefonbücher aus der Fritz!Box herunter
+        If XMLData.POptionen.CBKontaktSucheFritzBox Then
+            PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher()
+            NLogger.Debug("Fritz!Box Telefonbücher geladen...")
+        End If
 
         ' Anrufmonitor starten
         If XMLData.POptionen.CBAnrMonAuto Then
             PAnrufmonitor = New Anrufmonitor
             PAnrufmonitor.StartAnrMon()
+            NLogger.Debug("Anrufmonitor gestartet...")
         End If
-
-        ' Lade alle Telefonbücher aus der Fritz!Box herunter
-        If XMLData.POptionen.CBKontaktSucheFritzBox Then PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher()
 
         ' Explorer Ereignishandler festlegen
         SetExplorer()
+        NLogger.Debug("Outlook-Explorer Ereignishandler erfasst...")
 
         ' Outlook Inspektoren erfassen
         OutlookInspectors = Application.Inspectors
+        NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
 
         ' Anrufliste auswerten
-        If XMLData.POptionen.CBAutoAnrList Then AutoAnrListe()
+        If XMLData.POptionen.CBAutoAnrList Then
+            AutoAnrListe()
+            NLogger.Debug("Auswertung Anrufliste gestartet...")
+        End If
 
-        NLogger.Info($"{My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} gestartet.")
+        ' Schreibe in das Log noch Informationen zur Fritz!Box
+        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Nothing)
+            NLogger.Debug($"{fbtr064.FriendlyName} {fbtr064.DisplayVersion}")
+        End Using
 
     End Sub
 
@@ -84,7 +100,7 @@ Public NotInheritable Class ThisAddIn
     ''' <summary>
     ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
     ''' </summary>
-    Sub AnrMonRestartNachStandBy(sender As Object, e As Microsoft.Win32.PowerModeChangedEventArgs)
+    Private Sub AnrMonRestartNachStandBy(sender As Object, e As Microsoft.Win32.PowerModeChangedEventArgs)
 
         NLogger.Info($"PowerMode: {e.Mode} ({e.Mode})")
 

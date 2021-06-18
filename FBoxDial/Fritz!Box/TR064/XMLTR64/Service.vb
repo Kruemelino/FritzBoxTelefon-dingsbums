@@ -7,7 +7,7 @@ Namespace SOAP
     <Serializable()>
     Public Class Service
 
-        Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+        Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
         <XmlElement("serviceType")> Public Property ServiceType As String
         <XmlElement("serviceId")> Public Property ServiceId As String

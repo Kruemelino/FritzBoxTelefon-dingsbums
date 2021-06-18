@@ -6,7 +6,7 @@ Imports System.Threading.Tasks
 ''' </summary>
 Public Class OptionenViewModel
     Inherits NotifyBase
-    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IOptionenService
 
 #Region "Addin Eigenschaften"
@@ -640,6 +640,7 @@ Public Class OptionenViewModel
         ' Fritz!Box Benutzer laden
         CBoxBenutzer = DatenService.LadeFBoxUser(TBFBAdr)
 
+        NLogger.Debug("Die Daten aus der XML-Datei wurden in das ViewModel Optionen geladen.")
     End Sub
 
     ''' <summary>

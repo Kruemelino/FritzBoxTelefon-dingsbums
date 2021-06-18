@@ -27,6 +27,8 @@ Friend Module NLogging
                                                       .FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltLogFileName),
                                                       .Layout = LayoutText.Join("|")})
 
+        ' Standard-Loglevel für das initiale Einlesen der Daten.
+        config.AddRule(LogLevel.Trace, LogLevel.Fatal, config.AllTargets.First)
         Return config
     End Function
 

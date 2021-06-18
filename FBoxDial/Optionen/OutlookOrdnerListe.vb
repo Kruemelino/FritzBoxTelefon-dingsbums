@@ -45,9 +45,9 @@ Public Class OutlookOrdnerListe
         OrdnerListe.RemoveAll(Function(OlFldr) Not OlFldr.Exists)
     End Sub
 
-    Friend Sub Remove(Folder As OutlookOrdner)
-        OrdnerListe.Remove(Folder)
-    End Sub
+    Friend Function Remove(Folder As OutlookOrdner) As Boolean
+        Return OrdnerListe.Remove(Folder)
+    End Function
 
     ''' <summary>
     ''' Prüft, ob der Outlook-Ordner für die gewünschte Verwendung ausgewählt wurde.
