@@ -159,9 +159,7 @@
 #End Region
 
 #Region "MicroSIP"
-
     <XmlElement("TBMicroSIPPath")> Public Property TBMicroSIPPath As String = DfltStringEmpty
-
     <XmlElement("CBMicroSIP")> Public Property CBMicroSIP As Boolean = False
 
 #End Region

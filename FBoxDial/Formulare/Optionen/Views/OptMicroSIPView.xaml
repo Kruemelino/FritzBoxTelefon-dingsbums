@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance Type=fbd:OptMicroSIPViewModel, IsDesignTimeCreatable=True}">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,7 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <StackPanel x:Name="MainStackPanel" Margin="8">
 
         <TextBlock Style="{StaticResource OptHeader}" 
@@ -34,13 +34,31 @@
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strMicroSIPCBMicroSIP}" 
                   IsChecked="{Binding OptVM.CBMicroSIP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
-        <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strMicroSIPTBMicroSIPPath}"
-                 Text="{Binding OptVM.TBMicroSIPPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Grid Margin="0,0,0,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="115*" />
+                <ColumnDefinition Width="99*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="{x:Static localize:LocOptionen.strMicroSIPTBMicroSIPPath}" Grid.ColumnSpan="2"/>
+
+            <Button Grid.Column="2" Margin="0"
+                    Content="{DynamicResource ImportFile_16x}" 
+                    Style="{StaticResource MiniIconButton}"
+                    Command="{Binding MicroSIPPathCommand}" />
+
+            <TextBox Grid.Column="3" IsReadOnly="True"
+                 Tag="{x:Static localize:LocOptionen.strMicroSIPTBMicroSIPPath}" 
+                 Text="{Binding OptVM.TBMicroSIPPath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        </Grid>
 
         <fbd:OptionsTextBlock Label="{x:Static localize:LocOptionen.strMicroSIPPhoneInfo}"/>
-        
+
         <Border BorderThickness="0.5" Margin="0,0,0,4">
             <Border.BorderBrush>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
@@ -61,19 +79,19 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
-                
+
                 <DataGrid.ItemContainerStyle>
                     <Style TargetType="DataGridRow">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsIPPhone}" 
                                          Value="False">
-                                
+
                                 <Setter Property="Visibility" 
                                         Value="Collapsed"/>
-                                
+
                             </DataTrigger>
                         </Style.Triggers>
-                    </Style>    
+                    </Style>
                 </DataGrid.ItemContainerStyle>
             </DataGrid>
         </Border>

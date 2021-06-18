@@ -4,8 +4,8 @@
     Private Const MicroSIPProgressName As String = "MicroSIP"
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-
     Friend ReadOnly Property MicroSIPReady As Boolean = Process.GetProcessesByName(MicroSIPProgressName).Length.IsNotZero
+    Friend ReadOnly Property MicroSIPPath As String
 
 #Region "MicroSIP Commandline"
     ''' <summary>
@@ -31,29 +31,46 @@
 #End Region
 
     Public Sub New()
+        If Not MicroSIPReady Then StartMicroSIP()
 
-        Dim ProcressMicroSIP As Process()
-        ProcressMicroSIP = Process.GetProcessesByName(MicroSIPProgressName)
+        MicroSIPPath = GetExecutablePath()
+    End Sub
+
+    Private Function GetExecutablePath() As String
+        Dim ProcressMicroSIP As Process() = Process.GetProcessesByName(MicroSIPProgressName)
 
         If ProcressMicroSIP.Length.IsNotZero Then
 
             NLogger.Debug(Localize.LocWählclient.strMicroSIPBereit)
 
             ' Ermittle Pfad zur ausgeführten MicroSIP.exe
-            XMLData.POptionen.TBMicroSIPPath = ProcressMicroSIP.First.MainModule.FileName
+            Return ProcressMicroSIP.First.MainModule.FileName
 
-            NLogger.Debug(String.Format(Localize.LocWählclient.strMicroSIPgestartetPfad, XMLData.POptionen.TBMicroSIPPath))
+            NLogger.Debug(String.Format(Localize.LocWählclient.strMicroSIPgestartetPfad, MicroSIPPath))
 
         Else
-            NLogger.Debug(Localize.LocWählclient.strMicroSIPNichtBereit)
-
-            If XMLData.POptionen.TBMicroSIPPath.IsNotStringNothingOrEmpty Then
-                ' Starte MicroSIP
-                Process.Start(XMLData.POptionen.TBMicroSIPPath)
-                NLogger.Info(Localize.LocWählclient.strMicroSIPgestartet)
-            End If
+            Return DfltStringEmpty
         End If
+    End Function
 
+    Private Sub StartMicroSIP()
+        NLogger.Debug(Localize.LocWählclient.strMicroSIPNichtBereit)
+
+        If XMLData.POptionen.TBMicroSIPPath.IsNotStringNothingOrEmpty Then
+            ' Starte MicroSIP
+            Try
+                Process.Start(XMLData.POptionen.TBMicroSIPPath)
+
+                NLogger.Info(Localize.LocWählclient.strMicroSIPgestartet)
+            Catch ex As ComponentModel.Win32Exception
+                NLogger.Warn(ex)
+            Catch ex As ObjectDisposedException
+                NLogger.Warn(ex)
+            Catch ex As IO.FileNotFoundException
+                NLogger.Warn(ex)
+            End Try
+
+        End If
     End Sub
 
     Friend Function Dial(DialCode As String, Hangup As Boolean) As Boolean
@@ -64,12 +81,12 @@
             ' Wählkommando senden
             If Hangup Then
                 ' Abbruch des Rufaufbaues mittels Parameter
-                Process.Start(XMLData.POptionen.TBMicroSIPPath, CommandHangUpAll)
+                Process.Start(MicroSIPPath, CommandHangUpAll)
 
                 NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
             Else
                 ' Aufbau des Telefonates mittels Parameter 
-                Process.Start(XMLData.POptionen.TBMicroSIPPath, DialCode)
+                Process.Start(MicroSIPPath, DialCode)
 
                 NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneAbbruch, DialCode, MicroSIPProgressName))
             End If

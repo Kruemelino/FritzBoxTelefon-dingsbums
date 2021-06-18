@@ -35,7 +35,7 @@
             <TextBlock Grid.Column="0"
                        Text="{x:Static localize:LocOptionen.strBaseTBBenutzer}"/>
 
-            <Button Grid.Column="1" Margin="2"
+            <Button Grid.Column="1" Margin="1"
                     Content="{DynamicResource Refresh_16x}" 
                     Style="{StaticResource MiniIconButton}"
                     Command="{Binding UpdateUserListCommand}" />

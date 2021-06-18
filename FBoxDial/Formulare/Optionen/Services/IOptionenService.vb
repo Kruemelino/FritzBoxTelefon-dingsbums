@@ -25,6 +25,10 @@ Friend Interface IOptionenService
     Function ZähleOutlookKontakte(olFolder As MAPIFolder) As Integer
 #End Region
 
+#Region "MicroSIP"
+    Function GetMicroSIPExecutablePath() As String
+#End Region
+
 #Region "Test Rückwärtssuche"
     Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean))
     Sub StartRWSTest(TelNr As String)

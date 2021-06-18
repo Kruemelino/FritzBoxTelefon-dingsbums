@@ -7,14 +7,13 @@
 Public Class DialogService
     Implements IDialogService
 
-    Public Function OpenFile(filter As String) As String Implements IDialogService.OpenFile
-        Dim dialog = New OpenFileDialog()
+    Public Function OpenFile(filter As String, Optional initialDirectory As String = "") As String Implements IDialogService.OpenFile
+        Dim dialog = New OpenFileDialog() With {.Multiselect = False,
+                                                .Filter = filter,
+                                                .InitialDirectory = IO.Path.GetDirectoryName(initialDirectory)}
 
-        If dialog.ShowDialog() = True Then
-            Return dialog.FileName
-        End If
+        Return If(dialog.ShowDialog() = True, dialog.FileName, DfltStringEmpty)
 
-        Return Nothing
     End Function
 
     Public Function ShowMessageBox(Frage As String) As Windows.MessageBoxResult Implements IDialogService.ShowMessageBox

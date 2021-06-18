@@ -129,6 +129,14 @@ Friend Class OptionenService
 
 #End Region
 
+#Region "MicroSIP"
+    Public Function GetMicroSIPExecutablePath() As String Implements IOptionenService.GetMicroSIPExecutablePath
+        Using MicroSIP As New MicroSIP
+            Return MicroSIP.MicroSIPPath
+        End Using
+    End Function
+#End Region
+
 #Region "Test Rückwärtssuche"
     Friend Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetRWS
 

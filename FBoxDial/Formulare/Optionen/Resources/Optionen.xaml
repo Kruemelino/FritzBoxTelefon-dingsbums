@@ -105,7 +105,7 @@
                             <ColumnDefinition Width="150"/>
                         </Grid.ColumnDefinitions>
                         <ContentPresenter Content="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
-                                        Grid.Column="0"/>
+                                          Grid.Column="0"/>
 
                         <TextBox Text="{Binding Path=Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
                                  Grid.Column="1" Margin="0"/>
