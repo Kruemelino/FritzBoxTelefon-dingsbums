@@ -610,14 +610,12 @@ Public Class OptionenViewModel
             Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
 
             If OptionPropertyInfo IsNot Nothing Then
-                With OptionPropertyInfo
 
-                    If ViewModelPropertyInfo.CanWrite Then
-                        ViewModelPropertyInfo.SetValue(Me, .GetValue(XMLData.POptionen))
-                        NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert {ViewModelPropertyInfo.GetValue(Me)} geladen.")
-                    End If
+                If ViewModelPropertyInfo.CanWrite Then
+                    ViewModelPropertyInfo.SetValue(Me, OptionPropertyInfo.GetValue(XMLData.POptionen))
+                    NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geladen.")
+                End If
 
-                End With
             End If
         Next
 
@@ -648,17 +646,17 @@ Public Class OptionenViewModel
     ''' </summary>
     Friend Async Sub Speichern()
         NLogger.Debug("Speichere die Daten aus dem ViewModel Optionen in die XML-Datei")
+
         ' Schleife durch alle Properties dieser Klasse
         For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
             ' Suche das passende Property in den Optionen
             Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
 
             If OptionPropertyInfo IsNot Nothing Then
-                With OptionPropertyInfo
-                    .SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
-                    NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert { ViewModelPropertyInfo.GetValue(Me)} geschrieben.")
 
-                End With
+                OptionPropertyInfo.SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
+                NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geschrieben.")
+
             End If
         Next
 

@@ -82,10 +82,14 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' FritzOutlookV5.log
     ''' </summary>
-    ''' <value>FritzOutlookV5.log</value>
-    ''' <returns>FritzOutlookV5.log</returns>
-    ''' <remarks>Wird mit Ressource "PDfltAddin_KurzName" erstellt.</remarks>
+    ''' <remarks>Wird mit Ressource "strDefShortName" erstellt.</remarks>
     Public Shared ReadOnly Property DfltLogFileName() As String = $"{My.Resources.strDefShortName}.log"
+
+    ''' <summary>
+    ''' FritzOutlookV5.{#}.log
+    ''' </summary>
+    ''' <remarks>Wird mit Ressource "strDefShortName" erstellt.</remarks>
+    Public Shared ReadOnly Property DfltLogArchiveFileName() As String = $"{My.Resources.strDefShortName}.{{#}}.log"
 
     Friend Shared ReadOnly Property DfltErrorvalue As Integer = -2147221233
 

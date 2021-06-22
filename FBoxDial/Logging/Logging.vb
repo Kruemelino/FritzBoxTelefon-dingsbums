@@ -4,6 +4,7 @@ Friend Module NLogging
     Friend Function DefaultNLogConfig() As Config.LoggingConfiguration
 
         Dim config = New Config.LoggingConfiguration
+        Dim BaseDir As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName)
 
         Dim LayoutText As String() = {"${date:format=dd.MM.yyyy HH\:mm\:ss.fff}",
                                       "${level}",
@@ -24,17 +25,24 @@ Friend Module NLogging
         config.AddTarget(New Targets.FileTarget With {.Name = "f",
                                                       .Encoding = Encoding.UTF8,
                                                       .KeepFileOpen = False,
-                                                      .FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltLogFileName),
-                                                      .Layout = LayoutText.Join("|")})
+                                                      .FileName = Path.Combine(BaseDir, DfltLogFileName),
+                                                      .Layout = LayoutText.Join("|"),
+                                                      .ArchiveNumbering = Targets.ArchiveNumberingMode.Rolling,
+                                                      .ArchiveFileName = Path.Combine(BaseDir, DfltLogArchiveFileName),
+                                                      .ArchiveOldFileOnStartupAboveSize = 524288,
+                                                      .MaxArchiveFiles = 5})
 
         ' Standard-Loglevel für das initiale Einlesen der Daten.
         config.AddRule(LogLevel.Trace, LogLevel.Fatal, config.AllTargets.First)
+
         Return config
     End Function
 
     Friend Sub SetLogLevel()
         With LogManager.Configuration
+            ' Entferne alle vorhandenen Regeln (es sollte nur eine sein)
             .LoggingRules.Clear()
+            ' Füge für jedes Target eine Regel hinzu
             For Each Target As Targets.Target In LogManager.Configuration.AllTargets
                 .AddRule(LogLevel.FromString(XMLData.POptionen.CBoxMinLogLevel), LogLevel.Fatal, Target)
             Next

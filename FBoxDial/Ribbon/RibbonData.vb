@@ -41,7 +41,7 @@ Namespace RibbonData
             ' Der Key enthält eine Information zu dem Control, für das die Daten ermittelt werden sollen
             ' Separiert wird mit Umterstich "_"
             ' {ControlID}_{TabID}
-            ' Die TabID ist irlevant (Alles hinter dem _ muss entfernt werden
+            ' Die TabID ist irrlevant (Alles hinter dem _ muss entfernt werden
             ' In der Lokalisierungsdatei sind die Textbausteine 
             ' {ControlID}_{Typ} aufgebaut
 
@@ -447,7 +447,7 @@ Namespace RibbonData
                             Return EnableDial(.Selection)
                         Catch ' ex As Runtime.InteropServices.COMException
                             ' https://social.msdn.microsoft.com/Forums/en-US/1d6aa6df-53db-42d6-946d-130e642ddacb/comexception-when-checking-activeexplorerselection?forum=outlookdev
-                            NLogger.Warn("Start mit 'Outlook Heute' gestartet.")
+                            NLogger.Debug("Outlook mit 'Outlook Heute' gestartet.")
                             Return False
                         End Try
 
