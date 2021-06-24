@@ -50,7 +50,7 @@
 
         <Border Grid.Column="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Grid.ColumnSpan="2">
             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <ContentControl Content="{Binding CurrentPageViewModel}"/>
+                <ContentControl Content="{Binding CurrentPageViewModel}" IsEnabled="{Binding DatenGeladen, FallbackValue=False}"/>
             </ScrollViewer>
         </Border>
 

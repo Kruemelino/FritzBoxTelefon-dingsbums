@@ -131,7 +131,7 @@ Friend Module KontaktFunktionen
             Dim KontaktOrdner As MAPIFolder = .GetMAPIFolder(OutlookOrdnerVerwendung.KontaktSpeichern)
             ' Speichere den Kontakt... 
             ' Wenn es sich nicht um den Hauptkontaktordner handelt, ist darin der Kontakt bereits (ungespeichert) enthalten. Ein Move würde den Kontakt nur dublizieren.
-            If KontaktOrdner.AreNotEqual(.GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts)) Then
+            If Not KontaktOrdner.AreEqual(.GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts)) Then
                 ' Verschiebe den Kontakt in den gewünschten Ornder
                 olKontakt = CType(olKontakt.Move(KontaktOrdner), ContactItem)
                 NLogger.Info($"Kontakt {olKontakt.FullName} wurde erstellt und in den Ordner {KontaktOrdner.Name} verschoben.")
@@ -425,10 +425,7 @@ Friend Module KontaktFunktionen
     ''' <param name="Ordner2">Zweiter MAPIFolder</param>
     ''' <returns></returns>
     <Extension> Friend Function AreEqual(Ordner1 As MAPIFolder, Ordner2 As MAPIFolder) As Boolean
-        Return Ordner1 IsNot Nothing AndAlso Ordner2 IsNot Nothing AndAlso (Ordner1.StoreID.AreEqual(Ordner2.StoreID) And Ordner1.EntryID.AreEqual(Ordner2.EntryID))
-    End Function
-    <Extension> Friend Function AreNotEqual(Ordner1 As MAPIFolder, Ordner2 As MAPIFolder) As Boolean
-        Return Ordner1 IsNot Nothing AndAlso Ordner2 IsNot Nothing AndAlso (Ordner1.StoreID.AreNotEqual(Ordner2.StoreID) Or Ordner1.EntryID.AreNotEqual(Ordner2.EntryID))
+        Return Ordner1 IsNot Nothing AndAlso Ordner2 IsNot Nothing AndAlso Ordner1.StoreID.AreEqual(Ordner2.StoreID) AndAlso Ordner1.EntryID.AreEqual(Ordner2.EntryID)
     End Function
 
 #Region "VIP"

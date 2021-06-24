@@ -17,7 +17,7 @@
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </Border.BorderBrush>
 
-            <TreeView ItemsSource="{Binding Path=Stores}" Height="120" Margin="4">
+            <TreeView ItemsSource="{Binding Path=Stores}" Height="120" Margin="4" IsEnabled="{Binding DatenGeladen, FallbackValue=False}">
                 <TreeView.Resources>
                     <fbd:BindingProxy x:Key="DataContextProxy" Data="{Binding}" />
                 </TreeView.Resources>

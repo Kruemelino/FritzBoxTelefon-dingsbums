@@ -93,7 +93,7 @@
         <ComboBox Style="{StaticResource OptComboBox}" 
                   Tag="{x:Static localize:LocOptionen.strBaseCBoxLogLevel}"
                   ItemsSource="{Binding Path=OptVM.CBoxLogLevel}"
-                  SelectedValue="{Binding OptVM.CBoxMinLogLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedValue="{Binding OptVM.CBoxMinLogLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=Debug}"
                   DisplayMemberPath="Name"
                   SelectedValuePath="Name" />
 

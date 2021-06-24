@@ -2,7 +2,6 @@
 Imports System.Runtime.CompilerServices
 Imports System.Text.RegularExpressions
 
-
 <DebuggerStepThrough()>
 Public Module Extensions
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -410,14 +409,11 @@ Public Module Extensions
 
         Dim IPHostInfo As IPHostEntry
         Dim PingSender As New NetworkInformation.Ping()
-        Dim Options As New NetworkInformation.PingOptions()
+        Dim Options As New NetworkInformation.PingOptions() With {.DontFragment = True}
         Dim PingReply As NetworkInformation.PingReply = Nothing
-        Dim data As String = DfltStringEmpty
 
-        Dim buffer As Byte() = Encoding.ASCII.GetBytes(data)
+        Dim buffer As Byte() = Encoding.ASCII.GetBytes(DfltStringEmpty)
         Dim timeout As Integer = 120
-
-        Options.DontFragment = True
 
         Try
             PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
@@ -488,7 +484,7 @@ Public Module Extensions
             End Select
         Else
             Try
-                IPHostInfo = Dns.GetHostEntry(XMLData.POptionen.TBFBAdr)
+                IPHostInfo = Dns.GetHostEntry(InputIP)
                 For Each IPAddresse In IPHostInfo.AddressList
                     If IPAddresse.AddressFamily = Sockets.AddressFamily.InterNetwork Then
                         ValidIP = IPAddresse.ToString

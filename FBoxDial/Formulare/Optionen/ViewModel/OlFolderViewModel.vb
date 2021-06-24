@@ -47,7 +47,6 @@ Public Class OlFolderViewModel
         End Get
     End Property
 
-
     Private _isChecked As Boolean? = False
     ''' <summary>
     ''' Gets/sets the state of the associated UI toggle (ex. CheckBox).

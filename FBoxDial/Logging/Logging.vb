@@ -24,7 +24,8 @@ Friend Module NLogging
 
         config.AddTarget(New Targets.FileTarget With {.Name = "f",
                                                       .Encoding = Encoding.UTF8,
-                                                      .KeepFileOpen = False,
+                                                      .KeepFileOpen = True,
+                                                      .ConcurrentWrites = True,
                                                       .FileName = Path.Combine(BaseDir, DfltLogFileName),
                                                       .Layout = LayoutText.Join("|"),
                                                       .ArchiveNumbering = Targets.ArchiveNumberingMode.Rolling,

@@ -1,7 +1,8 @@
 ﻿Friend NotInheritable Class FritzBoxDefault
     Friend Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-    Friend Const DfltFritzBoxAdress As String = "fritz.box"
+    Friend Const DfltFritzBoxAdress As String = "192.168.178.1"
+    Friend Const DfltFritzBoxHostName As String = "fritz.box"
     Friend Const DfltFritzBoxSessionID As String = "0000000000000000"
     Friend Const DfltCodePageFritzBox As Integer = 65001
 

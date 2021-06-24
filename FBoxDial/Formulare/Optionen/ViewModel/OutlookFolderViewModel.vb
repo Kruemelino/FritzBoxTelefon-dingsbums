@@ -1,4 +1,5 @@
 ﻿Imports System.Threading
+Imports System.Threading.Tasks
 Imports System.Windows.Input
 Imports Microsoft.Office.Interop.Outlook
 
@@ -28,6 +29,15 @@ Public Class OutlookFolderViewModel
         End Set
     End Property
 
+    Private _DatenGeladen As Boolean
+    Public Property DatenGeladen As Boolean
+        Get
+            Return _DatenGeladen
+        End Get
+        Set
+            SetProperty(_DatenGeladen, Value)
+        End Set
+    End Property
 
     ''' <summary>
     ''' Gets a command that checks all children And parent items
@@ -95,7 +105,6 @@ Public Class OutlookFolderViewModel
             ' Unterscheidung, nach Anzahl der Child-Elemente
             ' Wenn nur ein Element da ist, dann setze den Status auf Nothing (indeterminate)
             ' Wenn mehrere Elemente da sind, dann prüfe, ob es unterschiedliche Status gibt
-
             If itemChildren.Length.AreEqual(1) Then
 
                 If firstChild Is Nothing Or firstChild Then
@@ -103,13 +112,12 @@ Public Class OutlookFolderViewModel
                 Else
                     Folder.IsChecked = False
                 End If
-
             Else
                 For i = 0 To itemChildren.Length - 1
 
                     If Equals(firstChild, itemChildren(i).IsChecked) = False Then
 
-                        '' Two different child states found for this parent item ...
+                        ' Two different child states found for this parent item ...
                         Folder.IsChecked = Nothing
 
                         NLogger.Debug($"Setze Checkbox für den Outlook Ordner {Folder.Name} ({Verwendung}) auf unbestimmt (indeterminate).")
@@ -142,48 +150,53 @@ Public Class OutlookFolderViewModel
         _Stores = New ObservableCollectionEx(Of OlFolderViewModel)
 
         ' Lade Outlook Folders
-        Tasks.Task.Run(Sub()
-                           ' Lade die Outlook Folders
-                           _Stores.AddRange(From Store In ThisAddIn.OutookApplication.Session.Stores() Select New OlFolderViewModel(CType(Store, Store).GetRootFolder, OutlookItemType))
+        Task.Run(Sub()
+                     ' Lade die Outlook Folders
+                     _Stores.AddRange(From Store In ThisAddIn.OutookApplication.Session.Stores() Select New OlFolderViewModel(CType(Store, Store).GetRootFolder, OutlookItemType))
 
-                           NLogger.Debug($"Outlook Ordner für TreeView ({Verwendung}) geladen.")
-                       End Sub)
+                     NLogger.Debug($"Outlook Ordner für TreeView ({Verwendung}) geladen.")
+                 End Sub)
 
     End Sub
 
     ''' <summary>
     ''' Selektiert nach dem Start die durch den User gewählten Ordner.
     ''' </summary>
-    Private Sub SetUserFolder(IsChecked As Boolean)
+    Private Async Sub SetUserFolder(IsChecked As Boolean)
 
         If OptVM IsNot Nothing Then
 
             Dim TreeViewOutlookOrdner = TreeLib.BreadthFirst.Traverse.LevelOrder(Of IOlFolderViewModel)(Stores, Function(i) i.ChildFolders)
+            Dim TaskList As New List(Of Task)
 
             NLogger.Debug($"Beginne das Setzen der Optionen im TreeView für '{Verwendung}' ({IsChecked}).")
 
             For Each Ordner As OutlookOrdner In OptVM.OutlookOrdnerListe.FindAll(Verwendung)
-                NLogger.Debug($"Verarbeite Ordner {Ordner.Name} für '{Verwendung}'.")
-                If Ordner.Exists Then
+                TaskList.Add(Task.Run(Sub()
+                                          NLogger.Debug($"Verarbeite Ordner {Ordner.Name} für '{Verwendung}'.")
+                                          If Ordner.Exists Then
+                                              Dim node = TreeViewOutlookOrdner.Where(Function(olFolderNode) olFolderNode.Node.OutlookFolder.AreEqual(Ordner.MAPIFolder))
 
-                    Dim node = TreeViewOutlookOrdner.Where(Function(olFolderNode) olFolderNode.Node.OutlookFolder.AreEqual(Ordner.MAPIFolder))
+                                              If node IsNot Nothing AndAlso node.Any Then
+                                                  NLogger.Debug($"Knoten im TreeView gefunden.")
+                                                  With node.First
 
-                    If node IsNot Nothing AndAlso node.Any Then
-                        NLogger.Debug($"Knoten im TreeView gefunden.")
-                        With node.First
+                                                      ' Setze das Checkmark
+                                                      .Node.IsChecked = IsChecked
 
-                            ' Setze das Checkmark
-                            .Node.IsChecked = IsChecked
+                                                      ' Führe das Setzen aller benachbarter Knoten aus.
+                                                      CheckItemCommand_Executed(CType(.Node, OlFolderViewModel), False)
+                                                  End With
 
-                            ' Führe das Setzen aller benachbarter Knoten aus.
-                            CheckItemCommand_Executed(CType(.Node, OlFolderViewModel), False)
-                        End With
-
-                    End If
-                End If
+                                              End If
+                                          End If
+                                      End Sub))
             Next
-        Else
-            NLogger.Debug($"Die gewählten Outlook-Ordner für '{Verwendung}' können nicht geladen werden.")
+
+            Await Task.WhenAll(TaskList)
+            ' Setze das Flag, dass alle Daten geladen wurden
+            DatenGeladen = True
+
         End If
 
     End Sub

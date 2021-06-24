@@ -520,6 +520,16 @@ Public Class OptionenViewModel
             SetProperty(_currentPageViewModel, Value)
         End Set
     End Property
+
+    Private _DatenGeladen As Boolean
+    Public Property DatenGeladen As Boolean
+        Get
+            Return _DatenGeladen
+        End Get
+        Set
+            SetProperty(_DatenGeladen, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "ICommand"
@@ -601,23 +611,28 @@ Public Class OptionenViewModel
     ''' <summary>
     ''' Lädt die daten aus den <see cref="Optionen"/> in dieses Viewmodel.
     ''' </summary>
-    Friend Sub LadeDaten(o As Object)
+    Friend Async Sub LadeDaten(o As Object)
         NLogger.Debug("Lade die Daten aus der XML-Datei in das ViewModel Optionen")
 
-        ' Schleife durch alle Properties dieser Klasse
-        For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
-            ' Suche das passende Property in den Optionen
-            Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
+        Dim T As Task = Task.Run(Sub()
+                                     ' Schleife durch alle Properties dieser Klasse
+                                     For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
+                                         ' Suche das passende Property in den Optionen
+                                         Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
 
-            If OptionPropertyInfo IsNot Nothing Then
-
-                If ViewModelPropertyInfo.CanWrite Then
-                    ViewModelPropertyInfo.SetValue(Me, OptionPropertyInfo.GetValue(XMLData.POptionen))
-                    NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geladen.")
-                End If
-
-            End If
-        Next
+                                         If OptionPropertyInfo IsNot Nothing Then
+                                             Try
+                                                 If ViewModelPropertyInfo.CanWrite Then
+                                                     ViewModelPropertyInfo.SetValue(Me, OptionPropertyInfo.GetValue(XMLData.POptionen))
+                                                     OnPropertyChanged(ViewModelPropertyInfo.Name)
+                                                     NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geladen.")
+                                                 End If
+                                             Catch ex As Exception
+                                                 NLogger.Error(ex, $"Fehler beim Laden des Feldes {ViewModelPropertyInfo.Name}.")
+                                             End Try
+                                         End If
+                                     Next
+                                 End Sub)
 
         ' Landes- und Ortskennzahl aus der Telefonie holen
         TBLandesKZ = XMLData.PTelefonie.LKZ
@@ -635,9 +650,12 @@ Public Class OptionenViewModel
         OutlookOrdnerListe = New OutlookOrdnerListe
         OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
 
+        Await T
         ' Fritz!Box Benutzer laden
         CBoxBenutzer = DatenService.LadeFBoxUser(TBFBAdr)
 
+        ' Aktiviere die Eingabemaske, nachdem alle Daten geladen wurden
+        DatenGeladen = True
         NLogger.Debug("Die Daten aus der XML-Datei wurden in das ViewModel Optionen geladen.")
     End Sub
 
@@ -647,18 +665,21 @@ Public Class OptionenViewModel
     Friend Async Sub Speichern()
         NLogger.Debug("Speichere die Daten aus dem ViewModel Optionen in die XML-Datei")
 
-        ' Schleife durch alle Properties dieser Klasse
-        For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
-            ' Suche das passende Property in den Optionen
-            Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
+        Dim TaskList As New List(Of Task) From {
+                    Task.Run(Sub()
+                                 ' Schleife durch alle Properties dieser Klasse
+                                 For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
+                                     ' Suche das passende Property in den Optionen
+                                     Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
 
-            If OptionPropertyInfo IsNot Nothing Then
+                                     If OptionPropertyInfo IsNot Nothing Then
 
-                OptionPropertyInfo.SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
-                NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geschrieben.")
+                                         OptionPropertyInfo.SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
+                                         NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geschrieben.")
 
-            End If
-        Next
+                                     End If
+                                 Next
+                             End Sub)}
 
         ' Landes- und Ortskennzahl in die Telefonie schreiben
         XMLData.PTelefonie.LKZ = TBLandesKZ
@@ -682,8 +703,6 @@ Public Class OptionenViewModel
             ' Die Telefoniegeräte aus den Viewmodel setzen
             .AddRange(TelGeräteListe)
         End With
-
-        Dim TaskList As New List(Of Task)
 
         ' Ordnerliste überwachter Ordner
         With XMLData.POptionen.OutlookOrdner

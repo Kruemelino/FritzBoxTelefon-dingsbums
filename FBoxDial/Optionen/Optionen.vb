@@ -6,7 +6,7 @@
     ''' <summary>
     ''' Gibt die eingegebene Fritz!Box IP-Adresse an. Dies ist eine Angabe, die der Nutzer in den Einstellungen ändern kann.
     ''' </summary>
-    <XmlElement("TBFBAdr")> Public Property TBFBAdr As String = "192.168.178.1"
+    <XmlElement("TBFBAdr")> Public Property TBFBAdr As String = FritzBoxDefault.DfltFritzBoxHostName
 
     ''' <summary>
     ''' Gibt eine korrekte Fritz!Box IP-Adresse zurück.
@@ -151,9 +151,7 @@
 
 #Region "SoftPhones"
 #Region "Phoner"
-
     <XmlElement("TBPhonerPasswort")> Public Property TBPhonerPasswort As String = DfltStringEmpty
-
     <XmlElement("CBPhoner")> Public Property CBPhoner As Boolean = False
 
 #End Region
@@ -161,7 +159,6 @@
 #Region "MicroSIP"
     <XmlElement("TBMicroSIPPath")> Public Property TBMicroSIPPath As String = DfltStringEmpty
     <XmlElement("CBMicroSIP")> Public Property CBMicroSIP As Boolean = False
-
 #End Region
 #End Region
 
