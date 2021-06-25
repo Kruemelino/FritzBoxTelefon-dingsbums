@@ -29,6 +29,10 @@ Public Interface IOlFolderViewModel
     ''' </summary>
     Property IsChecked As Boolean?
 
+    ReadOnly Property IsNotCheckedOrIndeterminate As Boolean
+    ReadOnly Property IsCheckedOrIndeterminate As Boolean
+    ReadOnly Property IsCheckedTrue As Boolean
+    ReadOnly Property IsCheckedFalse As Boolean
     ''' <summary>
     ''' Gets the name of this item.
     ''' </summary>

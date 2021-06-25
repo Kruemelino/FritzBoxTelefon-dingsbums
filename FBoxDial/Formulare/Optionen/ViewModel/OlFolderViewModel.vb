@@ -65,6 +65,28 @@ Public Class OlFolderViewModel
         End Set
     End Property
 
+    Public ReadOnly Property IsNotCheckedOrIndeterminate As Boolean Implements IOlFolderViewModel.IsNotCheckedOrIndeterminate
+        Get
+            Return CBool(IsChecked = False Or IsChecked Is Nothing)
+        End Get
+    End Property
+    Public ReadOnly Property IsCheckedOrIndeterminate As Boolean Implements IOlFolderViewModel.IsCheckedOrIndeterminate
+        Get
+            Return CBool(IsChecked = True Or IsChecked Is Nothing)
+        End Get
+    End Property
+    Public ReadOnly Property IsCheckedTrue As Boolean Implements IOlFolderViewModel.IsCheckedTrue
+        Get
+            Return CBool(IsChecked IsNot Nothing AndAlso IsChecked = True)
+        End Get
+    End Property
+
+    Public ReadOnly Property IsCheckedFalse As Boolean Implements IOlFolderViewModel.IsCheckedFalse
+        Get
+            Return CBool(IsChecked IsNot Nothing AndAlso IsChecked = False)
+        End Get
+    End Property
+
     Public ReadOnly Property IsEnabled As Boolean Implements IOlFolderViewModel.IsEnabled
         Get
             Return OutlookFolder.DefaultItemType = TargetFolderType
