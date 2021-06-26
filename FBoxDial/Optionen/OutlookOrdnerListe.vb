@@ -103,8 +103,5 @@ Public Class OutlookOrdnerListe
             End Select
         End If
     End Function
-    Public Function GetDefaultMAPIFolder(FolderType As OlDefaultFolders) As MAPIFolder
-        Return ThisAddIn.OutookApplication.Session.GetDefaultFolder(FolderType)
-    End Function
 
 End Class

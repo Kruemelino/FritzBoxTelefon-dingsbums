@@ -424,7 +424,7 @@ Imports Microsoft.Office.Interop
         If Not NrUnterdrückt Then
 
             ' Kontaktsuche in den Outlook-Kontakten
-            OlKontakt = KontaktSucher.KontaktSuche(GegenstelleTelNr)
+            OlKontakt = Await KontaktSucheTaskDASL(GegenstelleTelNr)
 
             If OlKontakt IsNot Nothing Then
                 ' Ein Kontakt wurde gefunden

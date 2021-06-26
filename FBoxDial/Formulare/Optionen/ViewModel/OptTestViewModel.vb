@@ -24,7 +24,7 @@
     Public Property TestRWSCommand As RelayCommand
     Public Property TestUserListCommand As RelayCommand
     Public Property TestLoginCommand As RelayCommand
-
+    Public Property TestKontaktsucheCommand As RelayCommand
 #End Region
     Public Sub New()
         ' Commands
@@ -32,34 +32,11 @@
         TestRWSCommand = New RelayCommand(AddressOf StartRWSTest, AddressOf CanRunTestRWS)
         TestUserListCommand = New RelayCommand(AddressOf StartLoadUserListTest, AddressOf CanLoadUserList)
         TestLoginCommand = New RelayCommand(AddressOf StartLoginTest, AddressOf CanStartLoginTest)
+        TestKontaktsucheCommand = New RelayCommand(AddressOf StartKontaktsucheTest, AddressOf CanRunTestKontaktsuche)
         ' Interface
         DatenService = New OptionenService
     End Sub
 
-    Private Sub StartTelNrTest(o As Object)
-        TestTelNr = New Telefonnummer With {.SetNummer = TBTestTelNrInput}
-
-        OnPropertyChanged(NameOf(TBTestTelNrUnformatiert))
-        OnPropertyChanged(NameOf(TBTestTelNrLKZ))
-        OnPropertyChanged(NameOf(TBTestTelNrLKZID))
-        OnPropertyChanged(NameOf(TBTestTelNrLKZName))
-        OnPropertyChanged(NameOf(TBTestTelNrONKZ))
-        OnPropertyChanged(NameOf(TBTestTelNrONKZName))
-        OnPropertyChanged(NameOf(TBTestTelNrEinwahl))
-        OnPropertyChanged(NameOf(TBTestTelNrDurchwahl))
-        OnPropertyChanged(NameOf(TBTestTelNrFormatiert))
-    End Sub
-
-    Private Sub StartRWSTest(o As Object)
-        ' Vorheriges Ergebnis löschen
-        TBTestRWSOutput = DfltStringEmpty
-
-        ' Ereignishandler hinzufügen
-        AddHandler DatenService.Status, AddressOf RWSTestStatus
-        AddHandler DatenService.BeendetRWS, AddressOf RWSTestBeendet
-        ' RWS Test Starten
-        DatenService.StartRWSTest(TBTestRWSInput)
-    End Sub
 
 #Region "Telefonnummerntest"
     Private Property TestTelNr As Telefonnummer
@@ -131,45 +108,19 @@
             Return TestTelNr?.Formatiert
         End Get
     End Property
-#End Region
 
-#Region "Test der Rückwärtssuche"
-    Private _TBTestRWSInput As String
-    Public Property TBTestRWSInput As String
-        Get
-            Return _TBTestRWSInput
-        End Get
-        Set
-            SetProperty(_TBTestRWSInput, Value)
-        End Set
-    End Property
+    Private Sub StartTelNrTest(o As Object)
+        TestTelNr = New Telefonnummer With {.SetNummer = TBTestTelNrInput}
 
-    Private _TBTestRWSOutput As String
-    Public Property TBTestRWSOutput As String
-        Get
-            Return _TBTestRWSOutput
-        End Get
-        Set
-            SetProperty(_TBTestRWSOutput, Value)
-        End Set
-    End Property
-
-    Private Function CanRunTestRWS(obj As Object) As Boolean
-        Return TBTestRWSInput.IsNotStringNothingOrEmpty
-    End Function
-
-    Private Sub RWSTestStatus(sender As Object, e As NotifyEventArgs(Of String))
-        TBTestRWSOutput += e.Value & Environment.NewLine
-    End Sub
-    Private Sub RWSTestBeendet(sender As Object, e As NotifyEventArgs(Of Boolean))
-        ' Ereignishandler hinzufügen
-        RemoveHandler DatenService.Status, AddressOf RWSTestStatus
-        RemoveHandler DatenService.BeendetRWS, AddressOf RWSTestBeendet
-
-        ' Finales Ergebnis schreiben
-        If Not e.Value Then
-            TBTestRWSOutput += Environment.NewLine & String.Format(Localize.LocOptionen.strTestRWSNoResult, TBTestRWSInput)
-        End If
+        OnPropertyChanged(NameOf(TBTestTelNrUnformatiert))
+        OnPropertyChanged(NameOf(TBTestTelNrLKZ))
+        OnPropertyChanged(NameOf(TBTestTelNrLKZID))
+        OnPropertyChanged(NameOf(TBTestTelNrLKZName))
+        OnPropertyChanged(NameOf(TBTestTelNrONKZ))
+        OnPropertyChanged(NameOf(TBTestTelNrONKZName))
+        OnPropertyChanged(NameOf(TBTestTelNrEinwahl))
+        OnPropertyChanged(NameOf(TBTestTelNrDurchwahl))
+        OnPropertyChanged(NameOf(TBTestTelNrFormatiert))
     End Sub
 #End Region
 
@@ -252,4 +203,109 @@
     End Sub
 
 #End Region
+
+#Region "Test der Kontaktsuche"
+    Private _TBTestKontaktsucheInput As String
+    Public Property TBTestKontaktsucheInput As String
+        Get
+            Return _TBTestKontaktsucheInput
+        End Get
+        Set
+            SetProperty(_TBTestKontaktsucheInput, Value)
+        End Set
+    End Property
+
+    Private _TBTestKontaktsucheOutput As String
+    Public Property TBTestKontaktsucheOutput As String
+        Get
+            Return _TBTestKontaktsucheOutput
+        End Get
+        Set
+            SetProperty(_TBTestKontaktsucheOutput, Value)
+        End Set
+    End Property
+    Private Function CanRunTestKontaktsuche(o As Object) As Boolean
+        Return TBTestKontaktsucheInput.IsNotStringNothingOrEmpty
+    End Function
+
+    Private Sub TestKontaktsucheStatus(sender As Object, e As NotifyEventArgs(Of String))
+        TBTestKontaktsucheOutput += e.Value & Environment.NewLine
+    End Sub
+
+    Private Sub StartKontaktsucheTest(o As Object)
+        ' Vorheriges Ergebnis löschen
+        TBTestKontaktsucheOutput = DfltStringEmpty
+
+        ' Ereignishandler hinzufügen
+        AddHandler DatenService.Status, AddressOf TestKontaktsucheStatus
+        AddHandler DatenService.BeendetKontaktsuche, AddressOf TestKontaktsucheBeendet
+
+        ' Test der Kontaktsuche
+        DatenService.StartKontaktsucheTest(TBTestKontaktsucheInput)
+    End Sub
+
+    Private Sub TestKontaktsucheBeendet(sender As Object, e As NotifyEventArgs(Of Boolean))
+        ' Ereignishandler hinzufügen
+        RemoveHandler DatenService.Status, AddressOf TestKontaktsucheStatus
+        RemoveHandler DatenService.BeendetKontaktsuche, AddressOf TestKontaktsucheBeendet
+
+        ' Finales Ergebnis schreiben
+        If Not e.Value Then
+            TBTestKontaktsucheOutput += Environment.NewLine & String.Format(Localize.LocOptionen.strTestRWSNoResult, TBTestKontaktsucheInput)
+        End If
+    End Sub
+#End Region
+
+#Region "Test der Rückwärtssuche"
+    Private _TBTestRWSInput As String
+    Public Property TBTestRWSInput As String
+        Get
+            Return _TBTestRWSInput
+        End Get
+        Set
+            SetProperty(_TBTestRWSInput, Value)
+        End Set
+    End Property
+
+    Private _TBTestRWSOutput As String
+    Public Property TBTestRWSOutput As String
+        Get
+            Return _TBTestRWSOutput
+        End Get
+        Set
+            SetProperty(_TBTestRWSOutput, Value)
+        End Set
+    End Property
+
+    Private Function CanRunTestRWS(obj As Object) As Boolean
+        Return TBTestRWSInput.IsNotStringNothingOrEmpty
+    End Function
+
+    Private Sub RWSTestStatus(sender As Object, e As NotifyEventArgs(Of String))
+        TBTestRWSOutput += e.Value & Environment.NewLine
+    End Sub
+
+    Private Sub StartRWSTest(o As Object)
+        ' Vorheriges Ergebnis löschen
+        TBTestRWSOutput = DfltStringEmpty
+
+        ' Ereignishandler hinzufügen
+        AddHandler DatenService.Status, AddressOf RWSTestStatus
+        AddHandler DatenService.BeendetRWS, AddressOf RWSTestBeendet
+        ' RWS Test Starten
+        DatenService.StartRWSTest(TBTestRWSInput)
+    End Sub
+
+    Private Sub RWSTestBeendet(sender As Object, e As NotifyEventArgs(Of Boolean))
+        ' Ereignishandler hinzufügen
+        RemoveHandler DatenService.Status, AddressOf RWSTestStatus
+        RemoveHandler DatenService.BeendetRWS, AddressOf RWSTestBeendet
+
+        ' Finales Ergebnis schreiben
+        If Not e.Value Then
+            TBTestRWSOutput += Environment.NewLine & String.Format(Localize.LocOptionen.strTestRWSNoResult, TBTestRWSInput)
+        End If
+    End Sub
+#End Region
+
 End Class

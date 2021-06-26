@@ -1,5 +1,5 @@
 ﻿Imports System.Threading
-Imports Microsoft.Office.Interop.Outlook
+Imports Microsoft.Office.Interop
 
 Public Class OptSearchContactViewModel
     Inherits NotifyBase
@@ -25,7 +25,7 @@ Public Class OptSearchContactViewModel
         End Get
     End Property
 
-    Private Property RootVM As OutlookFolderViewModel = New OutlookFolderViewModel(OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSuche)
+    Private Property RootVM As OutlookFolderViewModel = New OutlookFolderViewModel(Outlook.OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSuche)
 
     Public ReadOnly Property Root As OutlookFolderViewModel
         Get
@@ -125,6 +125,7 @@ Public Class OptSearchContactViewModel
         NLogger.Debug("Manueller Journalimport abgebrochen.")
 
     End Sub
+    ' TODO in Datenservice verschieben
     Private Async Sub StartIndex(obj As Object)
         ' Setze das CancelationPending zurück
         CancelationPending = False
@@ -138,26 +139,32 @@ Public Class OptSearchContactViewModel
         ' Für Ereignishandler hinzu
         AddHandler DatenService.IndexStatus, AddressOf SetProgressbar
 
-        Dim OutlookOrdner As OutlookOrdnerListe = OptVM.OutlookOrdnerListe
+        Dim OrdnerListe As List(Of OutlookOrdner) = OptVM.OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
 
         ' Überprüfe, ob Ordner für die Kontaktsuche ausgewählt sind
-        If Not OutlookOrdner.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Any Then
-            OutlookOrdner.Add(New OutlookOrdner(OutlookOrdner.GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche))
-
+        If Not OrdnerListe.Any Then
             NLogger.Debug($"Es wurde kein Outlookordner für die Kontaktsuche gewählt. Füge Standardkontaktordner hinzu.")
+            OrdnerListe.Add(New OutlookOrdner(GetDefaultMAPIFolder(Outlook.OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche))
         End If
 
         Dim IndexTasks As New List(Of Tasks.Task)
 
+        ' Erzeuge eine Liste der Ordner, die der Nutzer ausgewählt hat
+        Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = OrdnerListe.Select(Function(S) S.MAPIFolder).ToList
+
+        ' Füge die Unterordner hinzu
+        If OptVM.CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+
         ' Verarbeite alle Ordner die der Kontaktsuche entsprechen
-        For Each Ordner In OutlookOrdner.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
+        For Each Ordner In MAPIFolderList
             ' Erhöhe das Maximum der Progressbar
-            SetProgressbarMax(DatenService.ZähleOutlookKontakte(Ordner.MAPIFolder))
+            SetProgressbarMax(DatenService.ZähleOutlookKontakte(Ordner))
 
             ' Starte das Indizieren
-            IndexTasks.Add(Tasks.Task.Run(Sub() DatenService.Indexer(Ordner.MAPIFolder, IndexModus, OptVM.CBSucheUnterordner)))
+            IndexTasks.Add(Tasks.Task.Run(Sub() DatenService.Indexer(Ordner, IndexModus, OptVM.CBSucheUnterordner)))
 
             ' Frage Cancelation ab
+            ' TODO: Sauberes Abbrechen implementieren CancellationToken 
             If CancelationPending Then Exit For
         Next
 

@@ -565,6 +565,17 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Testbereich</value>
     <comment>MainView</comment>
   </data>
+  <data name="strTestKontaktsucheHead" xml:space="preserve">
+    <value>Test: Kontaktsuche</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestKontaktsucheInfo" xml:space="preserve">
+    <value>Im Folgenden kann die korrekte Umsetzung der Kontaktsuche in den gewälten Outlook Kontoaktordnern getestet werden.
+Bei erfolgreicher Suche wird der gefundene Kontakt eingeblendet.</value>
+  </data>
+  <data name="strTestKontaktsucheStart" xml:space="preserve">
+    <value>Starte die Kontaktsuche</value>
+  </data>
   <data name="strTestLKZ" xml:space="preserve">
     <value>Landeskennzahl</value>
     <comment>OptTestView</comment>
@@ -598,7 +609,7 @@ Seit FRITZ!OS 7.24 ist eine Anmeldung auf der Fritz!Box nur noch mit Benutzernam
     <value>Name des Ortsnetzes</value>
     <comment>OptTestView</comment>
   </data>
-  <data name="strTestRWS" xml:space="preserve">
+  <data name="strTestRWSHead" xml:space="preserve">
     <value>Test: Rückwärtssuche</value>
     <comment>OptTestView</comment>
   </data>

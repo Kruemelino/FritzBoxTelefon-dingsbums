@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Threading
+Imports Microsoft.Office.Interop
 Imports Microsoft.Office.Interop.Outlook
 
 Friend Class OptionenService
@@ -114,15 +115,15 @@ Friend Class OptionenService
             DeIndizierungOrdner(Ordner)
         End If
 
-        ' Unterordner werden rekursiv durchsucht und indiziert
-        If Unterordner Then
-            Dim iOrdner As Integer = 1
+        '' Unterordner werden rekursiv durchsucht und indiziert
+        'If Unterordner Then
+        '    Dim iOrdner As Integer = 1
 
-            Do While (iOrdner.IsLessOrEqual(Ordner.Folders.Count)) And Not CancelationPending
-                Indexer(Ordner.Folders.Item(iOrdner), IndexModus, Unterordner)
-                iOrdner += 1
-            Loop
-        End If
+        '    Do While (iOrdner.IsLessOrEqual(Ordner.Folders.Count)) And Not CancelationPending
+        '        Indexer(Ordner.Folders.Item(iOrdner), IndexModus, Unterordner)
+        '        iOrdner += 1
+        '    Loop
+        'End If
 
         NLogger.Info($"{If(IndexModus, "Indizierung", "Deindizierung")} des Ordners {Ordner.Name} ist abgeschlossen.")
     End Sub
@@ -177,6 +178,29 @@ Friend Class OptionenService
 
             RemoveHandler fboxTR064.Status, AddressOf SetStatus
         End Using
+    End Sub
+#End Region
+
+#Region "Test Kontaktsuche"
+    Public Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetKontaktsuche
+
+    Friend Async Sub StartKontaktsucheTest(TelNr As String) Implements IOptionenService.StartKontaktsucheTest
+        ' Ereignishandler hinzufügen
+        AddHandler KontaktSucher.Beendet, AddressOf KontaktsucheTestBeendet
+        AddHandler KontaktSucher.Status, AddressOf SetStatus
+
+        Dim oc As ContactItem = Await KontaktSucheTaskDASL(New Telefonnummer With {.SetNummer = TelNr})
+        If oc IsNot Nothing Then oc.Display()
+    End Sub
+
+    Private Sub KontaktsucheTestBeendet(sender As Object, e As NotifyEventArgs(Of Boolean))
+        RaiseEvent BeendetKontaktsuche(Me, New NotifyEventArgs(Of Boolean)(e.Value))
+
+        ' Ereignishandler hinzufügen
+        RemoveHandler KontaktSucher.Beendet, AddressOf KontaktsucheTestBeendet
+        RemoveHandler KontaktSucher.Status, AddressOf SetStatus
+
+        NLogger.Debug($"Test der Kontaktsuche beendet")
     End Sub
 #End Region
 End Class

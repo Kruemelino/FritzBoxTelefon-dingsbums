@@ -131,7 +131,7 @@ Friend Module KontaktFunktionen
             Dim KontaktOrdner As MAPIFolder = .GetMAPIFolder(OutlookOrdnerVerwendung.KontaktSpeichern)
             ' Speichere den Kontakt... 
             ' Wenn es sich nicht um den Hauptkontaktordner handelt, ist darin der Kontakt bereits (ungespeichert) enthalten. Ein Move würde den Kontakt nur dublizieren.
-            If Not KontaktOrdner.AreEqual(.GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts)) Then
+            If Not KontaktOrdner.AreEqual(GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts)) Then
                 ' Verschiebe den Kontakt in den gewünschten Ornder
                 olKontakt = CType(olKontakt.Move(KontaktOrdner), ContactItem)
                 NLogger.Info($"Kontakt {olKontakt.FullName} wurde erstellt und in den Ordner {KontaktOrdner.Name} verschoben.")
@@ -297,6 +297,33 @@ Friend Module KontaktFunktionen
         End If
 
     End Function
+
+    Friend Function GetDefaultMAPIFolder(FolderType As OlDefaultFolders) As MAPIFolder
+        Return ThisAddIn.OutookApplication.Session.GetDefaultFolder(FolderType)
+    End Function
+
+    Private Function GetOutlookChildFolders(BaseFolder As MAPIFolder, ItemType As OlItemType) As List(Of MAPIFolder)
+        Dim ChildFolders As New List(Of MAPIFolder)
+        ' Füge die direkten Childfolder hinzu
+        For Each Folder As MAPIFolder In BaseFolder.Folders
+            If Folder.DefaultItemType = ItemType Then ChildFolders.Add(Folder)
+
+            ' Rekursiver Aufruf
+            ChildFolders.AddRange(GetOutlookChildFolders(Folder, ItemType))
+        Next
+
+        Return ChildFolders
+    End Function
+
+    Friend Sub AddChildFolders(MAPIFolderList As List(Of MAPIFolder), ItemType As OlItemType)
+        Dim MAPIFolderChildList As New List(Of MAPIFolder)
+
+        For Each MapiFolder In MAPIFolderList
+            MAPIFolderChildList.AddRange(GetOutlookChildFolders(MapiFolder, ItemType))
+        Next
+        MAPIFolderList.AddRange(MAPIFolderChildList)
+    End Sub
+
     <Extension> Friend Function GetKontaktTelNrList(olContact As ContactItem) As List(Of Telefonnummer)
 
         Dim alleTelNr(14) As String ' alle im Kontakt enthaltenen Telefonnummern

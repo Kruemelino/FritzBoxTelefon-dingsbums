@@ -1,26 +1,24 @@
-﻿Imports Microsoft.Office.Interop
+﻿Imports System.Threading.Tasks
+Imports Microsoft.Office.Interop
 
 Friend Module KontaktSucher
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-
-    Friend Function KontaktSuche(TelNr As Telefonnummer) As Outlook.ContactItem
-        NLogger.Debug($"Starte Kontaktsuche in den Outlook Kontakten für Telefonnummer '{TelNr.Unformatiert}'.")
-
-        Return KontaktSucheAuswahlDASL(TelNr)
-
-    End Function
+    Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
+    Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Boolean))
 
 #Region "Kontaktsuche DASL in Ordnerauswahl"
-    Friend Function KontaktSucheAuswahlDASL(TelNr As Telefonnummer) As Outlook.ContactItem
+
+    Friend Async Function KontaktSucheTaskDASL(TelNr As Telefonnummer) As Task(Of Outlook.ContactItem)
         Dim Filter As List(Of String)
         Dim sFilter As String
         Dim olKontakt As Outlook.ContactItem = Nothing
-        Dim iOrdner As Integer
 
         If ThisAddIn.OutookApplication IsNot Nothing Then
 
             If TelNr IsNot Nothing Then
+                PushStatus(LogLevel.Debug, $"Kontaktsuche für {TelNr.Unformatiert} gestartet")
+
                 ' Filter zusammenstellen
                 Filter = New List(Of String)
 
@@ -29,35 +27,51 @@ Friend Module KontaktSucher
                 Next
                 sFilter = $"@SQL={String.Join(" OR ", Filter)}"
 
-                With XMLData.POptionen.OutlookOrdner.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
-                    ' Füge den Standardkontaktordner hinzu, falls keine anderen Ordner definiert wurden.
-                    If Not .Any Then
-                        .Add(New OutlookOrdner(XMLData.POptionen.OutlookOrdner.GetDefaultMAPIFolder(Outlook.OlDefaultFolders.olFolderContacts),
-                                               OutlookOrdnerVerwendung.KontaktSuche))
+                Dim OrdnerListe As List(Of OutlookOrdner) = XMLData.POptionen.OutlookOrdner.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
+
+                ' Füge den Standardkontaktordner hinzu, falls keine anderen Ordner definiert wurden.
+                If Not OrdnerListe.Any Then
+                    OrdnerListe.Add(New OutlookOrdner(GetDefaultMAPIFolder(Outlook.OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche))
+                End If
+
+                Dim TaskList As New List(Of Task(Of Outlook.ContactItem))
+
+                ' Erzeuge eine Liste der Ordner, die der Nutzer ausgewählt hat
+                Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = OrdnerListe.Select(Function(S) S.MAPIFolder).ToList
+
+                ' Füge die Unterordner hinzu
+                If XMLData.POptionen.CBSucheUnterordner Then
+                    PushStatus(LogLevel.Debug, "Ermittle Unterordner...")
+                    AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+                End If
+
+                PushStatus(LogLevel.Debug, $"Starte die Kontaktsuche in {MAPIFolderList.Count} Ordnern.")
+                ' Führe die Kontaktsuche aus.
+                For Each MapiFolder In MAPIFolderList
+
+                    TaskList.Add(Task.Run(Function() As Outlook.ContactItem
+                                              PushStatus(LogLevel.Debug, $"Kontaktsuche in MAPIFolder '{MapiFolder.Name}' gestartet")
+                                              Return FindeAnruferKontaktAuswahl(MapiFolder, sFilter)
+                                          End Function))
+                Next
+
+                While TaskList.Any 'And olKontakt Is Nothing
+                    Dim t = Await Task.WhenAny(TaskList)
+
+                    If t.Result IsNot Nothing Then
+                        If olKontakt Is Nothing Then olKontakt = t.Result
+                        PushStatus(LogLevel.Debug, $"Kontaktsuche erfolgreich: '{olKontakt.FullName}' in '{olKontakt.ParentFolder.Name}' gefunden.")
                     End If
 
-                    Dim Ordner As OutlookOrdner
-                    iOrdner = 0
-                    Do While (iOrdner.IsLess(.Count)) And (olKontakt Is Nothing)
-                        Ordner = .Item(iOrdner)
-
-                        ' Die Suche erfolgt mittels einer gefilterten Outlook-Datentabelle, welche nur passende Kontakte enthalten.
-                        olKontakt = FindeAnruferKontaktAuswahl(Ordner.MAPIFolder, sFilter)
-
-                        ' Rekursive Suche der Unterordner
-                        If olKontakt Is Nothing And XMLData.POptionen.CBSucheUnterordner Then
-                            For Each Unterordner As Outlook.MAPIFolder In Ordner.MAPIFolder.Folders
-                                olKontakt = FindeAnruferKontaktAuswahl(Unterordner, sFilter)
-                                Unterordner.ReleaseComObject
-                            Next
-                        End If
-                        iOrdner += 1
-                    Loop
-
-                End With
+                    TaskList.Remove(t)
+                End While
 
             End If
         End If
+
+        PushStatus(LogLevel.Debug, $"Kontaktsuche beendet.")
+        RaiseEvent Beendet(Nothing, New NotifyEventArgs(Of Boolean)(olKontakt IsNot Nothing))
+
         Return olKontakt
     End Function
 
@@ -84,9 +98,18 @@ Friend Module KontaktSucher
             oTable.ReleaseComObject
         End If
 
-
         Return olKontakt
     End Function '(FindeKontakt)
+
+    ''' <summary>
+    ''' Gibt eine Statusmeldung (<paramref name="StatusMessage"/>) als Event aus. Gleichzeitig wird in das Log mit vorgegebenem <paramref name="Level"/> geschrieben.
+    ''' </summary>
+    ''' <param name="Level">NLog LogLevel</param>
+    ''' <param name="StatusMessage">Die auszugebende Statusmeldung.</param>
+    Private Sub PushStatus(Level As LogLevel, StatusMessage As String)
+        NLogger.Log(Level, StatusMessage)
+        RaiseEvent Status(Nothing, New NotifyEventArgs(Of String)(StatusMessage))
+    End Sub
 #End Region
 
 #Region "Absendersuche E-Mail"

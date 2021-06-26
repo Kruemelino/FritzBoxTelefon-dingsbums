@@ -38,4 +38,9 @@ Friend Interface IOptionenService
     Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean))
     Sub StartLoginTest(FbAdr As String, User As String, Password As Security.SecureString)
 #End Region
+
+#Region "Test Kontaktsuche"
+    Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean))
+    Sub StartKontaktsucheTest(TelNr As String)
+#End Region
 End Interface

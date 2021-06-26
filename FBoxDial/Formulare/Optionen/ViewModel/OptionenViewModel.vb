@@ -1,6 +1,7 @@
 ﻿Imports System.Reflection
 Imports System.Windows
 Imports System.Threading.Tasks
+Imports Microsoft.Office.Interop
 ''' <summary>
 ''' https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/
 ''' </summary>
@@ -712,19 +713,25 @@ Public Class OptionenViewModel
             OutlookOrdnerListe.ClearNotExisting()
 
             ' deindiziere:
-            For Each Folder In .FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche))
+            Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = .FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
+
+            ' Füge die Unterordner hinzu
+            If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+
+            For Each Folder In MAPIFolderList
                 NLogger.Debug($"Deindiziere Odner {Folder.Name}")
-                TaskList.Add(Task.Run(Sub()
-                                          DatenService.Indexer(Folder.MAPIFolder, False, CBSucheUnterordner)
-                                      End Sub))
+                TaskList.Add(Task.Run(Sub() DatenService.Indexer(Folder, False, CBSucheUnterordner)))
             Next
 
             ' indiziere:
-            For Each Folder In OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche))
+            MAPIFolderList = OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
+
+            ' Füge die Unterordner hinzu
+            If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+
+            For Each Folder In MAPIFolderList
                 NLogger.Debug($"Indiziere Odner {Folder.Name}")
-                TaskList.Add(Task.Run(Sub()
-                                          DatenService.Indexer(Folder.MAPIFolder, True, CBSucheUnterordner)
-                                      End Sub))
+                TaskList.Add(Task.Run(Sub() DatenService.Indexer(Folder, True, CBSucheUnterordner)))
             Next
 
         End With

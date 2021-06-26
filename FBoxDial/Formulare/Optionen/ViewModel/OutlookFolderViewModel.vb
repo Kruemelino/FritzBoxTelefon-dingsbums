@@ -77,7 +77,7 @@ Public Class OutlookFolderViewModel
         ' Verarbeite die übergeordneten Elemente
         ' Wenn es keine nachfolgenden (Child) Elemente gibt
         ' Wenn keines der nachfolgenden (Child) Elemente True oder indeterminate ist
-        If ChangedItem.ChildrenCount.IsZero OrElse Not ChangedItem.Folders.Where(Function(F) F.IsCheckedOrIndeterminate).Any Then
+        If ChangedItem.ChildrenCount.IsZero OrElse ChangedItem.Folders.Where(Function(F) F.IsCheckedOrIndeterminate).Any Then
             ' Visit each parent in turn And determine their correct states
 
             Dim parentItem As IOlFolderViewModel = ChangedItem.Parent
@@ -87,7 +87,6 @@ Public Class OutlookFolderViewModel
                 parentItem = parentItem.Parent
             End While
         End If
-
 
     End Sub
 
@@ -173,7 +172,6 @@ Public Class OutlookFolderViewModel
         If OptVM IsNot Nothing Then
 
             Dim TreeViewOutlookOrdner = TreeLib.BreadthFirst.Traverse.LevelOrder(Of IOlFolderViewModel)(Stores, Function(i) i.ChildFolders.Where(Function(oFolder) oFolder.OutlookFolder.DefaultItemType = OutlookItemType))
-            Dim TaskList As New List(Of Task)
 
             NLogger.Debug($"Beginne das Setzen der Optionen im TreeView für '{Verwendung}' ({IsChecked}).")
 

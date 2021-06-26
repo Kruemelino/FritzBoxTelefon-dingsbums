@@ -72,27 +72,6 @@
             </StackPanel>
         </Expander>
         
-        <Expander Header="{x:Static localize:LocOptionen.strTestRWS}">
-            <StackPanel>
-                
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestRWSInfo}"/>
-                
-                <TextBox Style="{StaticResource OptTextBox}"
-                         Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
-                         Text="{Binding TBTestRWSInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <Button Style="{StaticResource IconTextButton}"
-                        Tag="{DynamicResource Import_16x}" Height="25"
-                        Content="{x:Static localize:LocOptionen.strTestRWSStart}" 
-                        Margin="4"
-                        Command="{Binding TestRWSCommand}" />
-
-                <TextBox Style="{StaticResource ResultTextBox}"
-                         Text="{Binding TBTestRWSOutput, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            </StackPanel>
-        </Expander>
-
         <Expander Header="{x:Static localize:LocOptionen.strTestLoginHead}">
             <StackPanel>
                 <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestLoginInfo}"/>
@@ -134,5 +113,47 @@
                          Text="{Binding TBTestLoginOutput, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </Expander>
+
+        <Expander Header="{x:Static localize:LocOptionen.strTestKontaktsucheHead}">
+            <StackPanel>
+                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestKontaktsucheInfo}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
+                         Text="{Binding TBTestKontaktsucheInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Style="{StaticResource IconTextButton}"
+                        Tag="{DynamicResource Import_16x}" Height="25"
+                        Content="{x:Static localize:LocOptionen.strTestKontaktsucheStart}" 
+                        Margin="4"
+                        Command="{Binding TestKontaktsucheCommand}" />
+
+                <TextBox Style="{StaticResource ResultTextBox}"
+                         Text="{Binding TBTestKontaktsucheOutput, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Expander>
+
+        <Expander Header="{x:Static localize:LocOptionen.strTestRWSHead}">
+            <StackPanel>
+                
+                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestRWSInfo}"/>
+                
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
+                         Text="{Binding TBTestRWSInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Style="{StaticResource IconTextButton}"
+                        Tag="{DynamicResource Import_16x}" Height="25"
+                        Content="{x:Static localize:LocOptionen.strTestRWSStart}" 
+                        Margin="4"
+                        Command="{Binding TestRWSCommand}" />
+
+                <TextBox Style="{StaticResource ResultTextBox}"
+                         Text="{Binding TBTestRWSOutput, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </StackPanel>
+        </Expander>
+
+
     </StackPanel>
 </UserControl>

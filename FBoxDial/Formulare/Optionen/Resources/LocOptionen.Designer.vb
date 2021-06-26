@@ -1048,6 +1048,34 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Test: Kontaktsuche ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestKontaktsucheHead() As String
+            Get
+                Return ResourceManager.GetString("strTestKontaktsucheHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Im Folgenden kann die korrekte Umsetzung der Kontaktsuche in den gewälten Outlook Kontoaktordnern getestet werden.
+        '''Bei erfolgreicher Suche wird der gefundene Kontakt eingeblendet. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestKontaktsucheInfo() As String
+            Get
+                Return ResourceManager.GetString("strTestKontaktsucheInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Starte die Kontaktsuche ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestKontaktsucheStart() As String
+            Get
+                Return ResourceManager.GetString("strTestKontaktsucheStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Landeskennzahl ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestLKZ() As String
@@ -1123,9 +1151,9 @@ Namespace Localize
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Test: Rückwärtssuche ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strTestRWS() As String
+        Public Shared ReadOnly Property strTestRWSHead() As String
             Get
-                Return ResourceManager.GetString("strTestRWS", resourceCulture)
+                Return ResourceManager.GetString("strTestRWSHead", resourceCulture)
             End Get
         End Property
         
