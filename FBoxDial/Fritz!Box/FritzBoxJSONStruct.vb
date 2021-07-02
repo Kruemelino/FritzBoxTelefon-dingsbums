@@ -8,10 +8,6 @@ Friend Structure MSNEntry
     Public Property Fax As Boolean
 End Structure
 
-Friend Structure FBoxFON
-    Public Property FON As List(Of MSNEntry)
-End Structure
-
 Friend Structure FBoxFONNr
     Public Property MSN0 As String
     Public Property MSN1 As String
@@ -42,10 +38,6 @@ End Structure
 
 Friend Structure DECTNr
     Public Property Number As String
-End Structure
-
-Friend Structure FBoxDECT
-    Public Property DECT As List(Of DECTEntry)
 End Structure
 
 Friend Structure FBoxDECTNr
@@ -89,34 +81,6 @@ Friend Structure FBoxFaxNr
     End Property
 
 End Structure
+
 #End Region
-
-Public Class CustomBooleanJsonConverter
-    Inherits JsonConverter(Of Boolean)
-
-    Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Boolean, hasExistingValue As Boolean, serializer As JsonSerializer) As Boolean
-        If reader.ValueType Is GetType(String) Then
-            Dim StrVal As String = reader.Value.ToString
-
-            If StrVal.IsNotStringNothingOrEmpty Then
-                Dim StrBool As Boolean
-                If Boolean.TryParse(StrVal, StrBool) Then
-                    Return True
-                Else
-                    Return Convert.ToBoolean(Convert.ToInt32(StrVal))
-                End If
-
-            Else
-                Return False
-
-            End If
-        Else
-            Return Convert.ToBoolean(reader.Value)
-        End If
-    End Function
-
-    Public Overrides Sub WriteJson(writer As JsonWriter, value As Boolean, serializer As JsonSerializer)
-        serializer.Serialize(writer, value)
-    End Sub
-End Class
 
