@@ -47,6 +47,19 @@ Public Class Telefonnummer
             NLogger.Trace($"Nummer erfasst: '{Value}'; '{EigeneNummer}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
         End Set
     End Property
+
+    <XmlIgnore> Public ReadOnly Property TellowsNummer As String
+        Get
+            ' TODO: Bei Nummern im Ortsnetz, die Vorwahl ergänzen 
+            ' 1. Entferne jeden String, der vor einem Doppelpunkt steht (einschließlich :)
+            ' 2. Ersetze das + durch die Verkehrsausscheidungsziffer (VAZ) 00
+            ' 3. Entferne alles, was keine Ziffer ist
+            ' 4. Wenn die Nummer nicht mit einer Null beginnt, füge die Ortskennzahl (einschließlich führender Null) hinzu
+
+            '      1                          .2                             .3                    .4
+            Return Nummer.RegExRemove("^.+:+").RegExReplace("^[+]", PDfltVAZ).RegExRemove("[^0-9]").RegExReplace("^(?!0)", $"0{Ortskennzahl}")
+        End Get
+    End Property
     <XmlIgnore> ReadOnly Property IstMobilnummer As Boolean
         Get
             If Not Ortskennzahl = DfltStringEmpty Then
@@ -111,15 +124,11 @@ Public Class Telefonnummer
                                     RegExReplace("[wxyz]", "9").
                                     RegExReplace("^[+]", PDfltVAZ)
 
-            ' Alles was jetzt keine Zahlen oder Steuerzeichen direkt entfernen
-            ' NurZiffern = NurZiffern.RegExRemove("[^0-9\#\*]")
-            ' Anpassung 20.03.2021: Steuerzeichen werden ebenfalls entfernt
+            ' Entferne alles, was keine Ziffer ist
             NurZiffern = NurZiffern.RegExRemove("[^0-9]")
 
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich ggf. vorhandener nachfolgender 0)
             If Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Then
-
-
                 NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{Landeskennzahl}{{1}}[0]?", "0")
             End If
 
@@ -226,7 +235,7 @@ Public Class Telefonnummer
             '                        wenn die Landesvorwahl der Nummer leer ist ODER gleich der eigestellten Landesvorwahl ist UND
             '                        die Ortsvorwahl nicht vorhanden ist
 
-            If (Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Or Landeskennzahl.AreEqual(DfltStringEmpty)) And XMLData.POptionen.CBintl And Ortskennzahl.IsStringEmpty Then
+            If (Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Or Landeskennzahl.AreEqual(DfltStringEmpty)) And XMLData.POptionen.CBintl And Ortskennzahl.IsStringNothingOrEmpty Then
                 Ortskennzahl = XMLData.PTelefonie.OKZ
             End If
 
@@ -235,7 +244,7 @@ Public Class Telefonnummer
                 ' Wenn die Landeskennzahl gleich der hinterlegten Kennzahl entspricht: Inland
                 If XMLData.POptionen.CBintl Then
                     ' Eine Ortsvorwahl muss vorhanden sein
-                    If Ortskennzahl.IsStringEmpty Then tmpOrtsvorwahl = XMLData.PTelefonie.OKZ
+                    If Ortskennzahl.IsStringNothingOrEmpty Then tmpOrtsvorwahl = XMLData.PTelefonie.OKZ
                     ' Entferne die führende Null OKZ Prefix
                     tmpOrtsvorwahl = tmpOrtsvorwahl.RegExRemove("^(0)+")
                     ' Die Landesvorwahl muss gesetzt sein

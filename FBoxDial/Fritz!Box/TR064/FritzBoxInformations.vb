@@ -4,10 +4,9 @@ Namespace SOAP
     Public Module FritzBoxInformations
 
 #Region "Properties"
+#Region "Fritz!Box SOAP/TR64"
         Friend ReadOnly Property TR064ContentType As String = "text/xml; charset=""utf-8"""
         Friend ReadOnly Property TR064UserAgent As String = "AVM UPnP/1.0 Client 1.0"
-
-#Region "Fritz!Box SOAP/TR64"
         Friend ReadOnly Property DfltTR064Port() As Integer = 49000
         Friend ReadOnly Property DfltTR064PortSSL() As Integer = 49443
         ''' <summary>

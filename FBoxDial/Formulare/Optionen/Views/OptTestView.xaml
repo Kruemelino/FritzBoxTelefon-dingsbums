@@ -19,7 +19,8 @@
     
     <StackPanel x:Name="MainStackPanel" Margin="8">
 
-        <Expander Header="{x:Static localize:LocOptionen.strTestTelNrHead}">
+        <Expander Style="{StaticResource OptExpander}" 
+                  Header="{x:Static localize:LocOptionen.strTestTelNrHead}">
 
             <StackPanel>
                 <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestTelNrInfo}"/>
@@ -71,8 +72,9 @@
                          Text="{Binding TBTestTelNrFormatiert, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </Expander>
-        
-        <Expander Header="{x:Static localize:LocOptionen.strTestLoginHead}">
+
+        <Expander Style="{StaticResource OptExpander}"
+                  Header="{x:Static localize:LocOptionen.strTestLoginHead}">
             <StackPanel>
                 <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestLoginInfo}"/>
                 <TextBox Style="{StaticResource OptTextBox}" Margin="4"
@@ -114,7 +116,8 @@
             </StackPanel>
         </Expander>
 
-        <Expander Header="{x:Static localize:LocOptionen.strTestKontaktsucheHead}">
+        <Expander Style="{StaticResource OptExpander}"
+                  Header="{x:Static localize:LocOptionen.strTestKontaktsucheHead}">
             <StackPanel>
                 <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestKontaktsucheInfo}"/>
 
@@ -133,7 +136,8 @@
             </StackPanel>
         </Expander>
 
-        <Expander Header="{x:Static localize:LocOptionen.strTestRWSHead}">
+        <Expander Style="{StaticResource OptExpander}"
+                  Header="{x:Static localize:LocOptionen.strTestRWSHead}">
             <StackPanel>
                 
                 <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestRWSInfo}"/>

@@ -57,6 +57,7 @@ Public Class OptionenViewModel
     Public ReadOnly Property AddinVersion As String = $"Info V{Assembly.GetExecutingAssembly.GetName.Version}"
     Public ReadOnly Property DfltDeCryptKey As String = DfltWerteAllgemein.DfltDeCryptKey
     Public ReadOnly Property DfltPhonerDeCryptKey As String = DfltWerteAllgemein.DfltPhonerDeCryptKey
+    Public ReadOnly Property DfltTellowsDeCryptKey As String = DfltWerteAllgemein.DfltTellowsDeCryptKey
 #End Region
 
 #Region "Grunddaten Telefonie"
@@ -353,9 +354,6 @@ Public Class OptionenViewModel
 
 #Region "Einstellungen für die Kontaktsuche - Rückwärtssuche (RWS)"
     Private _CBRWS As Boolean
-    Private _CBKErstellen As Boolean
-    Private _CBRWSIndex As Boolean
-
     Public Property CBRWS As Boolean
         Get
             Return _CBRWS
@@ -365,6 +363,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBKErstellen As Boolean
     Public Property CBKErstellen As Boolean
         Get
             Return _CBKErstellen
@@ -374,6 +373,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBRWSIndex As Boolean
     Public Property CBRWSIndex As Boolean
         Get
             Return _CBRWSIndex
@@ -385,6 +385,79 @@ Public Class OptionenViewModel
 
 #End Region
 
+#Region "Einstellungen für die Kontaktsuche - tellows"
+    Private _TBTellowsAPIKey As String
+    Public Property TBTellowsAPIKey As String
+        Get
+            Return _TBTellowsAPIKey
+        End Get
+        Set
+            SetProperty(_TBTellowsAPIKey, Value)
+        End Set
+    End Property
+
+    Private _CBTellows As Boolean
+    Public Property CBTellows As Boolean
+        Get
+            Return _CBTellows
+        End Get
+        Set
+            SetProperty(_CBTellows, Value)
+        End Set
+    End Property
+
+    Private _CBTellowsAnrMonMinScore As Integer
+    Public Property CBTellowsAnrMonMinScore As Integer
+        Get
+            Return _CBTellowsAnrMonMinScore
+        End Get
+        Set
+            SetProperty(_CBTellowsAnrMonMinScore, Value)
+        End Set
+    End Property
+
+    Private _CBTellowsAnrMonMinComments As Integer
+    Public Property CBTellowsAnrMonMinComments As Integer
+        Get
+            Return _CBTellowsAnrMonMinComments
+        End Get
+        Set
+            SetProperty(_CBTellowsAnrMonMinComments, Value)
+        End Set
+    End Property
+
+    Private _CBTellowsAnrMonColor As Boolean
+    Public Property CBTellowsAnrMonColor As Boolean
+        Get
+            Return _CBTellowsAnrMonColor
+        End Get
+        Set
+            SetProperty(_CBTellowsAnrMonColor, Value)
+        End Set
+    End Property
+
+    Private _CBTellowsAutoFBBlockList As Boolean
+    Public Property CBTellowsAutoFBBlockList As Boolean
+        Get
+            Return _CBTellowsAutoFBBlockList
+        End Get
+        Set
+            SetProperty(_CBTellowsAutoFBBlockList, Value)
+        End Set
+    End Property
+
+    Private _CBTellowsAutoScoreFBBlockList As Integer
+    Public Property CBTellowsAutoScoreFBBlockList As Integer
+        Get
+            Return _CBTellowsAutoScoreFBBlockList
+        End Get
+        Set
+            SetProperty(_CBTellowsAutoScoreFBBlockList, Value)
+        End Set
+    End Property
+
+    Public ReadOnly Property CBoxTellowsScore As IEnumerable(Of Integer) = {1, 2, 3, 4, 5, 6, 7, 8, 9}
+#End Region
 #End Region
 
 #Region "Auswertung der Fritz!box Anrufliste"
@@ -566,6 +639,7 @@ Public Class OptionenViewModel
             .Add(New OptTelephonyViewModel())
             .Add(New OptPhonerViewModel())
             .Add(New OptMicroSIPViewModel())
+            .Add(New OptTellowsViewModel())
             .Add(New OptInfoViewModel())
             .Add(New OptTestViewModel())
         End With
@@ -742,7 +816,7 @@ Public Class OptionenViewModel
         SetLogLevel()
 
         ' Speichern in Datei anstoßen
-        Serializer.Speichern(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
+        XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
 
         Await Task.WhenAll(TaskList)
     End Sub

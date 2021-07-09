@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Runtime.CompilerServices
 Imports Microsoft.Office.Interop.Outlook
+Imports System.Windows.Media
 Friend Module KontaktFunktionen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
@@ -228,9 +229,10 @@ Friend Module KontaktFunktionen
         If FBoxContact IsNot Nothing Then
             Pfad = $"{Path.GetTempPath}{Path.GetRandomFileName}".RegExReplace(".{3}$", "jpg")
 
+            Await DownloadToFileTaskAsync(New Uri(FBoxContact.Person.CompleteImageURL), Pfad)
+
             NLogger.Debug($"Bild des Kontaktes {FBoxContact.Person.RealName} unter Pfad {Pfad} gespeichert.")
 
-            Await SOAP.DownloadToFileTaskAsync(New Uri(FBoxContact.Person.CompleteImageURL), Pfad)
         End If
         Return Pfad
     End Function
@@ -680,4 +682,30 @@ Friend Module KontaktFunktionen
         End With
     End Sub
 
+#Region "Bilder"
+    Friend Async Function LadeKontaktbild(Link As String) As Threading.Tasks.Task(Of Imaging.BitmapImage)
+
+        If Link.IsNotStringNothingOrEmpty Then
+            ' Setze den Pfad zum Bild zusammen
+            Dim b As Byte() = {}
+
+            ' Lade das Bild herunter
+            b = Await DownloadDataTaskAsync(New Uri(Link))
+            If b.Any Then
+                Dim biImg As New Imaging.BitmapImage()
+                Dim ms As New MemoryStream(b)
+
+                With biImg
+                    .BeginInit()
+                    .StreamSource = ms
+                    .EndInit()
+                End With
+
+                Return biImg
+            End If
+        End If
+
+        Return Nothing
+    End Function
+#End Region
 End Module

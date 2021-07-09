@@ -46,6 +46,10 @@
         <fbd:OptMicroSIPView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type fbd:OptTellowsViewModel}">
+        <fbd:OptTellowsView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type fbd:OptInfoViewModel}">
         <fbd:OptInfoView />
     </DataTemplate>
@@ -120,7 +124,21 @@
         <Setter Property="Margin" Value="0,2,0,4"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-    </Style>     
+    </Style>
+
+    <DataTemplate x:Key="HeaderTemplate">
+        <TextBlock Text="{Binding}" 
+                   VerticalAlignment="Center"
+                   FontWeight="DemiBold"
+                   Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+                   Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}"
+                   TextTrimming="CharacterEllipsis"/>
+    </DataTemplate>
+
+    <Style x:Key="OptExpander" TargetType="{x:Type Expander}" >
+        <Setter Property="Margin" Value="0,2,0,4"/>
+        <Setter Property="HeaderTemplate" Value="{StaticResource HeaderTemplate}"/>
+    </Style>
 
     <Style x:Key="OptComboBox" TargetType="{x:Type ComboBox}" >
         <Setter Property="Template">

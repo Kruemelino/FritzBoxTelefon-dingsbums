@@ -8,7 +8,6 @@ Friend Module KontaktSucher
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Boolean))
 
 #Region "Kontaktsuche DASL in Ordnerauswahl"
-
     Friend Async Function KontaktSucheTaskDASL(TelNr As Telefonnummer) As Task(Of Outlook.ContactItem)
         Dim Filter As List(Of String)
         Dim sFilter As String

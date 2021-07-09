@@ -9,7 +9,6 @@
             .Telefonie.Nummern.Add(New FritzBoxXMLNummer With {.Nummer = TelNr.Unformatiert})
         End With
 
-
         Threading.Tasks.Task.Run(Sub()
                                      If AddToCallBarring(Sperreintrag) Then
                                          NLogger.Info($"Die Nummer '{TelNr.Unformatiert}' wurde der Sperrliste hinzugefügt.")

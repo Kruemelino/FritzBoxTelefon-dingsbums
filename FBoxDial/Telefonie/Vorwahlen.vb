@@ -47,9 +47,14 @@ Friend Class Vorwahlen
     End Sub
 
     Private Async Sub LadeVorwahlen()
-        Kennzahlen = Await XmlDeserializeFromStringAsync(Of KZ)(My.Resources.Vorwahlen)
-        NLogger.Debug("Landes- und Ortskennzahlen eingelesen.")
 
+        Kennzahlen = Await DeserializeAsyncXML(Of KZ)(My.Resources.Vorwahlen, False)
+
+        If Kennzahlen IsNot Nothing Then
+            NLogger.Debug("Landes- und Ortskennzahlen eingelesen.")
+        Else
+            NLogger.Warn("Landes- und Ortskennzahlen nicht eingelesen.")
+        End If
     End Sub
 
     Friend Sub TelNrKennzahlen(TelNr As Telefonnummer, ByRef _LKZ As LKZ, ByRef _ONKZ As ONKZ)

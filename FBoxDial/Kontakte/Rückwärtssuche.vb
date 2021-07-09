@@ -69,7 +69,7 @@ Public Module Rückwärtssuche
         Do
             PushStatus(LogLevel.Debug, $"Start RWS{i}: {baseurl}search_inv&ph={tmpTelNr}")
 
-            htmlRWS = Await HTTPAsyncGet($"{baseurl}search_inv&ph={tmpTelNr}", Encoding.Default)
+            htmlRWS = Await DownloadStringTaskAsync($"{baseurl}search_inv&ph={tmpTelNr}", Encoding.Default)
 
             If htmlRWS.IsNotStringEmpty Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
@@ -77,7 +77,7 @@ Public Module Rückwärtssuche
                 EintragsID = htmlRWS.GetSubString("form_name=detail&amp;action=58&amp;page=78&amp;context=11&amp;id=", "&")
                 If EintragsID.IsNotErrorString Then
                     PushStatus(LogLevel.Debug, $"Link vCard: {baseurl}vcard&id={EintragsID}")
-                    VCard = Await HTTPAsyncGet($"{baseurl}vcard&id={EintragsID}", Encoding.Default)
+                    VCard = Await DownloadStringTaskAsync($"{baseurl}vcard&id={EintragsID}", Encoding.Default)
                 End If
             End If
 

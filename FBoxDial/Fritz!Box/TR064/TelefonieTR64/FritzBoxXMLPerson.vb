@@ -49,44 +49,25 @@ Imports System.Xml.Serialization
             SetProperty(_ImageData, Value)
         End Set
     End Property
-    <XmlIgnore> Friend ReadOnly Property CompleteImageURL As String
+
+    <XmlIgnore> Friend ReadOnly Property CompleteImageURL(Optional SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID) As String
         Get
-            Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
-            Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
-                If fbtr064.GetSessionID(SessionID) Then
-                    Return $"https://{XMLData.POptionen.ValidFBAdr}:{SOAP.DfltTR064PortSSL}{ImageURL}&{SessionID}"
-                Else
-                    Return DfltStringEmpty
+            If SessionID.AreEqual(FritzBoxDefault.DfltFritzBoxSessionID) Then
+                If Ping(XMLData.POptionen.ValidFBAdr) Then
+                    Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+                        fbtr064.GetSessionID(SessionID)
+                        ' Session ID erhalten, ansonnsten DfltFritzBoxSessionID
+                    End Using
                 End If
-            End Using
+            End If
+
+            If SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID) Then
+                Return $"https://{XMLData.POptionen.ValidFBAdr}:{SOAP.DfltTR064PortSSL}{ImageURL}&{SessionID}"
+            Else
+                Return DfltStringEmpty
+            End If
         End Get
 
     End Property
-
-    Friend Async Function LadeKontaktbild() As Threading.Tasks.Task(Of Imaging.BitmapImage)
-
-        If ImageURL.IsNotStringNothingOrEmpty Then
-            ' Setze den Pfad zum Bild zusammen
-            Dim u As New Uri(CompleteImageURL)
-            Dim b As Byte() = {}
-
-            ' Lade das Bild herunter
-            b = Await SOAP.DownloadDataTaskAsync(u)
-            If b.Any Then
-                Dim biImg As New Imaging.BitmapImage()
-                Dim ms As New IO.MemoryStream(b)
-
-                With biImg
-                    .BeginInit()
-                    .StreamSource = ms
-                    .EndInit()
-                End With
-
-                Return biImg
-            End If
-        End If
-
-        Return Nothing
-    End Function
 
 End Class

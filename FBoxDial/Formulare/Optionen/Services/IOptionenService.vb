@@ -1,5 +1,4 @@
 ﻿Imports Microsoft.Office.Interop.Outlook
-
 Friend Interface IOptionenService
 
 #Region "Grunddaten"
@@ -32,6 +31,11 @@ Friend Interface IOptionenService
 #Region "Test Rückwärtssuche"
     Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean))
     Sub StartRWSTest(TelNr As String)
+#End Region
+
+#Region "Tellows"
+    Function GetTellowsAccountData(XAuthToken As String) As Threading.Tasks.Task(Of TellowsPartnerInfo)
+    Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Threading.Tasks.Task(Of TellowsResponse)
 #End Region
 
 #Region "Test Login"

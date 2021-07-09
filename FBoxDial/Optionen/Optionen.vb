@@ -117,6 +117,16 @@
 
 #End Region
 
+
+#Region "Einstellungen für die Kontaktsuche - tellows"
+    <XmlElement("TBTellowsAPIKey")> Public Property TBTellowsAPIKey As String = DfltStringEmpty
+    <XmlElement("CBTellows")> Public Property CBTellows As Boolean = False
+    <XmlElement("CBTellowsAnrMonMinScore")> Public Property CBTellowsAnrMonMinScore As Integer = 7
+    <XmlElement("CBTellowsAnrMonMinComments")> Public Property CBTellowsAnrMonMinComments As Integer = 3
+    <XmlElement("CBTellowsAnrMonColor")> Public Property CBTellowsAnrMonColor As Boolean = False
+    <XmlElement("CBTellowsAutoFBBlockList")> Public Property CBTellowsAutoFBBlockList As Boolean = False
+    <XmlElement("CBTellowsAutoScoreFBBlockList")> Public Property CBTellowsAutoScoreFBBlockList As Integer = 7
+#End Region
 #End Region
 
 #Region "Auswertung der Fritz!box Anrufliste"

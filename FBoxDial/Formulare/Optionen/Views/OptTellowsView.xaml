@@ -1,0 +1,156 @@
+﻿<UserControl x:Class="OptTellowsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=fbd:OptTellowsViewModel, IsDesignTimeCreatable=False}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strTellowsHeadInfo}"/>
+
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTellowsInfo}"/>
+        
+        <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strTellowsHomepage}" 
+                         URL="https://www.tellows.de/" 
+                         LinkLabel="www.tellows.de" />
+        
+        <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strTellowsApiKeyLink}" 
+                         URL="https://shop.tellows.de/de/tellows-api-key.html" 
+                         LinkLabel="{x:Static localize:LocOptionen.strTellowsAPIKey}"/>
+
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strTellowsHeadConfig}"/>
+
+        <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strTellowsAPIKey}"
+                                Value="{Binding Path=OptVM.TBTellowsAPIKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                DeCryptKey="{Binding Path=OptVM.DfltTellowsDeCryptKey, Mode=OneWay}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strTellowsCBTellows}" 
+                  IsChecked="{Binding OptVM.CBTellows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <ComboBox Style="{StaticResource OptComboBox}" 
+                  Tag="{x:Static localize:LocOptionen.strTellowsMinScore}"
+                  ItemsSource="{Binding Path=OptVM.CBoxTellowsScore}"
+                  SelectedValue="{Binding OptVM.CBTellowsAnrMonMinScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strTellowsMinComments}"
+                 Text="{Binding OptVM.CBTellowsAnrMonMinComments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strTellowsAnrMonColor}" 
+                  IsChecked="{Binding OptVM.CBTellowsAnrMonColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strTellowsAutoFBBlockList}" 
+                  IsChecked="{Binding OptVM.CBTellowsAutoFBBlockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <ComboBox Style="{StaticResource OptComboBox}" 
+                  Tag="{x:Static localize:LocOptionen.strTellowsAutoScoreFBBlockList}"
+                  ItemsSource="{Binding Path=OptVM.CBoxTellowsScore}"
+                  SelectedValue="{Binding OptVM.CBTellowsAutoScoreFBBlockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Expander Style="{StaticResource OptExpander}"
+                  Header="{x:Static localize:LocOptionen.strTellowsHeadAccountInfo}">
+
+            <StackPanel>
+                <Button Style="{StaticResource IconTextButton}"
+                        Tag="{DynamicResource Import_16x}" Height="25"
+                        Content="{x:Static localize:LocOptionen.strTellowsLadeAccountInfo}" 
+                        Margin="4"
+                        Command="{Binding TellowsAccountInfoCommand}" />
+
+                <TextBox Margin="0,0,0,4"
+                        Text="{Binding TellowsPartnerInfo.Info, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTellowsPartnerLogin}"
+                         Text="{Binding TellowsPartnerInfo.Apipartnerid, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTellowsRequestCount}"
+                         Text="{Binding TellowsPartnerInfo.Requests, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            </StackPanel>
+        </Expander>
+        
+        <Expander Style="{StaticResource OptExpander}"
+                  Header="{x:Static localize:LocOptionen.strTellowsTest}">
+            
+            <StackPanel>
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
+                         Text="{Binding TBTestTellowsInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Button Style="{StaticResource IconTextButton}"
+                        Tag="{DynamicResource Import_16x}" Height="25"
+                        Content="{x:Static localize:LocOptionen.strTellowsStartLiveRequest}" 
+                        Margin="4"
+                        Command="{Binding TellowsLiveAPICommand}" />
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTellowsScore}"
+                         Text="{Binding TellowsResponse.Score, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTellowsSearches}"
+                         Text="{Binding TellowsResponse.Searches, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTellowsComments}"
+                         Text="{Binding TellowsResponse.Comments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.RowSpan="2" Height="120"
+                           Margin="0" Source="{Binding Path=ImageData, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+                    <Label Grid.Row="0" Grid.Column="1" Content="{x:Static localize:LocOptionen.strTellowsCallerTypes}" VerticalAlignment="Bottom"/>
+                    <ListBox Grid.Row="1" Grid.Column="1" MaxHeight="100" Margin="4"
+                             ItemsSource="{Binding TellowsResponse.CallerNames, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Height" Value="17" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+
+                    <Label Grid.Row="0" Grid.Column="2" Content="{x:Static localize:LocOptionen.strTellowsCallerNames}" VerticalAlignment="Bottom"/>
+                    <DataGrid Grid.Row="1" Grid.Column="2" MaxHeight="100"
+                              ItemsSource="{Binding TellowsResponse.CallerTypes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                              Style="{StaticResource DataGridStyle}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Path=Name}" />
+                            <DataGridTextColumn Binding="{Binding Path=Count}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </StackPanel>            
+        </Expander>
+    </StackPanel>
+</UserControl>

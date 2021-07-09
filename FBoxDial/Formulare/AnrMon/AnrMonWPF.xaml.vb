@@ -31,6 +31,7 @@ Public Class AnrMonWPF
         NLogger.Trace("Initialized")
         Const AbstandAnrMon As Integer = 10
 
+        ' TODO: Anzeige auf anderen Monitor verschieben.
         ' Setze Startposition
         ' X-Koordinate
         Left = SystemParameters.WorkArea.Right - Width - AbstandAnrMon

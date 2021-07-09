@@ -309,6 +309,7 @@ Wird kein Ordner gewählt, wird der Outlook-Standard verwendet.</value>
 Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
 Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmn:
 Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
+Bei der Nutzung von tellows wird die zu Telefonnummer an den Anbieter übergeben. Die Datenschutzhinweise von tellows sind zu beachten!
 Bei der Nutzung der Software-Telefone Phoner und MicroSIP werden die zu wählenden Nummern an diese Programme übergeben. Die Datenschutzhinweise der Software-Telefone sind zu beachten!</value>
     <comment>OptInfoView</comment>
   </data>
@@ -561,6 +562,106 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Typ</value>
     <comment>OptTelephonyView</comment>
   </data>
+  <data name="strTellows" xml:space="preserve">
+    <value>tellows</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strTellowsAnrMonColor" xml:space="preserve">
+    <value>Anrufmonitor Hintergrund einfärben</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsAPIKey" xml:space="preserve">
+    <value>API Key</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsApiKeyLink" xml:space="preserve">
+    <value>API Key im tellows Shop</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsAutoFBBlockList" xml:space="preserve">
+    <value>Automatisch auf Fritz!Box Rufsperre setzen</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsAutoScoreFBBlockList" xml:space="preserve">
+    <value>Mindestscore für Fritz!Box Rufsperre</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsCallerNames" xml:space="preserve">
+    <value>Mögliche Namen</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsCallerTypes" xml:space="preserve">
+    <value>Typ</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsCBTellows" xml:space="preserve">
+    <value>Kontaktsuche bei tellows</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsComments" xml:space="preserve">
+    <value>Anzahl Kommentare dieser Nummer</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsHeadAccountInfo" xml:space="preserve">
+    <value>tellows - Account Info</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsHeadConfig" xml:space="preserve">
+    <value>tellows - Konfiguration</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsHeadInfo" xml:space="preserve">
+    <value>tellows - Rückwärtssuche</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsHomepage" xml:space="preserve">
+    <value>Homepage</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsInfo" xml:space="preserve">
+    <value>tellows bietet Informationen zur Identifizierung von seriösen oder gefährlichen Anrufen - dank der weltweiten Community. Die Nutzung von tellows ist nicht kostenfrei. Zur korrekten Nutzung ist der Erwerb eines sogenannten API Keys notwendig.</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsLadeAccountInfo" xml:space="preserve">
+    <value>Lade Account Daten</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsMinComments" xml:space="preserve">
+    <value>Mindestanzahl an Kommentaren</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsMinScore" xml:space="preserve">
+    <value>Mindestscore für Anzeige im Anrufmonitor</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsPartnerInfo" xml:space="preserve">
+    <value>Partnerinfo</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsPartnerLogin" xml:space="preserve">
+    <value>Partnerlogin</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsRequestCount" xml:space="preserve">
+    <value>Anzahl aller bisherigen Anfragen</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsScore" xml:space="preserve">
+    <value>Score dieser Nummer</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsSearches" xml:space="preserve">
+    <value>Anzahl Abfragen dieser Nummer</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsStartLiveRequest" xml:space="preserve">
+    <value>Starte Test der Live API</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsTest" xml:space="preserve">
+    <value>tellows - Test der Live API</value>
+    <comment>OptTellows</comment>
+  </data>
   <data name="strTest" xml:space="preserve">
     <value>Testbereich</value>
     <comment>MainView</comment>
@@ -572,9 +673,11 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
   <data name="strTestKontaktsucheInfo" xml:space="preserve">
     <value>Im Folgenden kann die korrekte Umsetzung der Kontaktsuche in den gewälten Outlook Kontoaktordnern getestet werden.
 Bei erfolgreicher Suche wird der gefundene Kontakt eingeblendet.</value>
+    <comment>OptTestView</comment>
   </data>
   <data name="strTestKontaktsucheStart" xml:space="preserve">
     <value>Starte die Kontaktsuche</value>
+    <comment>OptTestView</comment>
   </data>
   <data name="strTestLKZ" xml:space="preserve">
     <value>Landeskennzahl</value>

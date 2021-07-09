@@ -486,7 +486,7 @@ Namespace Localize
         '''Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
         '''Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmn:
         '''Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
-        '''Bei der Nutzung der Software-Telefone Phoner und MicroSIP werden die zu wählenden Nummern an di [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''Bei der Nutzung von tellows wird die zu Telefonnummer an den Anbieter übergeben. Die Datenschut [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strInfoDatenschutz() As String
             Get
@@ -1035,6 +1035,231 @@ Namespace Localize
         Public Shared ReadOnly Property strTelephonyPhoneType() As String
             Get
                 Return ResourceManager.GetString("strTelephonyPhoneType", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die tellows ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellows() As String
+            Get
+                Return ResourceManager.GetString("strTellows", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufmonitor Hintergrund einfärben ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsAnrMonColor() As String
+            Get
+                Return ResourceManager.GetString("strTellowsAnrMonColor", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die API Key ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsAPIKey() As String
+            Get
+                Return ResourceManager.GetString("strTellowsAPIKey", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die API Key im tellows Shop ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsApiKeyLink() As String
+            Get
+                Return ResourceManager.GetString("strTellowsApiKeyLink", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Automatisch auf Fritz!Box Rufsperre setzen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsAutoFBBlockList() As String
+            Get
+                Return ResourceManager.GetString("strTellowsAutoFBBlockList", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Mindestscore für Fritz!Box Rufsperre ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsAutoScoreFBBlockList() As String
+            Get
+                Return ResourceManager.GetString("strTellowsAutoScoreFBBlockList", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Mögliche Namen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsCallerNames() As String
+            Get
+                Return ResourceManager.GetString("strTellowsCallerNames", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Typ ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsCallerTypes() As String
+            Get
+                Return ResourceManager.GetString("strTellowsCallerTypes", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kontaktsuche bei tellows ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsCBTellows() As String
+            Get
+                Return ResourceManager.GetString("strTellowsCBTellows", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anzahl Kommentare dieser Nummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsComments() As String
+            Get
+                Return ResourceManager.GetString("strTellowsComments", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die tellows - Account Info ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsHeadAccountInfo() As String
+            Get
+                Return ResourceManager.GetString("strTellowsHeadAccountInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die tellows - Konfiguration ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsHeadConfig() As String
+            Get
+                Return ResourceManager.GetString("strTellowsHeadConfig", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die tellows - Rückwärtssuche ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsHeadInfo() As String
+            Get
+                Return ResourceManager.GetString("strTellowsHeadInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Homepage ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsHomepage() As String
+            Get
+                Return ResourceManager.GetString("strTellowsHomepage", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die tellows bietet Informationen zur Identifizierung von seriösen oder gefährlichen Anrufen - dank der weltweiten Community. Die Nutzung von tellows ist nicht kostenfrei. Zur korrekten Nutzung ist der Erwerb eines sogenannten API Keys notwendig. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsInfo() As String
+            Get
+                Return ResourceManager.GetString("strTellowsInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Lade Account Daten ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsLadeAccountInfo() As String
+            Get
+                Return ResourceManager.GetString("strTellowsLadeAccountInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Mindestanzahl an Kommentaren ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsMinComments() As String
+            Get
+                Return ResourceManager.GetString("strTellowsMinComments", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Mindestscore für Anzeige im Anrufmonitor ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsMinScore() As String
+            Get
+                Return ResourceManager.GetString("strTellowsMinScore", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Partnerinfo ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsPartnerInfo() As String
+            Get
+                Return ResourceManager.GetString("strTellowsPartnerInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Partnerlogin ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsPartnerLogin() As String
+            Get
+                Return ResourceManager.GetString("strTellowsPartnerLogin", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anzahl aller bisherigen Anfragen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsRequestCount() As String
+            Get
+                Return ResourceManager.GetString("strTellowsRequestCount", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Score dieser Nummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsScore() As String
+            Get
+                Return ResourceManager.GetString("strTellowsScore", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anzahl Abfragen dieser Nummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsSearches() As String
+            Get
+                Return ResourceManager.GetString("strTellowsSearches", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Starte Test der Live API ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsStartLiveRequest() As String
+            Get
+                Return ResourceManager.GetString("strTellowsStartLiveRequest", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die tellows - Test der Live API ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsTest() As String
+            Get
+                Return ResourceManager.GetString("strTellowsTest", resourceCulture)
             End Get
         End Property
         

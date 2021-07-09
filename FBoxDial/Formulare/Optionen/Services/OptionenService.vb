@@ -1,5 +1,5 @@
-﻿Imports System.Windows.Threading
-Imports Microsoft.Office.Interop
+﻿Imports System.Security
+Imports System.Windows.Threading
 Imports Microsoft.Office.Interop.Outlook
 
 Friend Class OptionenService
@@ -9,24 +9,27 @@ Friend Class OptionenService
     Friend Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FritzBoxXMLUser) Implements IOptionenService.LadeFBoxUser
 
         Dim UserList As New ObservableCollectionEx(Of FritzBoxXMLUser)
+        ' Prüfe, ob Fritz!Box verfügbar
+        If Ping(IPAdresse) Then
+            Using FBoxTr064 As New SOAP.FritzBoxTR64(IPAdresse, Nothing)
+                AddHandler FBoxTr064.Status, AddressOf SetStatus
 
-        Using FBoxTr064 As New SOAP.FritzBoxTR64(IPAdresse, Nothing)
-            AddHandler FBoxTr064.Status, AddressOf SetStatus
+                Dim XMLString As String = DfltStringEmpty
+                Dim FritzBoxUsers As New FritzBoxXMLUserList
 
-            Dim XMLString As String = DfltStringEmpty
-            Dim FritzBoxUsers As New FritzBoxXMLUserList
+                If FBoxTr064.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
+                    UserList.AddRange(FritzBoxUsers.UserListe)
 
-            If FBoxTr064.GetUserList(XMLString) AndAlso XmlDeserializeFromString(XMLString, FritzBoxUsers) Then
-                UserList = New ObservableCollectionEx(Of FritzBoxXMLUser)
-                UserList.AddRange(FritzBoxUsers.UserListe)
+                    RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(True))
+                Else
+                    RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(False))
+                End If
 
-                RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(True))
-            Else
-                RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(False))
-            End If
-
-            RemoveHandler FBoxTr064.Status, AddressOf SetStatus
-        End Using
+                RemoveHandler FBoxTr064.Status, AddressOf SetStatus
+            End Using
+        Else
+            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        End If
 
         Return UserList
     End Function
@@ -47,14 +50,8 @@ Friend Class OptionenService
         AddHandler FritzBoxDaten.Status, AddressOf SetStatus
 
         NLogger.Debug($"Einlesen der Telefoniedaten gestartet")
-
-        Dispatcher.CurrentDispatcher.BeginInvoke(Sub()
-                                                     ' Starte das Einlesen
-                                                     If Ping(XMLData.POptionen.ValidFBAdr) Then
-                                                         FritzBoxDaten.GetFritzBoxDaten()
-                                                     End If
-                                                 End Sub)
-
+        ' Starte das Einlesen
+        Dispatcher.CurrentDispatcher.BeginInvoke(Sub() If Ping(XMLData.POptionen.ValidFBAdr) Then FritzBoxDaten.GetFritzBoxDaten())
 
     End Sub
 
@@ -164,20 +161,44 @@ Friend Class OptionenService
     End Sub
 #End Region
 
+#Region "Tellows"
+    Public Async Function GetTellowsAccountData(XAuthToken As String) As Threading.Tasks.Task(Of TellowsPartnerInfo) Implements IOptionenService.GetTellowsAccountData
+        Using tellows = New Tellows(XAuthToken)
+            Return Await tellows.GetTellowsAccountInfo()
+        End Using
+    End Function
+
+    Public Async Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Threading.Tasks.Task(Of TellowsResponse) Implements IOptionenService.GetTellowsLiveAPIData
+        Using Tel As New Telefonnummer With {.SetNummer = TelNr}
+            If Tel.TellowsNummer.IsNotStringNothingOrEmpty Then
+                Using tellows = New Tellows(XAuthToken)
+                    Return Await tellows.GetTellowsLiveAPIData(Tel)
+                End Using
+            Else
+                Return Nothing
+            End If
+        End Using
+    End Function
+#End Region
+
 #Region "Test Login"
     Public Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetLogin
 
-    Friend Sub StartLoginTest(FbAdr As String, User As String, Password As Security.SecureString) Implements IOptionenService.StartLoginTest
+    Friend Sub StartLoginTest(IPAdresse As String, User As String, Password As SecureString) Implements IOptionenService.StartLoginTest
+        ' Prüfe, ob Fritz!Box verfügbar
+        If Ping(IPAdresse) Then
+            Using fboxTR064 As New SOAP.FritzBoxTR64(IPAdresse, New Net.NetworkCredential(User, Password))
+                AddHandler fboxTR064.Status, AddressOf SetStatus
 
-        Using fboxTR064 As New SOAP.FritzBoxTR64(FbAdr, New Net.NetworkCredential(User, Password))
-            AddHandler fboxTR064.Status, AddressOf SetStatus
+                Dim SessionID As String = DfltStringEmpty
 
-            Dim SessionID As String = DfltStringEmpty
+                RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(fboxTR064.GetSessionID(SessionID)))
 
-            RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(fboxTR064.GetSessionID(SessionID)))
-
-            RemoveHandler fboxTR064.Status, AddressOf SetStatus
-        End Using
+                RemoveHandler fboxTR064.Status, AddressOf SetStatus
+            End Using
+        Else
+            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        End If
     End Sub
 #End Region
 
@@ -202,5 +223,6 @@ Friend Class OptionenService
 
         NLogger.Debug($"Test der Kontaktsuche beendet")
     End Sub
+
 #End Region
 End Class

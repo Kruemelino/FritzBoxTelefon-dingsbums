@@ -1,4 +1,5 @@
 ﻿Imports System.Threading
+Imports System.Threading.Tasks
 Imports System.Windows
 Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop
@@ -11,7 +12,7 @@ Imports Microsoft.Office.Interop
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
-
+#Region "Integer"
     Private _ID As Integer
     <XmlAttribute> Public Property ID As Integer
         Get
@@ -22,46 +23,6 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    Private _EigeneTelNr As Telefonnummer
-    <XmlIgnore> Public Property EigeneTelNr As Telefonnummer
-        Get
-            Return _EigeneTelNr
-        End Get
-        Set
-            SetProperty(_EigeneTelNr, Value)
-        End Set
-    End Property
-
-    Private _OutEigeneTelNr As String
-    <XmlElement> Public Property OutEigeneTelNr As String
-        Get
-            Return _OutEigeneTelNr
-        End Get
-        Set
-            SetProperty(_OutEigeneTelNr, Value)
-        End Set
-    End Property
-
-    Private _GegenstelleTelNr As Telefonnummer
-    <XmlElement> Public Property GegenstelleTelNr As Telefonnummer
-        Get
-            Return _GegenstelleTelNr
-        End Get
-        Set
-            SetProperty(_GegenstelleTelNr, Value)
-        End Set
-    End Property
-
-    Private _TelGerät As Telefoniegerät
-    <XmlIgnore> Public Property TelGerät As Telefoniegerät
-        Get
-            Return _TelGerät
-        End Get
-        Set
-            SetProperty(_TelGerät, Value)
-        End Set
-    End Property
-
     Private _NebenstellenNummer As Integer
     <XmlElement> Public Property NebenstellenNummer As Integer
         Get
@@ -69,46 +30,6 @@ Imports Microsoft.Office.Interop
         End Get
         Set
             SetProperty(_NebenstellenNummer, Value)
-        End Set
-    End Property
-
-    Private _AnschlussID As String
-    <XmlElement> Public Property AnschlussID As String
-        Get
-            Return _AnschlussID
-        End Get
-        Set
-            SetProperty(_AnschlussID, Value)
-        End Set
-    End Property
-
-    Private _ZeitBeginn As Date
-    <XmlElement> Public Property ZeitBeginn As Date
-        Get
-            Return _ZeitBeginn
-        End Get
-        Set
-            SetProperty(_ZeitBeginn, Value)
-        End Set
-    End Property
-
-    Private _ZeitVerbunden As Date
-    <XmlElement> Public Property ZeitVerbunden As Date
-        Get
-            Return _ZeitVerbunden
-        End Get
-        Set
-            SetProperty(_ZeitVerbunden, Value)
-        End Set
-    End Property
-
-    Private _ZeitEnde As Date
-    <XmlElement> Public Property ZeitEnde As Date
-        Get
-            Return _ZeitEnde
-        End Get
-        Set
-            SetProperty(_ZeitEnde, Value)
         End Set
     End Property
 
@@ -131,34 +52,26 @@ Imports Microsoft.Office.Interop
             SetProperty(_AnrufRichtung, Value)
         End Set
     End Property
+#End Region
 
-    Private _Beendet As Boolean
-    <XmlIgnore> Public Property Beendet As Boolean
+#Region "String"
+    Private _OutEigeneTelNr As String
+    <XmlElement> Public Property OutEigeneTelNr As String
         Get
-            Return _Beendet
+            Return _OutEigeneTelNr
         End Get
         Set
-            SetProperty(_Beendet, Value)
+            SetProperty(_OutEigeneTelNr, Value)
         End Set
     End Property
 
-    Private _NrUnterdrückt As Boolean
-    <XmlAttribute> Public Property NrUnterdrückt As Boolean
+    Private _AnschlussID As String
+    <XmlElement> Public Property AnschlussID As String
         Get
-            Return _NrUnterdrückt
+            Return _AnschlussID
         End Get
         Set
-            SetProperty(_NrUnterdrückt, Value)
-        End Set
-    End Property
-
-    Private _Angenommen As Boolean
-    <XmlAttribute> Public Property Angenommen As Boolean
-        Get
-            Return _Angenommen
-        End Get
-        Set
-            SetProperty(_Angenommen, Value)
+            SetProperty(_AnschlussID, Value)
         End Set
     End Property
 
@@ -192,16 +105,6 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    Private _FBTelBookKontakt As FritzBoxXMLKontakt
-    <XmlElement> Public Property FBTelBookKontakt As FritzBoxXMLKontakt
-        Get
-            Return _FBTelBookKontakt
-        End Get
-        Set
-            SetProperty(_FBTelBookKontakt, Value)
-        End Set
-    End Property
-
     Private _AnruferName As String
     <XmlElement> Public Property AnruferName As String
         Get
@@ -221,6 +124,139 @@ Imports Microsoft.Office.Interop
         End Get
         Set
             SetProperty(_Firma, Value)
+        End Set
+    End Property
+
+    <XmlIgnore> Friend ReadOnly Property AnrMonExInfo As String
+        Get
+            If Firma.IsNotStringNothingOrEmpty Then
+                ' Gib die Firmeninformation zurück
+                Return Firma
+            Else
+                If Not GegenstelleTelNr.Unterdrückt Then
+                    Return $"{GegenstelleTelNr.Location}" & If(GegenstelleTelNr.IstInland, DfltStringEmpty, $" ({Localize.Länder.ResourceManager.GetString(GegenstelleTelNr.AreaCode)})")
+                Else
+                    ' Gib ein leeren String zurück
+                    Return DfltStringEmpty
+                End If
+            End If
+        End Get
+    End Property
+
+#End Region
+
+#Region "Boolean"
+    Private _Beendet As Boolean
+    <XmlIgnore> Public Property Beendet As Boolean
+        Get
+            Return _Beendet
+        End Get
+        Set
+            SetProperty(_Beendet, Value)
+        End Set
+    End Property
+
+    Private _NrUnterdrückt As Boolean
+    <XmlAttribute> Public Property NrUnterdrückt As Boolean
+        Get
+            Return _NrUnterdrückt
+        End Get
+        Set
+            SetProperty(_NrUnterdrückt, Value)
+        End Set
+    End Property
+
+    Private _Angenommen As Boolean
+    <XmlAttribute> Public Property Angenommen As Boolean
+        Get
+            Return _Angenommen
+        End Get
+        Set
+            SetProperty(_Angenommen, Value)
+        End Set
+    End Property
+
+    <XmlIgnore> Friend ReadOnly Property AnruferUnbekannt As Boolean
+        Get
+            Return OlKontakt Is Nothing And FBTelBookKontakt Is Nothing
+        End Get
+    End Property
+
+    <XmlIgnore> Friend Property AnruferErmittelt As Boolean = False
+    <XmlIgnore> Friend Property AnrMonEingeblendet As Boolean = False
+    <XmlIgnore> Friend Property StoppUhrEingeblendet As Boolean = False
+#End Region
+
+#Region "Date"
+    Private _ZeitBeginn As Date
+    <XmlElement> Public Property ZeitBeginn As Date
+        Get
+            Return _ZeitBeginn
+        End Get
+        Set
+            SetProperty(_ZeitBeginn, Value)
+        End Set
+    End Property
+
+    Private _ZeitVerbunden As Date
+    <XmlElement> Public Property ZeitVerbunden As Date
+        Get
+            Return _ZeitVerbunden
+        End Get
+        Set
+            SetProperty(_ZeitVerbunden, Value)
+        End Set
+    End Property
+
+    Private _ZeitEnde As Date
+    <XmlElement> Public Property ZeitEnde As Date
+        Get
+            Return _ZeitEnde
+        End Get
+        Set
+            SetProperty(_ZeitEnde, Value)
+        End Set
+    End Property
+#End Region
+
+#Region "Objekte"
+    Private _EigeneTelNr As Telefonnummer
+    <XmlIgnore> Public Property EigeneTelNr As Telefonnummer
+        Get
+            Return _EigeneTelNr
+        End Get
+        Set
+            SetProperty(_EigeneTelNr, Value)
+        End Set
+    End Property
+
+    Private _GegenstelleTelNr As Telefonnummer
+    <XmlElement> Public Property GegenstelleTelNr As Telefonnummer
+        Get
+            Return _GegenstelleTelNr
+        End Get
+        Set
+            SetProperty(_GegenstelleTelNr, Value)
+        End Set
+    End Property
+
+    Private _TelGerät As Telefoniegerät
+    <XmlIgnore> Public Property TelGerät As Telefoniegerät
+        Get
+            Return _TelGerät
+        End Get
+        Set
+            SetProperty(_TelGerät, Value)
+        End Set
+    End Property
+
+    Private _FBTelBookKontakt As FritzBoxXMLKontakt
+    <XmlElement> Public Property FBTelBookKontakt As FritzBoxXMLKontakt
+        Get
+            Return _FBTelBookKontakt
+        End Get
+        Set
+            SetProperty(_FBTelBookKontakt, Value)
         End Set
     End Property
 
@@ -246,31 +282,20 @@ Imports Microsoft.Office.Interop
         End Get
     End Property
 
-    <XmlIgnore> Friend Property AnrMonEingeblendet As Boolean = False
-    <XmlIgnore> Friend Property StoppUhrEingeblendet As Boolean = False
-    <XmlIgnore> Friend ReadOnly Property AnrMonExInfo As String
-        Get
-            If Firma.IsNotStringNothingOrEmpty Then
-                ' Gib die Firmeninformation zurück
-                Return Firma
-            Else
-                If Not GegenstelleTelNr.Unterdrückt Then
-                    Return $"{GegenstelleTelNr.Location}" & If(GegenstelleTelNr.IstInland, DfltStringEmpty, $" ({Localize.Länder.ResourceManager.GetString(GegenstelleTelNr.AreaCode)})")
-                Else
-                    ' Gib ein leeren String zurück
-                    Return DfltStringEmpty
-                End If
-            End If
-        End Get
-    End Property
-
-    <XmlIgnore> Friend ReadOnly Property AnruferBekannt As Boolean
-        Get
-            Return OlKontakt Is Nothing And FBTelBookKontakt Is Nothing
-        End Get
-    End Property
     <XmlIgnore> Private Property PopUpAnrMonWPF As AnrMonWPF
+
     <XmlIgnore> Private Property PopupStoppUhrWPF As StoppUhrWPF
+
+    Private _TellowsErgebnis As TellowsResponse
+    <XmlElement> Public Property TellowsErgebnis() As TellowsResponse
+        Get
+            Return _TellowsErgebnis
+        End Get
+        Set
+            SetProperty(_TellowsErgebnis, Value)
+        End Set
+    End Property
+#End Region
 
     ''' <summary>
     '''         0        ; 1  ;2;    3     ;  4   ; 5  ; 6
@@ -441,11 +466,14 @@ Imports Microsoft.Office.Interop
 
                     ' Log-Eintrag erzeugen
                     NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' in Outlook-Kontakten gefunden.")
+
+                    ' Flag setzen, dass Kontaktinformationen für Gegenstelle ermittelt wurden
+                    AnruferErmittelt = True
                 End With
             End If
 
             ' Kontaktsuche in den Fritz!Box Telefonbüchern
-            If OlKontakt Is Nothing Then
+            If Not AnruferErmittelt Then
                 If XMLData.POptionen.CBKontaktSucheFritzBox Then
 
                     If ThisAddIn.PhoneBookXML Is Nothing OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
@@ -477,14 +505,53 @@ Imports Microsoft.Office.Interop
 
                         ' Log-Eintrag erzeugen
                         NLogger.Debug($"Kontakt '{AnruferName}' für Telefonnummer '{GegenstelleTelNr.Unformatiert}' im Fritz!Box Telefonbuch gefunden.")
+
+                        ' Flag setzen, dass Kontaktinformationen für Gegenstelle ermittelt wurden
+                        AnruferErmittelt = True
                     End If
                 End If
             End If
 
             ' Kontaktsuche über die Rückwärtssuche
-            If FBTelBookKontakt Is Nothing And OlKontakt Is Nothing Then
+            If Not AnruferErmittelt Then
 
-                ' Eine Rückwärtssuche braucht nur dann gemacht werden, wennd die Länge der Telefonnummer aussreichend ist.
+                ' Starte die Suche mit Tellows, wenn der User das wünscht, und nur bei eingehenden Telefonaten
+                If XMLData.POptionen.CBTellows AndAlso AnrufRichtung = AnrufRichtungen.Eingehend And GegenstelleTelNr.TellowsNummer.Length.IsLargerOrEqual(4) Then
+
+                    Using tellows = New Tellows()
+                        ' Führe eine Suche via LiveAPI durch
+                        TellowsErgebnis = Await tellows.GetTellowsLiveAPIData(GegenstelleTelNr)
+                        If TellowsErgebnis IsNot Nothing Then
+
+                            If TellowsErgebnis.Score.AreEqual(5) And TellowsErgebnis.Comments.IsLess(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
+                                ' Verwirf das Ergebnis. Es gibt keinen Eintrag bei tellows
+                                TellowsErgebnis = Nothing
+                                NLogger.Debug($"Kein Eintrag bei tellows für Telefonnummer '{GegenstelleTelNr.TellowsNummer}' gefunden.")
+                            Else
+                                ' Verarbeite das Tellows Ergebnis
+                                With TellowsErgebnis
+
+                                    AnruferName = String.Join(", ", .CallerNames)
+                                    Firma = String.Join(", ", .CallerTypes.Select(Function(CT) $"{CT.Name} ({CT.Count})"))
+
+                                    NLogger.Debug($"Eintrag bei tellows für Telefonnummer '{GegenstelleTelNr.TellowsNummer}' mit Score { .Score} gefunden.")
+
+                                    If XMLData.POptionen.CBTellowsAutoFBBlockList AndAlso .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAutoScoreFBBlockList) Then
+                                        BlockNumbers(TellowsErgebnis)
+                                    End If
+
+                                End With
+
+                                AnruferErmittelt = True
+                            End If
+                        End If
+                    End Using
+
+                End If
+            End If
+
+            If Not AnruferErmittelt Then
+                ' Eine Rückwärtssuche braucht nur dann gemacht werden, wenn die Länge der Telefonnummer aussreichend ist.
                 ' Ggf. muss der Wert angepasst werden.
                 If XMLData.POptionen.CBRWS AndAlso GegenstelleTelNr.Unformatiert.Length.IsLargerOrEqual(4) Then
 
@@ -522,6 +589,24 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 #End Region
+
+    Private Sub BlockNumbers(tellowsResponse As TellowsResponse)
+
+        With tellowsResponse
+            Dim Sperreintrag As New FritzBoxXMLKontakt
+            Sperreintrag.Person.RealName = String.Join(", ", .CallerNames)
+            Sperreintrag.Telefonie.Nummern.Add(New FritzBoxXMLNummer With {.Nummer = tellowsResponse.Number})
+
+            Task.Run(Sub()
+                         If AddToCallBarring(Sperreintrag) Then
+                             NLogger.Info($"Die Nummer '{ .Number}' wurde der Sperrliste hinzugefügt (tellows Score { .Score}).")
+                         Else
+                             NLogger.Warn($"Die Nummer '{ .Number}' wurde nicht der Sperrliste hinzugefügt.")
+                         End If
+                     End Sub)
+        End With
+
+    End Sub
 
     ''' <summary>
     ''' Funktion, welche das öffnen des hinterlegten Kontaktes anstößt

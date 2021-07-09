@@ -36,9 +36,9 @@ Namespace SOAP
             ' Workaround: XML-Datei als String herunterladen und separat deserialisieren
 
             ' Herunterladen
-            If FritzBoxGet(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, Tr064Files.tr64desc).Uri, Response) Then
+            If DownloadString(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, Tr064Files.tr64desc).Uri, Response) Then
                 ' Deserialisieren
-                If Not XmlDeserializeFromString(Response, FBTR64Desc) Then
+                If Not DeserializeXML(Response, False, FBTR64Desc) Then
                     PushStatus(LogLevel.Error, "FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Deserialisieren der FBTR64Desc.")
                 End If
             Else
@@ -704,7 +704,7 @@ Namespace SOAP
 
                     NLogger.Trace(.Item("NewTAMList"))
 
-                    If Not XmlDeserializeFromString(.Item("NewTAMList").ToString(), TAMListe) Then
+                    If Not DeserializeXML(.Item("NewTAMList").ToString(), False, TAMListe) Then
                         PushStatus(LogLevel.Warn, $"GetList (TAM) konnte für nicht deserialisiert werden.")
                     End If
 
@@ -845,7 +845,7 @@ Namespace SOAP
 
                     NLogger.Trace(.Item("NewNumberList"))
 
-                    If Not XmlDeserializeFromString(.Item("NewNumberList").ToString(), NumberList) Then
+                    If Not DeserializeXML(.Item("NewNumberList").ToString(), False, NumberList) Then
                         PushStatus(LogLevel.Warn, $"X_AVM-DE_GetNumbers konnte für nicht deserialisiert werden. '{ .Item("Error")}'")
                     End If
 
@@ -910,7 +910,7 @@ Namespace SOAP
 
                     NLogger.Trace(.Item("NewX_AVM-DE_ClientList"))
 
-                    If Not XmlDeserializeFromString(.Item("NewX_AVM-DE_ClientList").ToString(), ClientList) Then
+                    If Not DeserializeXML(.Item("NewX_AVM-DE_ClientList").ToString(), False, ClientList) Then
                         PushStatus(LogLevel.Warn, $"X_AVM-DE_GetNumbers konnte für nicht deserialisiert werden.")
                     End If
 

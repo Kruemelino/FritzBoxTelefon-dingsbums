@@ -5,6 +5,7 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property DfltOptions As String = "Optionen"
     Public Shared ReadOnly Property DfltDeCryptKey As String = "ZugangV5"
     Public Shared ReadOnly Property DfltPhonerDeCryptKey As String = "ZugangPhoner"
+    Public Shared ReadOnly Property DfltTellowsDeCryptKey As String = "ZugangTellows"
 
 #Region "Global Default Value Properties"
     ''' <summary>
@@ -78,6 +79,12 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <returns>FritzOutlookV5.xml</returns>
     ''' <remarks>Wird mit der Ressource "strDefShortName" erstellt.</remarks>
     Public Shared ReadOnly Property DfltConfigFileName() As String = $"{My.Resources.strDefShortName}.xml"
+
+    '''' <summary>
+    '''' FritzOutlookV5.json
+    '''' </summary>
+    '''' <remarks>Wird mit Ressource "strDefShortName" erstellt.</remarks>
+    'Public Shared ReadOnly Property DfltTellowsFileName() As String = $"{My.Resources.strDefShortName}.json"
 
     ''' <summary>
     ''' FritzOutlookV5.log

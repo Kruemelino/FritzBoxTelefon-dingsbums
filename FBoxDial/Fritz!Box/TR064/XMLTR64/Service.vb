@@ -1,9 +1,10 @@
 ﻿Imports System.Collections
+Imports System.Net
 Imports System.Xml
 Imports System.Xml.Serialization
 
 Namespace SOAP
-    <DebuggerStepThrough>
+    '<DebuggerStepThrough>
     <Serializable()>
     Public Class Service
 
@@ -35,7 +36,7 @@ Namespace SOAP
                 If FBoxIPAdresse.IsStringNothingOrEmpty Then
                     NLogger.Error($"Action '{ActionName}': IP Adresse nicht vorhanden.")
                 Else
-                    If Not DeserializeObject(New UriBuilder(Uri.UriSchemeHttp, FBoxIPAdresse, DfltTR064Port, SCPDURL).Uri, SCPD) Then
+                    If Not DeserializeXML($"{Uri.UriSchemeHttp}://{FBoxIPAdresse}:{DfltTR064Port}{SCPDURL}", True, SCPD) Then
                         ' Fehlerfall
                         NLogger.Error($"Action '{ActionName}': ServiceControlProtocolDefinition nicht geladen.")
                     End If
@@ -70,7 +71,7 @@ Namespace SOAP
             ActionInputData.Clear()
         End Function
 
-        Friend Function Start([Action] As Action, InputArguments As Hashtable, NetworkCredential As Net.NetworkCredential) As Hashtable
+        Friend Function Start([Action] As Action, InputArguments As Hashtable, NetworkCredential As NetworkCredential) As Hashtable
             Dim ReturnXMLDoc As New XmlDocument
             Dim OutputHashTable As New Hashtable
             Dim Response As String = DfltStringEmpty
@@ -82,17 +83,28 @@ Namespace SOAP
                     NLogger.Error($"Action '{[Action]}': IP Adresse nicht vorhanden.")
                     .Add("Error", DfltStringEmpty)
                 Else
+                    ' Header festlegen
+                    Dim TR064Header As New WebHeaderCollection From {{HttpRequestHeader.ContentType, TR064ContentType},
+                                                                     {HttpRequestHeader.UserAgent, TR064UserAgent},
+                                                                     {"SOAPACTION", $"""{ServiceType}#{Action.Name}"""}}
 
-                    If FritzBoxPOST(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, ControlURL).Uri,
-                                    Action.Name,
-                                    ServiceType,
-                                    GetRequest(Action, InputArguments),
-                                    NetworkCredential,
-                                    Response) Then
+                    If UploadData(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, ControlURL).Uri,
+                                  GetRequest(Action, InputArguments).InnerXml,
+                                  NetworkCredential,
+                                  Response,
+                                  TR064Header) Then
 
-                        ' XML Laden
-                        ReturnXMLDoc.LoadXml(Response)
+                        NLogger.Trace($"Action {Action.Name}: {Response}")
 
+                        Try
+                            ReturnXMLDoc.LoadXml(Response)
+                        Catch ex As XmlException
+                            ' Fehlerfall
+                            .Add("Error", Response)
+                            NLogger.Error(ex, Response)
+                        End Try
+
+                        ' TODO: Serialisieren
                         If ReturnXMLDoc.InnerXml.IsNotStringEmpty Then
                             For Each OUTArguments As Argument In Action.ArgumentList.FindAll(Function(GetbyDirection) GetbyDirection.Direction = ArgumentDirection.OUT)
                                 .Add(OUTArguments.Name, ReturnXMLDoc.GetElementsByTagName(OUTArguments.Name).Item(0).InnerText)
@@ -117,15 +129,6 @@ Namespace SOAP
         ''' <param name="Action">Die <paramref name="Action"/>, die ausgeführt werden soll.</param>
         ''' <param name="InputValues">Die Daten, welche müt übergeben werden sollen.</param>
         Private Function GetRequest(Action As Action, InputValues As Hashtable) As XmlDocument
-
-            '	<?xml version="1.0" encoding="utf-8"?>
-            '	<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
-            '		<s:Body>
-            '			<u:GetPhonebook xmlns:u="urn:dslforum-org:service:X_AVM-DE_OnTel:1">
-            '				<u:NewPhonebookID>0</u:NewPhonebookID>
-            '			</u:GetPhonebook>
-            '		</s:Body>
-            '	</s:Envelope> 
 
             GetRequest = New XmlDocument
 

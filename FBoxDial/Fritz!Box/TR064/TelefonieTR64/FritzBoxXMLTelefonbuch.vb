@@ -1,8 +1,11 @@
 ﻿Imports System.Threading.Tasks
 Imports System.Windows.Media
+Imports System.Windows.Threading
 Imports System.Xml.Serialization
 <Serializable(), XmlType("phonebook")> Public Class FritzBoxXMLTelefonbuch
     Inherits NotifyBase
+
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Public Sub New()
         Kontakte = New ObservableCollectionEx(Of FritzBoxXMLKontakt)
     End Sub
@@ -142,46 +145,35 @@ Imports System.Xml.Serialization
                               End Function).Any
     End Function
 
-    Friend Async Sub LadeKonaktBilder()
+    Friend Sub LadeKonaktBilder()
 
         Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
 
-        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        ' Prüfe, ob Fritz!Box verfügbar
+        If Ping(XMLData.POptionen.ValidFBAdr) Then
+            Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
-            If fbtr064.GetSessionID(SessionID) Then
+                If fbtr064.GetSessionID(SessionID) Then
 
-                ' Schleife duch alle Kontakte
-                For Each Kontakt In Kontakte
-                    With Kontakt
-                        If .Person IsNot Nothing AndAlso .Person.ImageURL.IsNotStringNothingOrEmpty Then
-                            ' Setze den Pfad zum Bild zusammen
-                            Dim u As New Uri($"https://{XMLData.POptionen.ValidFBAdr}:{SOAP.DfltTR064PortSSL}{ .Person.ImageURL}&{SessionID}")
-                            Dim b As Byte() = {}
+                    Dim TaskList As New List(Of Task)
 
-                            ' Lade das Bild herunter
-                            b = Await SOAP.DownloadDataTaskAsync(u)
-                            If b.Any Then
-                                Dim biImg As New Imaging.BitmapImage()
-                                Dim ms As New IO.MemoryStream(b)
-                                .Person.ImageData = New Imaging.BitmapImage()
+                    ' Schleife duch alle Kontakte
+                    For Each Kontakt In Kontakte
+                        Dispatcher.CurrentDispatcher.Invoke(Async Function()
+                                                                With Kontakt
 
-                                With biImg
-                                    .BeginInit()
-                                    .StreamSource = ms
-                                    .EndInit()
-                                End With
-
-                                .Person.ImageData = biImg
-                            End If
-
-                        End If
-                    End With
-
-                Next
-
-            End If
-        End Using
-
+                                                                    If .Person IsNot Nothing AndAlso .Person.ImageURL.IsNotStringNothingOrEmpty Then
+                                                                        ' Setze den Pfad zum Bild zusammen
+                                                                        .Person.ImageData = Await LadeKontaktbild(.Person.CompleteImageURL(SessionID))
+                                                                    End If
+                                                                End With
+                                                            End Function)
+                    Next
+                End If
+            End Using
+        Else
+            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        End If
     End Sub
 
 #End Region

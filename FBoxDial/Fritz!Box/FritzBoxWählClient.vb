@@ -168,7 +168,11 @@ Public Class FritzBoxWählClient
             NLogger.Info($"Wählclient TR064Dial: '{DialCode}', Dialport: '{Telefon.TR064Dialport}'")
 
             Erfolreich = Await Task.Run(Function()
-                                            Return TR064Dial(DialCode, Telefon, Abbruch)
+                                            If Ping(XMLData.POptionen.ValidFBAdr) Then
+                                                Return TR064Dial(DialCode, Telefon, Abbruch)
+                                            Else Return False
+                                            End If
+
                                         End Function)
 
         End If

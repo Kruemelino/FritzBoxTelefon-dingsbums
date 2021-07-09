@@ -107,12 +107,14 @@ Friend Class Rijndael
     ''' <param name="encoding">Zeichencodierung</param>
     ''' <returns>ByteArray</returns>
     Private Function ToByteArray(secureString As SecureString, encoding As Encoding) As Byte()
-
         Dim unmanagedString As IntPtr = IntPtr.Zero
 
         Try
             unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(secureString)
             Return encoding.GetBytes(Marshal.PtrToStringUni(unmanagedString))
+        Catch ex As Exception
+            NLogger.Error(ex)
+            Return {}
         Finally
             Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString)
         End Try
@@ -143,7 +145,6 @@ Friend Class Rijndael
         Return output
     End Function
 
-
     ''' <summary>
     ''' Generiert ein <see cref="Byte"/>-Array mit zufälligen Werten.
     ''' </summary>
@@ -158,7 +159,7 @@ Friend Class Rijndael
     End Function
 
     ''' <summary>
-    ''' Erstellt einen MD4-Hash eines <see cref="SecureString"/> durch.
+    ''' Erstellt einen MD5-Hash eines <see cref="SecureString"/> durch.
     ''' </summary>
     ''' <param name="secureString">Verschlüsselte Zeichenfolge</param>
     ''' <param name="Zeichencodierung">Zeichencodierung</param>

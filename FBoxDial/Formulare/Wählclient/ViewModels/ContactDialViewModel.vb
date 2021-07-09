@@ -159,7 +159,7 @@ Public Class ContactDialViewModel
 
             ' Kontaktbild anzeigen
             Dispatcher.CurrentDispatcher.Invoke(Async Function()
-                                                    Kontaktbild = Await FBoxXMLKontakt.Person.LadeKontaktbild()
+                                                    Kontaktbild = Await LadeKontaktbild(FBoxXMLKontakt.Person.CompleteImageURL)
                                                     OnPropertyChanged(NameOf(ZeigeBild))
                                                 End Function)
         End With

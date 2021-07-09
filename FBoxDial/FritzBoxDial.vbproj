@@ -271,6 +271,7 @@
     <Compile Include="Formulare\Optionen\ViewModel\OptAnrMonViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptDialerViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptJournalViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptTellowsViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptSearchContactViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptCreateContactViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptTelephonyViewModel.vb" />
@@ -283,9 +284,13 @@
     </Compile>
     <Compile Include="Formulare\Optionen\ViewModel\OptTestViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Views\OptTellowsView.xaml.vb">
+      <DependentUpon>OptTellowsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\Optionen\Views\OptTestView.xaml.vb">
       <DependentUpon>OptTestView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUser.vb" />
     <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUserList.vb" />
@@ -428,6 +433,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Optionen\Utf8StringWriter.vb" />
+    <Compile Include="Optionen\WebFunctions.vb" />
     <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="Kontakte\NummernTypen.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />
@@ -463,7 +469,6 @@
     <Compile Include="SoftPhone\Phoner.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
-    <Compile Include="Fritz!Box\TR064\BaseFunctionsTR64.vb" />
     <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNr.vb" />
     <Compile Include="Formulare\Common\Services\Converters.vb" />
     <Compile Include="Formulare\Telefonbuch\Services\IContactDataService.vb" />
@@ -494,6 +499,12 @@
     <Compile Include="Telefonie\TelListen.vb" />
     <Compile Include="Telefonie\VIPEntry.vb" />
     <Compile Include="Telefonie\Vorwahlen.vb" />
+    <Compile Include="Tellows\Tellows.vb" />
+    <Compile Include="Tellows\TellowsAPI\TellowsComment.vb" />
+    <Compile Include="Tellows\TellowsAPI\TellowsPartnerinfo.vb" />
+    <Compile Include="Tellows\TellowsAPI\TellowsResponse.vb" />
+    <Compile Include="Tellows\TellowsAPI\TellowsCaller.vb" />
+    <Compile Include="Tellows\TellowsAPI\TellowsScoreListEntry.vb" />
     <Compile Include="ThisAddIn.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -598,6 +609,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptTellowsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -735,6 +750,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Telefonie\Listen\Vorwahlen.xml" />
+    <Resource Include="Tellows\Resources\score1.png" />
+    <Resource Include="Tellows\Resources\score2.png" />
+    <Resource Include="Tellows\Resources\score3.png" />
+    <Resource Include="Tellows\Resources\score4.png" />
+    <Resource Include="Tellows\Resources\score5.png" />
+    <Resource Include="Tellows\Resources\score6.png" />
+    <Resource Include="Tellows\Resources\score7.png" />
+    <Resource Include="Tellows\Resources\score8.png" />
+    <Resource Include="Tellows\Resources\score9.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
