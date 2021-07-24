@@ -1,9 +1,12 @@
 ﻿Imports System.Security
+Imports System.Threading
+Imports System.Threading.Tasks
 Imports System.Windows.Threading
 Imports Microsoft.Office.Interop.Outlook
 
 Friend Class OptionenService
     Implements IOptionenService
+
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "Grunddaten"
     Friend Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FritzBoxXMLUser) Implements IOptionenService.LadeFBoxUser
@@ -75,17 +78,19 @@ Friend Class OptionenService
 #End Region
 
 #Region "Indizierung"
-    Friend Event IndexStatus As EventHandler(Of NotifyEventArgs(Of Integer)) Implements IOptionenService.IndexStatus
-    Friend Property CancelationPending As Boolean Implements IOptionenService.CancelationPending
-
-    Public Function ZähleKontakte(olFolder As MAPIFolder) As Integer Implements IOptionenService.ZähleOutlookKontakte
-        Return ZähleOutlookKontakte(olFolder)
+    Public Function ZähleKontakte(olFolders As List(Of MAPIFolder)) As Integer Implements IOptionenService.ZähleOutlookKontakte
+        Dim retval As Integer = 0
+        For Each olFolder In olFolders
+            retval += olFolder.Items.Count
+        Next
+        Return retval
     End Function
 
-    Friend Sub Indexer(Ordner As MAPIFolder, IndexModus As Boolean, Unterordner As Boolean) Implements IOptionenService.Indexer
+    Private Function Indexer(Ordner As MAPIFolder, IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of Integer)) As Integer
+
+        Dim VerarbeiteteKontakte As Integer = 0
 
         For Each Item In Ordner.Items
-            If CancelationPending Then Exit For
 
             If TypeOf Item Is ContactItem Then
 
@@ -99,12 +104,16 @@ Friend Class OptionenService
 
                 aktKontakt.Speichern
 
-                aktKontakt.ReleaseComObject
+                ReleaseComObject(aktKontakt)
 
             End If
+            ' Frage Cancelation ab
+            If ct.IsCancellationRequested Then Exit For
 
             ' Erhöhe Wert für Progressbar
-            RaiseEvent IndexStatus(Me, New NotifyEventArgs(Of Integer)(1))
+            progress.Report(1)
+
+            VerarbeiteteKontakte += 1
         Next
 
         If Not IndexModus Then
@@ -112,8 +121,30 @@ Friend Class OptionenService
             DeIndizierungOrdner(Ordner)
         End If
 
-        NLogger.Info($"{If(IndexModus, "Indizierung", "Deindizierung")} des Ordners {Ordner.Name} ist abgeschlossen.")
-    End Sub
+        NLogger.Info($"{If(IndexModus, "Indizierung", "Deindizierung")} des Ordners {Ordner.Name} ist abgeschlossen ({VerarbeiteteKontakte} Kontakte verarbeitet).")
+        Return VerarbeiteteKontakte
+    End Function
+
+    Friend Async Function Indexer(OrdnerListe As List(Of MAPIFolder), IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer) Implements IOptionenService.Indexer
+
+        Dim IndexTasks As New List(Of Task(Of Integer))
+
+        ' Verarbeite alle Ordner die der Kontaktsuche entsprechen
+        For Each Ordner In OrdnerListe
+
+            ' Starte das Indizieren
+            IndexTasks.Add(Task.Run(Function()
+                                        Return Indexer(Ordner, IndexModus, ct, progress)
+                                    End Function, ct))
+
+            ' Frage Cancelation ab
+            If ct.IsCancellationRequested Then Exit For
+        Next
+
+        ' Warte den Abschluss der Indizierung ab
+        Return (Await Task.WhenAll(IndexTasks)).Sum
+
+    End Function
 
 #End Region
 
@@ -213,6 +244,7 @@ Friend Class OptionenService
 
         NLogger.Debug($"Test der Kontaktsuche beendet")
     End Sub
+
 
 #End Region
 End Class

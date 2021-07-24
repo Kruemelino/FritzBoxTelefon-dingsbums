@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Office.Interop.Outlook
+﻿Imports System.Threading.Tasks
+Imports Microsoft.Office.Interop.Outlook
 Friend Interface IOptionenService
 
 #Region "Grunddaten"
@@ -12,16 +13,13 @@ Friend Interface IOptionenService
 #End Region
 
 #Region "Indizierung Ordner"
-    Event IndexStatus As EventHandler(Of NotifyEventArgs(Of Integer))
-    Property CancelationPending As Boolean
     ''' <summary>
     ''' Startet die Indizierung des Ordners
     ''' </summary>
     ''' <param name="Ordner">Outlook-Ordner, der indiziert werden soll</param>
     ''' <param name="IndexModus">Modus: true indizieren, false deindizieren</param>
-    ''' <param name="Unterordner">Angabe, ob Unterordner einbezogen werden sollen</param>
-    Sub Indexer(Ordner As MAPIFolder, IndexModus As Boolean, Unterordner As Boolean)
-    Function ZähleOutlookKontakte(olFolder As MAPIFolder) As Integer
+    Function Indexer(Ordner As List(Of MAPIFolder), IndexModus As Boolean, ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
+    Function ZähleOutlookKontakte(olFolders As List(Of MAPIFolder)) As Integer
 #End Region
 
 #Region "MicroSIP"

@@ -280,7 +280,7 @@ Public Class FritzBoxWählClient
             Wählbox(aktKontakt)
         Else
             ' Es wurde kein Kontakt gefunden. 
-            aktKontakt.ReleaseComObject
+            ReleaseComObject(aktKontakt)
 
             ' B: Suche den ExchangeNutzer
             Dim aktExchangeNutzer As Outlook.ExchangeUser = KontaktSucheExchangeUser(ContactCard)
@@ -292,7 +292,7 @@ Public Class FritzBoxWählClient
             End If
         End If
 
-        ContactCard.ReleaseComObject
+        ReleaseComObject(ContactCard)
     End Sub
 
     ''' <summary>
@@ -316,7 +316,7 @@ Public Class FritzBoxWählClient
                 Wählbox(aktKontakt)
             Else
                 ' Es wurde kein Kontakt gefunden. 
-                aktKontakt.ReleaseComObject
+                ReleaseComObject(aktKontakt)
 
                 ' B: Suche den ExchangeNutzer
                 Dim aktExchangeNutzer As Outlook.ExchangeUser = KontaktSucheExchangeUser(SMTPAdresse)
@@ -330,7 +330,7 @@ Public Class FritzBoxWählClient
             End If
         End If
 
-        aktMail.ReleaseComObject
+        ReleaseComObject(aktMail)
     End Sub
 
     Friend Overloads Sub WählboxStart(olJournal As Outlook.JournalItem)

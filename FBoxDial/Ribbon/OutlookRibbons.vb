@@ -161,7 +161,7 @@ Imports FBoxDial.RibbonData
 
         Return VIPRibbonContent(oKontakt, control.Id, Typ.ImageMso)
 
-        oKontakt.ReleaseComObject
+        ReleaseComObject(oKontakt)
     End Function
 
     ''' <summary>

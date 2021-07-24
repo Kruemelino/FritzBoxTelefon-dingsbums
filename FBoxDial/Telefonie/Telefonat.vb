@@ -732,7 +732,7 @@ Imports Microsoft.Office.Interop
 
                     End With
 
-                    olJournal.ReleaseComObject
+                    ReleaseComObject(olJournal)
                     ' Merke die Zeit
                     If XMLData.POptionen.LetzterJournalEintrag < Now Then XMLData.POptionen.LetzterJournalEintrag = Now
                     ' Merke die ID

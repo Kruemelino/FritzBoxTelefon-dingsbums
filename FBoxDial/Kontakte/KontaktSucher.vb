@@ -94,7 +94,7 @@ Friend Module KontaktSucher
                 olKontakt = GetOutlookKontakt(oTable.GetNextRow("EntryID").ToString, Ordner.StoreID)
                 NLogger.Debug($"DASL Table erfolgreich: {olKontakt.FullNameAndCompany} in {Ordner.Name}")
             End If
-            oTable.ReleaseComObject
+            ReleaseComObject(oTable)
         End If
 
         Return olKontakt
@@ -167,7 +167,7 @@ Friend Module KontaktSucher
                         Return Nothing
                     End If
 
-                    Adresseintrag.ReleaseComObject
+                    ReleaseComObject(Adresseintrag)
 
                 Case Else
                     Return Nothing
@@ -175,7 +175,7 @@ Friend Module KontaktSucher
         Else
             Return Nothing
         End If
-        Kontaktkarte.ReleaseComObject
+        ReleaseComObject(Kontaktkarte)
 
     End Function
 
@@ -203,14 +203,14 @@ Friend Module KontaktSucher
                             Return Nothing
                     End Select
 
-                    Adresseintrag.ReleaseComObject
+                    ReleaseComObject(Adresseintrag)
                 Case Else
                     Return Nothing
             End Select
         Else
             Return Nothing
         End If
-        Kontaktkarte.ReleaseComObject
+        ReleaseComObject(Kontaktkarte)
     End Function
 
 #End Region

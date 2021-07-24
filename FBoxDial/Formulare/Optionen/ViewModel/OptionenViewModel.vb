@@ -2,6 +2,7 @@
 Imports System.Windows
 Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop
+Imports System.Threading
 ''' <summary>
 ''' https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/
 ''' </summary>
@@ -792,9 +793,13 @@ Public Class OptionenViewModel
             ' Füge die Unterordner hinzu
             If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
 
+            Dim progressIndicator = New Progress(Of Integer)(Sub(status)
+                                                             End Sub)
+            Dim CTS As New CancellationTokenSource
+
             For Each Folder In MAPIFolderList
                 NLogger.Debug($"Deindiziere Odner {Folder.Name}")
-                TaskList.Add(Task.Run(Sub() DatenService.Indexer(Folder, False, CBSucheUnterordner)))
+                TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, False, CTS.Token, progressIndicator)))
             Next
 
             ' indiziere:
@@ -805,9 +810,10 @@ Public Class OptionenViewModel
 
             For Each Folder In MAPIFolderList
                 NLogger.Debug($"Indiziere Odner {Folder.Name}")
-                TaskList.Add(Task.Run(Sub() DatenService.Indexer(Folder, True, CBSucheUnterordner)))
+                TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, True, CTS.Token, progressIndicator)))
             Next
 
+            CTS.Dispose()
         End With
 
         XMLData.POptionen.OutlookOrdner = OutlookOrdnerListe

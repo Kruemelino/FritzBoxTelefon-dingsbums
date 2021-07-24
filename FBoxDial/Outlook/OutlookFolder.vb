@@ -2,6 +2,7 @@
 Imports Microsoft.Office.Interop.Outlook
 
 Public Module OutlookFolder
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     ''' <summary>
     ''' Prüft, ob der Outlook-Ordner für die gewünschte Verwendung ausgewählt wurde.
     ''' Falls der Nutzer keinen Ordner in den Einstellungen gewählt hat, wird der Standard-Ordner verwendet.
@@ -15,4 +16,17 @@ Public Module OutlookFolder
 
     End Function
 
+    ''' <summary>
+    ''' Dekrementiert den Verweiszähler des dem angegebenen COM-Objekt zugeordneten angegebenen Runtime Callable Wrapper (RCW)
+    ''' </summary>
+    ''' <param name="COMObject">Das freizugebende COM-Objekt.</param>
+    Public Sub ReleaseComObject(Of T)(COMObject As T)
+        If COMObject IsNot Nothing Then
+            Try
+                Runtime.InteropServices.Marshal.ReleaseComObject(COMObject)
+            Catch ex As ArgumentException
+                NLogger.Error(ex, $"COM-Object ist kein gültiges COM-Objekt: {COMObject}")
+            End Try
+        End If
+    End Sub
 End Module

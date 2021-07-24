@@ -1,5 +1,5 @@
 ﻿Imports System.Threading
-Imports Microsoft.Office.Interop
+Imports Microsoft.Office.Interop.Outlook
 
 Public Class OptSearchContactViewModel
     Inherits NotifyBase
@@ -27,23 +27,13 @@ Public Class OptSearchContactViewModel
 
     Public Property InitialSelected As Boolean = False Implements IPageViewModel.InitialSelected
 
-    Private Property RootVM As OutlookFolderViewModel = New OutlookFolderViewModel(Outlook.OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSuche)
+    Private Property RootVM As OutlookFolderViewModel = New OutlookFolderViewModel(OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSuche)
 
     Public ReadOnly Property Root As OutlookFolderViewModel
         Get
             RootVM.OptVM = OptVM
             Return RootVM
         End Get
-    End Property
-
-    Private _CancelationPending As Boolean
-    Private Property CancelationPending As Boolean
-        Get
-            Return _CancelationPending
-        End Get
-        Set
-            SetProperty(_CancelationPending, Value)
-        End Set
     End Property
 
     Private _IndexProgressValue As Double
@@ -109,6 +99,9 @@ Public Class OptSearchContactViewModel
     Public Property CancelCommand As RelayCommand
     Public Property IndexCommand As RelayCommand
 #End Region
+#Region "Cancel"
+    Private Property CTS As CancellationTokenSource
+#End Region
 
     Public Sub New()
         ' Commands
@@ -122,85 +115,55 @@ Public Class OptSearchContactViewModel
 #Region "ICommand Callback"
     Private Sub CancelImport(o As Object)
 
-        CancelationPending = True
-        DatenService.CancelationPending = True
+        CTS?.Cancel()
         NLogger.Debug("Manueller Journalimport abgebrochen.")
 
     End Sub
-    ' TODO in Datenservice verschieben
+
     Private Async Sub StartIndex(obj As Object)
 
-        ' TODO CTS = New CancellationTokenSource analog TellowsViewmodel
-        ' TODO Dim progressIndicator = New Progress(Of Integer)(Sub(status) BlockProgressValue += status)
-
-
-        ' Setze das CancelationPending zurück
-        CancelationPending = False
-
-        ' Starte die Indizierung
-        ReSetProgressbar()
-
+        CTS = New CancellationTokenSource
+        Dim progressIndicator = New Progress(Of Integer)(Sub(status)
+                                                             IndexProgressValue += status
+                                                             IndexStatus = $"{Localize.LocOptionen.strIndexStatus}: {IndexProgressValue}/{IndexProgressMax}"
+                                                         End Sub)
         ' Aktiv-Flag setzen
         IsAktiv = True
 
-        ' Für Ereignishandler hinzu
-        AddHandler DatenService.IndexStatus, AddressOf SetProgressbar
-
-        Dim OrdnerListe As List(Of OutlookOrdner) = OptVM.OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
+        Dim OrdnerListe As List(Of MAPIFolder) = OptVM.OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Select(Function(S) S.MAPIFolder).ToList
 
         ' Überprüfe, ob Ordner für die Kontaktsuche ausgewählt sind
         If Not OrdnerListe.Any Then
-            NLogger.Debug($"Es wurde kein Outlookordner für die Kontaktsuche gewählt. Füge Standardkontaktordner hinzu.")
-            OrdnerListe.Add(New OutlookOrdner(GetDefaultMAPIFolder(Outlook.OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche))
+            NLogger.Info("Es wurde kein Outlookordner für die Kontaktsuche gewählt. Füge Standardkontaktordner hinzu.")
+            OrdnerListe.Add(New OutlookOrdner(GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche).MAPIFolder)
         End If
 
-        Dim IndexTasks As New List(Of Tasks.Task)
-
-        ' Erzeuge eine Liste der Ordner, die der Nutzer ausgewählt hat
-        Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = OrdnerListe.Select(Function(S) S.MAPIFolder).ToList
-
         ' Füge die Unterordner hinzu
-        If OptVM.CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+        If OptVM.CBSucheUnterordner Then AddChildFolders(OrdnerListe, OlItemType.olContactItem)
 
-        ' Verarbeite alle Ordner die der Kontaktsuche entsprechen
-        For Each Ordner In MAPIFolderList
-            ' Erhöhe das Maximum der Progressbar
-            SetProgressbarMax(DatenService.ZähleOutlookKontakte(Ordner))
+        ' Setze Progressbar Maximum
+        IndexProgressMax = DatenService.ZähleOutlookKontakte(OrdnerListe)
 
-            ' Starte das Indizieren
-            IndexTasks.Add(Tasks.Task.Run(Sub() DatenService.Indexer(Ordner, IndexModus, OptVM.CBSucheUnterordner)))
+        NLogger.Debug($"Manuelle {If(IndexModus, "Indizierung", "Deindizierung")} von {IndexProgressMax} Kontakten in {OrdnerListe.Count} Ordnern gestartet.")
 
-            ' Frage Cancelation ab
-            If CancelationPending Then Exit For
-        Next
+        ' Starte die Indizierung
+        IndexProgressValue = 0
+        IndexStatus = $"{Localize.LocOptionen.strIndexStatus}: {IndexProgressValue}/{IndexProgressMax}"
 
-        ' Warte den Abschluss der Indizierung ab
-        Await Tasks.Task.WhenAll(IndexTasks)
-
-        ' Entferne Ereignishandler 
-        RemoveHandler DatenService.IndexStatus, AddressOf SetProgressbar
+        Try
+            ' Start der Indizierung
+            NLogger.Debug($"Manuelle {If(IndexModus, "Indizierung", "Deindizierung")} von {Await DatenService.Indexer(OrdnerListe, IndexModus, CTS.Token, progressIndicator)} Kontakten in {OrdnerListe.Count} Ordnern beendet.")
+        Catch ex As OperationCanceledException
+            NLogger.Debug(ex)
+        End Try
 
         ' Aktiv-Flag setzen
         IsAktiv = False
+
+        ' CancellationTokenSource auflösen
+        CTS.Dispose()
     End Sub
 
 #End Region
 
-#Region "Hilfsfunktionen"
-    Private Sub ReSetProgressbar()
-        IndexProgressValue = 0
-        IndexProgressMax = 0
-        IndexStatus = $"{Localize.LocOptionen.strIndexStatus}: {IndexProgressValue}/{IndexProgressMax}"
-    End Sub
-
-    Private Sub SetProgressbar(sender As Object, e As NotifyEventArgs(Of Integer))
-        IndexProgressValue += e.Value
-        IndexStatus = $"{Localize.LocOptionen.strIndexStatus}: {IndexProgressValue}/{IndexProgressMax}"
-    End Sub
-
-    Private Sub SetProgressbarMax(NeuesMaximum As Integer)
-        IndexProgressMax += NeuesMaximum
-    End Sub
-
-#End Region
 End Class

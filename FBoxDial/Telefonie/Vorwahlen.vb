@@ -100,9 +100,9 @@ Friend Class Vorwahlen
                     If LKZListe.Any Then
                         ' Es wurden Einträge gefunden
                         If LKZListe.Count.AreEqual(1) Then
-                            NLogger.Debug($"Eine Landeskennzahl der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}' ({LKZListe.First.Code})")
+                            NLogger.Trace($"Eine Landeskennzahl der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}' ({LKZListe.First.Code})")
                         Else
-                            NLogger.Debug($"{LKZListe.Count} Landeskennzahlen der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}'")
+                            NLogger.Trace($"{LKZListe.Count} Landeskennzahlen der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}'")
                         End If
 
                     Else
@@ -115,7 +115,7 @@ Friend Class Vorwahlen
 
             If Not LKZListe.Any Then
                 LKZListe.Add(GetDefaultLKZ)
-                NLogger.Debug($"Standard-Landeskennzahl der Telefonnummer '{ .Unformatiert}' wurde gesetzt: {LKZListe.First.Landeskennzahl} ({LKZListe.First.Code})")
+                NLogger.Trace($"Standard-Landeskennzahl der Telefonnummer '{ .Unformatiert}' wurde gesetzt: {LKZListe.First.Landeskennzahl} ({LKZListe.First.Code})")
             End If
         End With
         Return LKZListe
@@ -147,7 +147,7 @@ Friend Class Vorwahlen
                     If ONKZListe.Count.AreEqual(1) Then
 
                         _ONKZ = ONKZListe.First
-                        NLogger.Debug($"Ortsnetzkennzahl der Telefonnummer '{TelNr.Unformatiert}' wurde ermittelt: {_ONKZ.Ortsnetzkennzahl} ({_ONKZ.Name})")
+                        NLogger.Trace($"Ortsnetzkennzahl der Telefonnummer '{TelNr.Unformatiert}' wurde ermittelt: {_ONKZ.Ortsnetzkennzahl} ({_ONKZ.Name})")
 
                         _LKZ.Clear()
                         _LKZ.Add(LKZ)
@@ -163,7 +163,7 @@ Friend Class Vorwahlen
                 ' Setze, die Ortskennzahl, falls diese noch nicht gesetzt ist, mit der in den Einstellungen hinterlegten OKZ
                 _ONKZ = GetDefaultONKZ
                 If _ONKZ IsNot Nothing Then
-                    NLogger.Debug($"Standard-Ortsnetzkennzahl der Telefonnummer '{TelNr.Unformatiert}' wurde gesetzt: '{_ONKZ.Ortsnetzkennzahl}' ({_ONKZ.Name})")
+                    NLogger.Trace($"Standard-Ortsnetzkennzahl der Telefonnummer '{TelNr.Unformatiert}' wurde gesetzt: '{_ONKZ.Ortsnetzkennzahl}' ({_ONKZ.Name})")
                 Else
                     NLogger.Warn($"Die Standard-Ortsvorwahl ({XMLData.PTelefonie.OKZ}) konnte nicht aus der LKZ {_LKZ.First.Landeskennzahl} ermittelt werden.")
                 End If

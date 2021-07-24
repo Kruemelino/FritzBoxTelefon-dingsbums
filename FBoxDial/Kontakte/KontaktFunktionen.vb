@@ -378,25 +378,6 @@ Friend Module KontaktFunktionen
         Next
     End Function
 
-    Friend Function ZähleOutlookKontakte(olFolder As MAPIFolder) As Integer
-        Dim retval As Integer = 0
-
-        ' Die Anzahl der Elemente dieses Ordners zählen
-        If olFolder IsNot Nothing AndAlso olFolder.DefaultItemType = OlItemType.olContactItem Then
-            retval = olFolder.Items.Count
-
-            ' Unterordner werden rekursiv mitgezählt
-            If XMLData.POptionen.CBSucheUnterordner Then
-                For Each Unterordner As MAPIFolder In olFolder.Folders
-                    retval += ZähleOutlookKontakte(Unterordner)
-                    Unterordner.ReleaseComObject
-                Next
-                'olFolder.ReleaseComObject
-            End If
-        End If
-        Return retval
-    End Function
-
     <Extension> Friend Function StoreID(olKontakt As ContactItem) As String
         Return CType(olKontakt.Parent, MAPIFolder).StoreID
     End Function
@@ -517,14 +498,14 @@ Friend Module KontaktFunktionen
                             If ExchangeUser IsNot Nothing Then .Addresse = ExchangeUser.PrimarySmtpAddress
 
                             ' COM Objekt freigeben
-                            ExchangeUser.ReleaseComObject
+                            ReleaseComObject(ExchangeUser)
 
                         Case Else
                             .Addresse = TryCast(Adresseintrag.PropertyAccessor.GetProperty(DfltDASLSMTPAdress), String)
 
                     End Select
                     ' COM Objekt freigeben
-                    Adresseintrag.ReleaseComObject
+                    ReleaseComObject(Adresseintrag)
                 Else
 
                     ' SMTP Adresse (klassische E-Mail)

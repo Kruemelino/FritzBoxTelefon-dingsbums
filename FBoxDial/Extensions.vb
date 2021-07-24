@@ -395,20 +395,6 @@ Public Module Extensions
 #End Region
 
 #Region "Hilfsfunktionen"
-    ''' <summary>
-    ''' Dekrementiert den Verweiszähler des dem angegebenen COM-Objekt zugeordneten angegebenen Runtime Callable Wrapper (RCW)
-    ''' </summary>
-    ''' <param name="COMObject">Das freizugebende COM-Objekt.</param>
-    <Extension> Public Sub ReleaseComObject(Of T)(COMObject As T)
-        If COMObject IsNot Nothing Then
-            Try
-                Runtime.InteropServices.Marshal.ReleaseComObject(COMObject)
-            Catch ex As ArgumentException
-                NLogger.Error(ex, "COM-Object ist kein gültiges COM-Objekt: {0}", COMObject.ToString)
-            End Try
-        End If
-    End Sub
-
     Public Function MsgBox(Meldung As String, Style As MsgBoxStyle, Aufruf As String) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then
             Meldung = String.Format("Die Funktion {0} meldet folgenden Fehler: {1}{2}", Aufruf, Dflt2NeueZeile, Meldung)
