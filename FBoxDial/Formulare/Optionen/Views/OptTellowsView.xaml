@@ -65,6 +65,14 @@
                   ItemsSource="{Binding Path=OptVM.CBoxTellowsScore}"
                   SelectedValue="{Binding OptVM.CBTellowsAutoScoreFBBlockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strTellowsAutoUpdateScoreList}" 
+                  IsChecked="{Binding OptVM.CBTellowsAutoUpdateScoreList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strTellowsEntryNumberCount}"
+                 Text="{Binding OptVM.CBTellowsEntryNumberCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
         <Expander Style="{StaticResource OptExpander}"
                   Header="{x:Static localize:LocOptionen.strTellowsHeadAccountInfo}">
 

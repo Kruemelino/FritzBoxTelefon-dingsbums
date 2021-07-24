@@ -1093,6 +1093,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Rufsperre automatisch aktualisieren ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsAutoUpdateScoreList() As String
+            Get
+                Return ResourceManager.GetString("strTellowsAutoUpdateScoreList", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Mögliche Namen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTellowsCallerNames() As String
@@ -1125,6 +1134,15 @@ Namespace Localize
         Public Shared ReadOnly Property strTellowsComments() As String
             Get
                 Return ResourceManager.GetString("strTellowsComments", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anzahl an Telefonnummern je Sperrlisteneintrag ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsEntryNumberCount() As String
+            Get
+                Return ResourceManager.GetString("strTellowsEntryNumberCount", resourceCulture)
             End Get
         End Property
         

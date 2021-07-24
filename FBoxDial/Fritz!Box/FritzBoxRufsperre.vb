@@ -238,10 +238,11 @@ Friend Module FritzBoxRufsperre
         End With
     End Sub
 
+
+
     ''' <summary>
     ''' Erzeugt einen neuen Eintrag als <see cref="FritzBoxXMLKontakt"/>für die Sperrliste, oder fügt die Nummer einem bestehenden Eintrag hinzu. 
     ''' </summary>
-    ''' <param name="Eintrag">tellows ScoreList-Eintrag als <see cref="TellowsScoreListEntry"/></param>
     ''' <param name="FBoxRufSperre">aktuelles Rufsperrentelefonbuch als <see cref="FritzBoxXMLTelefonbuch"/></param>
     ''' <param name="MaxNrbyEntry">Maximale Anzahl an Telefonnummern, die pro Eintrag in der Fritz!Box Rufsperre gespeichert werden sollen.</param>
     ''' <returns>Sperrlisteintrag, der die Nummer enthält. Oder Nothing, falls Nummer bereits in der Sperrliste enthalten ist.</returns>

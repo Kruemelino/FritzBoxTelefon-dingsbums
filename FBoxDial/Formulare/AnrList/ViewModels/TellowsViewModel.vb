@@ -75,7 +75,7 @@ Public Class TellowsViewModel
         End Set
     End Property
 
-    Private _TBTellowsEntryNumberCount As Integer = 10
+    Private _TBTellowsEntryNumberCount As Integer = XMLData.POptionen.CBTellowsEntryNumberCount
     Public Property TBTellowsEntryNumberCount As Integer
         Get
             Return _TBTellowsEntryNumberCount

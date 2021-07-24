@@ -17,12 +17,10 @@ Friend Module Journal
             End Using
         End If
 
-        Await TaskAnrufListe
-        Anrufliste = TaskAnrufListe.Result
+        Anrufliste = Await TaskAnrufListe
 
         If TaskScoreListe IsNot Nothing Then
-            Await TaskScoreListe
-            ThisAddIn.TellowsScoreList = TaskScoreListe.Result
+            ThisAddIn.TellowsScoreList = Await TaskScoreListe
             NLogger.Debug($"tellows Scorelist mit {ThisAddIn.TellowsScoreList.Count} Einträgen geladen.")
         End If
 
@@ -32,6 +30,28 @@ Friend Module Journal
             ' Starte die Auswertung der Anrufliste
             Await ImportCalls(XMLData.POptionen.LetzterJournalEintrag, Now)
         End If
+    End Sub
+
+    Friend Async Sub AutoBlockListe()
+
+        With XMLData.POptionen
+            If Now.Subtract(.LetzteSperrlistenaktualsierung).TotalHours.IsLargerOrEqual(24) Then
+                NLogger.Debug("Rufsperre der Fritz!Box wird aktualisiert.")
+
+                Dim CTS = New Threading.CancellationTokenSource
+                Dim progressIndicator = New Progress(Of Integer)(Sub(status)
+                                                                 End Sub)
+
+                Await BlockTellowsNumbers(.CBTellowsAnrMonMinScore, .CBTellowsEntryNumberCount, ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
+
+                .LetzteSperrlistenaktualsierung = Now
+
+                CTS.Dispose()
+            Else
+                NLogger.Debug("Rufsperre der Fritz!Box wird nicht aktualisiert.")
+            End If
+
+        End With
     End Sub
 
     Private Function ImportCalls(DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task

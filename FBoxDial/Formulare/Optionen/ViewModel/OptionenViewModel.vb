@@ -427,6 +427,16 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBTellowsEntryNumberCount As Integer
+    Public Property CBTellowsEntryNumberCount As Integer
+        Get
+            Return _CBTellowsEntryNumberCount
+        End Get
+        Set
+            SetProperty(_CBTellowsEntryNumberCount, Value)
+        End Set
+    End Property
+
     Private _CBTellowsAnrMonColor As Boolean
     Public Property CBTellowsAnrMonColor As Boolean
         Get
@@ -444,6 +454,16 @@ Public Class OptionenViewModel
         End Get
         Set
             SetProperty(_CBTellowsAutoFBBlockList, Value)
+        End Set
+    End Property
+
+    Private _CBTellowsAutoUpdateScoreList As Boolean
+    Public Property CBTellowsAutoUpdateScoreList As Boolean
+        Get
+            Return _CBTellowsAutoUpdateScoreList
+        End Get
+        Set
+            SetProperty(_CBTellowsAutoUpdateScoreList, Value)
         End Set
     End Property
 

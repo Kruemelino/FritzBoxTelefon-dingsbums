@@ -586,6 +586,10 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Mindestscore für Fritz!Box Rufsperre</value>
     <comment>OptTellows</comment>
   </data>
+  <data name="strTellowsAutoUpdateScoreList" xml:space="preserve">
+    <value>Fritz!Box Rufsperre automatisch aktualisieren</value>
+    <comment>OptTellows</comment>
+  </data>
   <data name="strTellowsCallerNames" xml:space="preserve">
     <value>Mögliche Namen</value>
     <comment>OptTellows</comment>
@@ -601,6 +605,9 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
   <data name="strTellowsComments" xml:space="preserve">
     <value>Anzahl Kommentare dieser Nummer</value>
     <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsEntryNumberCount" xml:space="preserve">
+    <value>Anzahl an Telefonnummern je Sperrlisteneintrag</value>
   </data>
   <data name="strTellowsHeadAccountInfo" xml:space="preserve">
     <value>tellows - Account Info</value>

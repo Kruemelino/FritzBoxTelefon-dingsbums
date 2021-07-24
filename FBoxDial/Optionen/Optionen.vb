@@ -117,7 +117,6 @@
 
 #End Region
 
-
 #Region "Einstellungen für die Kontaktsuche - tellows"
     <XmlElement("TBTellowsAPIKey")> Public Property TBTellowsAPIKey As String = DfltStringEmpty
     <XmlElement("CBTellows")> Public Property CBTellows As Boolean = False
@@ -126,6 +125,9 @@
     <XmlElement("CBTellowsAnrMonColor")> Public Property CBTellowsAnrMonColor As Boolean = False
     <XmlElement("CBTellowsAutoFBBlockList")> Public Property CBTellowsAutoFBBlockList As Boolean = False
     <XmlElement("CBTellowsAutoScoreFBBlockList")> Public Property CBTellowsAutoScoreFBBlockList As Integer = 7
+    <XmlElement("CBTellowsAutoUpdateScoreList")> Public Property CBTellowsAutoUpdateScoreList As Boolean = False
+    <XmlElement("CBTellowsEntryNumberCount")> Public Property CBTellowsEntryNumberCount As Integer = 10
+    <XmlElement("LetzteSperrlistenaktualsierung")> Public Property LetzteSperrlistenaktualsierung As Date = Now
 #End Region
 #End Region
 

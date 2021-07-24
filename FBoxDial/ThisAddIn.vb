@@ -71,8 +71,14 @@ Public NotInheritable Class ThisAddIn
 
         ' Anrufliste auswerten
         If XMLData.POptionen.CBAutoAnrList Then
-            AutoAnrListe()
             NLogger.Debug("Auswertung Anrufliste gestartet...")
+            AutoAnrListe()
+        End If
+
+        ' Aktualisierung der tellows Sperrliste
+        If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
+            NLogger.Debug("Update Rufsperre durch tellows gestartet...")
+            AutoBlockListe()
         End If
 
         ' Schreibe in das Log noch Informationen zur Fritz!Box
