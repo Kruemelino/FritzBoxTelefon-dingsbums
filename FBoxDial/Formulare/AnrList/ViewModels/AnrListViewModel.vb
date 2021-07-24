@@ -1,4 +1,5 @@
 ﻿Imports System.Collections
+Imports System.Threading
 
 Public Class AnrListViewModel
     Inherits NotifyBase
@@ -78,16 +79,6 @@ Public Class AnrListViewModel
         End Set
     End Property
 
-    Private _CancelationPending As Boolean
-    Private Property CancelationPending As Boolean
-        Get
-            Return _CancelationPending
-        End Get
-        Set
-            SetProperty(_CancelationPending, Value)
-        End Set
-    End Property
-
     Private _ImportProgressValue As Double
     Public Property ImportProgressValue As Double
         Get
@@ -106,6 +97,23 @@ Public Class AnrListViewModel
         Set
             SetProperty(_ImportProgressMax, Value)
         End Set
+    End Property
+
+    Private _IsAktiv As Boolean = False
+    Public Property IsAktiv As Boolean
+        Get
+            Return _IsAktiv
+        End Get
+        Set
+            SetProperty(_IsAktiv, Value)
+            OnPropertyChanged(NameOf(IsNotAktiv))
+        End Set
+    End Property
+
+    Public ReadOnly Property IsNotAktiv As Boolean
+        Get
+            Return Not _IsAktiv
+        End Get
     End Property
 #End Region
 
@@ -181,39 +189,56 @@ Public Class AnrListViewModel
     End Sub
 
     Private Sub CancelProcess(o As Object)
-        CancelationPending = True
+        CTS?.Cancel()
         NLogger.Debug("Manueller Journalimport abgebrochen.")
     End Sub
 
+#End Region
+
+#Region "Cancel"
+    Private Property CTS As CancellationTokenSource
+#End Region
+
 #Region "Journalimport"
-    Private Sub JournalImport(o As Object)
-        ' TODO CTS = New CancellationTokenSource analog TellowsViewmodel
-        ' TODO Dim progressIndicator = New Progress(Of Integer)(Sub(status) BlockProgressValue += status)
-        ' Abbruch Flag setzen
-        CancelationPending = False
+    Private Async Sub JournalImport(o As Object)
 
         Dim AusgewählteAnrufe As IEnumerable(Of FritzBoxXMLCall) = ListVM.CallList.Where(Function(x) x.Export = True)
 
         If AusgewählteAnrufe.Any Then
+
+            ' Aktiv-Flag setzen
+            IsAktiv = True
+
             ' Setze aktuellen Wert für Progressbar
             ImportProgressValue = 0
+
             ' Setze Progressbar Maximum
             ImportProgressMax = AusgewählteAnrufe.Count
 
             NLogger.Debug($"Starte manueller Import mit {ImportProgressMax} Einträgen.")
 
-            Threading.Tasks.Task.Run(Sub()
-                                         For Each Anruf In AusgewählteAnrufe
-                                             If CancelationPending Then Exit For
+            CTS = New CancellationTokenSource
 
-                                             ' Erhöhe Wert für Progressbar
-                                             ImportProgressValue += 1
+            Dim progressIndicator = New Progress(Of Integer)(Sub(status) ImportProgressValue += status)
 
-                                             DatenService.ErstelleEintrag(Anruf)
+            Try
+                ' Erstellung der Sperrliste in der Fritz!Box anstoßen
+                Await DatenService.ErstelleEinträge(AusgewählteAnrufe, CTS.Token, progressIndicator)
 
-                                         Next
-                                     End Sub)
+            Catch ex As OperationCanceledException
+                NLogger.Debug(ex)
+            End Try
 
+            If Not CTS.Token.IsCancellationRequested Then
+                ' Progressbar auf Max setzen:
+                ImportProgressValue = ImportProgressMax
+            End If
+
+            ' Aktiv-Flag setzen
+            IsAktiv = False
+
+            ' CancellationTokenSource auflösen
+            CTS.Dispose()
         End If
 
     End Sub
@@ -232,6 +257,5 @@ Public Class AnrListViewModel
     End Sub
 #End Region
 
-#End Region
 
 End Class

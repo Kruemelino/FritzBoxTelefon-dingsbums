@@ -131,12 +131,14 @@ Public Class TellowsViewModel
             ' Erstellung der Sperrliste in der Fritz!Box anstoßen
             Await DatenService.BlockTellowsNumbers(CBoxTellowsScoreFBBlockList, TBTellowsEntryNumberCount, ListVM.TellowsList, CTS.Token, progressIndicator)
 
-            ' Progressbar auf Max setzen:
-            BlockProgressValue = BlockProgressMax
-
         Catch ex As OperationCanceledException
             NLogger.Debug(ex)
         End Try
+
+        If Not CTS.Token.IsCancellationRequested Then
+            ' Progressbar auf Max setzen:
+            BlockProgressValue = BlockProgressMax
+        End If
 
         ' Aktiv-Flag setzen
         IsAktiv = False

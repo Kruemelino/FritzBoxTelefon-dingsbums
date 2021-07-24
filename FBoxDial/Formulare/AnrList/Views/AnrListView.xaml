@@ -81,13 +81,15 @@
                         Style="{StaticResource IconTextButton}"
                         Content="{x:Static localize:LocAnrList.strStartJounalImport}"
                         Tag="{DynamicResource ShowTrimmedCallTree_16x}" 
-                        Command="{Binding ImportCommand}"/>
+                        Command="{Binding ImportCommand}"
+                        IsEnabled="{Binding IsNotAktiv}"/>
 
                 <Button Grid.Column="1" Grid.Row="0"
                         Style="{StaticResource IconTextButton}"
                         Content="{x:Static localize:LocAnrList.strCancel}" 
                         Tag="{DynamicResource Cancel_16x}"
-                        Command="{Binding CancelCommand}" />
+                        Command="{Binding CancelCommand}" 
+                        IsEnabled="{Binding IsAktiv}"/>
 
                 <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
                     <Label Content="{x:Static localize:LocAnrList.strStatus}" Margin="8,0"/>

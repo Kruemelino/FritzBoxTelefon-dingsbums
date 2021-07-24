@@ -25,4 +25,30 @@ Module FritzBoxAnrufliste
 
     End Function
 #End Region
+
+#Region "Anrufliste auswerten"
+    Friend Async Function ErstelleJournal(Anrufe As IEnumerable(Of FritzBoxXMLCall), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
+        Return Await Task.Run(Function()
+                                  Dim Einträge As Integer = 0
+
+                                  For Each Anruf In Anrufe
+                                      ' Journaleintrag erstellen
+                                      Anruf.ErstelleTelefonat.ErstelleJournalEintrag()
+
+                                      ' Zählvariable hochsetzen
+                                      Einträge += 1
+
+                                      ' Status weitergeben
+                                      progress.Report(1)
+
+                                      ' Abbruch überwachen
+                                      If ct.IsCancellationRequested Then Exit For
+                                      'ct.ThrowIfCancellationRequested()
+                                  Next
+
+                                  Return Einträge
+                              End Function, ct)
+
+    End Function
+#End Region
 End Module

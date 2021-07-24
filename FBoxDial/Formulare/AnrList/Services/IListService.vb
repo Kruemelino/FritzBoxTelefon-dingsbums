@@ -17,8 +17,8 @@ Public Interface IListService
     ''' <summary>
     ''' Erstellt aus dem übegebenen Anruf (<see cref="FritzBoxXMLCall"/>) ein Outlook Journaleintrag.
     ''' </summary>
-    ''' <param name="Anruf">Der zu verarbeitende Anruf.</param>
-    Sub ErstelleEintrag(Anruf As FritzBoxXMLCall)
+    ''' <param name="Anrufe">Auflistung der zu importierenden Anrufe</param>
+    Function ErstelleEinträge(Anrufe As IEnumerable(Of FritzBoxXMLCall), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
 #End Region
 
 #Region "tellows"

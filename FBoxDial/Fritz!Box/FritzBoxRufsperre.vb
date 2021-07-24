@@ -321,21 +321,20 @@ Friend Module FritzBoxRufsperre
                                               NeueNummern += 1
                                           End If
 
-                                          ct.ThrowIfCancellationRequested()
+                                          If ct.IsCancellationRequested Then Exit For
                                       Next
 
                                       NLogger.Debug($"Es wurden {NeueSperrEinträge.Count} neue Einträge für {NeueNummern} erzeugt.")
 
                                       ' Lade die verbleibenden Sperrlisteinträge hoch
-                                      NeueSperrEinträge.ForEach(Sub(Eintrag)
-                                                                    ct.ThrowIfCancellationRequested()
+                                      For Each Eintrag In NeueSperrEinträge
+                                          If AddToCallBarring(Eintrag, fbtr064:=tr064) Then
+                                              progress.Report(Eintrag.Telefonie.Nummern.Count)
+                                          End If
 
-                                                                    If AddToCallBarring(Eintrag, fbtr064:=tr064) Then
-                                                                        progress.Report(Eintrag.Telefonie.Nummern.Count)
-                                                                    End If
-                                                                End Sub)
+                                          If ct.IsCancellationRequested Then Exit For
+                                      Next
 
-                                      ' Await Task.WhenAll(Tasklist)
                                       NLogger.Info($"{NeueNummern} neue Nummern der tellows Scorelist (ab Score {MinScore}) in die Fritz!Box Sperrliste ({MaxNrbyEntry} Nummern je Eintrag) übernommen.")
                                       Return NeueNummern
                                   End Using
