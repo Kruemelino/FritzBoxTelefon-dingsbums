@@ -236,7 +236,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen die (0) ausgewählte(n) Einträg(e) aus der Rufsperre endgültig gelöscht werden? ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen die {0} ausgewählte(n) Einträg(e) aus der Rufsperre endgültig gelöscht werden? ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strQuestionDeleteCallBarrings() As String
             Get

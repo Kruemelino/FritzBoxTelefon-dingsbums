@@ -58,30 +58,12 @@ Namespace Telefonbücher
                                 NLogger.Warn($"Es konnten nur {AlleTelefonbücher.Telefonbücher.Count} von {PhonebookIDs.Count} Telefonbüchern heruntergeladen werden.")
                             End If
 
-                            If .GetCallBarringList(PhonebookURL) Then
-                                NLogger.Debug($"Rufsperren heruntergeladen: '{PhonebookURL}'")
 
-                                ' Lade das Telefonbuch herunter
-                                AktuellePhoneBookXML = Await DeserializeAsyncXML(Of FritzBoxXMLTelefonbücher)(PhonebookURL, True, xslt)
+                            AktuellePhoneBookXML = Await LadeFritzBoxSperrliste(fbtr064)
+                            If AktuellePhoneBookXML IsNot Nothing Then
 
-
-                                If AktuellePhoneBookXML IsNot Nothing Then
-                                    ' Verarbeite die Telefonbücher
-                                    For Each Telefonbuch In AktuellePhoneBookXML.Telefonbücher
-
-                                        ' Angabe, dass es sich um die Rufsperren handelt
-                                        Telefonbuch.Rufsperren = True
-
-                                        ' ID Setzen 258
-                                        Telefonbuch.ID = Telefonbuch.Owner.ToInt
-
-                                        ' Ändere Namen
-                                        Telefonbuch.Name = Localize.resTelefonbuch.strCallBarringList
-                                    Next
-
-                                    ' Füge die Telefonbücher zusammen
-                                    AlleTelefonbücher.Telefonbücher.AddRange(AktuellePhoneBookXML.Telefonbücher)
-                                End If
+                                ' Füge die Telefonbücher zusammen
+                                AlleTelefonbücher.Telefonbücher.AddRange(AktuellePhoneBookXML.Telefonbücher)
                             End If
 
                             Return AlleTelefonbücher
@@ -94,6 +76,46 @@ Namespace Telefonbücher
                 NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
                 Return Nothing
             End If
+        End Function
+
+        Friend Async Function LadeFritzBoxSperrliste(Optional fbtr064 As SOAP.FritzBoxTR64 = Nothing) As Task(Of FritzBoxXMLTelefonbücher)
+
+            If fbtr064 Is Nothing Then fbtr064 = New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+
+            With fbtr064
+                ' Initialiesiere die Gesamtliste der Telefonbücher
+                Dim PhonebookURL As String = DfltStringEmpty
+
+                ' Lade die xslt Transformationsdatei
+                Dim xslt As New Xsl.XslCompiledTransform
+                xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
+
+                Dim CallBarringXML As New FritzBoxXMLTelefonbücher
+
+                If .GetCallBarringList(PhonebookURL) Then
+                    NLogger.Debug($"Rufsperren heruntergeladen: '{PhonebookURL}'")
+
+                    ' Lade das Telefonbuch herunter
+                    CallBarringXML = Await DeserializeAsyncXML(Of FritzBoxXMLTelefonbücher)(PhonebookURL, True, xslt)
+
+                    If CallBarringXML IsNot Nothing Then
+                        ' Verarbeite die Telefonbücher
+                        For Each Telefonbuch In CallBarringXML.Telefonbücher
+
+                            ' Angabe, dass es sich um die Rufsperren handelt
+                            Telefonbuch.Rufsperren = True
+
+                            ' ID Setzen 258
+                            Telefonbuch.ID = Telefonbuch.Owner.ToInt
+
+                            ' Ändere Namen
+                            Telefonbuch.Name = Localize.resTelefonbuch.strCallBarringList
+                        Next
+                    End If
+                End If
+
+                Return CallBarringXML
+            End With
         End Function
 
         Friend Function LadeHeaderFritzBoxTelefonbücher() As FritzBoxXMLTelefonbücher
@@ -397,5 +419,6 @@ Namespace Telefonbücher
         End Function
 
 #End Region
+
     End Module
 End Namespace

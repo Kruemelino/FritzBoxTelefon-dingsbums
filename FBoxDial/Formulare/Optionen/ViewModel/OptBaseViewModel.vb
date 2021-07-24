@@ -20,6 +20,8 @@
         End Get
     End Property
 
+    Public Property InitialSelected As Boolean = True Implements IPageViewModel.InitialSelected
+
     Public Property UpdateUserListCommand As RelayCommand
 
     Public Sub New()

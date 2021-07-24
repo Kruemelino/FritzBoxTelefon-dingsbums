@@ -65,22 +65,6 @@ Public Class ContactsViewModel
         End Get
     End Property
 #End Region
-
-#Region "ICommand"
-    Public Property EditCommand As ICommand
-    Public Property SaveCommand As ICommand
-    Public Property CancelCommand As ICommand
-    Public Property UpdateCommand As ICommand
-    'Public Property BrowseImageCommand As ICommand
-    Public Property AddContact As ICommand
-    Public Property DeleteCommand As ICommand
-    Public Property DialCommand As ICommand
-    Public Property AddNumber As ICommand
-    Public Property AddMail As ICommand
-    Public Property RemoveNumber As ICommand
-    Public Property RemoveMail As ICommand
-#End Region
-
 #Region "Filtern"
     Public Property View As ListCollectionView
 
@@ -102,16 +86,28 @@ Public Class ContactsViewModel
                 ' Telefone werden immer weggefiltet
                 Return False
             Else
-                If FilterName.IsNotStringNothingOrEmpty Then
-                    Return .Person.RealName.ToLower.Contains(FilterName.ToLower)
-                Else
-                    Return True
-                End If
+                Return If(FilterName.IsNotStringNothingOrEmpty, .Person.RealName.ToLower.Contains(FilterName.ToLower), True)
             End If
         End With
     End Function
 
 #End Region
+#Region "ICommand"
+    Public Property EditCommand As ICommand
+    Public Property SaveCommand As ICommand
+    Public Property CancelCommand As ICommand
+    Public Property UpdateCommand As ICommand
+    'Public Property BrowseImageCommand As ICommand
+    Public Property AddContact As ICommand
+    Public Property DeleteCommand As ICommand
+    Public Property DialCommand As ICommand
+    Public Property AddNumber As ICommand
+    Public Property AddMail As ICommand
+    Public Property RemoveNumber As ICommand
+    Public Property RemoveMail As ICommand
+#End Region
+
+
 
     Public Sub New(dataService As IContactDataService, dialogService As IDialogService)
         _DatenService = dataService

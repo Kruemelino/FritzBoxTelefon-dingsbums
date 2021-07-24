@@ -218,7 +218,19 @@ Public Class AnrMonViewModel
                             If XMLData.POptionen.CBTellowsAnrMonColor Then BackgroundColor = .ScoreColor
                         End If
                     End With
+                End If
 
+                ' Setze das Kontaktbild, falls ein Eintrag aus tellows ScoreList verfügbar ist.
+                If .ScoreListEntry IsNot Nothing Then
+                    With .ScoreListEntry
+                        ' Wenn der Mindestscore erreicht wurde und die Mindestanzahl an Kommentaren, dann Zeige die Informationen an
+                        If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Complains.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
+                            ' tellows Score Icon 
+                            Kontaktbild = New BitmapImage(New Uri($"pack://application:,,,/{My.Resources.strDefLongName};component/Tellows/Resources/score{ .Score}.png", UriKind.Absolute))
+                            ' Einfärben des Hintergrundes
+                            'If XMLData.POptionen.CBTellowsAnrMonColor Then BackgroundColor = .ScoreColor
+                        End If
+                    End With
                 End If
             End If
         End With

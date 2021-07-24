@@ -1,10 +1,17 @@
 ﻿Friend Class MicroSIP
     Implements IDisposable
+    Implements IIPPhone
 
     Private Const MicroSIPProgressName As String = "MicroSIP"
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Friend ReadOnly Property MicroSIPReady As Boolean = Process.GetProcessesByName(MicroSIPProgressName).Length.IsNotZero
+    Friend ReadOnly Property MicroSIPReady As Boolean Implements IIPPhone.IPPhoneReady
+        Get
+            Return Process.GetProcessesByName(MicroSIPProgressName).Length.IsNotZero
+        End Get
+    End Property
+
+
     Friend ReadOnly Property MicroSIPPath As String
 
 #Region "MicroSIP Commandline"
@@ -73,7 +80,7 @@
         End If
     End Sub
 
-    Friend Function Dial(DialCode As String, Hangup As Boolean) As Boolean
+    Friend Function Dial(DialCode As String, Hangup As Boolean) As Boolean Implements IIPPhone.Dial
 
         Dial = False
 
@@ -109,17 +116,11 @@
         End If
     End Sub
 
-    ' Finalizer nur überschreiben, wenn "Dispose(disposing As Boolean)" Code für die Freigabe nicht verwalteter Ressourcen enthält
-    ' Protected Overrides Sub Finalize()
-    '     ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
-    '     Dispose(disposing:=False)
-    '     MyBase.Finalize()
-    ' End Sub
-
     Public Sub Dispose() Implements IDisposable.Dispose
         ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
         Dispose(disposing:=True)
         ' Auskommentierung der folgenden Zeile aufheben, wenn Finalize() oben überschrieben wird.
         ' GC.SuppressFinalize(Me)
     End Sub
+
 End Class

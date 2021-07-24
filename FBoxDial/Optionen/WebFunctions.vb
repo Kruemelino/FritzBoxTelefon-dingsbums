@@ -187,16 +187,16 @@ Friend Module WebFunctions
                         End With
                     End Using
 
-                    'Case Uri.UriSchemeFile
+                Case Uri.UriSchemeFile
 
-                    '    retVal = Await Task.Run(Function()
-                    '                                Try
-                    '                                    Return IO.File.ReadAllText(UniformResourceIdentifier.LocalPath)
-                    '                                Catch ex As Exception
-                    '                                    NLogger.Warn(ex, $"Lokale Datei {UniformResourceIdentifier.LocalPath} kann nicht gelesen werden.")
-                    '                                    Return retVal
-                    '                                End Try
-                    '                            End Function)
+                    retVal = Await Task.Run(Function()
+                                                Try
+                                                    Return IO.File.ReadAllText(UniformResourceIdentifier.LocalPath)
+                                                Catch ex As Exception
+                                                    NLogger.Warn(ex, $"Lokale Datei {UniformResourceIdentifier.LocalPath} kann nicht gelesen werden.")
+                                                    Return DfltStringEmpty
+                                                End Try
+                                            End Function)
                 Case Else
                     NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
             End Select

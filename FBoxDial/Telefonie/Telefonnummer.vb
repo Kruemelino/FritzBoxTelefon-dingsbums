@@ -50,7 +50,6 @@ Public Class Telefonnummer
 
     <XmlIgnore> Public ReadOnly Property TellowsNummer As String
         Get
-            ' TODO: Bei Nummern im Ortsnetz, die Vorwahl ergänzen 
             ' 1. Entferne jeden String, der vor einem Doppelpunkt steht (einschließlich :)
             ' 2. Ersetze das + durch die Verkehrsausscheidungsziffer (VAZ) 00
             ' 3. Entferne alles, was keine Ziffer ist

@@ -146,6 +146,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Anrufliste ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strFBoxAnrufliste() As String
+            Get
+                Return ResourceManager.GetString("strFBoxAnrufliste", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Rufsperre ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strFBoxBlockList() As String
+            Get
+                Return ResourceManager.GetString("strFBoxBlockList", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Import der Anrufliste ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strImportCallerList() As String
@@ -241,6 +259,159 @@ Namespace Localize
         Public Shared ReadOnly Property strStatus() As String
             Get
                 Return ResourceManager.GetString("strStatus", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die tellows ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellows() As String
+            Get
+                Return ResourceManager.GetString("strTellows", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nummern hinzufügen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsAddtoBlockListe() As String
+            Get
+                Return ResourceManager.GetString("strTellowsAddtoBlockListe", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Mindestscore für Fritz!Box Rufsperre ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsAutoScoreFBBlockList() As String
+            Get
+                Return ResourceManager.GetString("strTellowsAutoScoreFBBlockList", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Name ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsCallerName() As String
+            Get
+                Return ResourceManager.GetString("strTellowsCallerName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Typ ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsCallerType() As String
+            Get
+                Return ResourceManager.GetString("strTellowsCallerType", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kommentare ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsComplains() As String
+            Get
+                Return ResourceManager.GetString("strTellowsComplains", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Rufsperre Einstellungen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsConfig() As String
+            Get
+                Return ResourceManager.GetString("strTellowsConfig", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Land ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsCountry() As String
+            Get
+                Return ResourceManager.GetString("strTellowsCountry", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anzahl an Telefonnummern je Eintrag ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsEntryNumberCount() As String
+            Get
+                Return ResourceManager.GetString("strTellowsEntryNumberCount", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Filter ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsFilter() As String
+            Get
+                Return ResourceManager.GetString("strTellowsFilter", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Enthaltener Text in Name oder Typ ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsFilterName() As String
+            Get
+                Return ResourceManager.GetString("strTellowsFilterName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anzuzeigender Score ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsFilterScore() As String
+            Get
+                Return ResourceManager.GetString("strTellowsFilterScore", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsNumber() As String
+            Get
+                Return ResourceManager.GetString("strTellowsNumber", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Vorwahl ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsPrefix() As String
+            Get
+                Return ResourceManager.GetString("strTellowsPrefix", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Ort ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsPrefixName() As String
+            Get
+                Return ResourceManager.GetString("strTellowsPrefixName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Score ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsScore() As String
+            Get
+                Return ResourceManager.GetString("strTellowsScore", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Suchanfragen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsSearches() As String
+            Get
+                Return ResourceManager.GetString("strTellowsSearches", resourceCulture)
             End Get
         End Property
         

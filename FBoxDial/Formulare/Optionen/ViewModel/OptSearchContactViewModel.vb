@@ -25,6 +25,8 @@ Public Class OptSearchContactViewModel
         End Get
     End Property
 
+    Public Property InitialSelected As Boolean = False Implements IPageViewModel.InitialSelected
+
     Private Property RootVM As OutlookFolderViewModel = New OutlookFolderViewModel(Outlook.OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSuche)
 
     Public ReadOnly Property Root As OutlookFolderViewModel
@@ -127,6 +129,11 @@ Public Class OptSearchContactViewModel
     End Sub
     ' TODO in Datenservice verschieben
     Private Async Sub StartIndex(obj As Object)
+
+        ' TODO CTS = New CancellationTokenSource analog TellowsViewmodel
+        ' TODO Dim progressIndicator = New Progress(Of Integer)(Sub(status) BlockProgressValue += status)
+
+
         ' Setze das CancelationPending zurück
         CancelationPending = False
 
@@ -164,7 +171,6 @@ Public Class OptSearchContactViewModel
             IndexTasks.Add(Tasks.Task.Run(Sub() DatenService.Indexer(Ordner, IndexModus, OptVM.CBSucheUnterordner)))
 
             ' Frage Cancelation ab
-            ' TODO: Sauberes Abbrechen implementieren CancellationToken 
             If CancelationPending Then Exit For
         Next
 

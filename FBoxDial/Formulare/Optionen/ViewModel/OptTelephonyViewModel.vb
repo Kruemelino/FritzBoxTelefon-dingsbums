@@ -20,6 +20,8 @@
         End Get
     End Property
 
+    Public Property InitialSelected As Boolean = False Implements IPageViewModel.InitialSelected
+
     Private _IsAktiv As Boolean
     Public Property IsAktiv As Boolean
         Get

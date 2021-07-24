@@ -56,8 +56,9 @@ Es liegt mir fern, fremden Code als meinen zu verkaufen. (Falls ich was vergesse
 *	WPF RelayCommand: Nofear23m [Command's in WPF](https://www.vb-paradise.de/index.php/Thread/128963-Command-s-in-WPF/?postID=1116045#post1116045)
 *   WPF Enums: Brian Lagunas [BindingEnumsInWpf](https://github.com/brianlagunas/BindingEnumsInWpf), [A Better Way to Data Bind Enums in WPF](https://brianlagunas.com/a-better-way-to-data-bind-enums-in-wpf/),
     [Localize Enum Descriptions in WPF](https://brianlagunas.com/localize-enum-descriptions-in-wpf/)
+*   WPF Spaltenfilter im Datagrid: Macabies Gilles [Filterable DataGrid, multi language](https://github.com/macgile/DataGridFilter)
 *   Passwortverschlüsselung: [Rijndael Encryption in VB.NET](http://www.freevbcode.com/ShowCode.asp?ID=4520)
-*   Routine zur Überprüfung der installierten .NET Version: Christoph Nahr [Check .NET Version with Inno Setup](http://kynosarges.org/DotNetVersion.html)
+*   Routine zur Überprüfung der installierten .NET Version: Christoph Nahr [Check .NET Version with Inno Setup](http://kynosarges.org/DotNetVersion.html)*   
 
 ### Datenschutz
 Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.

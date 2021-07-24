@@ -39,6 +39,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <RadioButton Style="{StaticResource ToggleButtonStyle}"
+                                     IsChecked="{Binding InitialSelected}"
                                      Content="{Binding Name}"
                                      Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                      CommandParameter="{Binding}" />

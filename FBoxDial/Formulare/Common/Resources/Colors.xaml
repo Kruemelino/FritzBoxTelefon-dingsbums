@@ -53,6 +53,15 @@
     
     <SolidColorBrush x:Key="FusionRed" Color="#fc5c65"/>
     <SolidColorBrush x:Key="Flirtatious" Color="#fed330"/>
-    
-    
+
+    <!-- tellows Brushes -->
+    <SolidColorBrush x:Key="score1" Color="#00fc00"/>
+    <SolidColorBrush x:Key="score2" Color="#30f90a"/>
+    <SolidColorBrush x:Key="score3" Color="#68ff0b"/>
+    <SolidColorBrush x:Key="score4" Color="#8dfc08"/>
+    <SolidColorBrush x:Key="score5" Color="#d6ff18"/>
+    <SolidColorBrush x:Key="score6" Color="#f4d11f"/>
+    <SolidColorBrush x:Key="score7" Color="#f79a01"/>    
+    <SolidColorBrush x:Key="score8" Color="#fb6703"/>
+    <SolidColorBrush x:Key="score9" Color="#ff3505"/>
 </ResourceDictionary>

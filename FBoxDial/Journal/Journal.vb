@@ -1,13 +1,35 @@
 ﻿Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop
-Module Journal
+Friend Module Journal
     Private Property Anrufliste As FritzBoxXMLCallList
-    'Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Friend Async Sub AutoAnrListe()
-        ' XMLData.POptionen.PLetzterJournalEintragID
-        Anrufliste = Await LadeFritzBoxAnrufliste()
+
+        ' Lade die Anruflise aus der Fritz!Box herunter
+        Dim TaskAnrufListe As Task(Of FritzBoxXMLCallList) = LadeFritzBoxAnrufliste()
+        Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
+
+        ' Lade die tellows Liste
+        If XMLData.POptionen.CBTellows Then
+            Using tellows As New Tellows
+                TaskScoreListe = tellows.LadeScoreList
+            End Using
+        End If
+
+        Await TaskAnrufListe
+        Anrufliste = TaskAnrufListe.Result
+
+        If TaskScoreListe IsNot Nothing Then
+            Await TaskScoreListe
+            ThisAddIn.TellowsScoreList = TaskScoreListe.Result
+            NLogger.Debug($"tellows Scorelist mit {ThisAddIn.TellowsScoreList.Count} Einträgen geladen.")
+        End If
+
         If Anrufliste IsNot Nothing Then
+            NLogger.Debug($"Anrufliste mit {Anrufliste.Calls.Count} Einträgen geladen.")
+
+            ' Starte die Auswertung der Anrufliste
             Await ImportCalls(XMLData.POptionen.LetzterJournalEintrag, Now)
         End If
     End Sub
@@ -16,9 +38,11 @@ Module Journal
         Return Task.Run(Sub()
                             Dim Abfrage As ParallelQuery(Of FritzBoxXMLCall)
 
-                            Abfrage = From Anruf In Anrufliste.Calls.AsParallel() Where (Anruf.Type.IsLessOrEqual(3) And DatumZeitAnfang <= Anruf.Datum And DatumZeitEnde >= Anruf.Datum) Select Anruf
+                            Abfrage = From Anruf In Anrufliste.Calls.AsParallel() Where Anruf.Type.IsLessOrEqual(3) And DatumZeitAnfang <= Anruf.Datum And DatumZeitEnde >= Anruf.Datum Select Anruf
                             Abfrage.ForAll(Sub(r)
+                                               ' in ErstelleTelefonat wird auch die Wahlwiederholungs- und Rückrufliste ausgewertet.
                                                Using t As Telefonat = r.ErstelleTelefonat
+                                                   ' Erstelle einen Journaleintrag
                                                    t.ErstelleJournalEintrag()
                                                End Using
                                            End Sub)

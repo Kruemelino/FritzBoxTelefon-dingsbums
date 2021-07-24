@@ -1,5 +1,4 @@
-﻿Imports System.Windows.Media.Imaging
-Imports System.Xml.Serialization
+﻿Imports System.Xml.Serialization
 <Serializable()>
 <XmlRoot("tellows"), XmlType("tellows")> Public Class TellowsResponse
 #Region "Tellows Eigenschaften"

@@ -141,6 +141,9 @@
     This section specifies references for the project.
   -->
   <ItemGroup>
+    <Reference Include="FilterDataGrid, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FilterDataGrid.1.2.3\lib\net46\FilterDataGrid.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -240,8 +243,17 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Formulare\AnrList\Services\AnrListService.vb" />
-    <Compile Include="Formulare\AnrList\Services\IAnrListService.vb" />
+    <Compile Include="Formulare\AnrList\Services\ListService.vb" />
+    <Compile Include="Formulare\AnrList\Services\IListService.vb" />
+    <Compile Include="Formulare\AnrList\Services\IPageListViewModel.vb" />
+    <Compile Include="Formulare\AnrList\ViewModels\TellowsViewModel.vb" />
+    <Compile Include="Formulare\AnrList\ViewModels\ListViewModel.vb" />
+    <Compile Include="Formulare\AnrList\Views\TellowsView.xaml.vb">
+      <DependentUpon>TellowsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\AnrList\Views\AnrListView.xaml.vb">
+      <DependentUpon>AnrListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\AnrMon\Resources\LocAnrMon.Designer.vb">
       <DependentUpon>LocAnrMon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -437,6 +449,7 @@
     <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="Kontakte\NummernTypen.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />
+    <Compile Include="SoftPhone\IIPPhone.vb" />
     <Compile Include="SoftPhone\MicroSIP.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
@@ -597,6 +610,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Formulare\AnrList\Resources\AnrList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\AnrList\Views\TellowsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\AnrList\Views\AnrListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

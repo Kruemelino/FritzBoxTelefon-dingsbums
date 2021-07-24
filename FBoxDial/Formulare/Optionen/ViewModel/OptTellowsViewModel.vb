@@ -4,10 +4,9 @@ Imports System.Windows.Media.Imaging
 Public Class OptTellowsViewModel
     Inherits NotifyBase
     Implements IPageViewModel
-
-    Private _OptVM As OptionenViewModel
     Private Property DatenService As IOptionenService
 
+    Private _OptVM As OptionenViewModel
     Public Property OptVM As OptionenViewModel Implements IPageViewModel.OptVM
         Get
             Return _OptVM
@@ -23,6 +22,7 @@ Public Class OptTellowsViewModel
         End Get
     End Property
 
+    Public Property InitialSelected As Boolean = False Implements IPageViewModel.InitialSelected
 #Region "tellows Test"
     Private _TBTestTellowsInput As String
     Public Property TBTestTellowsInput As String
@@ -102,7 +102,7 @@ Public Class OptTellowsViewModel
         End Using
 
         ' Lade Bild
-        If TellowsResponse IsNot Nothing Then
+        If TellowsResponse IsNot Nothing AndAlso TellowsResponse.Score.IsInRange(1, 9) Then
             ImageData = New BitmapImage(New Uri($"pack://application:,,,/{My.Resources.strDefLongName};component/Tellows/Resources/score{TellowsResponse.Score}.png", UriKind.Absolute))
         End If
     End Sub

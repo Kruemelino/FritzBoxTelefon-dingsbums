@@ -5,12 +5,8 @@ Imports System.Threading
 
 Friend Class Phoner
     Implements IDisposable
+    Implements IIPPhone
 
-    Private disposedValue As Boolean
-    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private ReadOnly Property PhonerEndpoint As IPAddress = IPAddress.Loopback
-    Private ReadOnly Property PhonerEndpointPort As Integer = 2012
-    Friend ReadOnly Property PhonerReady As Boolean = Process.GetProcessesByName(PhonerProgressName).Length.IsNotZero
 #Region "Phoner Strings"
     Private Const PhonerProgressName As String = "phoner"
     Private Const PhonerLogin As String = "Login"
@@ -21,23 +17,25 @@ Friend Class Phoner
     Private Const PhonerDISCONNECT As String = "DISCONNECT"
 #End Region
 
-    Friend Function CheckPhonerAuth() As Boolean
-        Return DialPhoner(DfltStringEmpty, False, True)
-    End Function
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private ReadOnly Property PhonerEndpoint As IPAddress = IPAddress.Loopback
+    Private ReadOnly Property PhonerEndpointPort As Integer = 2012
 
-    Friend Function Dial(DialCode As String, Hangup As Boolean) As Boolean
-        Return DialPhoner(DialCode, Hangup, False)
-    End Function
+    Friend ReadOnly Property PhonerReady As Boolean Implements IIPPhone.IPPhoneReady
+        Get
+            Return Process.GetProcessesByName(PhonerProgressName).Length.IsNotZero
+        End Get
+    End Property
+
     ''' <summary>
     ''' Initiiert ein Telefonat über Phoner
     ''' </summary>
     ''' <param name="DialCode">Die zu wählende Nummer</param>
     ''' <param name="Hangup">Angabe, ob der Rufaufbau beendet werden soll.</param>
-    ''' <param name="Check">Angabe, ob nur die Authentifizierung mit Phoner überprüft werden soll.</param>
     ''' <returns></returns>
-    Private Function DialPhoner(DialCode As String, Hangup As Boolean, Check As Boolean) As Boolean
+    Friend Function Dial(DialCode As String, Hangup As Boolean) As Boolean Implements IIPPhone.Dial
 
-        DialPhoner = False
+        Dial = False
 
         If PhonerReady Then
             Using PhonerTcpClient As New TcpClient
@@ -74,19 +72,19 @@ Friend Class Phoner
                                     Thread.Sleep(50)
                                     If .DataAvailable Then
                                         NLogger.Debug("Authentifizierung erfolgreich")
-                                        If Not Check Then
-                                            ' Wählkommando senden
-                                            If Hangup Then
-                                                ' Abbruch des Rufaufbaues mittels DISCONNECT
-                                                SW.WriteLine(PhonerDISCONNECT)
-                                                NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
-                                            Else
-                                                ' Aufbau des Telefonates mittels CONNECT
-                                                SW.WriteLine($"{PhonerCONNECT} {DialCode}")
-                                                NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneAbbruch, DialCode, PhonerProgressName))
-                                            End If
+
+                                        ' Wählkommando senden
+                                        If Hangup Then
+                                            ' Abbruch des Rufaufbaues mittels DISCONNECT
+                                            SW.WriteLine(PhonerDISCONNECT)
+                                            NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
+                                        Else
+                                            ' Aufbau des Telefonates mittels CONNECT
+                                            SW.WriteLine($"{PhonerCONNECT} {DialCode}")
+                                            NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneAbbruch, DialCode, PhonerProgressName))
                                         End If
-                                        DialPhoner = True
+
+                                        Dial = True
 
                                     Else
                                         NLogger.Warn(Localize.LocWählclient.strPhonerPasswortFalsch)
@@ -116,6 +114,7 @@ Friend Class Phoner
         End If
     End Function
 
+    Private disposedValue As Boolean
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
             If disposing Then

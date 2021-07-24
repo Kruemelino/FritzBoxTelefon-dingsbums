@@ -48,6 +48,7 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 [Files]
 
 #if FileExists("..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.dll")
+    Source: "..\FBoxDial\bin\Debug\FilterDataGrid.dll";                                   DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.dll";                      DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.dll.manifest";             DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.vsto";                     DestDir: "{app}"; Flags: ignoreversion

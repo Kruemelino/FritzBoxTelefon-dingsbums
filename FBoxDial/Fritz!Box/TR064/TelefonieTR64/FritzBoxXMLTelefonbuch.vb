@@ -125,9 +125,21 @@ Imports System.Xml.Serialization
     ''' <summary>
     ''' Durchsucht die Kontakte nach der übergebenen Telefonnummer.
     ''' </summary>
-    ''' <param name="TelNr">Zu suchende Telefonnummer</param>
+    ''' <param name="TelNr">Zu suchende Telefonnummer als Typ: <see cref="Telefonnummer"/></param>
     ''' <returns>Eine Auflistung aller infrage kommenden Kontakte.</returns>
     Friend Function FindbyNumber(TelNr As Telefonnummer) As IEnumerable(Of FritzBoxXMLKontakt)
+        Return Kontakte.Where(Function(K)
+                                  ' interne Telefone sollen nicht duchsucht werden
+                                  Return Not K.IstTelefon AndAlso K.Telefonie.Nummern.Where(Function(N) TelNr.Equals(N.Nummer)).Any
+                              End Function)
+    End Function
+
+    ''' <summary>
+    ''' Durchsucht die Kontakte nach der übergebenen Telefonnummer.
+    ''' </summary>
+    ''' <param name="TelNr">Zu suchende Telefonnummer als Typ: <see cref="String"/></param>
+    ''' <returns>Eine Auflistung aller infrage kommenden Kontakte.</returns>
+    Friend Function FindbyNumber(TelNr As String) As IEnumerable(Of FritzBoxXMLKontakt)
         Return Kontakte.Where(Function(K)
                                   ' interne Telefone sollen nicht duchsucht werden
                                   Return Not K.IstTelefon AndAlso K.Telefonie.Nummern.Where(Function(N) TelNr.Equals(N.Nummer)).Any
@@ -155,9 +167,6 @@ Imports System.Xml.Serialization
 
                 If fbtr064.GetSessionID(SessionID) Then
 
-                    Dim TaskList As New List(Of Task)
-
-                    ' Schleife duch alle Kontakte
                     For Each Kontakt In Kontakte
                         Dispatcher.CurrentDispatcher.Invoke(Async Function()
                                                                 With Kontakt

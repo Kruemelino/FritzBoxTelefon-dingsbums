@@ -8,7 +8,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property PAnrufmonitor As Anrufmonitor
     Friend Shared Property PhoneBookXML As FritzBoxXMLTelefonbücher
     Friend Shared Property PVorwahlen As Vorwahlen
-    'Friend Shared Property TellowsScoreList As List(Of TellowsScoreListEntry)
+    Friend Shared Property TellowsScoreList As List(Of TellowsScoreListEntry)
     Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
     Friend Shared Property OffeneStoppUhrWPF As List(Of StoppUhrWPF)
     Friend Shared Property AddinWindows As New List(Of Windows.Window)
@@ -80,12 +80,6 @@ Public NotInheritable Class ThisAddIn
             NLogger.Debug($"{fbtr064.FriendlyName} {fbtr064.DisplayVersion}")
         End Using
 
-        '' Lade die tellows Gesamtliste herunter
-        'If XMLData.POptionen.CBTellows Then
-        '    Using tellows = New Tellows()
-        '        TellowsScoreList = Await tellows.LadeScoreList
-        '    End Using
-        'End If
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown

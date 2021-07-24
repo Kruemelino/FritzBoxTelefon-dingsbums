@@ -7,6 +7,57 @@
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+
+    <DataTemplate DataType="{x:Type fbd:AnrListViewModel}">
+        <fbd:AnrListView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:TellowsViewModel}">
+        <fbd:TellowsView />
+    </DataTemplate>
+
+    <Style x:Key="ToggleButtonStyle" TargetType="{x:Type RadioButton}" >
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="GroupName" Value="SelOpt"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border Background="{TemplateBinding Background}" BorderThickness ="0" Padding="8,0,8,0" Margin="0">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}" >
         <Setter Property="Margin" Value="0,10,0,0"/>
         <Setter Property="HeadersVisibility" Value="Column"/>        
@@ -15,11 +66,23 @@
         <Setter Property="VerticalGridLinesBrush" Value="LightGray"/>
         <Setter Property="CanUserAddRows" Value="False"/>
         <Setter Property="CanUserDeleteRows" Value="False"/>
-        <Setter Property="CanUserReorderColumns" Value="False"/>
-        <Setter Property="CanUserResizeRows" Value="False"/>
-        <Setter Property="CanUserSortColumns" Value="False"/>
+        <Setter Property="CanUserReorderColumns" Value="True"/>
+        <Setter Property="CanUserResizeRows" Value="True"/>
+        <Setter Property="CanUserSortColumns" Value="True"/>
         <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="SelectionUnit" Value="FullRow"/>
+    </Style>
+
+    <Style x:Key="DataGridCellCenter" TargetType="{x:Type DataGridCell}">
+        <Setter Property="TextBlock.TextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="DataGridCellRight" TargetType="{x:Type DataGridCell}">
+        <Setter Property="TextBlock.TextAlignment" Value="Right" />
+    </Style>
+    
+    <Style x:Key="DataGridCellLeft" TargetType="{x:Type DataGridCell}">
+        <Setter Property="TextBlock.TextAlignment" Value="Left" />
     </Style>
 
     <ControlTemplate x:Key="TimePickerButtonTemplate" TargetType="ButtonBase">

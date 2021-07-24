@@ -144,6 +144,12 @@
   <data name="strEndTime" xml:space="preserve">
     <value>Endzeit</value>
   </data>
+  <data name="strFBoxAnrufliste" xml:space="preserve">
+    <value>Fritz!Box Anrufliste</value>
+  </data>
+  <data name="strFBoxBlockList" xml:space="preserve">
+    <value>Fritz!Box Rufsperre</value>
+  </data>
   <data name="strImportCallerList" xml:space="preserve">
     <value>Import der Anrufliste</value>
   </data>
@@ -176,6 +182,57 @@
   </data>
   <data name="strStatus" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="strTellows" xml:space="preserve">
+    <value>tellows</value>
+  </data>
+  <data name="strTellowsAddtoBlockListe" xml:space="preserve">
+    <value>Nummern hinzufügen</value>
+  </data>
+  <data name="strTellowsAutoScoreFBBlockList" xml:space="preserve">
+    <value>Mindestscore für Fritz!Box Rufsperre</value>
+  </data>
+  <data name="strTellowsCallerName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="strTellowsCallerType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="strTellowsComplains" xml:space="preserve">
+    <value>Kommentare</value>
+  </data>
+  <data name="strTellowsConfig" xml:space="preserve">
+    <value>Rufsperre Einstellungen</value>
+  </data>
+  <data name="strTellowsCountry" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="strTellowsEntryNumberCount" xml:space="preserve">
+    <value>Anzahl an Telefonnummern je Eintrag</value>
+  </data>
+  <data name="strTellowsFilter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="strTellowsFilterName" xml:space="preserve">
+    <value>Enthaltener Text in Name oder Typ</value>
+  </data>
+  <data name="strTellowsFilterScore" xml:space="preserve">
+    <value>Anzuzeigender Score</value>
+  </data>
+  <data name="strTellowsNumber" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <data name="strTellowsPrefix" xml:space="preserve">
+    <value>Vorwahl</value>
+  </data>
+  <data name="strTellowsPrefixName" xml:space="preserve">
+    <value>Ort</value>
+  </data>
+  <data name="strTellowsScore" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="strTellowsSearches" xml:space="preserve">
+    <value>Suchanfragen</value>
   </data>
   <data name="strTime" xml:space="preserve">
     <value>Zeit</value>

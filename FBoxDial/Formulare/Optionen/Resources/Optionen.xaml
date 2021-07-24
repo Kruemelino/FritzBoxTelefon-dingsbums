@@ -99,26 +99,6 @@
         </Style.Triggers>
     </Style>
     
-    <Style x:Key="OptTextBox" TargetType="{x:Type TextBox}" >
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Grid Margin="0,0,0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="150"/>
-                        </Grid.ColumnDefinitions>
-                        <ContentPresenter Content="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
-                                          Grid.Column="0"/>
-
-                        <TextBox Text="{Binding Path=Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
-                                 Grid.Column="1" Margin="0"/>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style x:Key="OptHeader" TargetType="{x:Type TextBlock}" >
         <Setter Property="FontWeight" Value="DemiBold"/>
         <Setter Property="Margin" Value="0,2,0,4"/>
@@ -138,32 +118,6 @@
     <Style x:Key="OptExpander" TargetType="{x:Type Expander}" >
         <Setter Property="Margin" Value="0,2,0,4"/>
         <Setter Property="HeaderTemplate" Value="{StaticResource HeaderTemplate}"/>
-    </Style>
-
-    <Style x:Key="OptComboBox" TargetType="{x:Type ComboBox}" >
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ComboBox}">
-                    <Grid Margin="0,0,0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="150"/>
-                        </Grid.ColumnDefinitions>
-                        <ContentPresenter Content="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
-                                                   Grid.Column="0"/>
-
-                        <ComboBox   
-                            ItemsSource="{Binding Path=ItemsSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
-                            SelectedValue="{Binding Path=SelectedValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
-                            DisplayMemberPath="{Binding Path=DisplayMemberPath, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
-                            SelectedValuePath="{Binding Path=SelectedValuePath, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
-                            IsEditable="{Binding Path=IsEditable, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
-                            Grid.Column="1"/>
-
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style x:Key="OptCheckBox" TargetType="{x:Type CheckBox}" >

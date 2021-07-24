@@ -72,21 +72,21 @@ Namespace SOAP
 
         Private Function TR064Start(SCPDURL As String, ActionName As String, Optional InputHashTable As Hashtable = Nothing) As Hashtable
 
-            If Ping(FBoxIPAdresse) Then
+            'If Ping(FBoxIPAdresse) Then
 
-                With GetService(SCPDURL)
-                    If?.ActionExists(ActionName) Then
-                        If .CheckInput(ActionName, InputHashTable) Then
-                            Return .Start(.GetActionByName(ActionName), InputHashTable, Credential)
-                        Else
-                            PushStatus(LogLevel.Error, $"InputData for Action '{ActionName}' not valid!")
-                        End If
+            With GetService(SCPDURL)
+                If?.ActionExists(ActionName) Then
+                    If .CheckInput(ActionName, InputHashTable) Then
+                        Return .Start(.GetActionByName(ActionName), InputHashTable, Credential)
                     Else
-                        PushStatus(LogLevel.Error, $"Action '{ActionName}'does not exist!")
+                        PushStatus(LogLevel.Error, $"InputData for Action '{ActionName}' not valid!")
                     End If
-                End With
+                Else
+                    PushStatus(LogLevel.Error, $"Action '{ActionName}'does not exist!")
+                End If
+            End With
 
-            End If
+            'End If
 
             Return New Hashtable From {{"Error", DfltStringEmpty}}
         End Function

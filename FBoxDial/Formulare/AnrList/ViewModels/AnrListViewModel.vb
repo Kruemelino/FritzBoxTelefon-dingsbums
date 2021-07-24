@@ -2,23 +2,28 @@
 
 Public Class AnrListViewModel
     Inherits NotifyBase
+    Implements IPageListViewModel
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private Property DatenService As IAnrListService
+    Private Property DatenService As IListService
     Private Property DialogService As IDialogService
 #Region "Felder"
-
-    ''' <summary>
-    ''' Returns Or sets a list as FritzBoxXMLCall             
-    ''' </summary>
-    Private _CallList As ObservableCollectionEx(Of FritzBoxXMLCall)
-    Public Property CallList As ObservableCollectionEx(Of FritzBoxXMLCall)
+    Public ReadOnly Property Name As String Implements IPageListViewModel.Name
         Get
-            Return _CallList
+            Return Localize.LocAnrList.strFBoxAnrufliste
+        End Get
+    End Property
+
+    Private _ListVM As ListViewModel
+    Public Property ListVM As ListViewModel Implements IPageListViewModel.ListVM
+        Get
+            Return _ListVM
         End Get
         Set
-            SetProperty(_CallList, Value)
+            SetProperty(_ListVM, Value)
         End Set
     End Property
+
+    Public Property InitialSelected As Boolean = True Implements IPageListViewModel.InitialSelected
 
     Private _StartDatum As Date
     Public Property StartDatum As Date
@@ -107,37 +112,32 @@ Public Class AnrListViewModel
 #Region "ICommand"
     Public Property CancelCommand As RelayCommand
     Public Property ImportCommand As RelayCommand
-    Public Property LoadedCommand As RelayCommand
     Public Property SelectAllCommand As RelayCommand
     Public Property BlockCommand As RelayCommand
 #End Region
 
     Public Sub New()
         ' Commands
-        CancelCommand = New RelayCommand(AddressOf CancelImport)
-        ImportCommand = New RelayCommand(AddressOf Import)
+        CancelCommand = New RelayCommand(AddressOf CancelProcess)
+        ImportCommand = New RelayCommand(AddressOf JournalImport)
         SelectAllCommand = New RelayCommand(AddressOf SelectAll)
         BlockCommand = New RelayCommand(AddressOf BlockNumbers)
-        ' Window Command
-        LoadedCommand = New RelayCommand(AddressOf Loaded)
 
         ' Interface
-        DatenService = New AnrListService
+        DatenService = New ListService
         DialogService = New DialogService
 
     End Sub
 
     Private Sub SelectAll(o As Object)
-
-        For Each Anruf In CallList
+        For Each Anruf In ListVM.CallList
             Anruf.Export = CBool(o)
         Next
-
     End Sub
 
     Private Sub SelectItems()
 
-        If CallList IsNot Nothing AndAlso CallList.Any Then
+        If ListVM.CallList IsNot Nothing AndAlso ListVM.CallList.Any Then
 
             ' Ausgewählten Zeitraum ermitteln
             ' Startpunkt
@@ -149,10 +149,10 @@ Public Class AnrListViewModel
             Dim AusgewählteAnrufe As IEnumerable(Of FritzBoxXMLCall)
 
             ' Ermittle alle Einträge, die im ausgewählten Bereich liegen
-            AusgewählteAnrufe = CallList.Where(Function(x) ImportStart <= x.Datum And x.Datum <= ImportEnde)
+            AusgewählteAnrufe = ListVM.CallList.Where(Function(x) ImportStart <= x.Datum And x.Datum <= ImportEnde)
 
             ' Entferne die Exportmarkierung, bei allen Einträgen, die nicht im Bereich liegen
-            For Each Anruf In CallList.Except(AusgewählteAnrufe)
+            For Each Anruf In ListVM.CallList.Except(AusgewählteAnrufe)
                 Anruf.Export = False
             Next
 
@@ -168,7 +168,7 @@ Public Class AnrListViewModel
     ''' <summary>
     ''' Tritt auf, wenn das Element ausgerichtet und gerendert sowie zur Interaktion vorbereitet wurde.
     ''' </summary>
-    Private Async Sub Loaded(o As Object)
+    Private Sub Init() Implements IPageListViewModel.Init
 
         ' Setze Startzeitpunkt = Zeitpunkt letzter Import
         StartDatum = DatenService.GetLastImport
@@ -178,26 +178,21 @@ Public Class AnrListViewModel
         EndDatum = Now.Date
         EndZeit = Now.TimeOfDay
 
-        ' Initiiere die Anrufliste
-        CallList = New ObservableCollectionEx(Of FritzBoxXMLCall)
-        ' Lade die Anrufliste
-        CallList.AddRange((Await DatenService.GetAnrufListe)?.Calls)
-
-        ' Selektiere Alle Anrufe im Startzeitraum 
-        SelectItems()
     End Sub
 
-    Private Sub CancelImport(o As Object)
+    Private Sub CancelProcess(o As Object)
         CancelationPending = True
         NLogger.Debug("Manueller Journalimport abgebrochen.")
     End Sub
 
-    Private Sub Import(o As Object)
-
+#Region "Journalimport"
+    Private Sub JournalImport(o As Object)
+        ' TODO CTS = New CancellationTokenSource analog TellowsViewmodel
+        ' TODO Dim progressIndicator = New Progress(Of Integer)(Sub(status) BlockProgressValue += status)
         ' Abbruch Flag setzen
         CancelationPending = False
 
-        Dim AusgewählteAnrufe As IEnumerable(Of FritzBoxXMLCall) = CallList.Where(Function(x) x.Export = True)
+        Dim AusgewählteAnrufe As IEnumerable(Of FritzBoxXMLCall) = ListVM.CallList.Where(Function(x) x.Export = True)
 
         If AusgewählteAnrufe.Any Then
             ' Setze aktuellen Wert für Progressbar
@@ -205,7 +200,7 @@ Public Class AnrListViewModel
             ' Setze Progressbar Maximum
             ImportProgressMax = AusgewählteAnrufe.Count
 
-            NLogger.Debug($"Starte manueller Journalimport mit {ImportProgressMax} Einträgen.")
+            NLogger.Debug($"Starte manueller Import mit {ImportProgressMax} Einträgen.")
 
             Threading.Tasks.Task.Run(Sub()
                                          For Each Anruf In AusgewählteAnrufe
@@ -223,17 +218,20 @@ Public Class AnrListViewModel
 
     End Sub
 
+#End Region
+
+#Region "Sperrlist"
     Private Sub BlockNumbers(o As Object)
 
         Dim BlockNumbers As IEnumerable(Of String) = From a In CType(o, IList).Cast(Of FritzBoxXMLCall)().ToList Select a.Gegenstelle
-
-        String.Join(", ", BlockNumbers)
 
         If DialogService.ShowMessageBox(String.Format(Localize.LocAnrList.strQuestionBlockNumber, String.Join(", ", BlockNumbers))) = Windows.MessageBoxResult.Yes Then
             DatenService.BlockNumbers(BlockNumbers)
         End If
 
     End Sub
+#End Region
+
 #End Region
 
 End Class

@@ -9,7 +9,12 @@ Friend Class Tellows
     ''' </summary>
     Private ReadOnly Property XAuthToken As String
     Private ReadOnly Property Headers As WebHeaderCollection
-    ' Private ReadOnly Property Pfad As String = IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltTellowsFileName)
+    Private ReadOnly Property Pfad As String = IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltTellowsFileName)
+    Private ReadOnly Property Ready As Boolean
+        Get
+            Return XAuthToken.IsNotStringNothingOrEmpty
+        End Get
+    End Property
 
     Public Sub New(Token As String)
         XAuthToken = Token
@@ -51,14 +56,17 @@ Friend Class Tellows
     ''' </summary>
     ''' <returns>Antwort von tellows als <see cref="TellowsPartnerInfo"/></returns>
     Friend Async Function GetTellowsAccountInfo() As Task(Of TellowsPartnerInfo)
+        If Ready Then
+            Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
+                                           .Host = "www.tellows.de",
+                                           .Path = "/api/getpartnerinfo",
+                                           .Query = String.Join("&", {"xml=1", "country=de", "lang=de", "showcomments=10"})}
 
-        Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
-                                       .Host = "www.tellows.de",
-                                       .Path = "/api/getpartnerinfo",
-                                       .Query = String.Join("&", {"xml=1", "country=de", "lang=de", "showcomments=10"})}
-
-        Return (Await GetTellowsResponseXML(ub.Uri, Headers)).Partnerinfo
-
+            Return (Await GetTellowsResponseXML(ub.Uri, Headers)).Partnerinfo
+        Else
+            NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich.")
+            Return New TellowsPartnerInfo With {.Info = "Kein tellows ApiKey vorhanden."}
+        End If
     End Function
 
     ''' <summary>
@@ -67,72 +75,69 @@ Friend Class Tellows
     ''' <param name="TelNr">Abzufragende Telefonnummer</param>
     ''' <returns>Antwort von tellows als <see cref="TellowsResponse"/></returns>
     Friend Async Function GetTellowsLiveAPIData(TelNr As Telefonnummer) As Task(Of TellowsResponse)
+        If Ready Then
+            NLogger.Info($"Starte Abfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer}")
 
-        NLogger.Debug($"Starte Apfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer}")
-
-        Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
+            Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
                                        .Host = "www.tellows.de",
                                        .Path = $"/basic/num/{TelNr.TellowsNummer}",
                                        .Query = "xml=1"}
 
-        Return Await GetTellowsResponseXML(ub.Uri, Headers)
-
-    End Function
-
-    ''' <summary>
-    ''' Führt eine Abfrage beim tellows zum herunterladen der ScoreList durch.
-    ''' </summary>
-    ''' <returns>Antwort von tellows als <see cref="List(Of TellowsScoreListEntry)"/></returns>
-    Friend Async Function GetTellowsScoreList() As Task(Of List(Of TellowsScoreListEntry))
-
-        Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
-                                       .Host = "www.tellows.de",
-                                       .Path = "/stats/partnerscoredata",
-                                       .Query = String.Join("&", {$"apikeyMd5={XAuthToken}",
-                                                                   "json=1",
-                                                                   "country=de",
-                                                                   "lang=de",
-                                                                   "minscore=1",
-                                                                   "mincomments=3",
-                                                                   "showcallername=1"})}
-
-        Return Await GetTellowsResponseJSON(ub.Uri.AbsoluteUri, Headers)
+            Return Await GetTellowsResponseXML(ub.Uri, Headers)
+        Else
+            NLogger.Warn($"Abfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer} nicht möglich.")
+            Return New TellowsResponse
+        End If
 
     End Function
 
 #Region "Herunterladen der ScoreList"
-    'Friend Async Function LadeScoreList() As Task(Of List(Of TellowsScoreListEntry))
-    '    NLogger.Debug($"Lade tellows ScoreList")
-    '    If IO.File.Exists(Pfad) Then
-    '        Return Await GetTellowsResponseJSON(Pfad)
-    '        NLogger.Debug($"tellows ScoreList von Pfad '{Pfad}' geladen")
-    '    Else
-    '        Return Await GetTellowsScoreList()
-    '        NLogger.Debug($"tellows ScoreList von tellows direkt geladen")
-    '    End If
-    'End Function
-    '
-    'Friend Async Function DownloadTellowsScoreList() As Task(Of Boolean)
-    '
-    '    If Not IO.File.Exists(Pfad) OrElse IO.File.GetLastWriteTime(Pfad).Subtract(Now).TotalHours.IsLargerOrEqual(24) Then
-    '
-    '        Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
-    '                                   .Host = "www.tellows.de",
-    '                                   .Path = "/stats/partnerscoredata",
-    '                                   .Query = String.Join("&", {$"apikeyMd5={XAuthToken}",
-    '                                                               "json=1",
-    '                                                               "country=de",
-    '                                                               "lang=de",
-    '                                                               "minscore=1",
-    '                                                               "mincomments=3",
-    '                                                               "showcallername=1"})}
-    '
-    '        Return Await DownloadToFileTaskAsync(ub.Uri, Pfad, Encoding.UTF8, Headers)
-    '
-    '    Else
-    '        Return False
-    '    End If
-    'End Function
+    Friend Async Function LadeScoreList() As Task(Of List(Of TellowsScoreListEntry))
+        NLogger.Debug($"Lade tellows ScoreList")
+
+        If Ready Then
+            If Await DownloadTellowsScoreList() Then
+                ' Die Datei wurde neu heruntergeladen
+                NLogger.Debug($"tellows ScoreList von tellows direkt geladen und unter '{Pfad}' gespeichert.")
+
+            Else
+                ' Die Datei ist aktuell und kann verwendet werden
+                NLogger.Debug($"tellows ScoreList von Pfad '{Pfad}' geladen")
+            End If
+
+            ' Lade die Daten aus der Datei
+            Return Await GetTellowsResponseJSON(Pfad)
+        Else
+            ' Gib eine leere Listezurück
+            Return New List(Of TellowsScoreListEntry)
+        End If
+
+    End Function
+
+    ''' <summary>
+    ''' Führt eine Abfrage beim tellows zum Herunterladen der ScoreList durch.
+    ''' </summary>
+    ''' <returns>Antwort von tellows als <see cref="List(Of TellowsScoreListEntry)"/></returns>
+    Private Async Function DownloadTellowsScoreList() As Task(Of Boolean)
+
+        If Not IO.File.Exists(Pfad) OrElse Now.Subtract(IO.File.GetLastWriteTime(Pfad)).TotalHours.IsLargerOrEqual(24) Then
+            Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
+                                           .Host = "www.tellows.de",
+                                           .Path = "/stats/partnerscoredata",
+                                           .Query = String.Join("&", {$"apikeyMd5={XAuthToken}",
+                                                                       "json=1",
+                                                                       "country=de",
+                                                                       "lang=de",
+                                                                       "minscore=1",
+                                                                       "showprefixname=1",
+                                                                      $"mincomments={XMLData.POptionen.CBTellowsAnrMonMinComments}",
+                                                                       "showcallername=1"})}
+
+            Return Await DownloadToFileTaskAsync(ub.Uri, Pfad, Encoding.UTF8, Headers)
+        Else
+            Return False
+        End If
+    End Function
 #End Region
 
 #Region "IDisposable Support"

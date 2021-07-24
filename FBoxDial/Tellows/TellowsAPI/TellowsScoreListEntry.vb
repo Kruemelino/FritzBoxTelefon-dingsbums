@@ -1,5 +1,5 @@
 ﻿Imports Newtonsoft.Json
-Friend Class TellowsScoreListEntry
+Public Class TellowsScoreListEntry
 
     ''' <summary>
     ''' Phone Number

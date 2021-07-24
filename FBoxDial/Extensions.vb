@@ -147,11 +147,8 @@ Public Module Extensions
     ''' <param name="LVal">Untere Schwelle</param>
     ''' <param name="UVal">Obere schwelle</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsInRange(Val1 As Double, LVal As Double, UVal As Double) As Boolean
-        Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
-    End Function
     <Extension()> Public Function IsInRange(Val1 As Integer, LVal As Integer, UVal As Integer) As Boolean
-        Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
+        Return Val1.IsLargerOrEqual(LVal) And Val1.IsLessOrEqual(UVal)
     End Function
 
 

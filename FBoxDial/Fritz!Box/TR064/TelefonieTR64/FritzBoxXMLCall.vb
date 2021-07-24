@@ -256,12 +256,12 @@
 
         If Type.IsLessOrEqual(3) Then
 
-            Dim tmpTelefonat As New Telefonat
+            Dim tmpTelefonat As New Telefonat With {.Import = True,
+                                                    .ID = ID,
+                                                    .ZeitBeginn = Datum}
             Dim tmpTelNr As Telefonnummer
 
             With tmpTelefonat
-                .ID = ID
-                .ZeitBeginn = Datum
 
                 If Type.AreEqual(1) Or Type.AreEqual(3) Then ' incoming, outgoing
                     ' Testweise wird auch nach dem Namen des Gerätes gesucht, wenn über den Port nichts gefunden wurde.
@@ -282,6 +282,7 @@
                     ' Number of calling party 
                     .GegenstelleTelNr = New Telefonnummer With {.SetNummer = Caller}
                     .NrUnterdrückt = .GegenstelleTelNr.Unterdrückt
+
                     ' Ring-List
                     If XMLData.POptionen.CBAnrListeUpdateCallLists Then
                         ' RING-Liste initialisieren, falls erforderlich
@@ -300,11 +301,11 @@
                     .OutEigeneTelNr = .EigeneTelNr.Unformatiert
                     ' Number or name of called party  
                     .GegenstelleTelNr = New Telefonnummer With {.SetNummer = Called}
+
                     ' Call-List
                     If XMLData.POptionen.CBAnrListeUpdateCallLists Then
                         ' CALL-Liste initialisieren, falls erforderlich
                         If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
-
                         ' Eintrag anfügen
                         XMLData.PTelListen.CALLListe.Insert(tmpTelefonat)
                     End If
@@ -315,7 +316,9 @@
                     ' Anrufer ermitteln
                     If Name.IsNotStringNothingOrEmpty Then .AnruferName = Name
 
-                    If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unterdrückt Then .Kontaktsuche()
+                    If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unterdrückt Then
+                        .Kontaktsuche()
+                    End If
                 End If
 
                 If Type.AreEqual(2) Then .Angenommen = False ' missed

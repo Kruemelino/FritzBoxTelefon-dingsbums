@@ -21,6 +21,8 @@
         End Get
     End Property
 
+    Public Property InitialSelected As Boolean = False Implements IPageViewModel.InitialSelected
+
     Public Property MicroSIPPathCommand As RelayCommand
 
     Public Sub New()

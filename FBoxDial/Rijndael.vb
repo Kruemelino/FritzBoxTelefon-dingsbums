@@ -167,26 +167,30 @@ Friend Class Rijndael
     ''' <returns></returns>
     Friend Function SecureStringToMD5(secureString As SecureString, Zeichencodierung As Encoding, Optional Präfix As String = "") As String
 
-        Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
-        Dim BufferPräfix As Byte() = Zeichencodierung.GetBytes(Präfix)
-        Dim Buffer(BufferSecuredString.Length + BufferPräfix.Length - 1) As Byte
-        Try
+        If secureString IsNot Nothing Then
+            Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
+            Dim BufferPräfix As Byte() = Zeichencodierung.GetBytes(Präfix)
+            Dim Buffer(BufferSecuredString.Length + BufferPräfix.Length - 1) As Byte
+            Try
 
-            BufferPräfix.CopyTo(Buffer, 0)
-            BufferSecuredString.CopyTo(Buffer, BufferPräfix.Length)
+                BufferPräfix.CopyTo(Buffer, 0)
+                BufferSecuredString.CopyTo(Buffer, BufferPräfix.Length)
 
-            Using md5 As MD5 = New MD5CryptoServiceProvider
-                Dim sBuilder As New StringBuilder()
-                For Each b As Byte In md5.ComputeHash(Buffer)
-                    sBuilder.Append(b.ToString("x2"))
-                Next
-                Return sBuilder.ToString()
-            End Using
+                Using md5 As MD5 = New MD5CryptoServiceProvider
+                    Dim sBuilder As New StringBuilder()
+                    For Each b As Byte In md5.ComputeHash(Buffer)
+                        sBuilder.Append(b.ToString("x2"))
+                    Next
+                    Return sBuilder.ToString()
+                End Using
 
-        Finally
-            If BufferSecuredString IsNot Nothing Then Array.Clear(BufferSecuredString, 0, BufferSecuredString.Length)
-            If Buffer IsNot Nothing Then Array.Clear(Buffer, 0, Buffer.Length)
-        End Try
+            Finally
+                If BufferSecuredString IsNot Nothing Then Array.Clear(BufferSecuredString, 0, BufferSecuredString.Length)
+                If Buffer IsNot Nothing Then Array.Clear(Buffer, 0, Buffer.Length)
+            End Try
+        Else
+            Return DfltStringEmpty
+        End If
 
     End Function
 

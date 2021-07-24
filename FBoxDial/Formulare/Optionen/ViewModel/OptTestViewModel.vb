@@ -19,6 +19,8 @@
         End Get
     End Property
 
+    Public Property InitialSelected As Boolean = False Implements IPageViewModel.InitialSelected
+
 #Region "ICommand"
     Public Property TestTelNrCommand As RelayCommand
     Public Property TestRWSCommand As RelayCommand

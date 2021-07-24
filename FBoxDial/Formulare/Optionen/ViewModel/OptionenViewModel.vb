@@ -628,7 +628,7 @@ Public Class OptionenViewModel
         ' Interface
         DatenService = New OptionenService
 
-        ' Chield Views
+        ' Child Views
         With PageViewModels
             .Add(New OptBaseViewModel())
             .Add(New OptAnrMonViewModel())

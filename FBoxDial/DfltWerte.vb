@@ -84,7 +84,7 @@ Public NotInheritable Class DfltWerteAllgemein
     '''' FritzOutlookV5.json
     '''' </summary>
     '''' <remarks>Wird mit Ressource "strDefShortName" erstellt.</remarks>
-    'Public Shared ReadOnly Property DfltTellowsFileName() As String = $"{My.Resources.strDefShortName}.json"
+    Public Shared ReadOnly Property DfltTellowsFileName() As String = $"{My.Resources.strDefShortName}.json"
 
     ''' <summary>
     ''' FritzOutlookV5.log

@@ -112,16 +112,6 @@ Friend Class OptionenService
             DeIndizierungOrdner(Ordner)
         End If
 
-        '' Unterordner werden rekursiv durchsucht und indiziert
-        'If Unterordner Then
-        '    Dim iOrdner As Integer = 1
-
-        '    Do While (iOrdner.IsLessOrEqual(Ordner.Folders.Count)) And Not CancelationPending
-        '        Indexer(Ordner.Folders.Item(iOrdner), IndexModus, Unterordner)
-        '        iOrdner += 1
-        '    Loop
-        'End If
-
         NLogger.Info($"{If(IndexModus, "Indizierung", "Deindizierung")} des Ordners {Ordner.Name} ist abgeschlossen.")
     End Sub
 

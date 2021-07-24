@@ -17,4 +17,6 @@
             Return Localize.LocOptionen.strPhoner
         End Get
     End Property
+
+    Public Property InitialSelected As Boolean = False Implements IPageViewModel.InitialSelected
 End Class
