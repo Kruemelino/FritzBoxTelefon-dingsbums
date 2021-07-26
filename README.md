@@ -17,6 +17,7 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
   * Outlook Adressbüchern
   * Telefonbücher der Fritz!Box
   * Rückwärtssuche
+  * [tellows](https://tellows.de) (Es wird ein kostenpflichtiger [API Key](https://shop.tellows.de/de/tellows-api-key.html) benötigt.)
 * Protokollierung aller Telefonate
 * Signalisierung der aktuellen Gesprächsdauer (Stoppuhr)
 * Datentransfer zwischen Outlook und den Fritz!Box Telefonbüchern (aktuell noch im Aufbau)
