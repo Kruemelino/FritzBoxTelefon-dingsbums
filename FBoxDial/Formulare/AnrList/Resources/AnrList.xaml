@@ -6,7 +6,8 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
+    
+    <fbd:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
     <DataTemplate DataType="{x:Type fbd:AnrListViewModel}">
         <fbd:AnrListView />

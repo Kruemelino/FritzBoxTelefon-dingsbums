@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fbd="clr-namespace:FBoxDial"
         xmlns:localize="clr-namespace:FBoxDial.Localize"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
         Title="{x:Static localize:LocAnrList.strImportCallerList}" Height="450" Width="800"
         d:DataContext="{d:DesignInstance Type=fbd:ListViewModel, IsDesignTimeCreatable=True}"
@@ -25,11 +24,13 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
-            <RowDefinition/>            
+            <RowDefinition Height="Auto" MaxHeight="35"/>
+            <RowDefinition />            
         </Grid.RowDefinitions>
         
-        <ItemsControl ItemsSource="{Binding PageViewModels}" Grid.Row="0" HorizontalAlignment="Left" >
+        <ItemsControl ItemsSource="{Binding PageViewModels}" Grid.Row="0" HorizontalAlignment="Left" 
+                      Visibility="{Binding NutzeTellows, Converter={StaticResource BoolToVisibilityConverter}}">
+            
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Rows="1" />

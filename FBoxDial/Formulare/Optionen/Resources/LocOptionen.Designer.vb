@@ -1147,6 +1147,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fehler! Account Daten nicht geladen. Log prüfen! Ist der API Key korrekt? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsFehlerPartnerDaten() As String
+            Get
+                Return ResourceManager.GetString("strTellowsFehlerPartnerDaten", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die tellows - Account Info ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTellowsHeadAccountInfo() As String
@@ -1156,11 +1165,29 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die tellows - Anrufmonitor ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsHeadAnrMon() As String
+            Get
+                Return ResourceManager.GetString("strTellowsHeadAnrMon", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die tellows - Konfiguration ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTellowsHeadConfig() As String
             Get
                 Return ResourceManager.GetString("strTellowsHeadConfig", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die tellows - Fritz!Box Rufsperre ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsHeadFBoxRufsperre() As String
+            Get
+                Return ResourceManager.GetString("strTellowsHeadFBoxRufsperre", resourceCulture)
             End Get
         End Property
         

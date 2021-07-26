@@ -6,7 +6,7 @@
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="400"
+             d:DesignHeight="800" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance Type=fbd:OptTellowsViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
@@ -39,6 +39,13 @@
                                 Value="{Binding Path=OptVM.TBTellowsAPIKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 DeCryptKey="{Binding Path=OptVM.DfltTellowsDeCryptKey, Mode=OneWay}"/>
 
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strTellowsMinComments}"
+                 Text="{Binding OptVM.CBTellowsAnrMonMinComments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strTellowsHeadAnrMon}"/>
+        
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strTellowsCBTellows}" 
                   IsChecked="{Binding OptVM.CBTellows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -46,30 +53,32 @@
         <ComboBox Style="{StaticResource OptComboBox}" 
                   Tag="{x:Static localize:LocOptionen.strTellowsMinScore}"
                   ItemsSource="{Binding Path=OptVM.CBoxTellowsScore}"
-                  SelectedValue="{Binding OptVM.CBTellowsAnrMonMinScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strTellowsMinComments}"
-                 Text="{Binding OptVM.CBTellowsAnrMonMinComments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  SelectedValue="{Binding OptVM.CBTellowsAnrMonMinScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding OptVM.CBTellows, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strTellowsAnrMonColor}" 
-                  IsChecked="{Binding OptVM.CBTellowsAnrMonColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTellowsInfoFBRufsperre}"/>
+                  IsChecked="{Binding OptVM.CBTellowsAnrMonColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  IsEnabled="{Binding OptVM.CBTellows, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
         
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strTellowsAutoFBBlockList}" 
-                  IsChecked="{Binding OptVM.CBTellowsAutoFBBlockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding OptVM.CBTellowsAutoFBBlockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding OptVM.CBTellows, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strTellowsHeadFBoxRufsperre}"/>
+        
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTellowsInfoFBRufsperre}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strTellowsAutoUpdateScoreList}" 
+                  IsChecked="{Binding OptVM.CBTellowsAutoUpdateScoreList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
         <ComboBox Style="{StaticResource OptComboBox}" 
                   Tag="{x:Static localize:LocOptionen.strTellowsAutoScoreFBBlockList}"
                   ItemsSource="{Binding Path=OptVM.CBoxTellowsScore}"
                   SelectedValue="{Binding OptVM.CBTellowsAutoScoreFBBlockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <CheckBox Style="{StaticResource OptCheckBox}" 
-                  Content="{x:Static localize:LocOptionen.strTellowsAutoUpdateScoreList}" 
-                  IsChecked="{Binding OptVM.CBTellowsAutoUpdateScoreList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBox Style="{StaticResource OptTextBox}"
                  Tag="{x:Static localize:LocOptionen.strTellowsEntryNumberCount}"

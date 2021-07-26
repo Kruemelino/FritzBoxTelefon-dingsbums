@@ -64,7 +64,7 @@ Friend Class Tellows
 
             Return (Await GetTellowsResponseXML(ub.Uri, Headers)).Partnerinfo
         Else
-            NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich.")
+            NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich, da kein API-Key eingegeben wurde.")
             Return New TellowsPartnerInfo With {.Info = "Kein tellows ApiKey vorhanden."}
         End If
     End Function
@@ -79,13 +79,13 @@ Friend Class Tellows
             NLogger.Info($"Starte Abfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer}")
 
             Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
-                                       .Host = "www.tellows.de",
-                                       .Path = $"/basic/num/{TelNr.TellowsNummer}",
-                                       .Query = "xml=1"}
+                                           .Host = "www.tellows.de",
+                                           .Path = $"/basic/num/{TelNr.TellowsNummer}",
+                                           .Query = "xml=1"}
 
             Return Await GetTellowsResponseXML(ub.Uri, Headers)
         Else
-            NLogger.Warn($"Abfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer} nicht möglich.")
+            NLogger.Warn($"Abfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer} nicht möglich, da kein API-Key eingegeben wurde.")
             Return New TellowsResponse
         End If
 
@@ -108,7 +108,8 @@ Friend Class Tellows
             ' Lade die Daten aus der Datei
             Return Await GetTellowsResponseJSON(Pfad)
         Else
-            ' Gib eine leere Listezurück
+            NLogger.Warn($"Ein tellows API-Key wurde nicht eingegeben.")
+            ' Gib eine leere Liste zurück
             Return New List(Of TellowsScoreListEntry)
         End If
 

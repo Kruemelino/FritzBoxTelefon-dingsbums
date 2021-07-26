@@ -60,7 +60,7 @@ Public NotInheritable Class ThisAddIn
         End If
 
         ' Tellows ScoreList laden
-        If XMLData.POptionen.CBTellows Then
+        If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
             Using tellows As New Tellows
                 TaskScoreListe = tellows.LadeScoreList
             End Using
@@ -99,7 +99,12 @@ Public NotInheritable Class ThisAddIn
         ' Beendigung des Task für das Herunterladen der tellows ScoreList abwarten
         If TaskScoreListe IsNot Nothing Then
             TellowsScoreList = Await TaskScoreListe
-            NLogger.Debug($"tellows Scorelist mit {TellowsScoreList.Count} Einträgen geladen.")
+            If TellowsScoreList IsNot Nothing Then
+                NLogger.Debug($"Die tellows Scorelist mit {TellowsScoreList.Count} Einträgen geladen.")
+            Else
+                NLogger.Warn($"Die tellows Scorelist konnte nicht geladen werden.")
+            End If
+
         End If
 
         ' Anrufliste auswerten

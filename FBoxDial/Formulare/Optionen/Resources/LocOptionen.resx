@@ -610,12 +610,24 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Anzahl an Telefonnummern je Sperrlisteneintrag</value>
     <comment>OptTellows</comment>
   </data>
+  <data name="strTellowsFehlerPartnerDaten" xml:space="preserve">
+    <value>Fehler! Account Daten nicht geladen. Log prüfen! Ist der API Key korrekt?</value>
+    <comment>OptTellows</comment>
+  </data>
   <data name="strTellowsHeadAccountInfo" xml:space="preserve">
     <value>tellows - Account Info</value>
     <comment>OptTellows</comment>
   </data>
+  <data name="strTellowsHeadAnrMon" xml:space="preserve">
+    <value>tellows - Anrufmonitor</value>
+    <comment>OptTellows</comment>
+  </data>
   <data name="strTellowsHeadConfig" xml:space="preserve">
     <value>tellows - Konfiguration</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsHeadFBoxRufsperre" xml:space="preserve">
+    <value>tellows - Fritz!Box Rufsperre</value>
     <comment>OptTellows</comment>
   </data>
   <data name="strTellowsHeadInfo" xml:space="preserve">

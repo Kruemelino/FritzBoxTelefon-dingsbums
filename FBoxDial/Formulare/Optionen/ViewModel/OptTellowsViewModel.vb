@@ -23,6 +23,7 @@ Public Class OptTellowsViewModel
     End Property
 
     Public Property InitialSelected As Boolean = False Implements IPageViewModel.InitialSelected
+
 #Region "tellows Test"
     Private _TBTestTellowsInput As String
     Public Property TBTestTellowsInput As String
@@ -87,6 +88,9 @@ Public Class OptTellowsViewModel
             With Crypter
                 TellowsPartnerInfo = Await DatenService.GetTellowsAccountData(.SecureStringToMD5(.DecryptString(OptVM.TBTellowsAPIKey, DfltTellowsDeCryptKey), Encoding.Default))
             End With
+            If TellowsPartnerInfo Is Nothing Then
+                TellowsPartnerInfo = New TellowsPartnerInfo With {.Info = Localize.LocOptionen.strTellowsFehlerPartnerDaten}
+            End If
         End Using
     End Sub
 #End Region

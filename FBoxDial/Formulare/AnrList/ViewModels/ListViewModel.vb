@@ -3,7 +3,7 @@ Imports System.Windows.Data
 
 Public Class ListViewModel
     Inherits NotifyBase
-    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    'Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IListService
 
 #Region "Window Eigenschaften"
@@ -33,6 +33,16 @@ Public Class ListViewModel
         End Get
         Set
             SetProperty(_DatenGeladen, Value)
+        End Set
+    End Property
+
+    Private _NutzeTellows As Boolean
+    Public Property NutzeTellows As Boolean
+        Get
+            Return _NutzeTellows
+        End Get
+        Set
+            SetProperty(_NutzeTellows, Value)
         End Set
     End Property
 #End Region
@@ -71,6 +81,9 @@ Public Class ListViewModel
 #End Region
 
     Public Sub New()
+        ' Interface
+        DatenService = New ListService
+
         ' Window Command
         LoadedCommand = New RelayCommand(AddressOf LadeDaten)
         NavigateCommand = New RelayCommand(AddressOf Navigate)
@@ -84,8 +97,6 @@ Public Class ListViewModel
         ' Lade die erste Seite
         Navigate(PageViewModels.First)
 
-        ' Interface
-        DatenService = New ListService
     End Sub
 
 
@@ -114,13 +125,12 @@ Public Class ListViewModel
         ' Lade die Anrufliste
         CallList.AddRange(TaskAnrList.Result?.Calls)
 
-        If TaskTellows IsNot Nothing Then
-            ' Initiiere die Anrufliste
-            TellowsList = New ObservableCollectionEx(Of TellowsScoreListEntry)
-            ' Lade die tellows ScoreList
-            TellowsList.AddRange(TaskTellows.Result)
+        ' Initiiere die Anrufliste
+        TellowsList = New ObservableCollectionEx(Of TellowsScoreListEntry)
+        ' Lade die tellows ScoreList
+        TellowsList.AddRange(Await TaskTellows)
 
-        End If
+        NutzeTellows = TellowsList.Any
 
         ' Initiiere alle Pageviewmodels
         PageViewModels.ForEach(Sub(P) P.Init())

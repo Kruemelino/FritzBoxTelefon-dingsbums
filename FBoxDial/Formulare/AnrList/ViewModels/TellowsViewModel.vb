@@ -62,10 +62,11 @@ Public Class TellowsViewModel
             Return Not _IsAktiv
         End Get
     End Property
+
 #End Region
 
 #Region "Eigenschaften tellows"
-    Private _CBoxTellowsScoreFBBlockList As Integer = XMLData.POptionen.CBTellowsAutoScoreFBBlockList
+    Private _CBoxTellowsScoreFBBlockList As Integer
     Public Property CBoxTellowsScoreFBBlockList As Integer
         Get
             Return _CBoxTellowsScoreFBBlockList
@@ -75,7 +76,7 @@ Public Class TellowsViewModel
         End Set
     End Property
 
-    Private _TBTellowsEntryNumberCount As Integer = XMLData.POptionen.CBTellowsEntryNumberCount
+    Private _TBTellowsEntryNumberCount As Integer
     Public Property TBTellowsEntryNumberCount As Integer
         Get
             Return _TBTellowsEntryNumberCount
@@ -96,7 +97,6 @@ Public Class TellowsViewModel
     Private Property CTS As CancellationTokenSource
 #End Region
 
-
     Public Sub New()
         ' Commands
         CancelCommand = New RelayCommand(AddressOf CancelProcess)
@@ -108,7 +108,8 @@ Public Class TellowsViewModel
     End Sub
 
     Public Sub Init() Implements IPageListViewModel.Init
-
+        CBoxTellowsScoreFBBlockList = XMLData.POptionen.CBTellowsAutoScoreFBBlockList
+        TBTellowsEntryNumberCount = XMLData.POptionen.CBTellowsEntryNumberCount
     End Sub
 
 #Region "ICommand Callback"
