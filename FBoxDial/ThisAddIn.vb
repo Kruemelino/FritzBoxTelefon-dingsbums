@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Office.Core
+﻿Imports System.Threading.Tasks
+Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop.Outlook
 
 Public NotInheritable Class ThisAddIn
@@ -41,6 +42,9 @@ Public NotInheritable Class ThisAddIn
     Private Async Sub StarteAddinFunktionen()
         NLogger.Info($"Starte {My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version}...")
 
+        Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
+        Dim TaskTelefonbücher As Task(Of FritzBoxXMLTelefonbücher) = Nothing
+
         ' Initialisiere die Landes- und Ortskennzahlen
         PVorwahlen = New Vorwahlen
         NLogger.Debug("Kennzahlen geladen...")
@@ -48,10 +52,16 @@ Public NotInheritable Class ThisAddIn
         Dim UserData As New NutzerDaten
         NLogger.Debug("Nutzererinstellungen geladen...")
 
-        ' Lade alle Telefonbücher aus der Fritz!Box herunter
+        ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
         If XMLData.POptionen.CBKontaktSucheFritzBox Then
-            PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher()
-            NLogger.Debug("Fritz!Box Telefonbücher geladen...")
+            TaskTelefonbücher = Telefonbücher.LadeFritzBoxTelefonbücher()
+        End If
+
+        ' Tellows ScoreList laden
+        If XMLData.POptionen.CBTellows Then
+            Using tellows As New Tellows
+                TaskScoreListe = tellows.LadeScoreList
+            End Using
         End If
 
         ' Anrufmonitor starten
@@ -69,6 +79,23 @@ Public NotInheritable Class ThisAddIn
         OutlookInspectors = Application.Inspectors
         NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
 
+        ' Schreibe in das Log noch Informationen zur Fritz!Box
+        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Nothing)
+            NLogger.Debug($"{fbtr064.FriendlyName} {fbtr064.DisplayVersion}")
+        End Using
+
+        ' Beendigung des Task für das herunterladen der Fritz!Box Telefonbücher abwarten
+        If TaskTelefonbücher IsNot Nothing Then
+            PhoneBookXML = Await TaskTelefonbücher
+            NLogger.Debug($"Fritz!Box Telefonbücher geladen...")
+        End If
+
+        ' Beendigung des Task für das Herunterladen der tellows ScoreList abwarten
+        If TaskScoreListe IsNot Nothing Then
+            TellowsScoreList = Await TaskScoreListe
+            NLogger.Debug($"tellows Scorelist mit {TellowsScoreList.Count} Einträgen geladen.")
+        End If
+
         ' Anrufliste auswerten
         If XMLData.POptionen.CBAutoAnrList Then
             NLogger.Debug("Auswertung Anrufliste gestartet...")
@@ -80,11 +107,6 @@ Public NotInheritable Class ThisAddIn
             NLogger.Debug("Update Rufsperre durch tellows gestartet...")
             AutoBlockListe()
         End If
-
-        ' Schreibe in das Log noch Informationen zur Fritz!Box
-        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Nothing)
-            NLogger.Debug($"{fbtr064.FriendlyName} {fbtr064.DisplayVersion}")
-        End Using
 
     End Sub
 

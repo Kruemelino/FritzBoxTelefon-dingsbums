@@ -127,7 +127,7 @@
     <XmlElement("CBTellowsAutoScoreFBBlockList")> Public Property CBTellowsAutoScoreFBBlockList As Integer = 7
     <XmlElement("CBTellowsAutoUpdateScoreList")> Public Property CBTellowsAutoUpdateScoreList As Boolean = False
     <XmlElement("CBTellowsEntryNumberCount")> Public Property CBTellowsEntryNumberCount As Integer = 10
-    <XmlElement("LetzteSperrlistenaktualsierung")> Public Property LetzteSperrlistenaktualsierung As Date = Now
+    <XmlElement("LetzteSperrlistenaktualsierung")> Public Property LetzteSperrlistenaktualisierung As Date = Now
 #End Region
 #End Region
 

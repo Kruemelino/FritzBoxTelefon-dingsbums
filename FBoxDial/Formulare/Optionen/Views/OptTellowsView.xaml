@@ -56,6 +56,8 @@
                   Content="{x:Static localize:LocOptionen.strTellowsAnrMonColor}" 
                   IsChecked="{Binding OptVM.CBTellowsAnrMonColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTellowsInfoFBRufsperre}"/>
+        
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strTellowsAutoFBBlockList}" 
                   IsChecked="{Binding OptVM.CBTellowsAutoFBBlockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

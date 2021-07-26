@@ -1192,6 +1192,16 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Die Rufsperre der Fritz!Box kann durch die Einträge aus tellows ergänzt werden. Es besteht die Möglichkeit, dass ein Abgleich bei Outlookstart (1x aller 24h) erfolgt. Ein manueller Abgleich ist auch über die Anrufliste möglich. Damit nicht für jede Nummer ein Eintrag erzeugt wird, werden die Nummern zu Gruppen zusammengefasst. 
+        '''Warnung: Wenn viele Einträge auf die Fritz!Box geladen werden, kann diese träge reagieren.  ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsInfoFBRufsperre() As String
+            Get
+                Return ResourceManager.GetString("strTellowsInfoFBRufsperre", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Lade Account Daten ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTellowsLadeAccountInfo() As String

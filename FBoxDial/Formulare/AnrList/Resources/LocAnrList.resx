@@ -171,6 +171,13 @@
   <data name="strQuestionBlockNumber" xml:space="preserve">
     <value>Sollen die selektierten Nummern {0} zu den Rufsperren der Fritz!Box hinzugefügt werden?</value>
   </data>
+  <data name="strQuestionUpdatetellows" xml:space="preserve">
+    <value>Für die Fritz!Box Rufsperre wurden {0} Einträge für {1} Nummern aus der tellows Score-Liste erzeugt (ab Score {2}) . 
+
+Warnung: Das Hochladen auf die Fritz!Box kann eine Weile dauern und die Fritz!Box kann währenddessen und auch danach träge reagieren.
+
+Sollen die Einträge jetzt in die Fritz!Box geladen werden?</value>
+  </data>
   <data name="strRemoteCaller" xml:space="preserve">
     <value>Gegenstelle</value>
   </data>

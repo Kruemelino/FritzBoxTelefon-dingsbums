@@ -227,6 +227,19 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Für die Fritz!Box Rufsperre wurden {0} Einträge für {1} Nummern aus der tellows Score-Liste erzeugt (ab Score {2}) . 
+        '''
+        '''Warnung: Das Hochladen auf die Fritz!Box kann eine Weile dauern und die Fritz!Box kann währenddessen und auch danach träge reagieren.
+        '''
+        '''Sollen die Einträge jetzt in die Fritz!Box geladen werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strQuestionUpdatetellows() As String
+            Get
+                Return ResourceManager.GetString("strQuestionUpdatetellows", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Gegenstelle ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strRemoteCaller() As String

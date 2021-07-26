@@ -86,7 +86,7 @@ Public Class ContactsViewModel
                 ' Telefone werden immer weggefiltet
                 Return False
             Else
-                Return If(FilterName.IsNotStringNothingOrEmpty, .Person.RealName.ToLower.Contains(FilterName.ToLower), True)
+                Return Not FilterName.IsNotStringNothingOrEmpty OrElse .Person.RealName.ToLower.Contains(FilterName.ToLower)
             End If
         End With
     End Function

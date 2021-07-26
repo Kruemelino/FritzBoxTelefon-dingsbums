@@ -306,6 +306,8 @@ Friend Module FritzBoxRufsperre
                                       ' Anzahl hinzugefügter Nummern
                                       Dim NeueNummern As Integer = 0
 
+                                      NLogger.Debug("Ermittle neue Sperrlisteinträge aus tellows.")
+
                                       ' Schleife durch alle Einträge, die den Mindesscore erfüllen
                                       For Each Eintrag In Einträge.Where(Function(E) E.Score.IsLargerOrEqual(MinScore))
 
@@ -325,18 +327,23 @@ Friend Module FritzBoxRufsperre
                                           If ct.IsCancellationRequested Then Exit For
                                       Next
 
-                                      NLogger.Debug($"Es wurden {NeueSperrEinträge.Count} neue Einträge für {NeueNummern} erzeugt.")
+                                      NLogger.Debug($"Es wurden {NeueSperrEinträge.Count} neue Einträge für {NeueNummern} Nummern erzeugt.")
 
-                                      ' Lade die verbleibenden Sperrlisteinträge hoch
-                                      For Each Eintrag In NeueSperrEinträge
-                                          If AddToCallBarring(Eintrag, fbtr064:=tr064) Then
-                                              progress.Report(Eintrag.Telefonie.Nummern.Count)
+                                      If NeueSperrEinträge.Any Then
+                                          If Windows.MessageBox.Show(String.Format(Localize.LocAnrList.strQuestionUpdatetellows, NeueSperrEinträge.Count, NeueNummern, MinScore), My.Resources.strDefLongName, Windows.MessageBoxButton.YesNo) = vbYes Then
+                                              ' Lade die Sperrlisteinträge hoch
+                                              For Each Eintrag In NeueSperrEinträge
+                                                  If AddToCallBarring(Eintrag, fbtr064:=tr064) Then progress.Report(Eintrag.Telefonie.Nummern.Count)
+
+                                                  If ct.IsCancellationRequested Then Exit For
+                                              Next
+
+                                              NLogger.Info($"{NeueNummern} neue Nummern der tellows Scorelist (ab Score {MinScore}) in die Fritz!Box Sperrliste ({MaxNrbyEntry} Nummern je Eintrag) übernommen.")
+                                          Else
+                                              NLogger.Debug("Hochladen auf die Fritz!Box nicht ausgeführt.")
                                           End If
+                                      End If
 
-                                          If ct.IsCancellationRequested Then Exit For
-                                      Next
-
-                                      NLogger.Info($"{NeueNummern} neue Nummern der tellows Scorelist (ab Score {MinScore}) in die Fritz!Box Sperrliste ({MaxNrbyEntry} Nummern je Eintrag) übernommen.")
                                       Return NeueNummern
                                   End Using
                               End Function, ct)

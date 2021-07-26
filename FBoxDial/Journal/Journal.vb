@@ -7,22 +7,7 @@ Friend Module Journal
     Friend Async Sub AutoAnrListe()
 
         ' Lade die Anruflise aus der Fritz!Box herunter
-        Dim TaskAnrufListe As Task(Of FritzBoxXMLCallList) = LadeFritzBoxAnrufliste()
-        Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
-
-        ' Lade die tellows Liste
-        If XMLData.POptionen.CBTellows Then
-            Using tellows As New Tellows
-                TaskScoreListe = tellows.LadeScoreList
-            End Using
-        End If
-
-        Anrufliste = Await TaskAnrufListe
-
-        If TaskScoreListe IsNot Nothing Then
-            ThisAddIn.TellowsScoreList = Await TaskScoreListe
-            NLogger.Debug($"tellows Scorelist mit {ThisAddIn.TellowsScoreList.Count} Einträgen geladen.")
-        End If
+        Anrufliste = Await LadeFritzBoxAnrufliste()
 
         If Anrufliste IsNot Nothing Then
             NLogger.Debug($"Anrufliste mit {Anrufliste.Calls.Count} Einträgen geladen.")
@@ -35,16 +20,16 @@ Friend Module Journal
     Friend Async Sub AutoBlockListe()
 
         With XMLData.POptionen
-            If Now.Subtract(.LetzteSperrlistenaktualsierung).TotalHours.IsLargerOrEqual(24) Then
+            If Now.Subtract(.LetzteSperrlistenaktualisierung).TotalHours.IsLargerOrEqual(24) Then
                 NLogger.Debug("Rufsperre der Fritz!Box wird aktualisiert.")
 
                 Dim CTS = New Threading.CancellationTokenSource
                 Dim progressIndicator = New Progress(Of Integer)(Sub(status)
                                                                  End Sub)
 
-                Await BlockTellowsNumbers(.CBTellowsAnrMonMinScore, .CBTellowsEntryNumberCount, ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
+                Await BlockTellowsNumbers(.CBTellowsAutoScoreFBBlockList, .CBTellowsEntryNumberCount, ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
 
-                .LetzteSperrlistenaktualsierung = Now
+                .LetzteSperrlistenaktualisierung = Now
 
                 CTS.Dispose()
             Else

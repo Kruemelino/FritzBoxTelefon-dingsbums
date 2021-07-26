@@ -608,6 +608,7 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
   </data>
   <data name="strTellowsEntryNumberCount" xml:space="preserve">
     <value>Anzahl an Telefonnummern je Sperrlisteneintrag</value>
+    <comment>OptTellows</comment>
   </data>
   <data name="strTellowsHeadAccountInfo" xml:space="preserve">
     <value>tellows - Account Info</value>
@@ -627,6 +628,11 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
   </data>
   <data name="strTellowsInfo" xml:space="preserve">
     <value>tellows bietet Informationen zur Identifizierung von seriösen oder gefährlichen Anrufen - dank der weltweiten Community. Die Nutzung von tellows ist nicht kostenfrei. Zur korrekten Nutzung ist der Erwerb eines sogenannten API Keys notwendig.</value>
+    <comment>OptTellows</comment>
+  </data>
+  <data name="strTellowsInfoFBRufsperre" xml:space="preserve">
+    <value>Die Rufsperre der Fritz!Box kann durch die Einträge aus tellows ergänzt werden. Es besteht die Möglichkeit, dass ein Abgleich bei Outlookstart (1x aller 24h) erfolgt. Ein manueller Abgleich ist auch über die Anrufliste möglich. Damit nicht für jede Nummer ein Eintrag erzeugt wird, werden die Nummern zu Gruppen zusammengefasst. 
+Warnung: Wenn viele Einträge auf die Fritz!Box geladen werden, kann diese träge reagieren. </value>
     <comment>OptTellows</comment>
   </data>
   <data name="strTellowsLadeAccountInfo" xml:space="preserve">
