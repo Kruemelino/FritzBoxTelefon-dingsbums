@@ -206,7 +206,7 @@ Imports FBoxDial.FritzBoxDefault
     Private Async Function GetFON(SessionID As String) As Task(Of List(Of Telefoniegerät))
         Dim TelQuery As New List(Of String)
         Dim FONList As New List(Of Telefoniegerät)
-        Dim MSNList As New List(Of MSNEntry)
+        Dim MSNList As New FBoxFON
 
         NLogger.Trace("GetFON - Start")
 
@@ -216,7 +216,7 @@ Imports FBoxDial.FritzBoxDefault
 
         If JSONDeserializeObjectFromString(Await FritzBoxAsyncQuery(SessionID, TelQuery), MSNList) Then
             ' Wenn es eine interne Nummer gibt, sind die DECT-Geräte aktiv
-            For Each FONTelefon In MSNList.Where(Function(F) F.Name.IsNotStringNothingOrEmpty)
+            For Each FONTelefon In MSNList.FON.Where(Function(F) F.Name.IsNotStringNothingOrEmpty)
                 ' Dimensioniere ein neues Telefon und setze Daten
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.FON,
                                                         .Name = FONTelefon.Name,
@@ -267,7 +267,7 @@ Imports FBoxDial.FritzBoxDefault
     Private Async Function GetDECT(SessionID As String) As Task(Of List(Of Telefoniegerät))
         Dim TelQuery As New List(Of String)
         Dim DECTList As New List(Of Telefoniegerät)
-        Dim DECTTelList As New List(Of DECTEntry)
+        Dim DECTTelList As New FBoxDECT
 
         NLogger.Trace("GetDECT - Start")
 
@@ -277,7 +277,7 @@ Imports FBoxDial.FritzBoxDefault
         ' Führe Abfrage aus
         If JSONDeserializeObjectFromString(Await FritzBoxAsyncQuery(SessionID, TelQuery), DECTTelList) Then
             ' Wenn es eine interne Nummer gibt, sind die DECT-Geräte aktiv
-            For Each DECTTelefon In DECTTelList.Where(Function(D) D.Intern.IsNotStringNothingOrEmpty)
+            For Each DECTTelefon In DECTTelList.DECT.Where(Function(D) D.Intern.IsNotStringNothingOrEmpty)
                 ' Dimensioniere ein neues Telefon und setze Daten
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.DECT,
                                                         .Name = DECTTelefon.Name,

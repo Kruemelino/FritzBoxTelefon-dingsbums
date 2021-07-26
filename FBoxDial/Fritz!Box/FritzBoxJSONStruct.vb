@@ -8,6 +8,10 @@ Friend Structure MSNEntry
     Public Property Fax As Boolean
 End Structure
 
+Friend Structure FBoxFON
+    Public Property FON As List(Of MSNEntry)
+End Structure
+
 Friend Structure FBoxFONNr
     Public Property MSN0 As String
     Public Property MSN1 As String
@@ -38,6 +42,10 @@ End Structure
 
 Friend Structure DECTNr
     Public Property Number As String
+End Structure
+
+Friend Structure FBoxDECT
+    Public Property DECT As List(Of DECTEntry)
 End Structure
 
 Friend Structure FBoxDECTNr
