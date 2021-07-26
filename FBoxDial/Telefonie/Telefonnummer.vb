@@ -140,8 +140,8 @@ Public Class Telefonnummer
     ''' Zerlegt die Telefonnummer in ihre Bestandteile.
     ''' </summary>
     Private Sub SetTelNrTeile()
-        Dim _LKZ As LKZ = Nothing
-        Dim _ONKZ As ONKZ = Nothing
+        Dim _LKZ As Landeskennzahl = Nothing
+        Dim _ONKZ As Ortsnetzkennzahlen = Nothing
         Dim TelNr As String
 
         If Unformatiert.IsNotStringEmpty AndAlso Unformatiert.Length.IsLarger(2) Then

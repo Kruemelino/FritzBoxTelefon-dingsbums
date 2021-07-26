@@ -1,64 +1,51 @@
 ﻿Imports System.Xml.Serialization
 Imports FBoxDial.DfltWerteTelefonie
-<Serializable(), XmlRoot("KZ")> Public Class KZ
-    <XmlElement("LKZ")> Public Property Landeskennzahlen As List(Of LKZ)
+<Serializable(), XmlRoot("KZ")> Public Class Kennzahlen
+    <XmlElement("LKZ")> Public Property Landeskennzahlen As List(Of Landeskennzahl)
 End Class
 
-<Serializable(), XmlType("LKZ")> Public Class LKZ
+<Serializable(), XmlType("LKZ")> Public Class Landeskennzahl
     <XmlAttribute("n")> Public Property Landeskennzahl As String
     <XmlAttribute("Code")> Public Property Code As String
-    <XmlElement("ONKZ")> Public Property Ortsnetzkennzahlen As List(Of ONKZ)
+    <XmlElement("ONKZ")> Public Property Ortsnetzkennzahlen As List(Of Ortsnetzkennzahlen)
 End Class
 
-<Serializable(), XmlType("ONKZ")> Public Class ONKZ
+<Serializable(), XmlType("ONKZ")> Public Class Ortsnetzkennzahlen
     <XmlAttribute("n")> Public Property Ortsnetzkennzahl As String
     <XmlAttribute("Name")> Public Property Name As String
 End Class
 
 Friend Class Vorwahlen
-    Public Property Kennzahlen As KZ
+    Public Property Kennzahlen As Kennzahlen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private ReadOnly Property GetDefaultLKZ() As LKZ
+    Private ReadOnly Property GetDefaultLKZ() As Landeskennzahl
         Get
             Return GetDefaultLKZ(XMLData.PTelefonie.LKZ)
         End Get
     End Property
-    Private ReadOnly Property GetDefaultLKZ(LKZString As String) As LKZ
+    Private ReadOnly Property GetDefaultLKZ(LKZString As String) As Landeskennzahl
         Get
             If LKZString.IsStringNothingOrEmpty Then
                 NLogger.Warn("Übergebener String ist Null oder Nothing.")
-                Return New LKZ With {.Landeskennzahl = DfltStringEmpty,
-                                     .Ortsnetzkennzahlen = New List(Of ONKZ)}
+                Return New Landeskennzahl With {.Landeskennzahl = DfltStringEmpty, .Ortsnetzkennzahlen = New List(Of Ortsnetzkennzahlen)}
             Else
                 Return Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = LKZString)
             End If
         End Get
     End Property
 
-    Private ReadOnly Property GetDefaultONKZ() As ONKZ
+    Private ReadOnly Property GetDefaultONKZ() As Ortsnetzkennzahlen
         Get
             Return GetDefaultLKZ?.Ortsnetzkennzahlen.Find(Function(OKZ) OKZ.Ortsnetzkennzahl = XMLData.PTelefonie.OKZ)
         End Get
     End Property
 
-    Public Sub New()
-        NLogger.Debug("Starte Einlesen der Landes- und Ortskennzahlen")
-        LadeVorwahlen()
-    End Sub
+    Friend Async Function LadeVorwahlen() As Threading.Tasks.Task(Of Kennzahlen)
+        Return Await DeserializeAsyncXML(Of Kennzahlen)(My.Resources.Vorwahlen, False)
+    End Function
 
-    Private Async Sub LadeVorwahlen()
-
-        Kennzahlen = Await DeserializeAsyncXML(Of KZ)(My.Resources.Vorwahlen, False)
-
-        If Kennzahlen IsNot Nothing Then
-            NLogger.Debug("Landes- und Ortskennzahlen eingelesen.")
-        Else
-            NLogger.Warn("Landes- und Ortskennzahlen nicht eingelesen.")
-        End If
-    End Sub
-
-    Friend Sub TelNrKennzahlen(TelNr As Telefonnummer, ByRef _LKZ As LKZ, ByRef _ONKZ As ONKZ)
-        Dim LKZListe As List(Of LKZ)
+    Friend Sub TelNrKennzahlen(TelNr As Telefonnummer, ByRef _LKZ As Landeskennzahl, ByRef _ONKZ As Ortsnetzkennzahlen)
+        Dim LKZListe As List(Of Landeskennzahl)
         ' Landeskennzahl ermitteln
         LKZListe = GetTelNrLKZListe(TelNr)
 
@@ -74,9 +61,9 @@ Friend Class Vorwahlen
     ''' Ermittelt die Landeskennzahlen aus einer unformatierten Telefonnummer. 
     ''' Es kann sein, dass mehrere Landeskennzeahlen ermittelt werden. Dies ist vor allem für die 1 der Fall. Weitere Beispiele: 7, 44
     ''' </summary>
-    Private Function GetTelNrLKZListe(TelNr As Telefonnummer) As List(Of LKZ)
+    Private Function GetTelNrLKZListe(TelNr As Telefonnummer) As List(Of Landeskennzahl)
         Dim i As Integer
-        Dim LKZListe As New List(Of LKZ)
+        Dim LKZListe As New List(Of Landeskennzahl)
 
         With TelNr
             ' Prüfe, ob die Telefonnummer eine Landeskennzahl enthält
@@ -121,10 +108,10 @@ Friend Class Vorwahlen
         Return LKZListe
     End Function
 
-    Private Function TelNrONKZ(TelNr As Telefonnummer, _LKZ As List(Of LKZ)) As ONKZ
+    Private Function TelNrONKZ(TelNr As Telefonnummer, _LKZ As List(Of Landeskennzahl)) As Ortsnetzkennzahlen
         Dim i, j As Integer
-        Dim _ONKZ As ONKZ = Nothing
-        Dim ONKZListe As List(Of ONKZ)
+        Dim _ONKZ As Ortsnetzkennzahlen = Nothing
+        Dim ONKZListe As List(Of Ortsnetzkennzahlen)
 
         With TelNr.Unformatiert
 

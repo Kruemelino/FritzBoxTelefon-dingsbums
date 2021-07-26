@@ -44,10 +44,12 @@ Public NotInheritable Class ThisAddIn
 
         Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
         Dim TaskTelefonbücher As Task(Of FritzBoxXMLTelefonbücher) = Nothing
+        Dim TaskVorwahlen As Task(Of Kennzahlen) = Nothing
 
         ' Initialisiere die Landes- und Ortskennzahlen
         PVorwahlen = New Vorwahlen
-        NLogger.Debug("Kennzahlen geladen...")
+        NLogger.Debug("Starte Einlesen der Landes- und Ortskennzahlen")
+        TaskVorwahlen = PVorwahlen.LadeVorwahlen
 
         Dim UserData As New NutzerDaten
         NLogger.Debug("Nutzererinstellungen geladen...")
@@ -84,7 +86,11 @@ Public NotInheritable Class ThisAddIn
             NLogger.Debug($"{fbtr064.FriendlyName} {fbtr064.DisplayVersion}")
         End Using
 
-        ' Beendigung des Task für das herunterladen der Fritz!Box Telefonbücher abwarten
+        ' Beendigung des Task für das Einlesen der Kennzahlen abwarten
+        PVorwahlen.Kennzahlen = Await TaskVorwahlen
+        NLogger.Debug($"Landes- und Ortskennzahlen {If(PVorwahlen.Kennzahlen Is Nothing, "nicht ", "")}geladen...")
+
+        ' Beendigung des Task für das Herunterladen der Fritz!Box Telefonbücher abwarten
         If TaskTelefonbücher IsNot Nothing Then
             PhoneBookXML = Await TaskTelefonbücher
             NLogger.Debug($"Fritz!Box Telefonbücher geladen...")
