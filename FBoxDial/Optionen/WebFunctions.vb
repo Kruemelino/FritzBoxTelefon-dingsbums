@@ -176,11 +176,12 @@ Friend Module WebFunctions
                                 retVal = Await .DownloadStringTaskAsync(UniformResourceIdentifier)
                                 NLogger.Trace($"{UniformResourceIdentifier.AbsoluteUri} - {retVal}")
 
-                            Catch exANE As ArgumentNullException
-                                NLogger.Error(exANE)
+                            Catch exArgumentNull As ArgumentNullException
+                                NLogger.Error(exArgumentNull)
 
-                            Catch exWE As WebException
-                                NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+                            Catch exWeb As WebException
+                                NLogger.Error(exWeb, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+
                             Catch ex As Exception
                                 Stop
                             End Try
