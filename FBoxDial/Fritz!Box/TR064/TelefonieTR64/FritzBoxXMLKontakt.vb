@@ -83,7 +83,7 @@ Imports Microsoft.Office.Interop.Outlook
             .FullName = Person.RealName
 
             ' Kontaktbild asynchron herunterladen
-            If Person.ImageURL.IsNotStringNothingOrEmpty Then HerunterladenKontaktBild = KontaktBild
+            If Person.ImageURL.IsNotStringNothingOrEmpty Then HerunterladenKontaktBild = KontaktBildPfad
 
             ' E-Mail Adressen (Es gibt in Outlook maximal 3 E-Mail Adressen)
             For i = 1 To Math.Min(Telefonie.Emails.Count, 3)

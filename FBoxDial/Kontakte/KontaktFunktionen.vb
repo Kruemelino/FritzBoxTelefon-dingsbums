@@ -204,53 +204,6 @@ Friend Module KontaktFunktionen
     End Sub ' (ZeigeKontaktAusInspector)
 
     ''' <summary>
-    ''' Speichert das Kontaktbild in den Arbeitsorder. 
-    ''' </summary>
-    ''' <param name="olContact">Kontakt, aus dem das Kontaktbild extrahiert werden soll.</param>
-    ''' <returns>Pfad zum extrahierten Kontaktbild.</returns>
-    <Extension> Friend Function KontaktBild(olContact As ContactItem) As String
-        KontaktBild = DfltStringEmpty
-        If olContact IsNot Nothing Then
-            With olContact
-                With .Attachments
-                    If .Item("ContactPicture.jpg") IsNot Nothing Then
-                        KontaktBild = $"{Path.GetTempPath}{Path.GetRandomFileName}".RegExReplace(".{3}$", "jpg")
-                        .Item("ContactPicture.jpg").SaveAsFile(KontaktBild)
-
-                        NLogger.Debug($"Bild des Kontaktes {olContact.FullName} unter Pfad {KontaktBild} gespeichert.")
-                    End If
-                End With
-            End With
-        End If
-    End Function
-
-    <Extension> Friend Async Function KontaktBild(FBoxContact As FritzBoxXMLKontakt) As Threading.Tasks.Task(Of String)
-        Dim Pfad As String = DfltStringEmpty
-        If FBoxContact IsNot Nothing Then
-            Pfad = $"{Path.GetTempPath}{Path.GetRandomFileName}".RegExReplace(".{3}$", "jpg")
-
-            Await DownloadToFileTaskAsync(New Uri(FBoxContact.Person.CompleteImageURL), Pfad)
-
-            NLogger.Debug($"Bild des Kontaktes {FBoxContact.Person.RealName} unter Pfad {Pfad} gespeichert.")
-
-        End If
-        Return Pfad
-    End Function
-    ''' <summary>
-    ''' Löscht das Kontaktbild in den Arbeitsorder. 
-    ''' </summary>
-    ''' <param name="PfadKontaktBild">Pfad zum extrahierten Kontaktbild</param>
-    Friend Sub DelKontaktBild(PfadKontaktBild As String)
-        If PfadKontaktBild.IsNotStringEmpty Then
-            With My.Computer.FileSystem
-                If .FileExists(PfadKontaktBild) Then
-                    .DeleteFile(PfadKontaktBild, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                    NLogger.Debug($"Kontaktbild {PfadKontaktBild} gelöscht.")
-                End If
-            End With
-        End If
-    End Sub
-    ''' <summary>
     ''' Ermittelt aus der KontaktID (EntryID) und der StoreID den zugehörigen Kontakt.
     ''' </summary>
     ''' <param name="KontaktID">EntryID des Kontaktes</param>
@@ -688,5 +641,104 @@ Friend Module KontaktFunktionen
 
         Return Nothing
     End Function
+
+    ''' <summary>
+    ''' Speichert das Kontaktbild in den Arbeitsorder. 
+    ''' </summary>
+    ''' <param name="olContact">Kontakt, aus dem das Kontaktbild extrahiert werden soll.</param>
+    ''' <returns>Pfad zum extrahierten Kontaktbild.</returns>
+    <Extension> Friend Function KontaktBild(olContact As ContactItem) As String
+        KontaktBild = DfltStringEmpty
+        If olContact IsNot Nothing Then
+            With olContact
+                With .Attachments
+                    If .Item("ContactPicture.jpg") IsNot Nothing Then
+                        KontaktBild = $"{Path.GetTempPath}{Path.GetRandomFileName}" '.RegExReplace(".{3}$", "jpg")
+                        .Item("ContactPicture.jpg").SaveAsFile(KontaktBild)
+
+                        NLogger.Debug($"Bild des Kontaktes {olContact.FullName} unter Pfad {KontaktBild} gespeichert.")
+                    End If
+                End With
+            End With
+        End If
+    End Function
+
+    <Extension> Friend Function KontaktBildEx(olContact As ContactItem) As Imaging.BitmapImage
+        If olContact IsNot Nothing Then
+            With olContact
+                With .Attachments
+                    If .Item("ContactPicture.jpg") IsNot Nothing Then
+                        ' Bild Speichern
+                        Dim BildPfad As String = $"{Path.GetTempPath}{Path.GetRandomFileName}"
+                        .Item("ContactPicture.jpg").SaveAsFile(BildPfad)
+                        NLogger.Debug($"Bild des Kontaktes {olContact.FullName} unter Pfad {BildPfad} gespeichert.")
+
+                        ' Bild in das Datenobjekt laden und abschließend löschen
+                        Return KontaktBildEx(BildPfad)
+
+                    End If
+                End With
+            End With
+        End If
+        Return Nothing
+    End Function
+
+    <Extension> Friend Async Function KontaktBildEx(FBoxContact As FritzBoxXMLKontakt) As Threading.Tasks.Task(Of Imaging.BitmapImage)
+        If FBoxContact IsNot Nothing Then
+            With FBoxContact
+                ' Bild in das Datenobjekt laden und abschließend löschen
+                Return KontaktBildEx(Await FBoxContact.KontaktBildPfad)
+            End With
+        End If
+        Return Nothing
+    End Function
+
+    Private Function KontaktBildEx(BildPfad As String) As Imaging.BitmapImage
+        If BildPfad.IsNotStringNothingOrEmpty Then
+            ' Bild in das Datenobjekt laden
+            Dim biImg As New Imaging.BitmapImage
+            With biImg
+                .BeginInit()
+                .CacheOption = Imaging.BitmapCacheOption.OnLoad
+                .UriSource = New Uri(BildPfad)
+                .EndInit()
+            End With
+
+            ' Bild wieder löschen
+            DelKontaktBild(BildPfad)
+
+            Return biImg
+        End If
+
+        Return Nothing
+    End Function
+
+    <Extension> Friend Async Function KontaktBildPfad(FBoxContact As FritzBoxXMLKontakt) As Threading.Tasks.Task(Of String)
+        Dim Pfad As String = DfltStringEmpty
+        If FBoxContact IsNot Nothing Then
+            Pfad = $"{Path.GetTempPath}{Path.GetRandomFileName}" '.RegExReplace(".{3}$", "jpg")
+
+            Await DownloadToFileTaskAsync(New Uri(FBoxContact.Person.CompleteImageURL), Pfad)
+
+            NLogger.Debug($"Bild des Kontaktes {FBoxContact.Person.RealName} unter Pfad {Pfad} gespeichert.")
+
+        End If
+        Return Pfad
+    End Function
+    ''' <summary>
+    ''' Löscht das Kontaktbild in den Arbeitsorder. 
+    ''' </summary>
+    ''' <param name="PfadKontaktBild">Pfad zum extrahierten Kontaktbild</param>
+    Friend Sub DelKontaktBild(PfadKontaktBild As String)
+        If PfadKontaktBild.IsNotStringEmpty Then
+            With My.Computer.FileSystem
+                If .FileExists(PfadKontaktBild) Then
+                    .DeleteFile(PfadKontaktBild, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                    NLogger.Debug($"Kontaktbild {PfadKontaktBild} gelöscht.")
+                End If
+            End With
+        End If
+    End Sub
+
 #End Region
 End Module

@@ -441,8 +441,8 @@ Imports Microsoft.Office.Interop
 
 #Region "Structures"
     Friend Structure AnrufRichtungen
-        Const Eingehend As Integer = 0
-        Const Ausgehend As Integer = 1
+        Friend Const Eingehend As Integer = 0
+        Friend Const Ausgehend As Integer = 1
     End Structure
 #End Region
 
@@ -828,10 +828,14 @@ Imports Microsoft.Office.Interop
             With PopUpAnrMonWPF
                 ' Übergib dieses Telefonat an das Viewmodel
                 With CType(.DataContext, AnrMonViewModel)
+                    ' Übergib den Dispatcher des Views an das Viewmodel
+                    .Instance = PopUpAnrMonWPF.Dispatcher
+
                     ' Übergib dieses Telefonat an das Viewmodel
                     .AnrMonTelefonat = Me
                 End With
-                ' Zeige den ANrufmonitor an
+
+                ' Zeige den Anrufmonitor an
                 .Show()
             End With
 
@@ -841,6 +845,7 @@ Imports Microsoft.Office.Interop
             ThisAddIn.OffeneAnrMonWPF.Add(PopUpAnrMonWPF)
             ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
             AddHandler PopUpAnrMonWPF.Geschlossen, AddressOf PopupAnrMonGeschlossen
+
         End If
     End Sub
 
@@ -880,6 +885,7 @@ Imports Microsoft.Office.Interop
     Private Sub PopupAnrMonGeschlossen(sender As Object, e As EventArgs)
 
         AnrMonEingeblendet = False
+
         ' Entferne den Anrufmonitor von der Liste der offenen Popups
         ThisAddIn.OffeneAnrMonWPF.Remove(PopUpAnrMonWPF)
         NLogger.Debug($"Anruffenster geschlossen: {AnruferName}: Noch {ThisAddIn.OffeneAnrMonWPF.Count} offene Anrufmonitor")
@@ -897,23 +903,40 @@ Imports Microsoft.Office.Interop
         PopupStoppUhrWPF = Nothing
     End Sub
 
-    Private Sub ShowAnrMon()
-        Dim t = New Thread(Sub()
+    Private Async Sub ShowAnrMon()
+
+        Await StartSTATask(Function() As Boolean
                                If PopUpAnrMonWPF Is Nothing Then
                                    NLogger.Debug("Blende einen neuen Anrufmonitor ein")
                                    ' Blende einen neuen Anrufmonitor ein
                                    AnrMonEinblenden()
 
                                    While AnrMonEingeblendet
+
                                        Forms.Application.DoEvents()
                                        Thread.Sleep(100)
+
                                    End While
                                End If
-                           End Sub)
+                               Return False
+                           End Function)
 
-        t.SetApartmentState(ApartmentState.STA)
-        t.Start()
     End Sub
+
+    Public Function StartSTATask(Of T)(func As Func(Of T)) As Task(Of T)
+        Dim tcs = New TaskCompletionSource(Of T)()
+        Dim thread As New Thread(Sub()
+                                     Try
+                                         tcs.SetResult(func())
+                                     Catch e As Exception
+                                         tcs.SetException(e)
+                                     End Try
+                                 End Sub)
+        thread.SetApartmentState(ApartmentState.STA)
+        thread.Start()
+        Return tcs.Task
+    End Function
+
     Private Sub ShowStoppUhr()
         Dim t = New Thread(Sub()
                                If PopupStoppUhrWPF Is Nothing Then

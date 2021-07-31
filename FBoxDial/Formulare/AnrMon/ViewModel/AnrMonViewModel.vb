@@ -2,7 +2,6 @@
 Imports System.Windows
 Imports System.Windows.Input
 Imports System.Windows.Media
-Imports System.Windows.Media.Imaging
 Imports System.Windows.Threading
 
 Public Class AnrMonViewModel
@@ -10,7 +9,7 @@ Public Class AnrMonViewModel
     Private Property DialogService As IDialogService
     Private Property DatenService As IAnrMonService
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-
+    Friend Property Instance As Dispatcher
 #Region "Eigenschaften"
 
     Private _AnrMonTelefonat As Telefonat
@@ -20,11 +19,12 @@ Public Class AnrMonViewModel
         End Get
         Set
             SetProperty(_AnrMonTelefonat, Value)
-            ' Daten laden
-            LadeDaten()
 
             ' Eventhandler für Veränderungen am Telefonat starten
             AddHandler AnrMonTelefonat.PropertyChanged, AddressOf TelefonatChanged
+
+            ' Daten laden
+            LadeDaten()
         End Set
     End Property
 
@@ -67,6 +67,7 @@ Public Class AnrMonViewModel
         Set
             SetProperty(_AnrMonAnrufer, Value)
             OnPropertyChanged(NameOf(ZeigeAnruferName))
+            OnPropertyChanged(NameOf(ZeigeTelNr))
         End Set
     End Property
 
@@ -81,8 +82,8 @@ Public Class AnrMonViewModel
         End Set
     End Property
 
-    Private _Kontaktbild As ImageSource
-    Public Property Kontaktbild As ImageSource
+    Private _Kontaktbild As Imaging.BitmapImage
+    Public Property Kontaktbild As Imaging.BitmapImage
         Get
             Return _Kontaktbild
         End Get
@@ -158,6 +159,7 @@ Public Class AnrMonViewModel
     End Sub
 
     Private Sub LadeDaten()
+        NLogger.Trace("LadeDaten")
         ' Setze Anzuzeigende Werte
         With AnrMonTelefonat
 
@@ -176,76 +178,80 @@ Public Class AnrMonViewModel
             ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)
             AnrMonExInfo = .AnrMonExInfo
 
-            If XMLData.POptionen.CBAnrMonContactImage AndAlso Kontaktbild Is Nothing Then
-                ' Setze das Kontaktbild, falls ein Outlookkontakt verfügbar ist.
-                If .OlKontakt IsNot Nothing Then
-                    ' Speichere das Kontaktbild in einem temporären Ordner
-                    Dim BildPfad As String = KontaktFunktionen.KontaktBild(.OlKontakt)
+            ' Setze das Kontaktbild
+            Instance.Invoke(Sub() LadeBild())
 
-                    ' Überführe das Bild in das BitmapImage
-                    If BildPfad.IsNotStringNothingOrEmpty Then
-                        ' Kontaktbild laden
-                        Dim biImg As New BitmapImage
-                        With biImg
-                            .BeginInit()
-                            .CacheOption = BitmapCacheOption.OnLoad
-                            .UriSource = New Uri(BildPfad)
-                            .EndInit()
-                        End With
-                        ' Weise das Bild zu
-                        Kontaktbild = biImg
-                        'Lösche das Kontaktbild aus dem temprären Ordner
-                        DelKontaktBild(BildPfad)
-                    End If
-                End If
-
-                ' Setze das Kontaktbild, falls ein Eintrag aus einem Fritz!Box Telefonbuch verfügbar ist.
-                If .FBTelBookKontakt IsNot Nothing Then
-                    ' Lade das Kontaktbild von der Fritz!Box herunter und weise es zu 
-                    Dispatcher.CurrentDispatcher.Invoke(Async Function()
-                                                            Kontaktbild = Await LadeKontaktbild(.FBTelBookKontakt.Person.CompleteImageURL)
-                                                        End Function)
-                End If
-
-                ' Setze das Kontaktbild, falls ein Eintrag aus tellows verfügbar ist.
-                If .TellowsErgebnis IsNot Nothing Then
-                    With .TellowsErgebnis
-                        ' Wenn der Mindestscore erreicht wurde und die Mindestanzahl an Kommentaren, dann Zeige die Informationen an
-                        If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Comments.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
-                            ' tellows Score Icon 
-                            Kontaktbild = New BitmapImage(New Uri($"pack://application:,,,/{My.Resources.strDefLongName};component/Tellows/Resources/score{ .Score}.png", UriKind.Absolute))
-                            ' Einfärben des Hintergrundes
-                            If XMLData.POptionen.CBTellowsAnrMonColor Then BackgroundColor = .ScoreColor
-                        End If
-                    End With
-                End If
-
-                ' Setze das Kontaktbild, falls ein Eintrag aus tellows ScoreList verfügbar ist.
-                If .ScoreListEntry IsNot Nothing Then
-                    With .ScoreListEntry
-                        ' Wenn der Mindestscore erreicht wurde und die Mindestanzahl an Kommentaren, dann Zeige die Informationen an
-                        If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Complains.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
-                            ' tellows Score Icon 
-                            Kontaktbild = New BitmapImage(New Uri($"pack://application:,,,/{My.Resources.strDefLongName};component/Tellows/Resources/score{ .Score}.png", UriKind.Absolute))
-                            ' Einfärben des Hintergrundes
-                            'If XMLData.POptionen.CBTellowsAnrMonColor Then BackgroundColor = .ScoreColor
-                        End If
-                    End With
-                End If
-            End If
         End With
         ' Forcing the CommandManager to raise the RequerySuggested event
         CommandManager.InvalidateRequerySuggested()
 
     End Sub
 
+    Private Async Sub LadeBild()
+        With AnrMonTelefonat
+            If XMLData.POptionen.CBAnrMonContactImage AndAlso Kontaktbild Is Nothing Then
+
+                ' Setze das Kontaktbild, falls ein Outlookkontakt verfügbar ist.
+                If .OlKontakt IsNot Nothing Then
+                    NLogger.Trace($"Lade Kontaktbild für { .OlKontakt.FullName}")
+                    Kontaktbild = .OlKontakt.KontaktBildEx
+                End If
+
+                ' Setze das Kontaktbild, falls ein Eintrag aus einem Fritz!Box Telefonbuch verfügbar ist.
+                If .FBTelBookKontakt IsNot Nothing Then
+                    ' Lade das Kontaktbild von der Fritz!Box herunter und weise es zu 
+                    Kontaktbild = Await .FBTelBookKontakt.KontaktBildEx
+                End If
+
+                ' Falls ein Kontaktbild aus Outlook oder den FB-Telefonbüchern schon gesetzt ist, dann irgnoriere Tellows
+                If Kontaktbild Is Nothing Then
+                    ' Setze das Kontaktbild, falls ein Eintrag aus tellows verfügbar ist.
+                    If .TellowsErgebnis IsNot Nothing Then
+                        With .TellowsErgebnis
+                            ' Wenn der Mindestscore erreicht wurde und die Mindestanzahl an Kommentaren, dann Zeige die Informationen an
+                            If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Comments.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
+                                ' tellows Score Icon 
+                                Kontaktbild = New Imaging.BitmapImage(New Uri($"pack://application:,,,/{My.Resources.strDefLongName};component/Tellows/Resources/score{ .Score}.png", UriKind.Absolute))
+                                ' Einfärben des Hintergrundes
+                                If XMLData.POptionen.CBTellowsAnrMonColor Then BackgroundColor = .ScoreColor
+                            End If
+                        End With
+                    End If
+
+                    ' Setze das Kontaktbild, falls ein Eintrag aus tellows ScoreList verfügbar ist.
+                    If .ScoreListEntry IsNot Nothing Then
+                        With .ScoreListEntry
+                            ' Wenn der Mindestscore erreicht wurde und die Mindestanzahl an Kommentaren, dann Zeige die Informationen an
+                            If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Complains.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
+                                ' tellows Score Icon 
+                                Kontaktbild = New Imaging.BitmapImage(New Uri($"pack://application:,,,/{My.Resources.strDefLongName};component/Tellows/Resources/score{ .Score}.png", UriKind.Absolute))
+                                ' Einfärben des Hintergrundes
+                                'If XMLData.POptionen.CBTellowsAnrMonColor Then BackgroundColor = .ScoreColor
+                            End If
+                        End With
+                    End If
+                End If
+
+            End If
+        End With
+
+    End Sub
+
 #Region "Event Callback"
     Private Sub TelefonatChanged(sender As Object, e As PropertyChangedEventArgs)
         NLogger.Trace($"AnrMonVM: Eigenschaft {e.PropertyName} verändert.")
-        Dispatcher.CurrentDispatcher.Invoke(Sub()
-                                                NLogger.Trace("Aktualisiere VM")
-                                                LadeDaten()
-                                            End Sub)
+        With AnrMonTelefonat
+            Select Case e.PropertyName
+                Case NameOf(Telefonat.AnruferName)
+                    AnrMonAnrufer = .AnruferName
+                Case NameOf(Telefonat.Firma)
+                    AnrMonExInfo = .AnrMonExInfo
+                Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsErgebnis)
+                    Instance.Invoke(Sub() LadeBild())
+                Case Else
+                    ' Nix tun
+            End Select
+        End With
     End Sub
 #End Region
 
