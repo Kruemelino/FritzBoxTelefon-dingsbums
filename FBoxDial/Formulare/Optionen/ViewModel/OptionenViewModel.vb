@@ -812,28 +812,17 @@ Public Class OptionenViewModel
 
             ' Füge die Unterordner hinzu
             If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+            TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, False, Nothing, Nothing)))
 
-            Dim progressIndicator = New Progress(Of Integer)(Sub(status)
-                                                             End Sub)
-            Dim CTS As New CancellationTokenSource
-
-            For Each Folder In MAPIFolderList
-                NLogger.Debug($"Deindiziere Odner {Folder.Name}")
-                TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, False, CTS.Token, progressIndicator)))
-            Next
 
             ' indiziere:
             MAPIFolderList = OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
 
             ' Füge die Unterordner hinzu
             If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+            TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, True, Nothing, Nothing)))
 
-            For Each Folder In MAPIFolderList
-                NLogger.Debug($"Indiziere Odner {Folder.Name}")
-                TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, True, CTS.Token, progressIndicator)))
-            Next
 
-            CTS.Dispose()
         End With
 
         XMLData.POptionen.OutlookOrdner = OutlookOrdnerListe
