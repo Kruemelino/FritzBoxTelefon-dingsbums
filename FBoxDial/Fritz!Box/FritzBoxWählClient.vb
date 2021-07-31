@@ -400,7 +400,16 @@ Public Class FritzBoxWählClient
     End Sub
 
     Friend Overloads Sub WählboxStart(Kontakt As FritzBoxXMLKontakt)
-        WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = True, .SetOutlookFBoxXMLKontakt = Kontakt})
+
+        WPFWindow = New WählclientWPF
+        With WPFWindow
+            .DataContext = New WählClientViewModel With {.Wählclient = Me,
+                                                         .Instance = WPFWindow.Dispatcher,
+                                                         .IsContactDial = True,
+                                                         .SetOutlookFBoxXMLKontakt = Kontakt}
+
+            .Show()
+        End With
     End Sub
 
     ''' <summary>
@@ -408,9 +417,19 @@ Public Class FritzBoxWählClient
     ''' </summary>
     ''' <param name="oContact">Der Outlook-Kontakt, welcher angerufen werden soll</param>
     Private Sub Wählbox(oContact As Outlook.ContactItem)
-
         If oContact IsNot Nothing Then
-            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = True, .SetOutlookKontakt = oContact})
+
+            WPFWindow = New WählclientWPF
+
+            With WPFWindow
+                .DataContext = New WählClientViewModel With {.Wählclient = Me,
+                                                             .Instance = WPFWindow.Dispatcher,
+                                                             .IsContactDial = True,
+                                                             .SetOutlookKontakt = oContact}
+
+                .Show()
+            End With
+
         Else
             NLogger.Error("Der Outlook-Kontakt ist nicht vorhanden.")
         End If
@@ -423,7 +442,18 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(oExchangeNutzer As Outlook.ExchangeUser)
 
         If oExchangeNutzer IsNot Nothing Then
-            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = True, .SetOutlookExchangeUser = oExchangeNutzer})
+            WPFWindow = New WählclientWPF
+
+            With WPFWindow
+                .DataContext = New WählClientViewModel With {.Wählclient = Me,
+                                                             .Instance = WPFWindow.Dispatcher,
+                                                             .IsContactDial = True,
+                                                             .SetOutlookExchangeUser = oExchangeNutzer}
+
+                .Show()
+            End With
+
+
         Else
             NLogger.Error("Der Outlook-oExchangeUser ist nicht vorhanden.")
         End If
@@ -436,7 +466,17 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(TelNr As Telefonnummer)
 
         If TelNr IsNot Nothing Then
-            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = False, .SetTelNr = TelNr})
+            WPFWindow = New WählclientWPF
+
+            With WPFWindow
+                .DataContext = New WählClientViewModel With {.Wählclient = Me,
+                                                             .Instance = WPFWindow.Dispatcher,
+                                                             .IsContactDial = False,
+                                                             .SetTelNr = TelNr}
+
+                .Show()
+            End With
+
         Else
             NLogger.Error("Die Telefonnummer ist nicht vorhanden.")
         End If
@@ -447,7 +487,15 @@ Public Class FritzBoxWählClient
     ''' </summary>
     Private Sub Wählbox()
 
-        WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .IsContactDial = False})
+        WPFWindow = New WählclientWPF
+
+        With WPFWindow
+            .DataContext = New WählClientViewModel With {.Wählclient = Me,
+                                                         .Instance = WPFWindow.Dispatcher,
+                                                         .IsContactDial = False}
+
+            .Show()
+        End With
 
     End Sub
 #End Region

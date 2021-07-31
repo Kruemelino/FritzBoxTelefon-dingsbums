@@ -5,7 +5,7 @@ Imports Microsoft.Office.Interop
 Public Class ContactDialViewModel
     Inherits NotifyBase
     Private Property DatenService As IDialService
-
+    Friend Property Instance As Dispatcher
 #Region "Eigenschaften"
 
     Private _DialVM As WählClientViewModel
@@ -98,9 +98,10 @@ Public Class ContactDialViewModel
     Public Property VIPCommand As RelayCommand
 #End Region
 
-    Public Sub New(WählclientVM As WählClientViewModel, DS As IDialService)
+    Public Sub New(WählclientVM As WählClientViewModel, DS As IDialService, i As Dispatcher)
         DialVM = WählclientVM
         DatenService = DS
+        Instance = i
         ' Init Command
 
         ShowContactCommand = New RelayCommand(AddressOf ShowContact, AddressOf CanShow)
@@ -119,20 +120,9 @@ Public Class ContactDialViewModel
             DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .FullName}{If(.CompanyName.IsNotStringEmpty, $" ({ .CompanyName})", DfltStringEmpty)}")
 
             ' Kontaktbild anzeigen
-            Dim BildPfad As String = .KontaktBild
 
-            If BildPfad.IsNotStringEmpty Then
-                ' Kontaktbild laden
-                Kontaktbild = New BitmapImage
-                With Kontaktbild
-                    .BeginInit()
-                    .CacheOption = BitmapCacheOption.OnLoad
-                    .UriSource = New Uri(BildPfad)
-                    .EndInit()
-                End With
-                'Lösche das Kontaktbild 
-                DelKontaktBild(BildPfad)
-            End If
+            ' Setze das Kontaktbild
+            Instance.Invoke(Sub() Kontaktbild = olKontakt.KontaktBildEx)
 
         End With
     End Sub
@@ -158,10 +148,11 @@ Public Class ContactDialViewModel
             DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .Person.RealName}")
 
             ' Kontaktbild anzeigen
-            Dispatcher.CurrentDispatcher.Invoke(Async Function()
-                                                    Kontaktbild = Await LadeKontaktbild(FBoxXMLKontakt.Person.CompleteImageURL)
-                                                    OnPropertyChanged(NameOf(ZeigeBild))
-                                                End Function)
+            Instance.Invoke(Async Function()
+                                Kontaktbild = Await FBoxXMLKontakt.KontaktBildEx
+                                OnPropertyChanged(NameOf(ZeigeBild))
+                            End Function)
+
         End With
     End Sub
 

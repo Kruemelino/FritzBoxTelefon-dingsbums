@@ -1,11 +1,12 @@
-﻿Imports Microsoft.Office.Interop
+﻿Imports System.Windows.Threading
+Imports Microsoft.Office.Interop
 Public Class WählClientViewModel
     Inherits NotifyBase
     ' Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend Property Wählclient As FritzBoxWählClient
     Private Property DatenService As IDialService
     Private Property DialogService As IDialogService
-
+    Friend Property Instance As Dispatcher
 #Region "Eigenschaften"
     Private _currentView As Object
     Public Property CurrentView As Object
@@ -183,7 +184,7 @@ Public Class WählClientViewModel
     Private Sub SetData()
         ' Setze ViewModel
         If IsContactDial Then
-            ContactDialVM = New ContactDialViewModel(Me, DatenService)
+            ContactDialVM = New ContactDialViewModel(Me, DatenService, Instance)
             ' CurrentView zuweisen
             CurrentView = ContactDialVM
 

@@ -6,11 +6,12 @@ Public Class WählclientWPF
     Inherits Window
     Private Property WindowHelper As WindowHelper
 
-    Public Sub New(ViewModel As WählClientViewModel)
+    Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         ' Startup Position festlegen
         WindowStartupLocation = WindowStartupLocation.CenterScreen
 
@@ -19,12 +20,6 @@ Public Class WählclientWPF
 
         ' Erzeuge die Klasse für das automatische Ausblenden
         WindowHelper = New WindowHelper(Me, TimeSpan.FromSeconds(XMLData.POptionen.TBWClientEnblDauer))
-
-        ' Initialisiere das ViewModel. Die Daten werden aus den Optionen geladen.
-        DataContext = ViewModel
-
-        ' Anzeigen
-        Show()
     End Sub
 
     ''' <summary>
