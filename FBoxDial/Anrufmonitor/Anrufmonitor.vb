@@ -202,8 +202,12 @@ Friend Class Anrufmonitor
                 AktivesTelefonat = AktiveTelefonate.Find(Function(TE) TE.ID.AreEqual(CInt(FBStatusSplit(2))))
                 If AktivesTelefonat IsNot Nothing Then AktivesTelefonat.SetAnrMonDISCONNECT = FBStatusSplit
                 ' Das Gespräch ist beendet. Entferne dieses Telefonat aus der Liste aktiver Telefonate
-                AktiveTelefonate.Remove(AktivesTelefonat)
+                If AktiveTelefonate.Remove(AktivesTelefonat) Then
+                    NLogger.Trace($"Telefonat {AktivesTelefonat.ID} aus Gesamtliste entfernt (Verbleibend: {AktiveTelefonate.Count}).")
+                End If
 
+            Case Else
+                Exit Select
         End Select
     End Sub
 

@@ -29,6 +29,7 @@ Friend Class Vorwahlen
                 NLogger.Warn("Übergebener String ist Null oder Nothing.")
                 Return New Landeskennzahl With {.Landeskennzahl = DfltStringEmpty, .Ortsnetzkennzahlen = New List(Of Ortsnetzkennzahlen)}
             Else
+                ' TODO: Absturz, wenn Telefonat eingeht, und Vorwahlen noch nicht geladen.
                 Return Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = LKZString)
             End If
         End Get

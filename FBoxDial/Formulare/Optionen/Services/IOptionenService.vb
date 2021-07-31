@@ -32,8 +32,8 @@ Friend Interface IOptionenService
 #End Region
 
 #Region "Tellows"
-    Function GetTellowsAccountData(XAuthToken As String) As Threading.Tasks.Task(Of TellowsPartnerInfo)
-    Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Threading.Tasks.Task(Of TellowsResponse)
+    Function GetTellowsAccountData(XAuthToken As String) As Task(Of TellowsPartnerInfo)
+    Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Task(Of TellowsResponse)
 #End Region
 
 #Region "Test Login"

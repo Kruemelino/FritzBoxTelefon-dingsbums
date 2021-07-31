@@ -111,7 +111,7 @@ Friend Class OptionenService
             If ct.IsCancellationRequested Then Exit For
 
             ' Erhöhe Wert für Progressbar
-            progress.Report(1)
+            progress?.Report(1)
 
             VerarbeiteteKontakte += 1
         Next
@@ -131,7 +131,7 @@ Friend Class OptionenService
 
         ' Verarbeite alle Ordner die der Kontaktsuche entsprechen
         For Each Ordner In OrdnerListe
-
+            NLogger.Debug($"{If(IndexModus, "Indiziere", "Deindiziere")} Odner {Ordner.Name}")
             ' Starte das Indizieren
             IndexTasks.Add(Task.Run(Function()
                                         Return Indexer(Ordner, IndexModus, ct, progress)
