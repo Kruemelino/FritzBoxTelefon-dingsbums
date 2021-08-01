@@ -172,43 +172,48 @@ Friend Class Anrufmonitor
     Private Sub AnrMonTCPClient_Message(sender As Object, e As NotifyEventArgs(Of String)) Handles AnrMonTCPClient.Message
 
         Dim AktivesTelefonat As Telefonat
-        Dim FBStatus As String = e.Value.RegExRemove("\r\n?|\n") ' Entferne den Zeilenumbruch
-        Dim FBStatusSplit As String() = FBStatus.Split(AnrMon_Delimiter)
 
-        ' Hier die Daten des Fritz!Box Anrufmonitors weitergeben
-        NLogger.Info($"AnrMonAktion: {FBStatus}")
+        ' Schleife durch alle eingegangenen Meldungen des Fritz!Box Anrufmonitors. Es kann sein, dass mehrere Meldungen gleichzeitig kommen.
+        ' Leere Zeilen werden übergangen.
+        For Each AnrMonStatus In e.Value.Split(Dflt1NeueZeile).Where(Function(S) S.IsNotStringNothingOrEmpty)
+            ' Hier die Daten des Fritz!Box Anrufmonitors weitergeben
+            NLogger.Info($"AnrMonAktion: {AnrMonStatus}")
 
-        'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
-        Select Case FBStatusSplit(1)
-            Case AnrMon_RING
-                ' Neues Telefonat erzeugen und Daten des Anrufmonitors übergeben
-                AktivesTelefonat = New Telefonat With {.SetAnrMonRING = FBStatusSplit}
-                ' Füge das Telefonat der Liste hinzu
-                AktiveTelefonate.Add(AktivesTelefonat)
+            Dim FBStatusSplit As String() = AnrMonStatus.Split(AnrMon_Delimiter)
 
-            Case AnrMon_CALL
-                ' Neues Telefonat erzeugen und Daten des Anrufmonitors übergeben
-                AktivesTelefonat = New Telefonat With {.SetAnrMonCALL = FBStatusSplit}
-                ' Füge das Telefonat der Liste hinzu
-                AktiveTelefonate.Add(AktivesTelefonat)
+            'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
+            Select Case FBStatusSplit(1)
+                Case AnrMon_RING
+                    ' Neues Telefonat erzeugen und Daten des Anrufmonitors übergeben
+                    AktivesTelefonat = New Telefonat With {.SetAnrMonRING = FBStatusSplit}
+                    ' Füge das Telefonat der Liste hinzu
+                    AktiveTelefonate.Add(AktivesTelefonat)
 
-            Case AnrMon_CONNECT
-                ' Vorhandenes Telefonat ermitteln und Daten des Anrufmonitors übergeben
-                AktivesTelefonat = AktiveTelefonate.Find(Function(TE) TE.ID.AreEqual(CInt(FBStatusSplit(2))))
-                If AktivesTelefonat IsNot Nothing Then AktivesTelefonat.SetAnrMonCONNECT = FBStatusSplit
+                Case AnrMon_CALL
+                    ' Neues Telefonat erzeugen und Daten des Anrufmonitors übergeben
+                    AktivesTelefonat = New Telefonat With {.SetAnrMonCALL = FBStatusSplit}
+                    ' Füge das Telefonat der Liste hinzu
+                    AktiveTelefonate.Add(AktivesTelefonat)
 
-            Case AnrMon_DISCONNECT
-                ' Vorhandenes Telefonat ermitteln und Daten des Anrufmonitors übergeben
-                AktivesTelefonat = AktiveTelefonate.Find(Function(TE) TE.ID.AreEqual(CInt(FBStatusSplit(2))))
-                If AktivesTelefonat IsNot Nothing Then AktivesTelefonat.SetAnrMonDISCONNECT = FBStatusSplit
-                ' Das Gespräch ist beendet. Entferne dieses Telefonat aus der Liste aktiver Telefonate
-                If AktiveTelefonate.Remove(AktivesTelefonat) Then
-                    NLogger.Trace($"Telefonat {AktivesTelefonat.ID} aus Gesamtliste entfernt (Verbleibend: {AktiveTelefonate.Count}).")
-                End If
+                Case AnrMon_CONNECT
+                    ' Vorhandenes Telefonat ermitteln und Daten des Anrufmonitors übergeben
+                    AktivesTelefonat = AktiveTelefonate.Find(Function(TE) TE.ID.AreEqual(CInt(FBStatusSplit(2))))
+                    If AktivesTelefonat IsNot Nothing Then AktivesTelefonat.SetAnrMonCONNECT = FBStatusSplit
 
-            Case Else
-                Exit Select
-        End Select
+                Case AnrMon_DISCONNECT
+                    ' Vorhandenes Telefonat ermitteln und Daten des Anrufmonitors übergeben
+                    AktivesTelefonat = AktiveTelefonate.Find(Function(TE) TE.ID.AreEqual(CInt(FBStatusSplit(2))))
+                    If AktivesTelefonat IsNot Nothing Then AktivesTelefonat.SetAnrMonDISCONNECT = FBStatusSplit
+                    ' Das Gespräch ist beendet. Entferne dieses Telefonat aus der Liste aktiver Telefonate
+                    If AktiveTelefonate.Remove(AktivesTelefonat) Then
+                        NLogger.Trace($"Telefonat {AktivesTelefonat.ID} aus Gesamtliste entfernt (Verbleibend: {AktiveTelefonate.Count}).")
+                    End If
+
+                Case Else
+                    Exit Select
+            End Select
+        Next
+
     End Sub
 
     Private Sub AnrMonTCPClient_ErrorOccured(Sender As AnrMonClient) Handles AnrMonTCPClient.ErrorOccured
