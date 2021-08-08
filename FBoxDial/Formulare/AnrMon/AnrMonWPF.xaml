@@ -16,6 +16,12 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/AnrMon.xaml"/>
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="Foreground" 
+                                     Color="{Binding ForeColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, 
+                                                                TargetNullValue={StaticResource {x:Static SystemColors.ControlTextColorKey}}, 
+                                                                FallbackValue={StaticResource {x:Static SystemColors.ControlTextColorKey}}}"/>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -65,16 +71,19 @@
 
                 <!--Zeit-->
                 <TextBlock Grid.Row="0" Grid.Column="0" 
+                           Foreground="{StaticResource Foreground}" 
                            Style="{StaticResource AnrMonZeit}"
                            Text="{Binding Path=Zeit, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=\{0:F\}}"/>
                 
                 <!--Gerät-->
-                <TextBlock Grid.Row="0" Grid.Column="1" 
+                <TextBlock Grid.Row="0" Grid.Column="1"
+                           Foreground="{StaticResource Foreground}" 
                            Style="{StaticResource AnrMonEigeneNummer}"
                            Text="{Binding Path=AnrMonEigeneTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
                 <!--Telefonnummer-->
                 <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                           Foreground="{StaticResource Foreground}" 
                            Style="{StaticResource AnrMonNummer}"
                            Text="{Binding Path=AnrMonTelNr, 
                                           FallbackValue='', 
@@ -83,7 +92,8 @@
                            Visibility="{Binding ZeigeTelNr, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <!--Anrufer-->
-                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                           Foreground="{StaticResource Foreground}" >
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource AnrMonMainInfo}">
                             <Style.Triggers>
@@ -103,6 +113,7 @@
                 
                 <!--Firma-->
                 <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+                           Foreground="{StaticResource Foreground}" 
                            Style="{StaticResource AnrMonFirmenbezeichnung}"
                            Text="{Binding Path=AnrMonExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            Visibility="{Binding ZeigeExInfo, Converter={StaticResource BoolToVisibilityConverter}}"/>

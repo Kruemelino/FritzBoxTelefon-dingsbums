@@ -125,6 +125,11 @@
     <value>Anrufmonitor</value>
     <comment>MainView</comment>
   </data>
+  <data name="strAnrMonBColorInfo" xml:space="preserve">
+    <value>Primärfarbe: Hintergrund
+Sekundarfarbe: Schrift</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strAnrMonCBAnrMonAuto" xml:space="preserve">
     <value>Anrufmonitor mit Outlook starten</value>
     <comment>OptAnrMonView</comment>
@@ -155,6 +160,14 @@
   </data>
   <data name="strAnrMonHeadStoppUhr" xml:space="preserve">
     <value>Einstellungen für die Stoppuhr</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonSetBColor" xml:space="preserve">
+    <value>Setze Hintergrundfarbe des Anrufmonitors</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonStoppUhrSetBColor" xml:space="preserve">
+    <value>Setze Hintergrundfarbe der Stoppuhr</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonTBEnblDauer" xml:space="preserve">

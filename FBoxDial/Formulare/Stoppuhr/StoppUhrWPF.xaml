@@ -9,12 +9,19 @@
         d:DesignHeight="140" d:DesignWidth="200" Height="140" Width="200"
         d:DataContext="{d:DesignInstance Type=fbd:StoppUhrViewModel, IsDesignTimeCreatable=True}"         
         fbd:WindowBehavior.Closing="{Binding ClosingCommand}"
-        Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+        Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+        Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, TargetNullValue={StaticResource {x:Static SystemColors.WindowBrushKey}}}">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Stoppuhr.xaml"/>
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="Foreground" 
+                                     Color="{Binding ForeColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, 
+                                                                TargetNullValue={StaticResource {x:Static SystemColors.ControlTextColorKey}}, 
+                                                                FallbackValue={StaticResource {x:Static SystemColors.ControlTextColorKey}}}"/>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -42,16 +49,19 @@
 
             <DockPanel Grid.Row="0">
                 <TextBlock DockPanel.Dock="Left"
-                       Style="{StaticResource Gegenstelle}"
-                       Text="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                           Style="{StaticResource Gegenstelle}"
+                           Foreground="{StaticResource Foreground}" 
+                           Text="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
                 <TextBlock DockPanel.Dock="Right"
+                           Foreground="{StaticResource Foreground}" 
                            Style="{StaticResource EigeneNummer}"
                            Text="{Binding Path=EigeneTelNr}"/>
             </DockPanel>
 
             
             <TextBlock Grid.Row="1"
+                       Foreground="{StaticResource Foreground}" 
                        Style="{StaticResource Zeit}"
                        Text="{Binding Path=Beginn, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"/>
 
@@ -72,12 +82,14 @@
 
                 <TextBlock HorizontalAlignment="Center"
                            Style="{StaticResource Stoppuhr}" FontSize="20"
+                           Foreground="{StaticResource Foreground}" 
                            Text="{Binding Path=Dauer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=hh\\:mm\\:ss}"/>
             </Grid>
             
 
 
             <TextBlock Grid.Row="3"
+                       Foreground="{StaticResource Foreground}" 
                        Style="{StaticResource Zeit}"
                        Text="{Binding Path=Ende, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"
                        Visibility="{Binding Ende, Converter={StaticResource DateToVisibilityConverter}}">

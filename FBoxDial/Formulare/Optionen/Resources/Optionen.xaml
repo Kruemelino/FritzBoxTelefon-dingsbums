@@ -6,9 +6,7 @@
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <!--<fbd:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    <fbd:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>-->
-
+    <fbd:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
     <DataTemplate DataType="{x:Type fbd:OptBaseViewModel}">
         <fbd:OptBaseView />

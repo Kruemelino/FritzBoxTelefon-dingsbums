@@ -103,6 +103,16 @@ Public Class AnrMonViewModel
             SetProperty(_BackgroundColor, Value)
         End Set
     End Property
+
+    Private _ForeColor As String
+    Public Property ForeColor As String
+        Get
+            Return _ForeColor
+        End Get
+        Set
+            SetProperty(_ForeColor, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Visibility Eigenschaften"
@@ -177,6 +187,12 @@ Public Class AnrMonViewModel
 
             ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)
             AnrMonExInfo = .AnrMonExInfo
+
+
+            If XMLData.POptionen.CBSetAnrMonBColor Then
+                BackgroundColor = XMLData.POptionen.TBAnrMonBColorHex
+                ForeColor = XMLData.POptionen.TBAnrMonFColorHex
+            End If
 
             ' Setze das Kontaktbild
             Instance.Invoke(Sub() LadeBild())

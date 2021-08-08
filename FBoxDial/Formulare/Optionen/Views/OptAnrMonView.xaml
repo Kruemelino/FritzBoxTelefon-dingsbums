@@ -5,14 +5,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
+             xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="420"
+             d:DesignHeight="700" d:DesignWidth="420"
              d:DataContext="{d:DesignInstance Type=fbd:OptAnrMonViewModel, IsDesignTimeCreatable=True}">
     
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/Optionen.xaml"/>
+            <ResourceDictionary.MergedDictionaries>                
+                <ResourceDictionary Source="../Resources/Optionen.xaml"/>                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -40,9 +41,28 @@
                   Content="{x:Static localize:LocOptionen.strAnrMonCBAnrMonContactImage}" 
                   IsChecked="{Binding OptVM.CBAnrMonContactImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="{x:Static localize:LocOptionen.strAnrMonSetBColor}" 
+                  IsChecked="{Binding OptVM.CBSetAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Grid Visibility="{Binding OptVM.CBSetAnrMonBColor, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,4"               >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{x:Static localize:LocOptionen.strAnrMonBColorInfo}"/>
+
+            <colorpicker:PortableColorPicker Grid.Column="1" ShowAlpha="True"
+                                             SelectedColor="{Binding OptVM.TBAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             SecondaryColor="{Binding OptVM.TBAnrMonFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        </Grid>
+
+        
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strAnrMonHeadStoppUhr}"/>
-
+     
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strAnrMonCBStoppUhrEinblenden}" 
                   IsChecked="{Binding OptVM.CBStoppUhrEinblenden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -55,5 +75,22 @@
                  Tag="{x:Static localize:LocOptionen.strAnrMonTBStoppUhrAusblendverzögerung}"
                  Text="{Binding OptVM.TBStoppUhrAusblendverzögerung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="{x:Static localize:LocOptionen.strAnrMonStoppUhrSetBColor}" 
+                  IsChecked="{Binding OptVM.CBSetStoppUhrBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Grid Visibility="{Binding OptVM.CBSetStoppUhrBColor, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,4"               >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{x:Static localize:LocOptionen.strAnrMonBColorInfo}"/>
+
+            <colorpicker:PortableColorPicker Grid.Column="1" ShowAlpha="True"
+                                             SelectedColor="{Binding OptVM.TBStoppUhrBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             SecondaryColor="{Binding OptVM.TBStoppUhrFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        </Grid>
     </StackPanel>
 </UserControl>

@@ -63,36 +63,34 @@
 #Region "Anrufmonitor"
 #Region "Anrufmonitor - Einstellungen für den Anrufmonitor"
     <XmlElement("CBAnrMonAuto")> Public Property CBAnrMonAuto As Boolean = False
-
     ''' <summary>
     ''' Angabe, ob der Anrufmonitor automatisch geschlossen werden soll.
     ''' </summary>
     <XmlElement("CBAutoClose")> Public Property CBAutoClose As Boolean = True
-
     ''' <summary>
     ''' Einblenddauer des Anrufmonitors in Sekunden.
     ''' </summary>
     <XmlElement("TBEnblDauer")> Public Property TBEnblDauer As Integer = 10
-
-
     ''' <summary>
     ''' Angabe, ob der Kontakt angezeigt werden soll
     ''' </summary>
     <XmlElement("CBAnrMonZeigeKontakt")> Public Property CBAnrMonZeigeKontakt As Boolean = False
-
     ''' <summary>
     ''' Angabe, ob ein Kontaktbild angezeigt werden soll.
     ''' </summary>
     <XmlElement("CBAnrMonContactImage")> Public Property CBAnrMonContactImage As Boolean = True
+    <XmlElement("CBSetAnrMonBColor")> Public Property CBSetAnrMonBColor As Boolean = False
+    <XmlElement("TBAnrMonBColorHex")> Public Property TBAnrMonBColorHex As String
+    <XmlElement("TBAnrMonFColorHex")> Public Property TBAnrMonFColorHex As String
 #End Region
 
 #Region "Stoppuhr"
-    Public Property CBStoppUhrEinblenden As Boolean = False
-
-    Public Property CBStoppUhrAusblenden As Boolean = False
-
-    Public Property TBStoppUhrAusblendverzögerung As Integer = 10
-
+    <XmlElement("CBStoppUhrEinblenden")> Public Property CBStoppUhrEinblenden As Boolean = False
+    <XmlElement("CBStoppUhrAusblenden")> Public Property CBStoppUhrAusblenden As Boolean = False
+    <XmlElement("TBStoppUhrAusblendverzögerung")> Public Property TBStoppUhrAusblendverzögerung As Integer = 10
+    <XmlElement("CBSetStoppUhrBColor")> Public Property CBSetStoppUhrBColor As Boolean = False
+    <XmlElement("TBStoppUhrBColorHex")> Public Property TBStoppUhrBColorHex As String
+    <XmlElement("TBStoppUhrFColorHex")> Public Property TBStoppUhrFColorHex As String
 #End Region
 #End Region
 

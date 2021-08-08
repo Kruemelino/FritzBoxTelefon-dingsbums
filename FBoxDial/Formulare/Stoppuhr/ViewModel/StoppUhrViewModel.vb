@@ -114,6 +114,26 @@ Public Class StoppUhrViewModel
             SetProperty(_Eingehend, Value)
         End Set
     End Property
+
+    Private _BackgroundColor As String
+    Public Property BackgroundColor As String
+        Get
+            Return _BackgroundColor
+        End Get
+        Set
+            SetProperty(_BackgroundColor, Value)
+        End Set
+    End Property
+
+    Private _ForeColor As String
+    Public Property ForeColor As String
+        Get
+            Return _ForeColor
+        End Get
+        Set
+            SetProperty(_ForeColor, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "ICommand"
@@ -147,6 +167,11 @@ Public Class StoppUhrViewModel
 
         ' Anrufrichtung festlegen
         Eingehend = StoppUhrTelefonat.AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
+
+        If XMLData.POptionen.CBSetStoppUhrBColor Then
+            BackgroundColor = XMLData.POptionen.TBStoppUhrBColorHex
+            ForeColor = XMLData.POptionen.TBStoppUhrFColorHex
+        End If
 
         ' Starte die Stoppuhr
         If StoppUhr Is Nothing Then

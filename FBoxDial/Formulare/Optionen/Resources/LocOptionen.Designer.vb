@@ -83,6 +83,16 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Primärfarbe: Hintergrund
+        '''Sekundarfarbe: Schrift ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonBColorInfo() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonBColorInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Anrufmonitor mit Outlook starten ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonCBAnrMonAuto() As String
@@ -151,6 +161,24 @@ Namespace Localize
         Public Shared ReadOnly Property strAnrMonHeadStoppUhr() As String
             Get
                 Return ResourceManager.GetString("strAnrMonHeadStoppUhr", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Setze Hintergrundfarbe des Anrufmonitors ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonSetBColor() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonSetBColor", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Setze Hintergrundfarbe der Stoppuhr ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonStoppUhrSetBColor() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonStoppUhrSetBColor", resourceCulture)
             End Get
         End Property
         
