@@ -55,6 +55,7 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
     Source: "..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.vsto";                     DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll";    DestDir: "{app}"; Flags: ignoreversion 
+    Source: "..\FBoxDial\bin\Debug\Microsoft.Xaml.Behaviors.dll";                                DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\MixERP.Net.VCards.dll";                                DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Newtonsoft.Json.dll";                                  DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\NLog.dll";                                             DestDir: "{app}"; Flags: ignoreversion

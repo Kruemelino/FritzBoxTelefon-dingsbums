@@ -188,7 +188,6 @@ Public Class AnrMonViewModel
             ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)
             AnrMonExInfo = .AnrMonExInfo
 
-
             If XMLData.POptionen.CBSetAnrMonBColor Then
                 BackgroundColor = XMLData.POptionen.TBAnrMonBColorHex
                 ForeColor = XMLData.POptionen.TBAnrMonFColorHex
