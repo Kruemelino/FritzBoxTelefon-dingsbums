@@ -467,6 +467,16 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBNoContactNotes As Boolean
+    Public Property CBNoContactNotes As Boolean
+        Get
+            Return _CBNoContactNotes
+        End Get
+        Set
+            SetProperty(_CBNoContactNotes, Value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Einstellungen für die Kontaktsuche - tellows"

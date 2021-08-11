@@ -100,7 +100,7 @@
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strSearchContactCBRWSIndex}" 
                   IsChecked="{Binding OptVM.CBRWSIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
+        
     </StackPanel>
 
 

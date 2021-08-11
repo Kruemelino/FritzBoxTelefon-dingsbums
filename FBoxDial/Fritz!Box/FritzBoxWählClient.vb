@@ -349,10 +349,10 @@ Public Class FritzBoxWählClient
 
                 If aktKontakt Is Nothing Then
                     ' vCard aus dem .Body herausfiltern
-                    vCard = DfltBegin_vCard & .Body.GetSubString(DfltBegin_vCard, DfltEnd_vCard) & DfltEnd_vCard
+                    vCard = $"{DfltBegin_vCard}{ .Body.GetSubString(DfltBegin_vCard, DfltEnd_vCard)}{DfltEnd_vCard}"
 
                     'Wenn keine vCard im Body gefunden
-                    If vCard.AreNotEqual(DfltBegin_vCard & DfltStrErrorMinusOne & DfltEnd_vCard) Then
+                    If vCard.AreNotEqual($"{DfltBegin_vCard}{DfltStrErrorMinusOne}{DfltEnd_vCard}") Then
                         'vCard gefunden
                         aktKontakt = ErstelleKontakt(vCard, TelNr, False)
                     End If

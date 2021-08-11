@@ -74,6 +74,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Erstellt durch das {0} am {1}  ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCreateContact() As String
+            Get
+                Return ResourceManager.GetString("strCreateContact", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Datum ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strDate() As String

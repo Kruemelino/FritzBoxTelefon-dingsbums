@@ -409,6 +409,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Keine Daten in die Notizen von Kontakten schreiben ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCreateContactsCBNoContactNotes() As String
+            Get
+                Return ResourceManager.GetString("strCreateContactsCBNoContactNotes", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Einstellungen für die Kontakterstellung ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCreateContactsHead() As String

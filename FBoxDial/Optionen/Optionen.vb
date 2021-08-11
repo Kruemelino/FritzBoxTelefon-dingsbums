@@ -113,6 +113,7 @@
 
     <XmlElement("CBRWSIndex")> Public Property CBRWSIndex As Boolean = True
 
+    <XmlElement("CBNoContactNotes")> Public Property CBNoContactNotes As Boolean = False
 #End Region
 
 #Region "Einstellungen für die Kontaktsuche - tellows"
@@ -137,9 +138,9 @@
 
 #Region "Auswertung der Fritz!box Anrufliste - Auswertung der Anrufliste"
 
-    <XmlElement("LetzterJournalEintrag")> Public Property LetzterJournalEintrag As Date = Now
+    <XmlElement("LetzteAuswertungAnrList")> Public Property LetzteAuswertungAnrList As Date = Now
 
-    <XmlElement("LetzterJournalEintragID")> Public Property LetzterJournalEintragID As Integer = 0
+    '<XmlElement("LetzterJournalEintragID")> Public Property LetzterJournalEintragID As Integer = 0
 
     <XmlElement("CBAutoAnrList")> Public Property CBAutoAnrList As Boolean = False
 

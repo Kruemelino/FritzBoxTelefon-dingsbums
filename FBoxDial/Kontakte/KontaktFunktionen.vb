@@ -57,8 +57,10 @@ Friend Module KontaktFunktionen
                     End If
 
                     .Categories = My.Resources.strDefLongName 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                    ' TODO: Localizieren
-                    .Body = $"{ .Body}{Dflt2NeueZeile}Erstellt durch das {My.Resources.strDefLongName} am {Now}{Dflt2NeueZeile}vCard:{Dflt2NeueZeile}{vCard}"
+
+                    If Not XMLData.POptionen.CBNoContactNotes Then
+                        .Body = $"{String.Format(Localize.resCommon.strCreateContact, My.Resources.strDefLongName, Now)}{Dflt2NeueZeile}vCard:{Dflt2NeueZeile}{vCard}"
+                    End If
                 End If
 
             End With
@@ -96,8 +98,10 @@ Friend Module KontaktFunktionen
                     XMLKontakt.XMLKontaktOutlook(olKontakt)
 
                     .Categories = My.Resources.strDefLongName ' 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                    ' TODO: Localizieren
-                    .Body = $"{ .Body}{Dflt2NeueZeile}Erstellt durch das {My.Resources.strDefLongName} am {Now}"
+
+                    If Not XMLData.POptionen.CBNoContactNotes Then
+                        .Body = String.Format(Localize.resCommon.strCreateContact, My.Resources.strDefLongName, Now)
+                    End If
                 End If
 
             End With
@@ -176,10 +180,10 @@ Friend Module KontaktFunktionen
                     Else
                         ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
                         ' vCard aus dem .Body herausfiltern
-                        vCard = DfltBegin_vCard & .Body.GetSubString(DfltBegin_vCard, DfltEnd_vCard) & DfltEnd_vCard
+                        vCard = $"{DfltBegin_vCard}{ .Body.GetSubString(DfltBegin_vCard, DfltEnd_vCard)}{DfltEnd_vCard}"
 
                         'Wenn keine vCard im Body gefunden
-                        If vCard.AreEqual(DfltBegin_vCard & DfltStrErrorMinusOne & DfltEnd_vCard) Then
+                        If vCard.AreNotEqual($"{DfltBegin_vCard}{DfltStrErrorMinusOne}{DfltEnd_vCard}") Then
                             ' wenn nicht, dann neuen Kontakt mit TelNr öffnen
                             olKontakt = ErstelleKontakt(TelNr, False)
                         Else
@@ -481,9 +485,11 @@ Friend Module KontaktFunktionen
             vCard = Await StartRWS(TelNr, False)
 
             If vCard.IsStringNothingOrEmpty Then
-                .Body += $"{Dflt1NeueZeile}{Localize.LocAnrMon.strJournalRWSFehler} {TelNr.Formatiert}"
+                MsgBox($"{Localize.LocAnrMon.strJournalRWSFehler} {TelNr.Formatiert}", MsgBoxStyle.Information, Localize.LocOptionen.strSearchContactHeadRWS)
             Else
-                .Body += String.Format($"{Dflt1NeueZeile}{Dflt2NeueZeile}{Localize.LocAnrMon.strJournalTextvCard}{vCard}")
+                If Not XMLData.POptionen.CBNoContactNotes Then
+                    .Body += String.Format($"{Dflt1NeueZeile}{Dflt2NeueZeile}{Localize.LocAnrMon.strJournalTextvCard}{vCard}")
+                End If
 
                 DeserializevCard(vCard, olContact)
             End If

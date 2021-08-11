@@ -25,7 +25,11 @@
         
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strCreateContactsCBKErstellen}" 
-                  IsChecked="{Binding OptVM.CBKErstellen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding OptVM.CBKErstellen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>    
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strCreateContactsCBNoContactNotes}" 
+                  IsChecked="{Binding OptVM.CBNoContactNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <fbd:OutlookFolderView DataContext="{Binding Root}" />
     </StackPanel>

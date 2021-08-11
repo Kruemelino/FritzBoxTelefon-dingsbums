@@ -271,6 +271,10 @@ Falls keine Werte gefunden wurden, können die Werte hier eingetragen werden.</v
     <value>Kontakte automatisch erstellen</value>
     <comment>OptCreateContactView</comment>
   </data>
+  <data name="strCreateContactsCBNoContactNotes" xml:space="preserve">
+    <value>Keine Daten in die Notizen von Kontakten schreiben</value>
+    <comment>OptCreateContactView</comment>
+  </data>
   <data name="strCreateContactsHead" xml:space="preserve">
     <value>Einstellungen für die Kontakterstellung</value>
     <comment>OptCreateContactView</comment>

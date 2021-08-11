@@ -158,7 +158,7 @@ Imports Microsoft.Office.Interop.Outlook
                 End Using
             Next
             ' Body
-            XmlSerializeToString(Me, .Body)
+            If Not XMLData.POptionen.CBNoContactNotes Then XmlSerializeToString(Me, .Body)
 
             If Person.ImageURL.IsNotStringNothingOrEmpty And HerunterladenKontaktBild IsNot Nothing Then
                 ' Kontaktbild
