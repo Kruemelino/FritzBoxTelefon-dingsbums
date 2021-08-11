@@ -13,7 +13,10 @@ Friend Module Journal
             NLogger.Debug($"Anrufliste mit {Anrufliste.Calls.Count} Einträgen geladen.")
 
             ' Starte die Auswertung der Anrufliste
-            Await ImportCalls(XMLData.POptionen.LetzterJournalEintrag, Now)
+            Await ImportCalls(XMLData.POptionen.LetzteAuswertungAnrList, Now)
+
+            ' Merke die Zeit
+            If XMLData.POptionen.LetzteAuswertungAnrList < Now Then XMLData.POptionen.LetzteAuswertungAnrList = Now
         End If
     End Sub
 
@@ -68,9 +71,9 @@ Friend Module Journal
                 vCard = Await StartRWS(TelNr, False)
 
                 If vCard.IsStringNothingOrEmpty Then
-                    .Body += String.Format("{0}{1}", Dflt1NeueZeile, Localize.LocAnrMon.strJournalFehler)
+                    .Body += String.Format($"{Dflt1NeueZeile}{Localize.LocAnrMon.strJournalFehler}")
                 Else
-                    .Body += String.Format("{0}{2}{1}{3}", Dflt1NeueZeile, Dflt2NeueZeile, Localize.LocAnrMon.strJournalTextvCard, vCard)
+                    .Body += String.Format($"{Dflt1NeueZeile}{Localize.LocAnrMon.strJournalTextvCard}{Dflt2NeueZeile}{vCard}")
                 End If
 
             End If

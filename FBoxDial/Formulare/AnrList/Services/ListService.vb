@@ -6,7 +6,7 @@ Public Class ListService
 #Region "Anrufliste"
     Friend ReadOnly Property GetLastImport() As Date Implements IListService.GetLastImport
         Get
-            Return XMLData.POptionen.LetzterJournalEintrag
+            Return XMLData.POptionen.LetzteAuswertungAnrList
         End Get
     End Property
 

@@ -733,10 +733,7 @@ Imports Microsoft.Office.Interop
                     End With
 
                     ReleaseComObject(olJournal)
-                    ' Merke die Zeit
-                    If XMLData.POptionen.LetzterJournalEintrag < Now Then XMLData.POptionen.LetzterJournalEintrag = Now
-                    ' Merke die ID
-                    XMLData.POptionen.LetzterJournalEintragID = Math.Max(XMLData.POptionen.LetzterJournalEintragID, ID)
+
                 End If
             End If
         Else

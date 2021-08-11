@@ -104,7 +104,6 @@ Public NotInheritable Class ThisAddIn
             Else
                 NLogger.Warn($"Die tellows Scorelist konnte nicht geladen werden.")
             End If
-
         End If
 
         ' Anrufliste auswerten
