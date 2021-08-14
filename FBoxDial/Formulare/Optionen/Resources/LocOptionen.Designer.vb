@@ -165,6 +165,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann die Positionierung des Popups beeinflusst werden. Die Position kann ausgehend von der rechten unteren Ecke des primären Bildschirmes zusätzlich verschoben werden. Zusätzlich kann der Abstand zum Rand und zwischen den einzelnen Popups variiert werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonPosInfo() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonPosInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Setze Hintergrundfarbe des Anrufmonitors ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonSetBColor() As String
@@ -179,6 +188,33 @@ Namespace Localize
         Public Shared ReadOnly Property strAnrMonStoppUhrSetBColor() As String
             Get
                 Return ResourceManager.GetString("strAnrMonStoppUhrSetBColor", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Abstand ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonTBAnrMonAbstand() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonTBAnrMonAbstand", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die X-Richtung ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonTBAnrMonModPosX() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonTBAnrMonModPosX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Y-Richtung ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonTBAnrMonModPosY() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonTBAnrMonModPosY", resourceCulture)
             End Get
         End Property
         

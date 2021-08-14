@@ -18,11 +18,11 @@ Friend Class WindowHelper
     ''' Sobald sich die Maus vom dem Fenster entfernt, wird der Timer fortgesetzt.
     ''' </summary>
     Private AusblendDispatcherTimer As Threading.DispatcherTimer
-#End Region
+
 
     Private AusblendTimer As Timers.Timer
 
-    Dim Dispatcher As Boolean
+    Private Dispatcher As Boolean
 
     Public Sub New(wndw As Window, Intervall As TimeSpan)
         Fenster = wndw
@@ -130,7 +130,6 @@ Friend Class WindowHelper
         End If
     End Sub
 
-
     ''' <summary>
     ''' Tritt auf, wenn der Mauszeiger den Bereich dieses Elements verlässt.
     ''' </summary>
@@ -145,4 +144,16 @@ Friend Class WindowHelper
             NLogger.Debug($"Timer nach {Now.Subtract(PauseTime).TotalSeconds} Sekunden fortgesetzt.")
         End If
     End Sub
+#End Region
+
+#Region "Position"
+    Friend Function GetAnrMonPosition(Width As Double, Height As Double) As Point
+
+        Return New Point With {
+            .X = SystemParameters.WorkArea.Right - Width - XMLData.POptionen.TBAnrMonAbstand - XMLData.POptionen.TBAnrMonModPosX,
+            .Y = SystemParameters.WorkArea.Bottom - Height - XMLData.POptionen.TBAnrMonAbstand - XMLData.POptionen.TBAnrMonModPosY - (ThisAddIn.OffeneAnrMonWPF.Count * (XMLData.POptionen.TBAnrMonAbstand + Height))
+        }
+
+    End Function
+#End Region
 End Class

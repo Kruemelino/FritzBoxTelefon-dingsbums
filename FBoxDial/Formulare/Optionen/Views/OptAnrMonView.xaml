@@ -45,6 +45,20 @@
                   Content="{x:Static localize:LocOptionen.strAnrMonSetBColor}" 
                   IsChecked="{Binding OptVM.CBSetAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strAnrMonPosInfo}"/>
+        
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosX}"
+                 Text="{Binding OptVM.TBAnrMonModPosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosY}"
+                 Text="{Binding OptVM.TBAnrMonModPosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+       
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonAbstand}"
+                 Text="{Binding OptVM.TBAnrMonAbstand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
         <Grid Visibility="{Binding OptVM.CBSetAnrMonBColor, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,4"               >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -58,7 +72,6 @@
                                              SecondaryColor="{Binding OptVM.TBAnrMonFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
-
         
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strAnrMonHeadStoppUhr}"/>

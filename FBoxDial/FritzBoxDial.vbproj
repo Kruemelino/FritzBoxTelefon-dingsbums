@@ -240,7 +240,6 @@
   -->
   <ItemGroup>
     <AppDesigner Include="My Project\" />
-    <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
     <Compile Include="Common\EnumDescriptionTypeConverter.vb" />
     <Compile Include="Common\LocalizedDescriptionAttribute.vb" />

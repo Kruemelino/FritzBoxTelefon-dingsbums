@@ -82,6 +82,10 @@
     <XmlElement("CBSetAnrMonBColor")> Public Property CBSetAnrMonBColor As Boolean = False
     <XmlElement("TBAnrMonBColorHex")> Public Property TBAnrMonBColorHex As String
     <XmlElement("TBAnrMonFColorHex")> Public Property TBAnrMonFColorHex As String
+    <XmlElement("TBAnrMonModPosX")> Public Property TBAnrMonModPosX As Double = 0.0R
+    <XmlElement("TBAnrMonModPosY")> Public Property TBAnrMonModPosY As Double = 0.0R
+    <XmlElement("TBAnrMonAbstand")> Public Property TBAnrMonAbstand As Double = 10.0R
+
 #End Region
 
 #Region "Stoppuhr"

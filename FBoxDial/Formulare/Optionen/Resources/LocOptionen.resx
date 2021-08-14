@@ -162,12 +162,28 @@ Sekundarfarbe: Schrift</value>
     <value>Einstellungen für die Stoppuhr</value>
     <comment>OptAnrMonView</comment>
   </data>
+  <data name="strAnrMonPosInfo" xml:space="preserve">
+    <value>Hier kann die Positionierung des Popups beeinflusst werden. Die Position kann ausgehend von der rechten unteren Ecke des primären Bildschirmes zusätzlich verschoben werden. Zusätzlich kann der Abstand zum Rand und zwischen den einzelnen Popups variiert werden.</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strAnrMonSetBColor" xml:space="preserve">
     <value>Setze Hintergrundfarbe des Anrufmonitors</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonStoppUhrSetBColor" xml:space="preserve">
     <value>Setze Hintergrundfarbe der Stoppuhr</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonTBAnrMonAbstand" xml:space="preserve">
+    <value>Abstand</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonTBAnrMonModPosX" xml:space="preserve">
+    <value>X-Richtung</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonTBAnrMonModPosY" xml:space="preserve">
+    <value>Y-Richtung</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonTBEnblDauer" xml:space="preserve">

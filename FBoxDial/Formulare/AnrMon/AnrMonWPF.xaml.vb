@@ -13,6 +13,9 @@ Public Class AnrMonWPF
 
     Public Sub New()
 
+        ' Erzeuge die Klasse für das automatische Ausblenden
+        WindowHelper = New WindowHelper(Me, TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
+
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
@@ -20,7 +23,7 @@ Public Class AnrMonWPF
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
 
         ' Erzeuge die Klasse für das automatische Ausblenden
-        WindowHelper = New WindowHelper(Me, TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
+        'WindowHelper = New WindowHelper(Me, TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
     End Sub
 
     ''' <summary>
@@ -29,15 +32,12 @@ Public Class AnrMonWPF
     ''' </summary>
     Private Sub AnrMonWPF_Initialized(sender As Object, e As EventArgs) Handles Me.Initialized
         NLogger.Trace("Initialized")
-        Const AbstandAnrMon As Integer = 10
 
-        ' TODO: Anzeige auf anderen Monitor verschieben.
         ' Setze Startposition
-        ' X-Koordinate
-        Left = SystemParameters.WorkArea.Right - Width - AbstandAnrMon
-
-        ' Y-Koordinate
-        Top = SystemParameters.WorkArea.Bottom - Height - AbstandAnrMon - ThisAddIn.OffeneAnrMonWPF.Count * (AbstandAnrMon + Height)
+        With WindowHelper.GetAnrMonPosition(Width, Height)
+            Left = .X ' X-Koordinate
+            Top = .Y ' Y-Koordinate
+        End With
 
         ' Outlook Inspektoren beachten
         KeepoInspActivated(False)

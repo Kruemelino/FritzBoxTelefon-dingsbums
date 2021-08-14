@@ -133,10 +133,6 @@ Public Class OptionenViewModel
 
 #Region "Einstellungen für den Anrufmonitor"
     Private _CBAnrMonAuto As Boolean
-    Private _CBAutoClose As Boolean
-    Private _TBEnblDauer As Integer
-    Private _CBAnrMonZeigeKontakt As Boolean
-
     Public Property CBAnrMonAuto As Boolean
         Get
             Return _CBAnrMonAuto
@@ -145,6 +141,8 @@ Public Class OptionenViewModel
             SetProperty(_CBAnrMonAuto, Value)
         End Set
     End Property
+
+    Private _CBAutoClose As Boolean
     ''' <summary>
     ''' Angabe, ob der Anrufmonitor automatisch geschlossen werden soll.
     ''' </summary>
@@ -157,6 +155,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _TBEnblDauer As Integer
     ''' <summary>
     ''' Einblenddauer des Anrufmonitors in Sekunden.
     ''' </summary>
@@ -169,6 +168,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBAnrMonZeigeKontakt As Boolean
     ''' <summary>
     ''' Angabe, ob der Kontakt Angezeigt werden soll
     ''' </summary>
@@ -241,6 +241,37 @@ Public Class OptionenViewModel
             SetProperty(_TBAnrMonFColor, CType(Media.ColorConverter.ConvertFromString(Value), Media.Color))
         End Set
     End Property
+
+    Private _TBAnrMonModPosX As Double
+    Public Property TBAnrMonModPosX As Double
+        Get
+            Return _TBAnrMonModPosX
+        End Get
+        Set
+            SetProperty(_TBAnrMonModPosX, Value)
+        End Set
+    End Property
+
+    Private _TBAnrMonModPosY As Double
+    Public Property TBAnrMonModPosY As Double
+        Get
+            Return _TBAnrMonModPosY
+        End Get
+        Set
+            SetProperty(_TBAnrMonModPosY, Value)
+        End Set
+    End Property
+
+    Private _TBAnrMonAbstand As Double
+    Public Property TBAnrMonAbstand As Double
+        Get
+            Return _TBAnrMonAbstand
+        End Get
+        Set
+            SetProperty(_TBAnrMonAbstand, Value)
+        End Set
+    End Property
+
 
     ''' <summary>
     ''' Returns Or sets a list as Telefonnummern             
