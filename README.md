@@ -50,22 +50,24 @@ Ursprüngliche Thread von 2006 im [IP Phone Forum](https://www.ip-phone-forum.de/
 
 Das Addin ist nicht ohne Hilfestellung anderer Entwickler und von denen zur Verfügung gestellten Programmcode entstanden. Im folgenden werde ich Quellen auflisten, bei denen ich Codefragmente, Lösungen und Ideen entnommen habe.
 Es liegt mir fern, fremden Code als meinen zu verkaufen. (Falls ich was vergessen habe, so werde ich es natürlich gerne ergänzen.)
-*	TCP-Client für den Anrufmonitor: ErfinderDesRades [VersuchsChat mit leistungsfähigem Server](https://www.vb-paradise.de/index.php/Thread/61948-VersuchsChat-mit-leistungsf%C3%A4higem-Server)
-*   WPF TreeView: Dirk Bahle [TreeLib](https://github.com/Dirkster99/TreeLib), [Advanced WPF TreeView in C#/VB.Net Part 6 of n](https://www.codeproject.com/Articles/1224943/Advanced-WPF-TreeView-in-Csharp-VB-Net-Part-of-n)
-*   WPF Telefonbuch: Tosker [ContactBook-Tutorial](https://github.com/Tosker/ContactBook-Tutorial), [WPF Contact Book - Part 1 [Getting Started]](https://www.youtube.com/watch?v=bmw68zxjwG4)
-*   WPF Navigation in Einstellungen: Rachel Lim [Navigation with MVVM](https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/)
-*	WPF RelayCommand: Nofear23m [Command's in WPF](https://www.vb-paradise.de/index.php/Thread/128963-Command-s-in-WPF/?postID=1116045#post1116045)
-*   WPF Enums: Brian Lagunas [BindingEnumsInWpf](https://github.com/brianlagunas/BindingEnumsInWpf), [A Better Way to Data Bind Enums in WPF](https://brianlagunas.com/a-better-way-to-data-bind-enums-in-wpf/),
-    [Localize Enum Descriptions in WPF](https://brianlagunas.com/localize-enum-descriptions-in-wpf/)
-*   WPF Spaltenfilter im Datagrid: Macabies Gilles [Filterable DataGrid, multi language](https://github.com/macgile/DataGridFilter)
-*   Passwortverschlüsselung: [Rijndael Encryption in VB.NET](http://www.freevbcode.com/ShowCode.asp?ID=4520)
-*   Routine zur Überprüfung der installierten .NET Version: Christoph Nahr [Check .NET Version with Inno Setup](http://kynosarges.org/DotNetVersion.html)*   
+* TCP-Client für den Anrufmonitor: ErfinderDesRades [VersuchsChat mit leistungsfähigem Server](https://www.vb-paradise.de/index.php/Thread/61948-VersuchsChat-mit-leistungsf%C3%A4higem-Server)
+* WPF TreeView: Dirk Bahle [TreeLib](https://github.com/Dirkster99/TreeLib), [Advanced WPF TreeView in C#/VB.Net Part 6 of n](https://www.codeproject.com/Articles/1224943/Advanced-WPF-TreeView-in-Csharp-VB-Net-Part-of-n)
+* WPF Telefonbuch: Tosker [ContactBook-Tutorial](https://github.com/Tosker/ContactBook-Tutorial), [WPF Contact Book - Part 1 [Getting Started]](https://www.youtube.com/watch?v=bmw68zxjwG4)
+* WPF Navigation in Einstellungen: Rachel Lim [Navigation with MVVM](https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/)
+* WPF RelayCommand: Nofear23m [Command's in WPF](https://www.vb-paradise.de/index.php/Thread/128963-Command-s-in-WPF/?postID=1116045#post1116045)
+* WPF Enums: Brian Lagunas [BindingEnumsInWpf](https://github.com/brianlagunas/BindingEnumsInWpf), [A Better Way to Data Bind Enums in WPF](https://brianlagunas.com/a-better-way-to-data-bind-enums-in-wpf/),
+  [Localize Enum Descriptions in WPF](https://brianlagunas.com/localize-enum-descriptions-in-wpf/)
+* Expanded ObservableCollection: Rachel Lim [Stack Overflow: how to sort ObservableCollection](https://stackoverflow.com/a/7285548)
+* WPF Spaltenfilter im Datagrid: Macabies Gilles [Filterable DataGrid, multi language](https://github.com/macgile/DataGridFilter)
+* Passwortverschlüsselung: [Rijndael Encryption in VB.NET](http://www.freevbcode.com/ShowCode.asp?ID=4520)
+* Routine zur Überprüfung der installierten .NET Version: Christoph Nahr [Check .NET Version with Inno Setup](http://kynosarges.org/DotNetVersion.html)*   
 
 ### Datenschutz
 Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
 Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
 Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmen:
 * Bei der Rückwärtssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
+* Bei der Nutzung von [tellows](https://tellows.de) wird die eingehende Nummer an den Anbieter übermittelt. Die Datenschutzhinweise von tellows sind zu beachten!
 * Bei der Nutzung der Software-Telefone [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/) werden die zu wählenden Nummern an diese Programme übergeben. Die Datenschutzhinweise der Software-Telefone sind zu beachten!
 
 ### Markenrecht
