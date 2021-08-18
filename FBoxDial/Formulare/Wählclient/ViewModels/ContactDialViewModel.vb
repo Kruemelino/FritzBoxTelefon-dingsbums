@@ -4,8 +4,9 @@ Imports Microsoft.Office.Interop
 
 Public Class ContactDialViewModel
     Inherits NotifyBase
+    Implements IViewModelBase
     Private Property DatenService As IDialService
-    Friend Property Instance As Dispatcher
+    Friend Property Instance As Dispatcher Implements IViewModelBase.Instance
 #Region "Eigenschaften"
 
     Private _DialVM As WählClientViewModel
@@ -73,7 +74,6 @@ Public Class ContactDialViewModel
             SetData(_FBoxXMLKontakt)
         End Set
     End Property
-
 
     Public ReadOnly Property IsVIP As Boolean
         Get

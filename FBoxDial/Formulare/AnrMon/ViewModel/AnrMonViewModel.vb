@@ -6,10 +6,12 @@ Imports System.Windows.Threading
 
 Public Class AnrMonViewModel
     Inherits NotifyBase
+    Implements IViewModelBase
+
     Private Property DialogService As IDialogService
     Private Property DatenService As IAnrMonService
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Friend Property Instance As Dispatcher
+    Friend Property Instance As Dispatcher Implements IViewModelBase.Instance
 #Region "Eigenschaften"
 
     Private _AnrMonTelefonat As Telefonat

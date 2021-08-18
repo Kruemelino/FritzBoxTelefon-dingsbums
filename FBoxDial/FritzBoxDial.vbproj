@@ -266,6 +266,7 @@
     </Compile>
     <Compile Include="Formulare\AnrMon\Services\AnrMonService.vb" />
     <Compile Include="Formulare\AnrMon\Services\IAnrMonService.vb" />
+    <Compile Include="Formulare\Common\Services\IViewModelBase.vb" />
     <Compile Include="Formulare\Common\Services\WindowHelper.vb" />
     <Compile Include="Formulare\Common\Services\WindowBehavior.vb" />
     <Compile Include="Common\EnumBindingSourceExtension.vb" />
