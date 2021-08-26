@@ -101,6 +101,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Ohne Name ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strOhneName() As String
+            Get
+                Return ResourceManager.GetString("strOhneName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Nummer ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelNr() As String

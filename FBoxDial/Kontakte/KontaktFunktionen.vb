@@ -510,7 +510,13 @@ Friend Module KontaktFunktionen
 
         With XMLKontakt
             ' Weise den Namen zu
-            .Person.RealName = olContact.FullName
+
+            If olContact.FullName.IsStringNothingOrEmpty Then
+                .Person.RealName = If(olContact.CompanyName.IsStringNothingOrEmpty, Localize.resCommon.strOhneName, olContact.CompanyName)
+            Else
+                .Person.RealName = olContact.FullName
+            End If
+            '.Person.RealName = olContact.FullNameAndCompany
 
             If UID.AreDifferentTo(-1) Then .Uniqueid = UID
 

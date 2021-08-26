@@ -129,6 +129,9 @@
   <data name="strLocation" xml:space="preserve">
     <value>Ort</value>
   </data>
+  <data name="strOhneName" xml:space="preserve">
+    <value>Ohne Name</value>
+  </data>
   <data name="strTelNr" xml:space="preserve">
     <value>Nummer</value>
   </data>
