@@ -20,7 +20,7 @@ Public Class LocalizedDescriptionAttribute
     Public Overrides ReadOnly Property Description As String
         Get
             Dim lDescription As String = ResManager.GetString(ResKey)
-            Return If(String.IsNullOrWhiteSpace(lDescription), String.Format("[[{0}]]", ResKey), lDescription)
+            Return If(String.IsNullOrWhiteSpace(lDescription), ResKey, lDescription)
         End Get
     End Property
 End Class

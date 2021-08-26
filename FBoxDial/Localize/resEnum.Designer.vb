@@ -289,6 +289,15 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Sonstige ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property Sonstige() As String
+        Get
+            Return ResourceManager.GetString("Sonstige", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die Telex ähnelt.
     '''</summary>
     Public Shared ReadOnly Property TelexNumber() As String

@@ -217,6 +217,10 @@
     <value>Funkruf</value>
     <comment>Outlook</comment>
   </data>
+  <data name="Sonstige" xml:space="preserve">
+    <value>Sonstige</value>
+    <comment>AVM XML Telefonbuch</comment>
+  </data>
   <data name="TelexNumber" xml:space="preserve">
     <value>Telex</value>
     <comment>Outlook</comment>

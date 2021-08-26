@@ -153,6 +153,9 @@ Public Enum XMLEMailTyp
     <LocalizedDescription("work", GetType(resEnum))>
     <XmlEnum("work")> work
 
+    <LocalizedDescription("other", GetType(resEnum))>
+    <XmlEnum("other")> other
+
     ' Das AVM Telefonbuch nimmt es mit der Groß- und Kleinschreibung nicht so genau.
     ' Für die XML - Deserialsierung ist dies aber extrem wichtig.
 
