@@ -1,4 +1,4 @@
 ﻿Public Interface IAnrMonService
 
-    Sub BlockNumbers(TelNr As Telefonnummer)
+    Sub BlockNumber(TelNr As Telefonnummer)
 End Interface

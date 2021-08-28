@@ -298,7 +298,7 @@ Public Class AnrMonViewModel
     Private Sub BlockNumber(o As Object)
 
         If DialogService.ShowMessageBox(String.Format(Localize.LocAnrMon.strQuestionBlockNumber, AnrMonTelefonat.GegenstelleTelNr.Formatiert)) = Windows.MessageBoxResult.Yes Then
-            DatenService.BlockNumbers(AnrMonTelefonat.GegenstelleTelNr)
+            DatenService.BlockNumber(AnrMonTelefonat.GegenstelleTelNr)
         End If
 
     End Sub

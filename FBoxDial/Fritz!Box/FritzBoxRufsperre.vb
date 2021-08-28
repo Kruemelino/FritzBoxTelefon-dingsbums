@@ -238,8 +238,6 @@ Friend Module FritzBoxRufsperre
         End With
     End Sub
 
-
-
     ''' <summary>
     ''' Erzeugt einen neuen Eintrag als <see cref="FritzBoxXMLKontakt"/>für die Sperrliste, oder fügt die Nummer einem bestehenden Eintrag hinzu. 
     ''' </summary>
