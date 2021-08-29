@@ -308,6 +308,7 @@
     <Compile Include="Formulare\Optionen\Views\OptTestView.xaml.vb">
       <DependentUpon>OptTestView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fritz!Box\TR064\TAM-TR64\ExTAM.vb" />
     <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUser.vb" />

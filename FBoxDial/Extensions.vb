@@ -303,6 +303,16 @@ Public Module Extensions
 
 #End Region
 
+#Region "Extensions für Verarbeitung von Boolean"
+    ''' <summary>
+    ''' Wandelt den Boolean-Wert in eine 1 für Wahr und eine 0 für Falsch
+    ''' </summary>
+    ''' <param name="Value">Umzuwandelnder Boolean-Wert</param>
+    <Extension> Friend Function ToInt(Value As Boolean) As Integer
+        Return If(Value, 1, 0)
+    End Function
+#End Region
+
 #Region "Extensions für Verarbeitung von Zeichenfolgen: List(Of Telefonat), List(Of VIPEntry)"
     <Extension> Public Sub Insert(ByRef Liste As List(Of Telefonat), item As Telefonat)
 

@@ -665,25 +665,29 @@ Namespace SOAP
         ''' <summary>
         ''' Return a informations of tam index <paramref name="i"/>. 
         ''' </summary>
-        ''' <param name="PhoneNumbers">Empty string represents all numbers. Comma (,) separated list represents specific phone numbers.</param>
+        ''' <param name="TAMInfo">Structure, which holds all data of the TAM</param>
         ''' <param name="i">Represents the index of all tam.</param>
         ''' <returns>True when success</returns>
-        ''' <remarks>Weitere felder verfügbar: NewEnable, NewName, NewTAMRunning, NewStick, NewStatus, NewCapacity, NewMode, NewRingSeconds </remarks>
-        Friend Function GetTAMInfo(ByRef PhoneNumbers As String(), i As Integer) As Boolean
+        Friend Function GetTAMInfoEx(ByRef TAMInfo As ExTAM, i As Integer) As Boolean
 
             With TR064Start(Tr064Files.x_tamSCPD, "GetInfo", New Hashtable From {{"NewIndex", i}})
 
-                If .ContainsKey("NewPhoneNumbers") Then
+                If .ContainsKey("NewEnable") And .ContainsKey("NewPhoneNumbers") Then
 
-                    NLogger.Trace(.Item("NewPhoneNumbers"))
-
-                    PhoneNumbers = .Item("NewPhoneNumbers").ToString.Split(",")
+                    TAMInfo.Enable = CBool(.Item("NewEnable"))
+                    TAMInfo.Name = .Item("NewName").ToString
+                    TAMInfo.TAMRunning = CBool(.Item("NewTAMRunning"))
+                    TAMInfo.Stick = CUShort(.Item("NewStick"))
+                    TAMInfo.Status = CUShort(.Item("NewStatus"))
+                    TAMInfo.Capacity = CULng(.Item("NewCapacity"))
+                    TAMInfo.Mode = .Item("NewMode").ToString
+                    TAMInfo.RingSeconds = CUShort(.Item("NewRingSeconds"))
+                    TAMInfo.PhoneNumbers = .Item("NewPhoneNumbers").ToString.Split(",")
 
                     Return True
 
                 Else
                     PushStatus(LogLevel.Warn, $"GetInfo konnte für nicht aufgelößt werden. '{ .Item("Error")}'")
-                    PhoneNumbers = {}
 
                     Return False
                 End If
@@ -719,6 +723,20 @@ Namespace SOAP
 
                     Return False
                 End If
+            End With
+
+        End Function
+
+        ''' <summary>
+        ''' If Enable is set to true, the TAM will be visible in WebGUI. 
+        ''' </summary>
+        ''' <param name="NewIndex">Index of TAM</param>
+        ''' <param name="NewEnable">Enable state</param>
+        ''' <returns>True when success</returns>
+        Friend Function SetEnable(NewIndex As Integer, NewEnable As Boolean) As Boolean
+
+            With TR064Start(Tr064Files.x_tamSCPD, "SetEnable", New Hashtable From {{"NewIndex", NewIndex}, {"NewEnable", NewEnable.ToInt}})
+                Return Not .ContainsKey("Error")
             End With
 
         End Function

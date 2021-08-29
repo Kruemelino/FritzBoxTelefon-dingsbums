@@ -72,6 +72,7 @@ Imports FBoxDial.FritzBoxDefault
                                 Dim Telefon As New Telefoniegerät With {.Name = SIPClient.PhoneName,
                                                                         .TelTyp = TelTypen.IP,
                                                                         .AnrMonID = AnrMonTelIDBase.IP + SIPClient.ClientIndex,
+                                                                        .InternalID = SIPClient.ClientIndex,
                                                                         .StrEinTelNr = New List(Of String),
                                                                         .Intern = SIPClient.InternalNumber}
                                 With Telefon
@@ -98,29 +99,31 @@ Imports FBoxDial.FritzBoxDefault
                         Dim ABListe As TAMList = Nothing
                         If .GetTAMList(ABListe) Then
                             ' Werte alle TAMs aus.
-                            For Each AB In ABListe.TAMListe.Where(Function(TAM) TAM.Enable)
+                            For Each AB In ABListe.TAMListe
 
                                 Dim Telefon As New Telefoniegerät With {.Name = AB.Name,
-                                                .TelTyp = TelTypen.TAM,
-                                                .StrEinTelNr = New List(Of String),
-                                                .Intern = InternBase.TAM + AB.Index}
+                                                    .TelTyp = TelTypen.TAM,
+                                                    .StrEinTelNr = New List(Of String),
+                                                    .InternalID = AB.Index,
+                                                    .Intern = InternBase.TAM + AB.Index,
+                                                    .Enable = AB.Enable}
 
                                 ' Ermittle die Nummer, auf den der AB reagiert.
-                                Dim TelNrArray As String() = {}
-                                If .GetTAMInfo(TelNrArray, AB.Index) Then
-                                    If TelNrArray.Length.AreEqual(1) AndAlso TelNrArray.First.IsStringNothingOrEmpty Then
+                                Dim TAMInfo As New ExTAM
+                                If .GetTAMInfoEx(TAMInfo, AB.Index) Then
+                                    If TAMInfo.PhoneNumbers.Length.AreEqual(1) AndAlso TAMInfo.PhoneNumbers.First.IsStringNothingOrEmpty Then
                                         ' Empty string represents all numbers.
                                         Telefonnummern.ForEach(Sub(TelNr) Telefon.StrEinTelNr.Add(TelNr.Einwahl))
 
                                     Else
                                         ' Comma (,) separated list represents specific phone numbers.
-                                        For Each T In TelNrArray
+                                        For Each T In TAMInfo.PhoneNumbers
                                             Telefon.StrEinTelNr.Add(GetEigeneTelNr(T)?.Einwahl)
                                         Next
 
                                     End If
                                 End If
-                                PushStatus(LogLevel.Debug, $"Telefon { Telefon.TelTyp}: { Telefon.AnrMonID}; { Telefon.Name}; { Telefon.Intern}")
+                                PushStatus(LogLevel.Debug, $"Telefon { Telefon.TelTyp}: { Telefon.AnrMonID}; { Telefon.Name}; { Telefon.Intern}; {Telefon.Enable}")
                                 ' Telefon der Liste von Geräten hinzufügen
                                 Telefoniegeräte.Add(Telefon)
 
