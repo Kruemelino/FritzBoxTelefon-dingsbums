@@ -74,6 +74,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCall() As String
+            Get
+                Return ResourceManager.GetString("strCall", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Abbrechen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCancel() As String
@@ -245,6 +254,15 @@ Namespace Localize
         Public Shared ReadOnly Property strRemoteCaller() As String
             Get
                 Return ResourceManager.GetString("strRemoteCaller", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kontakt anzeigen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strShowContact() As String
+            Get
+                Return ResourceManager.GetString("strShowContact", resourceCulture)
             End Get
         End Property
         

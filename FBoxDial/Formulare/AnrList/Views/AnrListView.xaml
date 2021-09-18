@@ -105,6 +105,18 @@
 
             <DataGrid.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="{x:Static localize:LocAnrList.strCall}" 
+                              Command="{Binding CallCommand}"
+                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Icon="{DynamicResource CallTo_16x}"/>
+
+                    <MenuItem Header="{x:Static localize:LocAnrList.strShowContact}" 
+                              Command="{Binding ShowContactCommand}"
+                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Icon="{DynamicResource ContactCard_16x}"/>
+                    
+                    <Separator/>
+                    
                     <MenuItem Header="{x:Static localize:LocAnrList.strCheckAll}" 
                               Command="{Binding SelectAllCommand}" CommandParameter="True"
                               Icon="{DynamicResource CheckBoxChecked_16x}"/>

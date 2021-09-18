@@ -122,6 +122,8 @@ Public Class AnrListViewModel
     Public Property ImportCommand As RelayCommand
     Public Property SelectAllCommand As RelayCommand
     Public Property BlockCommand As RelayCommand
+    Public Property CallCommand As RelayCommand
+    Public Property ShowContactCommand As RelayCommand
 #End Region
 
     Public Sub New()
@@ -130,6 +132,9 @@ Public Class AnrListViewModel
         ImportCommand = New RelayCommand(AddressOf JournalImport)
         SelectAllCommand = New RelayCommand(AddressOf SelectAll)
         BlockCommand = New RelayCommand(AddressOf BlockNumbers)
+        CallCommand = New RelayCommand(AddressOf [Call], AddressOf CanCall)
+        ShowContactCommand = New RelayCommand(AddressOf ShowContact, AddressOf CanShowContact)
+
 
         ' Interface
         DatenService = New ListService
@@ -257,5 +262,40 @@ Public Class AnrListViewModel
     End Sub
 #End Region
 
+#Region "Kontakt Anrufen"
+    Private Sub [Call](o As Object)
+        Dim XMLKontakt As FritzBoxXMLCall = (From a In CType(o, IList).Cast(Of FritzBoxXMLCall)()).ToList.First
+        DatenService.CallXMLContact(XMLKontakt)
+    End Sub
 
+    Private Function CanCall(o As Object) As Boolean
+        If o IsNot Nothing Then
+            Dim XMLKontaktListe As IEnumerable(Of FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of FritzBoxXMLCall)().ToList
+
+            Return XMLKontaktListe.Count.AreEqual(1) AndAlso XMLKontaktListe.First.Gegenstelle.IsNotStringNothingOrEmpty
+        Else
+            Return False
+        End If
+    End Function
+#End Region
+
+#Region "Kontakt Anzeigen"
+    Private Sub ShowContact(o As Object)
+        Dim XMLKontaktListe As IEnumerable(Of FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of FritzBoxXMLCall)().ToList
+
+        For Each XMLKontakt In XMLKontaktListe
+            DatenService.ShowXMLContact(XMLKontakt)
+        Next
+    End Sub
+
+    Private Function CanShowContact(o As Object) As Boolean
+        If o IsNot Nothing Then
+            Dim XMLKontaktListe As IEnumerable(Of FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of FritzBoxXMLCall)().ToList
+
+            Return XMLKontaktListe.First.Gegenstelle.IsNotStringNothingOrEmpty
+        Else
+            Return False
+        End If
+    End Function
+#End Region
 End Class

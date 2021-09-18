@@ -33,4 +33,12 @@ Public Interface IListService
     ''' </summary>
     ''' <param name="Nummern">Nummern, welche gesperrt werden sollen.</param>
     Sub BlockNumbers(Nummern As IEnumerable(Of String))
+
+    ''' <summary>
+    ''' Ruft den Kontakt zurück
+    ''' </summary>
+    ''' <param name="Kontakt">Anruf, welcher wiederholt werden soll, oder ein Rückruf erfolgen soll.</param>
+    Sub CallXMLContact(Kontakt As FritzBoxXMLCall)
+
+    Sub ShowXMLContact(Kontakt As FritzBoxXMLCall)
 End Interface

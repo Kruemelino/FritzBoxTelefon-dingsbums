@@ -236,7 +236,16 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefonbücher ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property mmFBox_Label() As String
+            Get
+                Return ResourceManager.GetString("mmFBox_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Telefonbücher ähnelt.
         '''</summary>
         Public Shared ReadOnly Property PhoneBooks_Label() As String
             Get

@@ -141,6 +141,9 @@
   <data name="ListCRV_ImageMso" xml:space="preserve">
     <value>HighImportance</value>
   </data>
+  <data name="mmFBox_ImageMso" xml:space="preserve">
+    <value>RmsNavigationBarHome</value>
+  </data>
   <data name="Note_ImageMso" xml:space="preserve">
     <value>ShowNotesPage</value>
   </data>

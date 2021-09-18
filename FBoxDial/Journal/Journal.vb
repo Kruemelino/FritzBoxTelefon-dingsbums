@@ -47,11 +47,14 @@ Friend Module Journal
                             Dim Abfrage As ParallelQuery(Of FritzBoxXMLCall)
 
                             Abfrage = From Anruf In Anrufliste.Calls.AsParallel() Where Anruf.Type.IsLessOrEqual(3) And DatumZeitAnfang <= Anruf.Datum And DatumZeitEnde >= Anruf.Datum Select Anruf
-                            Abfrage.ForAll(Sub(r)
+                            Abfrage.ForAll(Async Sub(r)
                                                ' in ErstelleTelefonat wird auch die Wahlwiederholungs- und Rückrufliste ausgewertet.
-                                               Using t As Telefonat = r.ErstelleTelefonat
+                                               Using t As Telefonat = Await r.ErstelleTelefonat
                                                    ' Erstelle einen Journaleintrag
                                                    t.ErstelleJournalEintrag()
+
+                                                   ' Anruflisten aktualisieren
+                                                   t.UpdateRingCallList()
                                                End Using
                                            End Sub)
 

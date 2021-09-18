@@ -563,6 +563,10 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Telefoniegeräte</value>
     <comment>OptTelephonyView</comment>
   </data>
+  <data name="strTelephonyHeadTAM" xml:space="preserve">
+    <value>Anrufbeantworter</value>
+    <comment>OptTelephonyView</comment>
+  </data>
   <data name="strTelephonyImportStart" xml:space="preserve">
     <value>Start</value>
     <comment>OptTelephonyView</comment>

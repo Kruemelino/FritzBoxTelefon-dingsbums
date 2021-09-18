@@ -1,4 +1,5 @@
 ﻿Imports System.Xml.Serialization
+Imports System.Threading.Tasks
 <Serializable(), XmlType("Call")> Public Class FritzBoxXMLCall
     Inherits NotifyBase
 
@@ -252,7 +253,7 @@
     End Property
 #End Region
 
-    Friend Function ErstelleTelefonat() As Telefonat
+    Friend Async Function ErstelleTelefonat() As Task(Of Telefonat)
 
         If Type.IsLessOrEqual(3) Then
 
@@ -277,19 +278,15 @@
                     ' Own Number of called party (incoming call)
                     tmpTelNr = New Telefonnummer With {.SetNummer = CalledNumber}
                     .EigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(Tel) Tel.Equals(tmpTelNr))
+                    ' Falls keine Nummer übereinstimmt, dann setze den tmpTelNr
+                    If .EigeneTelNr Is Nothing Then .EigeneTelNr = tmpTelNr
                     ' Wert für Serialisierung in separater Eigenschaft ablegen
                     .OutEigeneTelNr = .EigeneTelNr.Unformatiert
+
                     ' Number of calling party 
                     .GegenstelleTelNr = New Telefonnummer With {.SetNummer = Caller}
                     .NrUnterdrückt = .GegenstelleTelNr.Unterdrückt
 
-                    ' Ring-List
-                    If XMLData.POptionen.CBAnrListeUpdateCallLists Then
-                        ' RING-Liste initialisieren, falls erforderlich
-                        If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
-                        ' Eintrag anfügen
-                        XMLData.PTelListen.RINGListe.Insert(tmpTelefonat)
-                    End If
                 End If
 
                 If Type.AreEqual(3) Then 'outgoing
@@ -297,18 +294,13 @@
                     ' Own Number of called party (outgoing call) 
                     tmpTelNr = New Telefonnummer With {.SetNummer = CallerNumber}
                     .EigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(Tel) Tel.Equals(tmpTelNr))
+                    ' Falls keine Nummer übereinstimmt, dann setze den tmpTelNr
+                    If .EigeneTelNr Is Nothing Then .EigeneTelNr = tmpTelNr
                     ' Wert für Serialisierung in separater Eigenschaft ablegen
                     .OutEigeneTelNr = .EigeneTelNr.Unformatiert
                     ' Number or name of called party  
                     .GegenstelleTelNr = New Telefonnummer With {.SetNummer = Called}
 
-                    ' Call-List
-                    If XMLData.POptionen.CBAnrListeUpdateCallLists Then
-                        ' CALL-Liste initialisieren, falls erforderlich
-                        If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
-                        ' Eintrag anfügen
-                        XMLData.PTelListen.CALLListe.Insert(tmpTelefonat)
-                    End If
                 End If
 
                 If Type.AreEqual(1) Or Type.AreEqual(2) Or Type.AreEqual(3) Then
@@ -317,7 +309,7 @@
                     If Name.IsNotStringNothingOrEmpty Then .AnruferName = Name
 
                     If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unterdrückt Then
-                        .Kontaktsuche()
+                        Await .KontaktSucheTask()
                     End If
                 End If
 
@@ -336,7 +328,5 @@
         Else
             Return Nothing
         End If
-
     End Function
-
 End Class

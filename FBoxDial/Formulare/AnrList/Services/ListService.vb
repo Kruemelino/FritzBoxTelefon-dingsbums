@@ -40,4 +40,15 @@ Public Class ListService
         AddNrToBlockList(TelNrListe)
     End Sub
 
+    Friend Async Sub CallXMLContact(Kontakt As FritzBoxXMLCall) Implements IListService.CallXMLContact
+        Using t = Await Kontakt.ErstelleTelefonat
+            t.Rückruf()
+        End Using
+    End Sub
+
+    Friend Async Sub ShowXMLContact(Kontakt As FritzBoxXMLCall) Implements IListService.ShowXMLContact
+        Using t = Await Kontakt.ErstelleTelefonat
+            t.ZeigeKontakt()
+        End Using
+    End Sub
 End Class

@@ -446,7 +446,7 @@ Imports Microsoft.Office.Interop
     End Structure
 #End Region
 
-    Sub New()
+    Friend Sub New()
         'Stop
     End Sub
 
@@ -455,9 +455,14 @@ Imports Microsoft.Office.Interop
     ''' Führt die Kontaktsuche durch.
     ''' 1. Outlook-Kontakte
     ''' 2. Fritz!Box Telefonbücher
-    ''' 3. Rückwärtssuche
+    ''' 3. Tellows
+    ''' 4. Rückwärtssuche
     ''' </summary>
-    Friend Async Sub Kontaktsuche()
+    Friend Async Sub KontaktSuche()
+        Await KontaktSucheTask()
+    End Sub
+
+    Friend Async Function KontaktSucheTask() As Task
 
         ' Führe keine Kontaktsuche durch, wenn die Nummer unterdrückt ist
         If Not NrUnterdrückt Then
@@ -623,7 +628,8 @@ Imports Microsoft.Office.Interop
         Else
             AnruferName = Localize.LocAnrMon.strNrUnterdrückt
         End If
-    End Sub
+    End Function
+
 #End Region
 
     ''' <summary>
@@ -738,6 +744,23 @@ Imports Microsoft.Office.Interop
             End If
         Else
             NLogger.Info(Localize.LocAnrMon.strJournalFehler)
+        End If
+    End Sub
+
+    Friend Sub UpdateRingCallList()
+
+        If XMLData.POptionen.CBAnrListeUpdateCallLists Then
+            If AnrufRichtung = AnrufRichtungen.Eingehend Then
+                ' RING-Liste initialisieren, falls erforderlich
+                If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
+                ' Eintrag anfügen
+                XMLData.PTelListen.RINGListe.Insert(Me)
+            Else
+                ' CALL-Liste initialisieren, falls erforderlich
+                If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
+                ' Eintrag anfügen
+                XMLData.PTelListen.CALLListe.Insert(Me)
+            End If
         End If
     End Sub
 

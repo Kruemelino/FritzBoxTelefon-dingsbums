@@ -1040,6 +1040,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufbeantworter ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyHeadTAM() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyHeadTAM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Start ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelephonyImportStart() As String

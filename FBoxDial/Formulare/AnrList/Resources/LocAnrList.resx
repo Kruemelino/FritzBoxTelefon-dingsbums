@@ -120,6 +120,9 @@
   <data name="strAddBlockList" xml:space="preserve">
     <value>Nummer auf Anrufsperre der Fritz!Box setzen</value>
   </data>
+  <data name="strCall" xml:space="preserve">
+    <value>Anrufen</value>
+  </data>
   <data name="strCancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
@@ -180,6 +183,9 @@ Sollen die Einträge jetzt in die Fritz!Box geladen werden?</value>
   </data>
   <data name="strRemoteCaller" xml:space="preserve">
     <value>Gegenstelle</value>
+  </data>
+  <data name="strShowContact" xml:space="preserve">
+    <value>Kontakt anzeigen</value>
   </data>
   <data name="strStartJounalImport" xml:space="preserve">
     <value>Starte Jounalimport</value>

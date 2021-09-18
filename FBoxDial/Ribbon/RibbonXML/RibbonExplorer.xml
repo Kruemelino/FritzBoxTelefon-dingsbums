@@ -98,7 +98,9 @@
               <button id="ShowCallMonitor_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
+          <!--<menu id="mmFBox_M" getLabel="GetItemLabel" getImage="GetItemImageMso">-->
           <button id="PhoneBooks_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <!--</menu>-->          
           <button id="JournalImport_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_M" getScreentip="GetItemScreenTipp" onAction="BtnOnAction"/>

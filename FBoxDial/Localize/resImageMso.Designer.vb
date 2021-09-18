@@ -136,6 +136,15 @@ Public Class resImageMso
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die RmsNavigationBarHome ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property mmFBox_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("mmFBox_ImageMso", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die ShowNotesPage ähnelt.
     '''</summary>
     Public Shared ReadOnly Property Note_ImageMso() As String
