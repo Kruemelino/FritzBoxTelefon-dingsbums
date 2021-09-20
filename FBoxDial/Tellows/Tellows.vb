@@ -60,7 +60,7 @@ Friend Class Tellows
             Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
                                            .Host = "www.tellows.de",
                                            .Path = "/api/getpartnerinfo",
-                                           .Query = String.Join("&", {"xml=1", "country=de", "lang=de", "showcomments=10"})}
+                                           .Query = String.Join("&", {"xml=1"})}
 
             Return (Await GetTellowsResponseXML(ub.Uri, Headers)).Partnerinfo
         Else
@@ -81,7 +81,7 @@ Friend Class Tellows
             Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
                                            .Host = "www.tellows.de",
                                            .Path = $"/basic/num/{TelNr.TellowsNummer}",
-                                           .Query = "xml=1"}
+                                           .Query = String.Join("&", {"xml=1", "country=de", "lang=de", "showcomments=10"})}
 
             Return Await GetTellowsResponseXML(ub.Uri, Headers)
         Else

@@ -183,22 +183,26 @@ Friend Class OptionenService
 #End Region
 
 #Region "Tellows"
-    Public Async Function GetTellowsAccountData(XAuthToken As String) As Threading.Tasks.Task(Of TellowsPartnerInfo) Implements IOptionenService.GetTellowsAccountData
+    Public Async Function GetTellowsAccountData(XAuthToken As String) As Task(Of TellowsPartnerInfo) Implements IOptionenService.GetTellowsAccountData
         Using tellows = New Tellows(XAuthToken)
             Return Await tellows.GetTellowsAccountInfo()
         End Using
     End Function
 
-    Public Async Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Threading.Tasks.Task(Of TellowsResponse) Implements IOptionenService.GetTellowsLiveAPIData
-        Using Tel As New Telefonnummer With {.SetNummer = TelNr}
-            If Tel.TellowsNummer.IsNotStringNothingOrEmpty Then
-                Using tellows = New Tellows(XAuthToken)
-                    Return Await tellows.GetTellowsLiveAPIData(Tel)
-                End Using
-            Else
-                Return Nothing
-            End If
-        End Using
+    Public Async Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Task(Of TellowsResponse) Implements IOptionenService.GetTellowsLiveAPIData
+        If TelNr.IsNotStringNothingOrEmpty Then
+            Using Tel As New Telefonnummer With {.SetNummer = TelNr}
+                If Tel.TellowsNummer.IsNotStringNothingOrEmpty Then
+                    Using tellows = New Tellows(XAuthToken)
+                        Return Await tellows.GetTellowsLiveAPIData(Tel)
+                    End Using
+                Else
+                    Return Nothing
+                End If
+            End Using
+        Else
+            Return Nothing
+        End If
     End Function
 #End Region
 
@@ -246,5 +250,25 @@ Friend Class OptionenService
     End Sub
 
 
+#End Region
+
+#Region "TAM"
+    Friend Function GetTAMList() As TAMList Implements IOptionenService.GetTAMList
+        Dim ABListe As TAMList = Nothing
+        ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
+        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+
+            If fbtr064.GetTAMList(ABListe) Then
+                ' Werte alle TAMs aus.
+                Task.Run(Sub()
+                             For Each AB In ABListe.TAMListe
+                                 AB.GetTAMInformation(fbtr064)
+                             Next
+                         End Sub)
+            End If
+        End Using
+
+        Return ABListe
+    End Function
 #End Region
 End Class

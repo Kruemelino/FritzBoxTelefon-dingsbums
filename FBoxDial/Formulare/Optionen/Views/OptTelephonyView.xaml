@@ -128,15 +128,22 @@
             </StackPanel>
         </Expander>
 
-        <!--<Expander Style="{StaticResource OptExpander}"
+        <Expander Style="{StaticResource OptExpander}"
                   Header="{x:Static localize:LocOptionen.strTelephonyHeadTAM}">
+            
             <Border BorderThickness="0.5" Margin="0,0,0,4">
-                <ListBox>
-                    
-                </ListBox>
+                <ListView ItemsSource="{Binding TAMListe}" 
+                          SelectedItem="{Binding TAM}"
+                          BorderThickness="0">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <fbd:OptTAMView/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Border>
-        </Expander>-->
-    
+        </Expander>  
     
     </StackPanel>
 </UserControl>

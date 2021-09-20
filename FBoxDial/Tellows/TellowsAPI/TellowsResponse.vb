@@ -62,6 +62,8 @@
     ''' </summary>
     <XmlArray("commentList"), XmlArrayItem("comment")> Public Property CommentList As List(Of TellowsComment)
 
+    <XmlElement("numberDetails")> Public Property NumberDetails As TellowsNumberDetails
+
     ''' <summary>
     ''' Show tellows API Partner information for your account.
     ''' </summary>

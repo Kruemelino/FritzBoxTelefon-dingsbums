@@ -343,7 +343,7 @@ Namespace SOAP
                     ' Phonebook ExtraID auslesen
                     If .ContainsKey("NewPhonebookExtraID") Then PhonebookExtraID = .Item("NewPhonebookExtraID").ToString
 
-                    PushStatus(LogLevel.Debug, $"Pfad zum Telefonbuch '{PhonebookName}' der Fritz!Box: '{PhonebookURL}'")
+                    PushStatus(LogLevel.Debug, $"Pfad zum Telefonbuch '{PhonebookName}' der Fritz!Box: {PhonebookURL} ")
 
                     Return True
 
@@ -600,7 +600,7 @@ Namespace SOAP
                     ' Phonebook URL auslesen
                     PhonebookURL = .Item("NewPhonebookURL").ToString
 
-                    PushStatus(LogLevel.Debug, $"Pfad zur Rufsperre der Fritz!Box: '{PhonebookURL}'")
+                    PushStatus(LogLevel.Debug, $"Pfad zur Rufsperre der Fritz!Box: {PhonebookURL} ")
 
                     Return True
 
@@ -668,7 +668,9 @@ Namespace SOAP
         ''' <param name="TAMInfo">Structure, which holds all data of the TAM</param>
         ''' <param name="i">Represents the index of all tam.</param>
         ''' <returns>True when success</returns>
-        Friend Function GetTAMInfoEx(ByRef TAMInfo As ExTAM, i As Integer) As Boolean
+        Friend Function GetTAMInfoEx(ByRef TAMInfo As TAMInfo, i As Integer) As Boolean
+
+            If TAMInfo Is Nothing Then TAMInfo = New TAMInfo
 
             With TR064Start(Tr064Files.x_tamSCPD, "GetInfo", New Hashtable From {{"NewIndex", i}})
 
@@ -684,10 +686,12 @@ Namespace SOAP
                     TAMInfo.RingSeconds = CUShort(.Item("NewRingSeconds"))
                     TAMInfo.PhoneNumbers = .Item("NewPhoneNumbers").ToString.Split(",")
 
+                    PushStatus(LogLevel.Debug, $"GetTAMInfoEx ({i}): {TAMInfo.Name}; {TAMInfo.Enable}")
+
                     Return True
 
                 Else
-                    PushStatus(LogLevel.Warn, $"GetInfo konnte für nicht aufgelößt werden. '{ .Item("Error")}'")
+                    PushStatus(LogLevel.Warn, $"GetTAMInfoEx konnte für nicht aufgelößt werden. '{ .Item("Error")}'")
 
                     Return False
                 End If

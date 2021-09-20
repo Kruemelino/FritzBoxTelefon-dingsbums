@@ -1,6 +1,4 @@
-﻿Imports System.Threading.Tasks
-Imports System.Windows.Media
-Imports System.Windows.Threading
+﻿Imports System.Windows.Threading
 Imports System.Xml.Serialization
 <Serializable(), XmlType("phonebook")> Public Class FritzBoxXMLTelefonbuch
     Inherits NotifyBase

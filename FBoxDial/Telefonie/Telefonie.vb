@@ -109,7 +109,7 @@ Imports FBoxDial.FritzBoxDefault
                                                     .Enable = AB.Enable}
 
                                 ' Ermittle die Nummer, auf den der AB reagiert.
-                                Dim TAMInfo As New ExTAM
+                                Dim TAMInfo As New TAMInfo
                                 If .GetTAMInfoEx(TAMInfo, AB.Index) Then
                                     If TAMInfo.PhoneNumbers.Length.AreEqual(1) AndAlso TAMInfo.PhoneNumbers.First.IsStringNothingOrEmpty Then
                                         ' Empty string represents all numbers.

@@ -3,7 +3,9 @@ Imports System.Threading.Tasks
 Friend Module WebFunctions
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private ReadOnly Property DfltHeader As WebHeaderCollection = New WebHeaderCollection From {{HttpRequestHeader.KeepAlive, False.ToString}}
+
+    Private Const DefaultHeaderKeepAlive As Boolean = False
+    Private Const DefaultHeaderUserAgent As String = "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"
 
 #Region "Netzwerkfunktionen"
     ''' <summary>
@@ -112,17 +114,16 @@ Friend Module WebFunctions
         Select Case UniformResourceIdentifier.Scheme
             Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
 
-                If Headers Is Nothing Then
-                    Headers = DfltHeader
-                Else
-                    Headers.Add(DfltHeader)
-                End If
-
                 Using webClient As New WebClient With {.Proxy = Nothing,
                                                        .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache),
-                                                       .Headers = Headers,
                                                        .Encoding = If(ZeichenCodierung, Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox))}
                     With webClient
+
+                        With .Headers
+                            .Set(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko")
+                            .Set(HttpRequestHeader.KeepAlive, False.ToString)
+                            If Headers IsNot Nothing Then .Add(Headers)
+                        End With
 
                         Try
                             Response = .DownloadString(UniformResourceIdentifier)
@@ -133,7 +134,7 @@ Friend Module WebFunctions
                             Return False
 
                         Catch exWE As WebException
-                            NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+                            NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
                             Return False
 
                         End Try
@@ -160,17 +161,16 @@ Friend Module WebFunctions
             Select Case UniformResourceIdentifier.Scheme
                 Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
 
-                    If Headers Is Nothing Then
-                        Headers = DfltHeader
-                    Else
-                        Headers.Add(DfltHeader)
-                    End If
-
                     Using webClient As New WebClient With {.Proxy = Nothing,
                                                            .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache),
-                                                           .Headers = Headers,
                                                            .Encoding = If(ZeichenCodierung, Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox))}
                         With webClient
+
+                            With .Headers
+                                .Set(HttpRequestHeader.UserAgent, DefaultHeaderUserAgent)
+                                .Set(HttpRequestHeader.KeepAlive, DefaultHeaderKeepAlive.ToString)
+                                If Headers IsNot Nothing Then .Add(Headers)
+                            End With
 
                             Try
                                 retVal = Await .DownloadStringTaskAsync(UniformResourceIdentifier)
@@ -180,7 +180,7 @@ Friend Module WebFunctions
                                 NLogger.Error(exArgumentNull)
 
                             Catch exWeb As WebException
-                                NLogger.Error(exWeb, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+                                NLogger.Error(exWeb, $"Link: {UniformResourceIdentifier.AbsoluteUri} Header {webClient.Headers}")
 
                             Catch ex As Exception
                                 Stop
@@ -214,17 +214,16 @@ Friend Module WebFunctions
         Select Case UniformResourceIdentifier.Scheme
             Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
 
-                If Headers Is Nothing Then
-                    Headers = DfltHeader
-                Else
-                    Headers.Add(DfltHeader)
-                End If
-
                 Using webClient As New WebClient With {.Proxy = Nothing,
                                                        .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache),
-                                                       .Headers = Headers,
                                                        .Encoding = If(ZeichenCodierung, Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox))}
                     With webClient
+
+                        With .Headers
+                            .Set(HttpRequestHeader.UserAgent, DefaultHeaderUserAgent)
+                            .Set(HttpRequestHeader.KeepAlive, DefaultHeaderKeepAlive.ToString)
+                            If Headers IsNot Nothing Then .Add(Headers)
+                        End With
 
                         Try
                             Return Await .DownloadDataTaskAsync(UniformResourceIdentifier)
@@ -234,8 +233,8 @@ Friend Module WebFunctions
                             Return {}
 
                         Catch exWE As WebException
+                            NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
                             Return {}
-                            NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
 
                         End Try
                     End With
@@ -255,17 +254,16 @@ Friend Module WebFunctions
         Select Case UniformResourceIdentifier.Scheme
             Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
 
-                If Headers Is Nothing Then
-                    Headers = DfltHeader
-                Else
-                    Headers.Add(DfltHeader)
-                End If
-
                 Using webClient As New WebClient With {.Proxy = Nothing,
                                                        .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache),
-                                                       .Headers = Headers,
                                                        .Encoding = If(ZeichenCodierung, Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox))}
                     With webClient
+
+                        With .Headers
+                            .Set(HttpRequestHeader.UserAgent, DefaultHeaderUserAgent)
+                            .Set(HttpRequestHeader.KeepAlive, DefaultHeaderKeepAlive.ToString)
+                            If Headers IsNot Nothing Then .Add(Headers)
+                        End With
 
                         Try
                             Await .DownloadFileTaskAsync(UniformResourceIdentifier, DateiName)
@@ -295,16 +293,15 @@ Friend Module WebFunctions
 
         Response = DfltStringEmpty
 
-        If Headers Is Nothing Then
-            Headers = DfltHeader
-        Else
-            Headers.Add(DfltHeader)
-        End If
-
         Using webClient As New WebClient With {.Credentials = NC,
-                                               .Headers = Headers,
                                                .Encoding = If(ZeichenCodierung, Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox))}
             With webClient
+
+                With .Headers
+                    .Set(HttpRequestHeader.UserAgent, DefaultHeaderUserAgent)
+                    .Set(HttpRequestHeader.KeepAlive, DefaultHeaderKeepAlive.ToString)
+                    If Headers IsNot Nothing Then .Add(Headers)
+                End With
 
                 Try
                     Response = .UploadString(UniformResourceIdentifier, PostData)

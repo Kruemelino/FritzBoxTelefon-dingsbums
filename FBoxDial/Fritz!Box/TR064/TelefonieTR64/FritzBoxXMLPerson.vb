@@ -33,7 +33,8 @@ Imports System.Xml.Serialization
     ''' <returns>HTTP URL to image for this contact</returns>
     <XmlElement("imageURL")> Public Property ImageURL As String
         Get
-            Return _ImageURL
+            ' Entferne das /download.lua?path=
+            Return _ImageURL?.Replace("/download.lua?path=", DfltStringEmpty)
         End Get
         Set
             SetProperty(_ImageURL, Value)
@@ -61,11 +62,7 @@ Imports System.Xml.Serialization
                 End If
             End If
 
-            If SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID) Then
-                Return $"https://{XMLData.POptionen.ValidFBAdr}:{SOAP.DfltTR064PortSSL}{ImageURL}&{SessionID}"
-            Else
-                Return DfltStringEmpty
-            End If
+            Return If(SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{SOAP.DfltTR064PortSSL}/download.lua?path={ImageURL}&{SessionID}", DfltStringEmpty)
         End Get
 
     End Property

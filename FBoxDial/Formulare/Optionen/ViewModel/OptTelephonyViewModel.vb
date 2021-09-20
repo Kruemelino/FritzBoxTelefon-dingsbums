@@ -51,6 +51,28 @@
 
 #End Region
 
+#Region "Eigenschaften TAM"
+    Private _TAMListe As ObservableCollectionEx(Of TAMItem)
+    Public Property TAMListe As ObservableCollectionEx(Of TAMItem)
+        Get
+            Return _TAMListe
+        End Get
+        Set
+            SetProperty(_TAMListe, Value)
+        End Set
+    End Property
+
+    Private _TAM As TAMItem
+    Public Property TAM As TAMItem
+        Get
+            Return _TAM
+        End Get
+        Set
+            SetProperty(_TAM, Value)
+        End Set
+    End Property
+#End Region
+
 #Region "ICommand"
     Public Property ImportCommand As RelayCommand
 #End Region
@@ -62,6 +84,9 @@
         ' Interface
         DatenService = New OptionenService
 
+
+        TAMListe = New ObservableCollectionEx(Of TAMItem)
+        TAMListe.AddRange(DatenService.GetTAMList.TAMListe)
     End Sub
 
     Private Sub StartImport(obj As Object)

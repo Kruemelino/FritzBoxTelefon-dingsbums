@@ -10,7 +10,6 @@ Public Class Telefoniegerät
 
     End Sub
 
-    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "Eigenschaften"
     <XmlElement> Public Property Name As String
     <XmlElement> Public Property StrEinTelNr As List(Of String)
@@ -71,25 +70,6 @@ Public Class Telefoniegerät
             End Select
         End Get
     End Property
-
-    Friend Sub ToggleTAMEnableState()
-        If TelTyp = TelTypen.TAM Then
-            Using fboxTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
-
-                ' Ermittle den aktuellen Status des Anrufbeantworters
-                Dim TAMInfo As New ExTAM
-                If fboxTR064.GetTAMInfoEx(TAMInfo, InternalID) Then
-                    Dim NewEnableState As Boolean = Not TAMInfo.Enable
-
-                    If fboxTR064.SetEnable(InternalID, NewEnableState) Then Enable = NewEnableState
-
-                    NLogger.Info($"Anrufbeantworter {Name} ({InternalID}) {If(NewEnableState, "aktiviert", "deaktiviert")}.")
-
-                End If
-            End Using
-        End If
-    End Sub
-
 
 
 #Region "Equals"

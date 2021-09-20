@@ -302,13 +302,16 @@
     </Compile>
     <Compile Include="Formulare\Optionen\ViewModel\OptTestViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Views\OptTAMView.xaml.vb">
+      <DependentUpon>OptTAMView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\Optionen\Views\OptTellowsView.xaml.vb">
       <DependentUpon>OptTellowsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptTestView.xaml.vb">
       <DependentUpon>OptTestView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fritz!Box\TR064\TAM-TR64\ExTAM.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMInfo.vb" />
     <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUser.vb" />
@@ -520,6 +523,7 @@
     <Compile Include="Telefonie\VIPEntry.vb" />
     <Compile Include="Telefonie\Vorwahlen.vb" />
     <Compile Include="Tellows\Tellows.vb" />
+    <Compile Include="Tellows\TellowsAPI\TellowsNumberDetails.vb" />
     <Compile Include="Tellows\TellowsAPI\TellowsComment.vb" />
     <Compile Include="Tellows\TellowsAPI\TellowsPartnerinfo.vb" />
     <Compile Include="Tellows\TellowsAPI\TellowsResponse.vb" />
@@ -637,6 +641,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptTAMView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

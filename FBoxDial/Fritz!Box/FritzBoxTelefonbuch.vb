@@ -33,7 +33,7 @@ Namespace Telefonbücher
                                 ' Ermittle die URL zum Telefonbuch
                                 If .GetPhonebook(PhonebookID, PhonebookURL) Then
 
-                                    NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: '{PhonebookURL}'")
+                                    NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: {PhonebookURL} ")
 
                                     ' Lade das Telefonbuch herunter
                                     AktuellePhoneBookXML = Await DeserializeAsyncXML(Of FritzBoxXMLTelefonbücher)(PhonebookURL, True, xslt)
@@ -93,7 +93,7 @@ Namespace Telefonbücher
                 Dim CallBarringXML As New FritzBoxXMLTelefonbücher
 
                 If .GetCallBarringList(PhonebookURL) Then
-                    NLogger.Debug($"Rufsperren heruntergeladen: '{PhonebookURL}'")
+                    NLogger.Debug($"Rufsperren heruntergeladen: {PhonebookURL} ")
 
                     ' Lade das Telefonbuch herunter
                     CallBarringXML = Await DeserializeAsyncXML(Of FritzBoxXMLTelefonbücher)(PhonebookURL, True, xslt)
