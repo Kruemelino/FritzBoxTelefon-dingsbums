@@ -157,6 +157,7 @@ Friend Module WebFunctions
         Dim retVal As String = DfltStringEmpty
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
         If UniformResourceIdentifier.IsAbsoluteUri Or UniformResourceIdentifier.IsFile Then
             Select Case UniformResourceIdentifier.Scheme
                 Case Uri.UriSchemeHttp, Uri.UriSchemeHttps

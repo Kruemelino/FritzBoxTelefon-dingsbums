@@ -30,6 +30,9 @@ Public Module Extensions
     <Extension()> Public Function IsZero(Val1 As Integer) As Boolean
         Return Val1.Absolute < Epsilon
     End Function
+    <Extension()> Public Function IsZero(Val1 As Long) As Boolean
+        Return Val1.Absolute < Epsilon
+    End Function
 
     ''' <summary>
     ''' Prüft, ob die übergebende Größe ungleich Null ist.

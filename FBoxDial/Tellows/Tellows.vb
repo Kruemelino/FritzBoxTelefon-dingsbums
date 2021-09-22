@@ -86,7 +86,7 @@ Friend Class Tellows
             Return Await GetTellowsResponseXML(ub.Uri, Headers)
         Else
             NLogger.Warn($"Abfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer} nicht möglich, da kein API-Key eingegeben wurde.")
-            Return New TellowsResponse
+            Return Nothing
         End If
 
     End Function
@@ -121,7 +121,7 @@ Friend Class Tellows
     ''' <returns>Antwort von tellows als <see cref="List(Of TellowsScoreListEntry)"/></returns>
     Private Async Function DownloadTellowsScoreList() As Task(Of Boolean)
 
-        If Not IO.File.Exists(Pfad) OrElse Now.Subtract(IO.File.GetLastWriteTime(Pfad)).TotalHours.IsLargerOrEqual(24) Then
+        If Not IO.File.Exists(Pfad) OrElse (Now.Subtract(IO.File.GetLastWriteTime(Pfad)).TotalHours.IsLargerOrEqual(24) Or New IO.FileInfo(Pfad).Length.IsZero) Then
             Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
                                            .Host = "www.tellows.de",
                                            .Path = "/stats/partnerscoredata",
