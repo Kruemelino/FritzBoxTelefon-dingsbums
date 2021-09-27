@@ -144,6 +144,7 @@ End Enum
 
 <TypeConverter(GetType(EnumDescriptionTypeConverter))>
 Public Enum XMLEMailTyp
+
     <LocalizedDescription("Sonstige", GetType(resEnum))>
     <XmlEnum("")> notset
 

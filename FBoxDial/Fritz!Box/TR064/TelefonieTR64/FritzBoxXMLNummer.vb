@@ -9,12 +9,21 @@
     Private _Schnellwahl As String
     Private _Nummer As String
 
-    <XmlAttribute("type")> Public Property Typ As XMLTelNrTyp
+    <XmlIgnore> Public Property Typ As XMLTelNrTyp
         Get
             Return _Typ
         End Get
         Set
             SetProperty(_Typ, Value)
+        End Set
+    End Property
+
+    <XmlAttribute("type")> Public Property TelNrTyp As String
+        Get
+            Return EnumToString(Typ)
+        End Get
+        Set
+            Typ = StringToEnum(Of XMLTelNrTyp)(Value)
         End Set
     End Property
 

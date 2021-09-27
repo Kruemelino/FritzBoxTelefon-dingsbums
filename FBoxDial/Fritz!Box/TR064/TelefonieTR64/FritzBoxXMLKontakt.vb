@@ -185,6 +185,7 @@ Imports Microsoft.Office.Interop.Outlook
         Dim XMLKontakt As String = DfltStringEmpty
 
         XmlSerializeToString(Me, XMLKontakt)
+
         NLogger.Trace($"Kontakt {Person.RealName} serialisiert: {XMLKontakt}")
 
         Return XMLKontakt

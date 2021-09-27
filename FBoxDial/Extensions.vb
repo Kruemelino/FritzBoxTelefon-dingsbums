@@ -407,6 +407,27 @@ Public Module Extensions
     End Function
 #End Region
 
+#Region "Enum"
+    Friend Function StringToEnum(Of T)(StringValue As String) As T
+        ' Manually convert the string to enum, ignoring unknown values
+        'If StringValue.IsStringNothingOrEmpty Then StringValue = [Enum].GetName(GetType(T), 0)
+        If Not [Enum].GetNames(GetType(T)).Contains(StringValue) Then StringValue = [Enum].GetName(GetType(T), 0)
+
+        Try
+            Return CType([Enum].Parse(GetType(T), StringValue), T)
+        Catch ex As Exception
+            NLogger.Error(ex, $"Der String '{StringValue}' kann nicht in einen Wert des Enum {GetType(T).Name} gewandelt werden.")
+        End Try
+
+    End Function
+
+    Friend Function EnumToString(Of T)(EnumValue As T) As String
+        ' Convert the enum to a string
+        Return [Enum].GetName(GetType(T), EnumValue)
+
+    End Function
+#End Region
+
 #Region "Hilfsfunktionen"
     Public Function MsgBox(Meldung As String, Style As MsgBoxStyle, Aufruf As String) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then

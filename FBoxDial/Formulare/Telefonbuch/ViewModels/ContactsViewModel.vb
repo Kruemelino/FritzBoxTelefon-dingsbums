@@ -107,8 +107,6 @@ Public Class ContactsViewModel
     Public Property RemoveMail As ICommand
 #End Region
 
-
-
     Public Sub New(dataService As IContactDataService, dialogService As IDialogService)
         _DatenService = dataService
         _DialogService = dialogService
