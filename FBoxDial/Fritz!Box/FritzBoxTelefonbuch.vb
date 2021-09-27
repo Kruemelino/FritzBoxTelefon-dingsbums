@@ -161,6 +161,21 @@ Namespace Telefonbücher
 
         End Function
 
+        Friend Function GetSessionID() As String
+
+            Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
+
+            ' Prüfe, ob Fritz!Box verfügbar
+            If Ping(XMLData.POptionen.ValidFBAdr) Then
+                Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+                    fbtr064.GetSessionID(SessionID)
+                End Using
+            Else
+                NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+            End If
+            Return SessionID
+        End Function
+
 #Region "Aktionen für Telefonbuch"
         ''' <summary>
         ''' Erstellt ein neues Telefonbuch.

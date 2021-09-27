@@ -1,5 +1,4 @@
-﻿Imports System.Drawing
-''' <summary>
+﻿''' <summary>
 ''' Das Telefonbuch ist von Tosker erstellt worden und auf Youtube und Github bereitgestellt:
 ''' https://github.com/Tosker/ContactBook-Tutorial
 ''' Es wurde duch Kruemelino zu Zwecken der Anzeige von Fritz!Box Kontakten angepasst und erweitert.
@@ -25,6 +24,10 @@ Public Class ContactDataService
         Return Telefonbücher.LöscheTelefonbuch(TelefonbuchID)
     End Function
 
+    Public Function GetSesssionID() As String Implements IContactDataService.GetSessionID
+        Return Telefonbücher.GetSessionID
+    End Function
+
 #End Region
 
 #Region "Fritz!Box Kontakte"
@@ -45,11 +48,7 @@ Public Class ContactDataService
 #Region "Fritz!Box Rufsperre"
     Public Function SetRufsperre(XMLDaten As FritzBoxXMLKontakt) As Integer Implements IContactDataService.SetRufsperre
         Dim UID As Integer = 0
-        If AddToCallBarring(XMLDaten, UID) Then
-            Return UID
-        Else
-            Return -1
-        End If
+        Return If(AddToCallBarring(XMLDaten, UID), UID, -1)
     End Function
 
     Public Function DeleteRufsperre(UID As Integer) As Boolean Implements IContactDataService.DeleteRufsperre

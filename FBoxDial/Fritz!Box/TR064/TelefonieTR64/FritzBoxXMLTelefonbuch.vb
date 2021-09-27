@@ -155,15 +155,13 @@ Imports System.Xml.Serialization
                               End Function).Any
     End Function
 
-    Friend Sub LadeKonaktBilder()
-
-        Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
+    Friend Sub LadeKonaktBilder(SessionID As String)
 
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
             Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
-                If fbtr064.GetSessionID(SessionID) Then
+                If SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID) Then
 
                     For Each Kontakt In Kontakte
                         Dispatcher.CurrentDispatcher.Invoke(Async Function()

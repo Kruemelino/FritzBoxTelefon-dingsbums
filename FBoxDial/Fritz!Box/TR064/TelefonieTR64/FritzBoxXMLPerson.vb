@@ -4,8 +4,6 @@ Imports System.Xml.Serialization
     Inherits NotifyBase
 
     Private _RealName As String
-    Private _ImageURL As String
-
     ''' <summary>
     ''' Name of Contact 
     ''' </summary>
@@ -18,6 +16,7 @@ Imports System.Xml.Serialization
         End Set
     End Property
 
+    Private _ImageURL As String
     ''' <summary>
     ''' A telephone book may contain URLs with an image for the contact. 
     ''' The content can be downloaded using the protocol, hostname and port with the image URL.
@@ -54,10 +53,11 @@ Imports System.Xml.Serialization
     <XmlIgnore> Friend ReadOnly Property CompleteImageURL(Optional SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID) As String
         Get
             If SessionID.AreEqual(FritzBoxDefault.DfltFritzBoxSessionID) Then
+                ' Wird bei Anzeige im Anrufmonitor benötigt.
                 If Ping(XMLData.POptionen.ValidFBAdr) Then
                     Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
                         fbtr064.GetSessionID(SessionID)
-                        ' Session ID erhalten, ansonnsten DfltFritzBoxSessionID
+                        ' Session ID erhalten, ansonsten DfltFritzBoxSessionID
                     End Using
                 End If
             End If

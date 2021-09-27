@@ -11,6 +11,7 @@ Public Class ContactsViewModel
 
     Private Property DatenService As IContactDataService
     Private Property DialogService As IDialogService
+    Private Property SessionID As String
 
 #Region "Fritz!Box Telefonbuch Kontakte"
 
@@ -65,6 +66,7 @@ Public Class ContactsViewModel
         End Get
     End Property
 #End Region
+
 #Region "Filtern"
     Public Property View As ListCollectionView
 
@@ -92,12 +94,12 @@ Public Class ContactsViewModel
     End Function
 
 #End Region
+
 #Region "ICommand"
     Public Property EditCommand As ICommand
     Public Property SaveCommand As ICommand
     Public Property CancelCommand As ICommand
     Public Property UpdateCommand As ICommand
-    'Public Property BrowseImageCommand As ICommand
     Public Property AddContact As ICommand
     Public Property DeleteCommand As ICommand
     Public Property DialCommand As ICommand
@@ -125,13 +127,15 @@ Public Class ContactsViewModel
         RemoveNumber = New RelayCommand(AddressOf RemoveTelNr)
         RemoveMail = New RelayCommand(AddressOf RemoveEMail)
 
+        SessionID = DatenService.GetSessionID
     End Sub
 
     Public Sub LadeKontakte(Telefonbuch As FritzBoxXMLTelefonbuch)
 
+
         FBoxTelefonbuch = Telefonbuch
 
-        Telefonbuch.LadeKonaktbilder()
+        Telefonbuch.LadeKonaktBilder(SessionID)
 
         View = CType(CollectionViewSource.GetDefaultView(FBoxTelefonbuch.Kontakte), ListCollectionView)
 

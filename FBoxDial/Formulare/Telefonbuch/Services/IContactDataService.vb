@@ -9,6 +9,7 @@ Public Interface IContactDataService
     Function GetTelefonbücher() As Threading.Tasks.Task(Of FritzBoxXMLTelefonbücher)
     Function AddTelefonbuch(Name As String) As Threading.Tasks.Task(Of FritzBoxXMLTelefonbuch)
     Function DeleteTelefonbuch(TelefonbuchID As Integer) As Boolean
+    Function GetSessionID() As String
 #End Region
 
 #Region "Fritz!Box Kontakte"

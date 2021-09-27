@@ -643,7 +643,7 @@ Friend Module KontaktFunktionen
         If Link.IsNotStringNothingOrEmpty Then
             ' Setze den Pfad zum Bild zusammen
             Dim b As Byte() = {}
-
+            NLogger.Debug($"Lade Kontaktbild von Pfad: ' {Link} '")
             ' Lade das Bild herunter
             b = Await DownloadDataTaskAsync(New Uri(Link))
             If b.Any Then
