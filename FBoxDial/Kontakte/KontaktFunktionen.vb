@@ -239,24 +239,33 @@ Friend Module KontaktFunktionen
     ''' </summary>
     ''' <param name="FolderID">EntryID des Ordners</param>
     ''' <param name="StoreID">StoreID des Ordners</param>
-    ''' <returns>Erfolg: Ordner, Misserfolg: Standard-Kontaktordner</returns>
+    ''' <returns>Erfolg: Ordner, Misserfolg: Nothing</returns>
     ''' <remarks>In Office 2003 ist Outlook.Folder unbekannt, daher Outlook.MAPIFolder</remarks>
     Friend Function GetOutlookFolder(FolderID As String, StoreID As String) As MAPIFolder
         GetOutlookFolder = Nothing
 
-        If FolderID.IsNotErrorString And StoreID.IsNotErrorString Then
-            Try
-                ' Überprüfe, ob der Store vorhanden ist
-                Dim store = ThisAddIn.OutookApplication.Session.GetStoreFromID(StoreID)
-                ' Ermittle den Folder
-                GetOutlookFolder = ThisAddIn.OutookApplication.Session.GetFolderFromID(FolderID, StoreID)
-            Catch ex As System.Exception
-                NLogger.Error(ex)
-            End Try
+        If ThisAddIn.OutookApplication IsNot Nothing AndAlso ThisAddIn.OutookApplication.Session IsNot Nothing Then
+            If FolderID.IsNotErrorString And StoreID.IsNotErrorString Then
+                Try
+                    ' Überprüfe, ob der Store vorhanden ist
+                    Dim store = ThisAddIn.OutookApplication.Session.GetStoreFromID(StoreID)
+                    ' Ermittle den Folder
+                    GetOutlookFolder = ThisAddIn.OutookApplication.Session.GetFolderFromID(FolderID, StoreID)
+                Catch ex As System.Exception
+                    NLogger.Error(ex)
+                End Try
+            End If
+        Else
+            NLogger.Warn("Die Outlook Application bzw. die Session ist Nothing.")
         End If
 
     End Function
 
+    ''' <summary>
+    ''' Gibt ein Objekt vom Typ <see cref="MAPIFolder"/>, das den Standardordner des angeforderten <see cref="OlDefaultFolders"/> für das aktuelle Profil darstellt.
+    ''' </summary>
+    ''' <param name="FolderType">Der Typ des zurückzugebenden standardmäßigen Ordners.</param>
+    ''' <returns>Ein Objekt vom Typ <see cref="MAPIFolder"/>, das den standardmäßigen Ordner des angeforderten Typs für das aktuelle Profil darstellt.</returns>
     Friend Function GetDefaultMAPIFolder(FolderType As OlDefaultFolders) As MAPIFolder
         Return ThisAddIn.OutookApplication.Session.GetDefaultFolder(FolderType)
     End Function
