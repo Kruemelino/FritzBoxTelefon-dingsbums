@@ -11,6 +11,7 @@ Public Class Telefonnummer
     <XmlElement> Public Property Nummer As String
     <XmlAttribute> Public Property EigeneNummer As Boolean
     <XmlAttribute> Public Property Überwacht As Boolean
+    <XmlAttribute> Public Property IstGültig As Boolean = True
     <XmlElement> Public Property Landeskennzahl As String
     <XmlElement> Public Property Ortskennzahl As String
     <XmlElement> Public Property Einwahl As String
@@ -47,7 +48,6 @@ Public Class Telefonnummer
             NLogger.Trace($"Nummer erfasst: '{Value}'; '{EigeneNummer}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
         End Set
     End Property
-
     <XmlIgnore> Public ReadOnly Property TellowsNummer As String
         Get
             ' 1. Entferne jeden String, der vor einem Doppelpunkt steht (einschließlich :)
@@ -81,7 +81,7 @@ Public Class Telefonnummer
     ''' </summary>
     <XmlIgnore> ReadOnly Property IstInland As Boolean
         Get
-            Return Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ)
+            Return Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Or Landeskennzahl.IsNotStringNothingOrEmpty
         End Get
     End Property
 
@@ -160,6 +160,7 @@ Public Class Telefonnummer
                     AreaCode = .Code
                 End With
             Else
+                IstGültig = False
                 NLogger.Warn($"Landeskennzahl für {Unformatiert} konnte nicht ermittelt werden.")
             End If
 
@@ -172,6 +173,7 @@ Public Class Telefonnummer
                     Location = .Name
                 End With
             Else
+                IstGültig = False
                 NLogger.Warn($"Ortsnetzkennzahl für {Unformatiert} konnte nicht ermittelt werden.")
             End If
 
@@ -219,9 +221,10 @@ Public Class Telefonnummer
         Dim tmpLandesvorwahl As String
         Dim tmpGruppieren As Boolean = XMLData.POptionen.CBTelNrGruppieren
 
-        If Unterdrückt Then
+        If Unterdrückt Then ' Rückgabe Leerstring, falls die Nummer unterdrückt ist.
             Return DfltStringEmpty
-        Else
+
+        ElseIf IstGültig Then ' Führe eine Rufnummernformatierung durch, wenn die Nummer gültig ist.
             FormatTelNr = XMLData.POptionen.TBTelNrMaske
 
             ' Wenn die Maske keine Durchwahl vorgesehen hat, dann darf die  Druchwahl nicht vergessen werden. Sie muss an die Einwahl angehangen werden.
@@ -234,7 +237,7 @@ Public Class Telefonnummer
             '                        wenn die Landesvorwahl der Nummer leer ist ODER gleich der eigestellten Landesvorwahl ist UND
             '                        die Ortsvorwahl nicht vorhanden ist
 
-            If (Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Or Landeskennzahl.AreEqual(DfltStringEmpty)) And XMLData.POptionen.CBintl And Ortskennzahl.IsStringNothingOrEmpty Then
+            If XMLData.POptionen.CBintl And IstInland And Ortskennzahl.IsStringNothingOrEmpty Then
                 Ortskennzahl = XMLData.PTelefonie.OKZ
             End If
 
@@ -299,7 +302,10 @@ Public Class Telefonnummer
 
             'Finales Zusammenstellen
             Return FormatTelNr.Replace("%L", tmpLandesvorwahl).Replace("%O", Gruppiere(tmpOrtsvorwahl, tmpGruppieren)).Replace("%N", Gruppiere(Einwahl, tmpGruppieren)).Replace("%D", Gruppiere(Durchwahl, tmpGruppieren)).Trim
-
+        Else
+            ' Die Nummer ist ungültig: Gib die unformatierte Nummer zurück
+            NLogger.Info($"Formatierung der ungültigen Telefonnummer '{Nummer}' nicht durchgeführt.")
+            Return Unformatiert
         End If
     End Function
 #End Region
