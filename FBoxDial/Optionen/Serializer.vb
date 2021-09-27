@@ -257,7 +257,7 @@ Friend Module Serializer
             result = JsonConvert.DeserializeObject(Of T)(objectData, New CustomBooleanJsonConverter)
             Return True
         Catch ex As Exception
-            NLogger.Fatal(ex, $"Fehler beim Deserialisieren von {GetType(T).FullName}: {objectData}")
+            NLogger.Fatal(ex, $"Fehler beim Deserialisieren von {GetType(T).Name}: {objectData}")
 
             Return False
         End Try

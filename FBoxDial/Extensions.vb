@@ -410,7 +410,6 @@ Public Module Extensions
 #Region "Enum"
     Friend Function StringToEnum(Of T)(StringValue As String) As T
         ' Manually convert the string to enum, ignoring unknown values
-        'If StringValue.IsStringNothingOrEmpty Then StringValue = [Enum].GetName(GetType(T), 0)
         If Not [Enum].GetNames(GetType(T)).Contains(StringValue) Then StringValue = [Enum].GetName(GetType(T), 0)
 
         Try

@@ -16,6 +16,8 @@ Friend Class Tellows
         End Get
     End Property
 
+    Private Const NotAuthorized As String = "NOT AUTHORIZED REQUEST - API Key not valid"
+
     Public Sub New(Token As String)
         XAuthToken = Token
         ' Header für WebClient setzen
@@ -46,7 +48,16 @@ Friend Class Tellows
     End Function
 
     Private Async Function GetTellowsResponseJSON(pfad As String, Optional Headers As WebHeaderCollection = Nothing) As Task(Of List(Of TellowsScoreListEntry))
-        Return Await JSONDeserializeFromStringAsync(Of List(Of TellowsScoreListEntry))(Await DownloadStringTaskAsync(pfad, Encoding.UTF8, Headers))
+
+        Dim TellowsResponse As String = Await DownloadStringTaskAsync(pfad, Encoding.UTF8, Headers)
+
+        If TellowsResponse.Contains(NotAuthorized) Then
+            NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich, da kein gültiger API-Key eingegeben wurde.")
+            Return Nothing
+        Else
+            Return Await JSONDeserializeFromStringAsync(Of List(Of TellowsScoreListEntry))(TellowsResponse)
+        End If
+
     End Function
 
 #End Region
