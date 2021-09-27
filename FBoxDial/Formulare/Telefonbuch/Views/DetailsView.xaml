@@ -239,7 +239,7 @@
 
                                         <!--Editmode: Button Entfernen Telefonnummer-->
                                         <Button  Grid.Column="2" Style="{StaticResource EditButton}"
-                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveNumber}"
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveMail}"
                                                 CommandParameter="{Binding}">
 
                                             <ContentControl ContentTemplate="{StaticResource MailRemove}"/>
