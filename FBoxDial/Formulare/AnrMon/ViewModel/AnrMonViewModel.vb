@@ -206,7 +206,8 @@ Public Class AnrMonViewModel
 
     Private Async Sub LadeBild()
         With AnrMonTelefonat
-            If XMLData.POptionen.CBAnrMonContactImage AndAlso Kontaktbild Is Nothing Then
+            ' Lade das Kontaktbild, wenn a) Option gesetzt ist oder b) ein TellowsErgebnis vorliegt und das Bild noch nicht geladen wurde
+            If (XMLData.POptionen.CBAnrMonContactImage Or .TellowsErgebnis IsNot Nothing) AndAlso Kontaktbild Is Nothing Then
 
                 ' Setze das Kontaktbild, falls ein Outlookkontakt verfügbar ist.
                 If .OlKontakt IsNot Nothing Then
