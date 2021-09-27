@@ -106,7 +106,16 @@ Friend Module WebFunctions
         End If
 
     End Function
+
 #Region "GET"
+    ''' <summary>
+    ''' Lädt die angeforderte Ressource als <see cref="String"/> synchron herunter. Die herunterzuladende Ressource ist als <see cref="Uri"/> angegeben.
+    ''' </summary>
+    ''' <param name="UniformResourceIdentifier">Ein <see cref="Uri"/>-Objekt, das den herunterzuladenden URI enthält.</param>
+    ''' <param name="Response">Ein <see cref="String"/> mit der angeforderten Ressource.</param>
+    ''' <param name="ZeichenCodierung">(Optional) Legt die <see cref="Encoding"/> für den Download von Zeichenfolgen fest.</param>
+    ''' <param name="Headers">(Optional) Zusätzliche Header für den Download von Zeichenfolgen</param>
+    ''' <returns>Boolean, je nach Erfolg der Abfrage.</returns>
     Friend Function DownloadString(UniformResourceIdentifier As Uri, ByRef Response As String, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing) As Boolean
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
@@ -120,8 +129,8 @@ Friend Module WebFunctions
                     With webClient
 
                         With .Headers
-                            .Set(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko")
-                            .Set(HttpRequestHeader.KeepAlive, False.ToString)
+                            .Set(HttpRequestHeader.UserAgent, DefaultHeaderUserAgent)
+                            .Set(HttpRequestHeader.KeepAlive, DefaultHeaderKeepAlive.ToString)
                             If Headers IsNot Nothing Then .Add(Headers)
                         End With
 
@@ -129,29 +138,42 @@ Friend Module WebFunctions
                             Response = .DownloadString(UniformResourceIdentifier)
                             Return True
 
-                        Catch exANE As ArgumentNullException
-                            NLogger.Error(exANE)
-                            Return False
+                        Catch ex As ArgumentNullException
+                            ' Der address-Parameter ist null.
+                            NLogger.Error(ex, "Der address-Parameter ist null.")
 
-                        Catch exWE As WebException
-                            NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
-                            Return False
+                        Catch ex As WebException
+                            ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
+                            ' - oder -
+                            ' Fehler beim Herunterladen der Ressource.
+
+                            NLogger.Error(ex, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
+
+                        Catch ex As NotSupportedException
+                            ' Die Methode wurde gleichzeitig für mehrere Threads aufgerufen.
+                            NLogger.Error(ex, "Die Methode wurde gleichzeitig für mehrere Threads aufgerufen.")
 
                         End Try
                     End With
                 End Using
             Case Else
                 NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
-                Return False
 
         End Select
-
+        Return False
     End Function
 
     Friend Async Function DownloadStringTaskAsync(Link As String, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing) As Task(Of String)
         Return Await DownloadStringTaskAsync(New Uri(Link), ZeichenCodierung, Headers)
     End Function
 
+    ''' <summary>
+    ''' Lädt die angeforderte Ressource als <see cref="String"/> asynchron herunter. Die herunterzuladende Ressource ist als <see cref="Uri"/> angegeben.
+    ''' </summary>
+    ''' <param name="UniformResourceIdentifier">Ein <see cref="Uri"/>-Objekt, das den herunterzuladenden URI enthält.</param>
+    ''' <param name="ZeichenCodierung">(Optional) Legt die <see cref="Encoding"/> für den Download von Zeichenfolgen fest.</param>
+    ''' <param name="Headers">(Optional) Zusätzliche Header für den Download von Zeichenfolgen</param>
+    ''' <returns>Das <see cref="Task"/>-Objekt, das den asynchronen Vorgang darstellt.</returns>
     Friend Async Function DownloadStringTaskAsync(UniformResourceIdentifier As Uri, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing) As Task(Of String)
 
         Dim retVal As String = DfltStringEmpty
@@ -177,14 +199,25 @@ Friend Module WebFunctions
                                 retVal = Await .DownloadStringTaskAsync(UniformResourceIdentifier)
                                 NLogger.Trace($"{UniformResourceIdentifier.AbsoluteUri} - {retVal}")
 
-                            Catch exArgumentNull As ArgumentNullException
-                                NLogger.Error(exArgumentNull)
+                            Catch ex As ArgumentNullException
+                                ' Der address-Parameter ist null.
+                                NLogger.Error(ex, "Der address-Parameter ist null.")
 
-                            Catch exWeb As WebException
-                                NLogger.Error(exWeb, $"Link: {UniformResourceIdentifier.AbsoluteUri} Header {webClient.Headers}")
+                            Catch ex As WebException
+                                ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
+                                ' - oder -
+                                ' Fehler beim Herunterladen der Ressource.
 
-                            Catch ex As Exception
-                                Stop
+                                ' Fange Fehlermeldungen der Rückwärtssuche ab: Wenn die Nummer nicht gefunden wurde, dann wird ein Fehler 410 zurückgeben:
+                                ' Der Remoteserver hat einen Fehler zurückgegeben: (410) Nicht vorhanden.
+                                If UniformResourceIdentifier.Host.AreEqual("www.dasoertliche.de") AndAlso CType(ex.Response, HttpWebResponse).StatusCode = HttpStatusCode.Gone Then
+                                    ' Nix tun
+                                    NLogger.Debug($"RWS mit {UniformResourceIdentifier.AbsoluteUri} liefert kein Ergebnis (Status {HttpStatusCode.Gone}).")
+                                Else
+                                    ' Fehlermeldung ins Log schreiben
+                                    NLogger.Error(ex, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+                                End If
+
                             End Try
                         End With
                     End Using
@@ -208,6 +241,13 @@ Friend Module WebFunctions
         Return retVal
     End Function
 
+    ''' <summary>
+    ''' Lädt die angeforderte Ressource als <see cref="Byte"/>-Array asynchron herunter. Die herunterzuladende Ressource ist als <see cref="Uri"/> angegeben.
+    ''' </summary>
+    ''' <param name="UniformResourceIdentifier">Ein <see cref="Uri"/>-Objekt, das den herunterzuladenden URI enthält.</param>
+    ''' <param name="ZeichenCodierung">(Optional) Legt die <see cref="Encoding"/> für den Download von Zeichenfolgen fest.</param>
+    ''' <param name="Headers">(Optional) Zusätzliche Header für den Download von Zeichenfolgen</param>
+    ''' <returns>Das <see cref="Task"/>-Objekt, das den asynchronen Vorgang darstellt.</returns>
     Friend Async Function DownloadDataTaskAsync(UniformResourceIdentifier As Uri, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing) As Task(Of Byte())
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
@@ -229,12 +269,16 @@ Friend Module WebFunctions
                         Try
                             Return Await .DownloadDataTaskAsync(UniformResourceIdentifier)
 
-                        Catch exANE As ArgumentNullException
-                            NLogger.Error(exANE)
+                        Catch ex As ArgumentNullException
+                            ' Der address-Parameter ist null.
+                            NLogger.Error(ex, "Der address-Parameter ist null.")
                             Return {}
 
-                        Catch exWE As WebException
-                            NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
+                        Catch ex As WebException
+                            ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
+                            ' - oder -
+                            ' Fehler beim Herunterladen der Ressource.
+                            NLogger.Error(ex, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
                             Return {}
 
                         End Try
@@ -248,6 +292,14 @@ Friend Module WebFunctions
 
     End Function
 
+    ''' <summary>
+    ''' Lädt die angegebene Ressource in eine lokale Datei als asynchroner Vorgang mithilfe eines <see cref="Task"/>-Objekt herunter.
+    ''' </summary>
+    ''' <param name="UniformResourceIdentifier">Ein <see cref="Uri"/>-Objekt, das den herunterzuladenden URI enthält.</param>
+    ''' <param name="DateiName">Der Name der Datei, die auf dem lokalen Computer platziert werden soll.</param>
+    ''' <param name="ZeichenCodierung">(Optional) Legt die <see cref="Encoding"/> für den Download von Zeichenfolgen fest.</param>
+    ''' <param name="Headers">(Optional) Zusätzliche Header für den Download von Zeichenfolgen</param>
+    ''' <returns>Boolean, je nach Erfolg der Abfrage.</returns>
     Friend Async Function DownloadToFileTaskAsync(UniformResourceIdentifier As Uri, DateiName As String, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing) As Task(Of Boolean)
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
@@ -269,14 +321,19 @@ Friend Module WebFunctions
                         Try
                             Await .DownloadFileTaskAsync(UniformResourceIdentifier, DateiName)
                             Return True
-                        Catch exANE As ArgumentNullException
-                            NLogger.Error(exANE)
+                        Catch ex As ArgumentNullException
+                            ' Der address-Parameter ist null.
+                            NLogger.Error(ex, "Der address-Parameter ist null.")
 
-                        Catch exWE As WebException
-                            NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+                        Catch ex As WebException
+                            ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
+                            ' - oder -
+                            ' Fehler beim Herunterladen der Ressource.
+                            NLogger.Error(ex, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
 
-                        Catch exIOE As InvalidOperationException
-                            NLogger.Error(exIOE)
+                        Catch ex As InvalidOperationException
+                            'Die von fileName angegebene lokale Datei wird von einem anderen Thread verwendet.
+                            NLogger.Error(ex, $"Die von {DateiName} angegebene lokale Datei wird von einem anderen Thread verwendet.")
 
                         End Try
                     End With
@@ -290,6 +347,16 @@ Friend Module WebFunctions
 #End Region
 
 #Region "POST"
+    ''' <summary>
+    ''' Lädt die angegebene Zeichenfolge in die angegebene Ressource hoch.
+    ''' </summary>
+    ''' <param name="UniformResourceIdentifier">Der <see cref="Uri"/> der Ressource, die die Zeichenfolge empfangen soll.</param>
+    ''' <param name="PostData">Die Uploadzeichenfolge.</param>
+    ''' <param name="NC">Legt die Netzwerkanmeldeinformationen als <see cref="ICredentials"/> fest, die an den Host gesendet und für die Authentifizierung der Anforderung verwendet wird.</param>
+    ''' <param name="Response">Ein <see cref="String"/>, der die vom Server gesendete Antwort enthält.</param>
+    ''' <param name="Headers">(Optional) Zusätzliche Header für den Download von Zeichenfolgen</param>
+    ''' <param name="ZeichenCodierung">(Optional) Legt die <see cref="Encoding"/> für den Download von Zeichenfolgen fest.</param>
+    ''' <returns>Boolean, je nach Erfolg der Abfrage.</returns>
     Friend Function UploadData(UniformResourceIdentifier As Uri, PostData As String, NC As NetworkCredential, ByRef Response As String, Optional Headers As WebHeaderCollection = Nothing, Optional ZeichenCodierung As Encoding = Nothing) As Boolean
 
         Response = DfltStringEmpty
@@ -311,12 +378,12 @@ Friend Module WebFunctions
                     ' Der address-Parameter ist null.
                     ' - oder -
                     ' Der Data - Parameter ist null.
-                    NLogger.Error(ex)
+                    NLogger.Error(ex, $"URI: ' {UniformResourceIdentifier.AbsoluteUri} '; Data: '{PostData}' ")
                 Catch ex As WebException
                     ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
                     ' - oder -
                     ' Der Server, der Host dieser Ressource ist, hat nicht geantwortet.
-                    NLogger.Error(ex)
+                    NLogger.Error(ex, $"URI: ' {UniformResourceIdentifier.AbsoluteUri} '; Data: '{PostData}' ")
                 End Try
             End With
         End Using
