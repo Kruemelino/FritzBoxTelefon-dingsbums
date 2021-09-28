@@ -47,9 +47,9 @@ Friend Class Tellows
         Return Response
     End Function
 
-    Private Async Function GetTellowsResponseJSON(pfad As String, Optional Headers As WebHeaderCollection = Nothing) As Task(Of List(Of TellowsScoreListEntry))
+    Private Async Function GetTellowsResponseJSON(Pfad As Uri, Optional Headers As WebHeaderCollection = Nothing) As Task(Of List(Of TellowsScoreListEntry))
 
-        Dim TellowsResponse As String = Await DownloadStringTaskAsync(pfad, Encoding.UTF8, Headers)
+        Dim TellowsResponse As String = Await DownloadStringTaskAsync(Pfad, Encoding.UTF8, Headers)
 
         If TellowsResponse.Contains(NotAuthorized) Then
             NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich, da kein gültiger API-Key eingegeben wurde.")
@@ -117,7 +117,7 @@ Friend Class Tellows
             End If
 
             ' Lade die Daten aus der Datei
-            Return Await GetTellowsResponseJSON(Pfad)
+            Return Await GetTellowsResponseJSON(New Uri(Pfad))
         Else
             NLogger.Warn($"Ein tellows API-Key wurde nicht eingegeben.")
             ' Gib eine leere Liste zurück

@@ -67,9 +67,12 @@ Public Module Rückwärtssuche
 
         tmpTelNr = TelNr.Unformatiert
         Do
+
             PushStatus(LogLevel.Debug, $"Start RWS{i}: {baseurl}search_inv&ph={tmpTelNr}")
 
-            htmlRWS = Await DownloadStringTaskAsync($"{baseurl}search_inv&ph={tmpTelNr}", Encoding.UTF8)
+            ' Fange Fehlermeldungen der Rückwärtssuche ab: Wenn die Nummer nicht gefunden wurde, dann wird ein Fehler 410 zurückgeben:
+            ' Der Remoteserver hat einen Fehler zurückgegeben: (410) Nicht vorhanden.
+            htmlRWS = Await DownloadStringTaskAsync(New Uri($"{baseurl}search_inv&ph={tmpTelNr}"), Encoding.UTF8, Nothing, Net.HttpStatusCode.Gone)
 
             If htmlRWS.IsNotStringEmpty Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
@@ -80,7 +83,8 @@ Public Module Rückwärtssuche
                 If EintragsID.IsNotErrorString Then
                     ' Link zum Herunterladen der vCard suchen
                     PushStatus(LogLevel.Debug, $"Link vCard: {baseurl}vcard&id={EintragsID}")
-                    VCard = Await DownloadStringTaskAsync($"{baseurl}vcard&id={EintragsID}", Encoding.Default)
+
+                    VCard = Await DownloadStringTaskAsync(New Uri($"{baseurl}vcard&id={EintragsID}"), Encoding.Default)
                 Else
                     PushStatus(LogLevel.Warn, $"ID des Eintrages für {tmpTelNr} kann nicht ermittelt werden.")
                 End If

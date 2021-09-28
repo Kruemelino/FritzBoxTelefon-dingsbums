@@ -163,10 +163,6 @@ Friend Module WebFunctions
         Return False
     End Function
 
-    Friend Async Function DownloadStringTaskAsync(Link As String, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing) As Task(Of String)
-        Return Await DownloadStringTaskAsync(New Uri(Link), ZeichenCodierung, Headers)
-    End Function
-
     ''' <summary>
     ''' Lädt die angeforderte Ressource als <see cref="String"/> asynchron herunter. Die herunterzuladende Ressource ist als <see cref="Uri"/> angegeben.
     ''' </summary>
@@ -174,7 +170,7 @@ Friend Module WebFunctions
     ''' <param name="ZeichenCodierung">(Optional) Legt die <see cref="Encoding"/> für den Download von Zeichenfolgen fest.</param>
     ''' <param name="Headers">(Optional) Zusätzliche Header für den Download von Zeichenfolgen</param>
     ''' <returns>Das <see cref="Task"/>-Objekt, das den asynchronen Vorgang darstellt.</returns>
-    Friend Async Function DownloadStringTaskAsync(UniformResourceIdentifier As Uri, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing) As Task(Of String)
+    Friend Async Function DownloadStringTaskAsync(UniformResourceIdentifier As Uri, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing, Optional IgnoreStatusCode As HttpStatusCode = Nothing) As Task(Of String)
 
         Dim retVal As String = DfltStringEmpty
 
@@ -208,9 +204,7 @@ Friend Module WebFunctions
                                 ' - oder -
                                 ' Fehler beim Herunterladen der Ressource.
 
-                                ' Fange Fehlermeldungen der Rückwärtssuche ab: Wenn die Nummer nicht gefunden wurde, dann wird ein Fehler 410 zurückgeben:
-                                ' Der Remoteserver hat einen Fehler zurückgegeben: (410) Nicht vorhanden.
-                                If UniformResourceIdentifier.Host.AreEqual("www.dasoertliche.de") AndAlso CType(ex.Response, HttpWebResponse).StatusCode = HttpStatusCode.Gone Then
+                                If IgnoreStatusCode.Equals(CType(ex.Response, HttpWebResponse).StatusCode) Then
                                     ' Nix tun
                                     NLogger.Debug($"RWS mit {UniformResourceIdentifier.AbsoluteUri} liefert kein Ergebnis (Status {HttpStatusCode.Gone}).")
                                 Else
