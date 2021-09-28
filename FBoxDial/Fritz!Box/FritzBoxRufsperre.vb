@@ -217,7 +217,7 @@ Friend Module FritzBoxRufsperre
     ''' </summary>
     ''' <param name="TelNr">Telefonnummer, die der Sperrliste hinzugefügt werden soll.</param>
     Friend Sub AddNrToBlockList(TelNr As Telefonnummer)
-        AddToCallBarring(New List(Of String) From {TelNr.Unformatiert}, My.Resources.strDefLongName)
+        AddToCallBarring(New List(Of String) From {TelNr.Unformatiert}, Localize.resCommon.strCallBarring)
     End Sub
 
     ''' <summary>
@@ -225,7 +225,7 @@ Friend Module FritzBoxRufsperre
     ''' </summary>
     ''' <param name="TelNrListe">Liste an Telefonnummern, die der Sperrliste hinzugefügt werden sollen.</param>
     Friend Sub AddNrToBlockList(TelNrListe As IEnumerable(Of String))
-        AddToCallBarring(TelNrListe, My.Resources.strDefLongName)
+        AddToCallBarring(TelNrListe, Localize.resCommon.strCallBarring)
     End Sub
 
     ''' <summary>
