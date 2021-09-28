@@ -139,31 +139,10 @@
                     </Button.Content>
                 </Button>
 
-                <!--Edit--><!--
-                <Button Style="{StaticResource MenuToolButton}"
-                        ToolTip="{x:Static localize:resTelefonbuch.strToolTippKontaktEdit}"
-                        Command="{Binding BookVM.ContactsVM.EditCommand}">
-                    
-                    <Button.Content>
-                        <ContentControl ContentTemplate="{StaticResource ContactEdit}"/>
-                    </Button.Content>
-                </Button>-->
-
-                <!--Remove-->
-                <!--<Button Style="{StaticResource MenuToolButton}"
-                        ToolTip="{x:Static localize:resTelefonbuch.strToolTippKontaktDel}"
-                        Command="{Binding BookVM.ContactsVM.DeleteCommand}">
-                    
-                    <Button.Content>
-                        <ContentControl ContentTemplate="{StaticResource ContactDelete}"/>
-                    </Button.Content>
-                </Button>-->
             </StackPanel>
-
             
             </Grid>
-        <!--</StackPanel>-->
-        <!-- Content -->
+
         <Grid DockPanel.Dock="Bottom">
             <ContentControl Content="{Binding CurrentView}" Margin="0" />
         </Grid>

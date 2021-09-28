@@ -173,7 +173,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Soll die Nummer {0} zu den Rufsperren der Fritz!Box hinzugefügt werden? ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Soll die Nummer {0} zu der Rufsperre der Fritz!Box hinzugefügt werden? ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strQuestionBlockNumber() As String
             Get

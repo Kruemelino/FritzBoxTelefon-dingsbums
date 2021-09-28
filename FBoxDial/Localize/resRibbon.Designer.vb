@@ -362,6 +362,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufbeantworter ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property TAM_Label() As String
+            Get
+                Return ResourceManager.GetString("TAM_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffne die Verwaltung der Fritz!Box Anrufbeantworter... ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property TAM_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("TAM_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Hochladen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property Upload_Label() As String

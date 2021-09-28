@@ -25,7 +25,7 @@ Namespace Localize
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
-    Public Class resCommon
+    Public Class LocTAM
         
         Private Shared resourceMan As Global.System.Resources.ResourceManager
         
@@ -43,7 +43,7 @@ Namespace Localize
         Public Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("FBoxDial.resCommon", GetType(resCommon).Assembly)
+                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("FBoxDial.LocTAM", GetType(LocTAM).Assembly)
                     resourceMan = temp
                 End If
                 Return resourceMan
@@ -65,74 +65,47 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Land ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strArea() As String
-            Get
-                Return ResourceManager.GetString("strArea", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Rufsperre ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strCallBarring() As String
-            Get
-                Return ResourceManager.GetString("strCallBarring", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Erstellt durch das {0} am {1}  ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strCreateContact() As String
-            Get
-                Return ResourceManager.GetString("strCreateContact", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Datum ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strDate() As String
+        Public Shared ReadOnly Property strTAMDate() As String
             Get
-                Return ResourceManager.GetString("strDate", resourceCulture)
+                Return ResourceManager.GetString("strTAMDate", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Ort ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Dauer ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strLocation() As String
+        Public Shared ReadOnly Property strTAMDuration() As String
             Get
-                Return ResourceManager.GetString("strLocation", resourceCulture)
+                Return ResourceManager.GetString("strTAMDuration", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Ohne Name ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Anrufbeantworter ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strOhneName() As String
+        Public Shared ReadOnly Property strTAMHeader() As String
             Get
-                Return ResourceManager.GetString("strOhneName", resourceCulture)
+                Return ResourceManager.GetString("strTAMHeader", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Nummer ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Name ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strTelNr() As String
+        Public Shared ReadOnly Property strTAMName() As String
             Get
-                Return ResourceManager.GetString("strTelNr", resourceCulture)
+                Return ResourceManager.GetString("strTAMName", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Zeit ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Temefonnummer ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strTime() As String
+        Public Shared ReadOnly Property strTAMNumber() As String
             Get
-                Return ResourceManager.GetString("strTime", resourceCulture)
+                Return ResourceManager.GetString("strTAMNumber", resourceCulture)
             End Get
         End Property
     End Class

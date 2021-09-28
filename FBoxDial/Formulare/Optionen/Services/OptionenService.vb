@@ -252,23 +252,4 @@ Friend Class OptionenService
 
 #End Region
 
-#Region "TAM"
-    Friend Function GetTAMList() As TAMList Implements IOptionenService.GetTAMList
-        Dim ABListe As TAMList = Nothing
-        ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
-        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
-
-            If fbtr064.GetTAMList(ABListe) Then
-                ' Werte alle TAMs aus.
-                Task.Run(Sub()
-                             For Each AB In ABListe.TAMListe
-                                 AB.GetTAMInformation(fbtr064)
-                             Next
-                         End Sub)
-            End If
-        End Using
-
-        Return ABListe
-    End Function
-#End Region
 End Class

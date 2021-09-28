@@ -7,7 +7,7 @@
         xmlns:localize="clr-namespace:FBoxDial.Localize"
         mc:Ignorable="d" 
         Title="{x:Static localize:LocAnrList.strImportCallerList}" Height="450" Width="800"
-        d:DataContext="{d:DesignInstance Type=fbd:ListViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=fbd:ListViewModel, IsDesignTimeCreatable=False}"
         fbd:WindowBehavior.Loaded="{Binding LoadedCommand}">
     
     <Window.DataContext>

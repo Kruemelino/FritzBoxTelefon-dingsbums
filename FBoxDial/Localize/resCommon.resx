@@ -120,6 +120,9 @@
   <data name="strArea" xml:space="preserve">
     <value>Land</value>
   </data>
+  <data name="strCallBarring" xml:space="preserve">
+    <value>Rufsperre</value>
+  </data>
   <data name="strCreateContact" xml:space="preserve">
     <value>Erstellt durch das {0} am {1} </value>
   </data>

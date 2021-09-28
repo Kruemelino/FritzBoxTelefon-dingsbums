@@ -152,7 +152,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.37\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="MixERP.Net.VCards, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MixERP.Net.VCards.1.0.7\lib\net461\MixERP.Net.VCards.dll</HintPath>
@@ -279,6 +279,9 @@
     <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml.vb">
+      <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\Optionen\Services\BindingProxy.vb" />
     <Compile Include="Formulare\Optionen\Services\IOlFolderViewModel.vb" />
     <Compile Include="Formulare\Optionen\Services\IPageViewModel.vb" />
@@ -302,8 +305,20 @@
     </Compile>
     <Compile Include="Formulare\Optionen\ViewModel\OptTestViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
-    <Compile Include="Formulare\Optionen\Views\OptTAMView.xaml.vb">
-      <DependentUpon>OptTAMView.xaml</DependentUpon>
+    <Compile Include="Formulare\TAM\TAMWPF.xaml.vb">
+      <DependentUpon>TAMWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\TAM\ViewModels\TAMItemViewModel.vb" />
+    <Compile Include="Formulare\TAM\ViewModels\TAMListViewModel.vb" />
+    <Compile Include="Formulare\TAM\ViewModels\TAMMessageViewModel.vb" />
+    <Compile Include="Formulare\TAM\View\TAMDetailsView.xaml.vb">
+      <DependentUpon>TAMDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\TAM\View\TAMMessageView.xaml.vb">
+      <DependentUpon>TAMMessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\TAM\View\TAMView.xaml.vb">
+      <DependentUpon>TAMView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptTellowsView.xaml.vb">
       <DependentUpon>OptTellowsView.xaml</DependentUpon>
@@ -311,6 +326,15 @@
     <Compile Include="Formulare\Optionen\Views\OptTestView.xaml.vb">
       <DependentUpon>OptTestView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\TAM\Resources\LocTAM.Designer.vb">
+      <DependentUpon>LocTAM.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\TAM\Services\ITAMService.vb" />
+    <Compile Include="Formulare\TAM\Services\TAMService.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessage.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessageList.vb" />
     <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMInfo.vb" />
     <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
@@ -337,9 +361,6 @@
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsLink.xaml.vb">
       <DependentUpon>OptionsLink.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml.vb">
-      <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml.vb">
       <DependentUpon>OptionsHinweis.xaml</DependentUpon>
@@ -555,6 +576,11 @@
       <LastGenOutput>LocAnrMon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\TAM\Resources\LocTAM.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocTAM.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localize\Länder.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Länder.Designer.vb</LastGenOutput>
@@ -636,6 +662,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
     <Page Include="Formulare\Optionen\Resources\Optionen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -644,7 +674,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\OptTAMView.xaml">
+    <Page Include="Formulare\TAM\TAMWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\TAM\View\TAMDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\TAM\View\TAMMessageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\TAM\View\TAMView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -653,6 +695,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Views\OptTestView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\TAM\Resources\TAM.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -681,10 +727,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptionsLink.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -796,6 +838,7 @@
     <Resource Include="Tellows\Resources\score8.png" />
     <Resource Include="Tellows\Resources\score9.png" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

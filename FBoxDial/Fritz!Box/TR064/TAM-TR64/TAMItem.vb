@@ -31,6 +31,7 @@
         End Get
         Set
             SetProperty(_Enable, Value)
+
         End Set
     End Property
 
@@ -54,26 +55,44 @@
         End Set
     End Property
 
-    Friend Function GetTAMInformation(fboxTR064 As SOAP.FritzBoxTR64) As TAMInfo
+    <XmlIgnore> Friend Property MessageList As FritzBoxXMLMessageList
 
-        fboxTR064.GetTAMInfoEx(TAMInfo, Index)
+    Friend Function GetTAMInformation(fboxTR064 As SOAP.FritzBoxTR64) As TAMInfo
+        With fboxTR064
+            ' Lade die erweiterten TAM Infosätze herunter
+            If .GetTAMInfo(TAMInfo, Index) Then
+                ' Wenn der TAM aktiv und angezeigt wird, dann ermittle die URL zur MessageList
+                Dim MessageListURL As String = DfltStringEmpty
+                If Enable And Display AndAlso .GetMessageList(MessageListURL, Index) Then
+                    ' Deserialisiere die MessageList
+                    If DeserializeXML(MessageListURL, True, MessageList) Then
+                        NLogger.Debug($"{MessageList.Messages.Count} TAM Einträge von {MessageListURL} eingelesen.")
+                    Else
+                        NLogger.Warn($"TAM Einträge von {MessageListURL} nicht eingelesen.")
+                    End If
+                End If
+
+            End If
+
+        End With
 
         Return TAMInfo
     End Function
-    Friend Sub ToggleTAMEnableState(fboxTR064 As SOAP.FritzBoxTR64)
 
-        'Using fboxTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+    Friend Sub ToggleTAMEnableState()
 
-        ' Ermittle den aktuellen Status des Anrufbeantworters
-        With GetTAMInformation(fboxTR064) ' TAMInfo
-            Dim NewEnableState As Boolean = Not .Enable
+        Using fboxTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
-            If fboxTR064.SetEnable(Index, NewEnableState) Then Enable = NewEnableState
+            ' Ermittle den aktuellen Status des Anrufbeantworters
+            With GetTAMInformation(fboxTR064) ' TAMInfo
+                Dim NewEnableState As Boolean = Not .Enable
 
-            NLogger.Info($"Anrufbeantworter {Name} ({Index}) {If(NewEnableState, "aktiviert", "deaktiviert")}.")
-        End With
+                If fboxTR064.SetEnable(Index, NewEnableState) Then Enable = NewEnableState
 
-        'End Using
+                NLogger.Info($"Anrufbeantworter {Name} ({Index}) {If(NewEnableState, "aktiviert", "deaktiviert")}.")
+            End With
+
+        End Using
 
     End Sub
 

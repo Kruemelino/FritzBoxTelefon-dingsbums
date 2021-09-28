@@ -1,5 +1,4 @@
 ﻿Imports System.Threading.Tasks
-Imports System.Windows.Data
 
 Public Class ListViewModel
     Inherits NotifyBase

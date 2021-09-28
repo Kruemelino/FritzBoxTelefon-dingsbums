@@ -216,6 +216,12 @@
   <data name="Tab_ScreenTipp" xml:space="preserve">
     <value />
   </data>
+  <data name="TAM_Label" xml:space="preserve">
+    <value>Anrufbeantworter</value>
+  </data>
+  <data name="TAM_ScreenTipp" xml:space="preserve">
+    <value>Öffne die Verwaltung der Fritz!Box Anrufbeantworter...</value>
+  </data>
   <data name="UploadCreateContact" xml:space="preserve">
     <value>angelegt</value>
   </data>

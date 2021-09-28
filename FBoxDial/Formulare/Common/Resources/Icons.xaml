@@ -324,7 +324,7 @@
         </Rectangle>
     </Viewbox>
 
-    <Viewbox x:Key="Login_16x" x:Shared="false"  Width="16" Height="16">
+    <Viewbox x:Key="Login_16x" x:Shared="false" Width="16" Height="16">
         <Rectangle Width="16" Height="16">
             <Rectangle.Fill>
                 <DrawingBrush>
@@ -344,6 +344,23 @@
         </Rectangle>
     </Viewbox>
 
+    <Viewbox x:Key="SoundFile_16x" x:Shared="false" Width="16" Height="16">
+        <Rectangle Width="16" Height="16">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <DrawingGroup.Children>
+                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M7.5861,-0.000199999999999534L3.5851,4.0008 9.99999999997669E-05,4.0008 9.99999999997669E-05,10.9998 3.5851,10.9998 7.5861,14.9998 10.0001,14.9998 10.0001,9.9998 10.9291,9.9998 13.3011,12.3708 15.3701,10.3008 14.0701,8.9998 16.0001,8.9998 16.0001,5.9998 14.0701,5.9998 15.3701,4.6988 13.3011,2.6298 10.9291,4.9998 10.0001,4.9998 10.0001,-0.000199999999999534z" />
+                                <GeometryDrawing Brush="#FF414141" Geometry="F1M13,7C13.032,7.162 13.05,7.329 13.05,7.5 13.05,7.671 13.032,7.838 13,8L15,8 15,7z M11.956,9.611L13.301,10.957 13.956,10.301 12.611,8.957C12.439,9.217,12.217,9.439,11.956,9.611 M12.611,6.043L13.956,4.699 13.301,4.043 11.956,5.388C12.217,5.561,12.439,5.783,12.611,6.043 M9,6L11,6 11,9 9,9 9,14 8,14 4,10 1,10 1,5 4,5 8,1 9,1z" />
+                            </DrawingGroup.Children>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Viewbox>
 
     <!--Nachfolgende Icons sind der MahApps.Metro.IconPacks entnommen
         https://github.com/MahApps/MahApps.Metro.IconPacks

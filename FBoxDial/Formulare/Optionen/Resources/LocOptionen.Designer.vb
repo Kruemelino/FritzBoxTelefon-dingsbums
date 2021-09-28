@@ -762,6 +762,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Aus ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strOFF() As String
+            Get
+                Return ResourceManager.GetString("strOFF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die An ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strON() As String
+            Get
+                Return ResourceManager.GetString("strON", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Lade Outlook-Ordner... ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strOutlookTreeView() As String

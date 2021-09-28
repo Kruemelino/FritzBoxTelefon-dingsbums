@@ -110,7 +110,7 @@ Imports FBoxDial.FritzBoxDefault
 
                                 ' Ermittle die Nummer, auf den der AB reagiert.
                                 Dim TAMInfo As New TAMInfo
-                                If .GetTAMInfoEx(TAMInfo, AB.Index) Then
+                                If .GetTAMInfo(TAMInfo, AB.Index) Then
                                     If TAMInfo.PhoneNumbers.Length.AreEqual(1) AndAlso TAMInfo.PhoneNumbers.First.IsStringNothingOrEmpty Then
                                         ' Empty string represents all numbers.
                                         Telefonnummern.ForEach(Sub(TelNr) Telefon.StrEinTelNr.Add(TelNr.Einwahl))
@@ -512,7 +512,7 @@ Imports FBoxDial.FritzBoxDefault
     ''' <param name="Abfrage">Die auszuführende Abfrage.</param>
     ''' <returns></returns>
     Private Async Function FritzBoxAsyncQuery(SessionID As String, Abfrage As List(Of String)) As Task(Of String)
-        Return Await DownloadStringTaskAsync($"https://{XMLData.POptionen.ValidFBAdr}/query.lua?{SessionID}&{String.Join("&", Abfrage.ToArray)}", Encoding.GetEncoding(DfltCodePageFritzBox))
+        Return Await DownloadStringTaskAsync(New Uri($"https://{XMLData.POptionen.ValidFBAdr}/query.lua?{SessionID}&{String.Join("&", Abfrage.ToArray)}"), Encoding.GetEncoding(DfltCodePageFritzBox))
     End Function
 
     ''' <summary>

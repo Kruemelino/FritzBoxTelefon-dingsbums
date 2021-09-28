@@ -46,8 +46,5 @@ Friend Interface IOptionenService
     Sub StartKontaktsucheTest(TelNr As String)
 #End Region
 
-#Region "TAM"
-    Function GetTAMList() As TAMList
-#End Region
 
 End Interface

@@ -132,7 +132,6 @@ Public Class ContactsViewModel
 
     Public Sub LadeKontakte(Telefonbuch As FritzBoxXMLTelefonbuch)
 
-
         FBoxTelefonbuch = Telefonbuch
 
         Telefonbuch.LadeKonaktBilder(SessionID)

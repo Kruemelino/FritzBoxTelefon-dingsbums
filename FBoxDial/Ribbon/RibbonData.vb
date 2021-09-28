@@ -270,6 +270,11 @@ Namespace RibbonData
             fbt.Show()
         End Sub
 
+        Private Sub TAM()
+            Dim fbtam As New TAMWPF
+            fbtam.Show()
+        End Sub
+
         ''' <summary>
         ''' Ein- und Ausschalten des Anrufmonitors
         ''' </summary>

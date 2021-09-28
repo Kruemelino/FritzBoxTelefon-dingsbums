@@ -169,6 +169,7 @@ Friend Module WebFunctions
     ''' <param name="UniformResourceIdentifier">Ein <see cref="Uri"/>-Objekt, das den herunterzuladenden URI enthält.</param>
     ''' <param name="ZeichenCodierung">(Optional) Legt die <see cref="Encoding"/> für den Download von Zeichenfolgen fest.</param>
     ''' <param name="Headers">(Optional) Zusätzliche Header für den Download von Zeichenfolgen</param>
+    ''' <param name="IgnoreStatusCode">(Optional) Angabe eines <see cref="HttpStatusCode"/> welcher bei der Auswertung der <see cref="WebException"/> ignoriert werden soll.</param>
     ''' <returns>Das <see cref="Task"/>-Objekt, das den asynchronen Vorgang darstellt.</returns>
     Friend Async Function DownloadStringTaskAsync(UniformResourceIdentifier As Uri, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing, Optional IgnoreStatusCode As HttpStatusCode = Nothing) As Task(Of String)
 
@@ -338,6 +339,48 @@ Friend Module WebFunctions
         End Select
         Return False
     End Function
+
+    Friend Function GetStreamTaskAsync(UniformResourceIdentifier As Uri) As Task(Of IO.Stream)
+
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
+        Select Case UniformResourceIdentifier.Scheme
+            Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
+
+                Using webClient As New WebClient With {.Proxy = Nothing,
+                                                       .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)}
+                    With webClient
+
+                        With .Headers
+                            .Set(HttpRequestHeader.UserAgent, DefaultHeaderUserAgent)
+                            .Set(HttpRequestHeader.KeepAlive, DefaultHeaderKeepAlive.ToString)
+                        End With
+
+                        Try
+                            Return .OpenReadTaskAsync(UniformResourceIdentifier)
+
+                        Catch ex As ArgumentNullException
+                            ' Der address-Parameter ist null.
+                            NLogger.Error(ex, "Der address-Parameter ist null.")
+                            Return Nothing
+
+                        Catch ex As WebException
+                            ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
+                            ' - oder -
+                            ' Fehler beim Herunterladen der Ressource.
+                            NLogger.Error(ex, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
+                            Return Nothing
+
+                        End Try
+                    End With
+                End Using
+            Case Else
+
+                Return Nothing
+                NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
+        End Select
+    End Function
+
 #End Region
 
 #Region "POST"

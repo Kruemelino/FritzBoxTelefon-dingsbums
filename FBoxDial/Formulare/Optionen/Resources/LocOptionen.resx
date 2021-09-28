@@ -435,6 +435,14 @@ Wähle Telefoniegerät aus, was mit MicroSIP registriert ist.</value>
     <value>Pfad zu MicroSIP.exe</value>
     <comment>OptMicroSIPView</comment>
   </data>
+  <data name="strOFF" xml:space="preserve">
+    <value>Aus</value>
+    <comment>OptTAMView</comment>
+  </data>
+  <data name="strON" xml:space="preserve">
+    <value>An</value>
+    <comment>OptTAMView</comment>
+  </data>
   <data name="strOutlookTreeView" xml:space="preserve">
     <value>Lade Outlook-Ordner...</value>
     <comment>OptionsOLFolderTV</comment>

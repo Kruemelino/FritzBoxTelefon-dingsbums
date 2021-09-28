@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:fbd="clr-namespace:FBoxDial">
+                    xmlns:fbd="clr-namespace:FBoxDial"
+                    xmlns:localize="clr-namespace:FBoxDial.Localize">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
@@ -223,4 +224,5 @@
             </Setter.Value>
         </Setter>
     </Style>
+
 </ResourceDictionary>
