@@ -48,5 +48,13 @@
 
         <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strInfoMarkenrecht}"/>
 
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strInfoSpendeHead}"/>
+
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strInfoSpende}"/>
+
+        <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strInfoSpendeLink}" 
+                         URL="https://paypal.me/gertmichael" 
+                         LinkLabel="paypal.me/gertmichael"/>
     </StackPanel>
 </UserControl>

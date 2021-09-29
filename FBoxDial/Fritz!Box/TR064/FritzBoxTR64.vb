@@ -283,7 +283,6 @@ Namespace SOAP
 
         End Function
 
-
         ''' <summary>
         ''' Ermittelt die Liste der Telefonbocher. 
         ''' </summary>
@@ -654,6 +653,116 @@ Namespace SOAP
         Friend Function DeleteCallBarringEntryUID(NewPhonebookEntryUniqueID As Integer) As Boolean
 
             With TR064Start(Tr064Files.x_contactSCPD, "DeleteCallBarringEntryUID", New Hashtable From {{"NewPhonebookEntryUniqueID", NewPhonebookEntryUniqueID}})
+                Return Not .ContainsKey("Error")
+
+            End With
+
+        End Function
+
+        ''' <summary>
+        ''' Get the number of deflection entrys.
+        ''' </summary>
+        ''' <param name="NumberOfDeflections">Returns the number of deflection entrys</param>
+        ''' <returns>True when success</returns>
+        Friend Function GetNumberOfDeflections(ByRef NumberOfDeflections As String) As Boolean
+
+            With TR064Start(Tr064Files.x_contactSCPD, "GetNumberOfDeflections")
+
+                If .ContainsKey("NewNumberOfDeflections") Then
+                    ' Phonebook URL auslesen
+                    NumberOfDeflections = .Item("NewNumberOfDeflections").ToString
+
+                    PushStatus(LogLevel.Debug, $"Anzahl der Rufweiterleitungen aus der Fritz!Box ausgelesen: '{NumberOfDeflections}'")
+
+                    Return True
+
+                Else
+                    PushStatus(LogLevel.Warn, $"GetNumberOfDeflections konnte nicht aufgelöst werden. '{ .Item("Error")}'")
+
+                    NumberOfDeflections = DfltStringEmpty
+
+                    Return False
+                End If
+            End With
+
+        End Function
+
+        ''' <summary>
+        ''' Get the parameter for a deflection entry.
+        ''' DeflectionID is in the range of 0 .. NumberOfDeflections-1.
+        ''' </summary>
+        ''' <param name="DeflectionInfo">Komplexes Datenelement, was alle Informationen zu der Rufumleitung enthält.</param>
+        ''' <param name="DeflectionId">Die ID der Rufumleitung</param>
+        ''' <returns>True when success</returns>
+        Friend Function GetDeflection(ByRef DeflectionInfo As DeflectionInfo, DeflectionId As Integer) As Boolean
+
+            If DeflectionInfo Is Nothing Then DeflectionInfo = New DeflectionInfo
+
+            With TR064Start(Tr064Files.x_tamSCPD, "GetInfo", New Hashtable From {{"NewDeflectionId", DeflectionId}})
+
+                If .ContainsKey("NewEnable") Then
+
+                    DeflectionInfo.Enable = CBool(.Item("NewEnable"))
+                    DeflectionInfo.Type = CType(.Item("NewType"), TypeEnum)
+                    DeflectionInfo.Number = .Item("NewNumber").ToString
+                    DeflectionInfo.DeflectionToNumber = .Item("NewDeflectionToNumber").ToString
+                    DeflectionInfo.Mode = CType(.Item("NewMode"), ModeEnum)
+                    DeflectionInfo.Outgoing = .Item("NewOutgoing").ToString
+                    DeflectionInfo.PhonebookID = CInt(.Item("NewPhonebookID"))
+
+                    PushStatus(LogLevel.Debug, $"GetDeflection ({DeflectionId}): {DeflectionInfo.Mode}; {DeflectionInfo.Enable}")
+
+                    Return True
+
+                Else
+                    PushStatus(LogLevel.Warn, $"GetDeflection konnte für nicht aufgelößt werden. '{ .Item("Error")}'")
+
+                    Return False
+                End If
+            End With
+
+        End Function
+
+        ''' <summary>
+        ''' Returns a list of deflections.
+        ''' </summary>
+        ''' <param name="DeflectionList">List of deflections</param>
+        ''' <returns>True when success</returns>
+        Friend Function GetDeflections(ByRef DeflectionList As String) As Boolean
+
+            With TR064Start(Tr064Files.x_contactSCPD, "GetDeflections")
+
+                If .ContainsKey("NewDeflectionList") Then
+                    ' Phonebook URL auslesen
+                    DeflectionList = .Item("NewDeflectionList").ToString
+
+                    PushStatus(LogLevel.Debug, $"Liste der Rufweiterleitungen: '{DeflectionList}'")
+
+                    Return True
+
+                Else
+                    PushStatus(LogLevel.Warn, $"GetDeflections konnte nicht aufgelöst werden. '{ .Item("Error")}'")
+
+                    DeflectionList = DfltStringEmpty
+
+                    Return False
+                End If
+            End With
+
+        End Function
+
+        ''' <summary>
+        ''' Enable or disable a deflection.
+        ''' DeflectionID is in the range of 0 .. NumberOfDeflections-1
+        ''' </summary>
+        ''' <param name="DeflectionId">Die ID der Rufumleitung</param>
+        ''' <param name="Enable">Neuer Aktivierungszustand</param>
+        ''' <returns>True when success</returns>
+        Friend Function SetDeflectionEnable(DeflectionId As Integer, Enable As Boolean) As Boolean
+
+            With TR064Start(Tr064Files.x_contactSCPD, "SetPhonebookEntryUID", New Hashtable From {{"NewDeflectionId", DeflectionId},
+                                                                                                  {"NewEnable", Enable.ToString}})
+
                 Return Not .ContainsKey("Error")
 
             End With

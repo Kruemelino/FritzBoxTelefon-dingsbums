@@ -379,6 +379,19 @@ Für fehlerhafte oder falsche Angaben, die Rückwärtssuche liefert wird keine H
     <value>Dieses Outlook-Addin wird vom Autor privat in der Freizeit als Hobby gepflegt. Mit der Bereitstellung des Outlook-Addins werden keine gewerblichen Interessen verfolgt. Es wird aus rein ideellen Gründen zum Gemeinwohl aller Nutzer einer Fritz!Box betrieben. Die Erstellung dieser Software erfolgt nicht im Auftrag oder mit Wissen der Firmen AVM GmbH bzw. Microsoft Corporation. Diese Software wurde unabhängig erstellt. Der Autor pflegt im Zusammenhang mit dieser Software keine Beziehungen zur Firma AVM GmbH oder Microsoft Corporation.</value>
     <comment>OptInfoView</comment>
   </data>
+  <data name="strInfoSpende" xml:space="preserve">
+    <value>Ich habe nun die Möglichkeit geschaffen, mir Spenden zu übersenden. Es besteht in keinem Fall eine Pflicht zu spenden. Es gibt auch keinen Mehrwert für die, die gespendet haben. Ich programmiere aus Spaß und Freude und nicht zum Zweck des Geldverdienens.
+Wer spenden will, der spendet und wer nicht will, der macht es halt nicht.</value>
+    <comment>OptInfo</comment>
+  </data>
+  <data name="strInfoSpendeHead" xml:space="preserve">
+    <value>Spende</value>
+    <comment>OptInfo</comment>
+  </data>
+  <data name="strInfoSpendeLink" xml:space="preserve">
+    <value>PayPal</value>
+    <comment>OptInfo</comment>
+  </data>
   <data name="strJournal" xml:space="preserve">
     <value>Journal</value>
     <comment>MainView</comment>

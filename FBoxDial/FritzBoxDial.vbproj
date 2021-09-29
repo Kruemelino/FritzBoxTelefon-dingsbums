@@ -333,6 +333,7 @@
     </Compile>
     <Compile Include="Formulare\TAM\Services\ITAMService.vb" />
     <Compile Include="Formulare\TAM\Services\TAMService.vb" />
+    <Compile Include="Fritz!Box\TR064\Deflection-TR64\DeflectionInfo.vb" />
     <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessage.vb" />
     <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessageList.vb" />
     <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMInfo.vb" />

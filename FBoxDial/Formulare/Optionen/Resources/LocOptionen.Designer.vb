@@ -641,6 +641,34 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Ich habe nun die Möglichkeit geschaffen, mir Spenden zu übersenden. Es besteht in keinem Fall eine Pflicht zu spenden. Es gibt auch keinen Mehrwert für die, die gespendet haben. Ich programmiere aus Spaß und Freude und nicht zum Zweck des Geldverdienens.
+        '''Wer spenden will, der spendet und wer nicht will, der macht es halt nicht. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strInfoSpende() As String
+            Get
+                Return ResourceManager.GetString("strInfoSpende", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Spende ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strInfoSpendeHead() As String
+            Get
+                Return ResourceManager.GetString("strInfoSpendeHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die PayPal ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strInfoSpendeLink() As String
+            Get
+                Return ResourceManager.GetString("strInfoSpendeLink", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Journal ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strJournal() As String
