@@ -1,26 +1,22 @@
 ﻿Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop
 Friend Module Journal
-    Private Property Anrufliste As FritzBoxXMLCallList
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-    Friend Async Sub AutoAnrListe()
-
-        ' Lade die Anruflise aus der Fritz!Box herunter
-        Anrufliste = Await LadeFritzBoxAnrufliste()
+    Friend Async Sub AutoAnrListe(Anrufliste As FritzBoxXMLCallList)
 
         If Anrufliste IsNot Nothing Then
             NLogger.Debug($"Anrufliste mit {Anrufliste.Calls.Count} Einträgen geladen.")
 
             ' Starte die Auswertung der Anrufliste
-            Await ImportCalls(XMLData.POptionen.LetzteAuswertungAnrList, Now)
+            Await ImportCalls(Anrufliste, XMLData.POptionen.LetzteAuswertungAnrList, Now)
 
             ' Merke die Zeit
             If XMLData.POptionen.LetzteAuswertungAnrList < Now Then XMLData.POptionen.LetzteAuswertungAnrList = Now
         End If
     End Sub
 
-    Friend Async Sub AutoBlockListe()
+    Friend Async Sub AutoBlockListe(fboxTR064 As SOAP.FritzBoxTR64)
 
         With XMLData.POptionen
             If Now.Subtract(.LetzteSperrlistenaktualisierung).TotalHours.IsLargerOrEqual(24) Then
@@ -30,7 +26,7 @@ Friend Module Journal
                 Dim progressIndicator = New Progress(Of Integer)(Sub(status)
                                                                  End Sub)
 
-                Await BlockTellowsNumbers(.CBTellowsAutoScoreFBBlockList, .CBTellowsEntryNumberCount, ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
+                Await BlockTellowsNumbers(fboxTR064, .CBTellowsAutoScoreFBBlockList, .CBTellowsEntryNumberCount, ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
 
                 .LetzteSperrlistenaktualisierung = Now
 
@@ -42,7 +38,7 @@ Friend Module Journal
         End With
     End Sub
 
-    Private Function ImportCalls(DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task
+    Private Function ImportCalls(Anrufliste As FritzBoxXMLCallList, DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task
         Return Task.Run(Sub()
                             Dim Abfrage As ParallelQuery(Of FritzBoxXMLCall)
 

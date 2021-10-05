@@ -45,6 +45,7 @@ Public NotInheritable Class ThisAddIn
         Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
         Dim TaskTelefonbücher As Task(Of FritzBoxXMLTelefonbücher) = Nothing
         Dim TaskVorwahlen As Task(Of Kennzahlen) = Nothing
+        Dim TaskAnrList As Task(Of FritzBoxXMLCallList) = Nothing
 
         ' Initialisiere die Landes- und Ortskennzahlen
         PVorwahlen = New Vorwahlen
@@ -54,70 +55,80 @@ Public NotInheritable Class ThisAddIn
         Dim UserData As New NutzerDaten
         NLogger.Debug("Nutzererinstellungen geladen...")
 
-        ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
-        If XMLData.POptionen.CBKontaktSucheFritzBox Then
-            TaskTelefonbücher = Telefonbücher.LadeFritzBoxTelefonbücher()
-        End If
+        ' Initiiere die TR064 Schnittstelle für die Abfragen der Daten der Fritz!Box
+        Using FBoxTR064 = New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
-        ' Tellows ScoreList laden
-        If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
-            Using tellows As New Tellows
-                TaskScoreListe = tellows.LadeScoreList
-            End Using
-        End If
+            If FBoxTR064.Bereit Then
+                ' Schreibe in das Log noch Informationen zur Fritz!Box
+                NLogger.Info($"{FBoxTR064.FriendlyName} {FBoxTR064.DisplayVersion}")
 
-        ' Anrufmonitor starten
-        If XMLData.POptionen.CBAnrMonAuto Then
-            PAnrufmonitor = New Anrufmonitor
-            PAnrufmonitor.StartAnrMon()
-            NLogger.Debug("Anrufmonitor gestartet...")
-        End If
+                ' Lade die Anrufliste herunter
+                If XMLData.POptionen.CBAutoAnrList Then
+                    TaskAnrList = LadeFritzBoxAnrufliste(FBoxTR064)
+                End If
 
-        ' Explorer Ereignishandler festlegen
-        SetExplorer()
-        NLogger.Debug("Outlook-Explorer Ereignishandler erfasst...")
+                ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
+                If XMLData.POptionen.CBKontaktSucheFritzBox Then
+                    TaskTelefonbücher = Telefonbücher.LadeFritzBoxTelefonbücher(FBoxTR064)
+                End If
 
-        ' Outlook Inspektoren erfassen
-        OutlookInspectors = Application.Inspectors
-        NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
-
-        ' Schreibe in das Log noch Informationen zur Fritz!Box
-        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Nothing)
-            NLogger.Debug($"{fbtr064.FriendlyName} {fbtr064.DisplayVersion}")
-        End Using
-
-        ' Beendigung des Task für das Einlesen der Kennzahlen abwarten
-        PVorwahlen.Kennzahlen = Await TaskVorwahlen
-        NLogger.Debug($"Landes- und Ortskennzahlen {If(PVorwahlen.Kennzahlen Is Nothing, "nicht ", "")}geladen...")
-
-        ' Beendigung des Task für das Herunterladen der Fritz!Box Telefonbücher abwarten
-        If TaskTelefonbücher IsNot Nothing Then
-            PhoneBookXML = Await TaskTelefonbücher
-            NLogger.Debug($"Fritz!Box Telefonbücher geladen...")
-        End If
-
-        ' Beendigung des Task für das Herunterladen der tellows ScoreList abwarten
-        If TaskScoreListe IsNot Nothing Then
-            TellowsScoreList = Await TaskScoreListe
-            If TellowsScoreList IsNot Nothing Then
-                NLogger.Debug($"Die tellows Scorelist mit {TellowsScoreList.Count} Einträgen geladen.")
+                ' Tellows ScoreList laden
+                If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
+                    Using tellows As New Tellows
+                        TaskScoreListe = tellows.LadeScoreList
+                    End Using
+                End If
             Else
-                NLogger.Warn($"Die tellows Scorelist konnte nicht geladen werden.")
+                NLogger.Warn("TR064 Schnittstelle der Dritz!Box nicht verfügbar.")
             End If
-        End If
 
-        ' Anrufliste auswerten
-        If XMLData.POptionen.CBAutoAnrList Then
-            NLogger.Debug("Auswertung Anrufliste gestartet...")
-            AutoAnrListe()
-        End If
+            ' Anrufmonitor starten
+            If XMLData.POptionen.CBAnrMonAuto Then
+                PAnrufmonitor = New Anrufmonitor
+                PAnrufmonitor.StartAnrMon()
+                NLogger.Debug("Anrufmonitor gestartet...")
+            End If
 
-        ' Aktualisierung der tellows Sperrliste
-        If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
-            NLogger.Debug("Update Rufsperre durch tellows gestartet...")
-            AutoBlockListe()
-        End If
+            ' Explorer Ereignishandler festlegen
+            SetExplorer()
+            NLogger.Debug("Outlook-Explorer Ereignishandler erfasst...")
 
+            ' Outlook Inspektoren erfassen
+            OutlookInspectors = Application.Inspectors
+            NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
+
+            ' Beendigung des Task für das Einlesen der Kennzahlen abwarten
+            PVorwahlen.Kennzahlen = Await TaskVorwahlen
+            NLogger.Debug($"Landes- und Ortskennzahlen {If(PVorwahlen.Kennzahlen Is Nothing, "nicht ", "")}geladen...")
+
+            ' Beendigung des Task für das Herunterladen der Fritz!Box Telefonbücher abwarten
+            If TaskTelefonbücher IsNot Nothing Then
+                PhoneBookXML = Await TaskTelefonbücher
+                NLogger.Debug($"Fritz!Box Telefonbücher geladen...")
+            End If
+
+            ' Beendigung des Task für das Herunterladen der tellows ScoreList abwarten
+            If TaskScoreListe IsNot Nothing Then
+                TellowsScoreList = Await TaskScoreListe
+                If TellowsScoreList IsNot Nothing Then
+                    NLogger.Debug($"Die tellows Scorelist mit {TellowsScoreList.Count} Einträgen geladen.")
+                Else
+                    NLogger.Warn($"Die tellows Scorelist konnte nicht geladen werden.")
+                End If
+            End If
+
+            ' Anrufliste auswerten
+            If TaskAnrList IsNot Nothing Then
+                NLogger.Debug("Auswertung Anrufliste gestartet...")
+                AutoAnrListe(Await TaskAnrList)
+            End If
+
+            ' Aktualisierung der tellows Sperrliste
+            If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
+                NLogger.Debug("Update Rufsperre durch tellows gestartet...")
+                AutoBlockListe(FBoxTR064)
+            End If
+        End Using
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown

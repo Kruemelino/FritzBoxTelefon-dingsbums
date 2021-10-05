@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FBoxDataMainHeader" xml:space="preserve">
+    <value>Fritz!Box Daten</value>
+  </data>
+  <data name="strAddBlockList" xml:space="preserve">
+    <value>Nummer auf Anrufsperre der Fritz!Box setzen</value>
+  </data>
+  <data name="strAnrList" xml:space="preserve">
+    <value>Anrufliste</value>
+  </data>
+  <data name="strBrowse" xml:space="preserve">
+    <value>Auswählen</value>
+  </data>
+  <data name="strCall" xml:space="preserve">
+    <value>Anrufen</value>
+  </data>
+  <data name="strCallBarringList" xml:space="preserve">
+    <value>Rufsperren</value>
+  </data>
+  <data name="strCancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="strCancel1" xml:space="preserve">
+    <value>Abbruch</value>
+  </data>
+  <data name="strCancelClicked" xml:space="preserve">
+    <value>Abbrechen geklickt</value>
+  </data>
+  <data name="strCheckAll" xml:space="preserve">
+    <value>Alle auswählen</value>
+  </data>
+  <data name="strDate" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="strDelete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="strDevice" xml:space="preserve">
+    <value>Gerät</value>
+  </data>
+  <data name="strDial" xml:space="preserve">
+    <value>Anrufen</value>
+  </data>
+  <data name="strDownload" xml:space="preserve">
+    <value>Herunterladen</value>
+  </data>
+  <data name="strDuration" xml:space="preserve">
+    <value>Dauer</value>
+  </data>
+  <data name="strEdit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="strEndTime" xml:space="preserve">
+    <value>Endzeit</value>
+  </data>
+  <data name="strFBoxAnrufliste" xml:space="preserve">
+    <value>Fritz!Box Anrufliste</value>
+  </data>
+  <data name="strFBoxBlockList" xml:space="preserve">
+    <value>Fritz!Box Rufsperre</value>
+  </data>
+  <data name="strFilter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="strFritzBoxPhonebooks" xml:space="preserve">
+    <value>Fritz!Box Telefonbücher</value>
+  </data>
+  <data name="strHeaderMail" xml:space="preserve">
+    <value>E-Mails</value>
+  </data>
+  <data name="strHeaderPhone" xml:space="preserve">
+    <value>Telefonnummern</value>
+  </data>
+  <data name="strImportCallerList" xml:space="preserve">
+    <value>Import der Anrufliste</value>
+  </data>
+  <data name="strJournalImport" xml:space="preserve">
+    <value>Jounalimport</value>
+  </data>
+  <data name="strMailHome" xml:space="preserve">
+    <value>Privat</value>
+  </data>
+  <data name="strMailWork" xml:space="preserve">
+    <value>Arbeit</value>
+  </data>
+  <data name="strMyNumber" xml:space="preserve">
+    <value>Eingene Nr.</value>
+  </data>
+  <data name="strName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="strNoEntriesSelected" xml:space="preserve">
+    <value>Keine Einträge markiert</value>
+  </data>
+  <data name="strPhonebooks" xml:space="preserve">
+    <value>Telefonbücher</value>
+  </data>
+  <data name="strPhoneHome" xml:space="preserve">
+    <value>Privat</value>
+  </data>
+  <data name="strPhoneMobile" xml:space="preserve">
+    <value>Mobil</value>
+  </data>
+  <data name="strPhoneWork" xml:space="preserve">
+    <value>Arbeit</value>
+  </data>
+  <data name="strPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="strQuestionBlockNumber" xml:space="preserve">
+    <value>Sollen die selektierten Nummern {0} zu den Rufsperren der Fritz!Box hinzugefügt werden?</value>
+  </data>
+  <data name="strQuestionBookDelete" xml:space="preserve">
+    <value>Soll das Telefonbuch '{0}' auf der Fritz!Box endgültig gelöscht werden?</value>
+  </data>
+  <data name="strQuestionBookDeleteID0" xml:space="preserve">
+    <value>Das Telefonbuch '{0}' kann auf der Fritz!Box nicht gelöscht werden. Stattdessen werden alle Kontakte gelöscht. Fortfahren?</value>
+  </data>
+  <data name="strQuestionDeleteCallBarring" xml:space="preserve">
+    <value>Soll diese Rufsperre auf der Fritz!Box endgültig gelöscht werden?</value>
+  </data>
+  <data name="strQuestionDeleteCallBarrings" xml:space="preserve">
+    <value>Sollen die {0} ausgewählte(n) Einträg(e) aus der Rufsperre endgültig gelöscht werden?</value>
+  </data>
+  <data name="strQuestionDeleteContact" xml:space="preserve">
+    <value>Soll der Kontakt '{0}' im Telefonbuch '{1}' auf der Fritz!Box endgültig gelöscht werden?</value>
+  </data>
+  <data name="strQuestionDeleteContacts" xml:space="preserve">
+    <value>Sollen die {0} ausgewählte(n) Kontakt(e) im Telefonbuch '{1}' auf der Fritz!Box endgültig gelöscht werden?</value>
+  </data>
+  <data name="strQuestionDeleteMessage" xml:space="preserve">
+    <value>Soll diese Nachricht im Anrufbeantworter auf der Fritz!Box endgültig gelöscht werden?</value>
+  </data>
+  <data name="strQuestionUpdatetellows" xml:space="preserve">
+    <value>Für die Fritz!Box Rufsperre wurden {0} Einträge für {1} Nummern aus der tellows Score-Liste erzeugt (ab Score {2}) . 
+
+Warnung: Das Hochladen auf die Fritz!Box kann eine Weile dauern und die Fritz!Box kann währenddessen und auch danach träge reagieren.
+
+Sollen die Einträge jetzt in die Fritz!Box geladen werden?</value>
+  </data>
+  <data name="strRemoteCaller" xml:space="preserve">
+    <value>Gegenstelle</value>
+  </data>
+  <data name="strRufUml" xml:space="preserve">
+    <value>Rufumleitungen</value>
+  </data>
+  <data name="strRufUmlMode" xml:space="preserve">
+    <value>Modus</value>
+  </data>
+  <data name="strRufUmlTyp" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="strRufUmlVon" xml:space="preserve">
+    <value>Anruf an</value>
+  </data>
+  <data name="strRufUmlZiel" xml:space="preserve">
+    <value>Umleitungsziel</value>
+  </data>
+  <data name="strSave" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="strShowContact" xml:space="preserve">
+    <value>Kontakt anzeigen</value>
+  </data>
+  <data name="strStartJounalImport" xml:space="preserve">
+    <value>Starte Jounalimport</value>
+  </data>
+  <data name="strStartTime" xml:space="preserve">
+    <value>Startzeit</value>
+  </data>
+  <data name="strStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="strTAM" xml:space="preserve">
+    <value>Anrufbeantworter</value>
+  </data>
+  <data name="strTAMDate" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="strTAMDuration" xml:space="preserve">
+    <value>Dauer</value>
+  </data>
+  <data name="strTAMHeader" xml:space="preserve">
+    <value>Fritz!Box Anrufbeantworter</value>
+  </data>
+  <data name="strTAMName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="strTAMNumber" xml:space="preserve">
+    <value>Telefonnummer</value>
+  </data>
+  <data name="strTelBuch" xml:space="preserve">
+    <value>Telefonbücher</value>
+  </data>
+  <data name="strTellows" xml:space="preserve">
+    <value>tellows</value>
+  </data>
+  <data name="strTellowsAddtoBlockListe" xml:space="preserve">
+    <value>Nummern hinzufügen</value>
+  </data>
+  <data name="strTellowsAutoScoreFBBlockList" xml:space="preserve">
+    <value>Mindestscore für Fritz!Box Rufsperre</value>
+  </data>
+  <data name="strTellowsCallerName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="strTellowsCallerType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="strTellowsComplains" xml:space="preserve">
+    <value>Kommentare</value>
+  </data>
+  <data name="strTellowsConfig" xml:space="preserve">
+    <value>Rufsperre Einstellungen</value>
+  </data>
+  <data name="strTellowsCountry" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="strTellowsEntryNumberCount" xml:space="preserve">
+    <value>Anzahl an Telefonnummern je Eintrag</value>
+  </data>
+  <data name="strTellowsFilter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="strTellowsFilterName" xml:space="preserve">
+    <value>Enthaltener Text in Name oder Typ</value>
+  </data>
+  <data name="strTellowsFilterScore" xml:space="preserve">
+    <value>Anzuzeigender Score</value>
+  </data>
+  <data name="strTellowsNumber" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <data name="strTellowsPrefix" xml:space="preserve">
+    <value>Vorwahl</value>
+  </data>
+  <data name="strTellowsPrefixName" xml:space="preserve">
+    <value>Ort</value>
+  </data>
+  <data name="strTellowsScore" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="strTellowsSearches" xml:space="preserve">
+    <value>Suchanfragen</value>
+  </data>
+  <data name="strTime" xml:space="preserve">
+    <value>Zeit</value>
+  </data>
+  <data name="strToolTippKontaktAdd" xml:space="preserve">
+    <value>Ein neuen Kontakt hinzufügen...</value>
+  </data>
+  <data name="strToolTippKontaktDel" xml:space="preserve">
+    <value>Diesen Kontakt löschen...</value>
+  </data>
+  <data name="strToolTippKontaktEdit" xml:space="preserve">
+    <value>Diesen Kontakt bearbeiten...</value>
+  </data>
+  <data name="strToolTippTelBuchAdd" xml:space="preserve">
+    <value>Ein neues Telefonbuch hinzufügen...</value>
+  </data>
+  <data name="strToolTippTelBuchDel" xml:space="preserve">
+    <value>Dieses Telefonbuch löschen...</value>
+  </data>
+  <data name="strToolTippTelBuchDown" xml:space="preserve">
+    <value>Telefonbücher von der Fritz!Box herunterladen...</value>
+  </data>
+  <data name="strToolTippTelBuchRename" xml:space="preserve">
+    <value>Dieses Telefonbuch umbenennen...</value>
+  </data>
+  <data name="strToolTippTelBuchUp" xml:space="preserve">
+    <value>Telefonbücher zur Fritz!Box hochladen...</value>
+  </data>
+  <data name="strUncheckAll" xml:space="preserve">
+    <value>Keine auswählen</value>
+  </data>
+  <data name="strZeitraum" xml:space="preserve">
+    <value>Zeitraum</value>
+  </data>
+</root>

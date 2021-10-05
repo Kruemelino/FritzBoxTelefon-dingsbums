@@ -641,7 +641,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Ich habe nun die Möglichkeit geschaffen, mir Spenden zu übersenden. Es besteht in keinem Fall eine Pflicht zu spenden. Es gibt auch keinen Mehrwert für die, die gespendet haben. Ich programmiere aus Spaß und Freude und nicht zum Zweck des Geldverdienens.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Ich habe nun die Möglichkeit geschaffen, mir Spenden zu übersenden. Es besteht in keinem Fall eine Pflicht zu spenden. Es gibt auch keinen Mehrwert für alle, die gespendet haben. Ich programmiere aus Spaß und Freude und nicht zum Zweck des Geldverdienens.
         '''Wer spenden will, der spendet und wer nicht will, der macht es halt nicht. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strInfoSpende() As String

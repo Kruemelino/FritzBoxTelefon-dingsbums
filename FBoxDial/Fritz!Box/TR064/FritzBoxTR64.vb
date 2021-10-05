@@ -7,6 +7,9 @@ Namespace SOAP
 
         Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
 
+        Public Property Authorisiert As Boolean = False
+        Public Property Bereit As Boolean = False
+
         Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
         Private Property FBTR64Desc As TR64Desc
         Private Property Credential As NetworkCredential
@@ -34,17 +37,26 @@ Namespace SOAP
             ' FBTR64Desc = DeserializeObject(Of TR64Desc)($"http://{FBoxIPAdresse}:{FritzBoxDefault.PDfltFBSOAP}{Tr064Files.tr64desc}")
 
             ' Workaround: XML-Datei als String herunterladen und separat deserialisieren
+            If Ping(FBoxIPAdresse) Then
+                ' Herunterladen
+                If DownloadString(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, Tr064Files.tr64desc).Uri, Response) Then
+                    ' Deserialisieren
+                    If DeserializeXML(Response, False, FBTR64Desc) Then
+                        ' Füge das Flag hinzu, dass die TR064-Schnittstelle bereit ist-
+                        Bereit = True
 
-            ' Herunterladen
-            If DownloadString(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, Tr064Files.tr64desc).Uri, Response) Then
-                ' Deserialisieren
-                If Not DeserializeXML(Response, False, FBTR64Desc) Then
-                    PushStatus(LogLevel.Error, "FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Deserialisieren der FBTR64Desc.")
+                        ' Prüfe, ob die Anmeldeinformationen korrekt sind. Ermittle dazu eine SessionID.
+                        Authorisiert = GetSessionID(DfltStringEmpty)
+
+                    Else
+                        PushStatus(LogLevel.Error, "FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Deserialisieren der FBTR64Desc.")
+                    End If
+                Else
+                    PushStatus(LogLevel.Error, "FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Herunterladen der FBTR64Desc.")
                 End If
             Else
-                PushStatus(LogLevel.Error, "FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Herunterladen der FBTR64Desc.")
+                PushStatus(LogLevel.Error, $"FritzBoxTR64 kann nicht initialisiert werden: Fritz!Box unter {FBoxIPAdresse} nicht verfügbar.")
             End If
-
         End Sub
 
         Private Sub PushStatus(Level As LogLevel, StatusMessage As String)
@@ -72,22 +84,21 @@ Namespace SOAP
 
         Private Function TR064Start(SCPDURL As String, ActionName As String, Optional InputHashTable As Hashtable = Nothing) As Hashtable
 
-            'If Ping(FBoxIPAdresse) Then
-
-            With GetService(SCPDURL)
-                If?.ActionExists(ActionName) Then
-                    If .CheckInput(ActionName, InputHashTable) Then
-                        Return .Start(.GetActionByName(ActionName), InputHashTable, Credential)
+            If Bereit Then
+                With GetService(SCPDURL)
+                    If?.ActionExists(ActionName) Then
+                        If .CheckInput(ActionName, InputHashTable) Then
+                            Return .Start(.GetActionByName(ActionName), InputHashTable, Credential)
+                        Else
+                            PushStatus(LogLevel.Error, $"InputData for Action '{ActionName}' not valid!")
+                        End If
                     Else
-                        PushStatus(LogLevel.Error, $"InputData for Action '{ActionName}' not valid!")
+                        PushStatus(LogLevel.Error, $"Action '{ActionName}'does not exist!")
                     End If
-                Else
-                    PushStatus(LogLevel.Error, $"Action '{ActionName}'does not exist!")
-                End If
-            End With
+                End With
+            End If
 
-            'End If
-
+            ' TODO Fehlermeldung konkretisieren
             Return New Hashtable From {{"Error", DfltStringEmpty}}
         End Function
 
@@ -708,7 +719,7 @@ Namespace SOAP
                     DeflectionInfo.DeflectionToNumber = .Item("NewDeflectionToNumber").ToString
                     DeflectionInfo.Mode = CType(.Item("NewMode"), ModeEnum)
                     DeflectionInfo.Outgoing = .Item("NewOutgoing").ToString
-                    DeflectionInfo.PhonebookID = CInt(.Item("NewPhonebookID"))
+                    DeflectionInfo.PhonebookID = .Item("NewPhonebookID").ToString
 
                     PushStatus(LogLevel.Debug, $"GetDeflection ({DeflectionId}): {DeflectionInfo.Mode}; {DeflectionInfo.Enable}")
 

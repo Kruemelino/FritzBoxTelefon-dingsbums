@@ -243,22 +243,6 @@
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
     <Compile Include="Common\EnumDescriptionTypeConverter.vb" />
     <Compile Include="Common\LocalizedDescriptionAttribute.vb" />
-    <Compile Include="Formulare\AnrList\Resources\LocAnrList.Designer.vb">
-      <DependentUpon>LocAnrList.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Formulare\AnrList\Services\ListService.vb" />
-    <Compile Include="Formulare\AnrList\Services\IListService.vb" />
-    <Compile Include="Formulare\AnrList\Services\IPageListViewModel.vb" />
-    <Compile Include="Formulare\AnrList\ViewModels\TellowsViewModel.vb" />
-    <Compile Include="Formulare\AnrList\ViewModels\ListViewModel.vb" />
-    <Compile Include="Formulare\AnrList\Views\TellowsView.xaml.vb">
-      <DependentUpon>TellowsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\AnrList\Views\AnrListView.xaml.vb">
-      <DependentUpon>AnrListView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Formulare\AnrMon\Resources\LocAnrMon.Designer.vb">
       <DependentUpon>LocAnrMon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -273,11 +257,57 @@
     <Compile Include="Formulare\Common\Services\NotifyBase.vb" />
     <Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\Common\Services\RelayCommand.vb" />
-    <Compile Include="Formulare\AnrList\ViewModels\AnrListViewModel.vb" />
-    <Compile Include="Formulare\AnrList\Resources\TimePicker.vb" />
+    <Compile Include="Formulare\FBoxData\Elemente\TimePicker.vb" />
     <Compile Include="Formulare\AnrMon\ViewModel\AnrMonViewModel.vb" />
     <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\FBoxDataWPF.xaml.vb">
+      <DependentUpon>FBoxDataWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Resources\LocFBoxData.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocFBoxData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Services\FBoxDataService.vb" />
+    <Compile Include="Formulare\FBoxData\Services\IFBoxData.vb" />
+    <Compile Include="Formulare\FBoxData\Services\IFBoxDataService.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataAnrListViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataRufUmlViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataTAMViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataTellowsViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataTelBuchViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\RufUml\RufUmlViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\KontaktViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\TelbuchViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\Views\FboxAnrListView.xaml.vb">
+      <DependentUpon>FboxAnrListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Views\FBoxRufUmlView.xaml.vb">
+      <DependentUpon>FBoxRufUmlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Views\FboxTAMView.xaml.vb">
+      <DependentUpon>FboxTAMView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Views\FBoxTelbuchView.xaml.vb">
+      <DependentUpon>FBoxTelbuchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Views\RufUml\RufUmlView.xaml.vb">
+      <DependentUpon>RufUmlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Views\Telefonbücher\DetailsView.xaml.vb">
+      <DependentUpon>DetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Views\Telefonbücher\KontaktView.xaml.vb">
+      <DependentUpon>KontaktView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Views\Telefonbücher\TelbuchView.xaml.vb">
+      <DependentUpon>TelbuchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FBoxData\Views\FboxTellowsView.xaml.vb">
+      <DependentUpon>FboxTellowsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml.vb">
       <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
@@ -305,19 +335,15 @@
     </Compile>
     <Compile Include="Formulare\Optionen\ViewModel\OptTestViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
-    <Compile Include="Formulare\TAM\TAMWPF.xaml.vb">
-      <DependentUpon>TAMWPF.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\TAM\ViewModels\TAMItemViewModel.vb" />
-    <Compile Include="Formulare\TAM\ViewModels\TAMListViewModel.vb" />
-    <Compile Include="Formulare\TAM\ViewModels\TAMMessageViewModel.vb" />
-    <Compile Include="Formulare\TAM\View\TAMDetailsView.xaml.vb">
+    <Compile Include="Formulare\FBoxData\ViewModel\FBoxTAM\TAMItemViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\FBoxTAM\TAMMessageViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\Views\FBoxTAM\TAMDetailsView.xaml.vb">
       <DependentUpon>TAMDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\TAM\View\TAMMessageView.xaml.vb">
+    <Compile Include="Formulare\FBoxData\Views\FBoxTAM\TAMMessageView.xaml.vb">
       <DependentUpon>TAMMessageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\TAM\View\TAMView.xaml.vb">
+    <Compile Include="Formulare\FBoxData\Views\FBoxTAM\TAMView.xaml.vb">
       <DependentUpon>TAMView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptTellowsView.xaml.vb">
@@ -326,14 +352,8 @@
     <Compile Include="Formulare\Optionen\Views\OptTestView.xaml.vb">
       <DependentUpon>OptTestView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\TAM\Resources\LocTAM.Designer.vb">
-      <DependentUpon>LocTAM.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Formulare\TAM\Services\ITAMService.vb" />
-    <Compile Include="Formulare\TAM\Services\TAMService.vb" />
     <Compile Include="Fritz!Box\TR064\Deflection-TR64\DeflectionInfo.vb" />
+    <Compile Include="Fritz!Box\TR064\Deflection-TR64\DeflectionList.vb" />
     <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessage.vb" />
     <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessageList.vb" />
     <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMInfo.vb" />
@@ -420,9 +440,6 @@
     <Compile Include="Formulare\Wählclient\Views\DirectDialView.xaml.vb">
       <DependentUpon>DirectDialView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\AnrList\AnrListWPF.xaml.vb">
-      <DependentUpon>AnrListWPF.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Fritz!Box\FritzBoxJSONStruct.vb" />
     <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNrList.vb" />
     <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPClientList.vb" />
@@ -458,11 +475,6 @@
     </Compile>
     <Compile Include="Localize\resRibbon.Designer.vb">
       <DependentUpon>resRibbon.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Formulare\Telefonbuch\Resources\resTelefonbuch.Designer.vb">
-      <DependentUpon>resTelefonbuch.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -516,25 +528,8 @@
     <Compile Include="Rijndael.vb" />
     <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNr.vb" />
     <Compile Include="Formulare\Common\Services\Converters.vb" />
-    <Compile Include="Formulare\Telefonbuch\Services\IContactDataService.vb" />
     <Compile Include="Formulare\Common\Services\IDialogService.vb" />
-    <Compile Include="Formulare\Telefonbuch\Services\ContactDataService.vb" />
     <Compile Include="Formulare\Common\Services\DialogService.vb" />
-    <Compile Include="Formulare\Telefonbuch\ViewModels\AppViewModel.vb" />
-    <Compile Include="Formulare\Telefonbuch\ViewModels\TelefonbuchViewModel.vb" />
-    <Compile Include="Formulare\Telefonbuch\ViewModels\ContactsViewModel.vb" />
-    <Compile Include="Formulare\Telefonbuch\Views\TelefonbuchView.xaml.vb">
-      <DependentUpon>TelefonbuchView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Telefonbuch\Views\KontaktView.xaml.vb">
-      <DependentUpon>KontaktView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Telefonbuch\Views\DetailsView.xaml.vb">
-      <DependentUpon>DetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Telefonbuch\FBKontakBuch.xaml.vb">
-      <DependentUpon>FBKontakBuch.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
     <Compile Include="Telefonie\Telefonat.vb" />
@@ -567,20 +562,15 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <EmbeddedResource Include="Formulare\AnrList\Resources\LocAnrList.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LocAnrList.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>Localize</CustomToolNamespace>
-    </EmbeddedResource>
     <EmbeddedResource Include="Formulare\AnrMon\Resources\LocAnrMon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocAnrMon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\TAM\Resources\LocTAM.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LocTAM.Designer.vb</LastGenOutput>
+    <EmbeddedResource Include="Formulare\FBoxData\Resources\LocFBoxData.resx">
       <CustomToolNamespace>Localize</CustomToolNamespace>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocFBoxData.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Localize\Länder.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -608,11 +598,6 @@
     <EmbeddedResource Include="Localize\resRibbon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resRibbon.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>Localize</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\Telefonbuch\Resources\resTelefonbuch.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>resTelefonbuch.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\Optionen\Resources\LocOptionen.resx">
@@ -647,21 +632,53 @@
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Formulare\AnrList\Resources\AnrList.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\AnrList\Views\TellowsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\AnrList\Views\AnrListView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Formulare\AnrMon\AnrMonWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\FBoxData\FBoxDataWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\FBoxData\Resources\FBoxData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\FBoxData\Views\FboxAnrListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\FBoxData\Views\FBoxRufUmlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\FBoxData\Views\FboxTAMView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\FBoxData\Views\FBoxTelbuchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\FBoxData\Views\RufUml\RufUmlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\FBoxData\Views\Telefonbücher\DetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\FBoxData\Views\Telefonbücher\KontaktView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\FBoxData\Views\Telefonbücher\TelbuchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\FBoxData\Views\FboxTellowsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml">
       <SubType>Designer</SubType>
@@ -675,19 +692,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\TAM\TAMWPF.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Formulare\TAM\View\TAMDetailsView.xaml">
+    <Page Include="Formulare\FBoxData\Views\FBoxTAM\TAMDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\TAM\View\TAMMessageView.xaml">
+    <Page Include="Formulare\FBoxData\Views\FBoxTAM\TAMMessageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\TAM\View\TAMView.xaml">
+    <Page Include="Formulare\FBoxData\Views\FBoxTAM\TAMView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -696,10 +709,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Views\OptTestView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\TAM\Resources\TAM.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -775,10 +784,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\AnrList\AnrListWPF.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Formulare\AnrMon\Resources\AnrMon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -803,23 +808,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Telefonbuch\Resources\Telefonbuch.xaml">
-      <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
-    <Page Include="Formulare\Telefonbuch\Views\TelefonbuchView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
-    <Page Include="Formulare\Telefonbuch\Views\KontaktView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
-    <Page Include="Formulare\Telefonbuch\Views\DetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
-    <Page Include="Formulare\Telefonbuch\FBKontakBuch.xaml">
+    <Page Include="Formulare\FBoxData\Resources\Telefonbuch.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>

@@ -1,23 +1,21 @@
 ﻿Imports System.Threading.Tasks
 
-Module FritzBoxAnrufliste
+Friend Module FritzBoxAnrufliste
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "Anrufliste Laden"
-    Friend Async Function LadeFritzBoxAnrufliste() As Task(Of FritzBoxXMLCallList)
+    Friend Async Function LadeFritzBoxAnrufliste(FBoxTR064 As SOAP.FritzBoxTR64) As Task(Of FritzBoxXMLCallList)
 
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
-            Using fboxTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
-                Dim Pfad As String = DfltStringEmpty
+            Dim Pfad As String = DfltStringEmpty
 
-                ' Ermittle Pfad zur Anrufliste
-                If fboxTR064.GetCallList(Pfad) Then
-                    Return Await DeserializeAsyncXML(Of FritzBoxXMLCallList)(Pfad, True)
-                Else
-                    NLogger.Warn("Pfad zur XML-Anrufliste konnte nicht ermittelt werden.")
-                    Return Nothing
-                End If
-            End Using
+            ' Ermittle Pfad zur Anrufliste
+            If FBoxTR064.GetCallList(Pfad) Then
+                Return Await DeserializeAsyncXML(Of FritzBoxXMLCallList)(Pfad, True)
+            Else
+                NLogger.Warn("Pfad zur XML-Anrufliste konnte nicht ermittelt werden.")
+                Return Nothing
+            End If
         Else
             NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
             Return Nothing
@@ -49,7 +47,6 @@ Module FritzBoxAnrufliste
 
                                       ' Abbruch überwachen
                                       If ct.IsCancellationRequested Then Exit For
-                                      'ct.ThrowIfCancellationRequested()
                                   Next
 
                                   Return Einträge

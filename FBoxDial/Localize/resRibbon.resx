@@ -168,20 +168,14 @@
   <data name="DynListDel_ScreenTipp" xml:space="preserve">
     <value>Entfernt alle Einträge dieser Liste...</value>
   </data>
-  <data name="JournalImport_Label" xml:space="preserve">
-    <value>Anrufliste</value>
+  <data name="FritzBoxData_Label" xml:space="preserve">
+    <value>Fritz!Box Daten</value>
   </data>
-  <data name="JournalImport_ScreenTipp" xml:space="preserve">
-    <value>Zeigt die Anrufliste der Fritz!Box an und ermöglicht das Importieren als Journaleinträge...</value>
+  <data name="FritzBoxData_ScreenTipp" xml:space="preserve">
+    <value>Öffne die Verwaltung der Fritz!Box Daten...</value>
   </data>
   <data name="mmFBox_Label" xml:space="preserve">
     <value>Fritz!Box</value>
-  </data>
-  <data name="PhoneBooks_Label" xml:space="preserve">
-    <value>Telefonbücher</value>
-  </data>
-  <data name="PhoneBooks_ScreenTipp" xml:space="preserve">
-    <value>Öffne die Verwaltung der Fritz!Box Telefonbücher...</value>
   </data>
   <data name="RemoveVIP_ScreenTipp" xml:space="preserve">
     <value>Entfernt diesen Kontakt von der VIP-Liste...</value>
@@ -215,12 +209,6 @@
   </data>
   <data name="Tab_ScreenTipp" xml:space="preserve">
     <value />
-  </data>
-  <data name="TAM_Label" xml:space="preserve">
-    <value>Anrufbeantworter</value>
-  </data>
-  <data name="TAM_ScreenTipp" xml:space="preserve">
-    <value>Öffne die Verwaltung der Fritz!Box Anrufbeantworter...</value>
   </data>
   <data name="UploadCreateContact" xml:space="preserve">
     <value>angelegt</value>

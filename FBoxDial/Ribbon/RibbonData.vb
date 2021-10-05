@@ -254,25 +254,9 @@ Namespace RibbonData
             End If
         End Sub
 
-        ''' <summary>
-        ''' Einblenden der Fritz!Box Anrufliste.
-        ''' </summary>
-        Private Sub JournalImport()
-            Dim AnrListImportWPF As New AnrListWPF
-            AnrListImportWPF.Show()
-        End Sub
-
-        ''' <summary>
-        ''' Einblenden der Fritz!Box Telefonbuchverwaltung. (Routine wird über Reflection.Invoke eingeblendet)
-        ''' </summary>
-        Private Sub PhoneBooks()
-            Dim fbt As New FBKontakBuch
-            fbt.Show()
-        End Sub
-
-        Private Sub TAM()
-            Dim fbtam As New TAMWPF
-            fbtam.Show()
+        Private Sub FritzBoxData()
+            Dim fbdata As New FBoxDataWPF
+            fbdata.Show()
         End Sub
 
         ''' <summary>

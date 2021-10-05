@@ -1,8 +1,11 @@
-﻿Friend Class DeflectionInfo
+﻿Imports System.Xml.Serialization
+
+
+<Serializable> Public Class DeflectionInfo
     Inherits NotifyBase
 
     Private _DeflectionId As Integer
-    Public Property DeflectionId As Integer
+    <XmlElement("DeflectionId")> Public Property DeflectionId As Integer
         Get
             Return _DeflectionId
         End Get
@@ -12,7 +15,7 @@
     End Property
 
     Private _Enable As Boolean
-    Public Property Enable As Boolean
+    <XmlElement("Enable")> Public Property Enable As Boolean
         Get
             Return _Enable
         End Get
@@ -22,7 +25,7 @@
     End Property
 
     Private _Type As TypeEnum
-    Public Property Type As TypeEnum
+    <XmlElement("Type")> Public Property Type As TypeEnum
         Get
             Return _Type
         End Get
@@ -32,7 +35,7 @@
     End Property
 
     Private _Number As String
-    Public Property Number As String
+    <XmlElement("Number")> Public Property Number As String
         Get
             Return _Number
         End Get
@@ -42,7 +45,7 @@
     End Property
 
     Private _DeflectionToNumber As String
-    Public Property DeflectionToNumber As String
+    <XmlElement("DeflectionToNumber")> Public Property DeflectionToNumber As String
         Get
             Return _DeflectionToNumber
         End Get
@@ -52,7 +55,7 @@
     End Property
 
     Private _Mode As ModeEnum
-    Public Property Mode As ModeEnum
+    <XmlElement("Mode")> Public Property Mode As ModeEnum
         Get
             Return _Mode
         End Get
@@ -62,7 +65,7 @@
     End Property
 
     Private _Outgoing As String
-    Public Property Outgoing As String
+    <XmlElement("Outgoing")> Public Property Outgoing As String
         Get
             Return _Outgoing
         End Get
@@ -74,8 +77,8 @@
     ''' <summary>
     ''' Only valid if Type==fromPB
     ''' </summary>
-    Private _PhonebookID As Integer
-    Public Property PhonebookID As Integer
+    Private _PhonebookID As String
+    <XmlElement("PhonebookID")> Public Property PhonebookID As String
         Get
             Return _PhonebookID
         End Get
@@ -85,7 +88,7 @@
     End Property
 End Class
 
-Friend Enum ModeEnum
+Public Enum ModeEnum
     ''' <summary>
     ''' Deflect if a bell blockade is activ
     ''' </summary>
@@ -152,7 +155,7 @@ Friend Enum ModeEnum
     eVIP
 End Enum
 
-Friend Enum TypeEnum
+Public Enum TypeEnum
     ''' <summary>
     ''' Phone port 1 is selected
     ''' </summary>

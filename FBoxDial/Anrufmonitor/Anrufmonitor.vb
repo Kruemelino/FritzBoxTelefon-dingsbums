@@ -9,11 +9,7 @@ Friend Class Anrufmonitor
     ''' </summary>
     Friend ReadOnly Property Aktiv As Boolean
         Get
-            If AnrMonTCPClient Is Nothing Then
-                Return False
-            Else
-                Return AnrMonTCPClient.Verbunden
-            End If
+            Return AnrMonTCPClient IsNot Nothing AndAlso AnrMonTCPClient.Verbunden
         End Get
     End Property
     Friend Property AktiveTelefonate As List(Of Telefonat)
@@ -44,32 +40,34 @@ Friend Class Anrufmonitor
         Dim IP As IPAddress = IPAddress.Loopback
 
         If IPAddress.TryParse(XMLData.POptionen.ValidFBAdr, IP) Then
-            Dim TC As New TcpClient With {.ExclusiveAddressUse = False}
+            If Ping(IP.ToString) Then
+                Dim TC As New TcpClient With {.ExclusiveAddressUse = False}
 
-            Try
-                TC.Connect(New IPEndPoint(IP, AnrMon_Port))
-            Catch ex As SocketException
-                ' Connection refused.
-                ' No Connection could be made because the target computer actively refused it. This usually results from trying To connect To a service that Is inactive On the foreign host—that Is, one with no server application running.
-                If ex.SocketErrorCode = SocketError.ConnectionRefused Then
-                    NLogger.Warn("Der Anrufmonitor kann nicht verbunden werden, da der Fritz!Box CallMonitor (Port 1012) nicht aktiviert ist (Telefonecode #96*5* zum aktivieren).")
+                Try
+                    TC.Connect(New IPEndPoint(IP, AnrMon_Port))
+                Catch ex As SocketException
+                    ' Connection refused.
+                    ' No Connection could be made because the target computer actively refused it. This usually results from trying To connect To a service that Is inactive On the foreign host—that Is, one with no server application running.
+                    If ex.SocketErrorCode = SocketError.ConnectionRefused Then
+                        NLogger.Warn($"Der Anrufmonitor kann nicht verbunden werden, da der Fritz!Box CallMonitor (Port {AnrMon_Port}) nicht aktiviert ist (Telefonecode #96*5* zum aktivieren).")
+                    Else
+                        NLogger.Error(ex, "TcpClient.Connect")
+                    End If
+
+                End Try
+
+                If TC.Connected Then
+                    ' Info Message für das Log
+                    NLogger.Info($"Anrufmonitor verbunden zu {IP}:{AnrMon_Port}")
+                    AnrMonTCPClient = New AnrMonClient(TC)
+
+                    ' Verbinden
+                    AnrMonTCPClient.Connect()
                 Else
-                    NLogger.Error(ex, "TcpClient.Connect")
+                    TC.Close()
+                    ' Info Message für das Log
+                    NLogger.Warn($"Anrufmonitor nicht verbunden zu {IP}:{AnrMon_Port}")
                 End If
-
-            End Try
-
-            If TC.Connected Then
-                ' Info Message für das Log
-                NLogger.Info($"Anrufmonitor verbunden zu {IP}:{AnrMon_Port}")
-                AnrMonTCPClient = New AnrMonClient(TC)
-
-                ' Verbinden
-                AnrMonTCPClient.Connect()
-            Else
-                TC.Close()
-                ' Info Message für das Log
-                NLogger.Warn($"Anrufmonitor nicht verbunden zu {IP}:{AnrMon_Port}")
             End If
         End If
         ' Ribbon aktualisieren

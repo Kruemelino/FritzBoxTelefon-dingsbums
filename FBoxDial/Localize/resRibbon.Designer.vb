@@ -218,20 +218,20 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufliste ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Daten ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property JournalImport_Label() As String
+        Public Shared ReadOnly Property FritzBoxData_Label() As String
             Get
-                Return ResourceManager.GetString("JournalImport_Label", resourceCulture)
+                Return ResourceManager.GetString("FritzBoxData_Label", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt die Anrufliste der Fritz!Box an und ermöglicht das Importieren als Journaleinträge... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffne die Verwaltung der Fritz!Box Daten... ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property JournalImport_ScreenTipp() As String
+        Public Shared ReadOnly Property FritzBoxData_ScreenTipp() As String
             Get
-                Return ResourceManager.GetString("JournalImport_ScreenTipp", resourceCulture)
+                Return ResourceManager.GetString("FritzBoxData_ScreenTipp", resourceCulture)
             End Get
         End Property
         
@@ -241,24 +241,6 @@ Namespace Localize
         Public Shared ReadOnly Property mmFBox_Label() As String
             Get
                 Return ResourceManager.GetString("mmFBox_Label", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Telefonbücher ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property PhoneBooks_Label() As String
-            Get
-                Return ResourceManager.GetString("PhoneBooks_Label", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Öffne die Verwaltung der Fritz!Box Telefonbücher... ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property PhoneBooks_ScreenTipp() As String
-            Get
-                Return ResourceManager.GetString("PhoneBooks_ScreenTipp", resourceCulture)
             End Get
         End Property
         
@@ -358,24 +340,6 @@ Namespace Localize
         Public Shared ReadOnly Property Tab_ScreenTipp() As String
             Get
                 Return ResourceManager.GetString("Tab_ScreenTipp", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufbeantworter ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property TAM_Label() As String
-            Get
-                Return ResourceManager.GetString("TAM_Label", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Öffne die Verwaltung der Fritz!Box Anrufbeantworter... ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property TAM_ScreenTipp() As String
-            Get
-                Return ResourceManager.GetString("TAM_ScreenTipp", resourceCulture)
             End Get
         End Property
         

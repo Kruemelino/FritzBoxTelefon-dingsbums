@@ -20,11 +20,7 @@
               <button id="ShowCallMonitor_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <menu id="mmFBox_K" getLabel="GetItemLabel" getImage="GetItemImageMso">
-            <button id="PhoneBooks_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
-            <button id="TAM_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" />
-          </menu>
-          <button id="JournalImport_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="FritzBoxData_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_K" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
           </dialogBoxLauncher>
@@ -49,11 +45,7 @@
               <button id="ShowCallMonitor_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <menu id="mmFBox_C" getLabel="GetItemLabel" getImage="GetItemImageMso">
-            <button id="PhoneBooks_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
-            <button id="TAM_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" />
-          </menu>
-          <button id="JournalImport_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="FritzBoxData_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_C" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
           </dialogBoxLauncher>
@@ -78,11 +70,7 @@
               <button id="ShowCallMonitor_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <menu id="mmFBox_J" getLabel="GetItemLabel" getImage="GetItemImageMso">
-            <button id="PhoneBooks_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
-            <button id="TAM_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" />
-          </menu>
-          <button id="JournalImport_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="FritzBoxData_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_J" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
           </dialogBoxLauncher>
@@ -107,11 +95,7 @@
               <button id="ShowCallMonitor_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <menu id="mmFBox_M" getLabel="GetItemLabel" getImage="GetItemImageMso">
-            <button id="PhoneBooks_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
-            <button id="TAM_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" />
-          </menu>          
-          <button id="JournalImport_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="FritzBoxData_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>         
           <dialogBoxLauncher>
             <button id="Einstellungen_M" getScreentip="GetItemScreenTipp" onAction="BtnOnAction"/>
           </dialogBoxLauncher>

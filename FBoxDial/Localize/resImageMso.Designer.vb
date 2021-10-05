@@ -118,6 +118,15 @@ Public Class resImageMso
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die AddressBook ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property FritzBoxData_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("FritzBoxData_ImageMso", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die NewJournalEntry ähnelt.
     '''</summary>
     Public Shared ReadOnly Property JournalImport_ImageMso() As String
@@ -168,15 +177,6 @@ Public Class resImageMso
     Public Shared ReadOnly Property OnlineCallMonitor_ImageMso() As String
         Get
             Return ResourceManager.GetString("OnlineCallMonitor_ImageMso", resourceCulture)
-        End Get
-    End Property
-    
-    '''<summary>
-    '''  Sucht eine lokalisierte Zeichenfolge, die AddressBook ähnelt.
-    '''</summary>
-    Public Shared ReadOnly Property PhoneBooks_ImageMso() As String
-        Get
-            Return ResourceManager.GetString("PhoneBooks_ImageMso", resourceCulture)
         End Get
     End Property
     

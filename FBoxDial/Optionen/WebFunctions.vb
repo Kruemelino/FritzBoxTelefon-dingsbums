@@ -131,6 +131,7 @@ Friend Module WebFunctions
                         With .Headers
                             .Set(HttpRequestHeader.UserAgent, DefaultHeaderUserAgent)
                             .Set(HttpRequestHeader.KeepAlive, DefaultHeaderKeepAlive.ToString)
+                            
                             If Headers IsNot Nothing Then .Add(Headers)
                         End With
 
