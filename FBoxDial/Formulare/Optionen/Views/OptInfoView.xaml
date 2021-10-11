@@ -54,7 +54,7 @@
         <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strInfoSpende}"/>
 
         <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strInfoSpendeLink}" 
-                         URL="https://paypal.me/gertmichael" 
-                         LinkLabel="paypal.me/gertmichael"/>
+                         URL="https://www.paypal.com/donate?hosted_button_id=8D9V4CLHVD97L" 
+                         LinkLabel="PayPal"/>
     </StackPanel>
 </UserControl>
