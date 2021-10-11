@@ -492,7 +492,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Modus ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Art der Umleitung ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strRufUmlMode() As String
             Get
@@ -510,7 +510,16 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Anruf an ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die über ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strRufUmlVia() As String
+            Get
+                Return ResourceManager.GetString("strRufUmlVia", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Umleiten von ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strRufUmlVon() As String
             Get
@@ -519,7 +528,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Umleitungsziel ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die an ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strRufUmlZiel() As String
             Get

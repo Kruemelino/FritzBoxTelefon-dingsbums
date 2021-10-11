@@ -82,6 +82,15 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Umleitung bei Klingelsperre ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property BellBlockade() As String
+        Get
+            Return ResourceManager.GetString("BellBlockade", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die Geschäftlich 2 ähnelt.
     '''</summary>
     Public Shared ReadOnly Property Business2TelephoneNumber() As String
@@ -105,6 +114,15 @@ Public Class resEnum
     Public Shared ReadOnly Property BusinessTelephoneNumber() As String
         Get
             Return ResourceManager.GetString("BusinessTelephoneNumber", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die bei Besetzt ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property Busy() As String
+        Get
+            Return ResourceManager.GetString("Busy", resourceCulture)
         End Get
     End Property
     
@@ -136,11 +154,128 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Verzögert ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property Delayed() As String
+        Get
+            Return ResourceManager.GetString("Delayed", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Verzögert oder bei Besetzt ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property DelayedOrBusy() As String
+        Get
+            Return ResourceManager.GetString("DelayedOrBusy", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Direkter Anruf ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property DirectCall() As String
+        Get
+            Return ResourceManager.GetString("DirectCall", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die Fax ähnelt.
     '''</summary>
     Public Shared ReadOnly Property fax_work() As String
         Get
             Return ResourceManager.GetString("fax_work", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die FON1 ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fon1() As String
+        Get
+            Return ResourceManager.GetString("fon1", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die FON2 ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fon2() As String
+        Get
+            Return ResourceManager.GetString("fon2", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die FON3 ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fon3() As String
+        Get
+            Return ResourceManager.GetString("fon3", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die FON4 ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fon4() As String
+        Get
+            Return ResourceManager.GetString("fon4", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die alle Anrufe ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fromAll() As String
+        Get
+            Return ResourceManager.GetString("fromAll", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die von Anonym ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fromAnonymous() As String
+        Get
+            Return ResourceManager.GetString("fromAnonymous", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die von kein-VIP ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fromNotVIP() As String
+        Get
+            Return ResourceManager.GetString("fromNotVIP", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die von Rufnummer ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fromNumber() As String
+        Get
+            Return ResourceManager.GetString("fromNumber", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die von Person im Telefonbuch ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fromPB() As String
+        Get
+            Return ResourceManager.GetString("fromPB", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die von VIP ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fromVIP() As String
+        Get
+            Return ResourceManager.GetString("fromVIP", resourceCulture)
         End Get
     End Property
     
@@ -181,6 +316,15 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Sofort ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property Immediately() As String
+        Get
+            Return ResourceManager.GetString("Immediately", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die Intern ähnelt.
     '''</summary>
     Public Shared ReadOnly Property intern() As String
@@ -195,6 +339,15 @@ Public Class resEnum
     Public Shared ReadOnly Property ISDNNumber() As String
         Get
             Return ResourceManager.GetString("ISDNNumber", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Verzögert lang ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property LongDelayed() As String
+        Get
+            Return ResourceManager.GetString("LongDelayed", resourceCulture)
         End Get
     End Property
     
@@ -226,11 +379,29 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Keine Signalisierung ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property NoSignal() As String
+        Get
+            Return ResourceManager.GetString("NoSignal", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die Sonstige ähnelt.
     '''</summary>
     Public Shared ReadOnly Property notset() As String
         Get
             Return ResourceManager.GetString("notset", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Umleitung ausgeschaltet ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property Off() As String
+        Get
+            Return ResourceManager.GetString("Off", resourceCulture)
         End Get
     End Property
     
@@ -271,6 +442,15 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Parallelruf ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property ParallelCall() As String
+        Get
+            Return ResourceManager.GetString("ParallelCall", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die Haupttelefon ähnelt.
     '''</summary>
     Public Shared ReadOnly Property PrimaryTelephoneNumber() As String
@@ -285,6 +465,15 @@ Public Class resEnum
     Public Shared ReadOnly Property RadioTelephoneNumber() As String
         Get
             Return ResourceManager.GetString("RadioTelephoneNumber", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Verzögert kurz ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property ShortDelayed() As String
+        Get
+            Return ResourceManager.GetString("ShortDelayed", resourceCulture)
         End Get
     End Property
     
@@ -307,11 +496,65 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die an ? ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property toAny() As String
+        Get
+            Return ResourceManager.GetString("toAny", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die an MSN ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property toMSN() As String
+        Get
+            Return ResourceManager.GetString("toMSN", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die an Festnetz ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property toPOTS() As String
+        Get
+            Return ResourceManager.GetString("toPOTS", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die an VOIP ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property toVoIP() As String
+        Get
+            Return ResourceManager.GetString("toVoIP", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die Texttelefon ähnelt.
     '''</summary>
     Public Shared ReadOnly Property TTYTDDTelephoneNumber() As String
         Get
             Return ResourceManager.GetString("TTYTDDTelephoneNumber", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Unbekannt ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property Unknown() As String
+        Get
+            Return ResourceManager.GetString("Unknown", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die VIP ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property VIP() As String
+        Get
+            Return ResourceManager.GetString("VIP", resourceCulture)
         End Get
     End Property
     

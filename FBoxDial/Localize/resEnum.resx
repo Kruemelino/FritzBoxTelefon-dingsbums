@@ -121,6 +121,10 @@
     <value>Assistent</value>
     <comment>Outlook</comment>
   </data>
+  <data name="BellBlockade" xml:space="preserve">
+    <value>Umleitung bei Klingelsperre</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
+  </data>
   <data name="Business2TelephoneNumber" xml:space="preserve">
     <value>Geschäftlich 2</value>
     <comment>Outlook</comment>
@@ -132,6 +136,10 @@
   <data name="BusinessTelephoneNumber" xml:space="preserve">
     <value>Geschäftlich</value>
     <comment>Outlook</comment>
+  </data>
+  <data name="Busy" xml:space="preserve">
+    <value>bei Besetzt</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
   </data>
   <data name="CallbackTelephoneNumber" xml:space="preserve">
     <value>Rückmeldung</value>
@@ -145,9 +153,61 @@
     <value>Firma</value>
     <comment>Outlook</comment>
   </data>
+  <data name="Delayed" xml:space="preserve">
+    <value>Verzögert</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
+  </data>
+  <data name="DelayedOrBusy" xml:space="preserve">
+    <value>Verzögert oder bei Besetzt</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
+  </data>
+  <data name="DirectCall" xml:space="preserve">
+    <value>Direkter Anruf</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
+  </data>
   <data name="fax_work" xml:space="preserve">
     <value>Fax</value>
     <comment>AVM XML Telefonbuch</comment>
+  </data>
+  <data name="fon1" xml:space="preserve">
+    <value>FON1</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="fon2" xml:space="preserve">
+    <value>FON2</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="fon3" xml:space="preserve">
+    <value>FON3</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="fon4" xml:space="preserve">
+    <value>FON4</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="fromAll" xml:space="preserve">
+    <value>alle Anrufe</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="fromAnonymous" xml:space="preserve">
+    <value>von Anonym</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="fromNotVIP" xml:space="preserve">
+    <value>von kein-VIP</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="fromNumber" xml:space="preserve">
+    <value>von Rufnummer</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="fromPB" xml:space="preserve">
+    <value>von Person im Telefonbuch</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="fromVIP" xml:space="preserve">
+    <value>von VIP</value>
+    <comment>AVM XML Rufumleitung Type</comment>
   </data>
   <data name="home" xml:space="preserve">
     <value>Privat</value>
@@ -165,6 +225,10 @@
     <value>Privat</value>
     <comment>Outlook</comment>
   </data>
+  <data name="Immediately" xml:space="preserve">
+    <value>Sofort</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
+  </data>
   <data name="intern" xml:space="preserve">
     <value>Intern</value>
     <comment>AVM XML Telefonbuch</comment>
@@ -172,6 +236,10 @@
   <data name="ISDNNumber" xml:space="preserve">
     <value>ISDN</value>
     <comment>Outlook</comment>
+  </data>
+  <data name="LongDelayed" xml:space="preserve">
+    <value>Verzögert lang</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
   </data>
   <data name="memo" xml:space="preserve">
     <value>Anrufbeantworter</value>
@@ -185,9 +253,17 @@
     <value>Mobiltelefon</value>
     <comment>Outlook</comment>
   </data>
+  <data name="NoSignal" xml:space="preserve">
+    <value>Keine Signalisierung</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
+  </data>
   <data name="notset" xml:space="preserve">
     <value>Sonstige</value>
     <comment>AVM XML Telefonbuch</comment>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Umleitung ausgeschaltet</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
   </data>
   <data name="other" xml:space="preserve">
     <value>Sonstige</value>
@@ -205,6 +281,10 @@
     <value>Pager</value>
     <comment>Outlook</comment>
   </data>
+  <data name="ParallelCall" xml:space="preserve">
+    <value>Parallelruf</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
+  </data>
   <data name="PrimaryTelephoneNumber" xml:space="preserve">
     <value>Haupttelefon</value>
     <comment>Outlook</comment>
@@ -217,6 +297,10 @@
     <value>Funkruf</value>
     <comment>Outlook</comment>
   </data>
+  <data name="ShortDelayed" xml:space="preserve">
+    <value>Verzögert kurz</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
+  </data>
   <data name="Sonstige" xml:space="preserve">
     <value>Sonstige</value>
     <comment>AVM XML Telefonbuch</comment>
@@ -225,9 +309,33 @@
     <value>Telex</value>
     <comment>Outlook</comment>
   </data>
+  <data name="toAny" xml:space="preserve">
+    <value>an ?</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="toMSN" xml:space="preserve">
+    <value>an MSN</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="toPOTS" xml:space="preserve">
+    <value>an Festnetz</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
+  <data name="toVoIP" xml:space="preserve">
+    <value>an VOIP</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
   <data name="TTYTDDTelephoneNumber" xml:space="preserve">
     <value>Texttelefon</value>
     <comment>Outlook</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unbekannt</value>
+    <comment>AVM XML Rufumleitung Mode u. Type</comment>
+  </data>
+  <data name="VIP" xml:space="preserve">
+    <value>VIP</value>
+    <comment>AVM XML Rufumleitung Mode</comment>
   </data>
   <data name="work" xml:space="preserve">
     <value>Arbeit</value>

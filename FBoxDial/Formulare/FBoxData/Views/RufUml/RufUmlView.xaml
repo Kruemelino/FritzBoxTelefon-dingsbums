@@ -6,7 +6,7 @@
              xmlns:fbd="clr-namespace:FBoxDial"   
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
-             d:DesignHeight="75" d:DesignWidth="500"
+             d:DesignHeight="75" d:DesignWidth="790"
              d:DataContext="{d:DesignInstance Type=fbd:RufUmlViewModel, IsDesignTimeCreatable=True}" >
 
     <UserControl.Resources>
@@ -20,11 +20,11 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="28"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="120"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -54,19 +54,29 @@
                    Style="{StaticResource MessageData}" 
                    Text="{Binding CurrentRufUml.Number, FallbackValue=N/A}"/>
 
+
         <TextBlock Grid.Column="3" Grid.Row="0"
                    Style="{StaticResource MessageHead}" 
-                   Text="{x:Static localize:LocFBoxData.strRufUmlZiel}"/>
+                   Text="{x:Static localize:LocFBoxData.strRufUmlVia}"/>
 
         <TextBlock Grid.Column="3" Grid.Row="1"
                    Style="{StaticResource MessageData}" 
+                   Text="{Binding CurrentRufUml.Outgoing, FallbackValue=N/A}"/>
+        
+        
+        <TextBlock Grid.Column="4" Grid.Row="0"
+                   Style="{StaticResource MessageHead}" 
+                   Text="{x:Static localize:LocFBoxData.strRufUmlZiel}"/>
+
+        <TextBlock Grid.Column="4" Grid.Row="1"
+                   Style="{StaticResource MessageData}" 
                    Text="{Binding CurrentRufUml.DeflectionToNumber, FallbackValue=N/A}"/>
 
-        <TextBlock Grid.Column="4" Grid.Row="0"
+        <TextBlock Grid.Column="5" Grid.Row="0"
                    Style="{StaticResource MessageHead}" 
                    Text="{x:Static localize:LocFBoxData.strRufUmlMode}"/>
 
-        <TextBlock Grid.Column="4" Grid.Row="1"
+        <TextBlock Grid.Column="5" Grid.Row="1"
                    Style="{StaticResource MessageData}" 
                    Text="{Binding CurrentRufUml.Mode, FallbackValue=N/A}"/>
     </Grid>

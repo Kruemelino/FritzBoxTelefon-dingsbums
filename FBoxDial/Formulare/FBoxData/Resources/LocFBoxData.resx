@@ -263,16 +263,19 @@ Sollen die Einträge jetzt in die Fritz!Box geladen werden?</value>
     <value>Rufumleitungen</value>
   </data>
   <data name="strRufUmlMode" xml:space="preserve">
-    <value>Modus</value>
+    <value>Art der Umleitung</value>
   </data>
   <data name="strRufUmlTyp" xml:space="preserve">
     <value>Typ</value>
   </data>
+  <data name="strRufUmlVia" xml:space="preserve">
+    <value>über</value>
+  </data>
   <data name="strRufUmlVon" xml:space="preserve">
-    <value>Anruf an</value>
+    <value>Umleiten von</value>
   </data>
   <data name="strRufUmlZiel" xml:space="preserve">
-    <value>Umleitungsziel</value>
+    <value>an</value>
   </data>
   <data name="strSave" xml:space="preserve">
     <value>Speichern</value>

@@ -12,7 +12,6 @@ Friend Enum OutlookEMailType
     EX
 End Enum
 
-
 Public Structure TelNrType
     Public Property TelNrType As OutlookNrType
     Friend Property XML As XMLTelNrTyp
@@ -162,3 +161,182 @@ Public Enum XMLEMailTyp
 
 End Enum
 
+''' <summary>
+''' Fritz!Box Deflection
+''' </summary>
+<TypeConverter(GetType(EnumDescriptionTypeConverter))>
+Public Enum ModeEnum
+    ''' <summary>
+    ''' Deflect if a bell blockade is activ
+    ''' </summary>
+    <LocalizedDescription("BellBlockade", GetType(resEnum))>
+    <XmlEnum> eBellBlockade
+
+    ''' <summary>
+    ''' Busy
+    ''' </summary>
+    <LocalizedDescription("Busy", GetType(resEnum))>
+    <XmlEnum> eBusy
+
+    ''' <summary>
+    ''' Deflect with a delay
+    ''' </summary>
+    <LocalizedDescription("Delayed", GetType(resEnum))>
+    <XmlEnum> eDelayed
+
+    ''' <summary>
+    ''' Deflect if busy or with a delay
+    ''' </summary>
+    <LocalizedDescription("DelayedOrBusy", GetType(resEnum))>
+    <XmlEnum> eDelayedOrBusy
+
+    ''' <summary>
+    ''' Direct call
+    ''' </summary>
+    <LocalizedDescription("DirectCall", GetType(resEnum))>
+    <XmlEnum> eDirectCall
+
+    ''' <summary>
+    ''' Deflect immediately
+    ''' </summary>
+    <LocalizedDescription("Immediately", GetType(resEnum))>
+    <XmlEnum> eImmediately
+
+    ''' <summary>
+    ''' Deflect with a long delay
+    ''' </summary>
+    <LocalizedDescription("LongDelayed", GetType(resEnum))>
+    <XmlEnum> eLongDelayed
+
+    ''' <summary>
+    ''' Do not signal this call
+    ''' </summary>
+    <LocalizedDescription("NoSignal", GetType(resEnum))>
+    <XmlEnum> eNoSignal
+
+    ''' <summary>
+    ''' Deflect disabled
+    ''' </summary>
+    <LocalizedDescription("Off", GetType(resEnum))>
+    <XmlEnum> eOff
+
+    ''' <summary>
+    ''' Parallel call
+    ''' </summary>
+    <LocalizedDescription("ParallelCall", GetType(resEnum))>
+    <XmlEnum> eParallelCall
+
+    ''' <summary>
+    ''' Deflect with a short delay
+    ''' </summary>
+    <LocalizedDescription("ShortDelayed", GetType(resEnum))>
+    <XmlEnum> eShortDelayed
+
+    ''' <summary>
+    ''' Mode unknown
+    ''' </summary>
+    <LocalizedDescription("Unknown", GetType(resEnum))>
+    <XmlEnum> eUnknown
+
+    ''' <summary>
+    ''' VIP
+    ''' </summary>
+    <LocalizedDescription("VIP", GetType(resEnum))>
+    <XmlEnum> eVIP
+End Enum
+
+''' <summary>
+''' Fritz!Box Deflection
+''' </summary>
+<TypeConverter(GetType(EnumDescriptionTypeConverter))>
+Public Enum TypeEnum
+    ''' <summary>
+    ''' Phone port 1 is selected
+    ''' </summary>
+    <LocalizedDescription("fon1", GetType(resEnum))>
+    <XmlEnum> fon1
+
+    ''' <summary>
+    ''' Phone port 2 is selected
+    ''' </summary>
+    <LocalizedDescription("fon2", GetType(resEnum))>
+    <XmlEnum> fon2
+
+    ''' <summary>
+    ''' Phone port 3 is selected
+    ''' </summary>
+    <LocalizedDescription("fon3", GetType(resEnum))>
+    <XmlEnum> fon3
+
+    ''' <summary>
+    ''' Phone port 4 is selected
+    ''' </summary>
+    <LocalizedDescription("fon4", GetType(resEnum))>
+    <XmlEnum> fon4
+
+    ''' <summary>
+    ''' From all
+    ''' </summary>
+    <LocalizedDescription("fromAll", GetType(resEnum))>
+    <XmlEnum> fromAll
+
+    ''' <summary>
+    ''' From a anonymous call 
+    ''' </summary>
+    <LocalizedDescription("fromAnonymous", GetType(resEnum))>
+    <XmlEnum> fromAnonymous
+
+    ''' <summary>
+    ''' Call not from a VIP 
+    ''' </summary>
+    <LocalizedDescription("fromNotVIP", GetType(resEnum))>
+    <XmlEnum> fromNotVIP
+
+    ''' <summary>
+    ''' Specific Number 
+    ''' </summary>
+    <LocalizedDescription("fromNumber", GetType(resEnum))>
+    <XmlEnum> fromNumber
+
+    ''' <summary>
+    ''' The caller is in the phonebook
+    ''' </summary>
+    <LocalizedDescription("fromPB", GetType(resEnum))>
+    <XmlEnum> fromPB
+
+    ''' <summary>
+    ''' Call from a VIP
+    ''' </summary>
+    <LocalizedDescription("fromVIP", GetType(resEnum))>
+    <XmlEnum> fromVIP
+
+    ''' <summary>
+    ''' To Any
+    ''' </summary>
+    <LocalizedDescription("toAny", GetType(resEnum))>
+    <XmlEnum> toAny
+
+    ''' <summary>
+    ''' To MSN
+    ''' </summary>
+    <LocalizedDescription("toMSN", GetType(resEnum))>
+    <XmlEnum> toMSN
+
+    ''' <summary>
+    ''' To POTS
+    ''' </summary>
+    <LocalizedDescription("toPOTS", GetType(resEnum))>
+    <XmlEnum> toPOTS
+
+    ''' <summary>
+    ''' To VoIP
+    ''' </summary>
+    <LocalizedDescription("toVoIP", GetType(resEnum))>
+    <XmlEnum> toVoIP
+
+    ''' <summary>
+    ''' Type unknown
+    ''' </summary>
+    <LocalizedDescription("Unknown", GetType(resEnum))>
+    <XmlEnum> unknown
+End Enum
