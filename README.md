@@ -3,12 +3,14 @@
 Dieses Projekt ist ein Addin für Microsoft Outlook. 
 Das Projekt ist in den ersten Versionen bereits 2006 entstanden und wurde über die Jahre von einer Makrosammlung hin zu einem Office Addin überführt.
 
-Dieses Addin ist in meiner Freizeit entstanden. Ich erwarte keine Gegenleistung. Ein Danke ist ausreichend.
+Dieses Addin ist in meiner Freizeit entstanden. Ich erwarte keine Gegenleistung. Ein Danke ist ausreichend. Wer mir dennoch etwas Gutes zukommen lassen möchte kann dies gerne tun:
+
+[![Donate](https://img.shields.io/badge/Spenden-PayPal-green.svg)](https://www.paypal.com/paypalme/gertmichael)
 
 
 ### Zielsetzung
 Ziel ist es, die Produkte der Firma AVM (Fritz!Box) aus Berlin besser mit Outlook zu verknüpfen. Hierbei soll nur auf die Standardfunktionen der Fritz!Box zurückgegriffen werden,
-d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
+d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich. 
 
 ### Funktionsumfang
 #### Unterstütze Funktionen (was geht)

@@ -1,9 +1,9 @@
 ﻿Imports System.Windows
 Imports System.Threading
 Imports System.Windows.Markup
-Public Class FBoxDataWPF
-    Inherits Window
 
+Public Class KontaktsucheWPF
+    Inherits Window
     Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.

@@ -235,7 +235,9 @@ Friend Class OptionenService
         AddHandler KontaktSucher.Beendet, AddressOf KontaktsucheTestBeendet
         AddHandler KontaktSucher.Status, AddressOf SetStatus
 
-        Dim oc As ContactItem = Await KontaktSucheTaskDASL(New Telefonnummer With {.SetNummer = TelNr})
+        ' Führe eine Kontaktsuche durch
+        Dim oc As ContactItem = Await KontaktSucheTelNr(New Telefonnummer With {.SetNummer = TelNr})
+        ' Blende den Kontakt ein
         If oc IsNot Nothing Then oc.Display()
     End Sub
 

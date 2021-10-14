@@ -1,6 +1,4 @@
-﻿Imports System.Threading.Tasks
-
-Public Class FBoxDataViewModel
+﻿Public Class FBoxDataViewModel
     Inherits NotifyBase
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IFBoxDataService
@@ -62,7 +60,7 @@ Public Class FBoxDataViewModel
             .Add(New FBoxDataTAMViewModel(DatenService, DialogService) With {.FBoxDataVM = Me})
             .Add(New FBoxDataTelBuchViewModel(DatenService, DialogService) With {.FBoxDataVM = Me})
             .Add(New FBoxDataRufUmlViewModel(DatenService) With {.FBoxDataVM = Me})
-            .Add(New FboxDataTellowsViewModel(DatenService) With {.FBoxDataVM = Me})
+            .Add(New FBoxDataTellowsViewModel(DatenService) With {.FBoxDataVM = Me})
         End With
 
         ' Lade die Grundeinstellungen

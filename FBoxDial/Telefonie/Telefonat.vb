@@ -468,7 +468,7 @@ Imports Microsoft.Office.Interop
         If Not NrUnterdrückt Then
 
             ' Kontaktsuche in den Outlook-Kontakten
-            OlKontakt = Await KontaktSucheTaskDASL(GegenstelleTelNr)
+            OlKontakt = Await KontaktSucheTelNr(GegenstelleTelNr)
 
             If OlKontakt IsNot Nothing Then
                 ' Ein Kontakt wurde gefunden
@@ -703,7 +703,7 @@ Imports Microsoft.Office.Interop
 
                         .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
                         .Duration = Dauer.GetLarger(31) \ 60
-                        .Body = DfltJournalBody(If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert), Angenommen, VCard)
+                        .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{VCard}"
                         .Start = ZeitBeginn
                         .Companies = Firma
 

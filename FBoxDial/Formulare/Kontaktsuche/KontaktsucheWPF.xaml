@@ -1,0 +1,50 @@
+﻿<Window x:Class="KontaktsucheWPF"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:fbd="clr-namespace:FBoxDial"
+        xmlns:localize="clr-namespace:FBoxDial.Localize"
+        mc:Ignorable="d" 
+        d:DesignHeight="450" d:DesignWidth="500" 
+        d:DataContext="{d:DesignInstance Type=fbd:KontaktsucheViewModel, IsDesignTimeCreatable=True}"
+        Height="450" Width="500"
+        Title="{x:Static localize:LocKontaktsuche.strHeader}">
+
+    <Window.DataContext>
+        <fbd:KontaktsucheViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Kontaktsuche.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{x:Static localize:LocKontaktsuche.strInput}"/>
+        
+        <fbd:WatermarkTextBox Grid.Row="1" Margin="0,4"
+                              Text="{Binding DataContext.SearchText, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Mode=TwoWay}"
+                              Watermark="{x:Static localize:LocKontaktsuche.strInputWatermark}"/>     
+
+        <ListView Grid.Row="2" SelectionMode="Single"
+                  ItemsSource="{Binding Ergebnisse, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedItem="{Binding OLKontaktVM, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <fbd:ContactItemView DataContext="{Binding}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>

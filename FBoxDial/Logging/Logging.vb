@@ -10,6 +10,7 @@ Friend Module NLogging
                                       "${level}",
                                       "${logger}",
                                       "${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}",
+                                      "${threadid}",
                                       "${callsite-linenumber}",
                                       "${message}",
                                       "${onexception:${newline}Exception\: ${exception:format=type,message,method,properties,stackTrace :maxInnerExceptionLevel=50 :innerFormat=shortType,message,method,stackTrace :separator=\r\n}}"}

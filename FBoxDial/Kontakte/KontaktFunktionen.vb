@@ -2,6 +2,7 @@
 Imports System.Runtime.CompilerServices
 Imports Microsoft.Office.Interop.Outlook
 Imports System.Windows.Media
+Imports System.Threading.Tasks
 Friend Module KontaktFunktionen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
@@ -704,7 +705,7 @@ Friend Module KontaktFunktionen
         Return Nothing
     End Function
 
-    <Extension> Friend Async Function KontaktBildEx(FBoxContact As FritzBoxXMLKontakt) As Threading.Tasks.Task(Of Imaging.BitmapImage)
+    <Extension> Friend Async Function KontaktBildEx(FBoxContact As FritzBoxXMLKontakt) As Task(Of Imaging.BitmapImage)
         If FBoxContact IsNot Nothing Then
             With FBoxContact
                 ' Bild in das Datenobjekt laden und abschließend löschen

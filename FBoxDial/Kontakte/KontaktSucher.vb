@@ -8,75 +8,29 @@ Friend Module KontaktSucher
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Boolean))
 
 #Region "Kontaktsuche DASL in Ordnerauswahl"
-    Friend Async Function KontaktSucheTaskDASL(TelNr As Telefonnummer) As Task(Of Outlook.ContactItem)
-        Dim Filter As List(Of String)
-        Dim sFilter As String
+    Friend Async Function KontaktSucheTelNr(TelNr As Telefonnummer) As Task(Of Outlook.ContactItem)
         Dim olKontakt As Outlook.ContactItem = Nothing
 
-        If ThisAddIn.OutookApplication IsNot Nothing Then
+        If TelNr IsNot Nothing Then
+            PushStatus(LogLevel.Debug, $"Kontaktsuche für {TelNr.Unformatiert} gestartet")
 
-            If TelNr IsNot Nothing Then
-                PushStatus(LogLevel.Debug, $"Kontaktsuche für {TelNr.Unformatiert} gestartet")
-
-                ' Filter zusammenstellen
-                Filter = New List(Of String)
-
-                For Each DASLTag As String In DASLTagTelNrIndex.ToList
-                    Filter.Add($"{DASLTag}/0x0000001f = '{TelNr.Unformatiert}'")
-                Next
-                sFilter = $"@SQL={String.Join(" OR ", Filter)}"
-
-                Dim OrdnerListe As List(Of OutlookOrdner) = XMLData.POptionen.OutlookOrdner.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
-
-                ' Füge den Standardkontaktordner hinzu, falls keine anderen Ordner definiert wurden.
-                If Not OrdnerListe.Any Then
-                    OrdnerListe.Add(New OutlookOrdner(GetDefaultMAPIFolder(Outlook.OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche))
+            With Await KontaktSucheNumberField(TelNr.Unformatiert, True)
+                If .Any Then
+                    olKontakt = .First
                 End If
+            End With
 
-                Dim TaskList As New List(Of Task(Of Outlook.ContactItem))
-
-                ' Erzeuge eine Liste der Ordner, die der Nutzer ausgewählt hat
-                Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = OrdnerListe.Select(Function(S) S.MAPIFolder).ToList
-
-                ' Füge die Unterordner hinzu
-                If XMLData.POptionen.CBSucheUnterordner Then
-                    PushStatus(LogLevel.Debug, "Ermittle Unterordner...")
-                    AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
-                End If
-
-                PushStatus(LogLevel.Debug, $"Starte die Kontaktsuche in {MAPIFolderList.Count} Ordnern.")
-                ' Führe die Kontaktsuche aus.
-                For Each MapiFolder In MAPIFolderList
-
-                    TaskList.Add(Task.Run(Function() As Outlook.ContactItem
-                                              PushStatus(LogLevel.Debug, $"Kontaktsuche in MAPIFolder '{MapiFolder.Name}' gestartet")
-                                              Return FindeAnruferKontaktAuswahl(MapiFolder, sFilter)
-                                          End Function))
-                Next
-
-                While TaskList.Any 'And olKontakt Is Nothing
-                    Dim t = Await Task.WhenAny(TaskList)
-
-                    If t.Result IsNot Nothing Then
-                        If olKontakt Is Nothing Then olKontakt = t.Result
-                        PushStatus(LogLevel.Debug, $"Kontaktsuche erfolgreich: '{olKontakt.FullName}' in '{olKontakt.ParentFolder.Name}' gefunden.")
-                    End If
-
-                    TaskList.Remove(t)
-                End While
-
-            End If
         End If
 
-        PushStatus(LogLevel.Debug, $"Kontaktsuche beendet.")
+        PushStatus(LogLevel.Debug, $"Kontaktsuche für {TelNr.Unformatiert} beendet.")
         RaiseEvent Beendet(Nothing, New NotifyEventArgs(Of Boolean)(olKontakt IsNot Nothing))
 
         Return olKontakt
     End Function
 
-    Private Function FindeAnruferKontaktAuswahl(Ordner As Outlook.MAPIFolder, sFilter As String) As Outlook.ContactItem
+    Private Function FindeKontaktInOrdner(Ordner As Outlook.MAPIFolder, sFilter As String) As List(Of Outlook.ContactItem)
 
-        Dim olKontakt As Outlook.ContactItem = Nothing
+        Dim olKontaktListe As New List(Of Outlook.ContactItem)
 
         If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
 
@@ -90,15 +44,75 @@ Friend Module KontaktSucher
                 .Add("EntryID")
             End With
 
-            If Not oTable.EndOfTable Then
-                olKontakt = GetOutlookKontakt(oTable.GetNextRow("EntryID").ToString, Ordner.StoreID)
-                NLogger.Debug($"DASL Table erfolgreich: {olKontakt.FullNameAndCompany} in {Ordner.Name}")
-            End If
+            Do Until oTable.EndOfTable
+
+                With oTable.GetNextRow()
+                    olKontaktListe.Add(GetOutlookKontakt(.Item("EntryID").ToString, Ordner.StoreID))
+                End With
+
+            Loop
+
             ReleaseComObject(oTable)
         End If
 
-        Return olKontakt
-    End Function '(FindeKontakt)
+        Return olKontaktListe
+    End Function
+
+    Private Async Function KontaktSucheFilter(sFilter As String) As Task(Of List(Of Outlook.ContactItem))
+        Dim olKontaktListe As New List(Of Outlook.ContactItem)
+
+        If ThisAddIn.OutookApplication IsNot Nothing AndAlso sFilter.IsNotStringNothingOrEmpty Then
+
+            NLogger.Trace($"Kontaktsuche mit Filter gestartet: {sFilter}")
+
+            ' Ermittle Ordner
+            Dim OrdnerListe As List(Of OutlookOrdner) = XMLData.POptionen.OutlookOrdner.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
+
+            ' Füge den Standardkontaktordner hinzu, falls keine anderen Ordner definiert wurden.
+            If Not OrdnerListe.Any Then
+                OrdnerListe.Add(New OutlookOrdner(GetDefaultMAPIFolder(Outlook.OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche))
+            End If
+
+            Dim TaskList As New List(Of Task(Of List(Of Outlook.ContactItem)))
+
+            ' Erzeuge eine Liste der Ordner, die der Nutzer ausgewählt hat
+            Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = OrdnerListe.Select(Function(S) S.MAPIFolder).ToList
+
+            ' Füge die Unterordner hinzu
+            If XMLData.POptionen.CBSucheUnterordner Then
+                PushStatus(LogLevel.Debug, "Ermittle Unterordner...")
+                AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+            End If
+
+            PushStatus(LogLevel.Debug, $"Starte die Kontaktsuche in {MAPIFolderList.Count} Ordnern.")
+            ' Führe die Kontaktsuche aus.
+            For Each MapiFolder In MAPIFolderList
+
+                TaskList.Add(Task.Run(Function() As List(Of Outlook.ContactItem)
+                                          PushStatus(LogLevel.Debug, $"Kontaktsuche in MAPIFolder '{MapiFolder.Name}' gestartet")
+                                          Return FindeKontaktInOrdner(MapiFolder, sFilter)
+                                      End Function))
+            Next
+
+            While TaskList.Any 'And olKontakt Is Nothing
+                Dim t = Await Task.WhenAny(TaskList)
+
+                If t.Result.Any Then
+                    'If olKontakt Is Nothing Then olKontakt = t.Result
+                    olKontaktListe.AddRange(t.Result)
+                    PushStatus(LogLevel.Debug, $"Kontaktsuche erfolgreich: {t.Result.Count} Kontakte in '{t.Result.First.ParentFolder.Name}' gefunden: {String.Join(", ", t.Result.Select(Function(K) K.FullName))}")
+                End If
+
+                TaskList.Remove(t)
+            End While
+
+        End If
+
+        PushStatus(LogLevel.Debug, $"Kontaktsuche beendet.")
+        RaiseEvent Beendet(Nothing, New NotifyEventArgs(Of Boolean)(olKontaktListe IsNot Nothing))
+
+        Return olKontaktListe
+    End Function
 
     ''' <summary>
     ''' Gibt eine Statusmeldung (<paramref name="StatusMessage"/>) als Event aus. Gleichzeitig wird in das Log mit vorgegebenem <paramref name="Level"/> geschrieben.
@@ -215,4 +229,80 @@ Friend Module KontaktSucher
 
 #End Region
 
+#Region "Kontaktsuche Aufrufe"
+    ''' <summary>
+    ''' Stellt einen Filter für eine Kontaktsuche in den Namensfeldern zusammen und startet die Suche 
+    ''' </summary>
+    ''' <param name="FilterWert">Zeichenfolge nach der die Kontakte gesucht werden sollen.</param>
+    ''' <param name="Exakt">Angabe ob die die Ergebnisse exakt übereinstimmen müssen, oder ob der <paramref name="FilterWert"/> enthalten sein kann. </param>
+    ''' <returns>Liste von gefundenen <see cref="Outlook.ContactItem"/></returns>
+    Friend Async Function KontaktSucheNameField(FilterWert As String, Exakt As Boolean) As Task(Of List(Of Outlook.ContactItem))
+        Dim Filter As New List(Of String)
+
+        ' Standard Outlook Namens Felder 
+        If Exakt Then
+            ' Exakte Suche 
+            GetType(OutlookContactNameFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} = '{FilterWert}'"))
+        Else
+            ' Zeichenfolge kann enthalten sein
+            GetType(OutlookContactNameFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} LIKE '%{FilterWert}%'"))
+        End If
+
+        ' Führe die Suche aus
+        Return Await KontaktSucheFilter($"@SQL={String.Join(" OR ", Filter)}")
+    End Function
+
+    ''' <summary>
+    ''' Stellt einen Filter für eine Kontaktsuche in den Telefonnummern zusammen und startet die Suche 
+    ''' </summary>
+    ''' <param name="FilterWert">Zeichenfolge nach der die Kontakte gesucht werden sollen.</param>
+    ''' <param name="Exakt">Angabe ob die die Ergebnisse exakt übereinstimmen müssen, oder ob der <paramref name="FilterWert"/> enthalten sein kann. </param>
+    ''' <returns>Liste von gefundenen <see cref="Outlook.ContactItem"/></returns>
+    Friend Async Function KontaktSucheNumberField(FilterWert As String, Exakt As Boolean) As Task(Of List(Of Outlook.ContactItem))
+        Dim Filter As New List(Of String)
+
+        If Exakt Then
+            ' Exakte Suche 
+            ' Standard Outlook Nummern Felder (wird nicht benötigt, da die indizierten Felder durchsucht werden sollen)
+            ' GetType(OutlookContactNumberFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} = '{FilterWert}'"))
+
+            ' Indizierte Telefonnummernfelder hinzufügen
+            DASLTagTelNrIndex.ToList.ForEach(Sub(Tag) Filter.Add($"""{Tag}/0x0000001f"" = '{FilterWert}'"))
+        Else
+            ' Zeichenfolge kann enthalten sein
+
+            ' Standard Outlook Nummern Felder 
+            GetType(OutlookContactNumberFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} LIKE '%{FilterWert}%'"))
+
+            ' Indizierte Telefonnummernfelder hinzufügen
+            DASLTagTelNrIndex.ToList.ForEach(Sub(Tag) Filter.Add($"""{Tag}/0x0000001f"" LIKE '%{FilterWert}%'"))
+        End If
+
+        ' Führe die Suche aus
+        Return Await KontaktSucheFilter($"@SQL={String.Join(" OR ", Filter)}")
+    End Function
+
+    ''' <summary>
+    ''' Stellt einen Filter für eine Kontaktsuche in den E-Mailfeldern zusammen und startet die Suche 
+    ''' </summary>
+    ''' <param name="FilterWert">Zeichenfolge nach der die Kontakte gesucht werden sollen.</param>
+    ''' <param name="Exakt">Angabe ob die die Ergebnisse exakt übereinstimmen müssen, oder ob der <paramref name="FilterWert"/> enthalten sein kann. </param>
+    ''' <returns>Liste von gefundenen <see cref="Outlook.ContactItem"/></returns>
+    Friend Async Function KontaktSucheEMailField(FilterWert As String, Exakt As Boolean) As Task(Of List(Of Outlook.ContactItem))
+        Dim Filter As New List(Of String)
+
+        ' Standard Outlook E-Mail Felder 
+
+        If Exakt Then
+            ' Exakte Suche 
+            GetType(OutlookContactEMailFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} = '{FilterWert}'"))
+        Else
+            ' Zeichenfolge kann enthalten sein
+            GetType(OutlookContactEMailFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} LIKE '%{FilterWert}%'"))
+        End If
+
+        ' Führe die Suche aus
+        Return Await KontaktSucheFilter($"@SQL={String.Join(" OR ", Filter)}")
+    End Function
+#End Region
 End Module

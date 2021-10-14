@@ -16,7 +16,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-
         
     <Grid Margin="0,4">
         <Grid.ColumnDefinitions>

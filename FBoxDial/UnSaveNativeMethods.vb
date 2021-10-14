@@ -1,12 +1,7 @@
 ﻿Imports System.Security
 Imports System.Runtime.InteropServices
 
-'Public Structure RECT
-'    Public Property Left As Long
-'    Public Property Top As Long
-'    Public Property Right As Long
-'    Public Property Bottom As Long
-'End Structure
+Friend Delegate Function LowLevelKeyboardProc(nCode As Integer, wParam As IntPtr, lParam As IntPtr) As Integer
 
 ''' <summary>
 ''' The window sizing and positioning flags.
@@ -385,6 +380,59 @@ End Enum
     Friend Shared Function SetWindowPos(hWnd As IntPtr, hWndInsertAfter As HWndInsertAfterFlags, X As Integer, Y As Integer, cx As Integer, cy As Integer, uFlags As SetWindowPosFlags) As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
+    <DllImport("user32.dll", CharSet:=CharSet.Auto, SetLastError:=True)>
+    Friend Shared Function SetWindowsHookEx(idHook As Integer, lpfn As LowLevelKeyboardProc, hMod As IntPtr, ByVal dwThreadId As UInteger) As IntPtr
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Friend Shared Function UnhookWindowsHookEx(hhk As IntPtr) As Boolean
+    End Function
+
+    ''' <summary>
+    '''     Passes the hook information to the next hook procedure in the current hook chain. A hook procedure can call this
+    '''     function either before Or after processing the hook information.
+    '''     <para>
+    '''     See [ https://msdn.microsoft.com/en-us/library/windows/desktop/ms644974%28v=vs.85%29.aspx ] for more
+    '''     information.
+    '''     </para>
+    ''' </summary>
+    ''' <param name="hhk">C++ ( hhk [in, optional]. Type: HHOOK )<br />This parameter Is ignored. </param>
+    ''' <param name="nCode">
+    '''     C++ ( nCode [in]. Type: int )<br />The hook code passed to the current hook procedure. The next
+    '''     hook procedure uses this code to determine how to process the hook information.
+    ''' </param>
+    ''' <param name="wParam">
+    '''     C++ ( wParam [in]. Type: WPARAM )<br />The wParam value passed to the current hook procedure. The
+    '''     meaning of this parameter depends on the type of hook associated with the current hook chain.
+    ''' </param>
+    ''' <param name="lParam">
+    '''     C++ ( lParam [in]. Type: LPARAM )<br />The lParam value passed to the current hook procedure. The
+    '''     meaning of this parameter depends on the type of hook associated with the current hook chain.
+    ''' </param>
+    ''' <returns>
+    '''     C++ ( Type: LRESULT )<br />This value Is returned by the next hook procedure in the chain. The current hook
+    '''     procedure must also return this value. The meaning of the return value depends on the hook type. For more
+    '''     information, see the descriptions of the individual hook procedures.
+    ''' </returns>
+    ''' <remarks>
+    '''     <para>
+    '''     Hook procedures are installed in chains for particular hook types. <see cref="CallNextHookEx" /> calls the
+    '''     next hook in the chain.
+    '''     </para>
+    '''     <para>
+    '''     Calling CallNextHookEx Is optional, but it Is highly recommended; otherwise, other applications that have
+    '''     installed hooks will Not receive hook notifications And may behave incorrectly as a result. You should call
+    '''     <see cref="CallNextHookEx" /> unless you absolutely need to prevent the notification from being seen by other
+    '''     applications.
+    '''     </para>
+    ''' </remarks>
+    <DllImport("user32.dll")>
+    Friend Shared Function CallNextHookEx(hhk As IntPtr, nCode As Integer, wParam As IntPtr, lParam As IntPtr) As IntPtr
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Friend Shared Function GetKeyState(nVirtKey As Integer) As Short
+    End Function
 End Class
 
 Public NotInheritable Class UnSaveMethods
@@ -443,4 +491,28 @@ Public NotInheritable Class UnSaveMethods
     '    End Get
     'End Property
 
+    Friend Shared ReadOnly Property CallNextHookEx(hhk As IntPtr, nCode As Integer, wParam As IntPtr, lParam As IntPtr) As IntPtr
+        Get
+            Return UnsafeNativeMethods.CallNextHookEx(hhk, nCode, wParam, lParam)
+        End Get
+    End Property
+
+    Friend Shared ReadOnly Property UnhookWindowsHookEx(hhk As IntPtr) As Boolean
+        Get
+            Return UnsafeNativeMethods.UnhookWindowsHookEx(hhk)
+        End Get
+    End Property
+
+    Friend Shared ReadOnly Property SetWindowsHookEx(idHook As Integer, lpfn As LowLevelKeyboardProc, hMod As IntPtr, dwThreadId As UInteger) As IntPtr
+        Get
+            Return UnsafeNativeMethods.SetWindowsHookEx(idHook, lpfn, hMod, dwThreadId)
+        End Get
+    End Property
+
+    Friend Shared ReadOnly Property GetKeyState(nVirtKey As Integer) As Short
+        Get
+            Return UnsafeNativeMethods.GetKeyState(nVirtKey)
+        End Get
+    End Property
 End Class
+

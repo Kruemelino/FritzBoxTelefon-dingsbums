@@ -217,6 +217,15 @@ Public Class resImageMso
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die FindDialog ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property Search_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("Search_ImageMso", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die ClipArtInsert ähnelt.
     '''</summary>
     Public Shared ReadOnly Property ShowCallMonitor_ImageMso() As String

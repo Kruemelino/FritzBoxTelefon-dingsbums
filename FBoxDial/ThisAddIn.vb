@@ -37,6 +37,8 @@ Public NotInheritable Class ThisAddIn
         Else
             NLogger.Warn("Addin nicht gestartet, da kein Explorer vorhanden")
         End If
+        ' enable keyboard intercepts
+        KeyboardHooking.SetHook()
     End Sub
 
     Private Async Sub StarteAddinFunktionen()
@@ -129,9 +131,12 @@ Public NotInheritable Class ThisAddIn
                 AutoBlockListe(FBoxTR064)
             End If
         End Using
+
     End Sub
 
+
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
+
         ' Listen leeren
         If PVorwahlen IsNot Nothing Then PVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
         ' Anrufmonitor beenden
@@ -140,6 +145,8 @@ Public NotInheritable Class ThisAddIn
         NLogger.Info($"{My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} beendet.")
         ' XML-Datei Speichern
         XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltConfigFileName))
+        ' disable keyboard intercepts
+        KeyboardHooking.ReleaseHook()
 
         OutookApplication = Nothing
     End Sub

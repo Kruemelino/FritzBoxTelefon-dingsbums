@@ -65,4 +65,32 @@ Friend Module Fenster
         End If
     End Sub
 
+    Friend Function AddWindow(Of T As Windows.Window)() As T
+        ' Blendet ein neue Kontaktsuche ein
+        Dim AddinFenster As T = CType(ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is T), T)
+
+        If AddinFenster Is Nothing Then
+            ' Neues Window generieren
+            AddinFenster = CType(Activator.CreateInstance(GetType(T)), T)
+            ' Ereignishandler hinzufügen
+            AddHandler AddinFenster.Closed, AddressOf Window_Closed
+            ' Window in die Liste aufnehmen
+            ThisAddIn.AddinWindows.Add(AddinFenster)
+        Else
+            AddinFenster.Activate()
+        End If
+        Return AddinFenster
+    End Function
+
+    Friend Sub Window_Closed(sender As Object, e As EventArgs)
+
+        ' Window der Variable zuweisen
+        Dim Window As Windows.Window = CType(sender, Windows.Window)
+        ' Ereignishandler entfernen
+        RemoveHandler Window.Closed, AddressOf Window_Closed
+        ' Window aus der Liste entfernen
+        ThisAddIn.AddinWindows.Remove(Window)
+
+        NLogger.Debug("Fenster aus der Gesamtliste entfernt.")
+    End Sub
 End Module

@@ -135,11 +135,17 @@
   <data name="strDirectDial" xml:space="preserve">
     <value>Direktwahl - Geben Sie die zu wählende Telefonnummer direkt ein.</value>
   </data>
+  <data name="strErrorAuswahl" xml:space="preserve">
+    <value>Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein.</value>
+  </data>
+  <data name="strErrorMail" xml:space="preserve">
+    <value>Es ist kein Kontakt mit der E-Mail-Adresse {0} vorhanden.</value>
+  </data>
+  <data name="strErrorSoftphoneNotReady" xml:space="preserve">
+    <value>{0} ist nicht bereit...</value>
+  </data>
   <data name="strHeader" xml:space="preserve">
     <value>Anruf: {0}</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
   </data>
   <data name="strMicroSIPBereit" xml:space="preserve">
     <value>MicroSIP ist bereit.</value>

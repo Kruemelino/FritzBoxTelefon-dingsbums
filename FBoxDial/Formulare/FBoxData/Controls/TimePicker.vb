@@ -23,8 +23,8 @@ Public Class TimePicker
 
 #Region "Data"
 
-    Private Shared ReadOnly MinValidTime As TimeSpan = New TimeSpan(0, 0, 0)
-    Private Shared ReadOnly MaxValidTime As TimeSpan = New TimeSpan(23, 59, 59)
+    Private Shared ReadOnly MinValidTime As New TimeSpan(0, 0, 0)
+    Private Shared ReadOnly MaxValidTime As New TimeSpan(23, 59, 59)
     Private hourTextBox As TextBox
     Private minuteTextBox As TextBox
     Private secondTextBox As TextBox

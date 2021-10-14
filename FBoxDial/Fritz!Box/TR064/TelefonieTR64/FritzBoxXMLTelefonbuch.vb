@@ -113,7 +113,7 @@ Imports System.Xml.Serialization
     ''' Entfernt eine Auflistung von Kontakten aus dem Telefonbuch
     ''' </summary>
     ''' <param name="RemoveKontakte">Liste der zu entfernenden Kontakte.</param>
-    Friend Sub DeleteKontakte(RemoveKontakte As List(Of FritzBoxXMLKontakt))
+    Friend Sub DeleteKontakte(RemoveKontakte As IEnumerable(Of FritzBoxXMLKontakt))
         With Kontakte
             ' Kontake entfernen
             .RemoveRange(RemoveKontakte)

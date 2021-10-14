@@ -16,8 +16,8 @@
         Get
             Return _FBoxDataVM
         End Get
-        Set(value As FBoxDataViewModel)
-            SetProperty(_FBoxDataVM, value)
+        Set
+            SetProperty(_FBoxDataVM, Value)
         End Set
     End Property
 

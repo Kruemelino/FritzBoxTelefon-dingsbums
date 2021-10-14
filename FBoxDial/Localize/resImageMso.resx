@@ -168,6 +168,9 @@
   <data name="RWS_ImageMso" xml:space="preserve">
     <value>CheckNames</value>
   </data>
+  <data name="Search_ImageMso" xml:space="preserve">
+    <value>FindDialog</value>
+  </data>
   <data name="ShowCallMonitor_ImageMso" xml:space="preserve">
     <value>ClipArtInsert</value>
   </data>

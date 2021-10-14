@@ -7,7 +7,7 @@ Namespace SOAP
 
         Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
 
-        Public Property Authorisiert As Boolean = False
+        'Public Property Authorisiert As Boolean = False
         Public Property Bereit As Boolean = False
 
         Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -42,12 +42,14 @@ Namespace SOAP
                 If DownloadString(New UriBuilder(Uri.UriSchemeHttps, FBoxIPAdresse, DfltTR064PortSSL, Tr064Files.tr64desc).Uri, Response) Then
                     ' Deserialisieren
                     If DeserializeXML(Response, False, FBTR64Desc) Then
-                        ' Füge das Flag hinzu, dass die TR064-Schnittstelle bereit ist-
+                        ' Füge das Flag hinzu, dass die TR064-Schnittstelle bereit ist.
                         Bereit = True
+                        PushStatus(LogLevel.Debug, "FritzBoxTR64 erfolgreich initialisiert.")
 
-                        ' Prüfe, ob die Anmeldeinformationen korrekt sind. Ermittle dazu eine SessionID.
-                        Authorisiert = GetSessionID(DfltStringEmpty)
-
+                        '' Prüfe, ob die Anmeldeinformationen korrekt sind. Ermittle dazu eine SessionID.
+                        'With TR064Start(Tr064Files.deviceconfigSCPD, "X_AVM-DE_CreateUrlSID")
+                        '    Authorisiert = .ContainsKey("NewX_AVM-DE_UrlSID")
+                        'End With
                     Else
                         PushStatus(LogLevel.Error, "FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Deserialisieren der FBTR64Desc.")
                     End If
@@ -117,18 +119,21 @@ Namespace SOAP
 
         Friend ReadOnly Property HardwareVersion As Integer
             Get
+                NLogger.Trace($"Fritz!Box Hardware: {FBTR64Desc.SystemVersion.HW}")
                 Return FBTR64Desc.SystemVersion.HW
             End Get
         End Property
 
         Friend ReadOnly Property Major As Integer
             Get
+                NLogger.Trace($"Fritz!Box Major: {FBTR64Desc.SystemVersion.Major}")
                 Return FBTR64Desc.SystemVersion.Major
             End Get
         End Property
 
         Friend ReadOnly Property Minor As Integer
             Get
+                NLogger.Trace($"Fritz!Box Minor: {FBTR64Desc.SystemVersion.Minor}")
                 Return FBTR64Desc.SystemVersion.Minor
             End Get
         End Property
@@ -186,6 +191,7 @@ Namespace SOAP
 #End Region
 
 #Region "deviceconfigSCPD"
+
         ''' <summary>
         ''' Generate a temporary URL session ID. The session ID is need for accessing URLs like phone book, call list, FAX message, answering machine messages Or phone book images.
         ''' </summary>
@@ -280,7 +286,7 @@ Namespace SOAP
 
                     CallListURL = .Item("NewCallListURL").ToString
 
-                    PushStatus(LogLevel.Debug, $"Pfad zur Anrufliste der Fritz!Box: '{CallListURL}'")
+                    PushStatus(LogLevel.Debug, $"Pfad zur Anrufliste der Fritz!Box: {CallListURL} ")
 
                     Return True
                 Else

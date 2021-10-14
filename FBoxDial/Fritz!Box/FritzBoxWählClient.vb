@@ -101,14 +101,14 @@ Public Class FritzBoxWählClient
         Dim Erfolreich As Boolean = False
 
         If Abbruch Then
-            NLogger.Debug(WählClientStatusAbbruch)
+            NLogger.Debug("Anruf wird abgebrochen...")
 
             DialCode = DfltStringEmpty
 
         Else
 
             ' Status setzen
-            NLogger.Debug(WählClientStatusVorbereitung)
+            NLogger.Debug("Anruf wird vorbereitet...")
             ' Entferne 1x # am Ende
             DialCode = TelNr.Unformatiert.RegExRemove("#{1}$")
             ' Füge VAZ und LKZ hinzu, wenn gewünscht
@@ -119,7 +119,7 @@ Public Class FritzBoxWählClient
             ' Rufnummerunterdrückung
             DialCode = $"{If(CLIR, "*31#", DfltStringEmpty)}{XMLData.POptionen.TBPräfix}{DialCode}#"
 
-            NLogger.Debug(WählClientStatusWählClient(DialCode))
+            NLogger.Debug($"Dialcode: {DialCode}")
 
         End If
 
@@ -136,7 +136,7 @@ Public Class FritzBoxWählClient
                             NLogger.Info($"Wählclient an Phoner: {DialCode} über {Telefon.Name}")
                             Erfolreich = PhonerApp.Dial(DialCode, Abbruch)
                         Else
-                            NLogger.Debug(WählClientSoftPhoneInaktiv("Phoner"))
+                            NLogger.Debug(String.Format(Localize.LocWählclient.strErrorSoftphoneNotReady, "Phoner"))
                             Erfolreich = False
                         End If
 
@@ -155,7 +155,7 @@ Public Class FritzBoxWählClient
                             NLogger.Info($"Wählclient an MicroSIP: {DialCode} über {Telefon.Name}")
                             Erfolreich = MicroSIPApp.Dial(DialCode, Abbruch)
                         Else
-                            NLogger.Debug(WählClientSoftPhoneInaktiv("MicroSIP"))
+                            NLogger.Debug(String.Format(Localize.LocWählclient.strErrorSoftphoneNotReady, "MicroSIP"))
                             Erfolreich = False
                         End If
 
@@ -202,6 +202,14 @@ Public Class FritzBoxWählClient
 
 #Region "Wähldialog"
     ''' <summary>
+    ''' wird durch die Kontaktsuche ausgeführt
+    ''' </summary>
+    ''' <param name="olKontakt">Des anzurufende <see cref="Outlook.ContactItem"/></param>
+    Friend Overloads Sub WählboxStart(olKontakt As Outlook.ContactItem)
+        If olKontakt IsNot Nothing Then Wählbox(olKontakt)
+    End Sub
+
+    ''' <summary>
     ''' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste ausgeführt
     ''' </summary>
     ''' <param name="olAuswahl">Die aktuelle Auswahl eines Outlook-Elementes</param>
@@ -225,11 +233,11 @@ Public Class FritzBoxWählClient
 
                 Case Else
                     ' Nix tun
-                    MsgBox(WählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
+                    MsgBox(Localize.LocWählclient.strErrorAuswahl, MsgBoxStyle.Exclamation, "WählboxStart")
 
             End Select
         Else
-            MsgBox(WählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
+            MsgBox(Localize.LocWählclient.strErrorAuswahl, MsgBoxStyle.Exclamation, "WählboxStart")
         End If
 
     End Sub
@@ -288,7 +296,7 @@ Public Class FritzBoxWählClient
                 ' Wenn ein ExchangeUser gefunden wurde so wähle diesen an.
                 Wählbox(aktExchangeNutzer)
             Else
-                MsgBox(WählClientEMailunbekannt(ContactCard.Address), MsgBoxStyle.Information, "WählboxStart")
+                MsgBox(String.Format(Localize.LocWählclient.strErrorMail, ContactCard.Address), MsgBoxStyle.Information, "WählboxStart")
             End If
         End If
 
@@ -324,7 +332,7 @@ Public Class FritzBoxWählClient
                     ' Wenn ein ExchangeUser gefunden wurde so wähle diesen an.
                     Wählbox(aktExchangeNutzer)
                 Else
-                    MsgBox(WählClientEMailunbekannt(SMTPAdresse.Addresse), MsgBoxStyle.Information, "WählboxStart")
+                    MsgBox(String.Format(Localize.LocWählclient.strErrorMail, SMTPAdresse.Addresse), MsgBoxStyle.Information, "WählboxStart")
                 End If
 
             End If

@@ -290,6 +290,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kontaktsuche ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property Search_Label() As String
+            Get
+                Return ResourceManager.GetString("Search_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sucht einen Kontakt anhand des Namens, E-Mail oder Telefonnummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property Search_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("Search_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Anzeigen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property ShowCallMonitor_Label() As String

@@ -250,6 +250,9 @@
     </Compile>
     <Compile Include="Formulare\AnrMon\Services\AnrMonService.vb" />
     <Compile Include="Formulare\AnrMon\Services\IAnrMonService.vb" />
+    <Compile Include="Formulare\Common\Controls\WatermarkTextBox.xaml.vb">
+      <DependentUpon>WatermarkTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\Common\Services\IViewModelBase.vb" />
     <Compile Include="Formulare\Common\Services\WindowHelper.vb" />
     <Compile Include="Formulare\Common\Services\WindowBehavior.vb" />
@@ -257,7 +260,7 @@
     <Compile Include="Formulare\Common\Services\NotifyBase.vb" />
     <Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\Common\Services\RelayCommand.vb" />
-    <Compile Include="Formulare\FBoxData\Elemente\TimePicker.vb" />
+    <Compile Include="Formulare\FBoxData\Controls\TimePicker.vb" />
     <Compile Include="Formulare\AnrMon\ViewModel\AnrMonViewModel.vb" />
     <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
@@ -309,7 +312,22 @@
     <Compile Include="Formulare\FBoxData\Views\FboxTellowsView.xaml.vb">
       <DependentUpon>FboxTellowsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml.vb">
+    <Compile Include="Formulare\Kontaktsuche\KontaktsucheWPF.xaml.vb">
+      <DependentUpon>KontaktsucheWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Kontaktsuche\Resources\LocKontaktsuche.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocKontaktsuche.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Kontaktsuche\Services\IDataKontaktsuche.vb" />
+    <Compile Include="Formulare\Kontaktsuche\Services\DataKontaktsuche.vb" />
+    <Compile Include="Formulare\Kontaktsuche\ViewModel\ContactItemViewModel.vb" />
+    <Compile Include="Formulare\Kontaktsuche\ViewModel\KontaktsucheViewModel.vb" />
+    <Compile Include="Formulare\Kontaktsuche\Views\ContactItemView.xaml.vb">
+      <DependentUpon>ContactItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Controls\OptionsTextBlock.xaml.vb">
       <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Services\BindingProxy.vb" />
@@ -330,7 +348,7 @@
     <Compile Include="Formulare\Optionen\ViewModel\OptInfoViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptMicroSIPViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptBaseViewModel.vb" />
-    <Compile Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml.vb">
+    <Compile Include="Formulare\Optionen\Controls\OptCtrlTV.xaml.vb">
       <DependentUpon>OptCtrlTV.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\ViewModel\OptTestViewModel.vb" />
@@ -357,6 +375,7 @@
     <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessage.vb" />
     <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessageList.vb" />
     <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMInfo.vb" />
+    <Compile Include="KeyboardHooking.vb" />
     <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUser.vb" />
@@ -377,13 +396,13 @@
     <Compile Include="Formulare\Optionen\OptionenWPF.xaml.vb">
       <DependentUpon>OptionenWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml.vb">
+    <Compile Include="Formulare\Optionen\Controls\OptionsPasswordBox.xaml.vb">
       <DependentUpon>OptionsPasswordBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsLink.xaml.vb">
+    <Compile Include="Formulare\Optionen\Controls\OptionsLink.xaml.vb">
       <DependentUpon>OptionsLink.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml.vb">
+    <Compile Include="Formulare\Optionen\Controls\OptionsHinweis.xaml.vb">
       <DependentUpon>OptionsHinweis.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptMicroSIPView.xaml.vb">
@@ -490,6 +509,7 @@
     </Compile>
     <Compile Include="Optionen\Utf8StringWriter.vb" />
     <Compile Include="Optionen\WebFunctions.vb" />
+    <Compile Include="Outlook\OutlookContactFields.vb" />
     <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="Kontakte\NummernTypen.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />
@@ -572,6 +592,11 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocFBoxData.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\Kontaktsuche\Resources\LocKontaktsuche.resx">
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocKontaktsuche.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localize\Länder.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Länder.Designer.vb</LastGenOutput>
@@ -636,6 +661,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Formulare\Common\Controls\WatermarkTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Formulare\FBoxData\FBoxDataWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -680,7 +709,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsTextBlock.xaml">
+    <Page Include="Formulare\Kontaktsuche\KontaktsucheWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Kontaktsuche\Resources\Kontaktsuche.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Kontaktsuche\Views\ContactItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Optionen\Controls\OptionsTextBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
@@ -688,7 +729,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptCtrlTV.xaml">
+    <Page Include="Formulare\Optionen\Controls\OptCtrlTV.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -732,15 +773,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsPasswordBox.xaml">
+    <Page Include="Formulare\Optionen\Controls\OptionsPasswordBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsLink.xaml">
+    <Page Include="Formulare\Optionen\Controls\OptionsLink.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Elemente\OptionsHinweis.xaml">
+    <Page Include="Formulare\Optionen\Controls\OptionsHinweis.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

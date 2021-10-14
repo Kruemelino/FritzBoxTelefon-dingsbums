@@ -21,6 +21,7 @@
             </menu>
           </splitButton>
           <button id="FritzBoxData_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="Search_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_K" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
           </dialogBoxLauncher>
@@ -46,6 +47,7 @@
             </menu>
           </splitButton>
           <button id="FritzBoxData_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="Search_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>          
           <dialogBoxLauncher>
             <button id="Einstellungen_C" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
           </dialogBoxLauncher>
@@ -71,6 +73,7 @@
             </menu>
           </splitButton>
           <button id="FritzBoxData_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="Search_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_J" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
           </dialogBoxLauncher>
@@ -95,7 +98,8 @@
               <button id="ShowCallMonitor_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="FritzBoxData_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>         
+          <button id="FritzBoxData_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="Search_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_M" getScreentip="GetItemScreenTipp" onAction="BtnOnAction"/>
           </dialogBoxLauncher>

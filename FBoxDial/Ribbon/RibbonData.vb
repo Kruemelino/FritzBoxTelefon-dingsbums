@@ -9,27 +9,11 @@ Namespace RibbonData
     Friend Module RibbonData
         Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-#Region "Hilfsroutinen"
         Friend Enum Typ
             Label
             ScreenTipp
             ImageMso
         End Enum
-
-        Private Sub Window_Closed(sender As Object, e As EventArgs)
-
-            ' Window der Variable zuweisen
-            Dim Window As Windows.Window = CType(sender, Windows.Window)
-            ' Ereignishandler entfernen
-            RemoveHandler Window.Closed, AddressOf Window_Closed
-            ' Window aus der Liste entfernen
-            ThisAddIn.AddinWindows.Remove(Window)
-
-            NLogger.Debug("Fenster aus der Gesamtliste entfernt.")
-        End Sub
-
-
-#End Region
 
         ''' <summary>
         ''' Ermittelt den anzuzeigenden Content der einzelnen Schaltflächen (Label, ScreenTipp und ImageMso).
@@ -157,18 +141,7 @@ Namespace RibbonData
         ''' </summary>
         Private Sub Einstellungen()
             ' Blendet ein neues Einstellungsfenster ein
-            Dim AddinFenster As OptionenWPF = CType(ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is OptionenWPF), OptionenWPF)
-
-            If AddinFenster Is Nothing Then
-                ' Neues Window generieren
-                AddinFenster = New OptionenWPF
-                ' Ereignishandler hinzufügen
-                AddHandler AddinFenster.Closed, AddressOf Window_Closed
-                ' Window in die Liste aufnehmen
-                ThisAddIn.AddinWindows.Add(AddinFenster)
-            Else
-                AddinFenster.Activate()
-            End If
+            AddWindow(Of OptionenWPF)()
         End Sub
 
         ''' <summary>
@@ -254,9 +227,15 @@ Namespace RibbonData
             End If
         End Sub
 
+        ''' <summary>
+        ''' Einblenden der Fritz!Box Daten
+        ''' </summary>
         Private Sub FritzBoxData()
-            Dim fbdata As New FBoxDataWPF
-            fbdata.Show()
+            AddWindow(Of FBoxDataWPF)().Show
+        End Sub
+
+        Private Sub Search()
+            AddWindow(Of KontaktsucheWPF)()
         End Sub
 
         ''' <summary>

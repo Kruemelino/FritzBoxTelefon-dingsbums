@@ -24,7 +24,6 @@ Partial Public Class OptionsTextBlock
 
 #End Region
 
-
     Public Sub New()
         InitializeComponent()
     End Sub

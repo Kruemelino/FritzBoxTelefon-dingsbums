@@ -119,20 +119,38 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strErrorAuswahl() As String
+            Get
+                Return ResourceManager.GetString("strErrorAuswahl", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Es ist kein Kontakt mit der E-Mail-Adresse {0} vorhanden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strErrorMail() As String
+            Get
+                Return ResourceManager.GetString("strErrorMail", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die {0} ist nicht bereit... ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strErrorSoftphoneNotReady() As String
+            Get
+                Return ResourceManager.GetString("strErrorSoftphoneNotReady", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Anruf: {0} ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strHeader() As String
             Get
                 Return ResourceManager.GetString("strHeader", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property String1() As String
-            Get
-                Return ResourceManager.GetString("String1", resourceCulture)
             End Get
         End Property
         
