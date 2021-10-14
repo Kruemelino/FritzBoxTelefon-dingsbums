@@ -12,7 +12,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FritzBoxDial", "FBoxDial\Fr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1BA86D89-2BC9-4E8E-9F02-E260548D3092}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
