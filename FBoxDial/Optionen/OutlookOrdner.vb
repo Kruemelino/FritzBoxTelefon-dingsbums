@@ -9,11 +9,11 @@ End Enum
 
 <Serializable()>
 Public Class OutlookOrdner
-    'Implements IComparable(Of IndizerterOrdner)
+    Implements IDisposable
     Implements IEquatable(Of OutlookOrdner)
 
     Public Sub New()
-
+        ' Nicht löschen. Wird zum deserialisieren benötigt: Parameterloser Konstruktor
     End Sub
 
     Public Sub New(OlFolder As Outlook.MAPIFolder, Verwendung As OutlookOrdnerVerwendung)
@@ -44,6 +44,7 @@ Public Class OutlookOrdner
         End Set
     End Property
 
+#Region "IEquatable Support"
     Public Overloads Function Equals(other As OutlookOrdner) As Boolean Implements IEquatable(Of OutlookOrdner).Equals
         If other Is Nothing Then Return False
         Return FolderID.AreEqual(other.FolderID) And StoreID.AreEqual(other.StoreID) And Typ.Equals(other.Typ)
@@ -57,6 +58,34 @@ Public Class OutlookOrdner
     Public Overrides Function GetHashCode() As Integer
         Return (FolderID, StoreID).GetHashCode()
     End Function
+#End Region
 
+#Region "IDisposable Support"
+    Private disposedValue As Boolean
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not disposedValue Then
+            If disposing Then
+                ' Verwalteten Zustand (verwaltete Objekte) bereinigen
+            End If
 
+            ReleaseComObject(MAPIFolder)
+            ' Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalizer überschreiben
+            ' Große Felder auf NULL setzen
+            disposedValue = True
+        End If
+    End Sub
+
+    ' Finalizer nur überschreiben, wenn "Dispose(disposing As Boolean)" Code für die Freigabe nicht verwalteter Ressourcen enthält
+    Protected Overrides Sub Finalize()
+        ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
+        Dispose(disposing:=False)
+        MyBase.Finalize()
+    End Sub
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
+        Dispose(disposing:=True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 End Class

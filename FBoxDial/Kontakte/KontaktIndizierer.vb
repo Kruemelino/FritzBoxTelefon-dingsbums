@@ -8,11 +8,11 @@ Friend Module KontaktIndizierer
     ''' Indiziert oder deindiziert ein Kontaktelement, ne nach dem, ob der Ordner für die Kontaktsuche ausgewählt wurde
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
-    ''' <param name="Ordner">Der Ordner in dem Der Kontakt gespeichert werden soll.</param>
-    Friend Sub IndiziereKontakt(olKontakt As ContactItem, Ordner As MAPIFolder)
+    ''' <param name="olOrdner">Der Ordner in dem Der Kontakt gespeichert werden soll.</param>
+    Friend Sub IndiziereKontakt(olKontakt As ContactItem, olOrdner As MAPIFolder)
 
         ' Wird der Zielordner für, die Kontaktsuche verwendet?
-        If Ordner.OrdnerAusgewählt(OutlookOrdnerVerwendung.KontaktSuche) Then
+        If olOrdner.OrdnerAusgewählt(OutlookOrdnerVerwendung.KontaktSuche) Then
             ' Indiziere den Kontakt
             IndiziereKontakt(olKontakt)
 
@@ -21,7 +21,8 @@ Friend Module KontaktIndizierer
             DeIndiziereKontakt(olKontakt)
 
         End If
-
+        ReleaseComObject(olKontakt)
+        ReleaseComObject(olOrdner)
     End Sub
 
     ''' <summary>

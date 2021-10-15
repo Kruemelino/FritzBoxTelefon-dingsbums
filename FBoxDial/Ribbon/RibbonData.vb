@@ -41,7 +41,7 @@ Namespace RibbonData
 
             End Select
 
-            NLogger.Trace($"Daten ('{DatenTyp}') für '{Key}': {retVal}")
+            ' NLogger.Trace($"Daten ('{DatenTyp}') für '{Key}': {retVal}")
             Return retVal
         End Function
 

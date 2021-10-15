@@ -86,11 +86,11 @@ Friend Class OptionenService
         Return retval
     End Function
 
-    Private Function Indexer(Ordner As MAPIFolder, IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of Integer)) As Integer
+    Private Function Indexer(olOrdner As MAPIFolder, IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of Integer)) As Integer
 
         Dim VerarbeiteteKontakte As Integer = 0
 
-        For Each Item In Ordner.Items
+        For Each Item In olOrdner.Items
 
             If TypeOf Item Is ContactItem Then
 
@@ -118,10 +118,12 @@ Friend Class OptionenService
 
         If Not IndexModus Then
             ' Entfernt alle Indizierungseinträge aus den Ordnern des Kontaktelementes.
-            DeIndizierungOrdner(Ordner)
+            DeIndizierungOrdner(olOrdner)
         End If
 
-        NLogger.Info($"{If(IndexModus, "Indizierung", "Deindizierung")} des Ordners {Ordner.Name} ist abgeschlossen ({VerarbeiteteKontakte} Kontakte verarbeitet).")
+        NLogger.Info($"{If(IndexModus, "Indizierung", "Deindizierung")} des Ordners {olOrdner.Name} ist abgeschlossen ({VerarbeiteteKontakte} Kontakte verarbeitet).")
+
+        ReleaseComObject(olOrdner)
         Return VerarbeiteteKontakte
     End Function
 

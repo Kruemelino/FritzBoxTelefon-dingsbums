@@ -8,6 +8,13 @@ Friend Module KontaktSucher
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Boolean))
 
 #Region "Kontaktsuche DASL in Ordnerauswahl"
+
+    ''' <summary>
+    ''' Startet eine Kontaktsuche in allen ausgewählten Kontaktordnern (<see cref="Outlook.OlDefaultFolders.olFolderContacts"/>) durch.
+    ''' <para>Es wird nach einer Telefonnummer gesucht.</para>
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer, nach der gesucht werden soll.</param>
+    ''' <returns>Kontakt, der zu der Telefonnummer gefunden wurde.</returns>
     Friend Async Function KontaktSucheTelNr(TelNr As Telefonnummer) As Task(Of Outlook.ContactItem)
         Dim olKontakt As Outlook.ContactItem = Nothing
 
@@ -17,9 +24,10 @@ Friend Module KontaktSucher
             With Await KontaktSucheNumberField(TelNr.Unformatiert, True)
                 If .Any Then
                     olKontakt = .First
+                    ' Gib alle anderen wieder Frei
+                    .Skip(1).ToList.ForEach(Sub(O) ReleaseComObject(O))
                 End If
             End With
-
         End If
 
         PushStatus(LogLevel.Debug, $"Kontaktsuche für {TelNr.Unformatiert} beendet.")
@@ -28,36 +36,52 @@ Friend Module KontaktSucher
         Return olKontakt
     End Function
 
-    Private Function FindeKontaktInOrdner(Ordner As Outlook.MAPIFolder, sFilter As String) As List(Of Outlook.ContactItem)
+    ''' <summary>
+    ''' Durchsucht den <paramref name="olOrdner"/>.
+    ''' <para>Es wird vorab geprüft, ob es sich um einen Kontaktornder handelt.</para>
+    ''' </summary>
+    ''' <param name="olOrdner">Der zu durchsuchende Ornder als <see cref="Outlook.MAPIFolder"/></param>
+    ''' <param name="sFilter">Ein Filter in der Syntax für Microsoft Jet oder DAV Searching and Locating (DASL), die die Kriterien für Elemente im übergeordneten Ordner gibt.</param>
+    ''' <returns>Auflistung aller zur <paramref name="sFilter"/> passenden Kontakte aus diesem <paramref name="olOrdner"/> als Liste von <seealso cref="Outlook.ContactItem"/></returns>
+    Private Function FindeKontaktInOrdner(olOrdner As Outlook.MAPIFolder, sFilter As String) As List(Of Outlook.ContactItem)
 
         Dim olKontaktListe As New List(Of Outlook.ContactItem)
 
-        If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
+        If olOrdner.DefaultItemType = Outlook.OlItemType.olContactItem Then
 
             Dim oTable As Outlook.Table
             ' Die Suche erfolgt mittels einer gefilterten Outlook-Datentabelle, welche nur passende Kontakte enthalten.
             ' Erstellung der Datentabelle
-            oTable = Ordner.GetTable(sFilter)
-            ' Festlegung der Spalten. Zunächst werden alle Spalten entfernt
+            oTable = olOrdner.GetTable(sFilter)
+            ' Festlegung der Spalten. 
             With oTable.Columns
+                ' Zunächst werden alle Spalten entfernt
                 .RemoveAll()
                 .Add("EntryID")
             End With
 
+            ' Schleife durch alle Tabellenzeilen
             Do Until oTable.EndOfTable
-
+                ' Ermittle das zugehörige Kontaktelement und füge sie in die Rückgabeliste
                 With oTable.GetNextRow()
-                    olKontaktListe.Add(GetOutlookKontakt(.Item("EntryID").ToString, Ordner.StoreID))
+                    olKontaktListe.Add(GetOutlookKontakt(.Item("EntryID").ToString, olOrdner.StoreID))
                 End With
 
             Loop
 
+            ' Gibt die Elemente frei
             ReleaseComObject(oTable)
+            oTable = Nothing
         End If
 
         Return olKontaktListe
     End Function
 
+    ''' <summary>
+    ''' Führt die Kontaktsuche in allen ausgewählten Kontaktordnern (<see cref="Outlook.OlDefaultFolders.olFolderContacts"/>) durch.
+    ''' </summary>
+    ''' <param name="sFilter">Ein Filter in der Syntax für Microsoft Jet oder DAV Searching and Locating (DASL), die die Kriterien für Elemente im übergeordneten Ordner gibt.</param>
+    ''' <returns>Auflistung aller zur <paramref name="sFilter"/> passenden Kontakte aus allen gewählten Kontaktorndern als Liste von <seealso cref="Outlook.ContactItem"/></returns>
     Private Async Function KontaktSucheFilter(sFilter As String) As Task(Of List(Of Outlook.ContactItem))
         Dim olKontaktListe As New List(Of Outlook.ContactItem)
 
@@ -73,10 +97,8 @@ Friend Module KontaktSucher
                 OrdnerListe.Add(New OutlookOrdner(GetDefaultMAPIFolder(Outlook.OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche))
             End If
 
-            Dim TaskList As New List(Of Task(Of List(Of Outlook.ContactItem)))
-
-            ' Erzeuge eine Liste der Ordner, die der Nutzer ausgewählt hat
-            Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = OrdnerListe.Select(Function(S) S.MAPIFolder).ToList
+            ' Erzeuge eine Liste aller existierenden Ordner, die der Nutzer ausgewählt hat
+            Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = OrdnerListe.Where(Function(F) F.Exists).Select(Function(S) S.MAPIFolder).ToList
 
             ' Füge die Unterordner hinzu
             If XMLData.POptionen.CBSucheUnterordner Then
@@ -85,27 +107,46 @@ Friend Module KontaktSucher
             End If
 
             PushStatus(LogLevel.Debug, $"Starte die Kontaktsuche in {MAPIFolderList.Count} Ordnern.")
+
+            ' Erzeuge eine neue Liste von Taskobjekten, die eine Liste von Kontaktelementen zurückgeben.
+            Dim TaskList As New List(Of Task(Of List(Of Outlook.ContactItem)))
             ' Führe die Kontaktsuche aus.
             For Each MapiFolder In MAPIFolderList
-
+                ' Füge einen eigenen Task je Ordner hinzu.
                 TaskList.Add(Task.Run(Function() As List(Of Outlook.ContactItem)
                                           PushStatus(LogLevel.Debug, $"Kontaktsuche in MAPIFolder '{MapiFolder.Name}' gestartet")
                                           Return FindeKontaktInOrdner(MapiFolder, sFilter)
                                       End Function))
             Next
 
-            While TaskList.Any 'And olKontakt Is Nothing
+            ' Schleife, so lange Tasks in der Liste enthalten sind
+            While TaskList.Any
+                ' Warte den Abschluss eines Tasks ab.
                 Dim t = Await Task.WhenAny(TaskList)
 
+                ' Das Ergebnis ist eine Liste. Wenn Kontakte gefunden wurden, die auf den Filter passen, sind sie darin enthalten
                 If t.Result.Any Then
-                    'If olKontakt Is Nothing Then olKontakt = t.Result
+                    ' Füge die gefundenen Kontakte in die Ergebnisliste hinzu.
                     olKontaktListe.AddRange(t.Result)
                     PushStatus(LogLevel.Debug, $"Kontaktsuche erfolgreich: {t.Result.Count} Kontakte in '{t.Result.First.ParentFolder.Name}' gefunden: {String.Join(", ", t.Result.Select(Function(K) K.FullName))}")
                 End If
 
+                ' Entferne den Task aus der Liste, da er abgeschlossen ist.
                 TaskList.Remove(t)
             End While
 
+            ' Aufräumen
+            With OrdnerListe
+                .ForEach(Sub(O) O.Dispose())
+                .Clear()
+            End With
+            OrdnerListe = Nothing
+
+            With MAPIFolderList
+                .ForEach(Sub(O) ReleaseComObject(O))
+                .Clear()
+            End With
+            MAPIFolderList = Nothing
         End If
 
         PushStatus(LogLevel.Debug, $"Kontaktsuche beendet.")

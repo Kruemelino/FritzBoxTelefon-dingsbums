@@ -1001,6 +1001,8 @@ Imports Microsoft.Office.Interop
                 ' verwalteten Zustand (verwaltete Objekte) entsorgen.
             End If
 
+            ReleaseComObject(OlKontakt)
+            OlKontakt = Nothing
             ' nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() weiter unten überschreiben.
             ' große Felder auf Null setzen.
         End If
@@ -1008,11 +1010,11 @@ Imports Microsoft.Office.Interop
     End Sub
 
     ' Finalize() nur überschreiben, wenn Dispose(disposing As Boolean) weiter oben Code zur Bereinigung nicht verwalteter Ressourcen enthält.
-    'Protected Overrides Sub Finalize()
-    '    ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in Dispose(disposing As Boolean) weiter oben ein.
-    '    Dispose(False)
-    '    MyBase.Finalize()
-    'End Sub
+    Protected Overrides Sub Finalize()
+        ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in Dispose(disposing As Boolean) weiter oben ein.
+        Dispose(False)
+        MyBase.Finalize()
+    End Sub
 
     ' Dieser Code wird von Visual Basic hinzugefügt, um das Dispose-Muster richtig zu implementieren.
     Public Sub Dispose() Implements IDisposable.Dispose

@@ -148,6 +148,7 @@ Public NotInheritable Class ThisAddIn
         ' disable keyboard intercepts
         KeyboardHooking.ReleaseHook()
 
+        ReleaseComObject(OutookApplication)
         OutookApplication = Nothing
     End Sub
 
@@ -215,7 +216,6 @@ Public NotInheritable Class ThisAddIn
 
     Private Sub OutlookExplorer_SelectionChange() Handles OutlookMainExplorer.SelectionChange
         POutlookRibbons.RefreshRibbon()
-
     End Sub
 
     ''' <summary>
@@ -256,7 +256,7 @@ Public NotInheritable Class ThisAddIn
             If KontakInsepektorenListe Is Nothing Then KontakInsepektorenListe = New List(Of KontaktInspector)
 
             ' Füge diesen Kontaktinspektor hinzu
-            KontakInsepektorenListe.Add(New KontaktInspector() With {.Kontakt = CType(Inspector.CurrentItem, ContactItem)})
+            KontakInsepektorenListe.Add(New KontaktInspector() With {.OlKontakt = CType(Inspector.CurrentItem, ContactItem)})
         End If
     End Sub
 
