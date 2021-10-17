@@ -9,7 +9,7 @@
         d:DesignHeight="450" d:DesignWidth="500" 
         d:DataContext="{d:DesignInstance Type=fbd:KontaktsucheViewModel, IsDesignTimeCreatable=True}"
         Height="450" Width="500"
-        Title="{x:Static localize:LocKontaktsuche.strHeader}">
+        Title="{x:Static localize:LocKontaktsuche.strHeader}" >
 
     <Window.DataContext>
         <fbd:KontaktsucheViewModel/>
@@ -22,8 +22,8 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
-    <Grid Margin="4">
+
+    <Grid Margin="4" FocusManager.FocusedElement="{Binding ElementName=InputBox}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -31,10 +31,12 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Text="{x:Static localize:LocKontaktsuche.strInput}"/>
-        
-        <fbd:WatermarkTextBox Grid.Row="1" Margin="0,4"
+
+        <fbd:WatermarkTextBox Grid.Row="1" Height="25"
+                              Margin="0,4" 
+                              x:Name="InputBox" 
                               Text="{Binding DataContext.SearchText, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Mode=TwoWay}"
-                              Watermark="{x:Static localize:LocKontaktsuche.strInputWatermark}"/>     
+                              Watermark="{x:Static localize:LocKontaktsuche.strInputWatermark}"/>
 
         <ListView Grid.Row="2" SelectionMode="Single"
                   ItemsSource="{Binding Ergebnisse, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 

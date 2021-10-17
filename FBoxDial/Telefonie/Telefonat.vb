@@ -270,7 +270,7 @@ Imports Microsoft.Office.Interop
             ' Ermittle den Outlook-Kontakt, falls dies noch nicht geschehen ist
             If _OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringEmpty And OutlookStoreID.IsNotStringEmpty) Then
                 _OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
-                NLogger.Debug($"Outlook Kontakt {_OlKontakt.FullNameAndCompany} aus EntryID und KontaktID ermittelt.")
+                NLogger.Debug($"Outlook Kontakt {_OlKontakt?.FullNameAndCompany} aus EntryID und KontaktID ermittelt.")
             End If
 
             Return _OlKontakt
@@ -784,21 +784,25 @@ Imports Microsoft.Office.Interop
         XMLData.PTelListen.RINGListe.Insert(Me)
 
     End Sub
+
     Private Sub AnrMonCALL()
         Angenommen = False
         Beendet = False
 
         ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        Kontaktsuche()
+        KontaktSuche()
 
         ' Telefoniegerät ermitteln
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
         ' Eigene Nummer prüfen. Mittels Wählpräfix (*10X#, *11X#, *12X#) kann die ausgehende Telefonnummer beeinflusst werden. 
         ' Der Anrufmonitor gibt jedoch weiterhin die eigentlich genutzte eigene Nummer für diese Nebenstelle wieder.
-        ' Unterschiueden werden kann nur per AnschlussID
-        ' 03.03.21 15:48:18;CALL;1;4;123456;0049987654321#;SIP3; *124# 654321        '
+        ' Unterschieden werden kann nur per AnschlussID
+        ' 03.03.21 15:48:18;CALL;1;4;123456;0049987654321#;SIP3; *124# 654321
         ' 03.03.21 16:35:54;CALL;1;4;123456;0049987654321#;SIP1; *122# 123456
+
+        ' Bei Rufumleitungen im Modus Automatisch wird die umgeleitete eingehende Nummer als eigene rausgehende Nummer verwendet.
+        ' TODO: Anfangen von Rufumleitungen.
         If AnschlussID.IsNotStringNothingOrEmpty Then
             Dim tmpTel As Telefonnummer = XMLData.PTelefonie.GetEigeneTelNr(AnschlussID)
             If Not EigeneTelNr.Equals(tmpTel) Then
@@ -817,6 +821,7 @@ Imports Microsoft.Office.Interop
         XMLData.PTelListen.CALLListe.Insert(Me)
 
     End Sub
+
     Private Sub AnrMonCONNECT()
         Angenommen = True
 
@@ -827,6 +832,7 @@ Imports Microsoft.Office.Interop
         If XMLData.POptionen.CBStoppUhrEinblenden Then ShowStoppUhr()
 
     End Sub
+
     Private Sub AnrMonDISCONNECT()
         Beendet = True
 

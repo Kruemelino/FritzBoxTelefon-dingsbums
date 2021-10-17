@@ -56,12 +56,12 @@
     <DataTemplate DataType="{x:Type fbd:OptTestViewModel}">
         <fbd:OptTestView />
     </DataTemplate>
-  
+   
     <Style x:Key="OptHeader" TargetType="{x:Type TextBlock}" >
         <Setter Property="FontWeight" Value="DemiBold"/>
         <Setter Property="Margin" Value="0,2,0,4"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
-        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>        
     </Style>
 
     <DataTemplate x:Key="HeaderTemplate">

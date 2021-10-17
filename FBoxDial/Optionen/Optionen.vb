@@ -58,6 +58,19 @@
 
     <XmlElement("TBWClientEnblDauer")> Public Property TBWClientEnblDauer As Integer = 10
 #End Region
+
+#Region "Grundeinstlleungen - Tweaks"
+    ''' <summary>
+    ''' Gibt an, ob die Tastatursteuerung aktiviert werden soll.
+    ''' </summary>
+    <XmlElement("CBKeyboard")> Public Property CBKeyboard As Boolean = True
+
+    ''' <summary>
+    ''' Gibt an, ob bei der Prüfung des Enabled-State des Wählenbuttons im Ribbon deaktiviert wird.
+    ''' Dies ist bei verzögertem E-Mail versand notwendig.
+    ''' </summary>
+    <XmlElement("CBDisableMailCheck")> Public Property CBDisableMailCheck As Boolean = False
+#End Region
 #End Region
 
 #Region "Anrufmonitor"

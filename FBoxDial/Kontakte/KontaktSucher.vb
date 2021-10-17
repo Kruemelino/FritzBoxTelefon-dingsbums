@@ -1,4 +1,5 @@
-﻿Imports System.Threading.Tasks
+﻿Imports System.Threading
+Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop
 
 Friend Module KontaktSucher
@@ -43,7 +44,7 @@ Friend Module KontaktSucher
     ''' <param name="olOrdner">Der zu durchsuchende Ornder als <see cref="Outlook.MAPIFolder"/></param>
     ''' <param name="sFilter">Ein Filter in der Syntax für Microsoft Jet oder DAV Searching and Locating (DASL), die die Kriterien für Elemente im übergeordneten Ordner gibt.</param>
     ''' <returns>Auflistung aller zur <paramref name="sFilter"/> passenden Kontakte aus diesem <paramref name="olOrdner"/> als Liste von <seealso cref="Outlook.ContactItem"/></returns>
-    Private Function FindeKontaktInOrdner(olOrdner As Outlook.MAPIFolder, sFilter As String) As List(Of Outlook.ContactItem)
+    Private Function FindeKontaktInOrdner(olOrdner As Outlook.MAPIFolder, sFilter As String, ct As CancellationToken) As List(Of Outlook.ContactItem)
 
         Dim olKontaktListe As New List(Of Outlook.ContactItem)
 
@@ -61,12 +62,11 @@ Friend Module KontaktSucher
             End With
 
             ' Schleife durch alle Tabellenzeilen
-            Do Until oTable.EndOfTable
+            Do Until oTable.EndOfTable Or ct.IsCancellationRequested
                 ' Ermittle das zugehörige Kontaktelement und füge sie in die Rückgabeliste
                 With oTable.GetNextRow()
                     olKontaktListe.Add(GetOutlookKontakt(.Item("EntryID").ToString, olOrdner.StoreID))
                 End With
-
             Loop
 
             ' Gibt die Elemente frei
@@ -82,7 +82,7 @@ Friend Module KontaktSucher
     ''' </summary>
     ''' <param name="sFilter">Ein Filter in der Syntax für Microsoft Jet oder DAV Searching and Locating (DASL), die die Kriterien für Elemente im übergeordneten Ordner gibt.</param>
     ''' <returns>Auflistung aller zur <paramref name="sFilter"/> passenden Kontakte aus allen gewählten Kontaktorndern als Liste von <seealso cref="Outlook.ContactItem"/></returns>
-    Private Async Function KontaktSucheFilter(sFilter As String) As Task(Of List(Of Outlook.ContactItem))
+    Private Async Function KontaktSucheFilter(sFilter As String, ct As CancellationToken) As Task(Of List(Of Outlook.ContactItem))
         Dim olKontaktListe As New List(Of Outlook.ContactItem)
 
         If ThisAddIn.OutookApplication IsNot Nothing AndAlso sFilter.IsNotStringNothingOrEmpty Then
@@ -115,12 +115,13 @@ Friend Module KontaktSucher
                 ' Füge einen eigenen Task je Ordner hinzu.
                 TaskList.Add(Task.Run(Function() As List(Of Outlook.ContactItem)
                                           PushStatus(LogLevel.Debug, $"Kontaktsuche in MAPIFolder '{MapiFolder.Name}' gestartet")
-                                          Return FindeKontaktInOrdner(MapiFolder, sFilter)
-                                      End Function))
+                                          Return FindeKontaktInOrdner(MapiFolder, sFilter, ct)
+                                      End Function, ct))
             Next
 
             ' Schleife, so lange Tasks in der Liste enthalten sind
-            While TaskList.Any
+            While TaskList.Any And Not ct.IsCancellationRequested
+
                 ' Warte den Abschluss eines Tasks ab.
                 Dim t = Await Task.WhenAny(TaskList)
 
@@ -177,10 +178,15 @@ Friend Module KontaktSucher
 
         If SMTPAdresse.Addresse.IsNotStringEmpty Then
             ' Empfänger generieren
-            With ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
+            Dim Empfänger As Outlook.Recipient = ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
+
+            With Empfänger
                 .Resolve()
                 Return .AddressEntry.GetContact
             End With
+
+            ' Wichtig: Auflösen, da sonst verzögert versendete E-Mails nicht versendet werden.
+            ReleaseComObject(Empfänger)
         Else
             Return Nothing
         End If
@@ -190,10 +196,15 @@ Friend Module KontaktSucher
 
         If SMTPAdresse.Addresse.IsNotStringEmpty Then
             ' Empfänger generieren
-            With ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
+            Dim Empfänger As Outlook.Recipient = ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
+
+            With Empfänger
                 .Resolve()
                 Return .AddressEntry.GetExchangeUser
             End With
+
+            ' Wichtig: Auflösen, da sonst verzögert versendete E-Mails nicht versendet werden.
+            ReleaseComObject(Empfänger)
         Else
             Return Nothing
         End If
@@ -277,7 +288,7 @@ Friend Module KontaktSucher
     ''' <param name="FilterWert">Zeichenfolge nach der die Kontakte gesucht werden sollen.</param>
     ''' <param name="Exakt">Angabe ob die die Ergebnisse exakt übereinstimmen müssen, oder ob der <paramref name="FilterWert"/> enthalten sein kann. </param>
     ''' <returns>Liste von gefundenen <see cref="Outlook.ContactItem"/></returns>
-    Friend Async Function KontaktSucheNameField(FilterWert As String, Exakt As Boolean) As Task(Of List(Of Outlook.ContactItem))
+    Friend Async Function KontaktSucheNameField(FilterWert As String, Exakt As Boolean, ct As CancellationToken) As Task(Of List(Of Outlook.ContactItem))
         Dim Filter As New List(Of String)
 
         ' Standard Outlook Namens Felder 
@@ -290,7 +301,7 @@ Friend Module KontaktSucher
         End If
 
         ' Führe die Suche aus
-        Return Await KontaktSucheFilter($"@SQL={String.Join(" OR ", Filter)}")
+        Return Await KontaktSucheFilter($"@SQL={String.Join(" OR ", Filter)}", ct)
     End Function
 
     ''' <summary>
@@ -320,7 +331,7 @@ Friend Module KontaktSucher
         End If
 
         ' Führe die Suche aus
-        Return Await KontaktSucheFilter($"@SQL={String.Join(" OR ", Filter)}")
+        Return Await KontaktSucheFilter($"@SQL={String.Join(" OR ", Filter)}", Nothing)
     End Function
 
     ''' <summary>
@@ -343,7 +354,7 @@ Friend Module KontaktSucher
         End If
 
         ' Führe die Suche aus
-        Return Await KontaktSucheFilter($"@SQL={String.Join(" OR ", Filter)}")
+        Return Await KontaktSucheFilter($"@SQL={String.Join(" OR ", Filter)}", Nothing)
     End Function
 #End Region
 End Module

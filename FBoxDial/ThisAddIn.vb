@@ -37,8 +37,6 @@ Public NotInheritable Class ThisAddIn
         Else
             NLogger.Warn("Addin nicht gestartet, da kein Explorer vorhanden")
         End If
-        ' enable keyboard intercepts
-        KeyboardHooking.SetHook()
     End Sub
 
     Private Async Sub StarteAddinFunktionen()
@@ -132,6 +130,11 @@ Public NotInheritable Class ThisAddIn
             End If
         End Using
 
+        If XMLData.POptionen.CBKeyboard Then
+            ' enable keyboard intercepts
+            KeyboardHooking.SetHook()
+        End If
+
     End Sub
 
 
@@ -145,8 +148,11 @@ Public NotInheritable Class ThisAddIn
         NLogger.Info($"{My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} beendet.")
         ' XML-Datei Speichern
         XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltConfigFileName))
-        ' disable keyboard intercepts
-        KeyboardHooking.ReleaseHook()
+
+        If XMLData.POptionen.CBKeyboard Then
+            ' disable keyboard intercepts
+            KeyboardHooking.ReleaseHook()
+        End If
 
         ReleaseComObject(OutookApplication)
         OutookApplication = Nothing

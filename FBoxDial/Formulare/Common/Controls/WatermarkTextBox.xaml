@@ -6,10 +6,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"         
              mc:Ignorable="d">
 
-    <Grid DataContext="{Binding ElementName=WatermarkTextBox}">
-
-        <TextBox x:Name="SearchTermTextBox" Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock IsHitTestVisible="False" Text="{Binding Path=Watermark}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="2,0,0,0" Foreground="DarkGray">
+    <Grid DataContext="{Binding ElementName=WatermarkTextBox}" FocusManager.FocusedElement="{Binding ElementName=SearchTermTextBox}">
+        
+        <TextBox x:Name="SearchTermTextBox" 
+                 VerticalContentAlignment="Center"
+                 Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <TextBlock IsHitTestVisible="False"  
+                   Text="{Binding Path=Watermark}" 
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Left"
+                   Margin="2,0,0,0" 
+                   Foreground="DarkGray">
+            
             <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
                     <Setter Property="Visibility" Value="Collapsed"/>

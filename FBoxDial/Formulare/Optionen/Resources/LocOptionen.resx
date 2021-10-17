@@ -230,6 +230,10 @@ Sekundarfarbe: Schrift</value>
     <value>Grundaten Telefonie</value>
     <comment>OptBaseView</comment>
   </data>
+  <data name="strBaseHeadTweak" xml:space="preserve">
+    <value>Verschiedene Einstellungen</value>
+    <comment>OptBaseView</comment>
+  </data>
   <data name="strBaseInfoKZ" xml:space="preserve">
     <value>Landes- und Ortskennzahl (jeweils ohne führende Null) werden beim Einlesen der Telefone automatisch aus der Fritz!Box ausgelesen.
 Falls keine Werte gefunden wurden, können die Werte hier eingetragen werden.</value>
@@ -265,6 +269,24 @@ Falls keine Werte gefunden wurden, können die Werte hier eingetragen werden.</v
   </data>
   <data name="strBaseTBTelNrMaske" xml:space="preserve">
     <value>Maske</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTweakDisableMailCheck" xml:space="preserve">
+    <value>E-Mails nicht prüfen</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTweakDisableMailCheckInfo" xml:space="preserve">
+    <value>Wenn E-Mails verzögert versendet werden, muss folgende Einstellung gesetzt werden, da ansonsten die E-Mails im Postausgang verbleiben und nicht versendet werden. Dies scheint momentan ein Bug im Outlook zu sein.</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTweakKeyboard" xml:space="preserve">
+    <value>Tastatursteuerung aktivieren</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTweakKeyboardInfo" xml:space="preserve">
+    <value>Es besteht die Möglichkeit die Kontaktsuche mittels F2 zu öffnen.
+Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu Problemen mit anderen Programmen kommt.
+Ein Neustart von Outlook ist erforderlich!</value>
     <comment>OptBaseView</comment>
   </data>
   <data name="strBaseWorkDir" xml:space="preserve">

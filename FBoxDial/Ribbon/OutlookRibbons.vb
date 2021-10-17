@@ -133,7 +133,6 @@ Imports FBoxDial.RibbonData
 
         End Select
         Return False
-
     End Function
 
     ''' <summary>

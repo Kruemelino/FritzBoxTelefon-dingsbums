@@ -15,6 +15,13 @@ Public Class OutlookOrdner
     Public Sub New()
         ' Nicht löschen. Wird zum deserialisieren benötigt: Parameterloser Konstruktor
     End Sub
+    Public Sub New(OlFolder As Outlook.MAPIFolder)
+
+        FolderID = OlFolder.EntryID
+        StoreID = OlFolder.StoreID
+        Name = OlFolder.Name
+
+    End Sub
 
     Public Sub New(OlFolder As Outlook.MAPIFolder, Verwendung As OutlookOrdnerVerwendung)
 

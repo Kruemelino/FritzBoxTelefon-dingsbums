@@ -718,6 +718,27 @@ Public Class OptionenViewModel
     Public ReadOnly Property PfadArbeitsverzeichnis As String = IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName)
 #End Region
 
+#Region "Tweaks"
+    Private _CBKeyboard As Boolean
+    Public Property CBKeyboard As Boolean
+        Get
+            Return _CBKeyboard
+        End Get
+        Set
+            SetProperty(_CBKeyboard, Value)
+        End Set
+    End Property
+
+    Private _CBDisableMailCheck As Boolean
+    Public Property CBDisableMailCheck As Boolean
+        Get
+            Return _CBDisableMailCheck
+        End Get
+        Set
+            SetProperty(_CBDisableMailCheck, Value)
+        End Set
+    End Property
+#End Region
 #End Region
 
 #Region "Window Eigenschaften"

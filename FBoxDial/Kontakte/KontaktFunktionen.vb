@@ -217,7 +217,7 @@ Friend Module KontaktFunktionen
     Friend Function GetOutlookKontakt(ByRef KontaktID As String, ByRef StoreID As String) As ContactItem
         GetOutlookKontakt = Nothing
         Try
-            GetOutlookKontakt = CType(ThisAddIn.OutookApplication.Session.GetItemFromID(KontaktID, StoreID), ContactItem)
+            GetOutlookKontakt = CType(ThisAddIn.OutookApplication?.Session.GetItemFromID(KontaktID, StoreID), ContactItem)
         Catch ex As System.Exception
             NLogger.Error(ex)
         End Try
@@ -476,7 +476,7 @@ Friend Module KontaktFunktionen
                 Else
 
                     ' SMTP Adresse (klassische E-Mail)
-                    GetSenderSMTPAddress.OutlookTyp = OutlookEMailType.SMTP
+                    .OutlookTyp = OutlookEMailType.SMTP
 
                     .Addresse = EMail.SenderEmailAddress
                 End If

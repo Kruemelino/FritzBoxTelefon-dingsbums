@@ -408,7 +408,6 @@ Namespace RibbonData
             Select Case True
                 Case TypeOf Context Is Outlook.Explorer
                     ' Werte die Selection des Explorer aus
-
                     With CType(Context, Outlook.Explorer)
                         ' Rekursiver Aufruf
                         Try
@@ -453,28 +452,38 @@ Namespace RibbonData
                     End With
 
                 Case TypeOf Context Is Outlook.Selection
-                    With CType(Context, Outlook.Selection)
 
+                    With CType(Context, Outlook.Selection)
                         If .Count.IsNotZero Then
                             Select Case True
+                                Case TypeOf .Item(1) Is Outlook.MailItem
+
+                                    ' Durch den Else-Zweig wird die E-Mail geöffnet und auf gelesen gesetzt.
+                                    ' Die Mail wird insbesondere beim verzögerten Versenden nicht mehr versendet und bleibt im Postausgang liegen. 
+                                    If XMLData.POptionen.CBDisableMailCheck Then
+                                        Return True
+                                    Else
+                                        Dim MailItem As Outlook.MailItem = CType(.Item(1), Outlook.MailItem)
+
+                                        Dim MailAdr As EMailType = GetSenderSMTPAddress(MailItem)
+
+                                        ' Rekursiver Aufruf
+                                        If MailAdr.OutlookTyp = OutlookEMailType.SMTP Then
+
+                                            ' ContactItem
+                                            Return EnableDial(KontaktSuche(MailAdr))
+                                        Else
+
+                                            ' ExchangeUser
+                                            Return EnableDial(KontaktSucheExchangeUser(MailAdr))
+                                        End If
+                                    End If
+
                                 Case TypeOf .Item(1) Is Outlook.ContactItem
 
                                     ' Rekursiver Aufruf
                                     Return EnableDial(CType(.Item(1), Outlook.ContactItem))
 
-                                Case TypeOf .Item(1) Is Outlook.MailItem
-                                    Dim MailAdr As EMailType = GetSenderSMTPAddress(CType(.Item(1), Outlook.MailItem))
-
-                                    ' Rekursiver Aufruf
-                                    If MailAdr.OutlookTyp = OutlookEMailType.SMTP Then
-
-                                        ' ContactItem
-                                        Return EnableDial(KontaktSuche(MailAdr))
-                                    Else
-
-                                        ' ExchangeUser
-                                        Return EnableDial(KontaktSucheExchangeUser(MailAdr))
-                                    End If
 
                                 Case TypeOf .Item(1) Is Outlook.JournalItem
 
@@ -483,7 +492,6 @@ Namespace RibbonData
 
                             End Select
                         End If
-
                     End With
 
                 Case TypeOf Context Is Microsoft.Office.Core.IMsoContactCard
@@ -497,15 +505,16 @@ Namespace RibbonData
                            EnableDial(KontaktSucheExchangeUser(CType(Context, Microsoft.Office.Core.IMsoContactCard)))
 
                 Case TypeOf Context Is Outlook.ContactItem
-
                     ' Ermittelt, ob der Kontakt angerufen werden kann
+
                     With CType(Context, Outlook.ContactItem)
                         ' Hat der Kontakt Telefonnummern?
                         Return .GetTelNrArray.Any
                     End With
 
                 Case TypeOf Context Is Outlook.JournalItem
-                    ' Ermittelt, ob dem Journaleintrag ein Kontakthinterlegt ist, oder eine vCard, oder eine Telefonnummer
+                    '' Ermittelt, ob dem Journaleintrag ein Kontakthinterlegt ist, oder eine vCard, oder eine Telefonnummer
+
                     With CType(Context, Outlook.JournalItem)
                         Return Not .Body.StartsWith(String.Format($"{Localize.LocAnrMon.strJournalBodyStart} {Localize.LocAnrMon.strNrUnterdrückt}"))
                     End With

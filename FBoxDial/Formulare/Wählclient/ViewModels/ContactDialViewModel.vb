@@ -4,7 +4,9 @@ Imports Microsoft.Office.Interop
 
 Public Class ContactDialViewModel
     Inherits NotifyBase
+
     Implements IViewModelBase
+
     Private Property DatenService As IDialService
     Friend Property Instance As Dispatcher Implements IViewModelBase.Instance
 #Region "Eigenschaften"
@@ -118,8 +120,6 @@ Public Class ContactDialViewModel
 
             ' Kopfdaten setzen
             DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .FullName}{If(.CompanyName.IsNotStringEmpty, $" ({ .CompanyName})", DfltStringEmpty)}")
-
-            ' Kontaktbild anzeigen
 
             ' Setze das Kontaktbild
             Instance.Invoke(Sub() Kontaktbild = olKontakt.KontaktBildEx)

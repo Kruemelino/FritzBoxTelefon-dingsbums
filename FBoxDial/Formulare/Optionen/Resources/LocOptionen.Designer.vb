@@ -318,6 +318,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Verschiedene Einstellungen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseHeadTweak() As String
+            Get
+                Return ResourceManager.GetString("strBaseHeadTweak", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Landes- und Ortskennzahl (jeweils ohne führende Null) werden beim Einlesen der Telefone automatisch aus der Fritz!Box ausgelesen.
         '''Falls keine Werte gefunden wurden, können die Werte hier eingetragen werden. ähnelt.
         '''</summary>
@@ -396,6 +405,44 @@ Namespace Localize
         Public Shared ReadOnly Property strBaseTBTelNrMaske() As String
             Get
                 Return ResourceManager.GetString("strBaseTBTelNrMaske", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die E-Mails nicht prüfen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseTweakDisableMailCheck() As String
+            Get
+                Return ResourceManager.GetString("strBaseTweakDisableMailCheck", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Wenn E-Mails verzögert versendet werden, muss folgende Einstellung gesetzt werden, da ansonsten die E-Mails im Postausgang verbleiben und nicht versendet werden. Dies scheint momentan ein Bug im Outlook zu sein. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseTweakDisableMailCheckInfo() As String
+            Get
+                Return ResourceManager.GetString("strBaseTweakDisableMailCheckInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Tastatursteuerung aktivieren ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseTweakKeyboard() As String
+            Get
+                Return ResourceManager.GetString("strBaseTweakKeyboard", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Es besteht die Möglichkeit die Kontaktsuche mittels F2 zu öffnen.
+        '''Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu Problemen mit anderen Programmen kommt.
+        '''Ein Neustart von Outlook ist erforderlich! ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseTweakKeyboardInfo() As String
+            Get
+                Return ResourceManager.GetString("strBaseTweakKeyboardInfo", resourceCulture)
             End Get
         End Property
         
