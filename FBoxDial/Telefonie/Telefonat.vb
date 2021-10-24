@@ -929,27 +929,6 @@ Imports Microsoft.Office.Interop
 
         PopupStoppUhrWPF = Nothing
     End Sub
-
-    Private Async Sub ShowAnrMon()
-
-        Await StartSTATask(Function() As Boolean
-                               If PopUpAnrMonWPF Is Nothing Then
-                                   NLogger.Debug("Blende einen neuen Anrufmonitor ein")
-                                   ' Blende einen neuen Anrufmonitor ein
-                                   AnrMonEinblenden()
-
-                                   While AnrMonEingeblendet
-
-                                       Forms.Application.DoEvents()
-                                       Thread.Sleep(100)
-
-                                   End While
-                               End If
-                               Return False
-                           End Function)
-
-    End Sub
-
     Public Function StartSTATask(Of T)(func As Func(Of T)) As Task(Of T)
         Dim tcs = New TaskCompletionSource(Of T)()
         Dim thread As New Thread(Sub()
@@ -964,8 +943,26 @@ Imports Microsoft.Office.Interop
         Return tcs.Task
     End Function
 
-    Private Sub ShowStoppUhr()
-        Dim t = New Thread(Sub()
+    Private Async Sub ShowAnrMon()
+
+        Await StartSTATask(Function() As Boolean
+                               If PopUpAnrMonWPF Is Nothing Then
+                                   NLogger.Debug("Blende einen neuen Anrufmonitor ein")
+                                   ' Blende einen neuen Anrufmonitor ein
+                                   AnrMonEinblenden()
+
+                                   While AnrMonEingeblendet
+                                       Forms.Application.DoEvents()
+                                       Thread.Sleep(100)
+                                   End While
+                               End If
+                               Return False
+                           End Function)
+    End Sub
+
+    Private Async Sub ShowStoppUhr()
+
+        Await StartSTATask(Function() As Boolean
                                If PopupStoppUhrWPF Is Nothing Then
                                    NLogger.Debug("Blende einen neue StoppUhr ein")
                                    ' Blende einen neuen Anrufmonitor ein
@@ -976,11 +973,10 @@ Imports Microsoft.Office.Interop
                                        Thread.Sleep(100)
                                    End While
                                End If
-                           End Sub)
-
-        t.SetApartmentState(ApartmentState.STA)
-        t.Start()
+                               Return False
+                           End Function)
     End Sub
+
 #End Region
 
 #Region "Equals, CompareTo"
