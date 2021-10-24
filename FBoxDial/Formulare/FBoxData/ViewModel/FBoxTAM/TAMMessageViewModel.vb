@@ -22,8 +22,8 @@
 #End Region
 
 #Region "Eigenschaften"
-    Private _CurrentMessage As FritzBoxXMLMessage
-    Public Property CurrentMessage As FritzBoxXMLMessage
+    Private _CurrentMessage As TR064.FritzBoxXMLMessage
+    Public Property CurrentMessage As TR064.FritzBoxXMLMessage
         Get
             Return _CurrentMessage
         End Get

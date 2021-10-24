@@ -1,6 +1,6 @@
 ﻿Imports System.Collections
 
-Namespace SOAP
+Namespace TR064
     Friend Interface IService
         Property NLogger As Logger
         Property TR064Start As Func(Of String, String, Hashtable, Hashtable)

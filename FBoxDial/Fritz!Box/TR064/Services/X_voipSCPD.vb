@@ -1,5 +1,6 @@
 ﻿Imports System.Collections
-Namespace SOAP
+
+Namespace TR064
 
     Friend Class X_voipSCPD
         Implements IService
@@ -49,34 +50,34 @@ Namespace SOAP
             End With
         End Function
 
-        Friend Function GetVoIPEnableAreaCode(ByRef VoIPEnableAreaCode As Integer, VoIPAccountIndex As Integer) As Boolean
+        Friend Function GetVoIPEnableAreaCode(ByRef VoIPEnableAreaCode As Boolean, VoIPAccountIndex As Integer) As Boolean
             With TR064Start(Tr064Files.x_voipSCPD, "GetVoIPEnableAreaCode", New Hashtable From {{"NewVoIPAccountIndex", VoIPAccountIndex}})
 
                 If .ContainsKey("NewVoIPEnableAreaCode") Then
-                    VoIPEnableAreaCode = CInt(.Item("NewVoIPEnableAreaCode"))
+                    VoIPEnableAreaCode = CBool(.Item("NewVoIPEnableAreaCode"))
 
                     Return True
 
                 Else
                     PushStatus.Invoke(LogLevel.Warn, $"GetVoIPEnableAreaCode konnte nicht aufgelößt werden. '{ .Item("Error")}'")
-                    VoIPEnableAreaCode = 0
+                    VoIPEnableAreaCode = False
 
                     Return False
                 End If
             End With
         End Function
 
-        Friend Function GetVoIPEnableCountryCode(ByRef VoIPEnableCountryCode As Integer, VoIPAccountIndex As Integer) As Boolean
+        Friend Function GetVoIPEnableCountryCode(ByRef VoIPEnableCountryCode As Boolean, VoIPAccountIndex As Integer) As Boolean
             With TR064Start(Tr064Files.x_voipSCPD, "GetVoIPEnableCountryCode", New Hashtable From {{"NewVoIPAccountIndex", VoIPAccountIndex}})
 
                 If .ContainsKey("NewVoIPEnableCountryCode") Then
-                    VoIPEnableCountryCode = CInt(.Item("NewVoIPEnableCountryCode"))
+                    VoIPEnableCountryCode = CBool(.Item("NewVoIPEnableCountryCode"))
 
                     Return True
 
                 Else
                     PushStatus.Invoke(LogLevel.Warn, $"GetVoIPEnableCountryCode konnte nicht aufgelößt werden. '{ .Item("Error")}'")
-                    VoIPEnableCountryCode = 0
+                    VoIPEnableCountryCode = False
 
                     Return False
                 End If
@@ -103,9 +104,10 @@ Namespace SOAP
         Friend Function GetClient2(ByRef Client As SIPClient, ClientIndex As Integer) As Boolean
             If Client Is Nothing Then Client = New SIPClient
 
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetClient2", New Hashtable From {{"NewVoIPAccountIndex", ClientIndex}})
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetClient2", New Hashtable From {{"NewX_AVM-DE_ClientIndex", ClientIndex}})
 
-                If .ContainsKey("NewX_AVM-DE_ClientUsername ") Then
+                If .ContainsKey("NewX_AVM-DE_ClientUsername") Then
+                    Client.ClientIndex = ClientIndex
                     Client.ClientUsername = .Item("NewX_AVM-DE_ClientUsername").ToString
                     Client.ClientRegistrar = .Item("NewX_AVM-DE_ClientRegistrar").ToString
                     Client.ClientRegistrarPort = CInt(.Item("NewX_AVM-DE_ClientRegistrarPort"))
@@ -132,9 +134,47 @@ Namespace SOAP
         Friend Function GetClient3(ByRef Client As SIPClient, ClientIndex As Integer) As Boolean
             If Client Is Nothing Then Client = New SIPClient
 
-            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetClient3", New Hashtable From {{"NewVoIPAccountIndex", ClientIndex}})
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetClient3", New Hashtable From {{"NewX_AVM-DE_ClientIndex", ClientIndex}})
 
-                If .ContainsKey("NewX_AVM-DE_ClientUsername ") Then
+                If .ContainsKey("NewX_AVM-DE_ClientUsername") Then
+                    Client.ClientIndex = ClientIndex
+                    Client.ClientUsername = .Item("NewX_AVM-DE_ClientUsername").ToString
+                    Client.ClientRegistrar = .Item("NewX_AVM-DE_ClientRegistrar").ToString
+                    Client.ClientRegistrarPort = CInt(.Item("NewX_AVM-DE_ClientRegistrarPort"))
+                    Client.PhoneName = .Item("NewX_AVM-DE_PhoneName").ToString
+                    Client.ClientId = .Item("NewX_AVM-DE_ClientId").ToString
+                    Client.OutGoingNumber = .Item("NewX_AVM-DE_OutGoingNumber").ToString
+                    If Not DeserializeXML(.Item("NewX_AVM-DE_InComingNumbers").ToString(), False, Client.InComingNumbers) Then
+                        PushStatus.Invoke(LogLevel.Warn, $"NewX_AVM-DE_InComingNumbers konnte für nicht deserialisiert werden. '{ .Item("Error")}'")
+                    End If
+                    Client.ExternalRegistration = CBool(.Item("NewX_AVM-DE_ExternalRegistration"))
+                    Client.InternalNumber = CInt(.Item("NewX_AVM-DE_InternalNumber"))
+                    Client.DelayedCallNotification = CBool(.Item("NewX_AVM-DE_DelayedCallNotification"))
+
+                    Return True
+
+                Else
+                    PushStatus.Invoke(LogLevel.Warn, $"X_AVM-DE_GetClient3 konnte nicht aufgelößt werden. '{ .Item("Error")}'")
+
+                    Return False
+                End If
+            End With
+        End Function
+
+        ''' <summary>
+        ''' The input parameter ClientId has to be at least 1 character long and a substring of the actual ClientId (case
+        ''' sensitive). The response contains the information about the client, whose ClientId string contains the input 
+        ''' parameter. Even when it is a substring. E.g. the string “le” returns “apple” from the following ClientId List: 
+        ''' [0] : "melon" ; [1] "apple" ; [2] "lemon".
+        ''' </summary>
+        ''' <returns>Return SIP Client account with incoming numbers and allow registration from outside flag.</returns>
+        Friend Function GetClientByClientId(ByRef Client As SIPClient, ClientId As String) As Boolean
+            If Client Is Nothing Then Client = New SIPClient
+
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetClientByClientId", New Hashtable From {{"NewX_AVM-DE_ClientId", ClientId}})
+
+                If .ContainsKey("NewX_AVM-DE_ClientIndex") Then
+                    Client.ClientIndex = CInt(.Item("NewX_AVM-DE_ClientIndex"))
                     Client.ClientUsername = .Item("NewX_AVM-DE_ClientUsername").ToString
                     Client.ClientRegistrar = .Item("NewX_AVM-DE_ClientRegistrar").ToString
                     Client.ClientRegistrarPort = CInt(.Item("NewX_AVM-DE_ClientRegistrarPort"))
@@ -352,7 +392,7 @@ Namespace SOAP
         ''' <param name="ClientList">Represents the list of all SIP client accounts.</param>
         ''' <returns>True when success</returns>
         ''' <remarks>The list contains all configured SIP client accounts a XML list.</remarks>
-        Friend Function GetSIPClients(ByRef ClientList As SIPClientList) As Boolean
+        Friend Function GetClients(ByRef ClientList As SIPClientList) As Boolean
 
             With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetClients", Nothing)
 
@@ -379,6 +419,28 @@ Namespace SOAP
 
         End Function
 
+        Friend Function GetVoIPAccount(ByRef Account As VoIPAccount, AccountIndex As Integer) As Boolean
+            If Account Is Nothing Then Account = New VoIPAccount
+
+            With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetVoIPAccount", New Hashtable From {{"NewVoIPAccountIndex", AccountIndex}})
+
+                If .ContainsKey("NewVoIPRegistrar") Then
+                    Account.VoIPAccountIndex = AccountIndex
+                    Account.VoIPRegistrar = .Item("NewVoIPRegistrar").ToString
+                    Account.VoIPNumber = .Item("NewVoIPNumber").ToString
+                    Account.VoIPUsername = .Item("NewVoIPUsername").ToString
+                    Account.VoIPOutboundProxy = .Item("NewVoIPOutboundProxy").ToString
+                    Account.VoIPSTUNServer = .Item("NewVoIPSTUNServer").ToString
+
+                    Return True
+
+                Else
+                    PushStatus.Invoke(LogLevel.Warn, $"X_AVM-DE_GetVoIPAccount konnte nicht aufgelößt werden. '{ .Item("Error")}'")
+
+                    Return False
+                End If
+            End With
+        End Function
 #End Region
 
     End Class

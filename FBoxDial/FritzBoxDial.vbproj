@@ -379,6 +379,7 @@
     <Compile Include="Fritz!Box\TR064\Services\X_tamSCPD.vb" />
     <Compile Include="Fritz!Box\TR064\Services\X_voipSCPD.vb" />
     <Compile Include="Fritz!Box\TR064\Services\X_contactSCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP_TR64\VoIPAccount.vb" />
     <Compile Include="Fritz!Box\TR064\TAM_TR64\FritzBoxXMLMessage.vb" />
     <Compile Include="Fritz!Box\TR064\TAM_TR64\FritzBoxXMLMessageList.vb" />
     <Compile Include="Fritz!Box\TR064\TAM_TR64\TAMInfo.vb" />

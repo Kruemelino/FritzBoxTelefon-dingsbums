@@ -1,7 +1,7 @@
 ﻿Imports System.Collections
 Imports System.Net
 
-Namespace SOAP
+Namespace TR064
     Friend Class FritzBoxTR64
         Implements IDisposable
 

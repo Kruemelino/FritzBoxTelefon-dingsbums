@@ -656,7 +656,7 @@ Namespace RibbonData
                 .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
 
                 ' Ermittle die verfügbaren Quellen für die Telefonbuchnamen
-                Dim TelBk As FritzBoxXMLTelefonbücher
+                Dim TelBk As TR064.FritzBoxXMLTelefonbücher
 
                 If ThisAddIn.PhoneBookXML Is Nothing Then
                     TelBk = Telefonbücher.LadeHeaderFritzBoxTelefonbücher

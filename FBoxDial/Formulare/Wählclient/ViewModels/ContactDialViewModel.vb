@@ -65,8 +65,8 @@ Public Class ContactDialViewModel
         End Set
     End Property
 
-    Private _FBoxXMLKontakt As FritzBoxXMLKontakt
-    Public Property FBoxXMLKontakt As FritzBoxXMLKontakt
+    Private _FBoxXMLKontakt As TR064.FritzBoxXMLKontakt
+    Public Property FBoxXMLKontakt As TR064.FritzBoxXMLKontakt
         Get
             Return _FBoxXMLKontakt
         End Get
@@ -138,7 +138,7 @@ Public Class ContactDialViewModel
         End With
     End Sub
 
-    Private Sub SetData(FBoxXMLKontakt As FritzBoxXMLKontakt)
+    Private Sub SetData(FBoxXMLKontakt As TR064.FritzBoxXMLKontakt)
         With FBoxXMLKontakt
 
             ' Telefonnummern des Kontaktes setzen 

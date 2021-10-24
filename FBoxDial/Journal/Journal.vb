@@ -3,7 +3,7 @@ Imports Microsoft.Office.Interop
 Friend Module Journal
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-    Friend Async Sub AutoAnrListe(Anrufliste As FritzBoxXMLCallList)
+    Friend Async Sub AutoAnrListe(Anrufliste As TR064.FritzBoxXMLCallList)
 
         If Anrufliste IsNot Nothing Then
             NLogger.Debug($"Anrufliste mit {Anrufliste.Calls.Count} Einträgen geladen.")
@@ -16,7 +16,7 @@ Friend Module Journal
         End If
     End Sub
 
-    Friend Async Sub AutoBlockListe(fboxTR064 As SOAP.FritzBoxTR64)
+    Friend Async Sub AutoBlockListe(fboxTR064 As TR064.FritzBoxTR64)
 
         With XMLData.POptionen
             If Now.Subtract(.LetzteSperrlistenaktualisierung).TotalHours.IsLargerOrEqual(24) Then
@@ -38,9 +38,9 @@ Friend Module Journal
         End With
     End Sub
 
-    Private Function ImportCalls(Anrufliste As FritzBoxXMLCallList, DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task
+    Private Function ImportCalls(Anrufliste As TR064.FritzBoxXMLCallList, DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task
         Return Task.Run(Sub()
-                            Dim Abfrage As ParallelQuery(Of FritzBoxXMLCall)
+                            Dim Abfrage As ParallelQuery(Of TR064.FritzBoxXMLCall)
 
                             Abfrage = From Anruf In Anrufliste.Calls.AsParallel() Where Anruf.Type.IsLessOrEqual(3) And DatumZeitAnfang <= Anruf.Datum And DatumZeitEnde >= Anruf.Datum Select Anruf
                             Abfrage.ForAll(Async Sub(r)

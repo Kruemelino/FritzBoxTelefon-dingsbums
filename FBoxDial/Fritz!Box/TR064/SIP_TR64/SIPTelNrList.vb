@@ -1,11 +1,14 @@
 ﻿Imports System.Xml.Serialization
-<Serializable()>
-<XmlRoot("List")> Public Class SIPTelNrList
 
-    <XmlElement("Item")> Public Property TelNrList As List(Of SIPTelNr)
+Namespace TR064
+    <Serializable()>
+    <XmlRoot("List")> Public Class SIPTelNrList
 
-    Public Sub New()
-        TelNrList = New List(Of SIPTelNr)
-    End Sub
+        <XmlElement("Item")> Public Property TelNrList As List(Of SIPTelNr)
 
-End Class
+        Public Sub New()
+            TelNrList = New List(Of SIPTelNr)
+        End Sub
+
+    End Class
+End Namespace

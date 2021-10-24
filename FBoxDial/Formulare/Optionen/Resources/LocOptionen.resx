@@ -771,6 +771,10 @@ Warnung: Wenn viele Einträge auf die Fritz!Box geladen werden, kann diese träg
     <value>Testbereich</value>
     <comment>MainView</comment>
   </data>
+  <data name="strTestAnrufmonitorHead" xml:space="preserve">
+    <value>Test des Anrufmonitors</value>
+    <comment>OptTestView</comment>
+  </data>
   <data name="strTestKontaktsucheHead" xml:space="preserve">
     <value>Test: Kontaktsuche</value>
     <comment>OptTestView</comment>
@@ -831,6 +835,10 @@ Seit FRITZ!OS 7.24 ist eine Anmeldung auf der Fritz!Box nur noch mit Benutzernam
   </data>
   <data name="strTestRWSStart" xml:space="preserve">
     <value>Starte die Rückwärtssuche</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestStartAnrMon" xml:space="preserve">
+    <value>Starte Anrufmonitortest Test</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestStartLogin" xml:space="preserve">

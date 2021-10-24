@@ -15,8 +15,8 @@ Public Class KontaktViewModel
 
 #Region "Fritz!Box Telefonbuch Kontakte"
 
-    Private _FBoxKontakt As FritzBoxXMLKontakt
-    Public Property FBoxKontakt As FritzBoxXMLKontakt
+    Private _FBoxKontakt As TR064.FritzBoxXMLKontakt
+    Public Property FBoxKontakt As TR064.FritzBoxXMLKontakt
         Get
             Return _FBoxKontakt
         End Get
@@ -26,8 +26,8 @@ Public Class KontaktViewModel
         End Set
     End Property
 
-    Private _FBoxKontaktClone As FritzBoxXMLKontakt
-    Public Property FBoxKontaktClone As FritzBoxXMLKontakt
+    Private _FBoxKontaktClone As TR064.FritzBoxXMLKontakt
+    Public Property FBoxKontaktClone As TR064.FritzBoxXMLKontakt
         Get
             Return _FBoxKontaktClone
         End Get
@@ -36,8 +36,8 @@ Public Class KontaktViewModel
         End Set
     End Property
 
-    Private _FBoxTelefonbuch As FritzBoxXMLTelefonbuch
-    Public Property FBoxTelefonbuch As FritzBoxXMLTelefonbuch
+    Private _FBoxTelefonbuch As TR064.FritzBoxXMLTelefonbuch
+    Public Property FBoxTelefonbuch As TR064.FritzBoxXMLTelefonbuch
         Get
             Return _FBoxTelefonbuch
         End Get
@@ -82,7 +82,7 @@ Public Class KontaktViewModel
     End Property
 
     Public Function Filter(o As Object) As Boolean
-        With CType(o, FritzBoxXMLKontakt)
+        With CType(o, TR064.FritzBoxXMLKontakt)
 
             If .IstTelefon Then
                 ' Telefone werden immer weggefiltet
@@ -130,7 +130,7 @@ Public Class KontaktViewModel
         SessionID = DatenService.GetSessionID
     End Sub
 
-    Public Sub LadeKontakte(Telefonbuch As FritzBoxXMLTelefonbuch)
+    Public Sub LadeKontakte(Telefonbuch As TR064.FritzBoxXMLTelefonbuch)
 
         FBoxTelefonbuch = Telefonbuch
 
@@ -172,7 +172,7 @@ Public Class KontaktViewModel
 
 #Region "Kontakt hinzufügen"
     Private Sub AddKontakt(o As Object)
-        Dim NeuerKontakt = New FritzBoxXMLKontakt
+        Dim NeuerKontakt = New TR064.FritzBoxXMLKontakt
         NeuerKontakt.Person.RealName = "N/A"
 
         FBoxTelefonbuch.AddContact(NeuerKontakt)
@@ -253,25 +253,25 @@ Public Class KontaktViewModel
 
 #Region "Kontakt Telefonnummer hinzufügen/entfernen"
     Private Sub AddTelNr(o As Object)
-        If FBoxKontakt.Telefonie Is Nothing Then FBoxKontakt.Telefonie = New FritzBoxXMLTelefonie
-        If FBoxKontakt.Telefonie.Nummern Is Nothing Then FBoxKontakt.Telefonie.Nummern = New ObservableCollectionEx(Of FritzBoxXMLNummer)
+        If FBoxKontakt.Telefonie Is Nothing Then FBoxKontakt.Telefonie = New TR064.FritzBoxXMLTelefonie
+        If FBoxKontakt.Telefonie.Nummern Is Nothing Then FBoxKontakt.Telefonie.Nummern = New ObservableCollectionEx(Of TR064.FritzBoxXMLNummer)
 
-        FBoxKontakt.Telefonie.Nummern.Add(New FritzBoxXMLNummer)
+        FBoxKontakt.Telefonie.Nummern.Add(New TR064.FritzBoxXMLNummer)
     End Sub
     Private Sub RemoveTelNr(o As Object)
-        FBoxKontakt.Telefonie.Nummern.Remove(CType(o, FritzBoxXMLNummer))
+        FBoxKontakt.Telefonie.Nummern.Remove(CType(o, TR064.FritzBoxXMLNummer))
     End Sub
 #End Region
 
 #Region "Kontakt E-Mail hinzufügen/entfernen"
     Private Sub AddEMail(o As Object)
-        If FBoxKontakt.Telefonie Is Nothing Then FBoxKontakt.Telefonie = New FritzBoxXMLTelefonie
-        If FBoxKontakt.Telefonie.Emails Is Nothing Then FBoxKontakt.Telefonie.Emails = New ObservableCollectionEx(Of FritzBoxXMLEmail)
+        If FBoxKontakt.Telefonie Is Nothing Then FBoxKontakt.Telefonie = New TR064.FritzBoxXMLTelefonie
+        If FBoxKontakt.Telefonie.Emails Is Nothing Then FBoxKontakt.Telefonie.Emails = New ObservableCollectionEx(Of TR064.FritzBoxXMLEmail)
 
-        FBoxKontakt.Telefonie.Emails.Add(New FritzBoxXMLEmail)
+        FBoxKontakt.Telefonie.Emails.Add(New TR064.FritzBoxXMLEmail)
     End Sub
     Private Sub RemoveEMail(o As Object)
-        FBoxKontakt.Telefonie.Emails.Remove(CType(o, FritzBoxXMLEmail))
+        FBoxKontakt.Telefonie.Emails.Remove(CType(o, TR064.FritzBoxXMLEmail))
     End Sub
 
 #End Region

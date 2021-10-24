@@ -26,7 +26,7 @@
             ' Prüfe, ob Fritz!Box verfügbar
             If Ping(XMLData.POptionen.ValidFBAdr) Then
                 ' Eine Unterscheidung nach Firmware ist erforderlich.
-                Using FBTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Nothing)
+                Using FBTR064 As New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Nothing)
                     With FBTR064
                         If .Major.IsLargerOrEqual(7) And .Minor.IsLargerOrEqual(24) Then
                             ' ermittle den zuletzt angemeldeten User

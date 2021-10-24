@@ -1503,6 +1503,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Test des Anrufmonitors ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestAnrufmonitorHead() As String
+            Get
+                Return ResourceManager.GetString("strTestAnrufmonitorHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Test: Kontaktsuche ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestKontaktsucheHead() As String
@@ -1636,6 +1645,15 @@ Namespace Localize
         Public Shared ReadOnly Property strTestRWSStart() As String
             Get
                 Return ResourceManager.GetString("strTestRWSStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Starte Anrufmonitortest Test ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestStartAnrMon() As String
+            Get
+                Return ResourceManager.GetString("strTestStartAnrMon", resourceCulture)
             End Get
         End Property
         

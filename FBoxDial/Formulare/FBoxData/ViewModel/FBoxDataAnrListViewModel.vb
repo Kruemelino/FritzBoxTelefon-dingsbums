@@ -124,8 +124,8 @@ Public Class FBoxDataAnrListViewModel
     ''' <summary>
     ''' Returns Or sets a list as FritzBoxXMLCall             
     ''' </summary>
-    Private _CallList As ObservableCollectionEx(Of FritzBoxXMLCall)
-    Public Property CallList As ObservableCollectionEx(Of FritzBoxXMLCall)
+    Private _CallList As ObservableCollectionEx(Of TR064.FritzBoxXMLCall)
+    Public Property CallList As ObservableCollectionEx(Of TR064.FritzBoxXMLCall)
         Get
             Return _CallList
         End Get
@@ -188,7 +188,7 @@ Public Class FBoxDataAnrListViewModel
             ' Endzeitpunkt
             Dim ImportEnde As Date = EndDatum.Add(EndZeit)
 
-            Dim AusgewählteAnrufe As IEnumerable(Of FritzBoxXMLCall)
+            Dim AusgewählteAnrufe As IEnumerable(Of TR064.FritzBoxXMLCall)
 
             ' Ermittle alle Einträge, die im ausgewählten Bereich liegen
             AusgewählteAnrufe = CallList.Where(Function(x) ImportStart <= x.Datum And x.Datum <= ImportEnde)
@@ -212,10 +212,10 @@ Public Class FBoxDataAnrListViewModel
     ''' </summary>
     Private Async Sub Init() Implements IFBoxData.Init
 
-        Dim TaskAnrList As FritzBoxXMLCallList = Await DatenService.GetAnrufListe
+        Dim TaskAnrList As TR064.FritzBoxXMLCallList = Await DatenService.GetAnrufListe
 
         ' Initiiere die Anrufliste
-        CallList = New ObservableCollectionEx(Of FritzBoxXMLCall)
+        CallList = New ObservableCollectionEx(Of TR064.FritzBoxXMLCall)
         ' Lade die Anrufliste
         CallList.AddRange(TaskAnrList?.Calls)
 
@@ -243,7 +243,7 @@ Public Class FBoxDataAnrListViewModel
 #Region "Journalimport"
     Private Async Sub JournalImport(o As Object)
 
-        Dim AusgewählteAnrufe As IEnumerable(Of FritzBoxXMLCall) = CallList.Where(Function(x) x.Export = True)
+        Dim AusgewählteAnrufe As IEnumerable(Of TR064.FritzBoxXMLCall) = CallList.Where(Function(x) x.Export = True)
 
         If AusgewählteAnrufe.Any Then
 
@@ -289,7 +289,7 @@ Public Class FBoxDataAnrListViewModel
 #Region "Sperrlist"
     Private Sub BlockNumbers(o As Object)
 
-        Dim BlockNumbers As IEnumerable(Of String) = From a In CType(o, IList).Cast(Of FritzBoxXMLCall)().ToList Select a.Gegenstelle
+        Dim BlockNumbers As IEnumerable(Of String) = From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)().ToList Select a.Gegenstelle
 
         If DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBlockNumber, String.Join(", ", BlockNumbers))) = Windows.MessageBoxResult.Yes Then
             DatenService.BlockNumbers(BlockNumbers)
@@ -300,13 +300,13 @@ Public Class FBoxDataAnrListViewModel
 
 #Region "Kontakt Anrufen"
     Private Sub [Call](o As Object)
-        Dim XMLKontakt As FritzBoxXMLCall = (From a In CType(o, IList).Cast(Of FritzBoxXMLCall)()).ToList.First
+        Dim XMLKontakt As TR064.FritzBoxXMLCall = (From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)()).ToList.First
         DatenService.CallXMLContact(XMLKontakt)
     End Sub
 
     Private Function CanCall(o As Object) As Boolean
         If o IsNot Nothing Then
-            Dim XMLKontaktListe As IEnumerable(Of FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of FritzBoxXMLCall)().ToList
+            Dim XMLKontaktListe As IEnumerable(Of TR064.FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)().ToList
 
             Return XMLKontaktListe.Count.AreEqual(1) AndAlso XMLKontaktListe.First.Gegenstelle.IsNotStringNothingOrEmpty
         Else
@@ -317,7 +317,7 @@ Public Class FBoxDataAnrListViewModel
 
 #Region "Kontakt Anzeigen"
     Private Sub ShowContact(o As Object)
-        Dim XMLKontaktListe As IEnumerable(Of FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of FritzBoxXMLCall)().ToList
+        Dim XMLKontaktListe As IEnumerable(Of TR064.FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)().ToList
 
         For Each XMLKontakt In XMLKontaktListe
             DatenService.ShowXMLContact(XMLKontakt)
@@ -326,7 +326,7 @@ Public Class FBoxDataAnrListViewModel
 
     Private Function CanShowContact(o As Object) As Boolean
         If o IsNot Nothing Then
-            Dim XMLKontaktListe As IEnumerable(Of FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of FritzBoxXMLCall)().ToList
+            Dim XMLKontaktListe As IEnumerable(Of TR064.FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)().ToList
 
             Return XMLKontaktListe.First.Gegenstelle.IsNotStringNothingOrEmpty
         Else

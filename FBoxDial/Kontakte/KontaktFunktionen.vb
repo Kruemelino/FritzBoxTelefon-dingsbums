@@ -81,7 +81,7 @@ Friend Module KontaktFunktionen
     ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
     ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
     ''' <returns>Den erstellten Kontakt als Outlook.ContactItem.</returns>
-    Friend Function ErstelleKontakt(XMLKontakt As FritzBoxXMLKontakt, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
+    Friend Function ErstelleKontakt(XMLKontakt As TR064.FritzBoxXMLKontakt, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
 
         If Not TelNr.Unterdrückt Then
 
@@ -513,10 +513,10 @@ Friend Module KontaktFunktionen
     ''' <param name="olContact">Der Outlook Kontakt, der überführt werden soll.</param>
     ''' <param name="UID">Falls bekannt, die Uniqueid des Kontaktes im Fritz!Box Telefonbuch.</param>
     ''' <returns></returns>
-    <Extension> Friend Function ErstelleFBoxKontakt(olContact As ContactItem, Optional UID As Integer = -1) As FritzBoxXMLKontakt
+    <Extension> Friend Function ErstelleFBoxKontakt(olContact As ContactItem, Optional UID As Integer = -1) As TR064.FritzBoxXMLKontakt
 
         ' Erstelle ein nen neuen XMLKontakt
-        Dim XMLKontakt As New FritzBoxXMLKontakt
+        Dim XMLKontakt As New TR064.FritzBoxXMLKontakt
 
         With XMLKontakt
             ' Weise den Namen zu
@@ -534,20 +534,20 @@ Friend Module KontaktFunktionen
                 ' Weise die E-Mails zu
                 With .Emails
                     If olContact.Email1Address.IsNotStringNothingOrEmpty Then
-                        .Add(New FritzBoxXMLEmail With {.EMail = olContact.Email1Address})
+                        .Add(New TR064.FritzBoxXMLEmail With {.EMail = olContact.Email1Address})
                     End If
                     If olContact.Email2Address.IsNotStringNothingOrEmpty Then
-                        .Add(New FritzBoxXMLEmail With {.EMail = olContact.Email2Address})
+                        .Add(New TR064.FritzBoxXMLEmail With {.EMail = olContact.Email2Address})
                     End If
                     If olContact.Email3Address.IsNotStringNothingOrEmpty Then
-                        .Add(New FritzBoxXMLEmail With {.EMail = olContact.Email3Address})
+                        .Add(New TR064.FritzBoxXMLEmail With {.EMail = olContact.Email3Address})
                     End If
                 End With
 
                 ' Weise die Telefonnummern zu
                 With .Nummern
                     For Each TelNr In GetKontaktTelNrList(olContact)
-                        .Add(New FritzBoxXMLNummer With {.Nummer = TelNr.Unformatiert, .Typ = TelNr.Typ.XML})
+                        .Add(New TR064.FritzBoxXMLNummer With {.Nummer = TelNr.Unformatiert, .Typ = TelNr.Typ.XML})
                     Next
                 End With
 
@@ -705,7 +705,7 @@ Friend Module KontaktFunktionen
         Return Nothing
     End Function
 
-    <Extension> Friend Async Function KontaktBildEx(FBoxContact As FritzBoxXMLKontakt) As Task(Of Imaging.BitmapImage)
+    <Extension> Friend Async Function KontaktBildEx(FBoxContact As TR064.FritzBoxXMLKontakt) As Task(Of Imaging.BitmapImage)
         If FBoxContact IsNot Nothing Then
             With FBoxContact
                 ' Bild in das Datenobjekt laden und abschließend löschen
@@ -735,7 +735,7 @@ Friend Module KontaktFunktionen
         Return Nothing
     End Function
 
-    <Extension> Friend Async Function KontaktBildPfad(FBoxContact As FritzBoxXMLKontakt) As Threading.Tasks.Task(Of String)
+    <Extension> Friend Async Function KontaktBildPfad(FBoxContact As TR064.FritzBoxXMLKontakt) As Task(Of String)
         Dim Pfad As String = DfltStringEmpty
         If FBoxContact IsNot Nothing Then
             Pfad = $"{Path.GetTempPath}{Path.GetRandomFileName}" '.RegExReplace(".{3}$", "jpg")

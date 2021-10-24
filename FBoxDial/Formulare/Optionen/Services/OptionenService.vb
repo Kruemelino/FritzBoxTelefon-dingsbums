@@ -14,13 +14,13 @@ Friend Class OptionenService
         Dim UserList As New ObservableCollectionEx(Of FritzBoxXMLUser)
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(IPAdresse) Then
-            Using FBoxTr064 As New SOAP.FritzBoxTR64(IPAdresse, Nothing)
+            Using FBoxTr064 As New TR064.FritzBoxTR64(IPAdresse, Nothing)
                 AddHandler FBoxTr064.Status, AddressOf SetStatus
 
                 Dim XMLString As String = DfltStringEmpty
                 Dim FritzBoxUsers As New FritzBoxXMLUserList
 
-                If FBoxTr064.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
+                If FBoxTr064.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
                     UserList.AddRange(FritzBoxUsers.UserListe)
 
                     RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(True))
@@ -214,12 +214,12 @@ Friend Class OptionenService
     Friend Sub StartLoginTest(IPAdresse As String, User As String, Password As SecureString) Implements IOptionenService.StartLoginTest
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(IPAdresse) Then
-            Using fboxTR064 As New SOAP.FritzBoxTR64(IPAdresse, New Net.NetworkCredential(User, Password))
+            Using fboxTR064 As New TR064.FritzBoxTR64(IPAdresse, New Net.NetworkCredential(User, Password))
                 AddHandler fboxTR064.Status, AddressOf SetStatus
 
                 Dim SessionID As String = DfltStringEmpty
 
-                RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(fboxTR064.GetSessionID(SessionID)))
+                RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(fboxTR064.Deviceconfig.GetSessionID(SessionID)))
 
                 RemoveHandler fboxTR064.Status, AddressOf SetStatus
             End Using
@@ -252,8 +252,62 @@ Friend Class OptionenService
 
         NLogger.Debug($"Test der Kontaktsuche beendet")
     End Sub
-
-
 #End Region
 
+#Region "Test Anrufmonitor"
+    Public Sub StartAnrMonTest() Implements IOptionenService.StartAnrMonTest
+        'Dim rnd As New Random()
+
+        'Dim D As Landeskennzahl = ThisAddIn.PVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(LKZ) LKZ.Landeskennzahl = "49")
+        'Dim i As Integer = rnd.Next(0, D.Ortsnetzkennzahlen.Count)
+        'Dim N As Integer = rnd.Next(9999, 9999999)
+
+        'Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {"23.06.18 13:20:24", "RING", "1", $"0{D.Ortsnetzkennzahlen.Item(i).Ortsnetzkennzahl}{N}", XMLData.PTelefonie.Telefonnummern(rnd.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl, "SIP4"}}
+
+        '' 23.06.18 13:20:52;DISCONNECT;1;9;
+        'AktivesTelefonat.SetAnrMonDISCONNECT = {"23.06.18 13:20:52", "DISCONNECT", "1", "9"}
+
+        'Using fbtr064 As New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        '    With fbtr064.X_voip
+
+        '        Dim ExistingVoIPNumbers As Integer
+        '        If .GetExistingVoIPNumbers(ExistingVoIPNumbers) Then
+        '            NLogger.Debug($"GetExistingVoIPNumbers = {ExistingVoIPNumbers}")
+        '        End If
+
+        '        Dim MaxVoIPNumbers As Integer
+        '        If .GetMaxVoIPNumbers(MaxVoIPNumbers) Then
+        '            NLogger.Debug($"GetMaxVoIPNumbers = {MaxVoIPNumbers}")
+        '        End If
+
+        '        Dim NumberOfClients As Integer
+        '        If .GetNumberOfClients(NumberOfClients) Then
+        '            NLogger.Debug($"X_AVM-DE_GetNumberOfClients = {NumberOfClients}")
+        '        End If
+
+        '        Dim NumberOfNumbers As Integer
+        '        If .GetNumberOfNumbers(NumberOfNumbers) Then
+        '            NLogger.Debug($"X_AVM-DE_GetNumberOfNumbers = {NumberOfClients}")
+        '        End If
+
+        '        Dim ClientList As New TR064.SIPClientList
+        '        .GetClients(ClientList)
+
+        '        Dim VoIPAccount As New TR064.VoIPAccount
+        '        .GetVoIPAccount(VoIPAccount, 0)
+
+        '        Dim VoIPEnableCountryCode As Boolean
+        '        If .GetVoIPEnableCountryCode(VoIPEnableCountryCode, 0) Then
+        '            NLogger.Debug($"GetVoIPEnableCountryCode = {VoIPEnableCountryCode}")
+        '        End If
+
+        '        Dim VoIPEnableAreaCode As Boolean
+        '        If .GetVoIPEnableAreaCode(VoIPEnableAreaCode, 0) Then
+        '            NLogger.Debug($"GetVoIPEnableAreaCode = {VoIPEnableAreaCode}")
+        '        End If
+        '    End With
+        'End Using
+
+    End Sub
+#End Region
 End Class

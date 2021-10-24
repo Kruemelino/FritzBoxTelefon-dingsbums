@@ -29,8 +29,8 @@
 #End Region
 
 #Region "Eigenschaften"
-    Private _CurrentTAM As TAMItem
-    Public Property CurrentTAM As TAMItem
+    Private _CurrentTAM As TR064.TAMItem
+    Public Property CurrentTAM As TR064.TAMItem
         Get
             Return _CurrentTAM
         End Get
@@ -39,8 +39,8 @@
         End Set
     End Property
 
-    Private _CurrentMessage As FritzBoxXMLMessage
-    Public Property CurrentMessage As FritzBoxXMLMessage
+    Private _CurrentMessage As TR064.FritzBoxXMLMessage
+    Public Property CurrentMessage As TR064.FritzBoxXMLMessage
         Get
             Return _CurrentMessage
         End Get
@@ -50,7 +50,7 @@
     End Property
 #End Region
 
-    Public Sub New(dataService As IFBoxDataService, dialogService As IDialogService, cTAM As TAMItem)
+    Public Sub New(dataService As IFBoxDataService, dialogService As IDialogService, cTAM As TR064.TAMItem)
         ' Interface
         _DatenService = dataService
 

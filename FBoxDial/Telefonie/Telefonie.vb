@@ -39,7 +39,7 @@ Imports FBoxDial.FritzBoxDefault
         Dim SessionID As String = DfltFritzBoxSessionID
 
         ' Starte die TR-064 Schnittstelle zur Fritz!Box
-        Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Anmeldeinformationen)
+        Using fbtr064 As New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Anmeldeinformationen)
 
             With fbtr064
                 ' Ermittle die SessionID für Fritz!Box Query
@@ -58,13 +58,13 @@ Imports FBoxDial.FritzBoxDefault
                         PushStatus(LogLevel.Debug, $"Kennzahlen: {LKZ}; {OKZ}")
 
                         ' Lade Telefonnummern via TR-064 
-                        Dim NummernListe As SIPTelNrList = Nothing
+                        Dim NummernListe As TR064.SIPTelNrList = Nothing
                         ' Füge die Nummer zu den eigenen Nummern hinzu
                         If .X_voip.GetNumbers(NummernListe) Then NummernListe.TelNrList.ForEach(Sub(S) AddEigeneTelNr(S.Number, S.Index))
 
                         ' Lade SIP Clients via TR-064 
-                        Dim SIPList As SIPClientList = Nothing
-                        If .X_voip.GetSIPClients(SIPList) Then
+                        Dim SIPList As TR064.SIPClientList = Nothing
+                        If .X_voip.GetClients(SIPList) Then
 
                             ' Werte alle SIP Clients aus
                             For Each SIPClient In SIPList.SIPClients
@@ -77,7 +77,7 @@ Imports FBoxDial.FritzBoxDefault
                                                                         .Intern = SIPClient.InternalNumber}
                                 With Telefon
 
-                                    If SIPClient.InComingNumbers.First.Type = EType.eAllCalls Then
+                                    If SIPClient.InComingNumbers.First.Type = TR064.EType.eAllCalls Then
                                         ' füge alle bekannten Nummern hinzu
                                         Telefonnummern.ForEach(Sub(TelNr) .StrEinTelNr.Add(TelNr.Einwahl))
                                     Else
@@ -96,7 +96,7 @@ Imports FBoxDial.FritzBoxDefault
                         End If
 
                         ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
-                        Dim ABListe As TAMList = Nothing
+                        Dim ABListe As TR064.TAMList = Nothing
                         If .X_tam.GetTAMList(ABListe) Then
                             ' Werte alle TAMs aus.
                             For Each AB In ABListe.TAMListe
@@ -109,7 +109,7 @@ Imports FBoxDial.FritzBoxDefault
                                                     .Enable = AB.Enable}
 
                                 ' Ermittle die Nummer, auf den der AB reagiert.
-                                Dim TAMInfo As New TAMInfo
+                                Dim TAMInfo As New TR064.TAMInfo
                                 If .X_tam.GetTAMInfo(TAMInfo, AB.Index) Then
                                     If TAMInfo.PhoneNumbers.Length.AreEqual(1) AndAlso TAMInfo.PhoneNumbers.First.IsStringNothingOrEmpty Then
                                         ' Empty string represents all numbers.

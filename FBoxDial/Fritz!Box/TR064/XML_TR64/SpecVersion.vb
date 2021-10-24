@@ -1,6 +1,6 @@
 ﻿Imports System.Xml.Serialization
 
-Namespace SOAP
+Namespace TR064
     <Serializable()>
     Public Class SpecVersion
         <XmlElement("major")> Public Property Major As Integer

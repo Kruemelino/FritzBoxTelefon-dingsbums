@@ -158,6 +158,13 @@
             </StackPanel>
         </Expander>
 
+        <Expander Style="{StaticResource OptExpander}"
+                  Header="{x:Static localize:LocOptionen.strTestAnrufmonitorHead}">
+            
+            <Button Content="{x:Static localize:LocOptionen.strTestStartAnrMon}"
+                    Command="{Binding TestAnrMonCommand}" Height="25"/>
+            
+        </Expander>
 
     </StackPanel>
 </UserControl>

@@ -1,6 +1,6 @@
 ﻿Imports System.Xml.Serialization
 
-Namespace SOAP
+Namespace TR064
     <Serializable()>
     Public Class Argument
         <XmlElement("name")> Public Property Name As String

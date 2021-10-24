@@ -1,6 +1,6 @@
 ﻿Imports System.Xml.Serialization
 
-Namespace SOAP
+Namespace TR064
     <Serializable()>
     <XmlRoot("scpd", Namespace:="urn:dslforum-org:service-1-0", IsNullable:=False)>
     Public Class ServiceControlProtocolDefinition

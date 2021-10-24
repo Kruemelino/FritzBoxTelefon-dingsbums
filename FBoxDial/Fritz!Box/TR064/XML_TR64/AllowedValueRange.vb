@@ -1,6 +1,6 @@
 ﻿Imports System.Xml.Serialization
 
-Namespace SOAP
+Namespace TR064
     <Serializable()> Public Class AllowedValueRange
         <XmlElement("minimum")> Public Property Minimum As String
         <XmlElement("maximum")> Public Property Maximum As String

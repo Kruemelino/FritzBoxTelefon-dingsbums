@@ -27,6 +27,7 @@
     Public Property TestUserListCommand As RelayCommand
     Public Property TestLoginCommand As RelayCommand
     Public Property TestKontaktsucheCommand As RelayCommand
+    Public Property TestAnrMonCommand As RelayCommand
 #End Region
     Public Sub New()
         ' Commands
@@ -35,10 +36,11 @@
         TestUserListCommand = New RelayCommand(AddressOf StartLoadUserListTest, AddressOf CanLoadUserList)
         TestLoginCommand = New RelayCommand(AddressOf StartLoginTest, AddressOf CanStartLoginTest)
         TestKontaktsucheCommand = New RelayCommand(AddressOf StartKontaktsucheTest, AddressOf CanRunTestKontaktsuche)
+        TestAnrMonCommand = New RelayCommand(AddressOf StartAnrMonTest)
+
         ' Interface
         DatenService = New OptionenService
     End Sub
-
 
 #Region "Telefonnummerntest"
     Private Property TestTelNr As Telefonnummer
@@ -310,4 +312,9 @@
     End Sub
 #End Region
 
+#Region "Test des Anrufmonitors"
+    Private Sub StartAnrMonTest(obj As Object)
+        DatenService.StartAnrMonTest()
+    End Sub
+#End Region
 End Class

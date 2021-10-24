@@ -52,7 +52,7 @@
     Private Async Sub Init() Implements IFBoxData.Init
         TAMListe = New ObservableCollectionEx(Of TAMItemViewModel)
 
-        Dim ABs As TAMList = Await DatenService.GetTAMList
+        Dim ABs As TR064.TAMList = Await DatenService.GetTAMList
 
         TAMListe.AddRange(ABs.TAMListe.Select(Function(TAM) New TAMItemViewModel(DatenService, DialogService, TAM)))
     End Sub

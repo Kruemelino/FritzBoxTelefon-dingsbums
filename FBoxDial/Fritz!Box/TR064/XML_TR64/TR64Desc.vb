@@ -1,6 +1,6 @@
 ﻿Imports System.Xml.Serialization
 
-Namespace SOAP
+Namespace TR064
 
     <Serializable()>
     <XmlRoot("root", Namespace:="urn:dslforum-org:device-1-0", IsNullable:=False)> Public Class TR64Desc

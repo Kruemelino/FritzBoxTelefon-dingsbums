@@ -46,5 +46,7 @@ Friend Interface IOptionenService
     Sub StartKontaktsucheTest(TelNr As String)
 #End Region
 
-
+#Region "Test Anrufmonitor"
+    Sub StartAnrMonTest()
+#End Region
 End Interface

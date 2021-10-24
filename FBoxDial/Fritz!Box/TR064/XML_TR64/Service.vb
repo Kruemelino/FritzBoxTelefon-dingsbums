@@ -3,7 +3,7 @@ Imports System.Net
 Imports System.Xml
 Imports System.Xml.Serialization
 
-Namespace SOAP
+Namespace TR064
     '<DebuggerStepThrough>
     <Serializable()>
     Public Class Service

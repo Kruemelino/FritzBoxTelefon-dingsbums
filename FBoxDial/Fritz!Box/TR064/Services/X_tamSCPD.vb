@@ -1,5 +1,6 @@
 ﻿Imports System.Collections
-Namespace SOAP
+
+Namespace TR064
     Public Class X_tamSCPD
         Implements IService
         Private Property NLogger As Logger = LogManager.GetCurrentClassLogger Implements IService.NLogger

@@ -3,11 +3,11 @@ Public Class FBoxDataService
     Implements IFBoxDataService
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private Property FBoxTR064 As SOAP.FritzBoxTR64
+    Private Property FBoxTR064 As TR064.FritzBoxTR64
     Private Property SoundPlayer As Media.SoundPlayer
 
     Public Sub New()
-        FBoxTR064 = New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        FBoxTR064 = New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
     End Sub
     Protected Overrides Sub Finalize() Implements IFBoxDataService.Finalize
         FBoxTR064.Dispose()
@@ -23,11 +23,11 @@ Public Class FBoxDataService
         End Get
     End Property
 
-    Friend Async Function GetAnrufListe() As Task(Of FritzBoxXMLCallList) Implements IFBoxDataService.GetAnrufListe
+    Friend Async Function GetAnrufListe() As Task(Of TR064.FritzBoxXMLCallList) Implements IFBoxDataService.GetAnrufListe
         Return Await LadeFritzBoxAnrufliste(FBoxTR064)
     End Function
 
-    Friend Async Function ErstelleEinträge(Anrufe As IEnumerable(Of FritzBoxXMLCall), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer) Implements IFBoxDataService.ErstelleEinträge
+    Friend Async Function ErstelleEinträge(Anrufe As IEnumerable(Of TR064.FritzBoxXMLCall), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer) Implements IFBoxDataService.ErstelleEinträge
         Return Await ErstelleJournal(Anrufe, ct, progress)
     End Function
 
@@ -35,13 +35,13 @@ Public Class FBoxDataService
         AddNrToBlockList(FBoxTR064, TelNrListe)
     End Sub
 
-    Friend Async Sub CallXMLContact(Kontakt As FritzBoxXMLCall) Implements IFBoxDataService.CallXMLContact
+    Friend Async Sub CallXMLContact(Kontakt As TR064.FritzBoxXMLCall) Implements IFBoxDataService.CallXMLContact
         Using t = Await Kontakt.ErstelleTelefonat
             t.Rückruf()
         End Using
     End Sub
 
-    Friend Async Sub ShowXMLContact(Kontakt As FritzBoxXMLCall) Implements IFBoxDataService.ShowXMLContact
+    Friend Async Sub ShowXMLContact(Kontakt As TR064.FritzBoxXMLCall) Implements IFBoxDataService.ShowXMLContact
         Using t = Await Kontakt.ErstelleTelefonat
             t.ZeigeKontakt()
         End Using
@@ -49,11 +49,11 @@ Public Class FBoxDataService
 #End Region
 
 #Region "TAM Anrufbeantworter"
-    Friend Async Function GetTAMList() As Task(Of TAMList) Implements IFBoxDataService.GetTAMList
-        Dim ABListe As TAMList = Nothing
+    Friend Async Function GetTAMList() As Task(Of TR064.TAMList) Implements IFBoxDataService.GetTAMList
+        Dim ABListe As TR064.TAMList = Nothing
         ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
 
-        If FBoxTR064.GetTAMList(ABListe) Then
+        If FBoxTR064.X_tam.GetTAMList(ABListe) Then
             ' Werte alle TAMs aus.
             Await Task.Run(Sub()
                                For Each AB In ABListe.TAMListe
@@ -65,24 +65,24 @@ Public Class FBoxDataService
         Return ABListe
     End Function
 
-    Friend Sub ToggleTAM(TAM As TAMItem) Implements IFBoxDataService.ToggleTAM
+    Friend Sub ToggleTAM(TAM As TR064.TAMItem) Implements IFBoxDataService.ToggleTAM
         TAM.ToggleTAMEnableState()
     End Sub
 
-    Friend Function MarkMessage(Message As FritzBoxXMLMessage) As Boolean Implements IFBoxDataService.MarkMessage
+    Friend Function MarkMessage(Message As TR064.FritzBoxXMLMessage) As Boolean Implements IFBoxDataService.MarkMessage
         With Message
             ' Andersrum: If the MarkedAsRead state variable is set to 1, the message is marked as read, when it is 0, the message is marked as unread.
-            Return FBoxTR064.MarkMessage(.Tam, .Index, Not .[New])
+            Return FBoxTR064.X_tam.MarkMessage(.Tam, .Index, Not .[New])
         End With
     End Function
 
-    Friend Function DeleteMessage(Message As FritzBoxXMLMessage) As Boolean Implements IFBoxDataService.DeleteMessage
+    Friend Function DeleteMessage(Message As TR064.FritzBoxXMLMessage) As Boolean Implements IFBoxDataService.DeleteMessage
         With Message
-            Return FBoxTR064.DeleteMessage(.Tam, .Index)
+            Return FBoxTR064.X_tam.DeleteMessage(.Tam, .Index)
         End With
     End Function
 
-    Friend Async Sub PlayMessage(Message As FritzBoxXMLMessage) Implements IFBoxDataService.PlayMessage
+    Friend Async Sub PlayMessage(Message As TR064.FritzBoxXMLMessage) Implements IFBoxDataService.PlayMessage
 
         NLogger.Debug($"SoundSoundPlayer.Play Anrufbeantworter {Message.CompleteURL}")
 
@@ -121,13 +121,13 @@ Public Class FBoxDataService
 #Region "Telefonbücher"
 
 #Region "Fritz!Box Telefonbücher"
-    Public Async Function GetFBContacts() As Task(Of FritzBoxXMLTelefonbücher) Implements IFBoxDataService.GetTelefonbücher
+    Public Async Function GetFBContacts() As Task(Of TR064.FritzBoxXMLTelefonbücher) Implements IFBoxDataService.GetTelefonbücher
         ' Telefonbücher asynchron herunterladen
         ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher(FBoxTR064)
         Return ThisAddIn.PhoneBookXML
     End Function
 
-    Public Async Function AddPhonebook(Name As String) As Task(Of FritzBoxXMLTelefonbuch) Implements IFBoxDataService.AddTelefonbuch
+    Public Async Function AddPhonebook(Name As String) As Task(Of TR064.FritzBoxXMLTelefonbuch) Implements IFBoxDataService.AddTelefonbuch
         Return Await Telefonbücher.ErstelleTelefonbuch(FBoxTR064, Name)
     End Function
 
@@ -150,14 +150,14 @@ Public Class FBoxDataService
         Return Telefonbücher.DeleteTelefonbuchEintrag(FBoxTR064, TelefonbuchID, UID)
     End Function
 
-    Public Function DeleteKontakte(TelefonbuchID As Integer, Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean Implements IFBoxDataService.DeleteKontakte
+    Public Function DeleteKontakte(TelefonbuchID As Integer, Einträge As IEnumerable(Of TR064.FritzBoxXMLKontakt)) As Boolean Implements IFBoxDataService.DeleteKontakte
         Return Telefonbücher.DeleteTelefonbuchEinträge(FBoxTR064, TelefonbuchID, Einträge)
     End Function
 
 #End Region
 
 #Region "Fritz!Box Rufsperre"
-    Public Function SetRufsperre(XMLDaten As FritzBoxXMLKontakt) As Integer Implements IFBoxDataService.SetRufsperre
+    Public Function SetRufsperre(XMLDaten As TR064.FritzBoxXMLKontakt) As Integer Implements IFBoxDataService.SetRufsperre
         Dim UID As Integer = 0
         Return If(AddToCallBarring(FBoxTR064, XMLDaten, UID), UID, -1)
     End Function
@@ -166,14 +166,14 @@ Public Class FBoxDataService
         Return DeleteCallBarring(FBoxTR064, UID)
     End Function
 
-    Public Function DeleteRufsperren(Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean Implements IFBoxDataService.DeleteRufsperren
+    Public Function DeleteRufsperren(Einträge As IEnumerable(Of TR064.FritzBoxXMLKontakt)) As Boolean Implements IFBoxDataService.DeleteRufsperren
         Return DeleteCallBarrings(FBoxTR064, Einträge)
     End Function
 
 #End Region
 
 #Region "Kontakt anrufen"
-    Public Sub Dial(XMLDaten As FritzBoxXMLKontakt) Implements IFBoxDataService.Dial
+    Public Sub Dial(XMLDaten As TR064.FritzBoxXMLKontakt) Implements IFBoxDataService.Dial
         Dim WählClient As New FritzBoxWählClient
         WählClient.WählboxStart(XMLDaten)
     End Sub
@@ -181,19 +181,19 @@ Public Class FBoxDataService
 #End Region
 
 #Region "Deflection - Rufumleitung"
-    Friend Function GertDeflectionList() As Task(Of DeflectionList) Implements IFBoxDataService.GestDeflectionList
+    Friend Function GertDeflectionList() As Task(Of TR064.DeflectionList) Implements IFBoxDataService.GestDeflectionList
         Dim Deflections As String = DfltStringEmpty
-        Dim DeflectionList As New DeflectionList
+        Dim DeflectionList As New TR064.DeflectionList
 
-        If FBoxTR064.GetDeflections(Deflections) Then
-            Return DeserializeAsyncXML(Of DeflectionList)(Deflections, False)
+        If FBoxTR064.X_contact.GetDeflections(Deflections) Then
+            Return DeserializeAsyncXML(Of TR064.DeflectionList)(Deflections, False)
         Else
             Return Nothing
         End If
     End Function
 
-    Public Sub ToggleRufuml(Deflection As DeflectionInfo) Implements IFBoxDataService.ToggleRufuml
-        FBoxTR064.SetDeflectionEnable(Deflection.DeflectionId, Not Deflection.Enable)
+    Public Sub ToggleRufuml(Deflection As TR064.DeflectionInfo) Implements IFBoxDataService.ToggleRufuml
+        FBoxTR064.X_contact.SetDeflectionEnable(Deflection.DeflectionId, Not Deflection.Enable)
     End Sub
 #End Region
 End Class

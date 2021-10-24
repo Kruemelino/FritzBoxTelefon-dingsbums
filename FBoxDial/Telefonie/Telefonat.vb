@@ -254,8 +254,8 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    Private _FBTelBookKontakt As FritzBoxXMLKontakt
-    <XmlElement> Public Property FBTelBookKontakt As FritzBoxXMLKontakt
+    Private _FBTelBookKontakt As TR064.FritzBoxXMLKontakt
+    <XmlElement> Public Property FBTelBookKontakt As TR064.FritzBoxXMLKontakt
         Get
             Return _FBTelBookKontakt
         End Get
@@ -499,7 +499,7 @@ Imports Microsoft.Office.Interop
                         ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
                         ' Dann lade die Telefonbücher herunter
                         NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
-                        Using FBoxTR064 = New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+                        Using FBoxTR064 = New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
                             ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher(FBoxTR064)
                         End Using
                     End If

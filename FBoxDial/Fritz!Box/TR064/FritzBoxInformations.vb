@@ -1,6 +1,6 @@
 ﻿Imports System.Xml.Schema
 
-Namespace SOAP
+Namespace TR064
     Public Module FritzBoxInformations
 
 #Region "Properties"

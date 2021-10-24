@@ -7,7 +7,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property POutlookRibbons() As OutlookRibbons
     Friend Shared Property OutookApplication As Application
     Friend Shared Property PAnrufmonitor As Anrufmonitor
-    Friend Shared Property PhoneBookXML As FritzBoxXMLTelefonbücher
+    Friend Shared Property PhoneBookXML As TR064.FritzBoxXMLTelefonbücher
     Friend Shared Property PVorwahlen As Vorwahlen
     Friend Shared Property TellowsScoreList As List(Of TellowsScoreListEntry)
     Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
@@ -43,9 +43,9 @@ Public NotInheritable Class ThisAddIn
         NLogger.Info($"Starte {My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version}...")
 
         Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
-        Dim TaskTelefonbücher As Task(Of FritzBoxXMLTelefonbücher) = Nothing
+        Dim TaskTelefonbücher As Task(Of TR064.FritzBoxXMLTelefonbücher) = Nothing
         Dim TaskVorwahlen As Task(Of Kennzahlen) = Nothing
-        Dim TaskAnrList As Task(Of FritzBoxXMLCallList) = Nothing
+        Dim TaskAnrList As Task(Of TR064.FritzBoxXMLCallList) = Nothing
 
         ' Initialisiere die Landes- und Ortskennzahlen
         PVorwahlen = New Vorwahlen
@@ -56,7 +56,7 @@ Public NotInheritable Class ThisAddIn
         NLogger.Debug("Nutzererinstellungen geladen...")
 
         ' Initiiere die TR064 Schnittstelle für die Abfragen der Daten der Fritz!Box
-        Using FBoxTR064 = New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using FBoxTR064 = New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
             If FBoxTR064.Bereit Then
                 ' Schreibe in das Log noch Informationen zur Fritz!Box

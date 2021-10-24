@@ -3,7 +3,7 @@
 Friend Module FritzBoxAnrufliste
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "Anrufliste Laden"
-    Friend Async Function LadeFritzBoxAnrufliste(FBoxTR064 As SOAP.FritzBoxTR64) As Task(Of FritzBoxXMLCallList)
+    Friend Async Function LadeFritzBoxAnrufliste(FBoxTR064 As TR064.FritzBoxTR64) As Task(Of TR064.FritzBoxXMLCallList)
 
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
@@ -11,7 +11,7 @@ Friend Module FritzBoxAnrufliste
 
             ' Ermittle Pfad zur Anrufliste
             If FBoxTR064.X_contact.GetCallList(Pfad) Then
-                Return Await DeserializeAsyncXML(Of FritzBoxXMLCallList)(Pfad, True)
+                Return Await DeserializeAsyncXML(Of TR064.FritzBoxXMLCallList)(Pfad, True)
             Else
                 NLogger.Warn("Pfad zur XML-Anrufliste konnte nicht ermittelt werden.")
                 Return Nothing
@@ -25,7 +25,7 @@ Friend Module FritzBoxAnrufliste
 #End Region
 
 #Region "Anrufliste auswerten"
-    Friend Async Function ErstelleJournal(Anrufe As IEnumerable(Of FritzBoxXMLCall), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
+    Friend Async Function ErstelleJournal(Anrufe As IEnumerable(Of TR064.FritzBoxXMLCall), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
         Return Await Task.Run(Async Function()
                                   Dim Einträge As Integer = 0
 

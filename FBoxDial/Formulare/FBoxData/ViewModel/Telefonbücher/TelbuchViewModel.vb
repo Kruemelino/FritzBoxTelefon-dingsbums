@@ -12,8 +12,8 @@ Public Class TelbuchViewModel
     Private Property DatenService As IFBoxDataService
     Private Property DialogService As IDialogService
 #Region "Fritz!Box Telefonbücher"
-    Private _Telefonbücher As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
-    Public Property Telefonbücher As ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)
+    Private _Telefonbücher As ObservableCollectionEx(Of TR064.FritzBoxXMLTelefonbuch)
+    Public Property Telefonbücher As ObservableCollectionEx(Of TR064.FritzBoxXMLTelefonbuch)
         Get
             Return _Telefonbücher
         End Get
@@ -22,8 +22,8 @@ Public Class TelbuchViewModel
         End Set
     End Property
 
-    Private _Telefonbuch As FritzBoxXMLTelefonbuch
-    Public Property Telefonbuch As FritzBoxXMLTelefonbuch
+    Private _Telefonbuch As TR064.FritzBoxXMLTelefonbuch
+    Public Property Telefonbuch As TR064.FritzBoxXMLTelefonbuch
         Get
             Return _Telefonbuch
         End Get
@@ -77,9 +77,9 @@ Public Class TelbuchViewModel
         InitTelefonbücher(Await DatenService.GetTelefonbücher())
     End Sub
 
-    Friend Sub InitTelefonbücher(Bücher As FritzBoxXMLTelefonbücher)
+    Friend Sub InitTelefonbücher(Bücher As TR064.FritzBoxXMLTelefonbücher)
         If Bücher IsNot Nothing AndAlso Bücher.Telefonbücher IsNot Nothing Then
-            Telefonbücher = New ObservableCollectionEx(Of FritzBoxXMLTelefonbuch)(Bücher.Telefonbücher)
+            Telefonbücher = New ObservableCollectionEx(Of TR064.FritzBoxXMLTelefonbuch)(Bücher.Telefonbücher)
             OnPropertyChanged(NameOf(Telefonbücher))
 
             If Telefonbücher.Any Then LadeKontakte(Telefonbücher.First)
@@ -91,7 +91,7 @@ Public Class TelbuchViewModel
     Private Sub NeuesTelefonbuch(o As Object)
 
         ' Füge im Viewmodel ein neues Telefonbuch hinzu.
-        Telefonbücher.Add(New FritzBoxXMLTelefonbuch With {.Name = "TELEFONBUCHNAME", .IsBookEditMode = True, .ID = -1})
+        Telefonbücher.Add(New TR064.FritzBoxXMLTelefonbuch With {.Name = "TELEFONBUCHNAME", .IsBookEditMode = True, .ID = -1})
 
     End Sub
     Private Function CanAdd(o As Object) As Boolean
@@ -101,13 +101,13 @@ Public Class TelbuchViewModel
 
 #Region "Telefonbuch umbenennen"
     Private Async Sub TelefonbuchUmbenennen(o As Object)
-        With CType(o, FritzBoxXMLTelefonbuch)
+        With CType(o, TR064.FritzBoxXMLTelefonbuch)
             ' Schalte den Editiermodus aus.
             .IsBookEditMode = Not .IsBookEditMode
             ' Der Nutzer hat einen Namen festgelegt.
             ' Erstelle ein Telefonbuch mit dem gewählten Namen
 
-            Dim NeuesTelefonbuch As FritzBoxXMLTelefonbuch = Await DatenService.AddTelefonbuch(.Name)
+            Dim NeuesTelefonbuch As TR064.FritzBoxXMLTelefonbuch = Await DatenService.AddTelefonbuch(.Name)
 
             If NeuesTelefonbuch IsNot Nothing Then
                 ' Das neue Telefonbuch wurde angelegt.
@@ -123,7 +123,7 @@ Public Class TelbuchViewModel
 
     End Sub
     Private Function CanName(o As Object) As Boolean
-        Dim Buch As FritzBoxXMLTelefonbuch = CType(o, FritzBoxXMLTelefonbuch)
+        Dim Buch As TR064.FritzBoxXMLTelefonbuch = CType(o, TR064.FritzBoxXMLTelefonbuch)
         Return Telefonbücher IsNot Nothing AndAlso Buch.Name.IsNotStringEmpty And Not Telefonbücher.Where(Function(TB)
                                                                                                               Return TB.ID.AreDifferentTo(-1) And TB.Name.AreEqual(Buch.Name)
                                                                                                           End Function).Any
@@ -132,7 +132,7 @@ Public Class TelbuchViewModel
 
 #Region "Telefonbuch löschen"
     Private Sub LöscheTelefonbuch(o As Object)
-        With CType(o, FritzBoxXMLTelefonbuch)
+        With CType(o, TR064.FritzBoxXMLTelefonbuch)
             Dim Löschen As Boolean = False
 
             If .ID.IsZero Then
@@ -143,20 +143,20 @@ Public Class TelbuchViewModel
 
             If Löschen Then
                 If DatenService.DeleteTelefonbuch(.ID) Then
-                    Telefonbücher.Remove(CType(o, FritzBoxXMLTelefonbuch))
+                    Telefonbücher.Remove(CType(o, TR064.FritzBoxXMLTelefonbuch))
                 End If
             End If
         End With
     End Sub
     Private Function CanRemove(o As Object) As Boolean
-        Return Not CType(o, FritzBoxXMLTelefonbuch).Rufsperren
+        Return Not CType(o, TR064.FritzBoxXMLTelefonbuch).Rufsperren
     End Function
 #End Region
 
 #Region "Kontakte Laden"
     Private Sub LadeKontakte(o As Object)
 
-        Telefonbuch = CType(o, FritzBoxXMLTelefonbuch)
+        Telefonbuch = CType(o, TR064.FritzBoxXMLTelefonbuch)
         ContactsVM.LadeKontakte(Telefonbuch)
 
     End Sub
@@ -169,7 +169,7 @@ Public Class TelbuchViewModel
     End Function
 
     Private Sub LöscheKontakte(o As Object)
-        Dim Kontakte As IEnumerable(Of FritzBoxXMLKontakt) = From a In CType(o, IList).Cast(Of FritzBoxXMLKontakt)
+        Dim Kontakte As IEnumerable(Of TR064.FritzBoxXMLKontakt) = From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLKontakt)
 
         If Telefonbuch.Rufsperren Then
             If DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionDeleteCallBarrings, Kontakte.Count)) = Windows.MessageBoxResult.Yes Then

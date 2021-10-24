@@ -1,7 +1,7 @@
 ﻿Imports System.Collections
 Imports System.Xml.Serialization
 
-Namespace SOAP
+Namespace TR064
     <DebuggerStepThrough>
     <Serializable()>
     Public Class Action

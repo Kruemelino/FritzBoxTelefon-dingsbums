@@ -54,7 +54,7 @@
 
         RufUmlListe = New ObservableCollectionEx(Of RufUmlViewModel)
 
-        Dim RufUml As DeflectionList = Await DatenService.GestDeflectionList
+        Dim RufUml As TR064.DeflectionList = Await DatenService.GestDeflectionList
 
         If RufUml IsNot Nothing Then
             RufUmlListe.AddRange(RufUml.DeflectionListe.Select(Function(Defl) New RufUmlViewModel(DatenService, Defl)))

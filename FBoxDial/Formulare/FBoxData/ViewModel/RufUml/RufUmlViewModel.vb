@@ -4,8 +4,8 @@
     Private Property DatenService As IFBoxDataService
     'Private Property DialogService As IDialogService
 
-    Private _CurrentRufUml As DeflectionInfo
-    Public Property CurrentRufUml As DeflectionInfo
+    Private _CurrentRufUml As TR064.DeflectionInfo
+    Public Property CurrentRufUml As TR064.DeflectionInfo
         Get
             Return _CurrentRufUml
         End Get
@@ -18,7 +18,7 @@
     Public Property ToggleCommand As RelayCommand
 #End Region
 
-    Public Sub New(dataService As IFBoxDataService, cRufUml As DeflectionInfo)
+    Public Sub New(dataService As IFBoxDataService, cRufUml As TR064.DeflectionInfo)
 
         ' Interface
         _DatenService = dataService

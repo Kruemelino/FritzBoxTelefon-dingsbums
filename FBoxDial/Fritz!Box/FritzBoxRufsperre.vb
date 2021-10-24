@@ -6,30 +6,30 @@ Friend Module FritzBoxRufsperre
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     ''' <summary>
-    ''' Fügt einen Sperrlisteneintrag (<see cref="FritzBoxXMLKontakt"/>) zu der Sperrliste hinzu.
+    ''' Fügt einen Sperrlisteneintrag (<see cref="TR064.FritzBoxXMLKontakt"/>) zu der Sperrliste hinzu.
     ''' </summary>
     ''' <param name="Nummern">Auflistung an Telefonnummern, die gesperrt werden sollen.</param>
     ''' <param name="Name">Name des Sperrlisteneintrages</param>
     ''' <param name="UID">Rückgabewert: UID des neuen Sperreintrages</param>
     ''' <returns></returns>
-    Friend Function AddToCallBarring(fboxTR064 As SOAP.FritzBoxTR64, Nummern As IEnumerable(Of String), Name As String, Optional ByRef UID As Integer = 0) As Boolean
+    Friend Function AddToCallBarring(fboxTR064 As TR064.FritzBoxTR64, Nummern As IEnumerable(Of String), Name As String, Optional ByRef UID As Integer = 0) As Boolean
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
 
-            Dim Sperreintrag As New FritzBoxXMLKontakt
+            Dim Sperreintrag As New TR064.FritzBoxXMLKontakt
             With Sperreintrag
                 .Person.RealName = Name
 
                 ' Prüfe, ob die übergebenen Nummern bereits auf der Rufsperre der Fritz!Box vorhanden sind.
                 ' Ein Eintrag auf der Fritz!Box kann mehrere Telefonnummern enthalten
                 For Each TelNr In Nummern
-                    Dim Eintrag As FritzBoxXMLKontakt = Nothing
+                    Dim Eintrag As TR064.FritzBoxXMLKontakt = Nothing
                     If GetCallBarringEntryByNum(fboxTR064, TelNr, Eintrag) Then
                         ' Ein Eintrag mit der Nummer bereits vorhanden
                         NLogger.Info($"Ein Eintrag mit der '{TelNr}' ist in der Sperrliste bereits vorhanden (ID {Eintrag.Uniqueid}.")
                     Else
                         ' füge die Telefonnummer dem hinzuzufügenden Sperreintrag hinzu
-                        .Telefonie.Nummern.Add(New FritzBoxXMLNummer With {.Nummer = TelNr})
+                        .Telefonie.Nummern.Add(New TR064.FritzBoxXMLNummer With {.Nummer = TelNr})
                     End If
                 Next
 
@@ -50,17 +50,17 @@ Friend Module FritzBoxRufsperre
     End Function
 
     Friend Function AddToCallBarring(Nummern As IEnumerable(Of String), Name As String, Optional ByRef UID As Integer = 0) As Boolean
-        Using FBoxTR064 = New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using FBoxTR064 = New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
             Return AddToCallBarring(FBoxTR064, Nummern, Name, UID)
         End Using
     End Function
 
     ''' <summary>
-    ''' Fügt einen Sperrlisteneintrag (<see cref="FritzBoxXMLKontakt"/>) zu der Sperrliste hinzu.
+    ''' Fügt einen Sperrlisteneintrag (<see cref="TR064.FritzBoxXMLKontakt"/>) zu der Sperrliste hinzu.
     ''' </summary>
     ''' <param name="Sperreintrag">Sperrlisteneintrag</param>
     ''' <param name="UID">Rückgabewert: UID des neuen Sperreintrages</param>
-    Friend Function AddToCallBarring(fboxTR064 As SOAP.FritzBoxTR64, Sperreintrag As FritzBoxXMLKontakt, Optional ByRef UID As Integer = 0) As Boolean
+    Friend Function AddToCallBarring(fboxTR064 As TR064.FritzBoxTR64, Sperreintrag As TR064.FritzBoxXMLKontakt, Optional ByRef UID As Integer = 0) As Boolean
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
             Return fboxTR064.X_contact.SetCallBarringEntry(Sperreintrag.GetXMLKontakt, UID)
@@ -74,11 +74,11 @@ Friend Module FritzBoxRufsperre
     ''' Fügt eine Auflistung von Outlook Kontakten (<see cref="ContactItem"/>) zu der Sperrliste hinzu.
     ''' </summary>
     ''' <param name="OutlookKontakte">Auflistung von Sperrlisteneinträgen</param>
-    Friend Async Sub AddToCallBarring(fboxTR064 As SOAP.FritzBoxTR64, OutlookKontakte As IEnumerable(Of ContactItem))
+    Friend Async Sub AddToCallBarring(fboxTR064 As TR064.FritzBoxTR64, OutlookKontakte As IEnumerable(Of ContactItem))
         Const SperrlistenID As Integer = 258
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
-            Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+            Using fbtr064 As New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
                 ' Erzeuge für jeden Kontakt einen Eintrag
                 For Each Kontakt In OutlookKontakte
@@ -113,7 +113,7 @@ Friend Module FritzBoxRufsperre
     End Sub
 
     Friend Sub AddToCallBarring(OutlookKontakte As IEnumerable(Of ContactItem))
-        Using FBoxTR064 = New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using FBoxTR064 = New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
             AddToCallBarring(FBoxTR064, OutlookKontakte)
         End Using
     End Sub
@@ -123,7 +123,7 @@ Friend Module FritzBoxRufsperre
     ''' </summary>
     ''' <param name="UID">UID des zu entfernenden Sperrlisteneintrages</param>
     ''' <returns>True, wenn erfolgreich</returns>
-    Friend Function DeleteCallBarring(fboxTR064 As SOAP.FritzBoxTR64, UID As Integer) As Boolean
+    Friend Function DeleteCallBarring(fboxTR064 As TR064.FritzBoxTR64, UID As Integer) As Boolean
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
             Return fboxTR064.X_contact.DeleteCallBarringEntryUID(UID)
@@ -138,10 +138,10 @@ Friend Module FritzBoxRufsperre
     ''' </summary>
     ''' <param name="Einträge">Zu entferndende Sperrlisteneinträge.</param>
     ''' <returns>True, wenn erfolgreich</returns>
-    Friend Function DeleteCallBarrings(fboxTR064 As SOAP.FritzBoxTR64, Einträge As IEnumerable(Of FritzBoxXMLKontakt)) As Boolean
+    Friend Function DeleteCallBarrings(fboxTR064 As TR064.FritzBoxTR64, Einträge As IEnumerable(Of TR064.FritzBoxXMLKontakt)) As Boolean
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
-            Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+            Using fbtr064 As New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
                 With fbtr064.X_contact
                     For Each Kontakt In Einträge
                         If .DeleteCallBarringEntryUID(Kontakt.Uniqueid) Then
@@ -165,9 +165,9 @@ Friend Module FritzBoxRufsperre
     ''' Ermittelt einen Sperrlisteneintrag anhand der übergebenen Telefonnummer
     ''' </summary>
     ''' <param name="Nummer">Telefonnummer</param>
-    ''' <param name="Eintrag">Rückgabewert: Sperrlisteintrag als <see cref="FritzBoxXMLKontakt"/></param>
+    ''' <param name="Eintrag">Rückgabewert: Sperrlisteintrag als <see cref="TR064.FritzBoxXMLKontakt"/></param>
     ''' <returns>True, wenn Suche erfolgreich</returns>
-    Private Function GetCallBarringEntryByNum(fboxTR064 As SOAP.FritzBoxTR64, Nummer As String, ByRef Eintrag As FritzBoxXMLKontakt) As Boolean
+    Private Function GetCallBarringEntryByNum(fboxTR064 As TR064.FritzBoxTR64, Nummer As String, ByRef Eintrag As TR064.FritzBoxXMLKontakt) As Boolean
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
             If fboxTR064 IsNot Nothing Then
@@ -204,11 +204,11 @@ Friend Module FritzBoxRufsperre
     ''' Erzeugt einen Sperrlisteneintrag aus einer <see cref="Telefonnummer"/> und lädt diesen auf die Fritz!Box hoch.
     ''' </summary>
     ''' <param name="TelNr">Telefonnummer, die der Sperrliste hinzugefügt werden soll.</param>
-    Friend Sub AddNrToBlockList(fboxTR064 As SOAP.FritzBoxTR64, TelNr As Telefonnummer)
+    Friend Sub AddNrToBlockList(fboxTR064 As TR064.FritzBoxTR64, TelNr As Telefonnummer)
         AddToCallBarring(fboxTR064, New List(Of String) From {TelNr.Unformatiert}, Localize.resCommon.strCallBarring)
     End Sub
     Friend Sub AddNrToBlockList(TelNr As Telefonnummer)
-        Using FBoxTR064 = New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using FBoxTR064 = New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
             AddToCallBarring(FBoxTR064, New List(Of String) From {TelNr.Unformatiert}, Localize.resCommon.strCallBarring)
         End Using
     End Sub
@@ -217,7 +217,7 @@ Friend Module FritzBoxRufsperre
     ''' Erzeugt einen Sperrlisteneintrag aus einer <see cref="IEnumerable(Of String)"/> und lädt diesen auf die Fritz!Box hoch.
     ''' </summary>
     ''' <param name="TelNrListe">Liste an Telefonnummern, die der Sperrliste hinzugefügt werden sollen.</param>
-    Friend Sub AddNrToBlockList(fboxTR064 As SOAP.FritzBoxTR64, TelNrListe As IEnumerable(Of String))
+    Friend Sub AddNrToBlockList(fboxTR064 As TR064.FritzBoxTR64, TelNrListe As IEnumerable(Of String))
         AddToCallBarring(fboxTR064, TelNrListe, Localize.resCommon.strCallBarring)
     End Sub
 
@@ -225,19 +225,19 @@ Friend Module FritzBoxRufsperre
     ''' Erzeugt einen Sperrlisteneintrag aus einer <see cref="TellowsResponse"/> und lädt diesen auf die Fritz!Box hoch.
     ''' </summary>
     ''' <param name="tellowsResponse">Ergebnis von tellows welches der Sperrliste hinzugefügt werden soll.</param>
-    Friend Sub AddNrToBlockList(fboxTR064 As SOAP.FritzBoxTR64, tellowsResponse As TellowsResponse)
+    Friend Sub AddNrToBlockList(fboxTR064 As TR064.FritzBoxTR64, tellowsResponse As TellowsResponse)
         With tellowsResponse
             AddToCallBarring(fboxTR064, New List(Of String) From { .Number}, String.Join(", ", .CallerNames))
         End With
     End Sub
 
     ''' <summary>
-    ''' Erzeugt einen neuen Eintrag als <see cref="FritzBoxXMLKontakt"/>für die Sperrliste, oder fügt die Nummer einem bestehenden Eintrag hinzu. 
+    ''' Erzeugt einen neuen Eintrag als <see cref="TR064.FritzBoxXMLKontakt"/>für die Sperrliste, oder fügt die Nummer einem bestehenden Eintrag hinzu. 
     ''' </summary>
-    ''' <param name="FBoxRufSperre">aktuelles Rufsperrentelefonbuch als <see cref="FritzBoxXMLTelefonbuch"/></param>
+    ''' <param name="FBoxRufSperre">aktuelles Rufsperrentelefonbuch als <see cref="TR064.FritzBoxXMLTelefonbuch"/></param>
     ''' <param name="MaxNrbyEntry">Maximale Anzahl an Telefonnummern, die pro Eintrag in der Fritz!Box Rufsperre gespeichert werden sollen.</param>
     ''' <returns>Sperrlisteintrag, der die Nummer enthält. Oder Nothing, falls Nummer bereits in der Sperrliste enthalten ist.</returns>
-    Private Function AddTellowsEntry(Eintrag As TellowsScoreListEntry, FBoxRufSperre As FritzBoxXMLTelefonbuch, MaxNrbyEntry As Integer) As FritzBoxXMLKontakt
+    Private Function AddTellowsEntry(Eintrag As TellowsScoreListEntry, FBoxRufSperre As TR064.FritzBoxXMLTelefonbuch, MaxNrbyEntry As Integer) As TR064.FritzBoxXMLKontakt
         With FBoxRufSperre
 
             Dim DfltName As String = $"{Eintrag.CallerType} (tellows Score {Eintrag.Score})"
@@ -249,23 +249,23 @@ Friend Module FritzBoxRufsperre
                 Return Nothing
             Else
                 ' Finde einen passenden Sperreintrag, der A die richtige Bezeichnung hat und B noch Platz hat
-                Dim TellowsSperrEinträge As List(Of FritzBoxXMLKontakt) = .Kontakte.Where(Function(K) K.Person.RealName.AreEqual(DfltName) AndAlso
+                Dim TellowsSperrEinträge As List(Of TR064.FritzBoxXMLKontakt) = .Kontakte.Where(Function(K) K.Person.RealName.AreEqual(DfltName) AndAlso
                                                                                                       K.Telefonie.Nummern.Count.IsLess(MaxNrbyEntry)).ToList
 
                 If TellowsSperrEinträge IsNot Nothing AndAlso TellowsSperrEinträge.Any Then
                     NLogger.Debug($"Ein Eintrag für die Nummer {Eintrag.Number} (Score: {Eintrag.Score}) wurde gefunden")
                     ' Füge die Nummer dem ersten möglichen Eintrag hinzu
-                    TellowsSperrEinträge.First.Telefonie.Nummern.Add(New FritzBoxXMLNummer With {.Nummer = Eintrag.Number})
+                    TellowsSperrEinträge.First.Telefonie.Nummern.Add(New TR064.FritzBoxXMLNummer With {.Nummer = Eintrag.Number})
 
                     Return TellowsSperrEinträge.First
                 Else
 
                     NLogger.Debug($"Ein neuer Eintrag für die Nummer {Eintrag.Number} (Score: {Eintrag.Score}) wurde erstellt")
                     ' Lege einen neuen Sperrlisteintrag an
-                    Dim NeuerSperrEintrag As New FritzBoxXMLKontakt
+                    Dim NeuerSperrEintrag As New TR064.FritzBoxXMLKontakt
                     With NeuerSperrEintrag
                         .Person.RealName = DfltName
-                        .Telefonie.Nummern.Add(New FritzBoxXMLNummer With {.Nummer = Eintrag.Number})
+                        .Telefonie.Nummern.Add(New TR064.FritzBoxXMLNummer With {.Nummer = Eintrag.Number})
                     End With
 
                     ' Füge den neuen Eintrag dem Telefonbuch hinzu
@@ -287,13 +287,13 @@ Friend Module FritzBoxRufsperre
     ''' <param name="ct">Abbruchtoken</param>
     ''' <param name="progress">Prozessinformationen</param>
     ''' <returns>Anzahl neu angelegter Telefonnummern</returns>
-    Friend Async Function BlockTellowsNumbers(fboxTR064 As SOAP.FritzBoxTR64, MinScore As Integer, MaxNrbyEntry As Integer, Einträge As IEnumerable(Of TellowsScoreListEntry), ct As CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
+    Friend Async Function BlockTellowsNumbers(fboxTR064 As TR064.FritzBoxTR64, MinScore As Integer, MaxNrbyEntry As Integer, Einträge As IEnumerable(Of TellowsScoreListEntry), ct As CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
         Return Await Task.Run(Async Function()
                                   Using tellows As New Tellows ', fboxTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
                                       ' Lade die Rufsperre herunter
-                                      Dim RufsperreFritzBox As FritzBoxXMLTelefonbücher = Await Telefonbücher.LadeFritzBoxSperrliste(fboxTR064)
+                                      Dim RufsperreFritzBox As TR064.FritzBoxXMLTelefonbücher = Await Telefonbücher.LadeFritzBoxSperrliste(fboxTR064)
                                       ' hochzuladende Einträge
-                                      Dim NeueSperrEinträge As New List(Of FritzBoxXMLKontakt)
+                                      Dim NeueSperrEinträge As New List(Of TR064.FritzBoxXMLKontakt)
                                       ' Anzahl hinzugefügter Nummern
                                       Dim NeueNummern As Integer = 0
 
@@ -303,7 +303,7 @@ Friend Module FritzBoxRufsperre
                                       For Each Eintrag In Einträge.Where(Function(E) E.Score.IsLargerOrEqual(MinScore))
 
                                           ' Sucht einen passenden Eintrag in der Sperrliste und fügt die Nummer hinzu
-                                          Dim NeuerSperrEintrag As FritzBoxXMLKontakt = AddTellowsEntry(Eintrag, RufsperreFritzBox.Telefonbücher.First, MaxNrbyEntry)
+                                          Dim NeuerSperrEintrag As TR064.FritzBoxXMLKontakt = AddTellowsEntry(Eintrag, RufsperreFritzBox.Telefonbücher.First, MaxNrbyEntry)
 
                                           ' Falls Nothing, dann ist die Nummer bereits in der Liste
                                           If NeuerSperrEintrag IsNot Nothing Then

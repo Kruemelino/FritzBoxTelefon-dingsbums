@@ -1,30 +1,33 @@
 ﻿Imports System.Xml.Serialization
-<Serializable(), XmlType("telephony")> Public Class FritzBoxXMLTelefonie
-    Inherits NotifyBase
 
-    Private _Nummern As ObservableCollectionEx(Of FritzBoxXMLNummer)
-    Private _Emails As ObservableCollectionEx(Of FritzBoxXMLEmail)
+Namespace TR064
+    <Serializable(), XmlType("telephony")> Public Class FritzBoxXMLTelefonie
+        Inherits NotifyBase
 
-    Public Sub New()
-        Emails = New ObservableCollectionEx(Of FritzBoxXMLEmail)
-        Nummern = New ObservableCollectionEx(Of FritzBoxXMLNummer)
-    End Sub
+        Private _Nummern As ObservableCollectionEx(Of FritzBoxXMLNummer)
+        Private _Emails As ObservableCollectionEx(Of FritzBoxXMLEmail)
 
-    <XmlArray("services"), XmlArrayItem("email")> Public Property Emails As ObservableCollectionEx(Of FritzBoxXMLEmail)
-        Get
-            Return _Emails
-        End Get
-        Set
-            SetProperty(_Emails, Value)
-        End Set
-    End Property
+        Public Sub New()
+            Emails = New ObservableCollectionEx(Of FritzBoxXMLEmail)
+            Nummern = New ObservableCollectionEx(Of FritzBoxXMLNummer)
+        End Sub
 
-    <XmlElement("number")> Public Property Nummern As ObservableCollectionEx(Of FritzBoxXMLNummer)
-        Get
-            Return _Nummern
-        End Get
-        Set
-            SetProperty(_Nummern, Value)
-        End Set
-    End Property
-End Class
+        <XmlArray("services"), XmlArrayItem("email")> Public Property Emails As ObservableCollectionEx(Of FritzBoxXMLEmail)
+            Get
+                Return _Emails
+            End Get
+            Set
+                SetProperty(_Emails, Value)
+            End Set
+        End Property
+
+        <XmlElement("number")> Public Property Nummern As ObservableCollectionEx(Of FritzBoxXMLNummer)
+            Get
+                Return _Nummern
+            End Get
+            Set
+                SetProperty(_Nummern, Value)
+            End Set
+        End Property
+    End Class
+End Namespace
