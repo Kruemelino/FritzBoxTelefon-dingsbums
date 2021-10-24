@@ -8,8 +8,8 @@
     <XmlArray("X_AVM-DE_InComingNumbers"), XmlArrayItem("Item")> Property InComingNumbers As List(Of SIPTelNr)
     <XmlElement("X_AVM-DE_ExternalRegistration")> Public Property ExternalRegistration As Boolean
     <XmlElement("X_AVM-DE_InternalNumber")> Public Property InternalNumber As Integer
-    <XmlElement("X_AVM-DE_DelayedCallNotification")> Public Property DelayedCallNotification As String
+    <XmlElement("X_AVM-DE_DelayedCallNotification")> Public Property DelayedCallNotification As Boolean
     <XmlElement("X_AVM-DE_ClientRegistrar")> Public Property ClientRegistrar As String
-    <XmlElement("X_AVM-DE_ClientRegistrarPort")> Public Property ClientRegistrarPort As String
+    <XmlElement("X_AVM-DE_ClientRegistrarPort")> Public Property ClientRegistrarPort As Integer
 
 End Class

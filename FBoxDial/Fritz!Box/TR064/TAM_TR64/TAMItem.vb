@@ -58,7 +58,7 @@
     <XmlIgnore> Friend Property MessageList As FritzBoxXMLMessageList
 
     Friend Function GetTAMInformation(fboxTR064 As SOAP.FritzBoxTR64) As TAMInfo
-        With fboxTR064
+        With fboxTR064.X_tam
             ' Lade die erweiterten TAM Infosätze herunter
             If .GetTAMInfo(TAMInfo, Index) Then
                 ' Wenn der TAM aktiv und angezeigt wird, dann ermittle die URL zur MessageList
@@ -87,7 +87,7 @@
             With GetTAMInformation(fboxTR064) ' TAMInfo
                 Dim NewEnableState As Boolean = Not .Enable
 
-                If fboxTR064.SetEnable(Index, NewEnableState) Then Enable = NewEnableState
+                If fboxTR064.X_tam.SetEnable(Index, NewEnableState) Then Enable = NewEnableState
 
                 NLogger.Info($"Anrufbeantworter {Name} ({Index}) {If(NewEnableState, "aktiviert", "deaktiviert")}.")
             End With

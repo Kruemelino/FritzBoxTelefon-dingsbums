@@ -43,10 +43,10 @@ Imports FBoxDial.FritzBoxDefault
 
             With fbtr064
                 ' Ermittle die SessionID für Fritz!Box Query
-                If .GetSessionID(SessionID) Then
+                If .Deviceconfig.GetSessionID(SessionID) Then
 
                     ' Ermittle die Landeskennzahl (LKZ) und die Ortskennzahl (OKZ)
-                    If .GetVoIPCommonCountryCode(LKZ) And .GetVoIPCommonAreaCode(OKZ) Then
+                    If .X_voip.GetVoIPCommonCountryCode(LKZ) And .X_voip.GetVoIPCommonAreaCode(OKZ) Then
 
                         If LKZ.IsStringNothingOrEmpty Then
                             LKZ = If(XMLData.PTelefonie.LKZ.IsStringNothingOrEmpty, "49", XMLData.PTelefonie.LKZ)
@@ -60,11 +60,11 @@ Imports FBoxDial.FritzBoxDefault
                         ' Lade Telefonnummern via TR-064 
                         Dim NummernListe As SIPTelNrList = Nothing
                         ' Füge die Nummer zu den eigenen Nummern hinzu
-                        If .GetNumbers(NummernListe) Then NummernListe.TelNrList.ForEach(Sub(S) AddEigeneTelNr(S.Number, S.Index))
+                        If .X_voip.GetNumbers(NummernListe) Then NummernListe.TelNrList.ForEach(Sub(S) AddEigeneTelNr(S.Number, S.Index))
 
                         ' Lade SIP Clients via TR-064 
                         Dim SIPList As SIPClientList = Nothing
-                        If .GetSIPClients(SIPList) Then
+                        If .X_voip.GetSIPClients(SIPList) Then
 
                             ' Werte alle SIP Clients aus
                             For Each SIPClient In SIPList.SIPClients
@@ -97,7 +97,7 @@ Imports FBoxDial.FritzBoxDefault
 
                         ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
                         Dim ABListe As TAMList = Nothing
-                        If .GetTAMList(ABListe) Then
+                        If .X_tam.GetTAMList(ABListe) Then
                             ' Werte alle TAMs aus.
                             For Each AB In ABListe.TAMListe
 
@@ -110,7 +110,7 @@ Imports FBoxDial.FritzBoxDefault
 
                                 ' Ermittle die Nummer, auf den der AB reagiert.
                                 Dim TAMInfo As New TAMInfo
-                                If .GetTAMInfo(TAMInfo, AB.Index) Then
+                                If .X_tam.GetTAMInfo(TAMInfo, AB.Index) Then
                                     If TAMInfo.PhoneNumbers.Length.AreEqual(1) AndAlso TAMInfo.PhoneNumbers.First.IsStringNothingOrEmpty Then
                                         ' Empty string represents all numbers.
                                         Telefonnummern.ForEach(Sub(TelNr) Telefon.StrEinTelNr.Add(TelNr.Einwahl))
@@ -173,7 +173,7 @@ Imports FBoxDial.FritzBoxDefault
                             ' Schleife durch alle wählbaren Telefone
                             For i = 1 To WählhilfeTelefone.Count
                                 Dim Phoneport As String = DfltStringEmpty
-                                If .GetPhonePort(Phoneport, i) Then
+                                If .X_voip.GetPhonePort(Phoneport, i) Then
                                     ' Erfolgreich ermittelt
                                     Dim Telefon As Telefoniegerät = WählhilfeTelefone.Find(Function(Tel) Phoneport.EndsWith(Tel.Name))
                                     If Telefon IsNot Nothing Then

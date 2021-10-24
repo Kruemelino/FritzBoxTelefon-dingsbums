@@ -370,17 +370,24 @@
     <Compile Include="Formulare\Optionen\Views\OptTestView.xaml.vb">
       <DependentUpon>OptTestView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fritz!Box\TR064\Deflection-TR64\DeflectionInfo.vb" />
-    <Compile Include="Fritz!Box\TR064\Deflection-TR64\DeflectionList.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessage.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM-TR64\FritzBoxXMLMessageList.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMInfo.vb" />
+    <Compile Include="Fritz!Box\TR064\Deflection_TR64\DeflectionInfo.vb" />
+    <Compile Include="Fritz!Box\TR064\Deflection_TR64\DeflectionList.vb" />
+    <Compile Include="Fritz!Box\TR064\Services\DeviceconfigSCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\Services\DeviceinfoSCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\Services\IService.vb" />
+    <Compile Include="Fritz!Box\TR064\Services\LANConfigSecuritySCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\Services\X_tamSCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\Services\X_voipSCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\Services\X_contactSCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM_TR64\FritzBoxXMLMessage.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM_TR64\FritzBoxXMLMessageList.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM_TR64\TAMInfo.vb" />
     <Compile Include="KeyboardHooking.vb" />
     <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
-    <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUser.vb" />
-    <Compile Include="Fritz!Box\TR064\User-TR64\FritzBoxXMLUserList.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\AllowedValueRange.vb" />
+    <Compile Include="Fritz!Box\TR064\User_TR64\FritzBoxXMLUser.vb" />
+    <Compile Include="Fritz!Box\TR064\User_TR64\FritzBoxXMLUserList.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\AllowedValueRange.vb" />
     <Compile Include="Localize\Länder.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -460,25 +467,25 @@
       <DependentUpon>DirectDialView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\FritzBoxJSONStruct.vb" />
-    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNrList.vb" />
-    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPClientList.vb" />
-    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPClient.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMList.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMItem.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\Action.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\Argument.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\Device.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\Icon.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\SCPD.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\Service.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\SpecVersion.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\StateVariable.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\SystemVersion.vb" />
-    <Compile Include="Fritz!Box\TR064\XMLTR64\TR64Desc.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP_TR64\SIPTelNrList.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP_TR64\SIPClientList.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP_TR64\SIPClient.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM_TR64\TAMList.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM_TR64\TAMItem.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\Action.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\Argument.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\Device.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\Icon.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\SCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\Service.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\SpecVersion.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\StateVariable.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\SystemVersion.vb" />
+    <Compile Include="Fritz!Box\TR064\XML_TR64\TR64Desc.vb" />
     <Compile Include="Kontakte\KontaktInspector.vb" />
     <Compile Include="Fritz!Box\FritzBoxAnrufliste.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCall.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCallList.vb" />
+    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLCall.vb" />
+    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLCallList.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Formulare\Common\Services\NotifyEventArgs.vb" />
@@ -520,13 +527,13 @@
     <Compile Include="Fritz!Box\TR064\FritzBoxTR64.vb" />
     <Compile Include="Fritz!Box\TR064\FritzBoxInformations.vb" />
     <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLEmail.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLKontakt.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLNummer.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLPerson.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbuch.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbücher.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonie.vb" />
+    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLEmail.vb" />
+    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLKontakt.vb" />
+    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLNummer.vb" />
+    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLPerson.vb" />
+    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLTelefonbuch.vb" />
+    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLTelefonbücher.vb" />
+    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLTelefonie.vb" />
     <Compile Include="Fritz!Box\FritzBoxTelefonbuch.vb" />
     <Compile Include="Journal\Journal.vb" />
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
@@ -546,7 +553,7 @@
     <Compile Include="SoftPhone\Phoner.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
-    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNr.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP_TR64\SIPTelNr.vb" />
     <Compile Include="Formulare\Common\Services\Converters.vb" />
     <Compile Include="Formulare\Common\Services\IDialogService.vb" />
     <Compile Include="Formulare\Common\Services\DialogService.vb" />

@@ -24,16 +24,16 @@ Public Class FritzBoxWählClient
         Using TR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
             With Telefon
-                If Not TR064.DialGetConfig(PhoneName) Then
+                If Not TR064.X_voip.DialGetConfig(PhoneName) Then
                     ' Es kann sein, dass die Fritz!Box Wählhilfe aktiviert ist, aber kein Telefon ausgewählt ist.
                     ' In diesem Fall: Versuche das gewünschte Telefon zu setzen
-                    If TR064.DialSetConfig(.TR064Dialport) Then
+                    If TR064.X_voip.DialSetConfig(.TR064Dialport) Then
                         ' Das einstellen hat geklappt. Fahre normal Fort
                     End If
                 End If
 
                 ' Ermittle das aktuell eingestellte Telefon.
-                If TR064.DialGetConfig(PhoneName) Then
+                If TR064.X_voip.DialGetConfig(PhoneName) Then
 
                     ' Vorprüfung, ist der hinterlegte Dialport korrekt
                     ' Es kann vorkommen, dass der Dialport leer ist. Das bedeutet, dass er nicht korrekt eingelesen wurde. 
@@ -52,10 +52,10 @@ Public Class FritzBoxWählClient
                         NLogger.Debug($"Der Phoneport wird von '{PhoneName}' auf '{ .TR064Dialport}' geändert.")
 
                         ' Stelle das Telefon um.
-                        If TR064.DialSetConfig(.TR064Dialport) Then
+                        If TR064.X_voip.DialSetConfig(.TR064Dialport) Then
 
                             ' Prüfe, ob das Telefon tatsächlich umgestellt wurde
-                            If TR064.DialGetConfig(PhoneName) Then
+                            If TR064.X_voip.DialGetConfig(PhoneName) Then
                                 If PhoneName.AreEqual(.TR064Dialport) Then
                                     ' Der Phoneport wurde erfolgreich umgestellt
                                     NLogger.Debug($"Der Phoneport wurde erfolgreich auf '{PhoneName}' geändert.")
@@ -80,7 +80,7 @@ Public Class FritzBoxWählClient
                     NLogger.Debug($"Übermittle das Wählkomando an die Fritz!box: Auflegen: '{Auflegen}', '{DialCode}', '{PhoneName}'")
                     ' Das Telefon der Fritz!Box Wählhilfe muss nicht geändert werden
                     ' Senden des Wählkomandos und Rückmeldung, ob das Wählen erfolgreich war
-                    Return If(Auflegen, TR064.DialHangup, TR064.DialNumber(DialCode))
+                    Return If(Auflegen, TR064.X_voip.DialHangup, TR064.X_voip.DialNumber(DialCode))
                 Else
                     ' Genereller Fehler
                     NLogger.Error($"Der aktuelle Phoneport konnte nicht ausgelesen werden.")

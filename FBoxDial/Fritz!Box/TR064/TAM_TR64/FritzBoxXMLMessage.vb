@@ -142,7 +142,7 @@
                 ' Wird bei Anzeige im Anrufmonitor benötigt.
                 If Ping(XMLData.POptionen.ValidFBAdr) Then
                     Using fbtr064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
-                        fbtr064.GetSessionID(SessionID)
+                        fbtr064.Deviceconfig.GetSessionID(SessionID)
                         ' Session ID erhalten, ansonsten DfltFritzBoxSessionID
                     End Using
                 End If

@@ -10,7 +10,7 @@ Friend Module FritzBoxAnrufliste
             Dim Pfad As String = DfltStringEmpty
 
             ' Ermittle Pfad zur Anrufliste
-            If FBoxTR064.GetCallList(Pfad) Then
+            If FBoxTR064.X_contact.GetCallList(Pfad) Then
                 Return Await DeserializeAsyncXML(Of FritzBoxXMLCallList)(Pfad, True)
             Else
                 NLogger.Warn("Pfad zur XML-Anrufliste konnte nicht ermittelt werden.")
