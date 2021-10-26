@@ -256,16 +256,16 @@ Friend Class OptionenService
 
 #Region "Test Anrufmonitor"
     Public Sub StartAnrMonTest() Implements IOptionenService.StartAnrMonTest
-        'Dim rnd As New Random()
+        Dim rnd As New Random()
 
-        'Dim D As Landeskennzahl = ThisAddIn.PVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(LKZ) LKZ.Landeskennzahl = "49")
-        'Dim i As Integer = rnd.Next(0, D.Ortsnetzkennzahlen.Count)
-        'Dim N As Integer = rnd.Next(9999, 9999999)
+        Dim D As Landeskennzahl = ThisAddIn.PVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(LKZ) LKZ.Landeskennzahl = "49")
+        Dim i As Integer = rnd.Next(0, D.Ortsnetzkennzahlen.Count)
+        Dim N As Integer = rnd.Next(9999, 9999999)
 
-        'Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {"23.06.18 13:20:24", "RING", "1", $"0{D.Ortsnetzkennzahlen.Item(i).Ortsnetzkennzahl}{N}", XMLData.PTelefonie.Telefonnummern(rnd.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl, "SIP4"}}
+        Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {"23.06.18 13:20:24", "RING", "1", $"0{D.Ortsnetzkennzahlen.Item(i).Ortsnetzkennzahl}{N}", XMLData.PTelefonie.Telefonnummern(rnd.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl, "SIP4"}}
 
-        '' 23.06.18 13:20:52;DISCONNECT;1;9;
-        'AktivesTelefonat.SetAnrMonDISCONNECT = {"23.06.18 13:20:52", "DISCONNECT", "1", "9"}
+        ' 23.06.18 13:20:52;DISCONNECT;1;9;
+        AktivesTelefonat.SetAnrMonDISCONNECT = {"23.06.18 13:20:52", "DISCONNECT", "1", "9"}
 
         'Using fbtr064 As New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
         '    With fbtr064.X_voip

@@ -170,9 +170,9 @@ Friend Module WebFunctions
     ''' <param name="UniformResourceIdentifier">Ein <see cref="Uri"/>-Objekt, das den herunterzuladenden URI enthält.</param>
     ''' <param name="ZeichenCodierung">(Optional) Legt die <see cref="Encoding"/> für den Download von Zeichenfolgen fest.</param>
     ''' <param name="Headers">(Optional) Zusätzliche Header für den Download von Zeichenfolgen</param>
-    ''' <param name="IgnoreStatusCode">(Optional) Angabe eines <see cref="HttpStatusCode"/> welcher bei der Auswertung der <see cref="WebException"/> ignoriert werden soll.</param>
+    ''' <param name="IgnoreWebExcepton">Angabe, ob eine <see cref="WebException"/> ignoriert werden soll.</param>
     ''' <returns>Das <see cref="Task"/>-Objekt, das den asynchronen Vorgang darstellt.</returns>
-    Friend Async Function DownloadStringTaskAsync(UniformResourceIdentifier As Uri, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing, Optional IgnoreStatusCode As HttpStatusCode = Nothing) As Task(Of String)
+    Friend Async Function DownloadStringTaskAsync(UniformResourceIdentifier As Uri, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing, Optional IgnoreWebExcepton As Boolean = False) As Task(Of String)
 
         Dim retVal As String = DfltStringEmpty
 
@@ -206,9 +206,9 @@ Friend Module WebFunctions
                                 ' - oder -
                                 ' Fehler beim Herunterladen der Ressource.
 
-                                If IgnoreStatusCode.Equals(CType(ex.Response, HttpWebResponse).StatusCode) Then
+                                If IgnoreWebExcepton Then
                                     ' Nix tun
-                                    NLogger.Debug($"RWS mit {UniformResourceIdentifier.AbsoluteUri} liefert kein Ergebnis (Status {HttpStatusCode.Gone}).")
+                                    NLogger.Debug($"Aufruf von {UniformResourceIdentifier.AbsoluteUri} liefert einen Fehler.")
                                 Else
                                     ' Fehlermeldung ins Log schreiben
                                     NLogger.Error(ex, $"Link: {UniformResourceIdentifier.AbsoluteUri}")

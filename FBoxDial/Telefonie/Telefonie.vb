@@ -512,7 +512,7 @@ Imports FBoxDial.FritzBoxDefault
     ''' <param name="Abfrage">Die auszuführende Abfrage.</param>
     ''' <returns></returns>
     Private Async Function FritzBoxAsyncQuery(SessionID As String, Abfrage As List(Of String)) As Task(Of String)
-        Return Await DownloadStringTaskAsync(New Uri($"https://{XMLData.POptionen.ValidFBAdr}/query.lua?{SessionID}&{String.Join("&", Abfrage.ToArray)}"), Encoding.GetEncoding(DfltCodePageFritzBox))
+        Return Await DownloadStringTaskAsync(New Uri($"https://{XMLData.POptionen.ValidFBAdr}/query.lua?{SessionID}&{String.Join("&", Abfrage.ToArray)}"))
     End Function
 
     ''' <summary>

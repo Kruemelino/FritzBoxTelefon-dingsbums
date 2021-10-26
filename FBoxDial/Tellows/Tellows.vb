@@ -40,7 +40,7 @@ Friend Class Tellows
     Private Async Function GetTellowsResponseXML(UniformResourceIdentifier As Uri, Headers As WebHeaderCollection) As Task(Of TellowsResponse)
         Dim Response As New TellowsResponse
         ' Deserialisieren
-        If Not DeserializeXML(Await DownloadStringTaskAsync(UniformResourceIdentifier, Encoding.UTF8, Headers), False, Response) Then
+        If Not DeserializeXML(Await DownloadStringTaskAsync(UniformResourceIdentifier, ZeichenCodierung:=Encoding.UTF8, Headers:=Headers), False, Response) Then
             NLogger.Error($"Die Tellows Abfrage zu '{UniformResourceIdentifier}' war nicht erfolgreich.")
         End If
 
@@ -49,7 +49,7 @@ Friend Class Tellows
 
     Private Async Function GetTellowsResponseJSON(Pfad As Uri, Optional Headers As WebHeaderCollection = Nothing) As Task(Of List(Of TellowsScoreListEntry))
 
-        Dim TellowsResponse As String = Await DownloadStringTaskAsync(Pfad, Encoding.UTF8, Headers)
+        Dim TellowsResponse As String = Await DownloadStringTaskAsync(Pfad, ZeichenCodierung:=Encoding.UTF8, Headers:=Headers)
 
         If TellowsResponse.Contains(NotAuthorized) Then
             NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich, da kein gültiger API-Key eingegeben wurde.")
