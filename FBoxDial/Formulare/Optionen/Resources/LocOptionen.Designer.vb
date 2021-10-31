@@ -752,6 +752,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Erfasse auch blockierte Telefonnummern ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalCBJournalBlockNr() As String
+            Get
+                Return ResourceManager.GetString("strJournalCBJournalBlockNr", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Einstellungen für die Journalerstellung ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strJournalHead() As String

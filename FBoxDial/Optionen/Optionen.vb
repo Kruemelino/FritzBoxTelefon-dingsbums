@@ -150,7 +150,7 @@
 #Region "Auswertung der Fritz!box Anrufliste"
 #Region "Auswertung der Fritz!box Anrufliste - Outlook Journal"
     <XmlElement("CBJournal")> Public Property CBJournal As Boolean = True
-
+    <XmlElement("CBJournalBlockNr")> Public Property CBJournalBlockNr As Boolean = False
 #End Region
 
 #Region "Auswertung der Fritz!box Anrufliste - Auswertung der Anrufliste"

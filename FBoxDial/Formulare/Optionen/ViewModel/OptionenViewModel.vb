@@ -616,6 +616,15 @@ Public Class OptionenViewModel
             SetProperty(_CBJournal, Value)
         End Set
     End Property
+    Private _CBJournalBlockNr As Boolean
+    Public Property CBJournalBlockNr As Boolean
+        Get
+            Return _CBJournalBlockNr
+        End Get
+        Set
+            SetProperty(_CBJournalBlockNr, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Auswertung der Fritz!box Anrufliste - Auswertung der Anrufliste"

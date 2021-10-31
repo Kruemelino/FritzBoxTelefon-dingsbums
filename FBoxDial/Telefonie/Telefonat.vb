@@ -693,76 +693,81 @@ Imports Microsoft.Office.Interop
         If OutlookApp IsNot Nothing Then
             ' Journalimport nur dann, wenn Nummer überwacht wird
             If XMLData.POptionen.CBJournal And EigeneTelNr.Überwacht Then
-                Try
-                    ' Erstelle ein Journaleintrag im STandard-Ordner.
-                    olJournal = CType(OutlookApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
-                Catch ex As Exception
-                    NLogger.Error(ex)
-                End Try
 
-                If olJournal IsNot Nothing Then
-                    Dim tmpSubject As String
+                ' Erzeuge Journaleinträge für blockierte Anrufe nur, wenn es der Nutzer will
+                If Not Blockiert OrElse XMLData.POptionen.CBJournalBlockNr Then
+                    Try
+                        ' Erstelle ein Journaleintrag im STandard-Ordner.
+                        olJournal = CType(OutlookApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
+                    Catch ex As Exception
+                        NLogger.Error(ex)
+                    End Try
 
-                    If Not Blockiert Then
-                        If Angenommen Then
-                            tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalAusgehend, Localize.LocAnrMon.strJournalEingehend)
-                        Else 'Verpasst
-                            tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalNichterfolgreich, Localize.LocAnrMon.strJournalVerpasst)
-                        End If
-                    Else
-                        tmpSubject = Localize.LocAnrMon.strJournalBlockiert
-                    End If
+                    If olJournal IsNot Nothing Then
+                        Dim tmpSubject As String
 
-                    With olJournal
-
-                        .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
-                        .Duration = Dauer.GetLarger(31) \ 60
-                        .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{VCard}"
-                        .Start = ZeitBeginn
-                        .Companies = Firma
-
-                        ' Bei verpassten Anrufen ist TelGerät ggf. leer
-                        .Categories = $"{If(TelGerät Is Nothing, Localize.LocAnrMon.strJournalCatVerpasst, TelGerät.Name)};{String.Join("; ", DfltJournalDefCategories.ToArray)}"
-
-                        ' Speichern der EntryID und StoreID in Benutzerdefinierten Feldern
-                        If OlKontakt IsNot Nothing Then
-
-                            Dim colArgs(1) As Object
-                            colArgs(0) = OlKontakt.EntryID
-                            colArgs(1) = OlKontakt.StoreID
-
-                            For i As Integer = 0 To 1
-                                .PropertyAccessor.SetProperty(DASLTagJournal(i).ToString, colArgs(i))
-                            Next
-
-                            ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
-                            '.PropertyAccessor.SetProperties(DASLTagJournal, colArgs)
-                        End If
-
-                        ' Speicherort wählen
-                        olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
-
-                        If (olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing) AndAlso
-                            Not olJournalFolder.Equals(OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
-                            ' Verschiebe den Journaleintrag in den ausgewählten Ordner
-                            ' Damit wird der Kontakt gleichzeitig im Zielordner gespeichert.
-                            .Move(olJournalFolder.MAPIFolder)
-                            ' Verwerfe diesen Journaleintrag
-                            .Close(Outlook.OlInspectorClose.olDiscard)
-
-                            NLogger.Info($"Journaleintrag im Ornder {olJournalFolder.Name} (Store: {olJournalFolder.MAPIFolder.Store.DisplayName}) erstellt: { .Start}, { .Subject}, { .Duration}")
+                        If Not Blockiert Then
+                            If Angenommen Then
+                                tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalAusgehend, Localize.LocAnrMon.strJournalEingehend)
+                            Else 'Verpasst
+                                tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalNichterfolgreich, Localize.LocAnrMon.strJournalVerpasst)
+                            End If
                         Else
-                            ' Speicher den Journaleintrag im Standard-Ordner
-                            .Close(Outlook.OlInspectorClose.olSave)
-                            With OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)
-                                NLogger.Info($"Journaleintrag im Standardornder { .Name} (Store: { .Store.DisplayName}) erstellt: { olJournal.Start}, { olJournal.Subject}, { olJournal.Duration}")
-                            End With
+                            tmpSubject = Localize.LocAnrMon.strJournalBlockiert
                         End If
 
-                    End With
+                        With olJournal
 
-                    ReleaseComObject(olJournal)
+                            .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
+                            .Duration = Dauer.GetLarger(31) \ 60
+                            .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{VCard}"
+                            .Start = ZeitBeginn
+                            .Companies = Firma
 
+                            ' Bei verpassten Anrufen ist TelGerät ggf. leer
+                            .Categories = $"{If(TelGerät Is Nothing, Localize.LocAnrMon.strJournalCatVerpasst, TelGerät.Name)};{String.Join("; ", DfltJournalDefCategories.ToArray)}"
+
+                            ' Speichern der EntryID und StoreID in Benutzerdefinierten Feldern
+                            If OlKontakt IsNot Nothing Then
+
+                                Dim colArgs(1) As Object
+                                colArgs(0) = OlKontakt.EntryID
+                                colArgs(1) = OlKontakt.StoreID
+
+                                For i As Integer = 0 To 1
+                                    .PropertyAccessor.SetProperty(DASLTagJournal(i).ToString, colArgs(i))
+                                Next
+
+                                ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
+                                '.PropertyAccessor.SetProperties(DASLTagJournal, colArgs)
+                            End If
+
+                            ' Speicherort wählen
+                            olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
+
+                            If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing AndAlso
+                            Not olJournalFolder.Equals(OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
+                                ' Verschiebe den Journaleintrag in den ausgewählten Ordner
+                                ' Damit wird der Kontakt gleichzeitig im Zielordner gespeichert.
+                                .Move(olJournalFolder.MAPIFolder)
+                                ' Verwerfe diesen Journaleintrag
+                                .Close(Outlook.OlInspectorClose.olDiscard)
+
+                                NLogger.Info($"Journaleintrag im Ordner {olJournalFolder.Name} (Store: {olJournalFolder.MAPIFolder.Store.DisplayName}) erstellt: { .Start}, { .Subject}, { .Duration}")
+                            Else
+                                ' Speicher den Journaleintrag im Standard-Ordner
+                                .Close(Outlook.OlInspectorClose.olSave)
+                                With OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)
+                                    NLogger.Info($"Journaleintrag im Standardordner { .Name} (Store: { .Store.DisplayName}) erstellt: { olJournal.Start}, { olJournal.Subject}, { olJournal.Duration}")
+                                End With
+                            End If
+
+                        End With
+
+                        ReleaseComObject(olJournal)
+                    End If
+                Else
+                    NLogger.Info($"Journaleintrag für blockierte Nummer '{NameGegenstelle}' nicht erzeugt.")
                 End If
             End If
         Else
@@ -773,16 +778,18 @@ Imports Microsoft.Office.Interop
     Friend Sub UpdateRingCallList()
 
         If XMLData.POptionen.CBAnrListeUpdateCallLists Then
-            If AnrufRichtung = AnrufRichtungen.Eingehend Then
-                ' RING-Liste initialisieren, falls erforderlich
-                If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
-                ' Eintrag anfügen
-                XMLData.PTelListen.RINGListe.Insert(Me)
-            Else
-                ' CALL-Liste initialisieren, falls erforderlich
-                If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
-                ' Eintrag anfügen
-                XMLData.PTelListen.CALLListe.Insert(Me)
+            If Not Blockiert OrElse XMLData.POptionen.CBJournalBlockNr Then
+                If AnrufRichtung = AnrufRichtungen.Eingehend Then
+                    ' RING-Liste initialisieren, falls erforderlich
+                    If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
+                    ' Eintrag anfügen
+                    XMLData.PTelListen.RINGListe.Insert(Me)
+                Else
+                    ' CALL-Liste initialisieren, falls erforderlich
+                    If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
+                    ' Eintrag anfügen
+                    XMLData.PTelListen.CALLListe.Insert(Me)
+                End If
             End If
         End If
     End Sub

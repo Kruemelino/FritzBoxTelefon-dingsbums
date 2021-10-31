@@ -55,6 +55,9 @@ Friend Module FritzBoxAnrufliste
                                       If ct.IsCancellationRequested Then Exit For
                                   Next
 
+                                  ' TODO: Merke die Zeit
+                                  'If XMLData.POptionen.LetzteAuswertungAnrList < Now Then XMLData.POptionen.LetzteAuswertungAnrList = Now
+
                                   Return Einträge
                               End Function, ct)
 

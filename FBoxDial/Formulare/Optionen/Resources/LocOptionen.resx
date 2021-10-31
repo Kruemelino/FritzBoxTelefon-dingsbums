@@ -430,6 +430,10 @@ Wer spenden will, der spendet und wer nicht will, der macht es halt nicht.</valu
     <value>Journaleinträge erstellen</value>
     <comment>OptJournalView</comment>
   </data>
+  <data name="strJournalCBJournalBlockNr" xml:space="preserve">
+    <value>Erfasse auch blockierte Telefonnummern</value>
+    <comment>OptJournalView</comment>
+  </data>
   <data name="strJournalHead" xml:space="preserve">
     <value>Einstellungen für die Journalerstellung</value>
     <comment>OptJournalView</comment>
