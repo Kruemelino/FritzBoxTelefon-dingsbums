@@ -164,6 +164,9 @@
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=Type}" Value="3">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CallMade}" />
+                                </DataTrigger>  
+                                <DataTrigger Binding="{Binding Path=Type}" Value="10">
+                                    <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CancelRed}" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>

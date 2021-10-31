@@ -176,6 +176,15 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
+    Private _Abgelehnt As Boolean
+    <XmlAttribute> Public Property Blockiert As Boolean
+        Get
+            Return _Abgelehnt
+        End Get
+        Set
+            SetProperty(_Abgelehnt, Value)
+        End Set
+    End Property
     <XmlIgnore> Friend ReadOnly Property AnruferUnbekannt As Boolean
         Get
             Return OlKontakt Is Nothing And FBTelBookKontakt Is Nothing
@@ -694,10 +703,14 @@ Imports Microsoft.Office.Interop
                 If olJournal IsNot Nothing Then
                     Dim tmpSubject As String
 
-                    If Angenommen Then
-                        tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalAusgehend, Localize.LocAnrMon.strJournalEingehend)
-                    Else 'Verpasst
-                        tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalNichterfolgreich, Localize.LocAnrMon.strJournalVerpasst)
+                    If Not Blockiert Then
+                        If Angenommen Then
+                            tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalAusgehend, Localize.LocAnrMon.strJournalEingehend)
+                        Else 'Verpasst
+                            tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalNichterfolgreich, Localize.LocAnrMon.strJournalVerpasst)
+                        End If
+                    Else
+                        tmpSubject = Localize.LocAnrMon.strJournalBlockiert
                     End If
 
                     With olJournal
@@ -781,7 +794,7 @@ Imports Microsoft.Office.Interop
 
         ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
         ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        Kontaktsuche()
+        KontaktSuche()
 
         ' Anrufmonitor einblenden, wenn Bedingungen erfüllt 
         If EigeneTelNr.Überwacht Then ShowAnrMon()

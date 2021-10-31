@@ -74,6 +74,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Blockierter Anruf von ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalBlockiert() As String
+            Get
+                Return ResourceManager.GetString("strJournalBlockiert", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Tel.-Nr.: ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strJournalBodyStart() As String

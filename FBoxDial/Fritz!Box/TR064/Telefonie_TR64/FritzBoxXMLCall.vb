@@ -256,11 +256,9 @@ Namespace TR064
 
         Friend Async Function ErstelleTelefonat() As Task(Of Telefonat)
 
-            If Type.IsLessOrEqual(3) Then
+            If Type.IsLessOrEqual(3) Or Type.AreEqual(10) Then
 
-                Dim tmpTelefonat As New Telefonat With {.Import = True,
-                                                    .ID = ID,
-                                                    .ZeitBeginn = Datum}
+                Dim tmpTelefonat As New Telefonat With {.Import = True, .ID = ID, .ZeitBeginn = Datum}
                 Dim tmpTelNr As Telefonnummer
 
                 With tmpTelefonat
@@ -274,7 +272,7 @@ Namespace TR064
                         .Angenommen = .Dauer.IsNotZero
                     End If
 
-                    If Type.AreEqual(1) Or Type.AreEqual(2) Then ' incoming, missed
+                    If Type.AreEqual(1) Or Type.AreEqual(2) Or Type.AreEqual(10) Then ' incoming, missed, rejected
                         .AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
                         ' Own Number of called party (incoming call)
                         tmpTelNr = New Telefonnummer With {.SetNummer = CalledNumber}
@@ -304,21 +302,19 @@ Namespace TR064
 
                     End If
 
-                    If Type.AreEqual(1) Or Type.AreEqual(2) Or Type.AreEqual(3) Then
-                        '.Aktiv = False
-                        ' Anrufer ermitteln
-                        If Name.IsNotStringNothingOrEmpty Then .AnruferName = Name
+                    ' Anrufer ermitteln
+                    If Name.IsNotStringNothingOrEmpty Then .AnruferName = Name
 
-                        If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unterdrückt Then
-                            Await .KontaktSucheTask()
-                        End If
+                    If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unterdrückt Then
+                        Await .KontaktSucheTask()
                     End If
 
-                    If Type.AreEqual(2) Then .Angenommen = False ' missed
+                    If Type.AreEqual(2) Or Type.AreEqual(10) Then .Angenommen = False ' missed, rejected
+
+                    If Type.AreEqual(10) Then .Blockiert = True ' rejected
 
                     If Type.AreEqual(9) Or Type.AreEqual(10) Or Type.AreEqual(11) Then
                         ' 9 active incoming,
-                        ' 10 rejected incoming,
                         ' 11 active outgoing 
 
                         ' Hier könnte mal erfasst werden, was mit aktiven Gesprächen geschehen soll. 

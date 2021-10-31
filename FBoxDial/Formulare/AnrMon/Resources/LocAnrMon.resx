@@ -120,6 +120,9 @@
   <data name="strJournalAusgehend" xml:space="preserve">
     <value>Ausgehender Anruf zu</value>
   </data>
+  <data name="strJournalBlockiert" xml:space="preserve">
+    <value>Blockierter Anruf von</value>
+  </data>
   <data name="strJournalBodyStart" xml:space="preserve">
     <value>Tel.-Nr.:</value>
   </data>
