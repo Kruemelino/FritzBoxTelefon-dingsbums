@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Drawing
 Imports System.Globalization
 Imports System.Reflection
 Imports System.Windows
@@ -88,6 +89,22 @@ Public Class DateToVisibilityConverter
     End Function
 
     Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
+        Throw New NotImplementedException()
+    End Function
+End Class
+
+Public Class TelNrToFontWeightConverter
+    Implements IMultiValueConverter
+
+    Public Function Convert(values() As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IMultiValueConverter.Convert
+
+        With values.Cast(Of Telefonnummer)
+            Return If(.First.Equals(.Last), (New FontWeightConverter).ConvertFrom(parameter), FontWeights.Normal)
+        End With
+
+    End Function
+
+    Public Function ConvertBack(value As Object, targetTypes() As Type, parameter As Object, culture As CultureInfo) As Object() Implements IMultiValueConverter.ConvertBack
         Throw New NotImplementedException()
     End Function
 End Class

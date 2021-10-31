@@ -51,6 +51,21 @@
                   ItemsSource="{Binding Path=DialNumberList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                   SelectedItem="{Binding Path=DialVM.TelNr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                   IsEnabled="{Binding Path=DialVM.IsNotDialing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
+            
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="FontWeight">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource TelNrToFontWeightConverter}" ConverterParameter="SemiBold">
+                                <!--Die Telefonnummer der DataGrid Zeile-->
+                                <Binding Path="."/>
+                                <!--Die zuletzt angerufene Telefonnummer -->
+                                <Binding Path="DataContext.DialVM.ZuletztGewählteTelNr" RelativeSource="{RelativeSource FindAncestor, AncestorType=UserControl}"/>
+                            </MultiBinding>                                
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
 
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Typ" Width="100" Binding="{Binding Path=Typ.TelNrType, Converter={StaticResource EnumDescriptionConverter}}" />

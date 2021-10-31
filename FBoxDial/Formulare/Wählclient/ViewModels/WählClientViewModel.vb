@@ -89,6 +89,7 @@ Public Class WählClientViewModel
     End Property
 
     Private _TelNr As Telefonnummer
+
     ''' <summary>
     ''' Telefonnummer, die gewählt werden soll.
     ''' </summary>
@@ -100,6 +101,19 @@ Public Class WählClientViewModel
             SetProperty(_TelNr, Value)
 
             Dial(_TelNr)
+        End Set
+    End Property
+
+    Private _ZuletztGewählteTelNr As Telefonnummer
+    ''' <summary>
+    ''' Telefonnummer, die gewählt werden soll.
+    ''' </summary>
+    Public Property ZuletztGewählteTelNr As Telefonnummer
+        Get
+            Return _ZuletztGewählteTelNr
+        End Get
+        Set
+            SetProperty(_ZuletztGewählteTelNr, Value)
         End Set
     End Property
 

@@ -9,6 +9,7 @@
     <fbd:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <fbd:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     <fbd:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+    <fbd:TelNrToFontWeightConverter x:Key="TelNrToFontWeightConverter"/>
     
     <DataTemplate DataType="{x:Type fbd:DirectDialViewModel}" x:Key="DirectDialTemplate">
         <fbd:DirectDialView/>
@@ -36,7 +37,7 @@
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="SelectionMode" Value="Single" />
         <Setter Property="SelectionUnit" Value="FullRow" />
-        <Setter Property="Margin" Value="4,4,4,0"/>
+        <Setter Property="Margin" Value="4,4,4,0" />
     </Style>
 
     <Style x:Key="MiniIconButton" TargetType="{x:Type Button}" >

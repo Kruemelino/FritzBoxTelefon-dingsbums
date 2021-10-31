@@ -46,11 +46,17 @@ Friend Module Journal
                             Abfrage.ForAll(Async Sub(r)
                                                ' in ErstelleTelefonat wird auch die Wahlwiederholungs- und Rückrufliste ausgewertet.
                                                Using t As Telefonat = Await r.ErstelleTelefonat
-                                                   ' Erstelle einen Journaleintrag
-                                                   t.ErstelleJournalEintrag()
 
-                                                   ' Anruflisten aktualisieren
-                                                   t.UpdateRingCallList()
+                                                   If t IsNot Nothing Then
+                                                       ' Erstelle einen Journaleintrag
+                                                       t.ErstelleJournalEintrag()
+
+                                                       ' Anruflisten aktualisieren
+                                                       t.UpdateRingCallList()
+                                                   Else
+                                                       NLogger.Debug($"Anruf {r.ID} konnte nicht importiert werden.")
+                                                   End If
+
                                                End Using
                                            End Sub)
 

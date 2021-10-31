@@ -341,6 +341,10 @@ Public Class FritzBoxWählClient
         ReleaseComObject(aktMail)
     End Sub
 
+    ''' <summary>
+    ''' Wählen aus einem Journaleintrag
+    ''' </summary>
+    ''' <param name="olJournal">Der Journaleintrag, deren verknüpfter Kontakt angerufen werden soll</param>
     Friend Overloads Sub WählboxStart(olJournal As Outlook.JournalItem)
 
         With olJournal
@@ -376,6 +380,10 @@ Public Class FritzBoxWählClient
         End With
     End Sub
 
+    ''' <summary>
+    ''' Wählen aus der Wahlwiederholungs- oder Rückrufliste bzw. Wählvorgang aus einem Telefonat-Objekt.
+    ''' </summary>
+    ''' <param name="DialTelefonat">Telefonat</param>
     Friend Overloads Sub WählboxStart(DialTelefonat As Telefonat)
 
         With DialTelefonat
@@ -386,7 +394,7 @@ Public Class FritzBoxWählClient
             End If
 
             If .OlKontakt IsNot Nothing Then
-                Wählbox(.OlKontakt)
+                Wählbox(.OlKontakt, .GegenstelleTelNr)
             Else
                 Wählbox(.GegenstelleTelNr)
             End If
@@ -433,6 +441,30 @@ Public Class FritzBoxWählClient
                 .DataContext = New WählClientViewModel With {.Wählclient = Me,
                                                              .Instance = WPFWindow.Dispatcher,
                                                              .IsContactDial = True,
+                                                             .SetOutlookKontakt = oContact}
+
+                .Show()
+            End With
+
+        Else
+            NLogger.Error("Der Outlook-Kontakt ist nicht vorhanden.")
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Startet das Wählen auf Basis eines Outlook Kontaktes. Die zuletzt angerufene Telefonnummer wird markiert.
+    ''' </summary>
+    ''' <param name="oContact">Der Outlook-Kontakt, welcher angerufen werden soll</param>
+    Private Sub Wählbox(oContact As Outlook.ContactItem, TelNr As Telefonnummer)
+        If oContact IsNot Nothing Then
+
+            WPFWindow = New WählclientWPF
+
+            With WPFWindow
+                .DataContext = New WählClientViewModel With {.Wählclient = Me,
+                                                             .Instance = WPFWindow.Dispatcher,
+                                                             .IsContactDial = True,
+                                                             .ZuletztGewählteTelNr = TelNr,
                                                              .SetOutlookKontakt = oContact}
 
                 .Show()

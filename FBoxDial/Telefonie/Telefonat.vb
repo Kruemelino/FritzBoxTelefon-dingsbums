@@ -685,6 +685,7 @@ Imports Microsoft.Office.Interop
             ' Journalimport nur dann, wenn Nummer überwacht wird
             If XMLData.POptionen.CBJournal And EigeneTelNr.Überwacht Then
                 Try
+                    ' Erstelle ein Journaleintrag im STandard-Ordner.
                     olJournal = CType(OutlookApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
                 Catch ex As Exception
                     NLogger.Error(ex)
@@ -727,15 +728,23 @@ Imports Microsoft.Office.Interop
 
                         ' Speicherort wählen
                         olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
-                        If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing Then
-                            .Move(olJournalFolder.MAPIFolder)
-                            .Close(Outlook.OlInspectorClose.olDiscard)
-                        Else
-                            .Close(Outlook.OlInspectorClose.olSave)
-                            '.Move(OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal))
-                        End If
 
-                        NLogger.Info($"Journaleintrag erstellt: { .Start}, { .Subject}, { .Duration}")
+                        If (olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing) AndAlso
+                            Not olJournalFolder.Equals(OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
+                            ' Verschiebe den Journaleintrag in den ausgewählten Ordner
+                            ' Damit wird der Kontakt gleichzeitig im Zielordner gespeichert.
+                            .Move(olJournalFolder.MAPIFolder)
+                            ' Verwerfe diesen Journaleintrag
+                            .Close(Outlook.OlInspectorClose.olDiscard)
+
+                            NLogger.Info($"Journaleintrag im Ornder {olJournalFolder.Name} (Store: {olJournalFolder.MAPIFolder.Store.DisplayName}) erstellt: { .Start}, { .Subject}, { .Duration}")
+                        Else
+                            ' Speicher den Journaleintrag im Standard-Ordner
+                            .Close(Outlook.OlInspectorClose.olSave)
+                            With OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)
+                                NLogger.Info($"Journaleintrag im Standardornder { .Name} (Store: { .Store.DisplayName}) erstellt: { olJournal.Start}, { olJournal.Subject}, { olJournal.Duration}")
+                            End With
+                        End If
 
                     End With
 

@@ -763,7 +763,7 @@ Namespace Localize
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur Outlook Journaleinträgen:
         '''Sofern Journaleinträge erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Einträge erstellt werden sollen.
-        '''Wird kein Ordner gewählt, wird der Outlook-Standardverwendet. ähnelt.
+        '''Wird kein Ordner gewählt, wird der Outlook-Standard verwendet. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strJournalInfo() As String
             Get

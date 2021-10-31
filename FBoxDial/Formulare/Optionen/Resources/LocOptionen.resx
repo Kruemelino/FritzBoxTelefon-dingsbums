@@ -437,7 +437,7 @@ Wer spenden will, der spendet und wer nicht will, der macht es halt nicht.</valu
   <data name="strJournalInfo" xml:space="preserve">
     <value>Hinweise zur Outlook Journaleinträgen:
 Sofern Journaleinträge erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Einträge erstellt werden sollen.
-Wird kein Ordner gewählt, wird der Outlook-Standardverwendet.</value>
+Wird kein Ordner gewählt, wird der Outlook-Standard verwendet.</value>
     <comment>OptJournalView</comment>
   </data>
   <data name="strMicroSIP" xml:space="preserve">

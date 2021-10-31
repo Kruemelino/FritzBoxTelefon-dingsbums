@@ -32,11 +32,17 @@ Friend Module FritzBoxAnrufliste
                                   For Each Anruf In Anrufe
                                       ' Journaleintrag erstellen
                                       Using t = Await Anruf.ErstelleTelefonat
-                                          ' Erstelle einen Journaleintrag
-                                          t.ErstelleJournalEintrag()
 
-                                          ' Anruflisten aktualisieren
-                                          t.UpdateRingCallList()
+                                          If t IsNot Nothing Then
+                                              ' Erstelle einen Journaleintrag
+                                              t.ErstelleJournalEintrag()
+
+                                              ' Anruflisten aktualisieren
+                                              t.UpdateRingCallList()
+                                          Else
+                                              NLogger.Debug($"Anruf {Anruf.ID} konnte nicht importiert werden.")
+                                          End If
+
                                       End Using
 
                                       ' Zählvariable hochsetzen
