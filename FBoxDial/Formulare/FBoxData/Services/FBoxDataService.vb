@@ -62,7 +62,7 @@ Public Class FBoxDataService
         Dim ABListe As FBoxAPI.TAMList = Nothing
 
         ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
-        If FBoxTR064.X_tam.GetTAMList(ABListe) Then
+        If FBoxTR064.X_tam.GetList(ABListe) Then
             Return ABListe.TAMListe
         Else
             Return New List(Of FBoxAPI.TAMItem)

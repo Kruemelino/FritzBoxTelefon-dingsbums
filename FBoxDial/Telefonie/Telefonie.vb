@@ -97,7 +97,7 @@ Imports FBoxDial.FritzBoxDefault
 
                         ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
                         Dim ABListe As FBoxAPI.TAMList = Nothing
-                        If .X_tam.GetTAMList(ABListe) Then
+                        If .X_tam.GetList(ABListe) Then
                             ' Werte alle TAMs aus, welche in der Fritz!Box sichtbar sind.
                             For Each AB In ABListe.TAMListe.Where(Function(T) T.Display)
 
