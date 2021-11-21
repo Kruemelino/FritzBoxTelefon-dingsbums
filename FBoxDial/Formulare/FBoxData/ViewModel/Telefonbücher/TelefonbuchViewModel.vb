@@ -65,15 +65,15 @@ Public Class TelefonbuchViewModel
 #Region "ICommand Callback"
 #Region "Telefonbücher Laden"
     Private Async Sub LadeTelefonbücher(o As Object)
+        ' leere die Collection
+        Telefonbücher.Clear()
+
         ' Lade Fritz!Box Telefonbücher herunter
         InitTelefonbücher(Await DatenService.GetTelefonbücher())
     End Sub
 
     Friend Sub InitTelefonbücher(Bücher As IEnumerable(Of PhonebookEx))
         If Bücher IsNot Nothing Then
-            ' leere die Collection
-            Telefonbücher.Clear()
-
             Telefonbücher.AddRange(Bücher.Select(Function(pb) New PhonebookViewModel(DatenService, pb)))
 
             If Telefonbücher.Any Then LadeKontakte(Telefonbücher.First)
@@ -146,7 +146,8 @@ Public Class TelefonbuchViewModel
         End With
     End Sub
     Private Function CanRemove(o As Object) As Boolean
-        Return Not CType(o, PhonebookViewModel).Telefonbuch.Rufsperren
+        Dim Buch = CType(o, PhonebookViewModel)
+        Return Buch IsNot Nothing AndAlso Not Buch.Telefonbuch.Rufsperren
     End Function
 #End Region
 
@@ -174,6 +175,7 @@ Public Class TelefonbuchViewModel
                 ' TODO: Unschön
                 If DatenService.DeleteRufsperren(Kontakte.Select(Function(C) C.Kontakt)) Then
                     Telefonbuch.Telefonbuch.DeleteKontakte(Kontakte.Select(Function(C) C.Kontakt))
+                    Telefonbuch.Contacts.RemoveRange(Kontakte)
                 End If
             End If
 
@@ -184,6 +186,7 @@ Public Class TelefonbuchViewModel
                 If DatenService.DeleteKontakte(Telefonbuch.ID, Kontakte.Select(Function(K) K.Kontakt)) Then
                     ' Entferne die Kontate aus dem Datenobjekt
                     Telefonbuch.Telefonbuch.DeleteKontakte(Kontakte.Select(Function(C) C.Kontakt))
+                    Telefonbuch.Contacts.RemoveRange(Kontakte)
                 End If
             End If
 

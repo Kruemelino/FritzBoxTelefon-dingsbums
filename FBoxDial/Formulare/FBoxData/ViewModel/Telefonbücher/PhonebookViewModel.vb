@@ -44,6 +44,7 @@ Public Class PhonebookViewModel
     Friend Property ID As Integer
 
     Private _IsBookEditMode As Boolean
+
     Public Property IsBookEditMode As Boolean
         Get
             Return _IsBookEditMode
