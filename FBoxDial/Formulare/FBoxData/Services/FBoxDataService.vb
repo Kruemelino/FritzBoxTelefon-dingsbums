@@ -63,7 +63,7 @@ Public Class FBoxDataService
 
         ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
         If FBoxTR064.X_tam.GetList(ABListe) Then
-            Return ABListe.TAMListe
+            Return ABListe.Items
         Else
             Return New List(Of FBoxAPI.TAMItem)
         End If

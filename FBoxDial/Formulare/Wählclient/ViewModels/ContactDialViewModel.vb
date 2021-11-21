@@ -21,15 +21,7 @@ Public Class ContactDialViewModel
         End Set
     End Property
 
-    Private _DialNumberList As New ObservableCollectionEx(Of Telefonnummer)
-    Public Property DialNumberList As ObservableCollectionEx(Of Telefonnummer)
-        Get
-            Return _DialNumberList
-        End Get
-        Set
-            SetProperty(_DialNumberList, Value)
-        End Set
-    End Property
+    Public Property DialNumberList As New ObservableCollectionEx(Of Telefonnummer)
 
     Private _Kontaktbild As BitmapImage
     Public Property Kontaktbild As BitmapImage

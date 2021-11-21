@@ -39,9 +39,12 @@ Imports FBoxDial.FritzBoxDefault
         Dim SessionID As String = DfltFritzBoxSessionID
 
         ' Starte die TR-064 Schnittstelle zur Fritz!Box
-        Using fbtr064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Anmeldeinformationen)
+        Using FBoxTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Anmeldeinformationen)
 
-            With fbtr064
+            ' FBoxAPI Status abfangen
+            AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
+
+            With FBoxTR064
                 ' Ermittle die SessionID für Fritz!Box Query
                 If .Deviceconfig.GetSessionID(SessionID) Then
 
@@ -99,7 +102,7 @@ Imports FBoxDial.FritzBoxDefault
                         Dim ABListe As FBoxAPI.TAMList = Nothing
                         If .X_tam.GetList(ABListe) Then
                             ' Werte alle TAMs aus, welche in der Fritz!Box sichtbar sind.
-                            For Each AB In ABListe.TAMListe.Where(Function(T) T.Display)
+                            For Each AB In ABListe.Items.Where(Function(T) T.Display)
 
                                 Dim Telefon As New Telefoniegerät With {.Name = AB.Name,
                                                     .TelTyp = TelTypen.TAM,
@@ -196,6 +199,8 @@ Imports FBoxDial.FritzBoxDefault
 
                 End If
             End With
+
+            RemoveHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
 
         End Using
 

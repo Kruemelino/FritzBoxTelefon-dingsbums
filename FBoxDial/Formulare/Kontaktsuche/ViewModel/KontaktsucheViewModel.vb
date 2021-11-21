@@ -24,15 +24,7 @@ Public Class KontaktsucheViewModel
         End Set
     End Property
 
-    Private _Ergebnisse As ObservableCollectionEx(Of ContactItemViewModel)
-    Public Property Ergebnisse As ObservableCollectionEx(Of ContactItemViewModel)
-        Get
-            Return _Ergebnisse
-        End Get
-        Set
-            SetProperty(_Ergebnisse, Value)
-        End Set
-    End Property
+    Public Property Ergebnisse As New ObservableCollectionEx(Of ContactItemViewModel)
 
     Private _olKontaktVM As ContactItemViewModel
     Public Property OLKontaktVM As ContactItemViewModel
@@ -61,11 +53,6 @@ Public Class KontaktsucheViewModel
     ''' Startet due Kontaktsuche
     ''' </summary>
     Private Async Sub StarteKontaktSuche()
-
-        If Ergebnisse Is Nothing Then
-            ' Erstelle eine neue ObserverCollection
-            Ergebnisse = New ObservableCollectionEx(Of ContactItemViewModel)
-        End If
 
         If SearchText.IsNotStringNothingOrEmpty Then
 

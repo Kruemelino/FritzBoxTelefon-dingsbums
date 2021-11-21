@@ -39,7 +39,7 @@ Public Class FBoxDataTellowsViewModel
     ''' <summary>
     ''' Returns Or sets a list as TellowsScoreListEntry             
     ''' </summary>
-    Public Property TellowsList As ObservableCollectionEx(Of TellowsScoreListEntry)
+    Public Property TellowsList As New ObservableCollectionEx(Of TellowsScoreListEntry)
 #End Region
 
 #Region "Eigenschaften"
@@ -127,8 +127,6 @@ Public Class FBoxDataTellowsViewModel
 
         Dim TaskTellows As List(Of TellowsScoreListEntry) = Await DatenService.GetTellowsScoreList
 
-        ' Initiiere die Anrufliste
-        TellowsList = New ObservableCollectionEx(Of TellowsScoreListEntry)
         ' Lade die tellows ScoreList
         TellowsList.AddRange(TaskTellows)
 

@@ -2,15 +2,7 @@
     Inherits NotifyBase
     Private Property DatenService As IDialService
 
-    Private _DialDirektWahlList As New ObservableCollectionEx(Of Telefonnummer)
-    Public Property DialDirektWahlList As ObservableCollectionEx(Of Telefonnummer)
-        Get
-            Return _DialDirektWahlList
-        End Get
-        Set
-            SetProperty(_DialDirektWahlList, Value)
-        End Set
-    End Property
+    Public Property DialDirektWahlList As New ObservableCollectionEx(Of Telefonnummer)
 
     Private _DialVM As WählClientViewModel
     Public Property DialVM As WählClientViewModel
