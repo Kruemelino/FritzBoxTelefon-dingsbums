@@ -3,11 +3,11 @@ Imports Microsoft.Office.Interop.Outlook
 Friend Interface IOptionenService
 
 #Region "Grunddaten"
-    Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FritzBoxXMLUser)
+    Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User)
 #End Region
 
 #Region "Import Telefoniedaten"
-    Event Status As EventHandler(Of NotifyEventArgs(Of String))
+    Event Status As EventHandler(Of String)
     Event Beendet As EventHandler(Of NotifyEventArgs(Of Telefonie))
     Sub StartImport()
 #End Region

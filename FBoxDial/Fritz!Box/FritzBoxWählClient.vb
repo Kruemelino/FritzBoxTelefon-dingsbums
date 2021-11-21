@@ -21,7 +21,7 @@ Public Class FritzBoxWählClient
 
         Dim PhoneName As String = DfltStringEmpty
 
-        Using TR064 As New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using TR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
             With Telefon
                 If Not TR064.X_voip.DialGetConfig(PhoneName) Then
@@ -415,7 +415,7 @@ Public Class FritzBoxWählClient
         End With
     End Sub
 
-    Friend Overloads Sub WählboxStart(Kontakt As TR064.FritzBoxXMLKontakt)
+    Friend Overloads Sub WählboxStart(Kontakt As FBoxAPI.Contact)
 
         WPFWindow = New WählclientWPF
         With WPFWindow

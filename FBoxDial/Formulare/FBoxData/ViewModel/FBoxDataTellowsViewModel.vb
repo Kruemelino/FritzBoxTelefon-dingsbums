@@ -39,15 +39,7 @@ Public Class FBoxDataTellowsViewModel
     ''' <summary>
     ''' Returns Or sets a list as TellowsScoreListEntry             
     ''' </summary>
-    Private _TellowsList As ObservableCollectionEx(Of TellowsScoreListEntry)
     Public Property TellowsList As ObservableCollectionEx(Of TellowsScoreListEntry)
-        Get
-            Return _TellowsList
-        End Get
-        Set
-            SetProperty(_TellowsList, Value)
-        End Set
-    End Property
 #End Region
 
 #Region "Eigenschaften"

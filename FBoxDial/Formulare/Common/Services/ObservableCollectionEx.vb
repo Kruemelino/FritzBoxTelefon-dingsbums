@@ -4,6 +4,7 @@
 ''' Expanded ObservableCollection to include some List(Of T) And sort Methods e.g. myCol.Sort(x => x.Name)
 ''' </summary>
 ''' <remarks>https://stackoverflow.com/a/7285548</remarks>
+<DebuggerStepThrough>
 <Serializable>
 Public Class ObservableCollectionEx(Of T)
     Inherits ObservableCollection(Of T)

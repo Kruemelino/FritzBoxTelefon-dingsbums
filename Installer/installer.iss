@@ -1,6 +1,6 @@
 ﻿#include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "5.0.1.16"
+#define MyAppVersion "5.0.2.0"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2019), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
@@ -52,7 +52,8 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
     Source: "..\FBoxDial\bin\Debug\FilterDataGrid.dll";                                   DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.dll";                      DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.dll.manifest";             DestDir: "{app}"; Flags: ignoreversion
-    Source: "..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.vsto";                     DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.vsto";                     DestDir: "{app}"; Flags: ignoreversion    
+    Source: "..\FBoxDial\bin\Debug\FritzBoxAPI.dll";                                      DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll";    DestDir: "{app}"; Flags: ignoreversion 
     Source: "..\FBoxDial\bin\Debug\Microsoft.Xaml.Behaviors.dll";                         DestDir: "{app}"; Flags: ignoreversion

@@ -35,8 +35,8 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-    Private _CBoxBenutzer As ObservableCollectionEx(Of FritzBoxXMLUser)
-    Public Property CBoxBenutzer As ObservableCollectionEx(Of FritzBoxXMLUser)
+    Private _CBoxBenutzer As ObservableCollectionEx(Of FBoxAPI.User)
+    Public Property CBoxBenutzer As ObservableCollectionEx(Of FBoxAPI.User)
         Get
             Return _CBoxBenutzer
         End Get

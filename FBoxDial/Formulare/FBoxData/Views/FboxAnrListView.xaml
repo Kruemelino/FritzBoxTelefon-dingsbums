@@ -7,7 +7,7 @@
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=fbd:FBoxDataAnrListViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=fbd:FBoxDataAnrListViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="450" d:DesignWidth="800">
     
     <UserControl.Resources>
@@ -139,7 +139,7 @@
             <DataGrid.Columns>
 
                 <DataGridCheckBoxColumn Header="*" 
-                                        Binding="{Binding Path=Export, UpdateSourceTrigger=PropertyChanged}" 
+                                        Binding="{Binding Path=Export, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                         CellStyle="{StaticResource SingleClickStyle}"/>
 
                 <DataGridTemplateColumn Header="" CanUserSort="False">
@@ -156,46 +156,63 @@
                                 11 active outgoing-->
 
                             <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding Path=Type}" Value="1">
+                                <DataTrigger Binding="{Binding Path=Call.Type, Mode=OneWay}" Value="1">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CallReceived}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=Type}" Value="2">
+                                <DataTrigger Binding="{Binding Path=Call.Type, Mode=OneWay}" Value="2">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CallMissed}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=Type}" Value="3">
+                                <DataTrigger Binding="{Binding Path=Call.Type, Mode=OneWay}" Value="3">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CallMade}" />
-                                </DataTrigger>  
-                                <DataTrigger Binding="{Binding Path=Type}" Value="10">
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Call.Type, Mode=OneWay}" Value="10">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CancelRed}" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{x:Static localize:LocFBoxData.strDate}" Binding="{Binding Path=Datum, StringFormat=G}" />
-                <DataGridTextColumn Header="{x:Static localize:LocFBoxData.strName}" Binding="{Binding Path=Name}" Width="*" />
-                <DataGridTextColumn Header="{x:Static localize:LocFBoxData.strMyNumber}" Binding="{Binding Path=EigeneNummer}" Width="*" >
+
+                <DataGridTextColumn Binding="{Binding Path=Call.Date, StringFormat=G, Mode=OneWay}" 
+                                    Header="{x:Static localize:LocFBoxData.strDate}" />
+
+                <DataGridTextColumn Binding="{Binding Path=Call.Name, Mode=OneWay}"
+                                    Header="{x:Static localize:LocFBoxData.strName}" 
+                                    Width="*" />
+
+                <DataGridTextColumn Binding="{Binding Path=EigeneNummer, Mode=OneWay}"
+                                    Header="{x:Static localize:LocFBoxData.strMyNumber}" 
+                                    Width="*" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Right" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static localize:LocFBoxData.strRemoteCaller}" Binding="{Binding Path=Gegenstelle}" Width="*">
+
+                <DataGridTextColumn Binding="{Binding Path=Gegenstelle, Mode=OneWay}"
+                                    Header="{x:Static localize:LocFBoxData.strRemoteCaller}" 
+                                    Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Right" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static localize:LocFBoxData.strDuration}" Binding="{Binding Path=Duration, StringFormat='{}{0:hh\\:mm}'}"  Width="*">
+
+                <DataGridTextColumn Binding="{Binding Path=Call.Duration, StringFormat='{}{0:hh\\:mm}', Mode=OneWay}"
+                                    Header="{x:Static localize:LocFBoxData.strDuration}" 
+                                    Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static localize:LocFBoxData.strDevice}" Binding="{Binding Path=Device}"  Width="*"/>
+
+                <DataGridTextColumn Binding="{Binding Path=Call.Device, Mode=OneWay}"
+                                    Header="{x:Static localize:LocFBoxData.strDevice}" 
+                                    Width="*"/>
             </DataGrid.Columns>
 
         </DataGrid>

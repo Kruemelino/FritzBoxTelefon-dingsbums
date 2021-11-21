@@ -9,16 +9,16 @@ Friend Class OptionenService
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "Grunddaten"
-    Friend Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FritzBoxXMLUser) Implements IOptionenService.LadeFBoxUser
+    Friend Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
 
-        Dim UserList As New ObservableCollectionEx(Of FritzBoxXMLUser)
+        Dim UserList As New ObservableCollectionEx(Of FBoxAPI.User)
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(IPAdresse) Then
-            Using FBoxTr064 As New TR064.FritzBoxTR64(IPAdresse, Nothing)
-                AddHandler FBoxTr064.Status, AddressOf SetStatus
+            Using FBoxTr064 As New FBoxAPI.FritzBoxTR64(IPAdresse, Nothing)
+                AddHandler FBoxTr064.Status, AddressOf SetFBoxAPIStatus
 
                 Dim XMLString As String = DfltStringEmpty
-                Dim FritzBoxUsers As New FritzBoxXMLUserList
+                Dim FritzBoxUsers As New FBoxAPI.UserList
 
                 If FBoxTr064.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
                     UserList.AddRange(FritzBoxUsers.UserListe)
@@ -28,7 +28,8 @@ Friend Class OptionenService
                     RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(False))
                 End If
 
-                RemoveHandler FBoxTr064.Status, AddressOf SetStatus
+                RemoveHandler FBoxTr064.Status, AddressOf SetFBoxAPIStatus
+
             End Using
         Else
             NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
@@ -36,12 +37,15 @@ Friend Class OptionenService
 
         Return UserList
     End Function
+
+
 #End Region
 
 #Region "Import Telefoniedaten"
     Private Property FritzBoxDaten As Telefonie
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Telefonie)) Implements IOptionenService.Beendet
-    Friend Event Status As EventHandler(Of NotifyEventArgs(Of String)) Implements IOptionenService.Status
+    Friend Event Status As EventHandler(Of String) Implements IOptionenService.Status
+    Friend Event FBoxAPIStatus As EventHandler(Of String)
 
     Friend Sub StartImport() Implements IOptionenService.StartImport
 
@@ -58,8 +62,13 @@ Friend Class OptionenService
 
     End Sub
 
-    Private Sub SetStatus(sender As Object, e As NotifyEventArgs(Of String))
+    Private Sub SetStatus(sender As Object, e As String)
         RaiseEvent Status(Me, e)
+    End Sub
+
+    Private Sub SetFBoxAPIStatus(sender As Object, e As FBoxAPI.NotifyEventArgs(Of FBoxAPI.LogMessage))
+        NLogger.Log(LogLevel.FromOrdinal(e.Value.Level), e.Value.Message)
+        SetStatus(sender, e.Value.Message)
     End Sub
 
     Private Sub FritzBoxDatenImportBeendet()
@@ -73,7 +82,6 @@ Friend Class OptionenService
 
         NLogger.Debug($"Einlesen der Telefoniedaten beendet")
     End Sub
-
 
 #End Region
 
@@ -214,14 +222,14 @@ Friend Class OptionenService
     Friend Sub StartLoginTest(IPAdresse As String, User As String, Password As SecureString) Implements IOptionenService.StartLoginTest
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(IPAdresse) Then
-            Using fboxTR064 As New TR064.FritzBoxTR64(IPAdresse, New Net.NetworkCredential(User, Password))
-                AddHandler fboxTR064.Status, AddressOf SetStatus
+            Using fboxTR064 As New FBoxAPI.FritzBoxTR64(IPAdresse, New Net.NetworkCredential(User, Password))
+                AddHandler fboxTR064.Status, AddressOf SetFBoxAPIStatus
 
                 Dim SessionID As String = DfltStringEmpty
 
                 RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(fboxTR064.Deviceconfig.GetSessionID(SessionID)))
 
-                RemoveHandler fboxTR064.Status, AddressOf SetStatus
+                RemoveHandler fboxTR064.Status, AddressOf SetFBoxAPIStatus
             End Using
         Else
             NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")

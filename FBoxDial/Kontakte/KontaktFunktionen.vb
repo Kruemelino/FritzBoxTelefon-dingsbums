@@ -2,7 +2,6 @@
 Imports System.Runtime.CompilerServices
 Imports Microsoft.Office.Interop.Outlook
 Imports System.Windows.Media
-Imports System.Threading.Tasks
 Friend Module KontaktFunktionen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
@@ -81,7 +80,7 @@ Friend Module KontaktFunktionen
     ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
     ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
     ''' <returns>Den erstellten Kontakt als Outlook.ContactItem.</returns>
-    Friend Function ErstelleKontakt(XMLKontakt As TR064.FritzBoxXMLKontakt, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
+    Friend Function ErstelleKontakt(XMLKontakt As FBoxAPI.Contact, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
 
         If Not TelNr.Unterdrückt Then
 
@@ -513,10 +512,10 @@ Friend Module KontaktFunktionen
     ''' <param name="olContact">Der Outlook Kontakt, der überführt werden soll.</param>
     ''' <param name="UID">Falls bekannt, die Uniqueid des Kontaktes im Fritz!Box Telefonbuch.</param>
     ''' <returns></returns>
-    <Extension> Friend Function ErstelleFBoxKontakt(olContact As ContactItem, Optional UID As Integer = -1) As TR064.FritzBoxXMLKontakt
+    <Extension> Friend Function ErstelleFBoxKontakt(olContact As ContactItem, Optional UID As Integer = -1) As FBoxAPI.Contact
 
         ' Erstelle ein nen neuen XMLKontakt
-        Dim XMLKontakt As New TR064.FritzBoxXMLKontakt
+        Dim XMLKontakt As New FBoxAPI.Contact
 
         With XMLKontakt
             ' Weise den Namen zu
@@ -530,24 +529,24 @@ Friend Module KontaktFunktionen
 
             If UID.AreDifferentTo(-1) Then .Uniqueid = UID
 
-            With .Telefonie
+            With .Telephony
                 ' Weise die E-Mails zu
                 With .Emails
                     If olContact.Email1Address.IsNotStringNothingOrEmpty Then
-                        .Add(New TR064.FritzBoxXMLEmail With {.EMail = olContact.Email1Address})
+                        .Add(New FBoxAPI.Email With {.EMail = olContact.Email1Address})
                     End If
                     If olContact.Email2Address.IsNotStringNothingOrEmpty Then
-                        .Add(New TR064.FritzBoxXMLEmail With {.EMail = olContact.Email2Address})
+                        .Add(New FBoxAPI.Email With {.EMail = olContact.Email2Address})
                     End If
                     If olContact.Email3Address.IsNotStringNothingOrEmpty Then
-                        .Add(New TR064.FritzBoxXMLEmail With {.EMail = olContact.Email3Address})
+                        .Add(New FBoxAPI.Email With {.EMail = olContact.Email3Address})
                     End If
                 End With
 
                 ' Weise die Telefonnummern zu
-                With .Nummern
+                With .Numbers
                     For Each TelNr In GetKontaktTelNrList(olContact)
-                        .Add(New TR064.FritzBoxXMLNummer With {.Nummer = TelNr.Unformatiert, .Typ = TelNr.Typ.XML})
+                        .Add(New FBoxAPI.Number With {.Number = TelNr.Unformatiert, .Type = TelNr.Typ.XML})
                     Next
                 End With
 
@@ -639,30 +638,6 @@ Friend Module KontaktFunktionen
     End Sub
 
 #Region "Bilder"
-    Friend Async Function LadeKontaktbild(Link As String) As Threading.Tasks.Task(Of Imaging.BitmapImage)
-
-        If Link.IsNotStringNothingOrEmpty Then
-            ' Setze den Pfad zum Bild zusammen
-            Dim b As Byte() = {}
-            NLogger.Debug($"Lade Kontaktbild von Pfad: ' {Link} '")
-            ' Lade das Bild herunter
-            b = Await DownloadDataTaskAsync(New Uri(Link))
-            If b.Any Then
-                Dim biImg As New Imaging.BitmapImage()
-                Dim ms As New MemoryStream(b)
-
-                With biImg
-                    .BeginInit()
-                    .StreamSource = ms
-                    .EndInit()
-                End With
-
-                Return biImg
-            End If
-        End If
-
-        Return Nothing
-    End Function
 
     ''' <summary>
     ''' Speichert das Kontaktbild in den Arbeitsorder. 
@@ -705,17 +680,7 @@ Friend Module KontaktFunktionen
         Return Nothing
     End Function
 
-    <Extension> Friend Async Function KontaktBildEx(FBoxContact As TR064.FritzBoxXMLKontakt) As Task(Of Imaging.BitmapImage)
-        If FBoxContact IsNot Nothing Then
-            With FBoxContact
-                ' Bild in das Datenobjekt laden und abschließend löschen
-                Return KontaktBildEx(Await FBoxContact.KontaktBildPfad)
-            End With
-        End If
-        Return Nothing
-    End Function
-
-    Private Function KontaktBildEx(BildPfad As String) As Imaging.BitmapImage
+    Friend Function KontaktBildEx(BildPfad As String) As Imaging.BitmapImage
         If BildPfad.IsNotStringNothingOrEmpty Then
             ' Bild in das Datenobjekt laden
             Dim biImg As New Imaging.BitmapImage
@@ -735,18 +700,6 @@ Friend Module KontaktFunktionen
         Return Nothing
     End Function
 
-    <Extension> Friend Async Function KontaktBildPfad(FBoxContact As TR064.FritzBoxXMLKontakt) As Task(Of String)
-        Dim Pfad As String = DfltStringEmpty
-        If FBoxContact IsNot Nothing Then
-            Pfad = $"{Path.GetTempPath}{Path.GetRandomFileName}" '.RegExReplace(".{3}$", "jpg")
-
-            Await DownloadToFileTaskAsync(New Uri(FBoxContact.Person.CompleteImageURL), Pfad)
-
-            NLogger.Debug($"Bild des Kontaktes {FBoxContact.Person.RealName} unter Pfad {Pfad} gespeichert.")
-
-        End If
-        Return Pfad
-    End Function
     ''' <summary>
     ''' Löscht das Kontaktbild in den Arbeitsorder. 
     ''' </summary>

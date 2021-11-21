@@ -21,8 +21,8 @@ Public Class FBoxDataTelBuchViewModel
         Get
             Return _FBoxDataVM
         End Get
-        Set(value As FBoxDataViewModel)
-            SetProperty(_FBoxDataVM, value)
+        Set
+            SetProperty(_FBoxDataVM, Value)
         End Set
     End Property
 
@@ -38,9 +38,8 @@ Public Class FBoxDataTelBuchViewModel
         End Set
     End Property
 
-    Private _bookVM As TelbuchViewModel
-
-    Public Property BookVM As TelbuchViewModel
+    Private _bookVM As TelefonbuchViewModel
+    Public Property BookVM As TelefonbuchViewModel
         Get
             Return _bookVM
         End Get
@@ -56,7 +55,7 @@ Public Class FBoxDataTelBuchViewModel
     End Sub
 
     Public Async Sub Init() Implements IFBoxData.Init
-        BookVM = New TelbuchViewModel(DatenService, DialogService)
+        BookVM = New TelefonbuchViewModel(DatenService, DialogService)
         CurrentView = BookVM
 
         BookVM.InitTelefonbücher(Await DatenService.GetTelefonbücher())

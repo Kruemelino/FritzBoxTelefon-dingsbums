@@ -522,7 +522,7 @@ Namespace RibbonData
                 Case TypeOf Context Is Outlook.ExchangeUser
                     ' Ermittelt, ob der Kontakt angerufen werden kann
                     ' Hat der Kontakt Telefonnummern?
-                    Return GetKontaktTelNrList(CType(Context, Outlook.ExchangeUser)).Any
+                    Return CType(Context, Outlook.ExchangeUser).GetKontaktTelNrList.Any
 
             End Select
 
@@ -606,7 +606,7 @@ Namespace RibbonData
                 .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
 
                 ' Ermittle alle Telefonnummern des Kontaktes
-                ListofTelefonnummer = GetKontaktTelNrList(Kontakt)
+                ListofTelefonnummer = Kontakt.GetKontaktTelNrList
 
                 For Each TelNr In ListofTelefonnummer
                     .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, TelNr, ListofTelefonnummer.IndexOf(TelNr), ListName))
@@ -656,16 +656,10 @@ Namespace RibbonData
                 .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
 
                 ' Ermittle die verfügbaren Quellen für die Telefonbuchnamen
-                Dim TelBk As TR064.FritzBoxXMLTelefonbücher
-
-                If ThisAddIn.PhoneBookXML Is Nothing Then
-                    TelBk = Telefonbücher.LadeHeaderFritzBoxTelefonbücher
-                Else
-                    TelBk = ThisAddIn.PhoneBookXML
-                End If
+                If ThisAddIn.PhoneBookXML Is Nothing Then ThisAddIn.PhoneBookXML = Telefonbücher.LadeTelefonbücherNamen
 
                 ' Trage die einzelnen Bücher ein
-                For Each Buch In TelBk.Telefonbücher
+                For Each Buch As PhonebookEx In ThisAddIn.PhoneBookXML
                     .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Name, Buch.ID, Buch.Rufsperren, ListName))
                 Next
             End With

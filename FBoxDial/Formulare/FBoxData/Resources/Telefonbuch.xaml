@@ -9,7 +9,7 @@
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <DataTemplate DataType="{x:Type fbd:TelbuchViewModel}">
+    <DataTemplate DataType="{x:Type fbd:TelefonbuchViewModel}">
         <fbd:TelbuchView/>
     </DataTemplate>
 

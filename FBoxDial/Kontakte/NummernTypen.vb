@@ -14,35 +14,35 @@ End Enum
 
 Public Structure TelNrType
     Public Property TelNrType As OutlookNrType
-    Friend Property XML As XMLTelNrTyp
+    Friend Property XML As FBoxAPI.TelNrTyp
         Get
             Select Case TelNrType
                 Case OutlookNrType.CarTelephoneNumber, OutlookNrType.HomeTelephoneNumber, OutlookNrType.Home2TelephoneNumber, OutlookNrType.ISDNNumber, OutlookNrType.TTYTDDTelephoneNumber, OutlookNrType.OtherTelephoneNumber
-                    Return XMLTelNrTyp.home
+                    Return FBoxAPI.TelNrTyp.home
                 Case OutlookNrType.MobileTelephoneNumber, OutlookNrType.PagerNumber, OutlookNrType.RadioTelephoneNumber
-                    Return XMLTelNrTyp.mobile
+                    Return FBoxAPI.TelNrTyp.mobile
                 Case OutlookNrType.AssistantTelephoneNumber, OutlookNrType.BusinessTelephoneNumber, OutlookNrType.Business2TelephoneNumber, OutlookNrType.CallbackTelephoneNumber, OutlookNrType.CompanyMainTelephoneNumber, OutlookNrType.PrimaryTelephoneNumber
-                    Return XMLTelNrTyp.work
+                    Return FBoxAPI.TelNrTyp.work
                 Case OutlookNrType.BusinessFaxNumber, OutlookNrType.HomeFaxNumber, OutlookNrType.OtherFaxNumber, OutlookNrType.TelexNumber
-                    Return XMLTelNrTyp.fax_work
+                    Return FBoxAPI.TelNrTyp.fax_work
                 Case Else
-                    Return XMLTelNrTyp.notset
+                    Return FBoxAPI.TelNrTyp.notset
             End Select
 
         End Get
         Set
             Select Case Value
-                Case XMLTelNrTyp.notset, XMLTelNrTyp.other, XMLTelNrTyp.intern
+                Case FBoxAPI.TelNrTyp.notset, FBoxAPI.TelNrTyp.other, FBoxAPI.TelNrTyp.intern
                     TelNrType = OutlookNrType.OtherFaxNumber
-                Case XMLTelNrTyp.work
+                Case FBoxAPI.TelNrTyp.work
                     TelNrType = OutlookNrType.BusinessTelephoneNumber
-                Case XMLTelNrTyp.home
+                Case FBoxAPI.TelNrTyp.home
                     TelNrType = OutlookNrType.HomeTelephoneNumber
-                Case XMLTelNrTyp.mobile
+                Case FBoxAPI.TelNrTyp.mobile
                     TelNrType = OutlookNrType.MobileTelephoneNumber
-                Case XMLTelNrTyp.fax_work
+                Case FBoxAPI.TelNrTyp.fax_work
                     TelNrType = OutlookNrType.HomeFaxNumber
-                Case XMLTelNrTyp.memo
+                Case FBoxAPI.TelNrTyp.memo
                     TelNrType = OutlookNrType.CallbackTelephoneNumber
             End Select
         End Set

@@ -6,7 +6,7 @@
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=fbd:FBoxDataTelBuchViewModel, IsDesignTimeCreatable=False}"
+             d:DataContext="{d:DesignInstance Type=fbd:TelefonbuchViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="450" d:DesignWidth="800">
     
     <UserControl.Resources>
@@ -35,7 +35,7 @@
 
         <Grid Grid.Column="0" Grid.Row="1">
 
-            <ListView ItemsSource="{Binding ContactsVM.FBoxTelefonbuch.Kontakte}" 
+            <ListView ItemsSource="{Binding ContactsVM.FBoxTelefonbuch.Contacts}" 
                       SelectedItem="{Binding ContactsVM.FBoxKontakt}"
                       BorderThickness="0">
 

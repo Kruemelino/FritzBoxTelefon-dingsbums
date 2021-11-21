@@ -218,7 +218,7 @@ Public Class AnrMonViewModel
                 ' Setze das Kontaktbild, falls ein Eintrag aus einem Fritz!Box Telefonbuch verfügbar ist.
                 If .FBTelBookKontakt IsNot Nothing Then
                     ' Lade das Kontaktbild von der Fritz!Box herunter und weise es zu 
-                    Kontaktbild = Await .FBTelBookKontakt.KontaktBildEx
+                    Kontaktbild = Await .FBTelBookKontakt.KontaktBild
                 End If
 
                 ' Falls ein Kontaktbild aus Outlook oder den FB-Telefonbüchern schon gesetzt ist, dann irgnoriere Tellows

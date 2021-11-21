@@ -129,8 +129,8 @@
 #End Region
 
 #Region "Test Login"
-    Private _CBoxBenutzer As ObservableCollectionEx(Of FritzBoxXMLUser)
-    Public Property CBoxBenutzer As ObservableCollectionEx(Of FritzBoxXMLUser)
+    Private _CBoxBenutzer As ObservableCollectionEx(Of FBoxAPI.User)
+    Public Property CBoxBenutzer As ObservableCollectionEx(Of FBoxAPI.User)
         Get
             Return _CBoxBenutzer
         End Get
@@ -196,8 +196,8 @@
 
         DatenService.StartLoginTest(ValidIP(TBFBAdr), TBBenutzer, CType(o, Windows.Controls.PasswordBox).SecurePassword)
     End Sub
-    Private Sub LoginTestStatus(sender As Object, e As NotifyEventArgs(Of String))
-        TBTestLoginOutput += e.Value & Environment.NewLine
+    Private Sub LoginTestStatus(sender As Object, e As String)
+        TBTestLoginOutput += e & Environment.NewLine
     End Sub
 
     Private Sub LoginTestBeendet(sender As Object, e As NotifyEventArgs(Of Boolean))
@@ -232,8 +232,8 @@
         Return TBTestKontaktsucheInput.IsNotStringNothingOrEmpty
     End Function
 
-    Private Sub TestKontaktsucheStatus(sender As Object, e As NotifyEventArgs(Of String))
-        TBTestKontaktsucheOutput += e.Value & Environment.NewLine
+    Private Sub TestKontaktsucheStatus(sender As Object, e As String)
+        TBTestKontaktsucheOutput += e & Environment.NewLine
     End Sub
 
     Private Sub StartKontaktsucheTest(o As Object)
@@ -285,8 +285,8 @@
         Return TBTestRWSInput.IsNotStringNothingOrEmpty
     End Function
 
-    Private Sub RWSTestStatus(sender As Object, e As NotifyEventArgs(Of String))
-        TBTestRWSOutput += e.Value & Environment.NewLine
+    Private Sub RWSTestStatus(sender As Object, e As String)
+        TBTestRWSOutput += e & Environment.NewLine
     End Sub
 
     Private Sub StartRWSTest(o As Object)

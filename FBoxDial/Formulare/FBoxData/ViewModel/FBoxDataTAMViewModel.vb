@@ -23,7 +23,7 @@
 
     Public Property InitialSelected As Boolean = False Implements IFBoxData.InitialSelected
 
-#Region "Listen"
+#Region "TAM ViewModels"
     Private _TAMItemVM As TAMItemViewModel
     Public Property TAMItemVM As TAMItemViewModel
         Get
@@ -33,27 +33,23 @@
             SetProperty(_TAMItemVM, Value)
         End Set
     End Property
-
-    Private _TAMListe As ObservableCollectionEx(Of TAMItemViewModel)
     Public Property TAMListe As ObservableCollectionEx(Of TAMItemViewModel)
-        Get
-            Return _TAMListe
-        End Get
-        Set
-            SetProperty(_TAMListe, Value)
-        End Set
-    End Property
 #End Region
+
     Public Sub New(dataService As IFBoxDataService, dialogService As IDialogService)
         ' Interface
         _DatenService = dataService
         _DialogService = dialogService
     End Sub
-    Private Async Sub Init() Implements IFBoxData.Init
+    Private Sub Init() Implements IFBoxData.Init
         TAMListe = New ObservableCollectionEx(Of TAMItemViewModel)
 
-        Dim ABs As TR064.TAMList = Await DatenService.GetTAMList
+        Dim TAMItems As IEnumerable(Of FBoxAPI.TAMItem) = DatenService.GetTAMItems
 
-        TAMListe.AddRange(ABs.TAMListe.Select(Function(TAM) New TAMItemViewModel(DatenService, DialogService, TAM)))
+        If TAMItems.Any Then
+            TAMListe.AddRange(TAMItems.Select(Function(TAM) New TAMItemViewModel(DatenService, DialogService, TAM)))
+
+            TAMItemVM = TAMListe.First
+        End If
     End Sub
 End Class

@@ -5,7 +5,7 @@ Imports Microsoft.Office.Interop
 Friend Module KontaktSucher
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
+    Friend Event Status As EventHandler(Of String)
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Boolean))
 
 #Region "Kontaktsuche DASL in Ordnerauswahl"
@@ -163,7 +163,7 @@ Friend Module KontaktSucher
     ''' <param name="StatusMessage">Die auszugebende Statusmeldung.</param>
     Private Sub PushStatus(Level As LogLevel, StatusMessage As String)
         NLogger.Log(Level, StatusMessage)
-        RaiseEvent Status(Nothing, New NotifyEventArgs(Of String)(StatusMessage))
+        RaiseEvent Status(Nothing, StatusMessage)
     End Sub
 #End Region
 

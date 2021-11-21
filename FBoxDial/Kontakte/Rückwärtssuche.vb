@@ -2,7 +2,7 @@
 
 Public Module Rückwärtssuche
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
+    Friend Event Status As EventHandler(Of String)
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Boolean))
 
     Friend Async Function StartRWS(TelNr As Telefonnummer, RWSIndex As Boolean) As Task(Of String)
@@ -114,6 +114,6 @@ Public Module Rückwärtssuche
     ''' <param name="StatusMessage">Die auszugebende Statusmeldung.</param>
     Private Sub PushStatus(Level As LogLevel, StatusMessage As String)
         NLogger.Log(Level, StatusMessage)
-        RaiseEvent Status(Nothing, New NotifyEventArgs(Of String)(StatusMessage))
+        RaiseEvent Status(Nothing, StatusMessage)
     End Sub
 End Module

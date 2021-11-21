@@ -124,28 +124,12 @@ Public Class FBoxDataAnrListViewModel
     ''' <summary>
     ''' Returns Or sets a list as FritzBoxXMLCall             
     ''' </summary>
-    Private _CallList As ObservableCollectionEx(Of TR064.FritzBoxXMLCall)
-    Public Property CallList As ObservableCollectionEx(Of TR064.FritzBoxXMLCall)
-        Get
-            Return _CallList
-        End Get
-        Set
-            SetProperty(_CallList, Value)
-        End Set
-    End Property
-
+    Public Property CallList As New ObservableCollectionEx(Of AnrListItemViewModel)
     ''' <summary>
     ''' Returns Or sets a list as TellowsScoreListEntry             
     ''' </summary>
-    Private _TellowsList As ObservableCollectionEx(Of TellowsScoreListEntry)
     Public Property TellowsList As ObservableCollectionEx(Of TellowsScoreListEntry)
-        Get
-            Return _TellowsList
-        End Get
-        Set
-            SetProperty(_TellowsList, Value)
-        End Set
-    End Property
+
 #End Region
 
 #Region "ICommand"
@@ -188,7 +172,7 @@ Public Class FBoxDataAnrListViewModel
             ' Endzeitpunkt
             Dim ImportEnde As Date = EndDatum.Add(EndZeit)
 
-            Dim AusgewählteAnrufe As IEnumerable(Of TR064.FritzBoxXMLCall)
+            Dim AusgewählteAnrufe As IEnumerable(Of AnrListItemViewModel)
 
             ' Ermittle alle Einträge, die im ausgewählten Bereich liegen
             AusgewählteAnrufe = CallList.Where(Function(x) ImportStart <= x.Datum And x.Datum <= ImportEnde)
@@ -212,12 +196,12 @@ Public Class FBoxDataAnrListViewModel
     ''' </summary>
     Private Async Sub Init() Implements IFBoxData.Init
 
-        Dim TaskAnrList As TR064.FritzBoxXMLCallList = Await DatenService.GetAnrufListe
-
-        ' Initiiere die Anrufliste
-        CallList = New ObservableCollectionEx(Of TR064.FritzBoxXMLCall)
-        ' Lade die Anrufliste
-        CallList.AddRange(TaskAnrList?.Calls)
+        With Await DatenService.GetAnrufListe
+            ' Lade die Anrufliste
+            If .Calls.Any Then
+                CallList.AddRange(From item In .Calls Select New AnrListItemViewModel With {.[Call] = item})
+            End If
+        End With
 
         ' Setze Startzeitpunkt = Zeitpunkt letzter Import
         StartDatum = DatenService.GetLastImport
@@ -243,7 +227,7 @@ Public Class FBoxDataAnrListViewModel
 #Region "Journalimport"
     Private Async Sub JournalImport(o As Object)
 
-        Dim AusgewählteAnrufe As IEnumerable(Of TR064.FritzBoxXMLCall) = CallList.Where(Function(x) x.Export = True)
+        Dim AusgewählteAnrufe As IEnumerable(Of FBoxAPI.Call) = CallList.Where(Function(x) x.Export = True).Select(Function(Anruf) Anruf.Call)
 
         If AusgewählteAnrufe.Any Then
 
@@ -289,7 +273,7 @@ Public Class FBoxDataAnrListViewModel
 #Region "Sperrlist"
     Private Sub BlockNumbers(o As Object)
 
-        Dim BlockNumbers As IEnumerable(Of String) = From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)().ToList Select a.Gegenstelle
+        Dim BlockNumbers As IEnumerable(Of String) = From a In CType(o, IList).Cast(Of AnrListItemViewModel)().ToList Select a.Gegenstelle
 
         If DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBlockNumber, String.Join(", ", BlockNumbers))) = Windows.MessageBoxResult.Yes Then
             DatenService.BlockNumbers(BlockNumbers)
@@ -300,13 +284,12 @@ Public Class FBoxDataAnrListViewModel
 
 #Region "Kontakt Anrufen"
     Private Sub [Call](o As Object)
-        Dim XMLKontakt As TR064.FritzBoxXMLCall = (From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)()).ToList.First
-        DatenService.CallXMLContact(XMLKontakt)
+        DatenService.CallXMLContact((From a In CType(o, IList).Cast(Of AnrListItemViewModel)()).ToList.First.Call)
     End Sub
 
     Private Function CanCall(o As Object) As Boolean
         If o IsNot Nothing Then
-            Dim XMLKontaktListe As IEnumerable(Of TR064.FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)().ToList
+            Dim XMLKontaktListe As IEnumerable(Of AnrListItemViewModel) = From a In CType(o, IList).Cast(Of AnrListItemViewModel)().ToList
 
             Return XMLKontaktListe.Count.AreEqual(1) AndAlso XMLKontaktListe.First.Gegenstelle.IsNotStringNothingOrEmpty
         Else
@@ -317,18 +300,18 @@ Public Class FBoxDataAnrListViewModel
 
 #Region "Kontakt Anzeigen"
     Private Sub ShowContact(o As Object)
-        Dim XMLKontaktListe As IEnumerable(Of TR064.FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)().ToList
+        Dim AnrufListetListe As IEnumerable(Of AnrListItemViewModel) = From a In CType(o, IList).Cast(Of AnrListItemViewModel)().ToList
 
-        For Each XMLKontakt In XMLKontaktListe
-            DatenService.ShowXMLContact(XMLKontakt)
+        For Each Anruf In AnrufListetListe
+            DatenService.ShowXMLContact(Anruf.Call)
         Next
     End Sub
 
     Private Function CanShowContact(o As Object) As Boolean
         If o IsNot Nothing Then
-            Dim XMLKontaktListe As IEnumerable(Of TR064.FritzBoxXMLCall) = From a In CType(o, IList).Cast(Of TR064.FritzBoxXMLCall)().ToList
+            Dim AnrufListetListe As IEnumerable(Of AnrListItemViewModel) = From a In CType(o, IList).Cast(Of AnrListItemViewModel)().ToList
 
-            Return XMLKontaktListe.First.Gegenstelle.IsNotStringNothingOrEmpty
+            Return AnrufListetListe.First.Gegenstelle.IsNotStringNothingOrEmpty
         Else
             Return False
         End If

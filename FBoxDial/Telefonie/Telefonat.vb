@@ -263,8 +263,8 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    Private _FBTelBookKontakt As TR064.FritzBoxXMLKontakt
-    <XmlElement> Public Property FBTelBookKontakt As TR064.FritzBoxXMLKontakt
+    Private _FBTelBookKontakt As FBoxAPI.Contact
+    <XmlElement> Public Property FBTelBookKontakt As FBoxAPI.Contact
         Get
             Return _FBTelBookKontakt
         End Get
@@ -504,18 +504,18 @@ Imports Microsoft.Office.Interop
             If Not AnruferErmittelt Then
                 If XMLData.POptionen.CBKontaktSucheFritzBox Then
 
-                    If ThisAddIn.PhoneBookXML Is Nothing OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                    If ThisAddIn.PhoneBookXML Is Nothing Then 'OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
                         ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
                         ' Dann lade die Telefonbücher herunter
                         NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
-                        Using FBoxTR064 = New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
-                            ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeFritzBoxTelefonbücher(FBoxTR064)
+                        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+                            ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
                         End Using
                     End If
 
                     ' Wenn die Telefonbücher immer noch nicht zur Verfügung stehen, brich an dieser Stelle ab
-                    If ThisAddIn.PhoneBookXML IsNot Nothing AndAlso Not ThisAddIn.PhoneBookXML.NurHeaderDaten Then
-                        FBTelBookKontakt = ThisAddIn.PhoneBookXML.Find(GegenstelleTelNr)
+                    If ThisAddIn.PhoneBookXML IsNot Nothing Then 'AndAlso Not ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                        FBTelBookKontakt = Telefonbücher.Find(ThisAddIn.PhoneBookXML, GegenstelleTelNr)
                     Else
                         NLogger.Warn("Kontaktsuche in Fritz!Box Telefonbüchern ist nicht möglich: Telefonbücher sind nicht heruntergeladen worden.")
                     End If

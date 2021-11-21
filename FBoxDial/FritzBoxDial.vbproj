@@ -161,7 +161,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.11\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.12\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -265,6 +265,7 @@
     <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\FBoxData\ViewModel\Anrufliste\AnrListItemViewModel.vb" />
     <Compile Include="Formulare\FBoxData\FBoxDataWPF.xaml.vb">
       <DependentUpon>FBoxDataWPF.xaml</DependentUpon>
     </Compile>
@@ -273,6 +274,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocFBoxData.resx</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\FBoxData\Services\FboxConverter.vb" />
     <Compile Include="Formulare\FBoxData\Services\FBoxDataService.vb" />
     <Compile Include="Formulare\FBoxData\Services\IFBoxData.vb" />
     <Compile Include="Formulare\FBoxData\Services\IFBoxDataService.vb" />
@@ -282,14 +284,19 @@
     <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataTellowsViewModel.vb" />
     <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataViewModel.vb" />
     <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataTelBuchViewModel.vb" />
-    <Compile Include="Formulare\FBoxData\ViewModel\RufUml\RufUmlViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Rufbehandlung\RufUmlViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\ContactViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\PersonViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\TelephonyViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\EMailViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\NumberViewModel.vb" />
     <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\KontaktViewModel.vb" />
-    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\TelbuchViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\TelefonbuchViewModel.vb" />
     <Compile Include="Formulare\FBoxData\Views\FboxAnrListView.xaml.vb">
       <DependentUpon>FboxAnrListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\FBoxData\Views\FBoxRufUmlView.xaml.vb">
-      <DependentUpon>FBoxRufUmlView.xaml</DependentUpon>
+    <Compile Include="Formulare\FBoxData\Views\FBoxDeflectionView.xaml.vb">
+      <DependentUpon>FBoxDeflectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\FBoxData\Views\FboxTAMView.xaml.vb">
       <DependentUpon>FboxTAMView.xaml</DependentUpon>
@@ -297,8 +304,8 @@
     <Compile Include="Formulare\FBoxData\Views\FBoxTelbuchView.xaml.vb">
       <DependentUpon>FBoxTelbuchView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\FBoxData\Views\RufUml\RufUmlView.xaml.vb">
-      <DependentUpon>RufUmlView.xaml</DependentUpon>
+    <Compile Include="Formulare\FBoxData\Views\Rufbehandlung\DeflectionView.xaml.vb">
+      <DependentUpon>DeflectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\FBoxData\Views\Telefonbücher\DetailsView.xaml.vb">
       <DependentUpon>DetailsView.xaml</DependentUpon>
@@ -353,15 +360,15 @@
     </Compile>
     <Compile Include="Formulare\Optionen\ViewModel\OptTestViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OutlookFolderViewModel.vb" />
-    <Compile Include="Formulare\FBoxData\ViewModel\FBoxTAM\TAMItemViewModel.vb" />
-    <Compile Include="Formulare\FBoxData\ViewModel\FBoxTAM\TAMMessageViewModel.vb" />
-    <Compile Include="Formulare\FBoxData\Views\FBoxTAM\TAMDetailsView.xaml.vb">
+    <Compile Include="Formulare\FBoxData\ViewModel\Anrufbeantworter\TAMItemViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Anrufbeantworter\TAMMessageViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\Views\Anrufbeantworter\TAMDetailsView.xaml.vb">
       <DependentUpon>TAMDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\FBoxData\Views\FBoxTAM\TAMMessageView.xaml.vb">
+    <Compile Include="Formulare\FBoxData\Views\Anrufbeantworter\TAMMessageView.xaml.vb">
       <DependentUpon>TAMMessageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\FBoxData\Views\FBoxTAM\TAMView.xaml.vb">
+    <Compile Include="Formulare\FBoxData\Views\Anrufbeantworter\TAMView.xaml.vb">
       <DependentUpon>TAMView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptTellowsView.xaml.vb">
@@ -370,25 +377,12 @@
     <Compile Include="Formulare\Optionen\Views\OptTestView.xaml.vb">
       <DependentUpon>OptTestView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fritz!Box\TR064\Deflection_TR64\DeflectionInfo.vb" />
-    <Compile Include="Fritz!Box\TR064\Deflection_TR64\DeflectionList.vb" />
-    <Compile Include="Fritz!Box\TR064\Services\DeviceconfigSCPD.vb" />
-    <Compile Include="Fritz!Box\TR064\Services\DeviceinfoSCPD.vb" />
-    <Compile Include="Fritz!Box\TR064\Services\IService.vb" />
-    <Compile Include="Fritz!Box\TR064\Services\LANConfigSecuritySCPD.vb" />
-    <Compile Include="Fritz!Box\TR064\Services\X_tamSCPD.vb" />
-    <Compile Include="Fritz!Box\TR064\Services\X_voipSCPD.vb" />
-    <Compile Include="Fritz!Box\TR064\Services\X_contactSCPD.vb" />
-    <Compile Include="Fritz!Box\TR064\SIP_TR64\VoIPAccount.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM_TR64\FritzBoxXMLMessage.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM_TR64\FritzBoxXMLMessageList.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM_TR64\TAMInfo.vb" />
+    <Compile Include="Fritz!Box\Extended\ContactEx.vb" />
+    <Compile Include="Fritz!Box\Extended\PhonebookEx.vb" />
+    <Compile Include="Fritz!Box\FritzBoxStatus.vb" />
     <Compile Include="KeyboardHooking.vb" />
     <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
-    <Compile Include="Fritz!Box\TR064\User_TR64\FritzBoxXMLUser.vb" />
-    <Compile Include="Fritz!Box\TR064\User_TR64\FritzBoxXMLUserList.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\AllowedValueRange.vb" />
     <Compile Include="Localize\Länder.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -468,25 +462,8 @@
       <DependentUpon>DirectDialView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\FritzBoxJSONStruct.vb" />
-    <Compile Include="Fritz!Box\TR064\SIP_TR64\SIPTelNrList.vb" />
-    <Compile Include="Fritz!Box\TR064\SIP_TR64\SIPClientList.vb" />
-    <Compile Include="Fritz!Box\TR064\SIP_TR64\SIPClient.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM_TR64\TAMList.vb" />
-    <Compile Include="Fritz!Box\TR064\TAM_TR64\TAMItem.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\Action.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\Argument.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\Device.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\Icon.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\SCPD.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\Service.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\SpecVersion.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\StateVariable.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\SystemVersion.vb" />
-    <Compile Include="Fritz!Box\TR064\XML_TR64\TR64Desc.vb" />
     <Compile Include="Kontakte\KontaktInspector.vb" />
     <Compile Include="Fritz!Box\FritzBoxAnrufliste.vb" />
-    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLCall.vb" />
-    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLCallList.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Formulare\Common\Services\NotifyEventArgs.vb" />
@@ -525,16 +502,8 @@
     <Compile Include="SoftPhone\MicroSIP.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
-    <Compile Include="Fritz!Box\TR064\FritzBoxTR64.vb" />
-    <Compile Include="Fritz!Box\TR064\FritzBoxInformations.vb" />
     <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
-    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLEmail.vb" />
-    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLKontakt.vb" />
-    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLNummer.vb" />
-    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLPerson.vb" />
-    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLTelefonbuch.vb" />
-    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLTelefonbücher.vb" />
-    <Compile Include="Fritz!Box\TR064\Telefonie_TR64\FritzBoxXMLTelefonie.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\PhonebookViewModel.vb" />
     <Compile Include="Fritz!Box\FritzBoxTelefonbuch.vb" />
     <Compile Include="Journal\Journal.vb" />
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
@@ -554,7 +523,6 @@
     <Compile Include="SoftPhone\Phoner.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
-    <Compile Include="Fritz!Box\TR064\SIP_TR64\SIPTelNr.vb" />
     <Compile Include="Formulare\Common\Services\Converters.vb" />
     <Compile Include="Formulare\Common\Services\IDialogService.vb" />
     <Compile Include="Formulare\Common\Services\DialogService.vb" />
@@ -685,7 +653,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\FBoxData\Views\FBoxRufUmlView.xaml">
+    <Page Include="Formulare\FBoxData\Views\FBoxDeflectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -697,7 +665,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Formulare\FBoxData\Views\RufUml\RufUmlView.xaml">
+    <Page Include="Formulare\FBoxData\Views\Rufbehandlung\DeflectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -741,15 +709,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\FBoxData\Views\FBoxTAM\TAMDetailsView.xaml">
+    <Page Include="Formulare\FBoxData\Views\Anrufbeantworter\TAMDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\FBoxData\Views\FBoxTAM\TAMMessageView.xaml">
+    <Page Include="Formulare\FBoxData\Views\Anrufbeantworter\TAMMessageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\FBoxData\Views\FBoxTAM\TAMView.xaml">
+    <Page Include="Formulare\FBoxData\Views\Anrufbeantworter\TAMView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -877,7 +845,12 @@
     <Resource Include="Tellows\Resources\score8.png" />
     <Resource Include="Tellows\Resources\score9.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\FBoxAPI\FBoxAPI.vbproj">
+      <Project>{9e2df865-e261-426a-9e05-1a2f60bd7323}</Project>
+      <Name>FBoxAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

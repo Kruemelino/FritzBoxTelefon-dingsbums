@@ -260,7 +260,7 @@ Sollen die Einträge jetzt in die Fritz!Box geladen werden?</value>
     <value>Gegenstelle</value>
   </data>
   <data name="strRufUml" xml:space="preserve">
-    <value>Rufumleitungen</value>
+    <value>Rufbehandlung</value>
   </data>
   <data name="strRufUmlMode" xml:space="preserve">
     <value>Art der Umleitung</value>

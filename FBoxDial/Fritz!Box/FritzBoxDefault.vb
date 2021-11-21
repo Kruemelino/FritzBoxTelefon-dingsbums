@@ -5,7 +5,7 @@
     Friend Const DfltFritzBoxHostName As String = "fritz.box"
     Friend Const DfltFritzBoxSessionID As String = "0000000000000000"
     Friend Const DfltCodePageFritzBox As Integer = 65001
-
+    Friend Const DfltTR064PortSSL As Integer = 49443
     ''' <summary>
     ''' Anmeldeinformationen für die Fritz!Box
     ''' </summary>
@@ -26,12 +26,12 @@
             ' Prüfe, ob Fritz!Box verfügbar
             If Ping(XMLData.POptionen.ValidFBAdr) Then
                 ' Eine Unterscheidung nach Firmware ist erforderlich.
-                Using FBTR064 As New TR064.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Nothing)
+                Using FBTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Nothing)
                     With FBTR064
                         If .Major.IsLargerOrEqual(7) And .Minor.IsLargerOrEqual(24) Then
                             ' ermittle den zuletzt angemeldeten User
                             Dim XMLString As String = DfltStringEmpty
-                            Dim FritzBoxUsers As New FritzBoxXMLUserList
+                            Dim FritzBoxUsers As New FBoxAPI.UserList
 
                             If .LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
                                 NLogger.Info($"Benutzername zum Login auf zuletzt genutzten User gesetzt: '{FritzBoxUsers.GetLastUsedUser.UserName}'")

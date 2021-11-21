@@ -21,46 +21,18 @@
     Public Property InitialSelected As Boolean = False Implements IFBoxData.InitialSelected
 
     Private Property DatenService As IFBoxDataService
-    'Private Property DialogService As IDialogService
-
 
 #Region "Listen"
-    Private _RufUmlItemVM As RufUmlViewModel
-    Public Property RufUmlItemVM As RufUmlViewModel
-        Get
-            Return _RufUmlItemVM
-        End Get
-        Set
-            SetProperty(_RufUmlItemVM, Value)
-        End Set
-    End Property
-
-    Private _RufUmlListe As ObservableCollectionEx(Of RufUmlViewModel)
     Public Property RufUmlListe As ObservableCollectionEx(Of RufUmlViewModel)
-        Get
-            Return _RufUmlListe
-        End Get
-        Set
-            SetProperty(_RufUmlListe, Value)
-        End Set
-    End Property
 #End Region
 
     Public Sub New(dataService As IFBoxDataService)
         _DatenService = dataService
-        '_DialogService = dialogService
     End Sub
-    Public Async Sub Init() Implements IFBoxData.Init
+    Public Sub Init() Implements IFBoxData.Init
 
-        RufUmlListe = New ObservableCollectionEx(Of RufUmlViewModel)
-
-        Dim RufUml As TR064.DeflectionList = Await DatenService.GestDeflectionList
-
-        If RufUml IsNot Nothing Then
-            RufUmlListe.AddRange(RufUml.DeflectionListe.Select(Function(Defl) New RufUmlViewModel(DatenService, Defl)))
-        End If
+        RufUmlListe = New ObservableCollectionEx(Of RufUmlViewModel)(DatenService.GetDeflectionList.Deflections.Select(Function(Defl) New RufUmlViewModel(DatenService) With {.Deflection = Defl, .Enable = Defl.Enable}))
 
     End Sub
-
 
 End Class

@@ -3,20 +3,20 @@ Imports Microsoft.Office.Interop
 Friend Module Journal
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-    Friend Async Sub AutoAnrListe(Anrufliste As TR064.FritzBoxXMLCallList)
+    Friend Async Sub AutoAnrListe(Anrufliste As FBoxAPI.CallList)
 
         If Anrufliste IsNot Nothing Then
             NLogger.Debug($"Anrufliste mit {Anrufliste.Calls.Count} Einträgen geladen.")
 
             ' Starte die Auswertung der Anrufliste
-            Await ImportCalls(Anrufliste, XMLData.POptionen.LetzteAuswertungAnrList, Now)
+            Await ImportCalls(Anrufliste.Calls, XMLData.POptionen.LetzteAuswertungAnrList, Now)
 
             ' Merke die Zeit
             If XMLData.POptionen.LetzteAuswertungAnrList < Now Then XMLData.POptionen.LetzteAuswertungAnrList = Now
         End If
     End Sub
 
-    Friend Async Sub AutoBlockListe(fboxTR064 As TR064.FritzBoxTR64)
+    Friend Async Sub AutoBlockListe(fboxTR064 As FBoxAPI.FritzBoxTR64)
 
         With XMLData.POptionen
             If Now.Subtract(.LetzteSperrlistenaktualisierung).TotalHours.IsLargerOrEqual(24) Then
@@ -38,14 +38,14 @@ Friend Module Journal
         End With
     End Sub
 
-    Private Function ImportCalls(Anrufliste As TR064.FritzBoxXMLCallList, DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task
+    Private Function ImportCalls(Anrufliste As IEnumerable(Of FBoxAPI.Call), DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task
         Return Task.Run(Sub()
-                            Dim Abfrage As ParallelQuery(Of TR064.FritzBoxXMLCall)
+                            Dim Abfrage As ParallelQuery(Of FBoxAPI.Call)
 
-                            Abfrage = From Anruf In Anrufliste.Calls.AsParallel() Where Anruf.Type.IsLessOrEqual(3) And DatumZeitAnfang <= Anruf.Datum And DatumZeitEnde >= Anruf.Datum Select Anruf
-                            Abfrage.ForAll(Async Sub(r)
+                            Abfrage = From Anruf In Anrufliste.AsParallel() Where Anruf.Type.IsLessOrEqual(3) And DatumZeitAnfang <= CDate(Anruf.Date) And DatumZeitEnde >= CDate(Anruf.Date) Select Anruf
+                            Abfrage.ForAll(Async Sub(Anruf)
                                                ' in ErstelleTelefonat wird auch die Wahlwiederholungs- und Rückrufliste ausgewertet.
-                                               Using t As Telefonat = Await r.ErstelleTelefonat
+                                               Using t As Telefonat = Await ErstelleTelefonat(Anruf)
 
                                                    If t IsNot Nothing Then
                                                        ' Erstelle einen Journaleintrag
@@ -54,7 +54,7 @@ Friend Module Journal
                                                        ' Anruflisten aktualisieren
                                                        t.UpdateRingCallList()
                                                    Else
-                                                       NLogger.Debug($"Anruf {r.ID} konnte nicht importiert werden.")
+                                                       NLogger.Debug($"Anruf {Anruf.ID} konnte nicht importiert werden.")
                                                    End If
 
                                                End Using

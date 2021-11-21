@@ -118,12 +118,12 @@
                                         <!--Displaymode: Label Telefonnummer-->
                                         <Label Grid.Column="0"
                                                Style="{StaticResource ContentLabel}"
-                                               Content="{Binding Nummer, FallbackValue=N/A}"/>
+                                               Content="{Binding Number, FallbackValue=N/A}"/>
                                         
                                         <!--Displaymode: Label Typ-->
                                         <Label Grid.Column="1"
                                                Style="{StaticResource DetailLabel}" 
-                                               Content="{Binding Typ, FallbackValue=notset, Converter={StaticResource EnumDescriptionConverter}}"/>
+                                               Content="{Binding Type, FallbackValue=notset, Converter={StaticResource EnumDescriptionConverter}}"/>
 
                                     </Grid>
 
@@ -137,12 +137,12 @@
                                         
                                         <!--Editmode: Textbox Telefonnummer-->
                                         <TextBox Style="{StaticResource EditBox}" Grid.Column="0"
-                                                 Text="{Binding Nummer, FallbackValue=N/A, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                 Text="{Binding Number, FallbackValue=N/A, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                        
                                         <!--Editmode: Combobox Typ-->
                                         <ComboBox Style="{StaticResource EditComboBox}" Grid.Column="1"
                                                   ItemsSource="{Binding Source={fbd:EnumBindingSource {x:Type fbd:XMLTelNrTyp}}}"
-                                                  SelectedValue="{Binding Typ, FallbackValue=notset}">
+                                                  SelectedValue="{Binding Type, FallbackValue=notset}">
 
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
@@ -209,7 +209,7 @@
                                         <!--Displaymode: Label Typ-->
                                         <Label Grid.Column="1"
                                                Style="{StaticResource DetailLabel}" 
-                                               Content="{Binding Klassifizierer, FallbackValue=notset, Converter={StaticResource EnumDescriptionConverter}}"/>
+                                               Content="{Binding Classifier, FallbackValue=notset, Converter={StaticResource EnumDescriptionConverter}}"/>
 
                                     </Grid>
 
@@ -221,14 +221,14 @@
                                             <ColumnDefinition Width="30"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <!--Editmode: Textbox Telefonnummer-->
+                                        <!--Editmode: Textbox E-Mail-->
                                         <TextBox Style="{StaticResource EditBox}" Grid.Column="0"
                                                  Text="{Binding EMail, FallbackValue=N/A, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                                         <!--Editmode: Combobox Typ-->
                                         <ComboBox Style="{StaticResource EditComboBox}" Grid.Column="1"
                                                   ItemsSource="{Binding Source={fbd:EnumBindingSource {x:Type fbd:XMLEMailTyp}}}"
-                                                  SelectedValue="{Binding Klassifizierer, FallbackValue=notset}">
+                                                  SelectedValue="{Binding Classifier, FallbackValue=notset}">
 
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
@@ -237,7 +237,7 @@
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
 
-                                        <!--Editmode: Button Entfernen Telefonnummer-->
+                                        <!--Editmode: Button Entfernen E-Mail-->
                                         <Button  Grid.Column="2" Style="{StaticResource EditButton}"
                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveMail}"
                                                 CommandParameter="{Binding}">

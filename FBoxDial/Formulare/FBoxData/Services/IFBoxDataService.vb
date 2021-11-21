@@ -4,11 +4,12 @@ Public Interface IFBoxDataService
     Sub Finalize()
 
 #Region "TAM Anrufbeantworter"
-    Function GetTAMList() As Task(Of TR064.TAMList)
-    Sub ToggleTAM(TAM As TR064.TAMItem)
-    Function MarkMessage(Message As TR064.FritzBoxXMLMessage) As Boolean
-    Function DeleteMessage(Message As TR064.FritzBoxXMLMessage) As Boolean
-    Sub PlayMessage(Message As TR064.FritzBoxXMLMessage)
+    Function GetTAMItems() As IEnumerable(Of FBoxAPI.TAMItem)
+    Function GetMessagges(TAM As FBoxAPI.TAMItem) As IEnumerable(Of FBoxAPI.Message)
+    Function ToggleTAM(TAM As FBoxAPI.TAMItem) As Boolean
+    Function MarkMessage(Message As FBoxAPI.Message) As Boolean
+    Function DeleteMessage(Message As FBoxAPI.Message) As Boolean
+    Sub PlayMessage(Message As FBoxAPI.Message)
 #End Region
 
 #Region "Anrufliste"
@@ -22,13 +23,13 @@ Public Interface IFBoxDataService
     ''' Lädt die Anrufliste aus der Fritz!Box herunter
     ''' </summary>
     ''' <returns>FritzBoxXMLCallList</returns>
-    Function GetAnrufListe() As Task(Of TR064.FritzBoxXMLCallList)
+    Function GetAnrufListe() As Task(Of FBoxAPI.CallList)
 
     ''' <summary>
-    ''' Erstellt aus dem übegebenen Anruf (<see cref="TR064.FritzBoxXMLCall"/>) ein Outlook Journaleintrag.
+    ''' Erstellt aus dem übegebenen Anruf (<see cref="FBoxAPI.Call"/>) ein Outlook Journaleintrag.
     ''' </summary>
     ''' <param name="Anrufe">Auflistung der zu importierenden Anrufe</param>
-    Function ErstelleEinträge(Anrufe As IEnumerable(Of TR064.FritzBoxXMLCall), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
+    Function ErstelleEinträge(Anrufe As IEnumerable(Of FBoxAPI.Call), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
 
     ''' <summary>
     ''' Lädt die übergebenen Nummern in die Sperrliste der Fritz!Box hoch.
@@ -39,10 +40,16 @@ Public Interface IFBoxDataService
     ''' <summary>
     ''' Ruft den Kontakt zurück
     ''' </summary>
-    ''' <param name="Kontakt">Anruf, welcher wiederholt werden soll, oder ein Rückruf erfolgen soll.</param>
-    Sub CallXMLContact(Kontakt As TR064.FritzBoxXMLCall)
+    ''' <param name="Anruf">Anruf, welcher wiederholt werden soll, oder ein Rückruf erfolgen soll.</param>
+    Sub CallXMLContact(Anruf As FBoxAPI.Call)
 
-    Sub ShowXMLContact(Kontakt As TR064.FritzBoxXMLCall)
+    Sub ShowXMLContact(Anruf As FBoxAPI.Call)
+
+#End Region
+
+#Region "Deflection - Rufumleitung"
+    Function GetDeflectionList() As FBoxAPI.DeflectionList
+    Function ToggleRufuml(Deflection As FBoxAPI.Deflection) As Boolean
 #End Region
 
 #Region "tellows"
@@ -53,32 +60,30 @@ Public Interface IFBoxDataService
 #End Region
 
 #Region "Telefonbücher"
-#Region "Fritz!Box Telefonbücher"
-    Function GetTelefonbücher() As Task(Of TR064.FritzBoxXMLTelefonbücher)
-    Function AddTelefonbuch(Name As String) As Task(Of TR064.FritzBoxXMLTelefonbuch)
+#Region "Telefonbücher"
+    Function GetTelefonbücher() As Task(Of IEnumerable(Of PhonebookEx))
+    Function AddTelefonbuch(Name As String) As Task(Of PhonebookEx)
     Function DeleteTelefonbuch(TelefonbuchID As Integer) As Boolean
     Function GetSessionID() As String
 #End Region
 
-#Region "Fritz!Box Kontakte"
+#Region "Kontakte"
     Function SetKontakt(TelefonbuchID As Integer, XMLDaten As String) As Integer
     Function DeleteKontakt(TelefonbuchID As Integer, UID As Integer) As Boolean
-    Function DeleteKontakte(TelefonbuchID As Integer, Einträge As IEnumerable(Of TR064.FritzBoxXMLKontakt)) As Boolean
+    Function DeleteKontakte(TelefonbuchID As Integer, Einträge As IEnumerable(Of FBoxAPI.Contact)) As Boolean
+    Function LadeKontaktbild(Person As FBoxAPI.Person) As Task(Of Windows.Media.ImageSource)
 #End Region
 
-#Region "Fritz!Box Rufsperren"
-    Function SetRufsperre(XMLDaten As TR064.FritzBoxXMLKontakt) As Integer
+#Region "Rufsperren"
+    Function SetRufsperre(XMLDaten As FBoxAPI.Contact) As Integer
     Function DeleteRufsperre(UID As Integer) As Boolean
-    Function DeleteRufsperren(Einträge As IEnumerable(Of TR064.FritzBoxXMLKontakt)) As Boolean
+    Function DeleteRufsperren(Einträge As IEnumerable(Of FBoxAPI.Contact)) As Boolean
 #End Region
 
 #Region "Kontakt anrufen"
-    Sub Dial(XMLDaten As TR064.FritzBoxXMLKontakt)
+    Sub Dial(XMLDaten As FBoxAPI.Contact)
 #End Region
 #End Region
 
-#Region "Deflection - Rufumleitung"
-    Function GestDeflectionList() As Task(Of TR064.DeflectionList)
-    Sub ToggleRufuml(Deflection As TR064.DeflectionInfo)
-#End Region
+
 End Interface

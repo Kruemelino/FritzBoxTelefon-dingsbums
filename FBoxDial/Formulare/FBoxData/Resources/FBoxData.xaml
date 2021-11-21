@@ -28,7 +28,7 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type fbd:FBoxDataRufUmlViewModel}">
-        <fbd:FBoxRufUmlView/>
+        <fbd:FBoxDeflectionView/>
     </DataTemplate>
 
     <!--https://stackoverflow.com/a/56616523-->

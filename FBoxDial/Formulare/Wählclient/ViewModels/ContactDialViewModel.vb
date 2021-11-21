@@ -65,8 +65,8 @@ Public Class ContactDialViewModel
         End Set
     End Property
 
-    Private _FBoxXMLKontakt As TR064.FritzBoxXMLKontakt
-    Public Property FBoxXMLKontakt As TR064.FritzBoxXMLKontakt
+    Private _FBoxXMLKontakt As FBoxAPI.Contact
+    Public Property FBoxXMLKontakt As FBoxAPI.Contact
         Get
             Return _FBoxXMLKontakt
         End Get
@@ -138,7 +138,7 @@ Public Class ContactDialViewModel
         End With
     End Sub
 
-    Private Sub SetData(FBoxXMLKontakt As TR064.FritzBoxXMLKontakt)
+    Private Sub SetData(FBoxXMLKontakt As FBoxAPI.Contact)
         With FBoxXMLKontakt
 
             ' Telefonnummern des Kontaktes setzen 
@@ -149,7 +149,7 @@ Public Class ContactDialViewModel
 
             ' Kontaktbild anzeigen
             Instance.Invoke(Async Function()
-                                Kontaktbild = Await FBoxXMLKontakt.KontaktBildEx
+                                Kontaktbild = Await FBoxXMLKontakt.KontaktBild
                                 OnPropertyChanged(NameOf(ZeigeBild))
                             End Function)
 

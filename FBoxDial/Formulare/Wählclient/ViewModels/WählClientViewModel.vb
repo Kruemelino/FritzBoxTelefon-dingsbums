@@ -167,7 +167,7 @@ Public Class WählClientViewModel
             ContactDialVM.OExchangeNutzer = Value
         End Set
     End Property
-    Friend WriteOnly Property SetOutlookFBoxXMLKontakt As TR064.FritzBoxXMLKontakt
+    Friend WriteOnly Property SetOutlookFBoxXMLKontakt As FBoxAPI.Contact
         Set
             ContactDialVM.FBoxXMLKontakt = Value
         End Set
