@@ -198,6 +198,8 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Friend Property AnruferErmittelt As Boolean = False
     <XmlIgnore> Friend Property AnrMonEingeblendet As Boolean = False
     <XmlIgnore> Friend Property StoppUhrEingeblendet As Boolean = False
+    <XmlIgnore> Friend Property AnrMonStartHideTimer As Boolean = False
+
 #End Region
 
 #Region "Date"
@@ -860,9 +862,8 @@ Imports Microsoft.Office.Interop
         ' Anrufmonitor ausblenden einleiten, falls dies beim CONNECT geschehen soll
         If XMLData.POptionen.CBAutoClose And XMLData.POptionen.CBAnrMonHideCONNECT Then
             ' Ausblenden nur Starten, wenn nicht der Anrufbeaantworter rangegangen ist.
-            If Not TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM Then
-                NLogger.Debug($"Starte Timer für Ausblenden des Anrufmonitor beim CONNECT...")
-                PopUpAnrMonWPF.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
+            If Not TelGerät?.TelTyp = DfltWerteTelefonie.TelTypen.TAM Then
+                AnrMonStartHideTimer = True
             End If
         End If
 
@@ -905,7 +906,7 @@ Imports Microsoft.Office.Interop
 
                 ' Anrufmonitor ausblenden einleiten, falls dies beim RING geschehen soll
                 If XMLData.POptionen.CBAutoClose And Not XMLData.POptionen.CBAnrMonHideCONNECT Then
-                    NLogger.Debug($"Starte Timer für Ausblenden des Anrufmonitor beim RING...")
+                    NLogger.Debug("Starte Timer für Ausblenden des Anrufmonitors beim RING...")
                     .StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
                 End If
             End With
@@ -996,12 +997,27 @@ Imports Microsoft.Office.Interop
                                    AnrMonEinblenden()
 
                                    While AnrMonEingeblendet
+                                       AnrMonControl()
+
                                        Forms.Application.DoEvents()
                                        Thread.Sleep(100)
                                    End While
                                End If
                                Return False
                            End Function)
+    End Sub
+
+    Private Sub AnrMonControl()
+
+        ' AnrMonStartHideTimer wird durch die CONNECT auf True gesetzt. Sobald das der Fall ist, wird der AusblendTimer gestartet. 
+        If AnrMonStartHideTimer Then
+            NLogger.Debug("Starte Timer für Ausblenden des Anrufmonitors beim CONNECT...")
+            PopUpAnrMonWPF?.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
+
+            ' Setze AnrMonStartHideTimer, damit der Timer nur einmal gestartet wird.
+            AnrMonStartHideTimer = False
+        End If
+
     End Sub
 
     Private Async Sub ShowStoppUhr()
