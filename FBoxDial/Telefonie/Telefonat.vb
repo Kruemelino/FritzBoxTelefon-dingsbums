@@ -858,7 +858,7 @@ Imports Microsoft.Office.Interop
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
         ' Anrufmonitor ausblenden einleiten, falls dies beim CONNECT geschehen soll
-        If XMLData.POptionen.CBAutoClose And Not XMLData.POptionen.CBAnrMonHideCONNECT Then
+        If XMLData.POptionen.CBAutoClose And XMLData.POptionen.CBAnrMonHideCONNECT Then
             ' Ausblenden nur Starten, wenn nicht der Anrufbeaantworter rangegangen ist.
             If Not TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM Then
                 NLogger.Debug($"Starte Timer für Ausblenden des Anrufmonitor beim CONNECT...")
