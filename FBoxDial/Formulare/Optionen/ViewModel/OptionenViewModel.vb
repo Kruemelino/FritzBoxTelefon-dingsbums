@@ -168,6 +168,19 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBAnrMonHideCONNECT As Boolean
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor bei Rufannahme ausgeblendet werden soll.
+    ''' </summary>
+    Public Property CBAnrMonHideCONNECT As Boolean
+        Get
+            Return _CBAnrMonHideCONNECT
+        End Get
+        Set
+            SetProperty(_CBAnrMonHideCONNECT, Value)
+        End Set
+    End Property
+
     Private _CBAnrMonZeigeKontakt As Boolean
     ''' <summary>
     ''' Angabe, ob der Kontakt Angezeigt werden soll

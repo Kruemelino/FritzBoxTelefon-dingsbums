@@ -34,6 +34,10 @@
                  Text="{Binding OptVM.TBEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="{x:Static localize:LocOptionen.strAnrMonCBHideCONNECT}" 
+                  IsChecked="{Binding OptVM.CBAnrMonHideCONNECT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}"
                   Content="{x:Static localize:LocOptionen.strAnrMonCBAnrMonZeigeKontakt}" 
                   IsChecked="{Binding OptVM.CBAnrMonZeigeKontakt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 

@@ -19,21 +19,21 @@ Friend Class WindowHelper
     ''' </summary>
     Private AusblendDispatcherTimer As Threading.DispatcherTimer
 
-
     Private AusblendTimer As Timers.Timer
 
     Private Dispatcher As Boolean
 
-    Public Sub New(wndw As Window, Intervall As TimeSpan)
+    Public Sub New(wndw As Window)
         Fenster = wndw
-        Ausblendverzögerung = Intervall
 
         ' Ereignishandler hinzufügen
         AddHandler Fenster.MouseEnter, AddressOf Fenster_MouseEnter
         AddHandler Fenster.MouseLeave, AddressOf Fenster_MouseLeave
     End Sub
 
-    Friend Sub StartTimer(StartDispatcher As Boolean)
+    Friend Sub StartTimer(StartDispatcher As Boolean, Intervall As TimeSpan)
+
+        Ausblendverzögerung = Intervall
 
         Dispatcher = StartDispatcher
 

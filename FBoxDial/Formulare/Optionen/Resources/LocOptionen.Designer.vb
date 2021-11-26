@@ -22,7 +22,7 @@ Namespace Localize
     '''<summary>
     '''  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class LocOptionen
@@ -125,6 +125,15 @@ Namespace Localize
         Public Shared ReadOnly Property strAnrMonCBAutoClose() As String
             Get
                 Return ResourceManager.GetString("strAnrMonCBAutoClose", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufmonitor bei Rufannahme ausblenden ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonCBHideCONNECT() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonCBHideCONNECT", resourceCulture)
             End Get
         End Property
         

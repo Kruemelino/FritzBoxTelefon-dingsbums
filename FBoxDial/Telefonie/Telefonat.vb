@@ -857,6 +857,15 @@ Imports Microsoft.Office.Interop
         ' Telefoniegerät ermitteln
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
+        ' Anrufmonitor ausblenden einleiten, falls dies beim CONNECT geschehen soll
+        If XMLData.POptionen.CBAutoClose And Not XMLData.POptionen.CBAnrMonHideCONNECT Then
+            ' Ausblenden nur Starten, wenn nicht der Anrufbeaantworter rangegangen ist.
+            If Not TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM Then
+                NLogger.Debug($"Starte Timer für Ausblenden des Anrufmonitor beim CONNECT...")
+                PopUpAnrMonWPF.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
+            End If
+        End If
+
         ' Stoppuhr einblenden, wenn Bedingungen erfüllt 
         If XMLData.POptionen.CBStoppUhrEinblenden Then ShowStoppUhr()
 
@@ -866,7 +875,7 @@ Imports Microsoft.Office.Interop
         Beendet = True
 
         ' Stoppuhr ausblenden, wenn dies in den Einstellungen gesetzt ist
-        If StoppUhrEingeblendet And XMLData.POptionen.CBStoppUhrAusblenden Then PopupStoppUhrWPF.StarteAusblendTimer()
+        If StoppUhrEingeblendet And XMLData.POptionen.CBStoppUhrAusblenden Then PopupStoppUhrWPF.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBStoppUhrAusblendverzögerung))
 
         If XMLData.POptionen.CBJournal Then ErstelleJournalEintrag()
     End Sub
@@ -893,6 +902,12 @@ Imports Microsoft.Office.Interop
 
                 ' Zeige den Anrufmonitor an
                 .Show()
+
+                ' Anrufmonitor ausblenden einleiten, falls dies beim RING geschehen soll
+                If XMLData.POptionen.CBAutoClose And Not XMLData.POptionen.CBAnrMonHideCONNECT Then
+                    NLogger.Debug($"Starte Timer für Ausblenden des Anrufmonitor beim RING...")
+                    .StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
+                End If
             End With
 
             AnrMonEingeblendet = True
@@ -1057,5 +1072,3 @@ Imports Microsoft.Office.Interop
 #End Region
 
 End Class
-
-

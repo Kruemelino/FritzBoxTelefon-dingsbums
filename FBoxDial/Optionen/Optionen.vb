@@ -85,6 +85,10 @@
     ''' </summary>
     <XmlElement("TBEnblDauer")> Public Property TBEnblDauer As Integer = 10
     ''' <summary>
+    ''' Angabe, ob der Anrufmonitor bei Rufannahme ausgeblendet werden soll.
+    ''' </summary>
+    <XmlElement("CBAnrMonHideCONNECT")> Public Property CBAnrMonHideCONNECT As Boolean = False
+    ''' <summary>
     ''' Angabe, ob der Kontakt angezeigt werden soll
     ''' </summary>
     <XmlElement("CBAnrMonZeigeKontakt")> Public Property CBAnrMonZeigeKontakt As Boolean = False

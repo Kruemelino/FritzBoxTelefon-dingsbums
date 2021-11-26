@@ -146,6 +146,10 @@ Sekundarfarbe: Schrift</value>
     <value>Anruffenster automatisch ausblenden</value>
     <comment>OptAnrMonView</comment>
   </data>
+  <data name="strAnrMonCBHideCONNECT" xml:space="preserve">
+    <value>Anrufmonitor bei Rufannahme ausblenden</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strAnrMonCBStoppUhrAusblenden" xml:space="preserve">
     <value>Stoppuhr bei Beenden ausblenden</value>
     <comment>OptAnrMonView</comment>

@@ -18,15 +18,15 @@ Public Class StoppUhrWPF
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
 
         ' Erzeuge die Klasse für das automatische Ausblenden
-        WindowHelper = New WindowHelper(Me, TimeSpan.FromSeconds(XMLData.POptionen.TBStoppUhrAusblendverzögerung))
+        WindowHelper = New WindowHelper(Me)
     End Sub
 
     ''' <summary>
     ''' Startet das automatische Ausblenden der Stoppuhr
     ''' </summary>
-    Friend Sub StarteAusblendTimer()
+    Friend Sub StarteAusblendTimer(Intervall As TimeSpan)
         ' Timer für das Ausblenden starten
-        WindowHelper.StartTimer(False)
+        WindowHelper.StartTimer(False, Intervall)
     End Sub
 
 #Region "Window Events"

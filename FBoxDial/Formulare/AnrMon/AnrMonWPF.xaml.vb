@@ -4,6 +4,7 @@ Imports System.Threading
 
 Public Class AnrMonWPF
     Inherits Window
+
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property WindowHelper As WindowHelper
 
@@ -14,7 +15,7 @@ Public Class AnrMonWPF
     Public Sub New()
 
         ' Erzeuge die Klasse für das automatische Ausblenden
-        WindowHelper = New WindowHelper(Me, TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
+        WindowHelper = New WindowHelper(Me)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -22,8 +23,6 @@ Public Class AnrMonWPF
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
 
-        ' Erzeuge die Klasse für das automatische Ausblenden
-        'WindowHelper = New WindowHelper(Me, TimeSpan.FromSeconds(XMLData.POptionen.TBEnblDauer))
     End Sub
 
     ''' <summary>
@@ -57,10 +56,8 @@ Public Class AnrMonWPF
         ' Outlook Inspektor reaktivieren
         KeepoInspActivated(True)
 
-        ' Timer für das Ausblenden starten
-        If XMLData.POptionen.CBAutoClose Then WindowHelper.StartTimer(True)
-
     End Sub
+
     ''' <summary>
     ''' Tritt kurz vor dem Schließen des Fensters auf.
     ''' </summary>
@@ -68,4 +65,8 @@ Public Class AnrMonWPF
         RaiseEvent Geschlossen(Me, e)
     End Sub
 
+    Friend Sub StarteAusblendTimer(Intervall As TimeSpan)
+        ' Timer für das Ausblenden starten
+        WindowHelper.StartTimer(True, Intervall)
+    End Sub
 End Class

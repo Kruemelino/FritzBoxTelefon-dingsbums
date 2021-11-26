@@ -193,7 +193,7 @@ Public Class FritzBoxWählClient
             End If
 
             ' Timer zum automatischen Schließen des Fensters starten
-            If Not Abbruch And XMLData.POptionen.CBCloseWClient Then WPFWindow.StarteAusblendTimer()
+            If Not Abbruch And XMLData.POptionen.CBCloseWClient Then WPFWindow.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBWClientEnblDauer))
 
         End If
 
