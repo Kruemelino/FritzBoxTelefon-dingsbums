@@ -11,10 +11,10 @@ Imports System.Security
 ' Werte der Assemblyattribute überprüfen
 
 <Assembly: AssemblyTitle("Fritz!Box Telefon-Dingsbums")>
-<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyDescription("Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche.")>
 <Assembly: AssemblyCompany("Fritz!Box Telefon-Dingsbums")>
 <Assembly: AssemblyProduct("Fritz!Box Telefon-Dingsbums")>
-<Assembly: AssemblyCopyright("Kruemelino ©2021")>
+<Assembly: AssemblyCopyright("Gert Michael (Kruemelino) © 2021")>
 <Assembly: AssemblyTrademark("")>
 
 ' Durch Festlegen von "ComVisible" auf "false" werden die Typen in dieser Assembly unsichtbar 
