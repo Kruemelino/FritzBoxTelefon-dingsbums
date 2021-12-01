@@ -291,7 +291,7 @@ Imports FBoxDial.FritzBoxDefault
                                                         .Name = DECTTelefon.Name,
                                                         .Intern = DECTTelefon.Intern.ToInt,
                                                         .IsFax = False,
-                                                        .AnrMonID = AnrMonTelIDBase.DECT + InternBase.DECT - .Intern,
+                                                        .AnrMonID = .Intern - InternBase.DECT + AnrMonTelIDBase.DECT,
                                                         .StrEinTelNr = New List(Of String)}
                 ' Abfrageliste leeren
                 TelQuery.Clear()
