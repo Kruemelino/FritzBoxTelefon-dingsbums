@@ -31,15 +31,20 @@
 
         <TextBox Style="{StaticResource OptTextBox}"
                  Tag="{x:Static localize:LocOptionen.strAnrMonTBEnblDauer}"
-                 Text="{Binding OptVM.TBEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding OptVM.TBEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strAnrMonHideInfo}"
+                            IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        
         <CheckBox Style="{StaticResource OptCheckBox}"
                   Content="{x:Static localize:LocOptionen.strAnrMonCBHideCONNECT}" 
-                  IsChecked="{Binding OptVM.CBAnrMonHideCONNECT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding OptVM.CBAnrMonHideCONNECT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <CheckBox Style="{StaticResource OptCheckBox}"
                   Content="{x:Static localize:LocOptionen.strAnrMonCBAnrMonZeigeKontakt}" 
-                  IsChecked="{Binding OptVM.CBAnrMonZeigeKontakt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding OptVM.CBAnrMonZeigeKontakt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <CheckBox Style="{StaticResource OptCheckBox}"
                   Content="{x:Static localize:LocOptionen.strAnrMonCBAnrMonContactImage}" 
@@ -47,23 +52,10 @@
 
         <CheckBox Style="{StaticResource OptCheckBox}"
                   Content="{x:Static localize:LocOptionen.strAnrMonSetBColor}" 
-                  IsChecked="{Binding OptVM.CBSetAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding OptVM.CBSetAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strAnrMonPosInfo}"/>
-        
-        <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosX}"
-                 Text="{Binding OptVM.TBAnrMonModPosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosY}"
-                 Text="{Binding OptVM.TBAnrMonModPosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-       
-        <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonAbstand}"
-                 Text="{Binding OptVM.TBAnrMonAbstand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
-        <Grid Visibility="{Binding OptVM.CBSetAnrMonBColor, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,4"               >
+        <Grid Visibility="{Binding OptVM.CBSetAnrMonBColor, Converter={StaticResource BoolToVisibilityConverter}}" 
+              Margin="0,0,0,4"               >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="150"/>
@@ -76,6 +68,20 @@
                                              SecondaryColor="{Binding OptVM.TBAnrMonFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
+
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strAnrMonPosInfo}" />
+        
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosX}"
+                 Text="{Binding OptVM.TBAnrMonModPosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosY}"
+                 Text="{Binding OptVM.TBAnrMonModPosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+       
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonAbstand}"
+                 Text="{Binding OptVM.TBAnrMonAbstand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />    
         
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strAnrMonHeadStoppUhr}"/>
@@ -90,7 +96,8 @@
 
         <TextBox Style="{StaticResource OptTextBox}"
                  Tag="{x:Static localize:LocOptionen.strAnrMonTBStoppUhrAusblendverzögerung}"
-                 Text="{Binding OptVM.TBStoppUhrAusblendverzögerung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding OptVM.TBStoppUhrAusblendverzögerung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 IsEnabled="{Binding OptVM.CBStoppUhrAusblenden, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <CheckBox Style="{StaticResource OptCheckBox}"
                   Content="{x:Static localize:LocOptionen.strAnrMonStoppUhrSetBColor}" 

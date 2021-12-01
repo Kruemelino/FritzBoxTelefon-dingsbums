@@ -338,6 +338,7 @@
       <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Services\BindingProxy.vb" />
+    <Compile Include="Formulare\Optionen\Services\PassthroughMouseWheelBehavior.vb" />
     <Compile Include="Formulare\Optionen\Services\IOlFolderViewModel.vb" />
     <Compile Include="Formulare\Optionen\Services\IPageViewModel.vb" />
     <Compile Include="Formulare\Optionen\Services\OptionenService.vb" />

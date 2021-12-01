@@ -174,6 +174,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Das Ausblenden des Anrufmonitors wird über einen Timer gesteuert. Normalerweise wird dieser beim eingehenden Telefonat automatisch gestartet. Im Folgenden kann festgelegt werden, dass dieser Timer erst bei dem Zustandekommen der Verbindung gestartet wird. Dies hat zur Folge, dass Anruffenster für verpasste Telefonate geöffnet bleiben. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonHideInfo() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonHideInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann die Positionierung des Popups beeinflusst werden. Die Position kann ausgehend von der rechten unteren Ecke des primären Bildschirmes zusätzlich verschoben werden. Zusätzlich kann der Abstand zum Rand und zwischen den einzelnen Popups variiert werden. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonPosInfo() As String

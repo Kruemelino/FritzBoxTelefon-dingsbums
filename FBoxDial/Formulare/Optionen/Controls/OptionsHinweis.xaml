@@ -1,10 +1,12 @@
 ﻿<UserControl x:Class="OptionsHinweis"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    x:Name="OptionsHinweis">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             mc:Ignorable="d"
+             x:Name="OptionsHinweis">
 
     <Grid DataContext="{Binding ElementName=OptionsHinweis}" Margin="0,0,0,4">
         <Border BorderThickness="0.5">
@@ -26,9 +28,16 @@
                     </Style>
                 </ScrollViewer.Resources>
 
-                <TextBlock Text="{Binding Path=Label}" Style="{StaticResource TextBlockStyle}"/>
+                <TextBlock Text="{Binding Path=Label}" Style="{StaticResource TextBlockStyle}" />
+
             </ScrollViewer>
+            
+            <b:Interaction.Behaviors>
+                <fbd:PassthroughMouseWheelBehavior />
+            </b:Interaction.Behaviors>
         </Border>
+        
+
     </Grid>
 
 </UserControl>
