@@ -262,7 +262,6 @@ Public Class FBoxDataService
     End Function
 #End Region
 
-
 #Region "Rufsperre"
     Public Function SetRufsperre(XMLDaten As FBoxAPI.Contact) As Integer Implements IFBoxDataService.SetRufsperre
         Dim UID As Integer = 0
@@ -286,7 +285,5 @@ Public Class FBoxDataService
     End Sub
 #End Region
 #End Region
-
-
 
 End Class

@@ -135,7 +135,11 @@ Public Class KontaktViewModel
             If DialogService.ShowMessageBox(Localize.LocFBoxData.strQuestionDeleteCallBarring) = Windows.MessageBoxResult.Yes Then
                 ' Lösche die Rufsperre auf der Fritz!Box
                 If DatenService.DeleteRufsperre(FBoxKontakt.Uniqueid) Then
+                    ' Entferne den Kontakt ...
+                    ' ... im Fritz!Box Telefonbuch
                     FBoxTelefonbuch.Telefonbuch.DeleteKontakt(FBoxKontakt.Kontakt)
+                    ' ... in der ObservableCollection
+                    FBoxTelefonbuch.Contacts.Remove(FBoxKontakt)
                 End If
             End If
 
@@ -144,7 +148,11 @@ Public Class KontaktViewModel
             If DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionDeleteContact, FBoxKontakt.Person.RealName, FBoxTelefonbuch.Name)) = Windows.MessageBoxResult.Yes Then
                 ' lösche den Kontakt auf der Box
                 If DatenService.DeleteKontakt(FBoxTelefonbuch.ID, FBoxKontakt.Uniqueid) Then
+                    ' Entferne den Kontakt ...
+                    ' ... im Fritz!Box Telefonbuch
                     FBoxTelefonbuch.Telefonbuch.DeleteKontakt(FBoxKontakt.Kontakt)
+                    ' ... in der ObservableCollection
+                    FBoxTelefonbuch.Contacts.Remove(FBoxKontakt)
                 End If
             End If
 

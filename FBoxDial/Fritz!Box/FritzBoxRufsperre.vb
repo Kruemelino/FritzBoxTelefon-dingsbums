@@ -16,9 +16,10 @@ Friend Module FritzBoxRufsperre
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
 
-            Dim Sperreintrag As New FBoxAPI.Contact
+            ' Sperreintrag generieren
+            Dim Sperreintrag As FBoxAPI.Contact = CreateContact(Name)
+
             With Sperreintrag
-                .Person.RealName = Name
 
                 ' Prüfe, ob die übergebenen Nummern bereits auf der Rufsperre der Fritz!Box vorhanden sind.
                 ' Ein Eintrag auf der Fritz!Box kann mehrere Telefonnummern enthalten
