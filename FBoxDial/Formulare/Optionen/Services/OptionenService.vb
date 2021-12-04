@@ -263,7 +263,7 @@ Friend Class OptionenService
 #End Region
 
 #Region "Test Anrufmonitor"
-    Public Sub StartAnrMonTest(TelNr As String) Implements IOptionenService.StartAnrMonTest
+    Public Sub StartAnrMonTest(TelNr As String, CONNECT As Boolean) Implements IOptionenService.StartAnrMonTest
         Dim rnd As New Random()
 
         Dim D As Landeskennzahl = ThisAddIn.PVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(LKZ) LKZ.Landeskennzahl = "49")
@@ -280,8 +280,11 @@ Friend Class OptionenService
 
         Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {"23.06.18 13:20:24", "RING", "1", TelNr, XMLData.PTelefonie.Telefonnummern(rnd.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl, "SIP4"}}
 
+        ' 23.06.18 13:20:44;CONNECT;1;40;0123456789;
+        If CONNECT Then AktivesTelefonat.SetAnrMonCONNECT = {"23.06.18 13:20:52", "CONNECT", "1", $"{XMLData.PTelefonie.Telefoniegeräte(rnd.Next(0, XMLData.PTelefonie.Telefoniegeräte.Count)).AnrMonID}", TelNr}
+
         ' 23.06.18 13:20:52;DISCONNECT;1;9;
-        AktivesTelefonat.SetAnrMonDISCONNECT = {"23.06.18 13:20:52", "DISCONNECT", "1", "9"}
+        AktivesTelefonat.SetAnrMonDISCONNECT = {"23.06.18 13:20:44", "DISCONNECT", "1", "9"}
     End Sub
 #End Region
 End Class

@@ -1530,6 +1530,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anruf verbunden (CONNECT) ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestAnrMonCONNECT() As String
+            Get
+                Return ResourceManager.GetString("strTestAnrMonCONNECT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Test des Anrufmonitors ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestAnrufmonitorHead() As String

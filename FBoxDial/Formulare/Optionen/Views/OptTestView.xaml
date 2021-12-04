@@ -165,6 +165,10 @@
                              Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
                              Text="{Binding TBTestAnrMonInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strTestAnrMonCONNECT}" 
+                          IsChecked="{Binding TBTestAnrMonCONNECT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
                 <Button Content="{x:Static localize:LocOptionen.strTestStartAnrMon}"
                         Command="{Binding TestAnrMonCommand}" Height="25"/>
             </StackPanel>

@@ -47,6 +47,6 @@ Friend Interface IOptionenService
 #End Region
 
 #Region "Test Anrufmonitor"
-    Sub StartAnrMonTest(TelNr As String)
+    Sub StartAnrMonTest(TelNr As String, CONNECT As Boolean)
 #End Region
 End Interface

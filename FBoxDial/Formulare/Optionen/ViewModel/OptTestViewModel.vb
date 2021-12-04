@@ -323,8 +323,18 @@
         End Set
     End Property
 
+    Private _TBTestAnrMonCONNECT As Boolean
+    Public Property TBTestAnrMonCONNECT As Boolean
+        Get
+            Return _TBTestAnrMonCONNECT
+        End Get
+        Set
+            SetProperty(_TBTestAnrMonCONNECT, Value)
+        End Set
+    End Property
+
     Private Sub StartAnrMonTest(obj As Object)
-        DatenService.StartAnrMonTest(TBTestAnrMonInput)
+        DatenService.StartAnrMonTest(TBTestAnrMonInput, TBTestAnrMonCONNECT)
     End Sub
 #End Region
 End Class

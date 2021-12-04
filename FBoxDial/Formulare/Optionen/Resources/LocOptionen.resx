@@ -783,6 +783,10 @@ Warnung: Wenn viele Einträge auf die Fritz!Box geladen werden, kann diese träg
     <value>Testbereich</value>
     <comment>MainView</comment>
   </data>
+  <data name="strTestAnrMonCONNECT" xml:space="preserve">
+    <value>Anruf verbunden (CONNECT)</value>
+    <comment>OptTestView</comment>
+  </data>
   <data name="strTestAnrufmonitorHead" xml:space="preserve">
     <value>Test des Anrufmonitors</value>
     <comment>OptTestView</comment>
