@@ -9,7 +9,8 @@ Friend Module KontaktIndizierer
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
     ''' <param name="olOrdner">Der Ordner in dem Der Kontakt gespeichert werden soll.</param>
-    Friend Sub IndiziereKontakt(olKontakt As ContactItem, olOrdner As MAPIFolder)
+    ''' <param name="RCO">Angabe, ob der indizierte Kontakte freigegeben werden soll. <see cref="ReleaseComObject"/></param>
+    Friend Sub IndiziereKontakt(olKontakt As ContactItem, olOrdner As MAPIFolder, RCO As Boolean)
 
         ' Wird der Zielordner für, die Kontaktsuche verwendet?
         If olOrdner.OrdnerAusgewählt(OutlookOrdnerVerwendung.KontaktSuche) Then
@@ -21,7 +22,8 @@ Friend Module KontaktIndizierer
             DeIndiziereKontakt(olKontakt)
 
         End If
-        ReleaseComObject(olKontakt)
+
+        If RCO Then ReleaseComObject(olKontakt)
         ReleaseComObject(olOrdner)
     End Sub
 

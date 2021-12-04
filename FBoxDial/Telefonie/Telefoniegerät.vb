@@ -22,18 +22,10 @@ Public Class Telefoniegerät
     <XmlAttribute> Public Property IsMicroSIP As Boolean
     <XmlAttribute> Public Property ZuletztGenutzt As Boolean
     <XmlAttribute> Public Property TelTyp As TelTypen
-    <XmlAttribute> Public Property Enable As Boolean
-    <XmlAttribute> Public Property InternalID As Integer
 #End Region
     <XmlIgnore> Public ReadOnly Property IsSoftPhone As Boolean
         Get
             Return IsMicroSIP Or IsPhoner
-        End Get
-    End Property
-
-    <XmlIgnore> Public ReadOnly Property IsIPPhone As Boolean
-        Get
-            Return TelTyp = TelTypen.IP
         End Get
     End Property
 
@@ -70,7 +62,6 @@ Public Class Telefoniegerät
             End Select
         End Get
     End Property
-
 
 #Region "Equals"
     Public Overrides Function Equals(obj As Object) As Boolean

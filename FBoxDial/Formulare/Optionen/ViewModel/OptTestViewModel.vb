@@ -313,8 +313,18 @@
 #End Region
 
 #Region "Test des Anrufmonitors"
+    Private _TBTestAnrMonInput As String
+    Public Property TBTestAnrMonInput As String
+        Get
+            Return _TBTestAnrMonInput
+        End Get
+        Set
+            SetProperty(_TBTestAnrMonInput, Value)
+        End Set
+    End Property
+
     Private Sub StartAnrMonTest(obj As Object)
-        DatenService.StartAnrMonTest()
+        DatenService.StartAnrMonTest(TBTestAnrMonInput)
     End Sub
 #End Region
 End Class

@@ -75,7 +75,6 @@ Imports FBoxDial.FritzBoxDefault
                                 Dim Telefon As New Telefoniegerät With {.Name = SIPClient.PhoneName,
                                                                         .TelTyp = TelTypen.IP,
                                                                         .AnrMonID = AnrMonTelIDBase.IP + SIPClient.ClientIndex,
-                                                                        .InternalID = SIPClient.ClientIndex,
                                                                         .StrEinTelNr = New List(Of String),
                                                                         .Intern = SIPClient.InternalNumber}
                                 With Telefon
@@ -94,7 +93,7 @@ Imports FBoxDial.FritzBoxDefault
                                 ' Telefon der Liste von Geräten hinzufügen
                                 Telefoniegeräte.Add(Telefon)
 
-                                NLogger.Debug($"Test Dialport Fallback IP-Telefon: '{Telefon.GetDialPortFallback}'")
+                                'NLogger.Debug($"Test Dialport Fallback IP-Telefon: '{Telefon.GetDialPortFallback}'")
                             Next
                         End If
 
@@ -107,9 +106,7 @@ Imports FBoxDial.FritzBoxDefault
                                 Dim Telefon As New Telefoniegerät With {.Name = AB.Name,
                                                     .TelTyp = TelTypen.TAM,
                                                     .StrEinTelNr = New List(Of String),
-                                                    .InternalID = AB.Index,
-                                                    .Intern = InternBase.TAM + AB.Index,
-                                                    .Enable = AB.Enable}
+                                                    .Intern = InternBase.TAM + AB.Index}
 
                                 ' Ermittle die Nummer, auf den der AB reagiert.
                                 Dim TAMInfo As New FBoxAPI.TAMInfo
@@ -126,11 +123,11 @@ Imports FBoxDial.FritzBoxDefault
 
                                     End If
                                 End If
-                                PushStatus(LogLevel.Debug, $"Telefon { Telefon.TelTyp}: { Telefon.AnrMonID}; { Telefon.Name}; { Telefon.Intern}; {Telefon.Enable}")
+                                PushStatus(LogLevel.Debug, $"Telefon { Telefon.TelTyp}: { Telefon.AnrMonID}; { Telefon.Name}; { Telefon.Intern}")
                                 ' Telefon der Liste von Geräten hinzufügen
                                 Telefoniegeräte.Add(Telefon)
 
-                                NLogger.Debug($"Test Dialport Fallback TAM: '{Telefon.GetDialPortFallback}'")
+                                'NLogger.Debug($"Test Dialport Fallback TAM: '{Telefon.GetDialPortFallback}'")
                             Next
                         End If
 
@@ -410,7 +407,7 @@ Imports FBoxDial.FritzBoxDefault
                 PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
                 TelList.Add(Telefon)
 
-                NLogger.Debug($"Test Dialport Fallback Mobile: '{Telefon.GetDialPortFallback}'")
+                'NLogger.Debug($"Test Dialport Fallback Mobile: '{Telefon.GetDialPortFallback}'")
             End If
 
             ' Verarbeite internen Faxempfang (FaxMail)

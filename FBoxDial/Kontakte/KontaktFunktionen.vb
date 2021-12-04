@@ -149,7 +149,7 @@ Friend Module KontaktFunktionen
             End If
 
             ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
-            IndiziereKontakt(olKontakt, KontaktOrdner)
+            IndiziereKontakt(olKontakt, KontaktOrdner, False)
 
         End With
 

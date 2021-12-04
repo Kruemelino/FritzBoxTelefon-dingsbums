@@ -160,10 +160,14 @@
 
         <Expander Style="{StaticResource OptExpander}"
                   Header="{x:Static localize:LocOptionen.strTestAnrufmonitorHead}">
-            
-            <Button Content="{x:Static localize:LocOptionen.strTestStartAnrMon}"
-                    Command="{Binding TestAnrMonCommand}" Height="25"/>
-            
+            <StackPanel>
+                <TextBox Style="{StaticResource OptTextBox}"
+                             Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
+                             Text="{Binding TBTestAnrMonInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Content="{x:Static localize:LocOptionen.strTestStartAnrMon}"
+                        Command="{Binding TestAnrMonCommand}" Height="25"/>
+            </StackPanel>
         </Expander>
 
     </StackPanel>

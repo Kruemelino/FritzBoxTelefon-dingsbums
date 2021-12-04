@@ -20,7 +20,7 @@ Public Module OutlookFolder
     ''' Dekrementiert den Verweiszähler des dem angegebenen COM-Objekt zugeordneten angegebenen Runtime Callable Wrapper (RCW)
     ''' </summary>
     ''' <param name="COMObject">Das freizugebende COM-Objekt.</param>
-    Public Sub ReleaseComObject(Of T)(COMObject As T)
+    Friend Sub ReleaseComObject(Of T)(COMObject As T)
         If COMObject IsNot Nothing Then
             Try
                 Runtime.InteropServices.Marshal.ReleaseComObject(COMObject)

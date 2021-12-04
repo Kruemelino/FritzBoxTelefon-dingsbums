@@ -859,11 +859,19 @@ Imports Microsoft.Office.Interop
         ' Telefoniegerät ermitteln
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
+        If TelGerät Is Nothing Then
+            NLogger.Debug($"Telefoniegerät für Anruf {ID} mit AnrMonID {NebenstellenNummer} nicht gefunden.")
+        Else
+            NLogger.Debug($"Telefoniegerät für Anruf {ID} mit AnrMonID {NebenstellenNummer} gefunden: {TelGerät.Name} (Typ: {TelGerät.TelTyp})")
+        End If
+
+        NLogger.Trace($"CBAutoClose: {XMLData.POptionen.CBAutoClose}, CBAnrMonHideCONNECT: {XMLData.POptionen.CBAnrMonHideCONNECT}")
         ' Anrufmonitor ausblenden einleiten, falls dies beim CONNECT geschehen soll
         If XMLData.POptionen.CBAutoClose And XMLData.POptionen.CBAnrMonHideCONNECT Then
             ' Ausblenden nur Starten, wenn nicht der Anrufbeaantworter rangegangen ist.
             ' Es kann sein, dass das Gerät nicht ermittelt wurde. Dann starte das Ausblenden trotzdem
             If TelGerät Is Nothing OrElse TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM Then
+                NLogger.Trace("Signalisierung Ausblenden AnrMon CONNECT")
                 AnrMonStartHideTimer = True
             End If
         End If

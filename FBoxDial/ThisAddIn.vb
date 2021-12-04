@@ -237,7 +237,7 @@ Public NotInheritable Class ThisAddIn
                 ' Wenn es sich um Kontakte handelt, dann (de-)indiziere den Kontakt
                 If TypeOf ClipboardObject Is ContactItem Then
 
-                    IndiziereKontakt(CType(ClipboardObject, ContactItem), Target)
+                    IndiziereKontakt(CType(ClipboardObject, ContactItem), Target, True)
 
                 End If
             Next

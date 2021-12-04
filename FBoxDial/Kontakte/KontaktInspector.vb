@@ -13,7 +13,7 @@ Friend Class KontaktInspector
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles OlKontakt.Write
         ' Prüfe ob der Ordner für die Kontaktsuche verwendet wird
-        IndiziereKontakt(OlKontakt, OlKontakt.ParentFolder)
+        IndiziereKontakt(OlKontakt, OlKontakt.ParentFolder, True)
     End Sub
 
 #Region "IDisposable Support"
