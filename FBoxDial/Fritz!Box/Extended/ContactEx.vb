@@ -127,8 +127,10 @@ Friend Module ContactEx
     <Extension> Friend Async Function KontaktBild(Contact As FBoxAPI.Contact) As Task(Of Imaging.BitmapImage)
         If Contact IsNot Nothing Then
             With Contact
-                ' Bild in das Datenobjekt laden und abschließend löschen
-                Return KontaktBildEx(Await Contact.KontaktBildPfad)
+                If .Person.ImageURL.IsNotStringNothingOrEmpty Then
+                    ' Bild in das Datenobjekt laden und abschließend löschen
+                    Return KontaktBildEx(Await .KontaktBildPfad)
+                End If
             End With
         End If
         Return Nothing
