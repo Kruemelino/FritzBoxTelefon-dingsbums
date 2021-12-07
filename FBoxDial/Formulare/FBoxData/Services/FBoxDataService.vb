@@ -7,11 +7,14 @@ Public Class FBoxDataService
     Private Property SoundPlayer As Media.SoundPlayer
     Friend Property SessionID As String
     Public Sub New()
-        FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        FBoxTR064 = New FBoxAPI.FritzBoxTR64()
+
+        AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
+
+        FBoxTR064.Init(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
         SessionID = GetSesssionID()
 
-        AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
     End Sub
 
     Protected Overrides Sub Finalize() Implements IFBoxDataService.Finalize

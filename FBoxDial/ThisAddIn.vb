@@ -56,7 +56,12 @@ Public NotInheritable Class ThisAddIn
         NLogger.Debug("Nutzererinstellungen geladen...")
 
         ' Initiiere die TR064 Schnittstelle für die Abfragen der Daten der Fritz!Box
-        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64()
+
+            ' Ereignishandler hinzufügen
+            AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
+            ' TR064 Schnittstelle initiieren
+            FBoxTR064.Init(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
 
             If FBoxTR064.Bereit Then
                 ' Schreibe in das Log noch Informationen zur Fritz!Box
@@ -79,7 +84,7 @@ Public NotInheritable Class ThisAddIn
                     End Using
                 End If
             Else
-                NLogger.Warn("TR064 Schnittstelle der Dritz!Box nicht verfügbar.")
+                NLogger.Warn("TR064 Schnittstelle der Fritz!Box nicht verfügbar.")
             End If
 
             ' Anrufmonitor starten
@@ -128,6 +133,10 @@ Public NotInheritable Class ThisAddIn
                 NLogger.Debug("Update Rufsperre durch tellows gestartet...")
                 AutoBlockListe(FBoxTR064)
             End If
+
+            ' Ereignishandler entfernen
+            RemoveHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
+
         End Using
 
         If XMLData.POptionen.CBKeyboard Then
