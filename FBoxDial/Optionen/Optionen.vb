@@ -89,6 +89,10 @@
     ''' </summary>
     <XmlElement("CBAnrMonHideCONNECT")> Public Property CBAnrMonHideCONNECT As Boolean = False
     ''' <summary>
+    ''' Angabe, ob der Anrufmonitor eingeblendet werden soll, falls sich der Anrufer auf der Sperrliste befindet
+    ''' </summary>
+    <XmlElement("CBAnrMonBlockNr")> Public Property CBAnrMonBlockNr As Boolean = False
+    ''' <summary>
     ''' Angabe, ob der Kontakt angezeigt werden soll
     ''' </summary>
     <XmlElement("CBAnrMonZeigeKontakt")> Public Property CBAnrMonZeigeKontakt As Boolean = False
@@ -147,7 +151,7 @@
     <XmlElement("CBTellowsAutoScoreFBBlockList")> Public Property CBTellowsAutoScoreFBBlockList As Integer = 7
     <XmlElement("CBTellowsAutoUpdateScoreList")> Public Property CBTellowsAutoUpdateScoreList As Boolean = False
     <XmlElement("CBTellowsEntryNumberCount")> Public Property CBTellowsEntryNumberCount As Integer = 10
-    <XmlElement("LetzteSperrlistenaktualsierung")> Public Property LetzteSperrlistenaktualisierung As Date = Now
+    <XmlElement("LetzteSperrlistenaktualsierung")> Public Property LetzteSperrlistenAktualisierung As Date = Now
 #End Region
 #End Region
 
@@ -160,8 +164,6 @@
 #Region "Auswertung der Fritz!box Anrufliste - Auswertung der Anrufliste"
 
     <XmlElement("LetzteAuswertungAnrList")> Public Property LetzteAuswertungAnrList As Date = Now
-
-    '<XmlElement("LetzterJournalEintragID")> Public Property LetzterJournalEintragID As Integer = 0
 
     <XmlElement("CBAutoAnrList")> Public Property CBAutoAnrList As Boolean = False
 

@@ -183,7 +183,7 @@ Public Class OptionenViewModel
 
     Private _CBAnrMonZeigeKontakt As Boolean
     ''' <summary>
-    ''' Angabe, ob der Kontakt Angezeigt werden soll
+    ''' Angabe, ob der Kontakt angezeigt werden soll
     ''' </summary>
     Public Property CBAnrMonZeigeKontakt As Boolean
         Get
@@ -191,6 +191,19 @@ Public Class OptionenViewModel
         End Get
         Set
             SetProperty(_CBAnrMonZeigeKontakt, Value)
+        End Set
+    End Property
+
+    Private _CBAnrMonBlockNr As Boolean
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor eingeblendet werden soll, falls sich der Anrufer auf der Sperrliste befindet
+    ''' </summary>
+    Public Property CBAnrMonBlockNr As Boolean
+        Get
+            Return _CBAnrMonBlockNr
+        End Get
+        Set
+            SetProperty(_CBAnrMonBlockNr, Value)
         End Set
     End Property
 
@@ -642,7 +655,6 @@ Public Class OptionenViewModel
 
 #Region "Auswertung der Fritz!box Anrufliste - Auswertung der Anrufliste"
     Private _CBAutoAnrList As Boolean
-    Private _CBAnrListeUpdateCallLists As Boolean
     Public Property CBAutoAnrList As Boolean
         Get
             Return _CBAutoAnrList
@@ -652,6 +664,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBAnrListeUpdateCallLists As Boolean
     Public Property CBAnrListeUpdateCallLists As Boolean
         Get
             Return _CBAnrListeUpdateCallLists

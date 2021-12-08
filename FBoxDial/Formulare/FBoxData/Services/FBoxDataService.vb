@@ -39,7 +39,7 @@ Public Class FBoxDataService
     End Function
 
     Friend Async Function ErstelleEinträge(Anrufe As IEnumerable(Of FBoxAPI.Call), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer) Implements IFBoxDataService.ErstelleEinträge
-        Return Await ErstelleJournal(Anrufe, ct, progress)
+        Return Await SetUpOutlookListen(Anrufe, ct, progress)
     End Function
 
     Friend Sub BlockNumbers(TelNrListe As IEnumerable(Of String)) Implements IFBoxDataService.BlockNumbers

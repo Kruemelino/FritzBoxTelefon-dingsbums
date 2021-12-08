@@ -56,6 +56,7 @@ Namespace Telefonbücher
                             NLogger.Warn($"Es konnten nur {AlleTelefonbücher.Count} von {PhonebookIDs.Count} Telefonbüchern heruntergeladen werden.")
                         End If
 
+                        ' Füge das Telefonbuch der Rufsperre hinzu.
                         AlleTelefonbücher.AddRange(Await LadeSperrliste(fbtr064))
 
                         Return AlleTelefonbücher
@@ -115,7 +116,6 @@ Namespace Telefonbücher
                 Return LadeTelefonbücherNamen(FBoxTR064)
             End Using
         End Function
-
 
         Friend Async Function LadeSperrliste(fbtr064 As FBoxAPI.FritzBoxTR64) As Task(Of IEnumerable(Of PhonebookEx))
 

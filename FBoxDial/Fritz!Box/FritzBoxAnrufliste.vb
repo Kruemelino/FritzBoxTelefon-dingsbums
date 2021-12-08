@@ -27,24 +27,14 @@ Friend Module FritzBoxAnrufliste
 #End Region
 
 #Region "Anrufliste auswerten"
-    Friend Async Function ErstelleJournal(Anrufe As IEnumerable(Of FBoxAPI.Call), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
+    Friend Async Function SetUpOutlookListen(Anrufliste As IEnumerable(Of FBoxAPI.Call), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
         Return Await Task.Run(Async Function()
                                   Dim Einträge As Integer = 0
 
-                                  For Each Anruf In Anrufe
+                                  For Each Anruf In Anrufliste
                                       ' Journaleintrag erstellen
                                       Using t = Await ErstelleTelefonat(Anruf)
-
-                                          If t IsNot Nothing Then
-                                              ' Erstelle einen Journaleintrag
-                                              t.ErstelleJournalEintrag()
-
-                                              ' Anruflisten aktualisieren
-                                              t.UpdateRingCallList()
-                                          Else
-                                              NLogger.Debug($"Anruf {Anruf.ID} konnte nicht importiert werden.")
-                                          End If
-
+                                          If t IsNot Nothing Then t.SetUpOlLists()
                                       End Using
 
                                       ' Zählvariable hochsetzen
@@ -56,9 +46,6 @@ Friend Module FritzBoxAnrufliste
                                       ' Abbruch überwachen
                                       If ct.IsCancellationRequested Then Exit For
                                   Next
-
-                                  ' TODO: Merke die Zeit
-                                  'If XMLData.POptionen.LetzteAuswertungAnrList < Now Then XMLData.POptionen.LetzteAuswertungAnrList = Now
 
                                   Return Einträge
                               End Function, ct)

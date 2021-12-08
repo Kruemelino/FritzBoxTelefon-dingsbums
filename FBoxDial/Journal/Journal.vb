@@ -11,15 +11,13 @@ Friend Module Journal
             ' Starte die Auswertung der Anrufliste
             Await ImportCalls(Anrufliste.Calls, XMLData.POptionen.LetzteAuswertungAnrList, Now)
 
-            ' Merke die Zeit
-            If XMLData.POptionen.LetzteAuswertungAnrList < Now Then XMLData.POptionen.LetzteAuswertungAnrList = Now
         End If
     End Sub
 
     Friend Async Sub AutoBlockListe(fboxTR064 As FBoxAPI.FritzBoxTR64)
 
         With XMLData.POptionen
-            If Now.Subtract(.LetzteSperrlistenaktualisierung).TotalHours.IsLargerOrEqual(24) Then
+            If Now.Subtract(.LetzteSperrlistenAktualisierung).TotalHours.IsLargerOrEqual(24) Then
                 NLogger.Debug("Rufsperre der Fritz!Box wird aktualisiert.")
 
                 Dim CTS = New Threading.CancellationTokenSource
@@ -28,7 +26,7 @@ Friend Module Journal
 
                 Await BlockTellowsNumbers(fboxTR064, .CBTellowsAutoScoreFBBlockList, .CBTellowsEntryNumberCount, ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
 
-                .LetzteSperrlistenaktualisierung = Now
+                .LetzteSperrlistenAktualisierung = Now
 
                 CTS.Dispose()
             Else
@@ -43,23 +41,13 @@ Friend Module Journal
                             Dim Abfrage As ParallelQuery(Of FBoxAPI.Call)
 
                             Abfrage = From Anruf In Anrufliste.AsParallel() Where Anruf.Type.IsLessOrEqual(3) And DatumZeitAnfang <= CDate(Anruf.Date) And DatumZeitEnde >= CDate(Anruf.Date) Select Anruf
+
                             Abfrage.ForAll(Async Sub(Anruf)
                                                ' in ErstelleTelefonat wird auch die Wahlwiederholungs- und Rückrufliste ausgewertet.
                                                Using t As Telefonat = Await ErstelleTelefonat(Anruf)
-
-                                                   If t IsNot Nothing Then
-                                                       ' Erstelle einen Journaleintrag
-                                                       t.ErstelleJournalEintrag()
-
-                                                       ' Anruflisten aktualisieren
-                                                       t.UpdateRingCallList()
-                                                   Else
-                                                       NLogger.Debug($"Anruf {Anruf.ID} konnte nicht importiert werden.")
-                                                   End If
-
+                                                   If t IsNot Nothing Then t.SetUpOlLists()
                                                End Using
                                            End Sub)
-
                         End Sub)
     End Function
 
@@ -83,5 +71,10 @@ Friend Module Journal
 
             End If
         End With
+    End Sub
+
+    Friend Sub UpdateTimeAnrList()
+        ' Merke die Zeit
+        If XMLData.POptionen.LetzteAuswertungAnrList < Now Then XMLData.POptionen.LetzteAuswertungAnrList = Now
     End Sub
 End Module

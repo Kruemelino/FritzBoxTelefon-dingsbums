@@ -146,7 +146,7 @@ Imports Microsoft.Office.Interop
 #End Region
 
 #Region "Boolean"
-    Private _Beendet As Boolean
+    Private _Beendet As Boolean = False
     <XmlIgnore> Public Property Beendet As Boolean
         Get
             Return _Beendet
@@ -166,7 +166,7 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    Private _Angenommen As Boolean
+    Private _Angenommen As Boolean = False
     <XmlAttribute> Public Property Angenommen As Boolean
         Get
             Return _Angenommen
@@ -176,13 +176,13 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    Private _Abgelehnt As Boolean
+    Private _Blockiert As Boolean = False
     <XmlAttribute> Public Property Blockiert As Boolean
         Get
-            Return _Abgelehnt
+            Return _Blockiert
         End Get
         Set
-            SetProperty(_Abgelehnt, Value)
+            SetProperty(_Blockiert, Value)
         End Set
     End Property
     <XmlIgnore> Friend ReadOnly Property AnruferUnbekannt As Boolean
@@ -199,6 +199,17 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Friend Property AnrMonEingeblendet As Boolean = False
     <XmlIgnore> Friend Property StoppUhrEingeblendet As Boolean = False
     <XmlIgnore> Friend Property AnrMonStartHideTimer As Boolean = False
+
+    ''' <summary>
+    ''' Angabe ob das Telefonat für die Auswertung relevant ist. Maßgebend ist die Entscheidung, des Nutzers,
+    ''' ob die eigene Telefonnummer überwacht werden soll und, ob die Gegenstelle nicht auf der Fritz!Box blockiert wird.
+    ''' </summary>
+    <XmlIgnore> Friend ReadOnly Property IstRelevant As Boolean
+        Get
+            Return EigeneTelNr.Überwacht AndAlso (Not Blockiert OrElse XMLData.POptionen.CBJournalBlockNr)
+        End Get
+    End Property
+
 
 #End Region
 
@@ -686,200 +697,214 @@ Imports Microsoft.Office.Interop
         WählClient.WählboxStart(Me)
     End Sub
 
+    ''' <summary>
+    ''' Wird durch die Auswertung der Anrufliste aufgerufen. Erstellt Jounaleinträge und aktualisiert die Listen.
+    ''' </summary>
+    Friend Sub SetUpOlLists()
+        If IstRelevant Then
+            ' Erstelle einen Journaleintrag
+            ErstelleJournalEintrag()
+
+            ' Anruflisten aktualisieren
+            UpdateRingCallList()
+        Else
+            NLogger.Debug($"Anruf {ID} wurde nicht importiert.")
+        End If
+    End Sub
+
     Friend Sub ErstelleJournalEintrag()
 
-        Dim OutlookApp As Outlook.Application = ThisAddIn.OutookApplication
-        Dim olJournal As Outlook.JournalItem = Nothing
-        Dim olJournalFolder As OutlookOrdner
+        If XMLData.POptionen.CBJournal Then
 
-        If OutlookApp IsNot Nothing Then
-            ' Journalimport nur dann, wenn Nummer überwacht wird
-            If XMLData.POptionen.CBJournal And EigeneTelNr.Überwacht Then
+            If ThisAddIn.OutookApplication IsNot Nothing Then
 
-                ' Erzeuge Journaleinträge für blockierte Anrufe nur, wenn es der Nutzer will
-                If Not Blockiert OrElse XMLData.POptionen.CBJournalBlockNr Then
-                    Try
-                        ' Erstelle ein Journaleintrag im STandard-Ordner.
-                        olJournal = CType(OutlookApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
-                    Catch ex As Exception
-                        NLogger.Error(ex)
-                    End Try
+                Dim olJournal As Outlook.JournalItem = Nothing
+                Dim olJournalFolder As OutlookOrdner
 
-                    If olJournal IsNot Nothing Then
-                        Dim tmpSubject As String
+                Try
+                    ' Erstelle ein Journaleintrag im STandard-Ordner.
+                    olJournal = CType(ThisAddIn.OutookApplication.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
+                Catch ex As Exception
+                    NLogger.Error(ex)
+                End Try
 
-                        If Not Blockiert Then
-                            If Angenommen Then
-                                tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalAusgehend, Localize.LocAnrMon.strJournalEingehend)
-                            Else 'Verpasst
-                                tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalNichterfolgreich, Localize.LocAnrMon.strJournalVerpasst)
-                            End If
-                        Else
-                            tmpSubject = Localize.LocAnrMon.strJournalBlockiert
+                If olJournal IsNot Nothing Then
+                    Dim tmpSubject As String
+
+                    If Not Blockiert Then
+                        If Angenommen Then
+                            tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalAusgehend, Localize.LocAnrMon.strJournalEingehend)
+                        Else 'Verpasst
+                            tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalNichterfolgreich, Localize.LocAnrMon.strJournalVerpasst)
+                        End If
+                    Else
+                        tmpSubject = Localize.LocAnrMon.strJournalBlockiert
+                    End If
+
+                    With olJournal
+
+                        .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
+                        .Duration = Dauer.GetLarger(31) \ 60
+                        .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{VCard}"
+                        .Start = ZeitBeginn
+                        .Companies = Firma
+
+                        ' Bei verpassten Anrufen ist TelGerät ggf. leer
+                        .Categories = $"{If(TelGerät Is Nothing, Localize.LocAnrMon.strJournalCatVerpasst, TelGerät.Name)};{String.Join("; ", DfltJournalDefCategories.ToArray)}"
+
+                        ' Speichern der EntryID und StoreID in benutzerdefinierten Feldern
+                        If OlKontakt IsNot Nothing Then
+
+                            Dim colArgs(1) As Object
+                            colArgs(0) = OlKontakt.EntryID
+                            colArgs(1) = OlKontakt.StoreID
+
+                            For i As Integer = 0 To 1
+                                .PropertyAccessor.SetProperty(DASLTagJournal(i).ToString, colArgs(i))
+                            Next
+
+                            ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
+                            '.PropertyAccessor.SetProperties(DASLTagJournal, colArgs)
                         End If
 
-                        With olJournal
+                        ' Speicherort wählen
+                        olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
 
-                            .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
-                            .Duration = Dauer.GetLarger(31) \ 60
-                            .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{VCard}"
-                            .Start = ZeitBeginn
-                            .Companies = Firma
+                        If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing AndAlso
+                        Not olJournalFolder.Equals(ThisAddIn.OutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
+                            ' Verschiebe den Journaleintrag in den ausgewählten Ordner
+                            ' Damit wird der Kontakt gleichzeitig im Zielordner gespeichert.
+                            .Move(olJournalFolder.MAPIFolder)
+                            ' Verwerfe diesen Journaleintrag
+                            .Close(Outlook.OlInspectorClose.olDiscard)
 
-                            ' Bei verpassten Anrufen ist TelGerät ggf. leer
-                            .Categories = $"{If(TelGerät Is Nothing, Localize.LocAnrMon.strJournalCatVerpasst, TelGerät.Name)};{String.Join("; ", DfltJournalDefCategories.ToArray)}"
+                            NLogger.Info($"Journaleintrag im Ordner {olJournalFolder.Name} (Store: {olJournalFolder.MAPIFolder.Store.DisplayName}) erstellt: { .Start}, { .Subject}, { .Duration}")
+                        Else
+                            ' Speicher den Journaleintrag im Standard-Ordner
+                            .Close(Outlook.OlInspectorClose.olSave)
+                            With ThisAddIn.OutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)
+                                NLogger.Info($"Journaleintrag im Standardordner { .Name} (Store: { .Store.DisplayName}) erstellt: { olJournal.Start}, { olJournal.Subject}, { olJournal.Duration}")
+                            End With
+                        End If
 
-                            ' Speichern der EntryID und StoreID in Benutzerdefinierten Feldern
-                            If OlKontakt IsNot Nothing Then
+                        ' Merke die Zeit
+                        UpdateTimeAnrList()
 
-                                Dim colArgs(1) As Object
-                                colArgs(0) = OlKontakt.EntryID
-                                colArgs(1) = OlKontakt.StoreID
+                    End With
 
-                                For i As Integer = 0 To 1
-                                    .PropertyAccessor.SetProperty(DASLTagJournal(i).ToString, colArgs(i))
-                                Next
-
-                                ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
-                                '.PropertyAccessor.SetProperties(DASLTagJournal, colArgs)
-                            End If
-
-                            ' Speicherort wählen
-                            olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
-
-                            If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing AndAlso
-                            Not olJournalFolder.Equals(OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
-                                ' Verschiebe den Journaleintrag in den ausgewählten Ordner
-                                ' Damit wird der Kontakt gleichzeitig im Zielordner gespeichert.
-                                .Move(olJournalFolder.MAPIFolder)
-                                ' Verwerfe diesen Journaleintrag
-                                .Close(Outlook.OlInspectorClose.olDiscard)
-
-                                NLogger.Info($"Journaleintrag im Ordner {olJournalFolder.Name} (Store: {olJournalFolder.MAPIFolder.Store.DisplayName}) erstellt: { .Start}, { .Subject}, { .Duration}")
-                            Else
-                                ' Speicher den Journaleintrag im Standard-Ordner
-                                .Close(Outlook.OlInspectorClose.olSave)
-                                With OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)
-                                    NLogger.Info($"Journaleintrag im Standardordner { .Name} (Store: { .Store.DisplayName}) erstellt: { olJournal.Start}, { olJournal.Subject}, { olJournal.Duration}")
-                                End With
-                            End If
-
-                        End With
-
-                        ReleaseComObject(olJournal)
-                    End If
-                Else
-                    NLogger.Info($"Journaleintrag für blockierte Nummer '{NameGegenstelle}' nicht erzeugt.")
+                    ReleaseComObject(olJournal)
                 End If
+
+            Else
+                NLogger.Info(Localize.LocAnrMon.strJournalFehler)
             End If
-        Else
-            NLogger.Info(Localize.LocAnrMon.strJournalFehler)
+
         End If
     End Sub
 
     Friend Sub UpdateRingCallList()
 
         If XMLData.POptionen.CBAnrListeUpdateCallLists Then
-            If Not Blockiert OrElse XMLData.POptionen.CBJournalBlockNr Then
-                If AnrufRichtung = AnrufRichtungen.Eingehend Then
-                    ' RING-Liste initialisieren, falls erforderlich
-                    If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
-                    ' Eintrag anfügen
-                    XMLData.PTelListen.RINGListe.Insert(Me)
-                Else
-                    ' CALL-Liste initialisieren, falls erforderlich
-                    If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
-                    ' Eintrag anfügen
-                    XMLData.PTelListen.CALLListe.Insert(Me)
-                End If
+            ' Überprüfe, ob eigene Nummer überhaupt überwacht wird            ' 
+            If AnrufRichtung = AnrufRichtungen.Eingehend Then
+                ' RING-Liste initialisieren, falls erforderlich
+                If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
+                ' Telefonat in erste Positon der RING-Liste speicher
+                XMLData.PTelListen.RINGListe.Insert(Me)
+            Else
+                ' CALL-Liste initialisieren, falls erforderlich
+                If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
+                ' Telefonat in erste Positon der CALL-Liste speicher
+                XMLData.PTelListen.CALLListe.Insert(Me)
             End If
         End If
     End Sub
 
 #Region "Anrufmonitor"
     Private Sub AnrMonRING()
-        Angenommen = False
-        Beendet = False
 
-        ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
-        ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        KontaktSuche()
+        ' prüfe, ob die anrufende Nummer auf der Rufsperre der Fritz!Box steht
+        Blockiert = IsFBoxBlocked(GegenstelleTelNr.Unformatiert)
 
-        ' Anrufmonitor einblenden, wenn Bedingungen erfüllt 
-        If EigeneTelNr.Überwacht Then ShowAnrMon()
+        If IstRelevant Then
+            ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
+            ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
+            KontaktSuche()
 
-        ' RING-Liste initialisieren, falls erforderlich
-        If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
+            ' Anrufmonitor einblenden,
+            ShowAnrMon()
 
-        ' Telefonat in erste Positon der RING-Liste speichern
-        XMLData.PTelListen.RINGListe.Insert(Me)
+            UpdateRingCallList()
+
+        End If
 
     End Sub
 
     Private Sub AnrMonCALL()
-        Angenommen = False
-        Beendet = False
 
-        ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        KontaktSuche()
+        If IstRelevant Then
+            ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
+            KontaktSuche()
 
-        ' Telefoniegerät ermitteln
-        TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
+            ' Telefoniegerät ermitteln
+            TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
-        ' Eigene Nummer prüfen. Mittels Wählpräfix (*10X#, *11X#, *12X#) kann die ausgehende Telefonnummer beeinflusst werden. 
-        ' Der Anrufmonitor gibt jedoch weiterhin die eigentlich genutzte eigene Nummer für diese Nebenstelle wieder.
-        ' Unterschieden werden kann nur per AnschlussID
-        ' 03.03.21 15:48:18;CALL;1;4;123456;0049987654321#;SIP3; *124# 654321
-        ' 03.03.21 16:35:54;CALL;1;4;123456;0049987654321#;SIP1; *122# 123456
+            ' Eigene Nummer prüfen. Mittels Wählpräfix (*10X#, *11X#, *12X#) kann die ausgehende Telefonnummer beeinflusst werden. 
+            ' Der Anrufmonitor gibt jedoch weiterhin die eigentlich genutzte eigene Nummer für diese Nebenstelle wieder.
+            ' Unterschieden werden kann nur per AnschlussID
+            ' 03.03.21 15:48:18;CALL;1;4;123456;0049987654321#;SIP3; *124# 654321
+            ' 03.03.21 16:35:54;CALL;1;4;123456;0049987654321#;SIP1; *122# 123456
 
-        ' Bei Rufumleitungen im Modus Automatisch wird die umgeleitete eingehende Nummer als eigene rausgehende Nummer verwendet.
-        ' TODO: Anfangen von Rufumleitungen.
-        If AnschlussID.IsNotStringNothingOrEmpty Then
-            Dim tmpTel As Telefonnummer = XMLData.PTelefonie.GetEigeneTelNr(AnschlussID)
-            If Not EigeneTelNr.Equals(tmpTel) Then
-                ' Eintrag ins Log
-                NLogger.Debug($"Eigene Telefonnummer '{EigeneTelNr.Unformatiert}' mit '{tmpTel.Unformatiert}' überschrieben ({AnschlussID}).")
+            ' Bei Rufumleitungen im Modus Automatisch wird die umgeleitete eingehende Nummer als eigene rausgehende Nummer verwendet.
+            ' TODO: Anfangen von Rufumleitungen.
+            If AnschlussID.IsNotStringNothingOrEmpty Then
+                Dim tmpTel As Telefonnummer = XMLData.PTelefonie.GetEigeneTelNr(AnschlussID)
+                If Not EigeneTelNr.Equals(tmpTel) Then
+                    ' Eintrag ins Log
+                    NLogger.Debug($"Eigene Telefonnummer '{EigeneTelNr.Unformatiert}' mit '{tmpTel.Unformatiert}' überschrieben ({AnschlussID}).")
 
-                ' Telefonnummer ersetzen
-                EigeneTelNr = tmpTel
+                    ' Telefonnummer ersetzen
+                    EigeneTelNr = tmpTel
+                End If
             End If
+
+            UpdateRingCallList()
         End If
-
-        ' CALL-Liste initialisieren, falls erforderlich
-        If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
-
-        ' Telefonat in erste Positon der CALL-Liste speichern
-        XMLData.PTelListen.CALLListe.Insert(Me)
 
     End Sub
 
     Private Sub AnrMonCONNECT()
         Angenommen = True
 
-        ' Telefoniegerät ermitteln
-        TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
+        If IstRelevant Then
+            ' Telefoniegerät ermitteln
+            TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
-        If TelGerät Is Nothing Then NLogger.Warn($"Telefoniegerät für Anruf {ID} mit AnrMonID {NebenstellenNummer} nicht gefunden.")
+            If TelGerät Is Nothing Then NLogger.Warn($"Telefoniegerät für Anruf {ID} mit AnrMonID {NebenstellenNummer} nicht gefunden.")
 
-        ' Anrufmonitor ausblenden einleiten, falls dies beim CONNECT geschehen soll
-        If XMLData.POptionen.CBAutoClose And XMLData.POptionen.CBAnrMonHideCONNECT Then
-            ' Ausblenden nur Starten, wenn der Anrufbeaantworter nicht rangegangen ist.
-            ' Es kann sein, dass das Gerät nicht ermittelt wurde. Dann starte das Ausblenden trotzdem
-            AnrMonStartHideTimer = TelGerät Is Nothing OrElse Not TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM
+            ' Anrufmonitor ausblenden einleiten, falls dies beim CONNECT geschehen soll
+            If XMLData.POptionen.CBAutoClose And XMLData.POptionen.CBAnrMonHideCONNECT Then
+                ' Ausblenden nur Starten, wenn der Anrufbeaantworter nicht rangegangen ist.
+                ' Es kann sein, dass das Gerät nicht ermittelt wurde. Dann starte das Ausblenden trotzdem
+                AnrMonStartHideTimer = TelGerät Is Nothing OrElse Not TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM
+            End If
+
+            ' Stoppuhr einblenden, wenn Bedingungen erfüllt 
+            If XMLData.POptionen.CBStoppUhrEinblenden Then ShowStoppUhr()
         End If
-
-        ' Stoppuhr einblenden, wenn Bedingungen erfüllt 
-        If XMLData.POptionen.CBStoppUhrEinblenden Then ShowStoppUhr()
 
     End Sub
 
     Private Sub AnrMonDISCONNECT()
         Beendet = True
 
-        ' Stoppuhr ausblenden, wenn dies in den Einstellungen gesetzt ist
-        If StoppUhrEingeblendet And XMLData.POptionen.CBStoppUhrAusblenden Then PopupStoppUhrWPF.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBStoppUhrAusblendverzögerung))
+        If IstRelevant Then
+            ' Stoppuhr ausblenden, wenn dies in den Einstellungen gesetzt ist
+            If StoppUhrEingeblendet And XMLData.POptionen.CBStoppUhrAusblenden Then PopupStoppUhrWPF.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBStoppUhrAusblendverzögerung))
 
-        If XMLData.POptionen.CBJournal Then ErstelleJournalEintrag()
+            ErstelleJournalEintrag()
+        End If
+
     End Sub
 
     Friend Sub AnrMonEinblenden()

@@ -24,7 +24,7 @@ Friend Module FritzBoxRufsperre
                 ' Prüfe, ob die übergebenen Nummern bereits auf der Rufsperre der Fritz!Box vorhanden sind.
                 ' Ein Eintrag auf der Fritz!Box kann mehrere Telefonnummern enthalten
                 For Each TelNr In Nummern
-                    Dim Eintrag As ContactViewModel = Nothing
+                    Dim Eintrag As FBoxAPI.Contact = Nothing
                     If GetCallBarringEntryByNum(fboxTR064, TelNr, Eintrag) Then
                         ' Ein Eintrag mit der Nummer bereits vorhanden
                         NLogger.Info($"Ein Eintrag mit der '{TelNr}' ist in der Sperrliste bereits vorhanden (ID {Eintrag.Uniqueid}.")
@@ -162,9 +162,9 @@ Friend Module FritzBoxRufsperre
     ''' Ermittelt einen Sperrlisteneintrag anhand der übergebenen Telefonnummer
     ''' </summary>
     ''' <param name="Nummer">Telefonnummer</param>
-    ''' <param name="Eintrag">Rückgabewert: Sperrlisteintrag als <see cref="ContactViewModel"/></param>
+    ''' <param name="Eintrag">Rückgabewert: Sperrlisteintrag als <see cref="FBoxAPI.Contact"/></param>
     ''' <returns>True, wenn Suche erfolgreich</returns>
-    Private Function GetCallBarringEntryByNum(fboxTR064 As FBoxAPI.FritzBoxTR64, Nummer As String, ByRef Eintrag As ContactViewModel) As Boolean
+    Private Function GetCallBarringEntryByNum(fboxTR064 As FBoxAPI.FritzBoxTR64, Nummer As String, ByRef Eintrag As FBoxAPI.Contact) As Boolean
         ' Prüfe, ob Fritz!Box verfügbar
         If Ping(XMLData.POptionen.ValidFBAdr) Then
 
@@ -192,7 +192,17 @@ Friend Module FritzBoxRufsperre
         End If
     End Function
 
-#Region "Rufsperre"
+    ''' <summary>
+    ''' Überprüft, ob sich die Telefonnummer auf der Fitz!Box Sperrliste befindet.
+    ''' </summary>
+    ''' <param name="Nummer">Zu prüfende Nummer</param>
+    Friend Function IsFBoxBlocked(Nummer As String) As Boolean
+        Dim Eintrag As FBoxAPI.Contact = Nothing
+        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+            GetCallBarringEntryByNum(FBoxTR064, Nummer, Eintrag)
+        End Using
+        Return Eintrag IsNot Nothing
+    End Function
 
     ''' <summary>
     ''' Erzeugt einen Sperrlisteneintrag aus einer <see cref="Telefonnummer"/> und lädt diesen auf die Fritz!Box hoch.
@@ -332,6 +342,5 @@ Friend Module FritzBoxRufsperre
                               End Function, ct)
 
     End Function
-#End Region
 
 End Module

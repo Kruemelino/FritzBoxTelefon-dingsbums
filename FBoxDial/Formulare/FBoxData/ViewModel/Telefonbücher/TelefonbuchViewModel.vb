@@ -168,13 +168,14 @@ Public Class TelefonbuchViewModel
 
     Private Sub LöscheKontakte(o As Object)
         Dim Kontakte As IEnumerable(Of ContactViewModel) = From a In CType(o, IList).Cast(Of ContactViewModel)
+        Dim CList As IEnumerable(Of FBoxAPI.Contact) = Kontakte.Select(Function(C) C.Kontakt)
 
         If Telefonbuch.Telefonbuch.Rufsperren Then
             If DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionDeleteCallBarrings, Kontakte.Count)) = Windows.MessageBoxResult.Yes Then
                 ' Lösche die Einträge der Rufsperre auf der Fritz!Box
-                ' TODO: Unschön
-                If DatenService.DeleteRufsperren(Kontakte.Select(Function(C) C.Kontakt)) Then
-                    Telefonbuch.Telefonbuch.DeleteKontakte(Kontakte.Select(Function(C) C.Kontakt))
+                If DatenService.DeleteRufsperren(CList) Then
+                    ' Entferne die Kontate aus den Datenobjekten
+                    Telefonbuch.Telefonbuch.DeleteKontakte(CList)
                     Telefonbuch.Contacts.RemoveRange(Kontakte)
                 End If
             End If
@@ -182,16 +183,18 @@ Public Class TelefonbuchViewModel
         Else
 
             If DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionDeleteContacts, Kontakte.Count, Telefonbuch.Name)) = Windows.MessageBoxResult.Yes Then
-                ' lösche die Kontakte auf der Fritz!Box
-                If DatenService.DeleteKontakte(Telefonbuch.ID, Kontakte.Select(Function(K) K.Kontakt)) Then
-                    ' Entferne die Kontate aus dem Datenobjekt
-                    Telefonbuch.Telefonbuch.DeleteKontakte(Kontakte.Select(Function(C) C.Kontakt))
+                ' Lösche die Einträge in dem Telefonbuch auf der Fritz!Box
+                If DatenService.DeleteKontakte(Telefonbuch.ID, CList) Then
+                    ' Entferne die Kontate aus den Datenobjekten
+                    Telefonbuch.Telefonbuch.DeleteKontakte(CList)
                     Telefonbuch.Contacts.RemoveRange(Kontakte)
                 End If
             End If
 
         End If
 
+        CList = Nothing
+        Kontakte = Nothing
     End Sub
 #End Region
 #End Region
