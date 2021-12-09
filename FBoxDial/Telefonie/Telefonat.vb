@@ -1072,8 +1072,8 @@ Imports Microsoft.Office.Interop
 
     Public Overloads Function Equals(other As Telefonat) As Boolean Implements IEquatable(Of Telefonat).Equals
         Return other IsNot Nothing AndAlso
-               EigeneTelNr Is other.EigeneTelNr AndAlso
-               GegenstelleTelNr Is other.GegenstelleTelNr AndAlso
+               EigeneTelNr.Equals(other.EigeneTelNr) AndAlso
+               GegenstelleTelNr.Equals(other.GegenstelleTelNr) AndAlso
                ZeitBeginn = ZeitBeginn AndAlso
                ZeitEnde.CompareTo(other.ZeitEnde).IsZero
     End Function

@@ -317,31 +317,32 @@ Public Module Extensions
 #End Region
 
 #Region "Extensions für Verarbeitung von Zeichenfolgen: List(Of Telefonat), List(Of VIPEntry)"
-    <Extension> Public Sub Insert(ByRef Liste As List(Of Telefonat), item As Telefonat)
+    <Extension> Public Sub Insert(ByRef Anrufliste As List(Of Telefonat), Anruf As Telefonat)
 
         ' Liste initialisieren, falls erforderlich
-        If Liste Is Nothing Then Liste = New List(Of Telefonat)
+        If Anrufliste Is Nothing Then Anrufliste = New List(Of Telefonat)
 
-        ' TODO: Prüfe, ob Telefonat schon auf der Liste ist.
-        ' Kann passieren, wenn Outlook während Telefonat beendet wurde, und beim nächsten Start die Anrufliste ausgewertet wird.
+        ' Ignoriere dieses Telefonat, wenn es sich bereits in der Liste befindet 
+        If Not Anrufliste.Contains(Anruf) Then
 
-        ' Eintrag hinzufügen
-        Liste.Insert(0, item)
-        ' Liste sortieren
-        Liste = Liste.OrderByDescending(Function(TF) TF?.ZeitBeginn).ToList
+            ' Eintrag hinzufügen
+            'Anrufliste.Add(Anruf)
+            Anrufliste.Insert(0, Anruf)
+            ' Liste sortieren
+            Anrufliste = Anrufliste.OrderByDescending(Function(TF) TF?.ZeitBeginn).ToList
 
-        ' Entferne alle überflüssigen Elemente
-        With Liste
-            ' PTBNumEntryList = 10
-            ' .Count = 11
-            ' Start = PTBNumEntryList (Nullbasiert), Anzahl an zu löschenden Elementen = .Count - PTBNumEntryList
-            ' Start = 10, Anzahl = 11 - 10 = 1
-            If .Count.IsLarger(XMLData.POptionen.TBNumEntryList) Then
-                .RemoveRange(XMLData.POptionen.TBNumEntryList, .Count - XMLData.POptionen.TBNumEntryList)
-            End If
+            ' Entferne alle überflüssigen Elemente
+            With Anrufliste
+                ' PTBNumEntryList = 10
+                ' .Count = 11
+                ' Start = PTBNumEntryList (Nullbasiert), Anzahl an zu löschenden Elementen = .Count - PTBNumEntryList
+                ' Start = 10, Anzahl = 11 - 10 = 1
+                If .Count.IsLarger(XMLData.POptionen.TBNumEntryList) Then
+                    .RemoveRange(XMLData.POptionen.TBNumEntryList, .Count - XMLData.POptionen.TBNumEntryList)
+                End If
 
-        End With
-
+            End With
+        End If
         ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
