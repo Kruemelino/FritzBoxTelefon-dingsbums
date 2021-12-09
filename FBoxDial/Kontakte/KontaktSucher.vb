@@ -176,7 +176,7 @@ Friend Module KontaktSucher
     ''' <returns>Den gefundenen Kontakt als Outlook.ContactItem.</returns>
     Friend Function KontaktSuche(SMTPAdresse As EMailType) As Outlook.ContactItem
 
-        If SMTPAdresse.Addresse.IsNotStringEmpty Then
+        If SMTPAdresse.Addresse.IsNotStringNothingOrEmpty Then
             ' Empfänger generieren
             Dim Empfänger As Outlook.Recipient = ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
 
@@ -194,7 +194,7 @@ Friend Module KontaktSucher
 
     Friend Function KontaktSucheExchangeUser(SMTPAdresse As EMailType) As Outlook.ExchangeUser
 
-        If SMTPAdresse.Addresse.IsNotStringEmpty Then
+        If SMTPAdresse.Addresse.IsNotStringNothingOrEmpty Then
             ' Empfänger generieren
             Dim Empfänger As Outlook.Recipient = ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
 

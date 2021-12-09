@@ -67,7 +67,7 @@ Friend Class Rijndael
         Dim buffer() As Byte = Nothing
 
         ' Test ob gültige Eingangsdaten vorhanden
-        If vstrStringToBeDecrypted.IsNotErrorString And vstrStringToBeDecrypted.IsNotStringEmpty And DecryptionSaltKey.IsNotErrorString Then
+        If vstrStringToBeDecrypted.IsNotErrorString And vstrStringToBeDecrypted.IsNotStringNothingOrEmpty And DecryptionSaltKey.IsNotErrorString Then
             ' Extrahiere aus dem DecryptionSaltKey den Salt und den Key
             Dim SaltKey As Byte()() = DecryptionSaltKey.FromBase64String.SplitByte(16)
 

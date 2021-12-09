@@ -290,7 +290,7 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Friend Property OlKontakt() As Outlook.ContactItem
         Get
             ' Ermittle den Outlook-Kontakt, falls dies noch nicht geschehen ist
-            If _OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringEmpty And OutlookStoreID.IsNotStringEmpty) Then
+            If _OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty) Then
                 _OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
                 NLogger.Debug($"Outlook Kontakt {_OlKontakt?.FullNameAndCompany} aus EntryID und KontaktID ermittelt.")
             End If
@@ -621,7 +621,7 @@ Imports Microsoft.Office.Interop
 
                     VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.CBRWSIndex)
 
-                    If VCard.IsNotStringEmpty Then
+                    If VCard.IsNotStringNothingOrEmpty Then
 
                         NLogger.Info($"Rückwärtssuche für '{GegenstelleTelNr.Unformatiert}' erfolgreich: {VCard}")
 
@@ -1074,8 +1074,8 @@ Imports Microsoft.Office.Interop
         Return other IsNot Nothing AndAlso
                EigeneTelNr.Equals(other.EigeneTelNr) AndAlso
                GegenstelleTelNr.Equals(other.GegenstelleTelNr) AndAlso
-               ZeitBeginn = ZeitBeginn AndAlso
-               ZeitEnde.CompareTo(other.ZeitEnde).IsZero
+               ZeitBeginn.IsSameAs(other.ZeitBeginn) AndAlso
+               ZeitEnde.IsSameAs(other.ZeitEnde)
     End Function
 #End Region
 

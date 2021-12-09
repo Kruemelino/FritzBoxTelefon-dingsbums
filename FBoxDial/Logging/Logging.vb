@@ -28,7 +28,7 @@ Friend Module NLogging
                                                       .KeepFileOpen = True,
                                                       .ConcurrentWrites = True,
                                                       .FileName = Path.Combine(BaseDir, DfltLogFileName),
-                                                      .Layout = LayoutText.Join("|"),
+                                                      .Layout = String.Join("|", LayoutText),
                                                       .ArchiveNumbering = Targets.ArchiveNumberingMode.Rolling,
                                                       .ArchiveFileName = Path.Combine(BaseDir, DfltLogArchiveFileName),
                                                       .ArchiveOldFileOnStartupAboveSize = 524288,

@@ -111,7 +111,7 @@ Public Class ContactDialViewModel
             DialNumberList.AddRange(.GetKontaktTelNrList)
 
             ' Kopfdaten setzen
-            DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .FullName}{If(.CompanyName.IsNotStringEmpty, $" ({ .CompanyName})", DfltStringEmpty)}")
+            DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .FullName}{If(.CompanyName.IsNotStringNothingOrEmpty, $" ({ .CompanyName})", DfltStringEmpty)}")
 
             ' Setze das Kontaktbild
             Instance.Invoke(Sub() Kontaktbild = olKontakt.KontaktBildEx)
@@ -126,7 +126,7 @@ Public Class ContactDialViewModel
             DialNumberList.AddRange(.GetKontaktTelNrList)
 
             ' Kopfdaten setzen
-            DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .Name}{If(.CompanyName.IsNotStringEmpty, $" ({ .CompanyName})", DfltStringEmpty)}")
+            DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .Name}{If(.CompanyName.IsNotStringNothingOrEmpty, $" ({ .CompanyName})", DfltStringEmpty)}")
         End With
     End Sub
 

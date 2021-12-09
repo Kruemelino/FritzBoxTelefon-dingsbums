@@ -144,7 +144,7 @@ Public Class Telefonnummer
         Dim _ONKZ As Ortsnetzkennzahlen = Nothing
         Dim TelNr As String
 
-        If Unformatiert.IsNotStringEmpty AndAlso Unformatiert.Length.IsLarger(2) Then
+        If Unformatiert.IsNotStringNothingOrEmpty AndAlso Unformatiert.Length.IsLarger(2) Then
             ' Beginne mit der unformatierten Nummer
             TelNr = Unformatiert
 
@@ -231,7 +231,7 @@ Public Class Telefonnummer
             If Not FormatTelNr.Contains("%D") Then FormatTelNr = Replace(FormatTelNr, "%N", "%N%D")
 
             ' Wenn Keine Durchwahl der Telefonnummer vorhanden ist dann entferne in der Maske alles, was hinter der Einwahl befindet
-            If Durchwahl.IsStringEmpty Then FormatTelNr = FormatTelNr.RegExReplace("%N.*", "%N")
+            If Durchwahl.IsStringNothingOrEmpty Then FormatTelNr = FormatTelNr.RegExReplace("%N.*", "%N")
 
             ' Setze die Ortsvorwahl, wenn immer eine internale Nummer erzeugt werden soll UND
             '                        wenn die Landesvorwahl der Nummer leer ist ODER gleich der eigestellten Landesvorwahl ist UND
@@ -270,7 +270,7 @@ Public Class Telefonnummer
                         tmpGruppieren = False
 
                         ' Wenn keine Ortskennzahl gefunden wurde, dann gehe nach dem Schema vor 
-                        If Ortskennzahl.IsStringEmpty Then
+                        If Ortskennzahl.IsStringNothingOrEmpty Then
                             ' In der Regel sind die NPA immer 3 Ziffern lang
                             Ortskennzahl = Left(Einwahl, 3)
                             tmpOrtsvorwahl = Ortskennzahl
@@ -278,7 +278,7 @@ Public Class Telefonnummer
                         End If
 
                         ' Wenn es keine Durchwahl gibt, dann teile die Einwahl nach der dritten Ziffer
-                        If Durchwahl.IsStringEmpty Then
+                        If Durchwahl.IsStringNothingOrEmpty Then
                             Durchwahl = Mid(Einwahl, 4)
                             Einwahl = Left(Einwahl, 3)
                         End If
@@ -289,7 +289,7 @@ Public Class Telefonnummer
                 End Select
             End If
 
-            If Ortskennzahl.IsStringEmpty Then
+            If Ortskennzahl.IsNotStringNothingOrEmpty Then
                 ' Maske %L (%O) %N - %D
                 ' Wenn keine Ortskennzahl vorhanden ist, dann muss diese bei der Formatierung nicht berücksichtigt werden.
                 ' Die Ortskennzahl ist dann in der Einwahl enthalten.
@@ -298,7 +298,7 @@ Public Class Telefonnummer
             End If
 
             ' Füge das + bei Landvoran
-            If tmpLandesvorwahl.IsNotStringEmpty Then tmpLandesvorwahl = $"+{tmpLandesvorwahl}"
+            If tmpLandesvorwahl.IsNotStringNothingOrEmpty Then tmpLandesvorwahl = $"+{tmpLandesvorwahl}"
 
             'Finales Zusammenstellen
             Return FormatTelNr.Replace("%L", tmpLandesvorwahl).Replace("%O", Gruppiere(tmpOrtsvorwahl, tmpGruppieren)).Replace("%N", Gruppiere(Einwahl, tmpGruppieren)).Replace("%D", Gruppiere(Durchwahl, tmpGruppieren)).Trim

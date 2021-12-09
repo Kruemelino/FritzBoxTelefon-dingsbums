@@ -292,7 +292,7 @@ Namespace Telefonbücher
         ''' <returns>Die einzigartige ID des Kontaktes im Fritz!Box Telefonbuch mit der <paramref name="TelefonbuchID"/>.</returns>
         ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
         Friend Function SetTelefonbuchEintrag(fbtr064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, XMLDaten As String) As Integer
-            If XMLDaten.IsNotStringEmpty Then
+            If XMLDaten.IsNotStringNothingOrEmpty Then
                 ' Prüfe, ob Fritz!Box verfügbar
                 If Ping(XMLData.POptionen.ValidFBAdr) Then
                     With fbtr064.X_contact

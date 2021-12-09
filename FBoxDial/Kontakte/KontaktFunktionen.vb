@@ -27,12 +27,12 @@ Friend Module KontaktFunktionen
                     .BusinessTelephoneNumber = TelNr.Formatiert
                 End If
 
-                If vCard.IsNotStringEmpty And vCard.IsNotErrorString Then
+                If vCard.IsNotStringNothingOrEmpty And vCard.IsNotErrorString Then
 
                     DeserializevCard(vCard, olKontakt)
 
                     ' Formatiere Telefonnummer
-                    If .BusinessTelephoneNumber.IsNotStringEmpty Then
+                    If .BusinessTelephoneNumber.IsNotStringNothingOrEmpty Then
                         Using BTel As New Telefonnummer
                             BTel.SetNummer = .BusinessTelephoneNumber
 
@@ -41,7 +41,7 @@ Friend Module KontaktFunktionen
                             End If
                         End Using
                         .BusinessTelephoneNumber = TelNr.Formatiert
-                    ElseIf .HomeTelephoneNumber.IsNotStringEmpty Then
+                    ElseIf .HomeTelephoneNumber.IsNotStringNothingOrEmpty Then
                         Using HTel As New Telefonnummer
                             HTel.SetNummer = .HomeTelephoneNumber
 
@@ -52,7 +52,7 @@ Friend Module KontaktFunktionen
                         .BusinessTelephoneNumber = TelNr.Formatiert
 
                         .HomeTelephoneNumber = TelNr.Formatiert
-                    ElseIf .HomeTelephoneNumber.IsStringEmpty Then
+                    ElseIf .HomeTelephoneNumber.IsNotStringNothingOrEmpty Then
                         .HomeTelephoneNumber = TelNr.Formatiert
                     End If
 
@@ -705,7 +705,7 @@ Friend Module KontaktFunktionen
     ''' </summary>
     ''' <param name="PfadKontaktBild">Pfad zum extrahierten Kontaktbild</param>
     Friend Sub DelKontaktBild(PfadKontaktBild As String)
-        If PfadKontaktBild.IsNotStringEmpty Then
+        If PfadKontaktBild.IsNotStringNothingOrEmpty Then
             With My.Computer.FileSystem
                 If .FileExists(PfadKontaktBild) Then
                     .DeleteFile(PfadKontaktBild, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)

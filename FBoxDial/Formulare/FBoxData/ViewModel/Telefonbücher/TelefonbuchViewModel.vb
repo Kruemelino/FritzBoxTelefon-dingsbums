@@ -121,9 +121,9 @@ Public Class TelefonbuchViewModel
     Private Function CanName(o As Object) As Boolean
         Dim Buch = CType(o, PhonebookViewModel)
         Return Telefonbücher IsNot Nothing AndAlso Buch IsNot Nothing AndAlso
-                                                   Buch.Name.IsNotStringEmpty AndAlso Not Telefonbücher.Where(Function(TB)
-                                                                                                                  Return TB.ID.AreDifferentTo(-1) And TB.Name.AreEqual(Buch.Name)
-                                                                                                              End Function).Any
+                                                   Buch.Name.IsNotStringNothingOrEmpty AndAlso Not Telefonbücher.Where(Function(TB)
+                                                                                                                           Return TB.ID.AreDifferentTo(-1) And TB.Name.AreEqual(Buch.Name)
+                                                                                                                       End Function).Any
     End Function
 #End Region
 

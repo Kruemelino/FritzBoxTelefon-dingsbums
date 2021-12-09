@@ -315,7 +315,7 @@ Public Class FritzBoxWählClient
         ' A: Ein klassischer Kontakt ist hinterlegt
         ' B: Ein Exchange-User existiert. 
 
-        If SMTPAdresse.Addresse.IsNotStringEmpty Then
+        If SMTPAdresse.Addresse.IsNotStringNothingOrEmpty Then
             ' A: Führe zunächst die Absendersuche nach Outlook-Kontakten durch
             Dim aktKontakt As Outlook.ContactItem = KontaktSuche(SMTPAdresse)
 
@@ -388,7 +388,7 @@ Public Class FritzBoxWählClient
 
         With DialTelefonat
             ' Kontakt aus Telefonat ermitteln
-            If .OlKontakt Is Nothing AndAlso (.OutlookKontaktID.IsNotStringEmpty And .OutlookStoreID.IsNotStringEmpty) Then
+            If .OlKontakt Is Nothing AndAlso (.OutlookKontaktID.IsNotStringNothingOrEmpty And .OutlookStoreID.IsNotStringNothingOrEmpty) Then
                 ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
                 .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
             End If
@@ -406,7 +406,7 @@ Public Class FritzBoxWählClient
 
         With DialVIP
             ' Kontakt aus telefinat ermitteln
-            If .OlContact Is Nothing AndAlso (.StoreID.IsNotStringEmpty And .EntryID.IsNotStringEmpty) Then
+            If .OlContact Is Nothing AndAlso (.StoreID.IsNotStringNothingOrEmpty And .EntryID.IsNotStringNothingOrEmpty) Then
                 ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
                 .OlContact = GetOutlookKontakt(.EntryID, .StoreID)
             End If

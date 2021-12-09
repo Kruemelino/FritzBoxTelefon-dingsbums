@@ -97,9 +97,9 @@ Friend Module VCard
             ' insert email-addresses
             If .Emails IsNot Nothing Then
                 For Each vCardEMail As Models.Email In .Emails
-                    If Kontakt.Email1Address.IsStringEmpty Then Kontakt.Email1Address = vCardEMail.EmailAddress
-                    If Kontakt.Email2Address.IsStringEmpty Then Kontakt.Email2Address = vCardEMail.EmailAddress
-                    If Kontakt.Email3Address.IsStringEmpty Then Kontakt.Email3Address = vCardEMail.EmailAddress
+                    If Kontakt.Email1Address.IsStringNothingOrEmpty Then Kontakt.Email1Address = vCardEMail.EmailAddress
+                    If Kontakt.Email2Address.IsStringNothingOrEmpty Then Kontakt.Email2Address = vCardEMail.EmailAddress
+                    If Kontakt.Email3Address.IsStringNothingOrEmpty Then Kontakt.Email3Address = vCardEMail.EmailAddress
                 Next
             End If
             ' insert URL

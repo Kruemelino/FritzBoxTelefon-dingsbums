@@ -16,13 +16,13 @@ Public Module Rückwärtssuche
             If XMLData.PTelListen.RWSIndex IsNot Nothing Then
 
                 RWSIndexEintrag = XMLData.PTelListen.RWSIndex.Find(Function(RWSEntry) TelNr.Equals(RWSEntry.TelNr))
-                If RWSIndexEintrag IsNot Nothing AndAlso RWSIndexEintrag.VCard IsNot Nothing AndAlso RWSIndexEintrag.VCard.IsNotStringEmpty Then
+                If RWSIndexEintrag IsNot Nothing AndAlso RWSIndexEintrag.VCard IsNot Nothing AndAlso RWSIndexEintrag.VCard.IsNotStringNothingOrEmpty Then
                     vCard = RWSIndexEintrag.VCard
                 End If
             End If
         End If
 
-        If vCard.IsStringEmpty Then
+        If vCard.IsStringNothingOrEmpty Then
             vCard = Await RWSDasOertiche(TelNr)
 
             If RWSIndex Then
@@ -73,7 +73,7 @@ Public Module Rückwärtssuche
             ' Fange Fehlermeldungen der Rückwärtssuche ab: Wenn die Nummer nicht gefunden wurde, dann wird ein Fehler zurückgeben.
             htmlRWS = Await DownloadStringTaskAsync(New Uri($"{baseurl}search_inv&ph={tmpTelNr}"), ZeichenCodierung:=Encoding.UTF8, IgnoreWebExcepton:=True)
 
-            If htmlRWS.IsNotStringEmpty Then
+            If htmlRWS.IsNotStringNothingOrEmpty Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
                 ' Aus dem Response muss die ID des Eintrages ermittelt werden. Es gibt mehrere Möglichkeiten
                 EintragsID = htmlRWS.GetSubString("var handlerData =[['", "']];").Split("','").First
