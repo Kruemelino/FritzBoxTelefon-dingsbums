@@ -52,7 +52,7 @@ Friend Module KontaktFunktionen
                         .BusinessTelephoneNumber = TelNr.Formatiert
 
                         .HomeTelephoneNumber = TelNr.Formatiert
-                    ElseIf .HomeTelephoneNumber.IsNotStringNothingOrEmpty Then
+                    ElseIf .HomeTelephoneNumber.IsStringNothingOrEmpty Then
                         .HomeTelephoneNumber = TelNr.Formatiert
                     End If
 

@@ -653,6 +653,7 @@ Imports Microsoft.Office.Interop
         End If
     End Function
 
+
 #End Region
 
     ''' <summary>
@@ -822,9 +823,10 @@ Imports Microsoft.Office.Interop
 
 #Region "Anrufmonitor"
     Private Sub AnrMonRING()
-
+        NLogger.Debug($"Start Abfrage Blockierung: {Now}")
         ' prüfe, ob die anrufende Nummer auf der Rufsperre der Fritz!Box steht
         Blockiert = IsFBoxBlocked(GegenstelleTelNr.Unformatiert)
+        NLogger.Debug($"Ende Abfrage Blockierung: {Now}")
 
         If IstRelevant Then
             ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
@@ -1000,6 +1002,7 @@ Imports Microsoft.Office.Interop
 
         PopupStoppUhrWPF = Nothing
     End Sub
+
     Public Function StartSTATask(Of T)(func As Func(Of T)) As Task(Of T)
         Dim tcs = New TaskCompletionSource(Of T)()
         Dim thread As New Thread(Sub()
@@ -1071,11 +1074,22 @@ Imports Microsoft.Office.Interop
     End Function
 
     Public Overloads Function Equals(other As Telefonat) As Boolean Implements IEquatable(Of Telefonat).Equals
-        Return other IsNot Nothing AndAlso
-               EigeneTelNr.Equals(other.EigeneTelNr) AndAlso
-               GegenstelleTelNr.Equals(other.GegenstelleTelNr) AndAlso
-               ZeitBeginn.IsSameAs(other.ZeitBeginn) AndAlso
-               ZeitEnde.IsSameAs(other.ZeitEnde)
+
+        ' Starte den Vergleich nur, wenn das andere Telefonat nicht Nothing ist
+        If other IsNot Nothing Then
+
+            ' Es kann sein, dass Eigene Telefonnummer Nothing ist. Tritt bei den Wahlwiederholungslisten auf.
+            If EigeneTelNr Is Nothing AndAlso OutEigeneTelNr.IsNotStringNothingOrEmpty Then
+                ' Setze die eigene Nummer
+                EigeneTelNr = New Telefonnummer With {.SetNummer = OutEigeneTelNr}
+            End If
+
+            Return EigeneTelNr IsNot Nothing AndAlso
+                   EigeneTelNr.Equals(other.EigeneTelNr) AndAlso GegenstelleTelNr.Equals(other.GegenstelleTelNr) AndAlso
+                   ZeitBeginn.IsSameAs(other.ZeitBeginn) AndAlso ZeitEnde.IsSameAs(other.ZeitEnde)
+        Else
+            Return False
+        End If
     End Function
 #End Region
 

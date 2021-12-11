@@ -289,7 +289,7 @@ Public Class Telefonnummer
                 End Select
             End If
 
-            If Ortskennzahl.IsNotStringNothingOrEmpty Then
+            If Ortskennzahl.IsStringNothingOrEmpty Then
                 ' Maske %L (%O) %N - %D
                 ' Wenn keine Ortskennzahl vorhanden ist, dann muss diese bei der Formatierung nicht berücksichtigt werden.
                 ' Die Ortskennzahl ist dann in der Einwahl enthalten.
