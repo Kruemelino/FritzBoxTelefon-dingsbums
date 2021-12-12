@@ -3,8 +3,21 @@
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IFBoxDataService
     Private Property DialogService As IDialogService
+
 #Region "Window Eigenschaften"
 
+    Private _DatenGeladen As Boolean
+    Public Property DatenGeladen As Boolean
+        Get
+            Return _DatenGeladen
+        End Get
+        Set
+            SetProperty(_DatenGeladen, Value)
+        End Set
+    End Property
+#End Region
+
+#Region "ViewModel"
     Private _pageViewModels As List(Of IFBoxData)
     Public ReadOnly Property PageViewModels As List(Of IFBoxData)
         Get
@@ -22,21 +35,6 @@
             SetProperty(_currentPageViewModel, Value)
         End Set
     End Property
-
-    Private _DatenGeladen As Boolean
-    Public Property DatenGeladen As Boolean
-        Get
-            Return _DatenGeladen
-        End Get
-        Set
-            SetProperty(_DatenGeladen, Value)
-        End Set
-    End Property
-#End Region
-
-#Region "ViewModel"
-
-
 #End Region
 
 #Region "ICommand"
@@ -44,7 +42,10 @@
     Public Property ClosedCommand As RelayCommand
     Public Property NavigateCommand As RelayCommand
 #End Region
+
     Public Sub New()
+        DatenGeladen = False
+
         ' Window Command
         LoadedCommand = New RelayCommand(AddressOf LadeDaten)
         ClosedCommand = New RelayCommand(AddressOf EntladeDaten)
@@ -61,11 +62,7 @@
             .Add(New FBoxDataTelBuchViewModel(DatenService, DialogService) With {.FBoxDataVM = Me})
             .Add(New FBoxDataRufUmlViewModel(DatenService) With {.FBoxDataVM = Me})
             .Add(New FBoxDataTellowsViewModel(DatenService) With {.FBoxDataVM = Me})
-
         End With
-
-        ' Lade die Grundeinstellungen
-        Navigate(PageViewModels.First)
 
     End Sub
 
@@ -82,7 +79,11 @@
     Friend Sub LadeDaten(o As Object)
 
         ' Initiiere alle Pageviewmodels
-        PageViewModels.ForEach(Sub(P) P.Init())
+        PageViewModels.ForEach(Sub(P)
+                                   P.Init()
+                                   ' Lade die Grundeinstellungen
+                                   If P.InitialSelected Then Navigate(P)
+                               End Sub)
 
         ' Aktiviere die Eingabemaske, nachdem alle Daten geladen wurden
         DatenGeladen = True

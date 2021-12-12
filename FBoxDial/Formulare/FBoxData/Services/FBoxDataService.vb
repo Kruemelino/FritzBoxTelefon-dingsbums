@@ -34,7 +34,7 @@ Public Class FBoxDataService
         End Get
     End Property
 
-    Friend Async Function GetAnrufListe() As Task(Of FBoxAPI.CallList) Implements IFBoxDataService.GetAnrufListe
+    Friend Async Function GetCallList() As Task(Of FBoxAPI.CallList) Implements IFBoxDataService.GetCallList
         Return Await LadeFritzBoxAnrufliste(FBoxTR064)
     End Function
 
@@ -65,7 +65,7 @@ Public Class FBoxDataService
         Dim ABListe As FBoxAPI.TAMList = Nothing
 
         ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
-        If FBoxTR064.X_tam.GetList(ABListe) Then
+        If FBoxTR064.Bereit AndAlso FBoxTR064.X_tam.GetList(ABListe) Then
             Return ABListe.Items
         Else
             Return New List(Of FBoxAPI.TAMItem)
@@ -169,7 +169,7 @@ Public Class FBoxDataService
         'Dim DeflectionListVM As IEnumerable(Of FBoxDeflectionItemViewModel) = Nothing
         Dim DeflectionList As New FBoxAPI.DeflectionList
 
-        FBoxTR064.X_contact.GetDeflections(DeflectionList)
+        If FBoxTR064.Bereit Then FBoxTR064.X_contact.GetDeflections(DeflectionList)
 
         Return DeflectionList
     End Function

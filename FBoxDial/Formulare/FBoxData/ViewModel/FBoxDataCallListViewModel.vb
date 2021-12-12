@@ -1,5 +1,6 @@
 ﻿Imports System.Collections
 Imports System.Threading
+Imports System.Threading.Tasks
 
 Public Class FBoxDataCallListViewModel
     Inherits NotifyBase
@@ -151,12 +152,9 @@ Public Class FBoxDataCallListViewModel
     End Sub
 
     Public Async Sub Init() Implements IFBoxData.Init
-        With Await DatenService.GetAnrufListe
-            ' Lade die Anrufliste
-            If .Calls.Any Then
-                CallList.AddRange(From item In .Calls Select New CallViewModel With {.[Call] = item})
-            End If
-        End With
+
+        ' Dummyeintrag. Ansonsten wird das FilteredDataGrid nicht ordentlich geladen
+        CallList.Add(New CallViewModel With {.CallItem = New FBoxAPI.Call With {.Name = "Dummy", .[Date] = Now.ToString("g")}})
 
         ' Setze Startzeitpunkt = Zeitpunkt letzter Import
         StartDatum = DatenService.GetLastImport
@@ -166,6 +164,12 @@ Public Class FBoxDataCallListViewModel
         EndDatum = Now.Date
         EndZeit = Now.TimeOfDay
 
+        With Await DatenService.GetCallList
+            If .Calls.Any Then
+                CallList.Clear()
+                CallList.AddRange(From CallItem In .Calls Select New CallViewModel With {.CallItem = CallItem})
+            End If
+        End With
     End Sub
 
 #Region "ICommand Callback"
@@ -219,7 +223,7 @@ Public Class FBoxDataCallListViewModel
 #Region "Journalimport"
     Private Async Sub JournalImport(o As Object)
 
-        Dim AusgewählteAnrufe As IEnumerable(Of FBoxAPI.Call) = CallList.Where(Function(x) x.Export = True).Select(Function(Anruf) Anruf.Call)
+        Dim AusgewählteAnrufe As IEnumerable(Of FBoxAPI.Call) = CallList.Where(Function(x) x.Export = True).Select(Function(Anruf) Anruf.CallItem)
 
         If AusgewählteAnrufe.Any Then
 
@@ -276,7 +280,7 @@ Public Class FBoxDataCallListViewModel
 
 #Region "Kontakt Anrufen"
     Private Sub [Call](o As Object)
-        DatenService.CallXMLContact((From a In CType(o, IList).Cast(Of CallViewModel)()).ToList.First.Call)
+        DatenService.CallXMLContact((From a In CType(o, IList).Cast(Of CallViewModel)()).ToList.First.CallItem)
     End Sub
 
     Private Function CanCall(o As Object) As Boolean
@@ -295,7 +299,7 @@ Public Class FBoxDataCallListViewModel
         Dim AnrufListetListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
 
         For Each Anruf In AnrufListetListe
-            DatenService.ShowXMLContact(Anruf.Call)
+            DatenService.ShowXMLContact(Anruf.CallItem)
         Next
     End Sub
 

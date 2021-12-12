@@ -7,11 +7,11 @@ Namespace Telefonbücher
     Friend Module FritzBoxTelefonbuch
         Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-        Friend Async Function LadeTelefonbücher(fbtr064 As FBoxAPI.FritzBoxTR64) As Task(Of IEnumerable(Of PhonebookEx))
+        Friend Async Function LadeTelefonbücher(FBoxTR064 As FBoxAPI.FritzBoxTR64) As Task(Of IEnumerable(Of PhonebookEx))
 
             ' Prüfe, ob Fritz!Box verfügbar
-            If Ping(XMLData.POptionen.ValidFBAdr) Then
-                With fbtr064.X_contact
+            If FBoxTR064.Bereit Then
+                With FBoxTR064.X_contact
                     ' Ermittle alle verfügbaren Telefonbücher
                     Dim PhonebookIDs As Integer() = {}
                     If .GetPhonebookList(PhonebookIDs) Then
@@ -57,7 +57,7 @@ Namespace Telefonbücher
                         End If
 
                         ' Füge das Telefonbuch der Rufsperre hinzu.
-                        AlleTelefonbücher.AddRange(Await LadeSperrliste(fbtr064))
+                        AlleTelefonbücher.AddRange(Await LadeSperrliste(FBoxTR064))
 
                         Return AlleTelefonbücher
                     End If
@@ -70,10 +70,10 @@ Namespace Telefonbücher
             End If
         End Function
 
-        Friend Function LadeTelefonbücherNamen(fbtr064 As FBoxAPI.FritzBoxTR64) As IEnumerable(Of PhonebookEx)
+        Friend Function LadeTelefonbücherNamen(FBoxTR064 As FBoxAPI.FritzBoxTR64) As IEnumerable(Of PhonebookEx)
             ' Prüfe, ob Fritz!Box verfügbar
             If Ping(XMLData.POptionen.ValidFBAdr) Then
-                With fbtr064.X_contact
+                With FBoxTR064.X_contact
                     ' Ermittle alle verfügbaren Telefonbücher
                     Dim PhonebookIDs As Integer() = {}
                     If .GetPhonebookList(PhonebookIDs) Then
@@ -117,9 +117,9 @@ Namespace Telefonbücher
             End Using
         End Function
 
-        Friend Async Function LadeSperrliste(fbtr064 As FBoxAPI.FritzBoxTR64) As Task(Of IEnumerable(Of PhonebookEx))
+        Friend Async Function LadeSperrliste(FBoxTR064 As FBoxAPI.FritzBoxTR64) As Task(Of IEnumerable(Of PhonebookEx))
 
-            With fbtr064.X_contact
+            With FBoxTR064.X_contact
                 ' Initialiesiere die Gesamtliste der Telefonbücher
                 Dim PhonebookURL As String = DfltStringEmpty
                 Dim Rufsperren As New List(Of PhonebookEx)
@@ -179,13 +179,13 @@ Namespace Telefonbücher
         ''' <summary>
         ''' Erstellt ein neues Telefonbuch.
         ''' </summary>
-        ''' <param name="fbtr064">TR064 Schnittstelle zur Fritz!Box</param>
+        ''' <param name="FBoxTR064">TR064 Schnittstelle zur Fritz!Box</param>
         ''' <param name="TelefonbuchName">Übergabe des neuen Namens des Telefonbuches.</param>
         ''' <returns>XML-Telefonbuch</returns>
-        Friend Async Function ErstelleTelefonbuch(fbtr064 As FBoxAPI.FritzBoxTR64, TelefonbuchName As String) As Task(Of PhonebookEx)
+        Friend Async Function ErstelleTelefonbuch(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchName As String) As Task(Of PhonebookEx)
             ' Prüfe, ob Fritz!Box verfügbar
             If Ping(XMLData.POptionen.ValidFBAdr) Then
-                With fbtr064.X_contact
+                With FBoxTR064.X_contact
                     ' Hole die momentan verfügbaren Ids der Telefonbücher
                     Dim IdsA As Integer() = {}
                     Dim PhonebookURL As String = DfltStringEmpty
@@ -286,16 +286,16 @@ Namespace Telefonbücher
         ''' <summary>
         ''' Startet das Hochladen eines Kontaktes.
         ''' </summary>
-        ''' <param name="fbtr064">TR064 Schnittstelle zur Fritz!Box</param>
+        ''' <param name="FBoxTR064">TR064 Schnittstelle zur Fritz!Box</param>
         ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
         ''' <param name="XMLDaten">Passender XML String des Kontaktes</param>
         ''' <returns>Die einzigartige ID des Kontaktes im Fritz!Box Telefonbuch mit der <paramref name="TelefonbuchID"/>.</returns>
         ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
-        Friend Function SetTelefonbuchEintrag(fbtr064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, XMLDaten As String) As Integer
+        Friend Function SetTelefonbuchEintrag(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, XMLDaten As String) As Integer
             If XMLDaten.IsNotStringNothingOrEmpty Then
                 ' Prüfe, ob Fritz!Box verfügbar
                 If Ping(XMLData.POptionen.ValidFBAdr) Then
-                    With fbtr064.X_contact
+                    With FBoxTR064.X_contact
                         Dim UID As Integer = -1
                         If .SetPhonebookEntryUID(TelefonbuchID, XMLDaten, UID) Then
                             NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} der Fritz!Box angelegt.")
@@ -313,11 +313,11 @@ Namespace Telefonbücher
         ''' <summary>
         ''' Startet das Hochladen mehrerer Outlook-Kontakte mittels asynchroner Aufgaben (<see cref="Task"/>).
         ''' </summary>
-        ''' <param name="fbtr064">TR064 Schnittstelle zur Fritz!Box</param>
+        ''' <param name="FBoxTR064">TR064 Schnittstelle zur Fritz!Box</param>
         ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
         ''' <param name="OutlookKontakte">Auflistung der hochzuladenden Outlook Kontakte</param>
         ''' <remarks>Wird durch die Ribbons des Addins aufgerufen.</remarks>
-        Friend Async Sub SetTelefonbuchEintrag(fbtr064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, OutlookKontakte As IEnumerable(Of ContactItem))
+        Friend Async Sub SetTelefonbuchEintrag(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, OutlookKontakte As IEnumerable(Of ContactItem))
 
             ' Prüfe, ob Fritz!Box verfügbar
             If Ping(XMLData.POptionen.ValidFBAdr) Then
@@ -334,7 +334,7 @@ Namespace Telefonbücher
                                                   Dim retVal As String = If(UID.AreEqual(-1), Localize.resRibbon.UploadCreateContact, Localize.resRibbon.UploadOverwriteContact)
 
                                                   ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
-                                                  If fbtr064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
+                                                  If FBoxTR064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
                                                       ' Stelle die Verknüpfung her
                                                       .SetUniqueID(TelefonbuchID.ToString, UID.ToString)
 
@@ -377,15 +377,15 @@ Namespace Telefonbücher
         ''' <summary>
         ''' Startet das Löschen eines Kontaktes.
         ''' </summary>
-        ''' <param name="fbtr064">TR064 Schnittstelle zur Fritz!Box</param>
+        ''' <param name="FBoxTR064">TR064 Schnittstelle zur Fritz!Box</param>
         ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
         ''' <param name="UID">Einzigartige ID des zu löschenden Kontaktes</param>
         ''' <returns>Boolean, ob erfolgreich, oder nicht.</returns>
         ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
-        Friend Function DeleteTelefonbuchEintrag(fbtr064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, UID As Integer) As Boolean
+        Friend Function DeleteTelefonbuchEintrag(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, UID As Integer) As Boolean
             ' Prüfe, ob Fritz!Box verfügbar
             If Ping(XMLData.POptionen.ValidFBAdr) Then
-                With fbtr064.X_contact
+                With FBoxTR064.X_contact
                     If .DeletePhonebookEntryUID(TelefonbuchID, UID) Then
                         NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box gelöscht.")
                         Return True

@@ -20,10 +20,9 @@ Public Interface IFBoxDataService
     ReadOnly Property GetLastImport() As Date
 
     ''' <summary>
-    ''' Lädt die Anrufliste aus der Fritz!Box herunter
+    ''' Lädt die Anrufliste aus der Fritz!Box asynchron herunter.
     ''' </summary>
-    ''' <returns>FritzBoxXMLCallList</returns>
-    Function GetAnrufListe() As Task(Of FBoxAPI.CallList)
+    Function GetCallList() As Task(Of FBoxAPI.CallList)
 
     ''' <summary>
     ''' Erstellt aus dem übegebenen Anruf (<see cref="FBoxAPI.Call"/>) ein Outlook Journaleintrag.

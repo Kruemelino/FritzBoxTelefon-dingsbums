@@ -1,5 +1,4 @@
 ﻿Imports System.ComponentModel
-Imports System.Drawing
 Imports System.Globalization
 Imports System.Reflection
 Imports System.Windows

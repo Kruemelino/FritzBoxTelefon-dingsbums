@@ -3,7 +3,7 @@
 
 #Region "Model"
     Private _Call As FBoxAPI.Call
-    Public Property [Call] As FBoxAPI.Call
+    Public Property CallItem As FBoxAPI.Call
         Get
             Return _Call
         End Get
@@ -30,12 +30,18 @@
     ''' </summary>
     Public ReadOnly Property Gegenstelle As String
         Get
-            Select Case [Call].Type
+            Select Case CallItem.Type
                 Case 1, 2, 9, 10
-                    Return [Call].Caller
+                    Return CallItem.Caller
                 Case Else '3, 11
-                    Return [Call].Called
+                    Return CallItem.Called
             End Select
+        End Get
+    End Property
+
+    Public ReadOnly Property Typ As Integer
+        Get
+            Return CallItem.Type
         End Get
     End Property
 
@@ -44,19 +50,19 @@
     ''' </summary>
     Public ReadOnly Property EigeneNummer As String
         Get
-            Return $"{[Call].CalledNumber}{[Call].CallerNumber}"
+            Return $"{CallItem.CalledNumber}{CallItem.CallerNumber}"
         End Get
     End Property
 
     Public ReadOnly Property Name As String
         Get
-            Return [Call].Name
+            Return CallItem.Name
         End Get
     End Property
 
     Public ReadOnly Property Datum As Date
         Get
-            Return CDate([Call].[Date])
+            Return CDate(CallItem.[Date])
         End Get
     End Property
 
@@ -70,7 +76,7 @@
 
     Public ReadOnly Property Gerät As String
         Get
-            Return [Call].Device
+            Return CallItem.Device
         End Get
     End Property
 #End Region

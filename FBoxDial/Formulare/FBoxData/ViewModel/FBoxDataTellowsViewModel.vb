@@ -126,10 +126,8 @@ Public Class FBoxDataTellowsViewModel
     End Sub
     Public Async Sub Init() Implements IFBoxData.Init
 
-        Dim TaskTellows As List(Of TellowsScoreListEntry) = Await DatenService.GetTellowsScoreList
-
         ' Lade die tellows ScoreList
-        TellowsList.AddRange(TaskTellows)
+        TellowsList.AddRange(Await DatenService.GetTellowsScoreList)
 
         NutzeTellows = TellowsList.Any
 

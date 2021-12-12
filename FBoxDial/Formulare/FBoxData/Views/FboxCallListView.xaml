@@ -105,8 +105,8 @@
         <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                             Style="{StaticResource DataGridStyle}" 
                             ItemsSource="{Binding CallList, UpdateSourceTrigger=PropertyChanged}"
-                            ShowStatusBar="True" ShowElapsedTime="True" ShowRowsCount="True"                                
-                            DateFormatString="g" FilterLanguage="German">
+                            ShowStatusBar="False" ShowElapsedTime="False" ShowRowsCount="False"                                
+                            DateFormatString="g" FilterLanguage="German" >
 
             <fdg:FilterDataGrid.ContextMenu>
                 <ContextMenu>
@@ -150,7 +150,7 @@
                     </fdg:DataGridTemplateColumn.CellTemplate>
                 </fdg:DataGridTemplateColumn>
 
-                <fdg:DataGridTemplateColumn FieldName="Direction" Header="" IsColumnFiltered="False">                  
+                <fdg:DataGridTemplateColumn FieldName="Typ" Header="" IsColumnFiltered="True">                  
 
                     <fdg:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -163,16 +163,16 @@
                                 11 active outgoing-->
 
                             <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding Path=Call.Type, Mode=OneWay}" Value="1">
+                                <DataTrigger Binding="{Binding Path=Typ, Mode=OneWay}" Value="1">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CallReceived}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=Call.Type, Mode=OneWay}" Value="2">
+                                <DataTrigger Binding="{Binding Path=Typ, Mode=OneWay}" Value="2">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CallMissed}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=Call.Type, Mode=OneWay}" Value="3">
+                                <DataTrigger Binding="{Binding Path=Typ, Mode=OneWay}" Value="3">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CallMade}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=Call.Type, Mode=OneWay}" Value="10">
+                                <DataTrigger Binding="{Binding Path=Typ, Mode=OneWay}" Value="10">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CancelRed}" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
