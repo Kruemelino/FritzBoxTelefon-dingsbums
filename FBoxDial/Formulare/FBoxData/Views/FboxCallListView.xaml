@@ -106,7 +106,7 @@
                             Style="{StaticResource DataGridStyle}" 
                             ItemsSource="{Binding CallList, UpdateSourceTrigger=PropertyChanged}"
                             ShowStatusBar="True" ShowElapsedTime="True" ShowRowsCount="True"                                
-                            DateFormatString="d"  FilterLanguage="German">
+                            DateFormatString="g" FilterLanguage="German">
 
             <fdg:FilterDataGrid.ContextMenu>
                 <ContextMenu>
@@ -182,7 +182,7 @@
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True" FieldName="Datum"
                                         Header="{x:Static localize:LocFBoxData.strDate}"
-                                        Binding="{Binding Path=Date, UpdateSourceTrigger=PropertyChanged}"/>
+                                        Binding="{Binding Path=Datum, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Name"
                                         Header="{x:Static localize:LocFBoxData.strName}"
@@ -201,7 +201,7 @@
                 <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Dauer"
                                         CellStyle="{StaticResource DataGridCellRight}"
                                         Header="{x:Static localize:LocFBoxData.strDuration}"
-                                        Binding="{Binding Path=Dauer, UpdateSourceTrigger=PropertyChanged}"/>
+                                        Binding="{Binding Path=Dauer, StringFormat='{}{0:hh\\:mm}', UpdateSourceTrigger=PropertyChanged}"/>
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Gerät"
                                         Header="{x:Static localize:LocFBoxData.strDevice}"

@@ -59,15 +59,12 @@
             Return CDate([Call].[Date])
         End Get
     End Property
-    Public ReadOnly Property [Date] As String
-        Get
-            Return [Call].[Date]
-        End Get
-    End Property
 
-    Public ReadOnly Property Dauer As String
+    Public ReadOnly Property Dauer As TimeSpan
         Get
-            Return [Call].Duration
+            With Datum
+                Return New TimeSpan(.Hour, .Minute, .Second)
+            End With
         End Get
     End Property
 
