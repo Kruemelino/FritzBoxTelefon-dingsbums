@@ -16,6 +16,11 @@ Public NotInheritable Class ThisAddIn
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property AnrMonWarAktiv As Boolean
 
+#Region "Timer für Raktivierung nach StandBy"
+    Private Property NeustartTimer As Timers.Timer
+    Private Property NeustartTimerIterations As Integer
+#End Region
+
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
         If POutlookRibbons Is Nothing Then POutlookRibbons = New OutlookRibbons
         Return POutlookRibbons
@@ -31,15 +36,15 @@ Public NotInheritable Class ThisAddIn
         If OutookApplication.ActiveExplorer IsNot Nothing Then
             ' Ereignishandler für StandBy / Resume
             NLogger.Debug("Füge Ereignishandler für PowerModeChanged hinzu.")
-            AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
+            AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf PowerModeChanged
             ' Starte die Funktionen des Addins
-            StarteAddinFunktionen()
+            StarteAddinFunktionen(False)
         Else
             NLogger.Warn("Addin nicht gestartet, da kein Explorer vorhanden")
         End If
     End Sub
 
-    Private Async Sub StarteAddinFunktionen()
+    Private Async Sub StarteAddinFunktionen(StandBy As Boolean)
         NLogger.Info($"Starte {My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version}...")
 
         Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
@@ -89,9 +94,18 @@ Public NotInheritable Class ThisAddIn
 
             ' Anrufmonitor starten
             If XMLData.POptionen.CBAnrMonAuto Then
-                PAnrufmonitor = New Anrufmonitor
-                PAnrufmonitor.StartAnrMon()
-                NLogger.Debug("Anrufmonitor gestartet...")
+                If StandBy Then
+                    If AnrMonWarAktiv Then
+                        ' Starte den Anrufmonitor wenn er zuvor aktiv war, und er automatisch gestartet werden soll.
+                        NLogger.Info("Anrufmonitor nach Standby gestartet.")
+                        ' Anrufmonitor erneut starten
+                        PAnrufmonitor.StartAnrMon()
+                    End If
+                Else
+                    PAnrufmonitor = New Anrufmonitor
+                    PAnrufmonitor.StartAnrMon()
+                    NLogger.Debug("Anrufmonitor gestartet...")
+                End If
             End If
 
             ' Explorer Ereignishandler festlegen
@@ -146,8 +160,7 @@ Public NotInheritable Class ThisAddIn
 
     End Sub
 
-
-    Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
+    Private Sub BeendeAddinFunktionen()
 
         ' Listen leeren
         If PVorwahlen IsNot Nothing Then PVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
@@ -162,6 +175,11 @@ Public NotInheritable Class ThisAddIn
             ' disable keyboard intercepts
             KeyboardHooking.ReleaseHook()
         End If
+    End Sub
+
+    Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
+
+        BeendeAddinFunktionen()
 
         ReleaseComObject(OutookApplication)
         OutookApplication = Nothing
@@ -169,39 +187,110 @@ Public NotInheritable Class ThisAddIn
 
 #Region "Standby Wakeup"
     ''' <summary>
-    ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
+    ''' Startet das Addin nach dem Aufwachen nach dem Standby neu, bzw. Beendet es, falls ein Standyby erkannt wird.
     ''' </summary>
-    Private Sub AnrMonRestartNachStandBy(sender As Object, e As Microsoft.Win32.PowerModeChangedEventArgs)
+    Private Sub PowerModeChanged(sender As Object, e As Microsoft.Win32.PowerModeChangedEventArgs)
 
         NLogger.Info($"PowerMode: {e.Mode} ({e.Mode})")
 
         Select Case e.Mode
             Case Microsoft.Win32.PowerModes.Resume
                 ' Wiederherstelung nach dem Standby
-
-                ' Starte den Anrufmonitor wenn er zuvor aktiv war, und er automatisch gestartet werden soll.
-                If AnrMonWarAktiv And XMLData.POptionen.CBAnrMonAuto Then
-                    ' Eintrag ins Log
-                    NLogger.Info("Anrufmonitor nach Standby gestartet.")
-                    ' Anrufmonitor erneut starten
-                    PAnrufmonitor.Reaktivieren()
-                End If
+                Reaktivieren()
 
             Case Microsoft.Win32.PowerModes.Suspend
-                ' Anrufmonitor beenden, falls dieser aktiv ist
+                ' Status des Anrufmonitors merken, falls dieser aktiv ist
                 If PAnrufmonitor IsNot Nothing Then
                     ' Eintrag ins Log
-                    NLogger.Info("Anrufmonitor für Standby angehalten.")
+                    NLogger.Info("Anrufmonitor wird für Standby angehalten.")
                     ' Merken, dass er aktiv war
                     AnrMonWarAktiv = PAnrufmonitor.Aktiv
-                    ' Anrufmonitor anhalten
-                    PAnrufmonitor.StoppAnrMon()
                 End If
 
-                ' XML-Datei speichern
-                XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltConfigFileName))
-
+                BeendeAddinFunktionen()
         End Select
+    End Sub
+
+    ''' <summary>
+    ''' Nach dem Aufwachen aus dem Standby besteht meist noch keine Verbindung zur Fritz!Box. Es wird mehrfach, mittels <see cref="Ping(ByRef String)"/>, geprüft, ob die Fritz!Box wieder erreichbar ist. 
+    ''' </summary>
+    Private Sub Reaktivieren()
+
+        If NeustartTimer IsNot Nothing Then
+            NLogger.Debug("Timer für Reaktivierung ist nicht Nothing und wird neu gestartet.")
+
+            ' Ereignishandler entfernen
+            RemoveHandler NeustartTimer.Elapsed, AddressOf TimerAnrMonReStart_Elapsed
+
+            ' Timer stoppen und auflösen
+            With NeustartTimer
+                .Stop()
+                .AutoReset = False
+                .Enabled = False
+                .Dispose()
+            End With
+        End If
+
+        ' Initiiere einen neuen Timer
+        NLogger.Debug("Timer für Reaktivierung wird gestartet.")
+
+        ' Setze die Zählvariable auf 0
+        NeustartTimerIterations = 0
+
+        ' Initiiere den Timer mit Intervall von 2 Sekunden
+        NeustartTimer = New Timers.Timer
+        With NeustartTimer
+            .Interval = DfltReStartIntervall
+            .AutoReset = True
+            .Enabled = True
+            ' Starte den Timer
+            .Start()
+        End With
+
+        ' Ereignishandler hinzufügen
+        AddHandler NeustartTimer.Elapsed, AddressOf TimerAnrMonReStart_Elapsed
+    End Sub
+
+    Private Sub TimerAnrMonReStart_Elapsed(sender As Object, e As Timers.ElapsedEventArgs)
+        ' Prüfe, ob die maximale Anzahl an Durchläufen (15) noch nicht erreicht wurde
+        If NeustartTimerIterations.IsLess(DfltTryMaxRestart) Then
+            ' Wenn ein Ping zur Fritz!Box erfolgreich war, dann hat das Wiederverbinden geklappt.
+            If Ping(XMLData.POptionen.ValidFBAdr) Then
+                ' Halte den TImer an und löse ihn auf
+                With NeustartTimer
+                    .Stop()
+                    .Dispose()
+                End With
+
+                ' Starte alle weiteren Addinfunktionen
+                StarteAddinFunktionen(True)
+
+                ' Statusmeldung
+                NLogger.Info($"Addin konnte nach {NeustartTimerIterations} Versuchen erfolgreich neu gestartet werden.")
+            Else
+                ' Erhöhe den Wert der durchgeführten Iterationen
+                NeustartTimerIterations += 1
+                ' Statusmeldung
+                NLogger.Debug($"Timer: Starte {NeustartTimerIterations}. Versuch den Anrufmonitor zu starten.")
+            End If
+
+        Else
+            ' Es konnte keine Verbindung zur Fritz!Box aufgebaut werden.
+            NLogger.Warn($"Addin konnte nach {NeustartTimerIterations} Versuchen nicht neu gestartet werden.")
+
+            ' Ereignishandler entfernen
+            RemoveHandler NeustartTimer.Elapsed, AddressOf TimerAnrMonReStart_Elapsed
+
+            ' Timer stoppen und auflösen
+            With NeustartTimer
+                .Stop()
+                .AutoReset = False
+                .Enabled = False
+                .Dispose()
+            End With
+        End If
+        ' Ribbon aktualisieren
+        POutlookRibbons.RefreshRibbon()
     End Sub
 #End Region
 
