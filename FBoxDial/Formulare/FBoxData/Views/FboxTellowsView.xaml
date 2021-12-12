@@ -27,6 +27,7 @@
             <RowDefinition Height="100"/>
             <RowDefinition />
         </Grid.RowDefinitions>
+
         <GroupBox Grid.Row="0" Grid.Column="0" Header="{x:Static localize:LocFBoxData.strTellowsConfig}">
             <StackPanel Margin="0,4">
                 <ComboBox Style="{StaticResource OptComboBox}" 

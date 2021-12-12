@@ -1,7 +1,7 @@
 ﻿Imports System.Collections
 Imports System.Threading
 
-Public Class FBoxDataAnrListViewModel
+Public Class FBoxDataCallListViewModel
     Inherits NotifyBase
     Implements IFBoxData
 
@@ -25,6 +25,15 @@ Public Class FBoxDataAnrListViewModel
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IFBoxDataService
     Private Property DialogService As IDialogService
+
+#Region "ICommand"
+    Public Property CancelCommand As RelayCommand
+    Public Property ImportCommand As RelayCommand
+    Public Property SelectAllCommand As RelayCommand
+    Public Property BlockCommand As RelayCommand
+    Public Property CallCommand As RelayCommand
+    Public Property ShowContactCommand As RelayCommand
+#End Region
 
 #Region "Properties"
 
@@ -124,22 +133,9 @@ Public Class FBoxDataAnrListViewModel
     ''' <summary>
     ''' Returns Or sets a list as FritzBoxXMLCall             
     ''' </summary>
-    Public Property CallList As New ObservableCollectionEx(Of AnrListItemViewModel)
-    ''' <summary>
-    ''' Returns Or sets a list as TellowsScoreListEntry             
-    ''' </summary>
-    Public Property TellowsList As ObservableCollectionEx(Of TellowsScoreListEntry)
-
+    Public Property CallList As New ObservableCollectionEx(Of CallViewModel)
 #End Region
 
-#Region "ICommand"
-    Public Property CancelCommand As RelayCommand
-    Public Property ImportCommand As RelayCommand
-    Public Property SelectAllCommand As RelayCommand
-    Public Property BlockCommand As RelayCommand
-    Public Property CallCommand As RelayCommand
-    Public Property ShowContactCommand As RelayCommand
-#End Region
     Public Sub New(dataService As IFBoxDataService, dialogService As IDialogService)
         ' Interface
         _DatenService = dataService
@@ -152,9 +148,29 @@ Public Class FBoxDataAnrListViewModel
         BlockCommand = New RelayCommand(AddressOf BlockNumbers)
         CallCommand = New RelayCommand(AddressOf [Call], AddressOf CanCall)
         ShowContactCommand = New RelayCommand(AddressOf ShowContact, AddressOf CanShowContact)
+    End Sub
+
+    Public Async Sub Init() Implements IFBoxData.Init
+        With Await DatenService.GetAnrufListe
+            ' Lade die Anrufliste
+            If .Calls.Any Then
+                CallList.AddRange(From item In .Calls Select New CallViewModel With {.[Call] = item})
+            End If
+        End With
+
+        ' Setze Startzeitpunkt = Zeitpunkt letzter Import
+        StartDatum = DatenService.GetLastImport
+        StartZeit = StartDatum.TimeOfDay
+
+        ' Setze Endzeitpunkt = Jetzt
+        EndDatum = Now.Date
+        EndZeit = Now.TimeOfDay
 
     End Sub
 
+#Region "ICommand Callback"
+
+#Region "SelectAll"
     Private Sub SelectAll(o As Object)
         For Each Anruf In CallList
             Anruf.Export = CBool(o)
@@ -172,7 +188,7 @@ Public Class FBoxDataAnrListViewModel
             ' Endzeitpunkt
             Dim ImportEnde As Date = EndDatum.Add(EndZeit)
 
-            Dim AusgewählteAnrufe As IEnumerable(Of AnrListItemViewModel)
+            Dim AusgewählteAnrufe As IEnumerable(Of CallViewModel)
 
             ' Ermittle alle Einträge, die im ausgewählten Bereich liegen
             AusgewählteAnrufe = CallList.Where(Function(x) ImportStart <= x.Datum And x.Datum <= ImportEnde)
@@ -189,39 +205,15 @@ Public Class FBoxDataAnrListViewModel
 
         End If
     End Sub
+#End Region
 
-#Region "ICommand Callback"
-    ''' <summary>
-    ''' Tritt auf, wenn das Element ausgerichtet und gerendert sowie zur Interaktion vorbereitet wurde.
-    ''' </summary>
-    Private Async Sub Init() Implements IFBoxData.Init
-
-        With Await DatenService.GetAnrufListe
-            ' Lade die Anrufliste
-            If .Calls.Any Then
-                CallList.AddRange(From item In .Calls Select New AnrListItemViewModel With {.[Call] = item})
-            End If
-        End With
-
-        ' Setze Startzeitpunkt = Zeitpunkt letzter Import
-        StartDatum = DatenService.GetLastImport
-        StartZeit = StartDatum.TimeOfDay
-
-        ' Setze Endzeitpunkt = Jetzt
-        EndDatum = Now.Date
-        EndZeit = Now.TimeOfDay
-
-    End Sub
+#Region "Cancel"
+    Private Property CTS As CancellationTokenSource
 
     Private Sub CancelProcess(o As Object)
         CTS?.Cancel()
         NLogger.Debug("Manueller Journalimport abgebrochen.")
     End Sub
-
-#End Region
-
-#Region "Cancel"
-    Private Property CTS As CancellationTokenSource
 #End Region
 
 #Region "Journalimport"
@@ -273,7 +265,7 @@ Public Class FBoxDataAnrListViewModel
 #Region "Sperrlist"
     Private Sub BlockNumbers(o As Object)
 
-        Dim BlockNumbers As IEnumerable(Of String) = From a In CType(o, IList).Cast(Of AnrListItemViewModel)().ToList Select a.Gegenstelle
+        Dim BlockNumbers As IEnumerable(Of String) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList Select a.Gegenstelle
 
         If DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBlockNumber, String.Join(", ", BlockNumbers))) = Windows.MessageBoxResult.Yes Then
             DatenService.BlockNumbers(BlockNumbers)
@@ -284,12 +276,12 @@ Public Class FBoxDataAnrListViewModel
 
 #Region "Kontakt Anrufen"
     Private Sub [Call](o As Object)
-        DatenService.CallXMLContact((From a In CType(o, IList).Cast(Of AnrListItemViewModel)()).ToList.First.Call)
+        DatenService.CallXMLContact((From a In CType(o, IList).Cast(Of CallViewModel)()).ToList.First.Call)
     End Sub
 
     Private Function CanCall(o As Object) As Boolean
         If o IsNot Nothing Then
-            Dim XMLKontaktListe As IEnumerable(Of AnrListItemViewModel) = From a In CType(o, IList).Cast(Of AnrListItemViewModel)().ToList
+            Dim XMLKontaktListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
 
             Return XMLKontaktListe.Count.AreEqual(1) AndAlso XMLKontaktListe.First.Gegenstelle.IsNotStringNothingOrEmpty
         Else
@@ -300,7 +292,7 @@ Public Class FBoxDataAnrListViewModel
 
 #Region "Kontakt Anzeigen"
     Private Sub ShowContact(o As Object)
-        Dim AnrufListetListe As IEnumerable(Of AnrListItemViewModel) = From a In CType(o, IList).Cast(Of AnrListItemViewModel)().ToList
+        Dim AnrufListetListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
 
         For Each Anruf In AnrufListetListe
             DatenService.ShowXMLContact(Anruf.Call)
@@ -309,13 +301,15 @@ Public Class FBoxDataAnrListViewModel
 
     Private Function CanShowContact(o As Object) As Boolean
         If o IsNot Nothing Then
-            Dim AnrufListetListe As IEnumerable(Of AnrListItemViewModel) = From a In CType(o, IList).Cast(Of AnrListItemViewModel)().ToList
+            Dim AnrufListetListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
 
             Return AnrufListetListe.First.Gegenstelle.IsNotStringNothingOrEmpty
         Else
             Return False
         End If
     End Function
+
+#End Region
 
 #End Region
 End Class

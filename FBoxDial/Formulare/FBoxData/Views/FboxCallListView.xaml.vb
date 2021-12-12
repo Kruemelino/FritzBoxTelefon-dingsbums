@@ -1,4 +1,4 @@
 ﻿Imports System.Windows.Controls
-Public Class FboxAnrListView
+Public Class FboxCallListView
     Inherits UserControl
 End Class

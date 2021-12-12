@@ -1,15 +1,16 @@
-﻿<UserControl x:Class="FboxAnrListView"
+﻿<UserControl x:Class="FboxCallListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
+             xmlns:fdg="http://filterdatagrid.control.com/2021"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=fbd:FBoxDataAnrListViewModel, IsDesignTimeCreatable=False}"
+             d:DataContext="{d:DesignInstance Type=fbd:FBoxDataCallListViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,7 +18,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-
+    
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -27,7 +28,7 @@
             <RowDefinition Height="100"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-
+        
         <GroupBox Grid.Row="0" Grid.Column="0" Header="{x:Static localize:LocFBoxData.strZeitraum}">
             <Grid Width="260" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
@@ -101,10 +102,13 @@
             </Grid>
         </GroupBox>
 
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource DataGridStyle}"
-                  ItemsSource="{Binding Path=CallList, UpdateSourceTrigger=PropertyChanged}" >
+        <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                            Style="{StaticResource DataGridStyle}" 
+                            ItemsSource="{Binding CallList, UpdateSourceTrigger=PropertyChanged}"
+                            ShowStatusBar="True" ShowElapsedTime="True" ShowRowsCount="True"                                
+                            DateFormatString="d"  FilterLanguage="German">
 
-            <DataGrid.ContextMenu>
+            <fdg:FilterDataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{x:Static localize:LocFBoxData.strCall}" 
                               Command="{Binding CallCommand}"
@@ -134,20 +138,23 @@
                               Command="{Binding BlockCommand}"/>
 
                 </ContextMenu>
-            </DataGrid.ContextMenu>
+            </fdg:FilterDataGrid.ContextMenu>            
+            
+            <fdg:FilterDataGrid.Columns>
 
-            <DataGrid.Columns>
+                <fdg:DataGridTemplateColumn FieldName="Export" Header="*" IsColumnFiltered="False">
+                    <fdg:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Export, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </fdg:DataGridTemplateColumn.CellTemplate>
+                </fdg:DataGridTemplateColumn>
 
-                <DataGridCheckBoxColumn Header="*" 
-                                        Binding="{Binding Path=Export, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                        CellStyle="{StaticResource SingleClickStyle}"/>
+                <fdg:DataGridTemplateColumn FieldName="Direction" Header="" IsColumnFiltered="False">                  
 
-                <DataGridTemplateColumn Header="" CanUserSort="False">
-                    <DataGridTemplateColumn.CellTemplate>
+                    <fdg:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Name="image" Margin="2" Width="10" Height="10"/>
-
-
                             <!--1 incoming,
                                 2 missed,
                                 3 outgoing,
@@ -170,53 +177,39 @@
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    </fdg:DataGridTemplateColumn.CellTemplate>
+                </fdg:DataGridTemplateColumn>
 
-                <DataGridTextColumn Binding="{Binding Path=Call.Date, StringFormat=G, Mode=OneWay}" 
-                                    Header="{x:Static localize:LocFBoxData.strDate}" />
+                <fdg:DataGridTextColumn IsColumnFiltered="True" FieldName="Datum"
+                                        Header="{x:Static localize:LocFBoxData.strDate}"
+                                        Binding="{Binding Path=Date, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <DataGridTextColumn Binding="{Binding Path=Call.Name, Mode=OneWay}"
-                                    Header="{x:Static localize:LocFBoxData.strName}" 
-                                    Width="*" />
+                <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Name"
+                                        Header="{x:Static localize:LocFBoxData.strName}"
+                                        Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <DataGridTextColumn Binding="{Binding Path=EigeneNummer, Mode=OneWay}"
-                                    Header="{x:Static localize:LocFBoxData.strMyNumber}" 
-                                    Width="*" >
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="EigeneNummer"
+                                        CellStyle="{StaticResource DataGridCellRight}"
+                                        Header="{x:Static localize:LocFBoxData.strMyNumber}"
+                                        Binding="{Binding Path=EigeneNummer, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <DataGridTextColumn Binding="{Binding Path=Gegenstelle, Mode=OneWay}"
-                                    Header="{x:Static localize:LocFBoxData.strRemoteCaller}" 
-                                    Width="*">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Gegenstelle"
+                                        CellStyle="{StaticResource DataGridCellRight}"
+                                        Header="{x:Static localize:LocFBoxData.strRemoteCaller}"
+                                        Binding="{Binding Path=Gegenstelle, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <DataGridTextColumn Binding="{Binding Path=Call.Duration, StringFormat='{}{0:hh\\:mm}', Mode=OneWay}"
-                                    Header="{x:Static localize:LocFBoxData.strDuration}" 
-                                    Width="*">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Dauer"
+                                        CellStyle="{StaticResource DataGridCellRight}"
+                                        Header="{x:Static localize:LocFBoxData.strDuration}"
+                                        Binding="{Binding Path=Dauer, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <DataGridTextColumn Binding="{Binding Path=Call.Device, Mode=OneWay}"
-                                    Header="{x:Static localize:LocFBoxData.strDevice}" 
-                                    Width="*"/>
-            </DataGrid.Columns>
+                <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Gerät"
+                                        Header="{x:Static localize:LocFBoxData.strDevice}"
+                                        Binding="{Binding Path=Gerät, UpdateSourceTrigger=PropertyChanged}"/>
 
-        </DataGrid>
-
+            </fdg:FilterDataGrid.Columns>
+        </fdg:FilterDataGrid>
+        
     </Grid>
 
 </UserControl>

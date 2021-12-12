@@ -265,7 +265,7 @@
     <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\FBoxData\ViewModel\Anrufliste\AnrListItemViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\Anrufliste\CallViewModel.vb" />
     <Compile Include="Formulare\FBoxData\FBoxDataWPF.xaml.vb">
       <DependentUpon>FBoxDataWPF.xaml</DependentUpon>
     </Compile>
@@ -278,7 +278,7 @@
     <Compile Include="Formulare\FBoxData\Services\FBoxDataService.vb" />
     <Compile Include="Formulare\FBoxData\Services\IFBoxData.vb" />
     <Compile Include="Formulare\FBoxData\Services\IFBoxDataService.vb" />
-    <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataAnrListViewModel.vb" />
+    <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataCallListViewModel.vb" />
     <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataRufUmlViewModel.vb" />
     <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataTAMViewModel.vb" />
     <Compile Include="Formulare\FBoxData\ViewModel\FBoxDataTellowsViewModel.vb" />
@@ -292,8 +292,8 @@
     <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\NumberViewModel.vb" />
     <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\KontaktViewModel.vb" />
     <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\TelefonbuchViewModel.vb" />
-    <Compile Include="Formulare\FBoxData\Views\FboxAnrListView.xaml.vb">
-      <DependentUpon>FboxAnrListView.xaml</DependentUpon>
+    <Compile Include="Formulare\FBoxData\Views\FboxCallListView.xaml.vb">
+      <DependentUpon>FboxCallListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\FBoxData\Views\FBoxDeflectionView.xaml.vb">
       <DependentUpon>FBoxDeflectionView.xaml</DependentUpon>
@@ -650,7 +650,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\FBoxData\Views\FboxAnrListView.xaml">
+    <Page Include="Formulare\FBoxData\Views\FboxCallListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

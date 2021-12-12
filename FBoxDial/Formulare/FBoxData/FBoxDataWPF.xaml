@@ -6,7 +6,7 @@
         xmlns:fbd="clr-namespace:FBoxDial"
         xmlns:localize="clr-namespace:FBoxDial.Localize"
         mc:Ignorable="d" 
-        d:DataContext="{d:DesignInstance Type=fbd:FBoxDataViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=fbd:FBoxDataViewModel, IsDesignTimeCreatable=False}"
         Height="450" Width="900"
         Title="{x:Static localize:LocFBoxData.FBoxDataMainHeader}"
         fbd:WindowBehavior.Loaded="{Binding LoadedCommand}"

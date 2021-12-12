@@ -56,11 +56,12 @@
 
         ' Child Views
         With PageViewModels
-            .Add(New FBoxDataAnrListViewModel(DatenService, DialogService) With {.FBoxDataVM = Me})
+            .Add(New FBoxDataCallListViewModel(DatenService, DialogService) With {.FBoxDataVM = Me})
             .Add(New FBoxDataTAMViewModel(DatenService, DialogService) With {.FBoxDataVM = Me})
             .Add(New FBoxDataTelBuchViewModel(DatenService, DialogService) With {.FBoxDataVM = Me})
             .Add(New FBoxDataRufUmlViewModel(DatenService) With {.FBoxDataVM = Me})
             .Add(New FBoxDataTellowsViewModel(DatenService) With {.FBoxDataVM = Me})
+
         End With
 
         ' Lade die Grundeinstellungen

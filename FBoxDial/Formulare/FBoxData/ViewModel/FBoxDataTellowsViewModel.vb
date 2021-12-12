@@ -115,12 +115,13 @@ Public Class FBoxDataTellowsViewModel
 #End Region
 
     Public Sub New(dataService As IFBoxDataService)
-        ' Commands
-        CancelCommand = New RelayCommand(AddressOf CancelProcess)
-        BlockCommand = New RelayCommand(AddressOf BlockNumbers)
 
         ' Interface
         _DatenService = dataService
+
+        ' Commands
+        CancelCommand = New RelayCommand(AddressOf CancelProcess)
+        BlockCommand = New RelayCommand(AddressOf BlockNumbers)
 
     End Sub
     Public Async Sub Init() Implements IFBoxData.Init

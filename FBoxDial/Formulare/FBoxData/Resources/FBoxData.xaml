@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:fbd="clr-namespace:FBoxDial">
+                    xmlns:fbd="clr-namespace:FBoxDial" >
 
+    
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -14,10 +15,6 @@
     <DataTemplate DataType="{x:Type fbd:FBoxDataTAMViewModel}">
         <fbd:FboxTAMView />
     </DataTemplate>
-    
-    <DataTemplate DataType="{x:Type fbd:FBoxDataAnrListViewModel}">
-        <fbd:FboxAnrListView />
-    </DataTemplate>
 
     <DataTemplate DataType="{x:Type fbd:FBoxDataTellowsViewModel}">
         <fbd:FboxTellowsView />
@@ -29,6 +26,10 @@
 
     <DataTemplate DataType="{x:Type fbd:FBoxDataRufUmlViewModel}">
         <fbd:FBoxDeflectionView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:FBoxDataCallListViewModel}">
+        <fbd:FboxCallListView/>
     </DataTemplate>
 
     <!--https://stackoverflow.com/a/56616523-->

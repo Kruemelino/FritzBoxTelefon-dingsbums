@@ -1,6 +1,4 @@
-﻿Imports System.Threading.Tasks
-
-Public Class AnrListItemViewModel
+﻿Public Class CallViewModel
     Inherits NotifyBase
 
 #Region "Model"
@@ -41,22 +39,41 @@ Public Class AnrListItemViewModel
         End Get
     End Property
 
+    ''' <summary>
+    ''' Gibt die Eigene Nummer zurück.
+    ''' </summary>
     Public ReadOnly Property EigeneNummer As String
         Get
             Return $"{[Call].CalledNumber}{[Call].CallerNumber}"
         End Get
     End Property
 
-    Public ReadOnly Property Datum As Date
+    Public ReadOnly Property Name As String
         Get
-            Return CDate([Call].[Date].ToString)
+            Return [Call].Name
         End Get
     End Property
-    Public ReadOnly Property Dauer As TimeSpan
+
+    Public ReadOnly Property Datum As Date
         Get
-            With CDate([Call].Duration)
-                Return New TimeSpan(.Hour, .Minute, .Second)
-            End With
+            Return CDate([Call].[Date])
+        End Get
+    End Property
+    Public ReadOnly Property [Date] As String
+        Get
+            Return [Call].[Date]
+        End Get
+    End Property
+
+    Public ReadOnly Property Dauer As String
+        Get
+            Return [Call].Duration
+        End Get
+    End Property
+
+    Public ReadOnly Property Gerät As String
+        Get
+            Return [Call].Device
         End Get
     End Property
 #End Region
