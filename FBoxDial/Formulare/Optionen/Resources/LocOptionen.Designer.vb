@@ -465,6 +465,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Timeout der Netzwerkroutinen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseTweakNetworkTimeout() As String
+            Get
+                Return ResourceManager.GetString("strBaseTweakNetworkTimeout", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann der Timeout für die Netzwerkverbindungen (Ping, Downloads etc.) zur Fritz!Box angepasst werden. (Standard: 120 ms) ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseTweakNetworkTimeoutInfo() As String
+            Get
+                Return ResourceManager.GetString("strBaseTweakNetworkTimeoutInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Arbeitsverzeichnis ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strBaseWorkDir() As String

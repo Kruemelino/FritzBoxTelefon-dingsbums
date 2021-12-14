@@ -66,7 +66,7 @@ Public NotInheritable Class ThisAddIn
             ' Ereignishandler hinzufügen
             AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
             ' TR064 Schnittstelle initiieren
-            FBoxTR064.Init(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+            FBoxTR064.Init(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
 
             If FBoxTR064.Bereit Then
                 ' Schreibe in das Log noch Informationen zur Fritz!Box
@@ -99,11 +99,11 @@ Public NotInheritable Class ThisAddIn
                         ' Starte den Anrufmonitor wenn er zuvor aktiv war, und er automatisch gestartet werden soll.
                         NLogger.Info("Anrufmonitor nach Standby gestartet.")
                         ' Anrufmonitor erneut starten
-                        PAnrufmonitor.StartAnrMon()
+                        PAnrufmonitor.Start()
                     End If
                 Else
                     PAnrufmonitor = New Anrufmonitor
-                    PAnrufmonitor.StartAnrMon()
+                    PAnrufmonitor.Start()
                     NLogger.Debug("Anrufmonitor gestartet...")
                 End If
             End If
@@ -165,7 +165,7 @@ Public NotInheritable Class ThisAddIn
         ' Listen leeren
         If PVorwahlen IsNot Nothing Then PVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
         ' Anrufmonitor beenden
-        If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.StoppAnrMon()
+        If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
         ' Eintrag ins Log
         NLogger.Info($"{My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} beendet.")
         ' XML-Datei Speichern

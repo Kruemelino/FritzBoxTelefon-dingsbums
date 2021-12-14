@@ -39,7 +39,7 @@ Imports FBoxDial.FritzBoxDefault
         Dim SessionID As String = DfltFritzBoxSessionID
 
         ' Starte die TR-064 Schnittstelle zur Fritz!Box
-        Using FBoxTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, Anmeldeinformationen)
+        Using FBoxTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, Anmeldeinformationen)
 
             ' FBoxAPI Status abfangen
             AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage

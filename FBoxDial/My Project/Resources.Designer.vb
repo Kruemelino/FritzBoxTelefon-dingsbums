@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -63,12 +63,13 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         '''&lt;customUI xmlns=&quot;http://schemas.microsoft.com/office/2009/07/customui&quot; onLoad=&quot;Ribbon_Load&quot;&gt;
-        '''  &lt;ribbon startFromScratch=&quot;false&quot;&gt;
-        '''    &lt;tabs&gt;
-        '''      &lt;tab idMso=&quot;TabCalendar&quot;&gt;
-        '''        &lt;group id=&quot;Tab_Calendar&quot; getLabel=&quot;GetItemLabel&quot; autoScale=&quot;false&quot; imageMso=&quot;AutoDial&quot;&gt;
-        '''          &lt;splitButton id=&quot;spb1_K&quot; size=&quot;large&quot;&gt;
-        '''            &lt;button id=&quot;Dial_K&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; onAction=&quot;BtnOnAction&quot; getScreentip=&quot;GetItemScreenTipp&quot; getEnabled [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''	&lt;ribbon startFromScratch=&quot;false&quot;&gt;
+        '''		&lt;tabs&gt;
+        '''			&lt;tab idMso=&quot;TabCalendar&quot;&gt;
+        '''				&lt;group id=&quot;Tab_Calendar&quot; getLabel=&quot;GetItemLabel&quot; autoScale=&quot;false&quot; imageMso=&quot;AutoDial&quot;&gt;
+        '''					&lt;splitButton id=&quot;spb1_K&quot; size=&quot;large&quot;&gt;
+        '''						&lt;button id=&quot;Dial_K&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; onAction=&quot;BtnOnAction&quot; getScreentip=&quot;GetItemScreenTipp&quot; getEnabled=&quot;DialEnabled&quot;/&gt;
+        '''			 [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonExplorer() As String
             Get

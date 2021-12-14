@@ -6,7 +6,7 @@
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="400"
+             d:DesignHeight="700" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance Type=fbd:OptBaseViewModel, IsDesignTimeCreatable=True}" >
 
     <UserControl.Resources>
@@ -139,6 +139,11 @@
                           Content="{x:Static localize:LocOptionen.strBaseTweakDisableMailCheck}" 
                           IsChecked="{Binding OptVM.CBDisableMailCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeoutInfo}"/>
+                
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeout}"
+                         Text="{Binding OptVM.TBNetworkTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </Expander>
     </StackPanel>

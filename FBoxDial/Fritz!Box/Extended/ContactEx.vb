@@ -162,12 +162,12 @@ Friend Module ContactEx
         Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
 
         ' Wird bei Anzeige im Anrufmonitor benötigt.
-        If Ping(XMLData.POptionen.ValidFBAdr) Then
-            Using fbtr064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
-                fbtr064.Deviceconfig.GetSessionID(SessionID)
-                ' Session ID erhalten, ansonsten DfltFritzBoxSessionID
-            End Using
-        End If
+        'If Ping(XMLData.POptionen.ValidFBAdr) Then
+        Using fbtr064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
+            fbtr064.Deviceconfig.GetSessionID(SessionID)
+            ' Session ID erhalten, ansonsten DfltFritzBoxSessionID
+        End Using
+        'End If
 
         Return If(SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Person.ImageURL}&{SessionID}", DfltStringEmpty)
     End Function

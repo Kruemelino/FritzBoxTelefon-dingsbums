@@ -70,6 +70,11 @@
     ''' Dies ist bei verzögertem E-Mail versand notwendig.
     ''' </summary>
     <XmlElement("CBDisableMailCheck")> Public Property CBDisableMailCheck As Boolean = False
+
+    ''' <summary>
+    ''' Timeout für die Netzwerkschnittstelle. Normalfall 120 ms. 
+    ''' </summary>
+    <XmlElement("TBNetworkTimeout")> Public Property TBNetworkTimeout As Integer = 120
 #End Region
 #End Region
 

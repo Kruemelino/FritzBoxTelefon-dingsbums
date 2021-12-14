@@ -13,44 +13,44 @@ Friend Module FritzBoxRufsperre
     ''' <param name="UID">Rückgabewert: UID des neuen Sperreintrages</param>
     ''' <returns></returns>
     Friend Function AddToCallBarring(fboxTR064 As FBoxAPI.FritzBoxTR64, Nummern As IEnumerable(Of String), Name As String, Optional ByRef UID As Integer = 0) As Boolean
-        ' Prüfe, ob Fritz!Box verfügbar
-        If Ping(XMLData.POptionen.ValidFBAdr) Then
+        '' Prüfe, ob Fritz!Box verfügbar
+        'If Ping(XMLData.POptionen.ValidFBAdr) Then
 
-            ' Sperreintrag generieren
-            Dim Sperreintrag As FBoxAPI.Contact = CreateContact(If(Nummern.Count.AreEqual(1), Nummern.First, $"{Name} ({Nummern.Count})"))
+        ' Sperreintrag generieren
+        Dim Sperreintrag As FBoxAPI.Contact = CreateContact(If(Nummern.Count.AreEqual(1), Nummern.First, $"{Name} ({Nummern.Count})"))
 
-            With Sperreintrag
+        With Sperreintrag
 
-                ' Prüfe, ob die übergebenen Nummern bereits auf der Rufsperre der Fritz!Box vorhanden sind.
-                ' Ein Eintrag auf der Fritz!Box kann mehrere Telefonnummern enthalten
-                For Each TelNr In Nummern
-                    If IsFBoxBlocked(fboxTR064, TelNr) Then
-                        ' Ein Eintrag mit der Nummer bereits vorhanden
-                        NLogger.Info($"Ein Eintrag mit der '{TelNr}' ist in der Sperrliste bereits vorhanden.")
-                    Else
-                        ' füge die Telefonnummer dem hinzuzufügenden Sperreintrag hinzu
-                        .Telephony.Numbers.Add(New FBoxAPI.Number With {.Number = TelNr})
-                    End If
-                Next
-
-                ' Prüfe, ob der Sperreintrag überhaupt Nummern hat.
-                If .Telephony.Numbers.Any Then
-                    ' lade den Sperreintrag hoch
-                    Return fboxTR064.X_contact.SetCallBarringEntry(Sperreintrag.GetXMLKontakt, UID)
+            ' Prüfe, ob die übergebenen Nummern bereits auf der Rufsperre der Fritz!Box vorhanden sind.
+            ' Ein Eintrag auf der Fritz!Box kann mehrere Telefonnummern enthalten
+            For Each TelNr In Nummern
+                If IsFBoxBlocked(fboxTR064, TelNr) Then
+                    ' Ein Eintrag mit der Nummer bereits vorhanden
+                    NLogger.Info($"Ein Eintrag mit der '{TelNr}' ist in der Sperrliste bereits vorhanden.")
                 Else
-                    Return False
+                    ' füge die Telefonnummer dem hinzuzufügenden Sperreintrag hinzu
+                    .Telephony.Numbers.Add(New FBoxAPI.Number With {.Number = TelNr})
                 End If
+            Next
 
-            End With
+            ' Prüfe, ob der Sperreintrag überhaupt Nummern hat.
+            If .Telephony.Numbers.Any Then
+                ' lade den Sperreintrag hoch
+                Return fboxTR064.X_contact.SetCallBarringEntry(Sperreintrag.GetXMLKontakt, UID)
+            Else
+                Return False
+            End If
 
-        Else
-            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            Return False
-        End If
+        End With
+
+        'Else
+        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        '    Return False
+        'End If
     End Function
 
     Friend Function AddToCallBarring(Nummern As IEnumerable(Of String), Name As String, Optional ByRef UID As Integer = 0) As Boolean
-        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
             Return AddToCallBarring(FBoxTR064, Nummern, Name, UID)
         End Using
     End Function
@@ -62,12 +62,12 @@ Friend Module FritzBoxRufsperre
     ''' <param name="UID">Rückgabewert: UID des neuen Sperreintrages</param>
     Friend Function AddToCallBarring(fboxTR064 As FBoxAPI.FritzBoxTR64, Sperreintrag As FBoxAPI.Contact, Optional ByRef UID As Integer = 0) As Boolean
         ' Prüfe, ob Fritz!Box verfügbar
-        If Ping(XMLData.POptionen.ValidFBAdr) Then
-            Return fboxTR064.X_contact.SetCallBarringEntry(Sperreintrag.GetXMLKontakt, UID)
-        Else
-            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            Return False
-        End If
+        'If Ping(XMLData.POptionen.ValidFBAdr) Then
+        Return fboxTR064.X_contact.SetCallBarringEntry(Sperreintrag.GetXMLKontakt, UID)
+        'Else
+        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        '    Return False
+        'End If
     End Function
 
     ''' <summary>
@@ -77,38 +77,38 @@ Friend Module FritzBoxRufsperre
     ''' <param name="fboxTR064">Bestehende Verbindung zur Fritz!Box TR-064 Schnittstelle.</param>
     Friend Async Sub AddToCallBarring(fboxTR064 As FBoxAPI.FritzBoxTR64, OutlookKontakte As IEnumerable(Of ContactItem))
         Const SperrlistenID As Integer = 258
-        ' Prüfe, ob Fritz!Box verfügbar
-        If Ping(XMLData.POptionen.ValidFBAdr) Then
+        '' Prüfe, ob Fritz!Box verfügbar
+        'If Ping(XMLData.POptionen.ValidFBAdr) Then
 
-            ' Erzeuge für jeden Kontakt einen Eintrag
-            For Each Kontakt In OutlookKontakte
-                Await Task.Run(Sub()
+        ' Erzeuge für jeden Kontakt einen Eintrag
+        For Each Kontakt In OutlookKontakte
+            Await Task.Run(Sub()
 
-                                   With Kontakt
-                                       ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
-                                       Dim UID As Integer = Kontakt.GetUniqueID(SperrlistenID)
+                               With Kontakt
+                                   ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
+                                   Dim UID As Integer = Kontakt.GetUniqueID(SperrlistenID)
 
-                                       If UID.AreEqual(-1) Then
-                                           NLogger.Debug($"Sperreintrag { .FullName} wird neu angelegt.")
-                                       Else
-                                           NLogger.Debug($"Sperreintrag { .FullName} wird überschrieben ({UID}).")
-                                       End If
+                                   If UID.AreEqual(-1) Then
+                                       NLogger.Debug($"Sperreintrag { .FullName} wird neu angelegt.")
+                                   Else
+                                       NLogger.Debug($"Sperreintrag { .FullName} wird überschrieben ({UID}).")
+                                   End If
 
-                                       ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
-                                       If fboxTR064.X_contact.SetCallBarringEntry(.ErstelleXMLKontakt(UID), UID) Then
-                                           ' Stelle die Verknüpfung her
-                                           .SetUniqueID(SperrlistenID.ToString, UID.ToString)
+                                   ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
+                                   If fboxTR064.X_contact.SetCallBarringEntry(.ErstelleXMLKontakt(UID), UID) Then
+                                       ' Stelle die Verknüpfung her
+                                       .SetUniqueID(SperrlistenID.ToString, UID.ToString)
 
-                                           NLogger.Info($"Kontakt { .FullName} mit der ID '{UID}' in der Sperrliste der Fritz!Box angelegt.")
+                                       NLogger.Info($"Kontakt { .FullName} mit der ID '{UID}' in der Sperrliste der Fritz!Box angelegt.")
 
-                                       End If
-                                   End With
-                               End Sub)
-            Next
+                                   End If
+                               End With
+                           End Sub)
+        Next
 
-        Else
-            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-        End If
+        'Else
+        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        'End If
     End Sub
 
     ''' <summary>
@@ -116,7 +116,7 @@ Friend Module FritzBoxRufsperre
     ''' </summary>
     ''' <param name="OutlookKontakte">Auflistung von Sperrlisteneinträgen</param>
     Friend Sub AddToCallBarring(OutlookKontakte As IEnumerable(Of ContactItem))
-        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
             AddToCallBarring(FBoxTR064, OutlookKontakte)
         End Using
     End Sub
@@ -128,12 +128,12 @@ Friend Module FritzBoxRufsperre
     ''' <returns>True, wenn erfolgreich</returns>
     Friend Function DeleteCallBarring(fboxTR064 As FBoxAPI.FritzBoxTR64, UID As Integer) As Boolean
         ' Prüfe, ob Fritz!Box verfügbar
-        If Ping(XMLData.POptionen.ValidFBAdr) Then
-            Return fboxTR064.X_contact.DeleteCallBarringEntryUID(UID)
-        Else
-            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            Return False
-        End If
+        'If Ping(XMLData.POptionen.ValidFBAdr) Then
+        Return fboxTR064.X_contact.DeleteCallBarringEntryUID(UID)
+        'Else
+        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        '    Return False
+        'End If
     End Function
 
     ''' <summary>
@@ -143,24 +143,24 @@ Friend Module FritzBoxRufsperre
     ''' <param name="Einträge">Zu entferndende Sperrlisteneinträge.</param>
     ''' <returns>True, wenn erfolgreich</returns>
     Friend Function DeleteCallBarrings(fboxTR064 As FBoxAPI.FritzBoxTR64, Einträge As IEnumerable(Of FBoxAPI.Contact)) As Boolean
-        ' Prüfe, ob Fritz!Box verfügbar
-        If Ping(XMLData.POptionen.ValidFBAdr) Then
-            With fboxTR064.X_contact
-                For Each Kontakt In Einträge
-                    If .DeleteCallBarringEntryUID(Kontakt.Uniqueid) Then
-                        NLogger.Info($"Eintrag mit der ID '{Kontakt.Uniqueid}' in den Rufsperren der Fritz!Box gelöscht.")
+        '' Prüfe, ob Fritz!Box verfügbar
+        'If Ping(XMLData.POptionen.ValidFBAdr) Then
+        With fboxTR064.X_contact
+            For Each Kontakt In Einträge
+                If .DeleteCallBarringEntryUID(Kontakt.Uniqueid) Then
+                    NLogger.Info($"Eintrag mit der ID '{Kontakt.Uniqueid}' in den Rufsperren der Fritz!Box gelöscht.")
 
-                    Else
-                        NLogger.Warn($"Kontakt mit der ID '{Kontakt.Uniqueid}' in den Rufsperren der Fritz!Box nicht gelöscht.")
+                Else
+                    NLogger.Warn($"Kontakt mit der ID '{Kontakt.Uniqueid}' in den Rufsperren der Fritz!Box nicht gelöscht.")
 
-                    End If
-                Next
-            End With
-            Return True
-        Else
-            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            Return False
-        End If
+                End If
+            Next
+        End With
+        Return True
+        'Else
+        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        '    Return False
+        'End If
     End Function
 
     ''' <summary>
@@ -172,30 +172,30 @@ Friend Module FritzBoxRufsperre
     ''' <returns>True, wenn Suche erfolgreich</returns>
     Private Function GetCallBarringEntryByNum(fboxTR064 As FBoxAPI.FritzBoxTR64, Nummer As String, ByRef Eintrag As FBoxAPI.Contact) As Boolean
         ' Prüfe, ob Fritz!Box verfügbar
-        If Ping(XMLData.POptionen.ValidFBAdr) Then
+        'If Ping(XMLData.POptionen.ValidFBAdr) Then
 
-            With fboxTR064.X_contact
-                Dim EintragsDaten As String = DfltStringEmpty
-                If .GetCallBarringEntryByNum(Nummer, EintragsDaten) AndAlso EintragsDaten.IsNotStringNothingOrEmpty Then
-                    ' Deserialisiere das Ergebnis
-                    If DeserializeXML(EintragsDaten, False, Eintrag) Then
-                        NLogger.Info($"Eintrag für die Nummer '{Nummer}' wurde in den Rufsperren der Fritz!Box gefunden (ID '{Eintrag.Uniqueid}').")
-                        Return True
-
-                    Else
-                        Return False
-                        NLogger.Warn($"Deserialisierungsfehler für Sperrlisteneintrag für {Nummer}.")
-
-                    End If
-                Else
-                    NLogger.Debug($"Eintrag für die Nummer '{Nummer}' wurde in den Rufsperren der Fritz!Box nicht gefunden.")
+        With fboxTR064.X_contact
+            Dim EintragsDaten As String = DfltStringEmpty
+            If .GetCallBarringEntryByNum(Nummer, EintragsDaten) AndAlso EintragsDaten.IsNotStringNothingOrEmpty Then
+                ' Deserialisiere das Ergebnis
+                If DeserializeXML(EintragsDaten, False, Eintrag) Then
+                    NLogger.Info($"Eintrag für die Nummer '{Nummer}' wurde in den Rufsperren der Fritz!Box gefunden (ID '{Eintrag.Uniqueid}').")
                     Return True
+
+                Else
+                    Return False
+                    NLogger.Warn($"Deserialisierungsfehler für Sperrlisteneintrag für {Nummer}.")
+
                 End If
-            End With
-        Else
-            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            Return False
-        End If
+            Else
+                NLogger.Debug($"Eintrag für die Nummer '{Nummer}' wurde in den Rufsperren der Fritz!Box nicht gefunden.")
+                Return True
+            End If
+        End With
+        'Else
+        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        '    Return False
+        'End If
     End Function
 
     ''' <summary>
@@ -203,7 +203,7 @@ Friend Module FritzBoxRufsperre
     ''' </summary>
     ''' <param name="Number">Zu prüfende Nummer</param>
     Friend Function IsFBoxBlocked(Number As String) As Boolean
-        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
             Return IsFBoxBlocked(FBoxTR064, Number)
         End Using
     End Function
@@ -225,7 +225,7 @@ Friend Module FritzBoxRufsperre
     ''' </summary>
     ''' <param name="TelNr">Telefonnummer, die der Sperrliste hinzugefügt werden soll.</param>
     Friend Sub AddNrToBlockList(TelNr As Telefonnummer)
-        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
             AddToCallBarring(FBoxTR064, New List(Of String) From {TelNr.Unformatiert}, TelNr.Unformatiert)
         End Using
     End Sub

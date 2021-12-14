@@ -1,7 +1,7 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports System.Text.RegularExpressions
 
-'<DebuggerStepThrough()>
+<DebuggerStepThrough()>
 Public Module Extensions
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 

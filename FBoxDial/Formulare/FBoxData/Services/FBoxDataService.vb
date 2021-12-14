@@ -11,7 +11,7 @@ Public Class FBoxDataService
 
         AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
 
-        FBoxTR064.Init(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        FBoxTR064.Init(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
 
         SessionID = GetSesssionID()
 
@@ -58,6 +58,31 @@ Public Class FBoxDataService
         End Using
     End Sub
 
+    Friend Sub PlayMessage(CallItem As FBoxAPI.Call) Implements IFBoxDataService.PlayCallMessage
+
+        Dim Pfad As String = CompleteURL(CallItem)
+
+        NLogger.Debug($"Anrufbeantworternachricht via Callist für Anruf {CallItem.ID}: {Pfad}")
+
+        PlayRecord(Pfad)
+    End Sub
+
+    Friend Async Sub DownloadFax(CallItem As FBoxAPI.Call) Implements IFBoxDataService.DownloadFax
+
+        Dim URI As New Uri(CompleteURL(CallItem))
+        Dim DateiPfad As String = IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Templates), IO.Path.GetRandomFileName.RegExReplace("\.\w*$", ".pdf"))
+
+        NLogger.Debug($"Faxdokument via Callist für Anruf {CallItem.ID}: {URI} - {DateiPfad}")
+
+        If Await DownloadToFileTaskAsync(URI, DateiPfad) Then Process.Start(New ProcessStartInfo(DateiPfad))
+    End Sub
+
+    Private Function CompleteURL(CallItem As FBoxAPI.Call) As String
+        Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
+        ' Ermittle die SessionID. Sollte das schief gehen, kommt es zu einer Fehlermeldung im Log.
+        FBoxTR064.Deviceconfig.GetSessionID(SessionID)
+        Return If(SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{CallItem.Path}&{SessionID}", DfltStringEmpty)
+    End Function
 #End Region
 
 #Region "TAM Anrufbeantworter"
@@ -65,7 +90,7 @@ Public Class FBoxDataService
         Dim ABListe As FBoxAPI.TAMList = Nothing
 
         ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
-        If FBoxTR064.Bereit AndAlso FBoxTR064.X_tam.GetList(ABListe) Then
+        If FBoxTR064.X_tam.GetList(ABListe) Then
             Return ABListe.Items
         Else
             Return New List(Of FBoxAPI.TAMItem)
@@ -132,26 +157,13 @@ Public Class FBoxDataService
         End With
     End Function
 
-    Friend Async Sub PlayMessage(Message As FBoxAPI.Message) Implements IFBoxDataService.PlayMessage
+    Friend Sub PlayMessage(Message As FBoxAPI.Message) Implements IFBoxDataService.PlayMessage
 
         Dim Pfad As String = CompleteURL(Message)
 
-        NLogger.Debug($"SoundSoundPlayer.Play Anrufbeantworter {Pfad}")
-        If Not Pfad.Contains(FritzBoxDefault.DfltFritzBoxSessionID) Then
-            If SoundPlayer Is Nothing Then SoundPlayer = New Media.SoundPlayer
-            With SoundPlayer
-                ' halte die aktuelle Wiedergabe an
-                .Stop()
-                ' Lade die neue Wiedergabedatei
-                Using wc As New Net.WebClient()
-                    .Stream = Await GetStreamTaskAsync(New Uri(Pfad))
-                End Using
+        NLogger.Debug($"Anrufbeantworternachricht via TAM für Eintrag {Message.ID}: {Pfad}")
 
-                .Play()
-            End With
-        Else
-            ' TODO: Fehlermeldung als Messagebox rausgeben
-        End If
+        PlayRecord(Pfad)
 
     End Sub
 
@@ -233,11 +245,11 @@ Public Class FBoxDataService
         Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
 
         ' Prüfe, ob Fritz!Box verfügbar
-        If Ping(XMLData.POptionen.ValidFBAdr) Then
-            FBoxTR064.Deviceconfig.GetSessionID(SessionID)
-        Else
-            NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-        End If
+        'If Ping(XMLData.POptionen.ValidFBAdr) Then
+        FBoxTR064.Deviceconfig.GetSessionID(SessionID)
+        'Else
+        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+        'End If
         Return SessionID
     End Function
 
@@ -287,6 +299,40 @@ Public Class FBoxDataService
         WählClient.WählboxStart(XMLDaten)
     End Sub
 #End Region
+#End Region
+
+#Region "SoundPlayer"
+    Private Async Sub PlayRecord(Pfad As String)
+        ' TODO: Fehlermeldung als Messagebox rausgeben
+
+        If Not Pfad.Contains(FritzBoxDefault.DfltFritzBoxSessionID) Then
+            If SoundPlayer Is Nothing Then SoundPlayer = New Media.SoundPlayer
+            With SoundPlayer
+                ' halte die aktuelle Wiedergabe an
+                .Stop()
+                ' Lade die neue Wiedergabedatei
+                Using wc As New Net.WebClient()
+                    Try
+                        .Stream = Await GetStreamTaskAsync(New Uri(Pfad))
+                        .Play()
+                    Catch ex As Net.WebException
+                        ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
+                        ' - oder -
+                        ' Fehler beim Herunterladen der Ressource.
+                        NLogger.Error(ex, $"Link: {Pfad} ")
+
+                    Catch ex As ArgumentNullException
+                        ' Der address-Parameter ist null.
+                        NLogger.Error(ex, "Der address-Parameter ist null.")
+
+                    End Try
+
+                End Using
+            End With
+        Else
+
+        End If
+    End Sub
 #End Region
 
 End Class

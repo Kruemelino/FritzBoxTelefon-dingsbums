@@ -106,7 +106,7 @@
                             Style="{StaticResource DataGridStyle}" 
                             ItemsSource="{Binding CallList, UpdateSourceTrigger=PropertyChanged}"
                             ShowStatusBar="False" ShowElapsedTime="False" ShowRowsCount="False"                                
-                            DateFormatString="g" FilterLanguage="German" >
+                            DateFormatString="d" FilterLanguage="German" >
 
             <fdg:FilterDataGrid.ContextMenu>
                 <ContextMenu>
@@ -182,7 +182,11 @@
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True" FieldName="Datum"
                                         Header="{x:Static localize:LocFBoxData.strDate}"
-                                        Binding="{Binding Path=Datum, UpdateSourceTrigger=PropertyChanged}"/>
+                                        Binding="{Binding Path=NurDatum, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <fdg:DataGridTextColumn IsColumnFiltered="True" FieldName="Datum"
+                                        Header="{x:Static localize:LocFBoxData.strTime}"
+                                        Binding="{Binding Path=NurZeit, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Name"
                                         Header="{x:Static localize:LocFBoxData.strName}"
@@ -206,6 +210,30 @@
                 <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Gerät"
                                         Header="{x:Static localize:LocFBoxData.strDevice}"
                                         Binding="{Binding Path=Gerät, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <fdg:DataGridTemplateColumn FieldName="TAMMessageAvailable" Header="" IsColumnFiltered="True">
+
+                    <fdg:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+
+                            <Button Name="button"
+                                    Style="{StaticResource DataGridIconButton}" 
+                                    Visibility="{Binding ButtonVisible, Converter={StaticResource IsEditConverter}}"/>
+
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Path=TAMMessageAvailable, Mode=OneWay}" Value="True">
+                                    <Setter TargetName="button" Property="Content" Value="{StaticResource SoundFile_16x}" />
+                                    <Setter TargetName="button" Property="Command" Value="{Binding PlayMessageCommand}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=FaxAvailable, Mode=OneWay}" Value="True">
+                                    <Setter TargetName="button" Property="Content" Value="{StaticResource Text_16x}" />
+                                    <Setter TargetName="button" Property="Command" Value="{Binding DownloadFaxCommand}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+
+                        </DataTemplate>
+                    </fdg:DataGridTemplateColumn.CellTemplate>
+                </fdg:DataGridTemplateColumn>
 
             </fdg:FilterDataGrid.Columns>
         </fdg:FilterDataGrid>

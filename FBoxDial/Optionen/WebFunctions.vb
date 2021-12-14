@@ -6,6 +6,7 @@ Friend Module WebFunctions
 
     Private Const DefaultHeaderKeepAlive As Boolean = False
     Private Const DefaultHeaderUserAgent As String = "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"
+    Private Const DefaultMinTimout As Integer = 100
 
 #Region "Netzwerkfunktionen"
     ''' <summary>
@@ -22,10 +23,9 @@ Friend Module WebFunctions
         Dim PingReply As NetworkInformation.PingReply = Nothing
 
         Dim buffer As Byte() = Encoding.ASCII.GetBytes(DfltStringEmpty)
-        Dim timeout As Integer = 120
 
         Try
-            PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
+            PingReply = PingSender.Send(IPAdresse, Math.Max(XMLData.POptionen.TBNetworkTimeout, DefaultMinTimout), buffer, Options)
         Catch ex As Exception
             NLogger.Warn(ex, $"Ping zu {IPAdresse} nicht erfolgreich")
             Ping = False
@@ -316,6 +316,7 @@ Friend Module WebFunctions
 
                         Try
                             Await .DownloadFileTaskAsync(UniformResourceIdentifier, DateiName)
+
                             Return True
                         Catch ex As ArgumentNullException
                             ' Der address-Parameter ist null.
@@ -360,11 +361,6 @@ Friend Module WebFunctions
                         Try
                             Return .OpenReadTaskAsync(UniformResourceIdentifier)
 
-                        Catch ex As ArgumentNullException
-                            ' Der address-Parameter ist null.
-                            NLogger.Error(ex, "Der address-Parameter ist null.")
-                            Return Nothing
-
                         Catch ex As WebException
                             ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
                             ' - oder -
@@ -372,13 +368,18 @@ Friend Module WebFunctions
                             NLogger.Error(ex, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
                             Return Nothing
 
+                        Catch ex As ArgumentNullException
+                            ' Der address-Parameter ist null.
+                            NLogger.Error(ex, "Der address-Parameter ist null.")
+                            Return Nothing
+
                         End Try
                     End With
                 End Using
             Case Else
 
-                Return Nothing
                 NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
+                Return Nothing
         End Select
     End Function
 

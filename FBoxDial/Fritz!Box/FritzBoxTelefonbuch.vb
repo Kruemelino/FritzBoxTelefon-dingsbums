@@ -71,48 +71,48 @@ Namespace Telefonbücher
         End Function
 
         Friend Function LadeTelefonbücherNamen(FBoxTR064 As FBoxAPI.FritzBoxTR64) As IEnumerable(Of PhonebookEx)
-            ' Prüfe, ob Fritz!Box verfügbar
-            If Ping(XMLData.POptionen.ValidFBAdr) Then
-                With FBoxTR064.X_contact
-                    ' Ermittle alle verfügbaren Telefonbücher
-                    Dim PhonebookIDs As Integer() = {}
-                    If .GetPhonebookList(PhonebookIDs) Then
+            '' Prüfe, ob Fritz!Box verfügbar
+            'If Ping(XMLData.POptionen.ValidFBAdr) Then
+            With FBoxTR064.X_contact
+                ' Ermittle alle verfügbaren Telefonbücher
+                Dim PhonebookIDs As Integer() = {}
+                If .GetPhonebookList(PhonebookIDs) Then
 
-                        ' Initialiesiere die Gesamtliste der Telefonbücher
-                        Dim AlleTelefonbücher As New List(Of PhonebookEx)
+                    ' Initialiesiere die Gesamtliste der Telefonbücher
+                    Dim AlleTelefonbücher As New List(Of PhonebookEx)
 
-                        ' Schleife durch alle ermittelten IDs
-                        For Each PhonebookID In PhonebookIDs
-                            Dim PhonebookURL As String = DfltStringEmpty
-                            Dim PhonebookName As String = DfltStringEmpty
-                            ' Ermittle die URL und Namen zum Telefonbuch
-                            If .GetPhonebook(PhonebookID, PhonebookURL, PhonebookName) Then
+                    ' Schleife durch alle ermittelten IDs
+                    For Each PhonebookID In PhonebookIDs
+                        Dim PhonebookURL As String = DfltStringEmpty
+                        Dim PhonebookName As String = DfltStringEmpty
+                        ' Ermittle die URL und Namen zum Telefonbuch
+                        If .GetPhonebook(PhonebookID, PhonebookURL, PhonebookName) Then
 
-                                NLogger.Debug($"Name des Telefonbuches {PhonebookID} ermittelt: '{PhonebookName}'")
+                            NLogger.Debug($"Name des Telefonbuches {PhonebookID} ermittelt: '{PhonebookName}'")
 
-                                Dim AktuellePhoneBookXML As New PhonebookEx(Nothing) With {.ID = PhonebookID, .Rufsperren = False, .Name = PhonebookName}
+                            Dim AktuellePhoneBookXML As New PhonebookEx(Nothing) With {.ID = PhonebookID, .Rufsperren = False, .Name = PhonebookName}
 
-                                AlleTelefonbücher.Add(AktuellePhoneBookXML)
+                            AlleTelefonbücher.Add(AktuellePhoneBookXML)
 
-                            End If
-                        Next
-                        ' Setze diese unvollständige Liste global.
-                        If ThisAddIn.PhoneBookXML Is Nothing Then ThisAddIn.PhoneBookXML = AlleTelefonbücher
+                        End If
+                    Next
+                    ' Setze diese unvollständige Liste global.
+                    If ThisAddIn.PhoneBookXML Is Nothing Then ThisAddIn.PhoneBookXML = AlleTelefonbücher
 
-                        Return AlleTelefonbücher
-                    End If
+                    Return AlleTelefonbücher
+                End If
 
-                    Return Nothing
-                End With
-            Else
-                NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
                 Return Nothing
-            End If
+            End With
+            'Else
+            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+            '    Return Nothing
+            'End If
 
         End Function
 
         Friend Function LadeTelefonbücherNamen() As IEnumerable(Of PhonebookEx)
-            Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+            Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
                 Return LadeTelefonbücherNamen(FBoxTR064)
             End Using
         End Function
@@ -184,60 +184,60 @@ Namespace Telefonbücher
         ''' <returns>XML-Telefonbuch</returns>
         Friend Async Function ErstelleTelefonbuch(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchName As String) As Task(Of PhonebookEx)
             ' Prüfe, ob Fritz!Box verfügbar
-            If Ping(XMLData.POptionen.ValidFBAdr) Then
-                With FBoxTR064.X_contact
-                    ' Hole die momentan verfügbaren Ids der Telefonbücher
-                    Dim IdsA As Integer() = {}
-                    Dim PhonebookURL As String = DfltStringEmpty
-                    Dim NameOK As Boolean = True
-                    If .GetPhonebookList(IdsA) Then
+            'If Ping(XMLData.POptionen.ValidFBAdr) Then
+            With FBoxTR064.X_contact
+                ' Hole die momentan verfügbaren Ids der Telefonbücher
+                Dim IdsA As Integer() = {}
+                Dim PhonebookURL As String = DfltStringEmpty
+                Dim NameOK As Boolean = True
+                If .GetPhonebookList(IdsA) Then
 
-                        ' Prüfe, ob bereits ein Telefonbuch mit dem Namen vorhanden ist.
-                        For Each ID In IdsA
-                            Dim Name As String = DfltStringEmpty
+                    ' Prüfe, ob bereits ein Telefonbuch mit dem Namen vorhanden ist.
+                    For Each ID In IdsA
+                        Dim Name As String = DfltStringEmpty
 
-                            If .GetPhonebook(ID, PhonebookURL, Name) Then
-                                If Name.AreEqual(TelefonbuchName) Then
-                                    NLogger.Warn($"Ein Telefonbuch mit dem Namen '{TelefonbuchName}' kann nicht angelegt werden, da bereits eins mit diesem Namen exisiert.")
-                                    NameOK = False
-                                End If
+                        If .GetPhonebook(ID, PhonebookURL, Name) Then
+                            If Name.AreEqual(TelefonbuchName) Then
+                                NLogger.Warn($"Ein Telefonbuch mit dem Namen '{TelefonbuchName}' kann nicht angelegt werden, da bereits eins mit diesem Namen exisiert.")
+                                NameOK = False
                             End If
-                        Next
+                        End If
+                    Next
 
-                        ' Erzeuge ein neues Telefonbuch mit dem übergebenen Namen.
-                        If NameOK AndAlso .AddPhonebook(TelefonbuchName) Then
-                            ' Das neue Telefonbuch hat von der Fritz!Box eine ID zugewiesen bekommen.
-                            NLogger.Info($"Telefonbuch mit dem Namen '{TelefonbuchName}' auf der Fritz!Box erstellt.")
-                            ' Ermittle das neu angelegte Telefonbuch zur Rückgabe
-                            Dim IdsB As Integer() = {}
-                            If .GetPhonebookList(IdsB) Then
-                                Dim PhonebookID As Integer = IdsB.Except(IdsA).First
+                    ' Erzeuge ein neues Telefonbuch mit dem übergebenen Namen.
+                    If NameOK AndAlso .AddPhonebook(TelefonbuchName) Then
+                        ' Das neue Telefonbuch hat von der Fritz!Box eine ID zugewiesen bekommen.
+                        NLogger.Info($"Telefonbuch mit dem Namen '{TelefonbuchName}' auf der Fritz!Box erstellt.")
+                        ' Ermittle das neu angelegte Telefonbuch zur Rückgabe
+                        Dim IdsB As Integer() = {}
+                        If .GetPhonebookList(IdsB) Then
+                            Dim PhonebookID As Integer = IdsB.Except(IdsA).First
 
-                                ' Lade Ermittle URL des neuen Telefonbuches 
-                                If .GetPhonebook(PhonebookID, PhonebookURL, TelefonbuchName) Then
+                            ' Lade Ermittle URL des neuen Telefonbuches 
+                            If .GetPhonebook(PhonebookID, PhonebookURL, TelefonbuchName) Then
 
-                                    NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: {PhonebookURL}")
+                                NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: {PhonebookURL}")
 
-                                    ' Lade die xslt Transformationsdatei
-                                    Dim xslt As New Xsl.XslCompiledTransform
-                                    xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
+                                ' Lade die xslt Transformationsdatei
+                                Dim xslt As New Xsl.XslCompiledTransform
+                                xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
 
-                                    With Await DeserializeAsyncXML(Of FBoxAPI.Phonebooks)(PhonebookURL, True, xslt)
-                                        ' Setze die ID und gib das Telefonbuch zurück
-                                        Return New PhonebookEx(.Phonebooks.First) With {.ID = PhonebookID}
-                                    End With
-                                End If
+                                With Await DeserializeAsyncXML(Of FBoxAPI.Phonebooks)(PhonebookURL, True, xslt)
+                                    ' Setze die ID und gib das Telefonbuch zurück
+                                    Return New PhonebookEx(.Phonebooks.First) With {.ID = PhonebookID}
+                                End With
                             End If
                         End If
                     End If
+                End If
 
-                    Return Nothing
-                End With
-
-            Else
-                NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
                 Return Nothing
-            End If
+            End With
+
+            'Else
+            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+            '    Return Nothing
+            'End If
         End Function
 
         ''' <summary>
@@ -248,34 +248,34 @@ Namespace Telefonbücher
         ''' <returns>Boolean, ob erfolgreich.</returns>
         ''' <remarks>Wenn die ID nicht vorhanden ist, wird trotzdem <c>True</c> zurückgegeben.</remarks>
         Friend Function LöscheTelefonbuch(fbtr064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer) As Boolean
-            ' Prüfe, ob Fritz!Box verfügbar
-            If Ping(XMLData.POptionen.ValidFBAdr) Then
-                With fbtr064.X_contact
-                    ' Hole die momentan verfügbaren Ids der Telefonbücher
-                    Dim IdsA As Integer() = {}
+            '' Prüfe, ob Fritz!Box verfügbar
+            'If Ping(XMLData.POptionen.ValidFBAdr) Then
+            With fbtr064.X_contact
+                ' Hole die momentan verfügbaren Ids der Telefonbücher
+                Dim IdsA As Integer() = {}
 
-                    If .GetPhonebookList(IdsA) Then
-                        ' Prüfe, ob ein Telefonbuch mit der ID vorhanden ist, wenn nicht, muss auch nichts gelöscht werden.
-                        If IdsA.Contains(TelefonbuchID) Then
-                            ' Lösche das Telefonbuch
-                            If .DeletePhonebook(TelefonbuchID) Then
-                                NLogger.Info($"Telefonbuch mit der ID '{TelefonbuchID}' auf der Fritz!Box gelöscht.")
-                                Return True
+                If .GetPhonebookList(IdsA) Then
+                    ' Prüfe, ob ein Telefonbuch mit der ID vorhanden ist, wenn nicht, muss auch nichts gelöscht werden.
+                    If IdsA.Contains(TelefonbuchID) Then
+                        ' Lösche das Telefonbuch
+                        If .DeletePhonebook(TelefonbuchID) Then
+                            NLogger.Info($"Telefonbuch mit der ID '{TelefonbuchID}' auf der Fritz!Box gelöscht.")
+                            Return True
 
-                            Else
-                                NLogger.Warn($"Telefonbuch mit der ID '{TelefonbuchID}' auf der Fritz!Box nicht gelöscht.")
-                                Return False
+                        Else
+                            NLogger.Warn($"Telefonbuch mit der ID '{TelefonbuchID}' auf der Fritz!Box nicht gelöscht.")
+                            Return False
 
-                            End If
                         End If
                     End If
+                End If
 
-                    Return True
-                End With
-            Else
-                NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-                Return Nothing
-            End If
+                Return True
+            End With
+            'Else
+            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+            '    Return Nothing
+            'End If
 
         End Function
 
@@ -294,18 +294,18 @@ Namespace Telefonbücher
         Friend Function SetTelefonbuchEintrag(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, XMLDaten As String) As Integer
             If XMLDaten.IsNotStringNothingOrEmpty Then
                 ' Prüfe, ob Fritz!Box verfügbar
-                If Ping(XMLData.POptionen.ValidFBAdr) Then
-                    With FBoxTR064.X_contact
-                        Dim UID As Integer = -1
-                        If .SetPhonebookEntryUID(TelefonbuchID, XMLDaten, UID) Then
-                            NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} der Fritz!Box angelegt.")
-                            Return UID
-                        End If
-                    End With
-                Else
-                    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-                    Return Nothing
-                End If
+                'If Ping(XMLData.POptionen.ValidFBAdr) Then
+                With FBoxTR064.X_contact
+                    Dim UID As Integer = -1
+                    If .SetPhonebookEntryUID(TelefonbuchID, XMLDaten, UID) Then
+                        NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} der Fritz!Box angelegt.")
+                        Return UID
+                    End If
+                End With
+                'Else
+                '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+                '    Return Nothing
+                'End If
             End If
             Return -1
         End Function
@@ -319,48 +319,48 @@ Namespace Telefonbücher
         ''' <remarks>Wird durch die Ribbons des Addins aufgerufen.</remarks>
         Friend Async Sub SetTelefonbuchEintrag(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, OutlookKontakte As IEnumerable(Of ContactItem))
 
-            ' Prüfe, ob Fritz!Box verfügbar
-            If Ping(XMLData.POptionen.ValidFBAdr) Then
+            '' Prüfe, ob Fritz!Box verfügbar
+            'If Ping(XMLData.POptionen.ValidFBAdr) Then
 
-                ' Generiere eine Liste an Task
-                Dim TaskList As New List(Of Task(Of String))
+            ' Generiere eine Liste an Task
+            Dim TaskList As New List(Of Task(Of String))
 
-                ' Schleife durch alle Kontakte
-                For Each Kontakt In OutlookKontakte
-                    TaskList.Add(Task.Run(Function() As String
-                                              With Kontakt
-                                                  ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
-                                                  Dim UID As Integer = Kontakt.GetUniqueID(TelefonbuchID)
-                                                  Dim retVal As String = If(UID.AreEqual(-1), Localize.resRibbon.UploadCreateContact, Localize.resRibbon.UploadOverwriteContact)
+            ' Schleife durch alle Kontakte
+            For Each Kontakt In OutlookKontakte
+                TaskList.Add(Task.Run(Function() As String
+                                          With Kontakt
+                                              ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
+                                              Dim UID As Integer = Kontakt.GetUniqueID(TelefonbuchID)
+                                              Dim retVal As String = If(UID.AreEqual(-1), Localize.resRibbon.UploadCreateContact, Localize.resRibbon.UploadOverwriteContact)
 
-                                                  ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
-                                                  If FBoxTR064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
-                                                      ' Stelle die Verknüpfung her
-                                                      .SetUniqueID(TelefonbuchID.ToString, UID.ToString)
+                                              ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
+                                              If FBoxTR064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
+                                                  ' Stelle die Verknüpfung her
+                                                  .SetUniqueID(TelefonbuchID.ToString, UID.ToString)
 
-                                                      ' Statusmeldung
-                                                      retVal = String.Format(Localize.resRibbon.UploadSuccess, .FullName, TelefonbuchID, retVal, UID)
+                                                  ' Statusmeldung
+                                                  retVal = String.Format(Localize.resRibbon.UploadSuccess, .FullName, TelefonbuchID, retVal, UID)
 
-                                                  Else
-                                                      ' Statusmeldung
-                                                      retVal = String.Format(Localize.resRibbon.UploadError, .FullName, TelefonbuchID, retVal)
-                                                  End If
-                                                  NLogger.Info(retVal)
-                                                  Return retVal
-                                              End With
-                                          End Function))
+                                              Else
+                                                  ' Statusmeldung
+                                                  retVal = String.Format(Localize.resRibbon.UploadError, .FullName, TelefonbuchID, retVal)
+                                              End If
+                                              NLogger.Info(retVal)
+                                              Return retVal
+                                          End With
+                                      End Function))
 
-                    ' Die einzelnen Vorgänge müssen nacheinander erfolgen, da es sonst zu einer WebException kommt: Die zugrunde liegende Verbindung wurde geschlossen: Für den geschützten SSL/TLS-Kanal konnte keine Vertrauensstellung hergestellt werden.
-                    Await TaskList.Last
-                Next
+                ' Die einzelnen Vorgänge müssen nacheinander erfolgen, da es sonst zu einer WebException kommt: Die zugrunde liegende Verbindung wurde geschlossen: Für den geschützten SSL/TLS-Kanal konnte keine Vertrauensstellung hergestellt werden.
+                Await TaskList.Last
+            Next
 
-                Await Task.WhenAll(TaskList)
-                ' Gib eine finale Statusmeldung heraus
-                Windows.MessageBox.Show(String.Format(Localize.resRibbon.UploadResultMessageHeader, OutlookKontakte.Count, Dflt2NeueZeile, String.Join(Dflt1NeueZeile, TaskList.Select(Function(R) R.Result))), My.Resources.strDefLongName, Windows.MessageBoxButton.OK)
-            Else
-                NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+            Await Task.WhenAll(TaskList)
+            ' Gib eine finale Statusmeldung heraus
+            Windows.MessageBox.Show(String.Format(Localize.resRibbon.UploadResultMessageHeader, OutlookKontakte.Count, Dflt2NeueZeile, String.Join(Dflt1NeueZeile, TaskList.Select(Function(R) R.Result))), My.Resources.strDefLongName, Windows.MessageBoxButton.OK)
+            'Else
+            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
 
-            End If
+            'End If
         End Sub
 
         ''' <summary>
@@ -370,7 +370,7 @@ Namespace Telefonbücher
         ''' <param name="OutlookKontakte">Auflistung der hochzuladenden Outlook Kontakte</param>
         ''' <remarks>Wird durch die Ribbons des Addins aufgerufen.</remarks>
         Friend Sub SetTelefonbuchEintrag(TelefonbuchID As Integer, OutlookKontakte As IEnumerable(Of ContactItem))
-            Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+            Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
                 SetTelefonbuchEintrag(FBoxTR064, TelefonbuchID, OutlookKontakte)
             End Using
         End Sub
@@ -383,24 +383,24 @@ Namespace Telefonbücher
         ''' <returns>Boolean, ob erfolgreich, oder nicht.</returns>
         ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
         Friend Function DeleteTelefonbuchEintrag(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, UID As Integer) As Boolean
-            ' Prüfe, ob Fritz!Box verfügbar
-            If Ping(XMLData.POptionen.ValidFBAdr) Then
-                With FBoxTR064.X_contact
-                    If .DeletePhonebookEntryUID(TelefonbuchID, UID) Then
-                        NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box gelöscht.")
-                        Return True
+            '' Prüfe, ob Fritz!Box verfügbar
+            'If Ping(XMLData.POptionen.ValidFBAdr) Then
+            With FBoxTR064.X_contact
+                If .DeletePhonebookEntryUID(TelefonbuchID, UID) Then
+                    NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box gelöscht.")
+                    Return True
 
-                    Else
-                        NLogger.Warn($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box nicht gelöscht.")
-                        Return False
+                Else
+                    NLogger.Warn($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box nicht gelöscht.")
+                    Return False
 
-                    End If
-                End With
-                Return True
-            Else
-                NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-                Return False
-            End If
+                End If
+            End With
+            Return True
+            'Else
+            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+            '    Return False
+            'End If
         End Function
 
         ''' <summary>
@@ -412,26 +412,26 @@ Namespace Telefonbücher
         ''' <returns>Boolean, ob erfolgreich, oder nicht.</returns>
         ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
         Friend Function DeleteTelefonbuchEinträge(fbtr064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, Einträge As IEnumerable(Of FBoxAPI.Contact)) As Boolean
-            ' Prüfe, ob Fritz!Box verfügbar
-            If Ping(XMLData.POptionen.ValidFBAdr) Then
-                With fbtr064.X_contact
-                    For Each Kontakt In Einträge
-                        If .DeletePhonebookEntryUID(TelefonbuchID, Kontakt.Uniqueid) Then
-                            NLogger.Info($"Kontakt mit der ID '{Kontakt.Uniqueid}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box gelöscht.")
-                            Return True
+            '' Prüfe, ob Fritz!Box verfügbar
+            'If Ping(XMLData.POptionen.ValidFBAdr) Then
+            With fbtr064.X_contact
+                For Each Kontakt In Einträge
+                    If .DeletePhonebookEntryUID(TelefonbuchID, Kontakt.Uniqueid) Then
+                        NLogger.Info($"Kontakt mit der ID '{Kontakt.Uniqueid}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box gelöscht.")
+                        Return True
 
-                        Else
-                            NLogger.Warn($"Kontakt mit der ID '{Kontakt.Uniqueid}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box nicht gelöscht.")
-                            Return False
+                    Else
+                        NLogger.Warn($"Kontakt mit der ID '{Kontakt.Uniqueid}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box nicht gelöscht.")
+                        Return False
 
-                        End If
-                    Next
-                End With
-                Return True
-            Else
-                NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-                Return False
-            End If
+                    End If
+                Next
+            End With
+            Return True
+            'Else
+            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+            '    Return False
+            'End If
         End Function
 
 #End Region

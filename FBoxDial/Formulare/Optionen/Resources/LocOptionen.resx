@@ -297,6 +297,14 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
 Ein Neustart von Outlook ist erforderlich!</value>
     <comment>OptBaseView</comment>
   </data>
+  <data name="strBaseTweakNetworkTimeout" xml:space="preserve">
+    <value>Timeout der Netzwerkroutinen</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTweakNetworkTimeoutInfo" xml:space="preserve">
+    <value>Hier kann der Timeout für die Netzwerkverbindungen (Ping, Downloads etc.) zur Fritz!Box angepasst werden. (Standard: 120 ms)</value>
+    <comment>OptBaseView</comment>
+  </data>
   <data name="strBaseWorkDir" xml:space="preserve">
     <value>Arbeitsverzeichnis</value>
     <comment>OptBaseView</comment>

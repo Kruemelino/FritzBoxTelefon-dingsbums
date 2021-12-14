@@ -362,6 +362,24 @@
         </Rectangle>
     </Viewbox>
 
+    <Viewbox x:Key="Text_16x" x:Shared="false" Width="16" Height="16">
+        <Rectangle Width="16" Height="16">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <DrawingGroup.Children>
+                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M14,15L2,15 2,0 14,0z" />
+                                <GeometryDrawing Brush="#FF414141" Geometry="F1M12,2L4,2 4,13 12,13z M13,14L3,14 3,1 13,1z M10,10L5,10 5,11 10,11z M11,8L5,8 5,9 11,9z M11,6L5,6 5,7 11,7z M11,5L7,5 7,4 11,4z" />
+                                <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M11,5L7,5 7,4 11,4z M11,7L5,7 5,6 11,6z M11,9L5,9 5,8 11,8z M10,11L5,11 5,10 10,10z M4,13L12,13 12,2 4,2z" />
+                            </DrawingGroup.Children>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Viewbox>
+
     <!--Nachfolgende Icons sind der MahApps.Metro.IconPacks entnommen
         https://github.com/MahApps/MahApps.Metro.IconPacks
         Copyright (c) 2016-2019 MahApps, Jan Karger-->

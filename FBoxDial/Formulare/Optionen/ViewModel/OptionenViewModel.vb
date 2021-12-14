@@ -773,6 +773,16 @@ Public Class OptionenViewModel
             SetProperty(_CBDisableMailCheck, Value)
         End Set
     End Property
+
+    Private _TBNetworkTimeout As Integer
+    Public Property TBNetworkTimeout As Integer
+        Get
+            Return _TBNetworkTimeout
+        End Get
+        Set
+            SetProperty(_TBNetworkTimeout, Value)
+        End Set
+    End Property
 #End Region
 #End Region
 
