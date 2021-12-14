@@ -211,22 +211,22 @@
                                         Header="{x:Static localize:LocFBoxData.strDevice}"
                                         Binding="{Binding Path=Gerät, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <fdg:DataGridTemplateColumn FieldName="TAMMessageAvailable" Header="" IsColumnFiltered="True">
+                <fdg:DataGridTemplateColumn FieldName="DataAvailable" Header="" IsColumnFiltered="True" >
 
                     <fdg:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
-                            <Button Name="button"
+                            <Button Name="button" HorizontalAlignment="Center"
                                     Style="{StaticResource DataGridIconButton}" 
                                     Visibility="{Binding ButtonVisible, Converter={StaticResource IsEditConverter}}"/>
 
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding Path=TAMMessageAvailable, Mode=OneWay}" Value="True">
-                                    <Setter TargetName="button" Property="Content" Value="{StaticResource SoundFile_16x}" />
+                                    <Setter TargetName="button" Property="Content" Value="{StaticResource SoundFile_12x}" />
                                     <Setter TargetName="button" Property="Command" Value="{Binding PlayMessageCommand}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=FaxAvailable, Mode=OneWay}" Value="True">
-                                    <Setter TargetName="button" Property="Content" Value="{StaticResource Text_16x}" />
+                                    <Setter TargetName="button" Property="Content" Value="{StaticResource Text_12x}" />
                                     <Setter TargetName="button" Property="Command" Value="{Binding DownloadFaxCommand}" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
