@@ -247,9 +247,9 @@ Namespace RibbonData
             ' Wenn der Anrufmonitor aktiv ist, dann trenne ihn, ansonsten starte ihn
             With ThisAddIn.PAnrufmonitor
                 If .Aktiv Then
-                    .StoppAnrMon()
+                    .Stopp()
                 Else
-                    .StartAnrMon()
+                    .Start()
                 End If
             End With
         End Sub
