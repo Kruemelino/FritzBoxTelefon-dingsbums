@@ -134,10 +134,10 @@ Imports Microsoft.Office.Interop
                 Return Firma
             Else
                 If Not GegenstelleTelNr.Unterdrückt Then
-                    Return $"{GegenstelleTelNr.Location}" & If(GegenstelleTelNr.IstInland, DfltStringEmpty, $" ({Localize.Länder.ResourceManager.GetString(GegenstelleTelNr.AreaCode)})")
+                    Return $"{GegenstelleTelNr.Location}" & If(GegenstelleTelNr.IstInland, String.Empty, $" ({Localize.Länder.ResourceManager.GetString(GegenstelleTelNr.AreaCode)})")
                 Else
                     ' Gib ein leeren String zurück
-                    Return DfltStringEmpty
+                    Return String.Empty
                 End If
             End If
         End Get
@@ -290,17 +290,28 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Friend Property OlKontakt() As Outlook.ContactItem
         Get
             ' Ermittle den Outlook-Kontakt, falls dies noch nicht geschehen ist
-            If _OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty) Then
-                _OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
-                NLogger.Debug($"Outlook Kontakt {_OlKontakt?.FullNameAndCompany} aus EntryID und KontaktID ermittelt.")
-            End If
+            Try
+                If _OlKontakt IsNot Nothing Then Dim tmp As String = _OlKontakt.EntryID
 
+            Catch ex As Exception
+                _OlKontakt = Nothing
+                NLogger.Warn(ex)
+            Finally
+
+                If _OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty) Then
+                    _OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
+                    NLogger.Debug($"Outlook Kontakt {_OlKontakt?.FullNameAndCompany} aus EntryID und KontaktID ermittelt.")
+                End If
+
+            End Try
             Return _OlKontakt
         End Get
         Set
             SetProperty(_OlKontakt, Value)
         End Set
     End Property
+
+    Private WithEvents OlKontakt_wEvents As Outlook.ContactItem
 
     <XmlElement> Public ReadOnly Property NameGegenstelle As String
         Get
@@ -668,26 +679,49 @@ Imports Microsoft.Office.Interop
         ' 5. Es ist nichts hinterlegt.
 
         If OlKontakt Is Nothing AndAlso OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty Then
-            ' Verknüpfe den Kontakt
+            ' Verknüpfe den bestehenden Outlook-Kontakt
             OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
-        End If
 
-        If OlKontakt Is Nothing AndAlso FBTelBookKontakt IsNot Nothing Then
-            OlKontakt = ErstelleKontakt(FBTelBookKontakt, GegenstelleTelNr, False)
-        End If
+            ' Blende den Kontakt ein
+            If OlKontakt IsNot Nothing Then OlKontakt.Display()
 
-        If OlKontakt Is Nothing Then
-            If VCard.IsNotStringNothingOrEmpty Then
-                ' wenn nicht, dann neuen Kontakt mit TelNr öffnen
-                OlKontakt = ErstelleKontakt(GegenstelleTelNr, False)
+        Else
+            ' ein Kontaktitem, welches eingeblendet werden kann muss erst erzeugt werden
+            If FBTelBookKontakt IsNot Nothing Then
+
+                ' Es gibt einen Kontakt aus dem Fritz!Box Telefonbuch.
+                OlKontakt_wEvents = ErstelleKontakt(FBTelBookKontakt, GegenstelleTelNr, False)
+
+            ElseIf VCard.IsNotStringNothingOrEmpty Then
+                ' eine vCard ist verfügbar
+                OlKontakt_wEvents = ErstelleKontakt(VCard, GegenstelleTelNr, False)
             Else
-                'vCard gefunden
-                OlKontakt = ErstelleKontakt(VCard, GegenstelleTelNr, False)
+                ' eine Telefonnummer ist als einige Information vorhanden
+                OlKontakt_wEvents = ErstelleKontakt(GegenstelleTelNr, False)
             End If
+
+            ' Füge einen Ereignishandler hinzu, der das Speichern dieses temporären Kontaktes überwacht
+            AddHandler OlKontakt_wEvents.Write, AddressOf EOlKontakt_wEvents_Write
+
+            ' Blende den temporäten Kontakt ein
+            If OlKontakt_wEvents IsNot Nothing Then OlKontakt_wEvents.Display()
+
         End If
 
-        If OlKontakt IsNot Nothing Then OlKontakt.Display()
+    End Sub
 
+    Private Sub EOlKontakt_wEvents_Write(ByRef Cancel As Boolean)
+
+        With OlKontakt_wEvents
+
+            ' Entferne den Ereignishandler
+            RemoveHandler .Write, AddressOf EOlKontakt_wEvents_Write
+
+            ' Merke Kontakt und StoreID
+            OutlookStoreID = .StoreID
+            OutlookKontaktID = .EntryID
+
+        End With
     End Sub
 
     ''' <summary>
@@ -744,9 +778,9 @@ Imports Microsoft.Office.Interop
 
                     With olJournal
 
-                        .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
+                        .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, String.Empty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
                         .Duration = Dauer.GetLarger(31) \ 60
-                        .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{VCard}"
+                        .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{vbCrLf}Status: {If(Angenommen, String.Empty, "nicht ")}angenommen{vbCrLf & vbCrLf}{VCard}"
                         .Start = ZeitBeginn
                         .Companies = Firma
 
