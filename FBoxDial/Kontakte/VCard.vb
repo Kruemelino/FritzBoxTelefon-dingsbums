@@ -3,11 +3,12 @@ Imports MixERP.Net.VCards
 Friend Module VCard
 
     ''' <summary>
-    ''' Fügt die Informationen einer vCard in ein Kontaktelement ein.
+    ''' Fügt die Informationen einer vCard in ein Kontaktelement ein.<br/>
+    ''' <see href="https://github.com/mixerp/MixERP.Net.VCards"/><br/>
+    ''' <see href="https://www.ietf.org/rfc/rfc2426.txt"/>
     ''' </summary>
     ''' <param name="vCard">Quelle: Die vCard, die eingelesen werden soll.</param>
     ''' <param name="Kontakt">Ziel: (Rückgabe) Der Kontakt in den die Informationen der vCard geschrieben werden als<c>Outlook.ContactItem</c></param>
-    ''' ''' <remarks>https://www.ietf.org/rfc/rfc2426.txt</remarks>
     Friend Sub DeserializevCard(vCard As String, ByRef Kontakt As Outlook.ContactItem)
 
         With Deserializer.GetVCard(vCard)
@@ -75,25 +76,30 @@ Friend Module VCard
             End If
 
             ' insert addresses
-            For Each vCardAddress As Models.Address In .Addresses
-                Select Case vCardAddress.Type
-                    Case Types.AddressType.Home
-                        Kontakt.HomeAddressCity = vCardAddress.Locality
-                        Kontakt.HomeAddressCountry = vCardAddress.Country
-                        Kontakt.HomeAddressStreet = vCardAddress.Street
-                        Kontakt.HomeAddressState = vCardAddress.Region
-                        Kontakt.HomeAddressPostalCode = vCardAddress.PostalCode
-                        Kontakt.HomeAddressPostOfficeBox = vCardAddress.PoBox
+            If .Addresses IsNot Nothing Then
+                For Each vCardAddress As Models.Address In .Addresses
+                    Select Case vCardAddress.Type
 
-                    Case Types.AddressType.Work
-                        Kontakt.BusinessAddressCity = vCardAddress.Locality
-                        Kontakt.BusinessAddressCountry = vCardAddress.Country
-                        Kontakt.BusinessAddressStreet = vCardAddress.Street
-                        Kontakt.BusinessAddressState = vCardAddress.Region
-                        Kontakt.BusinessAddressPostalCode = vCardAddress.PostalCode
-                        Kontakt.BusinessAddressPostOfficeBox = vCardAddress.PoBox
-                End Select
-            Next
+                        Case Types.AddressType.Home
+                            Kontakt.HomeAddressCity = vCardAddress.Locality
+                            Kontakt.HomeAddressCountry = vCardAddress.Country
+                            Kontakt.HomeAddressStreet = vCardAddress.Street
+                            Kontakt.HomeAddressState = vCardAddress.Region
+                            Kontakt.HomeAddressPostalCode = vCardAddress.PostalCode
+                            Kontakt.HomeAddressPostOfficeBox = vCardAddress.PoBox
+
+                        Case Else
+                            Kontakt.BusinessAddressCity = vCardAddress.Locality
+                            Kontakt.BusinessAddressCountry = vCardAddress.Country
+                            Kontakt.BusinessAddressStreet = vCardAddress.Street
+                            Kontakt.BusinessAddressState = vCardAddress.Region
+                            Kontakt.BusinessAddressPostalCode = vCardAddress.PostalCode
+                            Kontakt.BusinessAddressPostOfficeBox = vCardAddress.PoBox
+
+                    End Select
+                Next
+            End If
+
             ' insert email-addresses
             If .Emails IsNot Nothing Then
                 For Each vCardEMail As Models.Email In .Emails
