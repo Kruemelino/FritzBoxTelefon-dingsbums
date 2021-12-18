@@ -22,7 +22,7 @@ Friend Module WebFunctions
         Dim Options As New NetworkInformation.PingOptions() With {.DontFragment = True}
         Dim PingReply As NetworkInformation.PingReply = Nothing
 
-        Dim buffer As Byte() = Encoding.ASCII.GetBytes(DfltStringEmpty)
+        Dim buffer As Byte() = Encoding.ASCII.GetBytes(String.Empty)
 
         Try
             PingReply = PingSender.Send(IPAdresse, Math.Max(XMLData.POptionen.TBNetworkTimeout, DefaultMinTimout), buffer, Options)
@@ -174,7 +174,7 @@ Friend Module WebFunctions
     ''' <returns>Das <see cref="Task"/>-Objekt, das den asynchronen Vorgang darstellt.</returns>
     Friend Async Function DownloadStringTaskAsync(UniformResourceIdentifier As Uri, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing, Optional IgnoreWebExcepton As Boolean = False) As Task(Of String)
 
-        Dim retVal As String = DfltStringEmpty
+        Dim retVal As String = String.Empty
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
@@ -225,7 +225,7 @@ Friend Module WebFunctions
                                                     Return IO.File.ReadAllText(UniformResourceIdentifier.LocalPath)
                                                 Catch ex As Exception
                                                     NLogger.Warn(ex, $"Lokale Datei {UniformResourceIdentifier.LocalPath} kann nicht gelesen werden.")
-                                                    Return DfltStringEmpty
+                                                    Return String.Empty
                                                 End Try
                                             End Function)
                 Case Else
@@ -398,7 +398,7 @@ Friend Module WebFunctions
     ''' <returns>Boolean, je nach Erfolg der Abfrage.</returns>
     Friend Function UploadData(UniformResourceIdentifier As Uri, PostData As String, NC As NetworkCredential, ByRef Response As String, Optional Headers As WebHeaderCollection = Nothing, Optional ZeichenCodierung As Encoding = Nothing) As Boolean
 
-        Response = DfltStringEmpty
+        Response = String.Empty
 
         Using webClient As New WebClient With {.Credentials = NC,
                                                .Encoding = If(ZeichenCodierung, Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox))}

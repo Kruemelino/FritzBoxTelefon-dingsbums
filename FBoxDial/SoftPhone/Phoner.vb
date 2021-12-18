@@ -55,15 +55,15 @@ Friend Class Phoner
                                 ' Hole die Phoner Welcome Message
                                 Daten = SR.ReadLine
                                 NLogger.Debug($"Phoner-Welcome:  {Daten}")
-                                If Daten.AreEqual(PhonerWelcomeMessage) Then
+                                If Daten.IsEqual(PhonerWelcomeMessage) Then
                                     ' Ermittle die Phoner Challenge
-                                    Dim Challange As String = SR.ReadLine.RegExReplace($"^{PhonerChallenge}", DfltStringEmpty)
+                                    Dim Challange As String = SR.ReadLine.RegExReplace($"^{PhonerChallenge}", String.Empty)
 
                                     ' Bei Phoner Authentifizieren md5(ChallengePasswort)
                                     Dim Response As String
                                     Using Crypter As New Rijndael
                                         With Crypter
-                                            Response = .SecureStringToMD5(.DecryptString(XMLData.POptionen.TBPhonerPasswort, DfltPhonerDeCryptKey), Encoding.ASCII, Challange).ToUpper
+                                            Response = .SecureStringToMD5(.DecryptString(XMLData.POptionen.TBPhonerPasswort, My.Resources.strDfltPhonerDeCryptKey), Encoding.ASCII, Challange).ToUpper
                                         End With
                                     End Using
                                     NLogger.Debug($"Phoner-Challange: {Challange}, Phoner-Response: {Response}")

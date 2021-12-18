@@ -78,7 +78,7 @@
             If TestTelNr?.AreaCode.IsNotStringNothingOrEmpty Then
                 Return Localize.Länder.ResourceManager.GetString(TestTelNr.AreaCode)
             Else
-                Return DfltStringEmpty
+                Return String.Empty
             End If
         End Get
     End Property
@@ -179,7 +179,7 @@
 
     Private Sub StartLoadUserListTest(o As Object)
         ' Vorheriges Ergebnis löschen
-        TBTestLoginOutput = DfltStringEmpty
+        TBTestLoginOutput = String.Empty
 
         ' Ereignishandler hinzufügen
         AddHandler DatenService.Status, AddressOf LoginTestStatus
@@ -238,7 +238,7 @@
 
     Private Sub StartKontaktsucheTest(o As Object)
         ' Vorheriges Ergebnis löschen
-        TBTestKontaktsucheOutput = DfltStringEmpty
+        TBTestKontaktsucheOutput = String.Empty
 
         ' Ereignishandler hinzufügen
         AddHandler DatenService.Status, AddressOf TestKontaktsucheStatus
@@ -291,7 +291,7 @@
 
     Private Sub StartRWSTest(o As Object)
         ' Vorheriges Ergebnis löschen
-        TBTestRWSOutput = DfltStringEmpty
+        TBTestRWSOutput = String.Empty
 
         ' Ereignishandler hinzufügen
         AddHandler DatenService.Status, AddressOf RWSTestStatus

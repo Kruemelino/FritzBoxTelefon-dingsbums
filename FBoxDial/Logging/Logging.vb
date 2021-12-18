@@ -27,10 +27,10 @@ Friend Module NLogging
                                                       .Encoding = Encoding.UTF8,
                                                       .KeepFileOpen = True,
                                                       .ConcurrentWrites = True,
-                                                      .FileName = Path.Combine(BaseDir, DfltLogFileName),
+                                                      .FileName = Path.Combine(BaseDir, $"{My.Resources.strDefShortName}.log"),
                                                       .Layout = String.Join("|", LayoutText),
                                                       .ArchiveNumbering = Targets.ArchiveNumberingMode.Rolling,
-                                                      .ArchiveFileName = Path.Combine(BaseDir, DfltLogArchiveFileName),
+                                                      .ArchiveFileName = Path.Combine(BaseDir, $"{My.Resources.strDefShortName}.{{#}}.log"),
                                                       .ArchiveOldFileOnStartupAboveSize = 524288,
                                                       .MaxArchiveFiles = 5})
 

@@ -15,7 +15,7 @@ Friend NotInheritable Class NutzerDaten
         Dim DateiInfo As FileInfo
         Dim Pfad As String
 
-        Pfad = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltConfigFileName)
+        Pfad = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml")
 
         DateiInfo = New FileInfo(Pfad)
         DateiInfo.Directory.Create() ' If the directory already exists, this method does nothing.

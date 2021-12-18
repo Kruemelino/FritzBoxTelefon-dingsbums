@@ -60,13 +60,13 @@ Friend Module Journal
                 Dim TelNr As Telefonnummer
 
                 ' Telefonnummer aus dem Body ermitteln
-                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, Dflt1NeueZeile)}
+                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, vbCrLf)}
                 vCard = Await StartRWS(TelNr, False)
 
                 If vCard.IsStringNothingOrEmpty Then
-                    .Body += String.Format($"{Dflt1NeueZeile}{Localize.LocAnrMon.strJournalFehler}")
+                    .Body += String.Format($"{vbCrLf}{Localize.LocAnrMon.strJournalFehler}")
                 Else
-                    .Body += String.Format($"{Dflt1NeueZeile}{Localize.LocAnrMon.strJournalTextvCard}{Dflt2NeueZeile}{vCard}")
+                    .Body += String.Format($"{vbCrLf}{Localize.LocAnrMon.strJournalTextvCard}{vbCrLf & vbCrLf}{vCard}")
                 End If
 
             End If

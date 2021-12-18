@@ -67,7 +67,7 @@ Public Class EnumDescriptionConverter
     End Function
 
     Private Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-        Dim description As String = DfltStringEmpty
+        Dim description As String = String.Empty
         If value IsNot String.Empty Then description = GetEnumDescription(CType(value, [Enum]))
 
         Return description

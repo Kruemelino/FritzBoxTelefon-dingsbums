@@ -18,7 +18,7 @@ Namespace Telefonbücher
 
                         ' Initialiesiere die Gesamtliste der Telefonbücher
                         Dim AlleTelefonbücher As New List(Of PhonebookEx)
-                        Dim PhonebookURL As String = DfltStringEmpty
+                        Dim PhonebookURL As String = String.Empty
 
                         ' Lade die xslt Transformationsdatei
                         Dim xslt As New Xsl.XslCompiledTransform
@@ -83,8 +83,8 @@ Namespace Telefonbücher
 
                     ' Schleife durch alle ermittelten IDs
                     For Each PhonebookID In PhonebookIDs
-                        Dim PhonebookURL As String = DfltStringEmpty
-                        Dim PhonebookName As String = DfltStringEmpty
+                        Dim PhonebookURL As String = String.Empty
+                        Dim PhonebookName As String = String.Empty
                         ' Ermittle die URL und Namen zum Telefonbuch
                         If .GetPhonebook(PhonebookID, PhonebookURL, PhonebookName) Then
 
@@ -121,7 +121,7 @@ Namespace Telefonbücher
 
             With FBoxTR064.X_contact
                 ' Initialiesiere die Gesamtliste der Telefonbücher
-                Dim PhonebookURL As String = DfltStringEmpty
+                Dim PhonebookURL As String = String.Empty
                 Dim Rufsperren As New List(Of PhonebookEx)
                 ' Lade die xslt Transformationsdatei
                 Dim xslt As New Xsl.XslCompiledTransform
@@ -188,16 +188,16 @@ Namespace Telefonbücher
             With FBoxTR064.X_contact
                 ' Hole die momentan verfügbaren Ids der Telefonbücher
                 Dim IdsA As Integer() = {}
-                Dim PhonebookURL As String = DfltStringEmpty
+                Dim PhonebookURL As String = String.Empty
                 Dim NameOK As Boolean = True
                 If .GetPhonebookList(IdsA) Then
 
                     ' Prüfe, ob bereits ein Telefonbuch mit dem Namen vorhanden ist.
                     For Each ID In IdsA
-                        Dim Name As String = DfltStringEmpty
+                        Dim Name As String = String.Empty
 
                         If .GetPhonebook(ID, PhonebookURL, Name) Then
-                            If Name.AreEqual(TelefonbuchName) Then
+                            If Name.IsEqual(TelefonbuchName) Then
                                 NLogger.Warn($"Ein Telefonbuch mit dem Namen '{TelefonbuchName}' kann nicht angelegt werden, da bereits eins mit diesem Namen exisiert.")
                                 NameOK = False
                             End If
@@ -356,7 +356,7 @@ Namespace Telefonbücher
 
             Await Task.WhenAll(TaskList)
             ' Gib eine finale Statusmeldung heraus
-            Windows.MessageBox.Show(String.Format(Localize.resRibbon.UploadResultMessageHeader, OutlookKontakte.Count, Dflt2NeueZeile, String.Join(Dflt1NeueZeile, TaskList.Select(Function(R) R.Result))), My.Resources.strDefLongName, Windows.MessageBoxButton.OK)
+            Windows.MessageBox.Show(String.Format(Localize.resRibbon.UploadResultMessageHeader, OutlookKontakte.Count, vbCrLf & vbCrLf, String.Join(vbCrLf, TaskList.Select(Function(R) R.Result))), My.Resources.strDefLongName, Windows.MessageBoxButton.OK)
             'Else
             '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
 

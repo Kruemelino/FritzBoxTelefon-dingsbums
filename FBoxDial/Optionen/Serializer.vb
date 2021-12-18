@@ -185,7 +185,7 @@ Friend Module Serializer
 
         If objectData IsNot Nothing Then
             Dim XmlSerializerNamespace As New XmlSerializerNamespaces()
-            XmlSerializerNamespace.Add(DfltStringEmpty, DfltStringEmpty)
+            XmlSerializerNamespace.Add(String.Empty, String.Empty)
 
             Using XmlSchreiber As New Utf8StringWriter
 
@@ -211,7 +211,7 @@ Friend Module Serializer
     Friend Function XmlSerializeToFile(Of T)(objectData As T, Pfad As String) As Boolean
         If objectData IsNot Nothing Then
             Dim XmlSerializerNamespace As New XmlSerializerNamespaces()
-            XmlSerializerNamespace.Add(DfltStringEmpty, DfltStringEmpty)
+            XmlSerializerNamespace.Add(String.Empty, String.Empty)
 
             Using XmlSchreiber As XmlWriter = XmlWriter.Create(Pfad, New XmlWriterSettings With {.Indent = True, .OmitXmlDeclaration = False})
                 With New XmlSerializer(GetType(T))
@@ -241,7 +241,7 @@ Friend Module Serializer
     ''' <param name="Objekt">Das zu klonende Objekt</param>
     ''' <returns>Den Klon.</returns>
     Friend Function XMLClone(Of T)(Objekt As T) As T
-        Dim tmp As String = DfltStringEmpty
+        Dim tmp As String = String.Empty
 
         If Objekt IsNot Nothing Then
             If Not XmlSerializeToString(Objekt, tmp) OrElse Not DeserializeXML(tmp, False, XMLClone) Then

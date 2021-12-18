@@ -177,7 +177,7 @@ Public Class OutlookFolderViewModel
 
             For Each Ordner As OutlookOrdner In OptVM.OutlookOrdnerListe.FindAll(Verwendung)
                 ' Vorfilter: Ermittle alle Konten für den passenden Store
-                Dim StoreNode = TreeViewOutlookOrdner.Where(Function(olStore) olStore.Node.OutlookFolder.StoreID.AreEqual(Ordner.StoreID))
+                Dim StoreNode = TreeViewOutlookOrdner.Where(Function(olStore) olStore.Node.OutlookFolder.StoreID.IsEqual(Ordner.StoreID))
 
                 NLogger.Debug($"Verarbeite Ordner {Ordner.Name} für '{Verwendung}'.")
 
@@ -185,7 +185,7 @@ Public Class OutlookFolderViewModel
                 If Ordner.Exists Then
 
                     ' Suche den Ordner
-                    Dim node = StoreNode.Where(Function(olFolderNode) olFolderNode.Node.OutlookFolder.EntryID.AreEqual(Ordner.FolderID))
+                    Dim node = StoreNode.Where(Function(olFolderNode) olFolderNode.Node.OutlookFolder.EntryID.IsEqual(Ordner.FolderID))
 
                     If node?.Any Then
                         NLogger.Debug($"Knoten im TreeView gefunden.")

@@ -166,6 +166,69 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ZugangV5 ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDfltDeCryptKey() As String
+            Get
+                Return ResourceManager.GetString("strDfltDeCryptKey", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die CallList ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDfltNameListCALL() As String
+            Get
+                Return ResourceManager.GetString("strDfltNameListCALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die RingList ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDfltNameListRING() As String
+            Get
+                Return ResourceManager.GetString("strDfltNameListRING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die VIPList ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDfltNameListVIP() As String
+            Get
+                Return ResourceManager.GetString("strDfltNameListVIP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Optionen ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDfltOptions() As String
+            Get
+                Return ResourceManager.GetString("strDfltOptions", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ZugangPhoner ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDfltPhonerDeCryptKey() As String
+            Get
+                Return ResourceManager.GetString("strDfltPhonerDeCryptKey", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ZugangTellows ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDfltTellowsDeCryptKey() As String
+            Get
+                Return ResourceManager.GetString("strDfltTellowsDeCryptKey", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
         '''  &lt;xsl:output omit-xml-declaration=&quot;yes&quot; indent=&quot;yes&quot;/&gt;
         '''  &lt;xsl:strip-space elements=&quot;*&quot;/&gt;

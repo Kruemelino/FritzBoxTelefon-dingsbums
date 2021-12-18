@@ -122,7 +122,7 @@ Public Class TelefonbuchViewModel
         Dim Buch = CType(o, PhonebookViewModel)
         Return Telefonbücher IsNot Nothing AndAlso Buch IsNot Nothing AndAlso
                                                    Buch.Name.IsNotStringNothingOrEmpty AndAlso Not Telefonbücher.Where(Function(TB)
-                                                                                                                           Return TB.ID.AreDifferentTo(-1) And TB.Name.AreEqual(Buch.Name)
+                                                                                                                           Return TB.ID.AreDifferentTo(-1) And TB.Name.IsEqual(Buch.Name)
                                                                                                                        End Function).Any
     End Function
 #End Region

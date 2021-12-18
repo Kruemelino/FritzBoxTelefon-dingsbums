@@ -54,12 +54,12 @@ Public Class OutlookOrdner
 #Region "IEquatable Support"
     Public Overloads Function Equals(other As OutlookOrdner) As Boolean Implements IEquatable(Of OutlookOrdner).Equals
         If other Is Nothing Then Return False
-        Return FolderID.AreEqual(other.FolderID) And StoreID.AreEqual(other.StoreID) And Typ.Equals(other.Typ)
+        Return FolderID.IsEqual(other.FolderID) And StoreID.IsEqual(other.StoreID) And Typ.Equals(other.Typ)
     End Function
 
     Public Overloads Function Equals(other As Outlook.MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
         If other Is Nothing Then Return False
-        Return FolderID.AreEqual(other.EntryID) And StoreID.AreEqual(other.StoreID) And Typ.Equals(Verwendung)
+        Return FolderID.IsEqual(other.EntryID) And StoreID.IsEqual(other.StoreID) And Typ.Equals(Verwendung)
     End Function
 
     Public Overrides Function GetHashCode() As Integer

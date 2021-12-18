@@ -262,7 +262,7 @@ Public Class AnrMonViewModel
             Select Case e.PropertyName
                 Case NameOf(Telefonat.AnruferName)
                     AnrMonAnrufer = .AnruferName
-                Case NameOf(Telefonat.Firma)
+                Case NameOf(Telefonat.Firma), NameOf(Telefonat.AnrMonExInfo)
                     AnrMonExInfo = .AnrMonExInfo
                 Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsErgebnis)
                     Instance.Invoke(Sub() LadeBild())

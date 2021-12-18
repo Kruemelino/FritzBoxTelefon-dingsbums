@@ -3,6 +3,10 @@ Imports System.Runtime.CompilerServices
 Imports Microsoft.Office.Interop.Outlook
 Imports System.Windows.Media
 Friend Module KontaktFunktionen
+    Private ReadOnly Property DfltErrorvalue As Integer = -2147221233
+    Private ReadOnly Property DfltDASLSMTPAdress As String = "http://schemas.microsoft.com/mapi/proptag/0x39FE001E"
+    Private ReadOnly Property DASLTagFBTelBuch As Object() = {$"{DfltDASLSchema}FBDB-PhonebookID", $"{DfltDASLSchema}FBDB-PhonebookEntryID"}.ToArray
+
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     ''' <summary>
@@ -27,7 +31,7 @@ Friend Module KontaktFunktionen
                     .BusinessTelephoneNumber = TelNr.Formatiert
                 End If
 
-                If vCard.IsNotStringNothingOrEmpty And vCard.IsNotErrorString Then
+                If vCard.IsNotStringNothingOrEmpty And vCard.IsNotEqual("-1") Then
 
                     DeserializevCard(vCard, olKontakt)
 
@@ -59,7 +63,7 @@ Friend Module KontaktFunktionen
                     .Categories = My.Resources.strDefLongName 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
 
                     If Not XMLData.POptionen.CBNoContactNotes Then
-                        .Body = $"{String.Format(Localize.resCommon.strCreateContact, My.Resources.strDefLongName, Now)}{Dflt2NeueZeile}vCard:{Dflt2NeueZeile}{vCard}"
+                        .Body = $"{String.Format(Localize.resCommon.strCreateContact, My.Resources.strDefLongName, Now)}{vbCrLf & vbCrLf}vCard:{vbCrLf & vbCrLf}{vCard}"
                     End If
                 End If
 
@@ -122,7 +126,7 @@ Friend Module KontaktFunktionen
     ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
     ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
     Friend Function ErstelleKontakt(TelNr As Telefonnummer, Speichern As Boolean) As ContactItem
-        Return ErstelleKontakt(DfltStringEmpty, TelNr, Speichern)
+        Return ErstelleKontakt(String.Empty, TelNr, Speichern)
     End Function
 
     ''' <summary>
@@ -180,10 +184,10 @@ Friend Module KontaktFunktionen
                     Else
                         ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
                         ' vCard aus dem .Body herausfiltern
-                        vCard = $"{DfltBegin_vCard}{ .Body.GetSubString(DfltBegin_vCard, DfltEnd_vCard)}{DfltEnd_vCard}"
+                        vCard = $"BEGIN:VCARD{ .Body.GetSubString("BEGIN:VCARD", "END:VCARD")}END:VCARD"
 
                         'Wenn keine vCard im Body gefunden
-                        If vCard.AreNotEqual($"{DfltBegin_vCard}{DfltStrErrorMinusOne}{DfltEnd_vCard}") Then
+                        If vCard.IsNotEqual($"BEGIN:VCARD-1END:VCARD") Then
                             ' wenn nicht, dann neuen Kontakt mit TelNr öffnen
                             olKontakt = ErstelleKontakt(TelNr, False)
                         Else
@@ -245,7 +249,7 @@ Friend Module KontaktFunktionen
         GetOutlookFolder = Nothing
 
         If ThisAddIn.OutookApplication IsNot Nothing AndAlso ThisAddIn.OutookApplication.Session IsNot Nothing Then
-            If FolderID.IsNotErrorString And StoreID.IsNotErrorString Then
+            If FolderID.IsNotEqual("-1") And StoreID.IsNotEqual("-1") Then
                 Try
                     ' Überprüfe, ob der Store vorhanden ist
                     Dim store = ThisAddIn.OutookApplication.Session.GetStoreFromID(StoreID)
@@ -401,7 +405,7 @@ Friend Module KontaktFunktionen
     ''' <param name="Ordner2">Zweiter MAPIFolder</param>
     ''' <returns></returns>
     <Extension> Friend Function AreEqual(Ordner1 As MAPIFolder, Ordner2 As MAPIFolder) As Boolean
-        Return Ordner1 IsNot Nothing AndAlso Ordner2 IsNot Nothing AndAlso Ordner1.StoreID.AreEqual(Ordner2.StoreID) AndAlso Ordner1.EntryID.AreEqual(Ordner2.EntryID)
+        Return Ordner1 IsNot Nothing AndAlso Ordner2 IsNot Nothing AndAlso Ordner1.StoreID.IsEqual(Ordner2.StoreID) AndAlso Ordner1.EntryID.IsEqual(Ordner2.EntryID)
     End Function
 
 #Region "VIP"
@@ -409,7 +413,7 @@ Friend Module KontaktFunktionen
         ' Prüfe, ob sich der Kontakt in der Liste befindet.
         If XMLData.PTelListen.VIPListe IsNot Nothing Then
             With XMLData.PTelListen.VIPListe
-                Return .Exists(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
+                Return .Exists(Function(VIPEintrag) VIPEintrag.EntryID.IsEqual(olKontakt.EntryID) And VIPEintrag.StoreID.IsEqual(olKontakt.StoreID))
             End With
         End If
         Return False
@@ -420,7 +424,7 @@ Friend Module KontaktFunktionen
 
         If olKontakt.IsVIP Then
             ' Entferne den Kontakt von der Liste
-            XMLData.PTelListen.VIPListe.RemoveAll(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
+            XMLData.PTelListen.VIPListe.RemoveAll(Function(VIPEintrag) VIPEintrag.EntryID.IsEqual(olKontakt.EntryID) And VIPEintrag.StoreID.IsEqual(olKontakt.StoreID))
 
         Else
             ' Füge einen neuen Eintrag hinzu
@@ -443,7 +447,7 @@ Friend Module KontaktFunktionen
     ''' <returns></returns>
     Friend Function GetSenderSMTPAddress(EMail As MailItem) As EMailType
 
-        GetSenderSMTPAddress = New EMailType With {.Addresse = DfltStringEmpty}
+        GetSenderSMTPAddress = New EMailType With {.Addresse = String.Empty}
 
         If EMail IsNot Nothing Then
 
@@ -497,7 +501,7 @@ Friend Module KontaktFunktionen
                 MsgBox($"{Localize.LocAnrMon.strJournalRWSFehler} {TelNr.Formatiert}", MsgBoxStyle.Information, Localize.LocOptionen.strSearchContactHeadRWS)
             Else
                 If Not XMLData.POptionen.CBNoContactNotes Then
-                    .Body += String.Format($"{Dflt1NeueZeile}{Dflt2NeueZeile}{Localize.LocAnrMon.strJournalTextvCard}{vCard}")
+                    .Body += String.Format($"{vbCrLf & vbCrLf}{Localize.LocAnrMon.strJournalTextvCard}{vCard}")
                 End If
 
                 DeserializevCard(vCard, olContact)
@@ -564,12 +568,12 @@ Friend Module KontaktFunktionen
     ''' <remarks>Die Auflistung kann leere Strings enthalten.</remarks>
     <Extension> Friend Function ErstelleXMLKontakt(olContacts As ContactItem, Optional UID As Integer = -1) As String
 
-        Dim NeuerKontakt As String = DfltStringEmpty
+        Dim NeuerKontakt As String = String.Empty
         If XmlSerializeToString(olContacts.ErstelleFBoxKontakt(UID), NeuerKontakt) Then
             Return NeuerKontakt
         Else
             NLogger.Warn($"Der Kontakt {olContacts.FullNameAndCompany} kann nicht serialisiert werden.")
-            Return DfltStringEmpty
+            Return String.Empty
         End If
 
     End Function
@@ -637,6 +641,7 @@ Friend Module KontaktFunktionen
         End With
     End Sub
 
+
 #Region "Bilder"
 
     ''' <summary>
@@ -645,7 +650,7 @@ Friend Module KontaktFunktionen
     ''' <param name="olContact">Kontakt, aus dem das Kontaktbild extrahiert werden soll.</param>
     ''' <returns>Pfad zum extrahierten Kontaktbild.</returns>
     <Extension> Friend Function KontaktBild(olContact As ContactItem) As String
-        KontaktBild = DfltStringEmpty
+        KontaktBild = String.Empty
         If olContact IsNot Nothing Then
             With olContact
                 With .Attachments

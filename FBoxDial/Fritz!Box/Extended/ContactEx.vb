@@ -137,7 +137,7 @@ Friend Module ContactEx
     End Function
 
     <Extension> Friend Async Function KontaktBildPfad(Kontakt As FBoxAPI.Contact) As Task(Of String)
-        Dim Pfad As String = DfltStringEmpty
+        Dim Pfad As String = String.Empty
         If Kontakt IsNot Nothing Then
             Pfad = $"{Path.GetTempPath}{Path.GetRandomFileName}" '.RegExReplace(".{3}$", "jpg")
 
@@ -149,7 +149,7 @@ Friend Module ContactEx
     End Function
 
     <Extension> Friend Function GetXMLKontakt(Kontakt As FBoxAPI.Contact) As String
-        Dim XMLKontakt As String = DfltStringEmpty
+        Dim XMLKontakt As String = String.Empty
 
         XmlSerializeToString(Kontakt, XMLKontakt)
 
@@ -169,11 +169,11 @@ Friend Module ContactEx
         End Using
         'End If
 
-        Return If(SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Person.ImageURL}&{SessionID}", DfltStringEmpty)
+        Return If(SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Person.ImageURL}&{SessionID}", String.Empty)
     End Function
 
     <Extension> Friend Function CompleteImageURL(Person As FBoxAPI.Person, SessionID As String) As String
-        Return If(SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Person.ImageURL}&{SessionID}", DfltStringEmpty)
+        Return If(SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Person.ImageURL}&{SessionID}", String.Empty)
     End Function
 
     <Extension> Friend Function GetKontaktTelNrList(Contact As FBoxAPI.Contact) As List(Of Telefonnummer)

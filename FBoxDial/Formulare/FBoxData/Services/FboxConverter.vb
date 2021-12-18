@@ -11,7 +11,7 @@ Friend Module FboxConverter
         ' Schleife durch alle Properties dieser Klasse
         For Each TR064ObjPropertyInfo As PropertyInfo In GetType(T1).GetProperties
             ' Suche das passende Property in den Optionen
-            Dim FBoxAddinPropertyInfo As PropertyInfo = Array.Find(GetType(T2).GetProperties, Function(ItemPropertyInfo As PropertyInfo) ItemPropertyInfo.Name.AreEqual(TR064ObjPropertyInfo.Name))
+            Dim FBoxAddinPropertyInfo As PropertyInfo = Array.Find(GetType(T2).GetProperties, Function(ItemPropertyInfo As PropertyInfo) ItemPropertyInfo.Name.IsEqual(TR064ObjPropertyInfo.Name))
 
             If FBoxAddinPropertyInfo IsNot Nothing Then
                 Try

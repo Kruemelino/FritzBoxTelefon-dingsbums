@@ -175,7 +175,7 @@ Friend Module FritzBoxRufsperre
         'If Ping(XMLData.POptionen.ValidFBAdr) Then
 
         With fboxTR064.X_contact
-            Dim EintragsDaten As String = DfltStringEmpty
+            Dim EintragsDaten As String = String.Empty
             If .GetCallBarringEntryByNum(Nummer, EintragsDaten) AndAlso EintragsDaten.IsNotStringNothingOrEmpty Then
                 ' Deserialisiere das Ergebnis
                 If DeserializeXML(EintragsDaten, False, Eintrag) Then
@@ -255,7 +255,7 @@ Friend Module FritzBoxRufsperre
             Return Nothing
         Else
             ' Finde einen passenden Sperreintrag, der A die richtige Bezeichnung hat und B noch Platz hat
-            Dim TellowsSperrEinträge As List(Of FBoxAPI.Contact) = FBoxRufSperre.Phonebook.Contacts.Where(Function(K) K.Person.RealName.AreEqual(DfltName) AndAlso K.Telephony.Numbers.Count.IsLess(MaxNrbyEntry)).ToList
+            Dim TellowsSperrEinträge As List(Of FBoxAPI.Contact) = FBoxRufSperre.Phonebook.Contacts.Where(Function(K) K.Person.RealName.IsEqual(DfltName) AndAlso K.Telephony.Numbers.Count.IsLess(MaxNrbyEntry)).ToList
 
             If TellowsSperrEinträge IsNot Nothing AndAlso TellowsSperrEinträge.Any Then
                 NLogger.Debug($"Ein Eintrag für die Nummer {Eintrag.Number} (Score: {Eintrag.Score}) wurde gefunden")

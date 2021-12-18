@@ -6,7 +6,7 @@ Public Module Rückwärtssuche
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Boolean))
 
     Friend Async Function StartRWS(TelNr As Telefonnummer, RWSIndex As Boolean) As Task(Of String)
-        Dim vCard As String = DfltStringEmpty
+        Dim vCard As String = String.Empty
         Dim RWSIndexEintrag As RWSIndexEntry
 
         NLogger.Debug($"Starte Kontaktsuche per Rückwärtssuche für Telefonnummer '{TelNr.Unformatiert}'.")
@@ -54,7 +54,7 @@ Public Module Rückwärtssuche
         Dim htmlRWS As String       ' Inhalt der Webseite
         Dim i As Integer            ' Zählvariable
         Dim baseurl As String
-        Dim VCard As String = DfltStringEmpty
+        Dim VCard As String = String.Empty
         Dim Gefunden As Boolean = False
 
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
@@ -79,7 +79,7 @@ Public Module Rückwärtssuche
                 EintragsID = htmlRWS.GetSubString("var handlerData =[['", "']];").Split("','").First
                 'EintragsID = htmlRWS.GetSubString($"{baseurl}detail&amp;id=", "&amp;recuid=")
 
-                If EintragsID.IsNotErrorString Then
+                If EintragsID.IsNotEqual("-1") Then
                     ' Link zum Herunterladen der vCard suchen
                     PushStatus(LogLevel.Debug, $"Link vCard: {baseurl}vcard&id={EintragsID}")
 
@@ -89,11 +89,11 @@ Public Module Rückwärtssuche
                 End If
             End If
 
-            If VCard.StartsWith(DfltBegin_vCard) Then
+            If VCard.StartsWith("BEGIN:VCARD") Then
                 Gefunden = True
                 PushStatus(LogLevel.Debug, VCard)
             Else
-                VCard = DfltStringEmpty
+                VCard = String.Empty
             End If
             i += 1
             ' Ersetze die letzten beiden Zeichen durch eine Null.

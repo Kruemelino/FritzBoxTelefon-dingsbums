@@ -172,7 +172,7 @@ Imports FBoxDial.FritzBoxDefault
 
                             ' Schleife durch alle wählbaren Telefone
                             For i = 1 To WählhilfeTelefone.Count
-                                Dim Phoneport As String = DfltStringEmpty
+                                Dim Phoneport As String = String.Empty
                                 If .X_voip.GetPhonePort(Phoneport, i) Then
                                     ' Erfolgreich ermittelt
                                     Dim Telefon As Telefoniegerät = WählhilfeTelefone.Find(Function(Tel) Phoneport.EndsWith(Tel.Name))

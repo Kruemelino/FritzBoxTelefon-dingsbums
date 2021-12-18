@@ -12,7 +12,7 @@ Public Class DialogService
                                                 .Filter = filter,
                                                 .InitialDirectory = IO.Path.GetDirectoryName(initialDirectory)}
 
-        Return If(dialog.ShowDialog() = True, dialog.FileName, DfltStringEmpty)
+        Return If(dialog.ShowDialog() = True, dialog.FileName, String.Empty)
 
     End Function
 

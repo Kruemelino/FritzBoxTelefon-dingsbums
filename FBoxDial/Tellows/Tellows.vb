@@ -9,7 +9,7 @@ Friend Class Tellows
     ''' </summary>
     Private ReadOnly Property XAuthToken As String
     Private ReadOnly Property Headers As WebHeaderCollection
-    Private ReadOnly Property Pfad As String = IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltTellowsFileName)
+    Private ReadOnly Property Pfad As String = IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.json")
     Private ReadOnly Property Ready As Boolean
         Get
             Return XAuthToken.IsNotStringNothingOrEmpty
@@ -27,7 +27,7 @@ Friend Class Tellows
     Public Sub New()
         Using Crypter As New Rijndael
             With Crypter
-                XAuthToken = .SecureStringToMD5(.DecryptString(XMLData.POptionen.TBTellowsAPIKey, DfltTellowsDeCryptKey), Encoding.Default)
+                XAuthToken = .SecureStringToMD5(.DecryptString(XMLData.POptionen.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey), Encoding.Default)
             End With
         End Using
 
@@ -42,6 +42,7 @@ Friend Class Tellows
         ' Deserialisieren
         If Not DeserializeXML(Await DownloadStringTaskAsync(UniformResourceIdentifier, ZeichenCodierung:=Encoding.UTF8, Headers:=Headers), False, Response) Then
             NLogger.Error($"Die Tellows Abfrage zu '{UniformResourceIdentifier}' war nicht erfolgreich.")
+            Return Nothing
         End If
 
         Return Response

@@ -56,9 +56,9 @@ Public Class OptionenViewModel
     End Property
 
     Public ReadOnly Property AddinVersion As String = $"Info V{Assembly.GetExecutingAssembly.GetName.Version}"
-    Public ReadOnly Property DfltDeCryptKey As String = DfltWerteAllgemein.DfltDeCryptKey
-    Public ReadOnly Property DfltPhonerDeCryptKey As String = DfltWerteAllgemein.DfltPhonerDeCryptKey
-    Public ReadOnly Property DfltTellowsDeCryptKey As String = DfltWerteAllgemein.DfltTellowsDeCryptKey
+    Public ReadOnly Property DfltDeCryptKey As String = My.Resources.strDfltDeCryptKey
+    Public ReadOnly Property DfltPhonerDeCryptKey As String = My.Resources.strDfltPhonerDeCryptKey
+    Public ReadOnly Property DfltTellowsDeCryptKey As String = My.Resources.strDfltTellowsDeCryptKey
 #End Region
 
 #Region "Grunddaten Telefonie"
@@ -904,7 +904,7 @@ Public Class OptionenViewModel
                                      ' Schleife durch alle Properties dieser Klasse
                                      For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
                                          ' Suche das passende Property in den Optionen
-                                         Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
+                                         Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.IsEqual(ViewModelPropertyInfo.Name))
 
                                          If OptionPropertyInfo IsNot Nothing Then
                                              Try
@@ -956,7 +956,7 @@ Public Class OptionenViewModel
                                  ' Schleife durch alle Properties dieser Klasse
                                  For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
                                      ' Suche das passende Property in den Optionen
-                                     Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
+                                     Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.IsEqual(ViewModelPropertyInfo.Name))
 
                                      If OptionPropertyInfo IsNot Nothing Then
 

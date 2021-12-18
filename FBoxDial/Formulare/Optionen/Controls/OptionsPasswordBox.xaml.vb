@@ -77,7 +77,7 @@ Partial Public Class OptionsPasswordBox
         If PwBox.Password.IsStringNothingOrEmpty Then
             PwBox.Password = "1234"
         Else
-            If PwBox.Password.AreNotEqual("1234") Then
+            If PwBox.Password.IsNotEqual("1234") Then
                 Using Crypt As New Rijndael
                     Value = Crypt.EncryptString(PwBox.SecurePassword, DeCryptKey)
                 End Using

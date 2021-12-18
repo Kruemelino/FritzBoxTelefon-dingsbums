@@ -105,10 +105,10 @@ Public Module Extensions
 #End Region
 
 #Region "Extensions für Verarbeitung von Zeichenfolgen: String"
-    <Extension> Public Function AreEqual(Str1 As String, Str2 As String) As Boolean
+    <Extension> Public Function IsEqual(Str1 As String, Str2 As String) As Boolean
         Return String.Compare(Str1, Str2).IsZero
     End Function
-    <Extension> Public Function AreNotEqual(Str1 As String, Str2 As String) As Boolean
+    <Extension> Public Function IsNotEqual(Str1 As String, Str2 As String) As Boolean
         Return String.Compare(Str1, Str2).IsNotZero
     End Function
     <Extension> Public Function IsStringNothingOrEmpty(Str1 As String) As Boolean
@@ -117,17 +117,11 @@ Public Module Extensions
     <Extension> Public Function IsNotStringNothingOrEmpty(Str1 As String) As Boolean
         Return Not Str1.IsStringNothingOrEmpty
     End Function
-    <Extension> Public Function IsErrorString(Str1 As String) As Boolean
-        Return Str1.AreEqual(DfltStrErrorMinusOne)
-    End Function
-    <Extension> Public Function IsNotErrorString(Str1 As String) As Boolean
-        Return Not Str1.IsErrorString
-    End Function
     <Extension> Public Function RegExReplace(str1 As String, pattern As String, replacement As String, Optional RegOpt As RegexOptions = RegexOptions.None) As String
         Return Regex.Replace(str1, pattern, replacement, RegOpt)
     End Function
     <Extension> Public Function RegExRemove(str1 As String, pattern As String, Optional RegOpt As RegexOptions = RegexOptions.None) As String
-        Return str1.RegExReplace(pattern, DfltStringEmpty, RegOpt)
+        Return str1.RegExReplace(pattern, String.Empty, RegOpt)
     End Function
     <Extension> Public Function IsRegExMatch(str1 As String, pattern As String, Optional RegOpt As RegexOptions = RegexOptions.None) As Boolean
         Return Regex.Match(str1, pattern, RegOpt).Success
@@ -159,7 +153,7 @@ Public Module Extensions
         If Not pos(0).AreEqual(Len(StringDavor)) Then
             GetSubString = Mid(Text, pos(0), pos(1) - pos(0))
         Else
-            GetSubString = DfltStrErrorMinusOne
+            GetSubString = "-1"
         End If
     End Function
 
@@ -195,7 +189,7 @@ Public Module Extensions
             GetSubString = Mid(Text, pos(0), pos(1) - pos(0))
             StartPosition = pos(1)
         Else
-            GetSubString = DfltStrErrorMinusOne
+            GetSubString = "-1"
         End If
 
     End Function
@@ -315,7 +309,7 @@ Public Module Extensions
     ' TODO: Auflösen
     Public Function MsgBox(Meldung As String, Style As MsgBoxStyle, Aufruf As String) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then
-            Meldung = String.Format("Die Funktion {0} meldet folgenden Fehler: {1}{2}", Aufruf, Dflt2NeueZeile, Meldung)
+            Meldung = String.Format("Die Funktion {0} meldet folgenden Fehler: {1}{2}", Aufruf, vbCrLf & vbCrLf, Meldung)
             NLogger.Warn(Meldung)
         End If
         Return Microsoft.VisualBasic.MsgBox(Meldung, Style, My.Resources.strDefLongName)

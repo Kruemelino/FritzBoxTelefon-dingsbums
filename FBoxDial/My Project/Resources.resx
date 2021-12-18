@@ -139,6 +139,27 @@
   <data name="strDefShortName" xml:space="preserve">
     <value>FritzOutlookV5</value>
   </data>
+  <data name="strDfltDeCryptKey" xml:space="preserve">
+    <value>ZugangV5</value>
+  </data>
+  <data name="strDfltNameListCALL" xml:space="preserve">
+    <value>CallList</value>
+  </data>
+  <data name="strDfltNameListRING" xml:space="preserve">
+    <value>RingList</value>
+  </data>
+  <data name="strDfltNameListVIP" xml:space="preserve">
+    <value>VIPList</value>
+  </data>
+  <data name="strDfltOptions" xml:space="preserve">
+    <value>Optionen</value>
+  </data>
+  <data name="strDfltPhonerDeCryptKey" xml:space="preserve">
+    <value>ZugangPhoner</value>
+  </data>
+  <data name="strDfltTellowsDeCryptKey" xml:space="preserve">
+    <value>ZugangTellows</value>
+  </data>
   <data name="ToLower" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\optionen\tolower.xslt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>

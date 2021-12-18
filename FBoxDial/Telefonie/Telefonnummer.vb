@@ -61,7 +61,7 @@ Public Class Telefonnummer
     End Property
     <XmlIgnore> ReadOnly Property IstMobilnummer As Boolean
         Get
-            If Not Ortskennzahl = DfltStringEmpty Then
+            If Not Ortskennzahl = String.Empty Then
                 Select Case Landeskennzahl
                     Case "49"
                         Return Ortskennzahl.IsRegExMatch("^(15|16|17)")
@@ -81,7 +81,7 @@ Public Class Telefonnummer
     ''' </summary>
     <XmlIgnore> ReadOnly Property IstInland As Boolean
         Get
-            Return Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Or Landeskennzahl.IsNotStringNothingOrEmpty
+            Return Landeskennzahl.IsEqual(XMLData.PTelefonie.LKZ) Or Landeskennzahl.IsNotStringNothingOrEmpty
         End Get
     End Property
 
@@ -90,7 +90,7 @@ Public Class Telefonnummer
     ''' </summary>
     <XmlIgnore> ReadOnly Property IstOrtsnetz As Boolean
         Get
-            Return IstInland AndAlso Ortskennzahl.AreEqual(XMLData.PTelefonie.OKZ)
+            Return IstInland AndAlso Ortskennzahl.IsEqual(XMLData.PTelefonie.OKZ)
         End Get
     End Property
 
@@ -127,7 +127,7 @@ Public Class Telefonnummer
             NurZiffern = NurZiffern.RegExRemove("[^0-9]")
 
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich ggf. vorhandener nachfolgender 0)
-            If Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Then
+            If Landeskennzahl.IsEqual(XMLData.PTelefonie.LKZ) Then
                 NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{Landeskennzahl}{{1}}[0]?", "0")
             End If
 
@@ -186,7 +186,7 @@ Public Class Telefonnummer
                 ' Einwahl: Druchwahl am Ende entfernen
                 Einwahl = Einwahl.RegExRemove($"{Durchwahl}$")
             Else
-                Durchwahl = DfltStringEmpty
+                Durchwahl = String.Empty
             End If
 
         End If
@@ -203,9 +203,9 @@ Public Class Telefonnummer
         If Gruppieren Then
             Dim imax As Integer
             imax = Math.Round(Len(TelNrTeil) / 2 + 0.1).ToInt
-            Gruppiere = DfltStringEmpty
+            Gruppiere = String.Empty
             For i = 1 To imax
-                Gruppiere = String.Concat(Right(TelNrTeil, 2), DfltStringLeerzeichen, Gruppiere)
+                Gruppiere = String.Concat(Right(TelNrTeil, 2), Chr(32), Gruppiere)
                 If Not Len(TelNrTeil) = 1 Then TelNrTeil = Left(TelNrTeil, Len(TelNrTeil) - 2)
             Next
         End If
@@ -222,7 +222,7 @@ Public Class Telefonnummer
         Dim tmpGruppieren As Boolean = XMLData.POptionen.CBTelNrGruppieren
 
         If Unterdrückt Then ' Rückgabe Leerstring, falls die Nummer unterdrückt ist.
-            Return DfltStringEmpty
+            Return String.Empty
 
         ElseIf IstGültig Then ' Führe eine Rufnummernformatierung durch, wenn die Nummer gültig ist.
             FormatTelNr = XMLData.POptionen.TBTelNrMaske
@@ -241,7 +241,7 @@ Public Class Telefonnummer
                 Ortskennzahl = XMLData.PTelefonie.OKZ
             End If
 
-            If Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Then
+            If Landeskennzahl.IsEqual(XMLData.PTelefonie.LKZ) Then
                 tmpOrtsvorwahl = Ortskennzahl
                 ' Wenn die Landeskennzahl gleich der hinterlegten Kennzahl entspricht: Inland
                 If XMLData.POptionen.CBintl Then
@@ -253,7 +253,7 @@ Public Class Telefonnummer
                     tmpLandesvorwahl = Landeskennzahl
                 Else
                     ' Keine Landesvorwahl ausgeben
-                    tmpLandesvorwahl = DfltStringEmpty
+                    tmpLandesvorwahl = String.Empty
                     ' Ortsvorwahl mit führender Null ausgeben
                     tmpOrtsvorwahl = $"0{tmpOrtsvorwahl}"
                 End If
@@ -294,7 +294,7 @@ Public Class Telefonnummer
                 ' Wenn keine Ortskennzahl vorhanden ist, dann muss diese bei der Formatierung nicht berücksichtigt werden.
                 ' Die Ortskennzahl ist dann in der Einwahl enthalten.
                 ' Keine Ortskennzahl: Alles zwischen %L und %N entfernen
-                FormatTelNr = FormatTelNr.RegExReplace("[^%L]*%O[^%N]*", If(FormatTelNr.Contains("%L "), DfltStringLeerzeichen, DfltStringEmpty))
+                FormatTelNr = FormatTelNr.RegExReplace("[^%L]*%O[^%N]*", If(FormatTelNr.Contains("%L "), Chr(32), String.Empty))
             End If
 
             ' Füge das + bei Landvoran
@@ -312,7 +312,7 @@ Public Class Telefonnummer
 
 #Region "IEquatable"
     Public Overloads Function Equals(other As Telefonnummer) As Boolean Implements IEquatable(Of Telefonnummer).Equals
-        Return other IsNot Nothing AndAlso Unformatiert.AreEqual(other.Unformatiert)
+        Return other IsNot Nothing AndAlso Unformatiert.IsEqual(other.Unformatiert)
     End Function
     Public Overloads Function Equals(other As String) As Boolean
 
@@ -324,11 +324,11 @@ Public Class Telefonnummer
 
         ' Führe einen schnellen Vergleich durch, ob die unformatierte Nummer oder die Einwahl identisch sind.
         Select Case True
-            Case Unformatiert.AreEqual(AndereNummer)
+            Case Unformatiert.IsEqual(AndereNummer)
                 NLogger.Trace($"Telefonnummernvergleich Unformatiert true: '{AndereNummer}'; {Unformatiert}")
                 Return True
 
-            Case Einwahl.AreEqual(AndereNummer)
+            Case Einwahl.IsEqual(AndereNummer)
                 NLogger.Trace($"Telefonnummernvergleich Einwahl true: '{AndereNummer}'; {Einwahl}")
                 Return True
 

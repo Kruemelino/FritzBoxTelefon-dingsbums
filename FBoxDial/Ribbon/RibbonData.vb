@@ -265,13 +265,13 @@ Namespace RibbonData
             NLogger.Info($"Liste {KeyDelete} gelöscht.")
 
             Select Case KeyDelete
-                Case DfltNameListCALL
+                Case My.Resources.strDfltNameListCALL
                     XMLData.PTelListen.CALLListe.Clear()
 
-                Case DfltNameListRING
+                Case My.Resources.strDfltNameListRING
                     XMLData.PTelListen.RINGListe.Clear()
 
-                Case DfltNameListVIP
+                Case My.Resources.strDfltNameListVIP
                     XMLData.PTelListen.VIPListe.Clear()
 
             End Select
@@ -288,17 +288,17 @@ Namespace RibbonData
 
             ' Ermittle die zugehörige Liste
             Select Case ID(0)
-                Case DfltNameListCALL
+                Case My.Resources.strDfltNameListCALL
                     Dim Liste As List(Of Telefonat) = XMLData.PTelListen.CALLListe
 
                     WählClient.WählboxStart(Liste(ID(1).ToInt))
 
-                Case DfltNameListRING
+                Case My.Resources.strDfltNameListRING
                     Dim Liste As List(Of Telefonat) = XMLData.PTelListen.RINGListe
 
                     WählClient.WählboxStart(Liste(ID(1).ToInt))
 
-                Case DfltNameListVIP
+                Case My.Resources.strDfltNameListVIP
                     Dim Liste As List(Of VIPEntry) = XMLData.PTelListen.VIPListe
 
                     WählClient.WählboxStart(Liste(ID(1).ToInt))
@@ -379,13 +379,13 @@ Namespace RibbonData
 
             If XMLData IsNot Nothing Then
                 Select Case ID(0)
-                    Case DfltNameListCALL
+                    Case My.Resources.strDfltNameListCALL
                         Return XMLData.PTelListen.CALLListe IsNot Nothing AndAlso XMLData.PTelListen.CALLListe.Any
 
-                    Case DfltNameListRING
+                    Case My.Resources.strDfltNameListRING
                         Return XMLData.PTelListen.RINGListe IsNot Nothing AndAlso XMLData.PTelListen.RINGListe.Any
 
-                    Case DfltNameListVIP
+                    Case My.Resources.strDfltNameListVIP
                         Return XMLData.PTelListen.VIPListe IsNot Nothing AndAlso XMLData.PTelListen.VIPListe.Any
 
                     Case Else
@@ -717,14 +717,14 @@ Namespace RibbonData
                 .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, $"DynListDel_{ListName}"))
                 .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
 
-                If ListName.AreEqual(DfltNameListCALL) Or ListName.AreEqual(DfltNameListRING) Then
-                    ListevonTelefonaten = If(ListName.AreEqual(DfltNameListCALL), XMLData.PTelListen.CALLListe, XMLData.PTelListen.RINGListe)
+                If ListName.IsEqual(My.Resources.strDfltNameListCALL) Or ListName.IsEqual(My.Resources.strDfltNameListRING) Then
+                    ListevonTelefonaten = If(ListName.IsEqual(My.Resources.strDfltNameListCALL), XMLData.PTelListen.CALLListe, XMLData.PTelListen.RINGListe)
 
                     For Each TelFt As Telefonat In ListevonTelefonaten.Where(Function(Tf) Not Tf.NrUnterdrückt)
                         .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, TelFt, ListevonTelefonaten.IndexOf(TelFt), ListName))
                     Next
 
-                ElseIf ListName.AreEqual(DfltNameListVIP) Then
+                ElseIf ListName.IsEqual(My.Resources.strDfltNameListVIP) Then
 
                     For Each VIP As VIPEntry In XMLData.PTelListen.VIPListe
                         .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, VIP, XMLData.PTelListen.VIPListe.IndexOf(VIP), ListName))
@@ -793,11 +793,11 @@ Namespace RibbonData
                 XButton.Attributes.Append(XAttribute)
 
                 XAttribute = xDoc.CreateAttribute("supertip")
-                XAttribute.Value = $"{Localize.resCommon.strTime}: { .ZeitBeginn}{Dflt1NeueZeile}"
+                XAttribute.Value = $"{Localize.resCommon.strTime}: { .ZeitBeginn}{vbCrLf}"
                 XAttribute.Value += $"{Localize.resCommon.strTelNr}: { .GegenstelleTelNr.Formatiert}"
 
-                If .GegenstelleTelNr.AreaCode.IsNotStringNothingOrEmpty Then XAttribute.Value += $"{Dflt1NeueZeile}{Localize.resCommon.strArea}: {Localize.Länder.ResourceManager.GetString(.GegenstelleTelNr.AreaCode)}"
-                If .GegenstelleTelNr.Location.IsNotStringNothingOrEmpty Then XAttribute.Value += $"{Dflt1NeueZeile}{Localize.resCommon.strLocation}: { .GegenstelleTelNr.Location}"
+                If .GegenstelleTelNr.AreaCode.IsNotStringNothingOrEmpty Then XAttribute.Value += $"{vbCrLf}{Localize.resCommon.strArea}: {Localize.Länder.ResourceManager.GetString(.GegenstelleTelNr.AreaCode)}"
+                If .GegenstelleTelNr.Location.IsNotStringNothingOrEmpty Then XAttribute.Value += $"{vbCrLf}{Localize.resCommon.strLocation}: { .GegenstelleTelNr.Location}"
 
                 XButton.Attributes.Append(XAttribute)
 
@@ -828,7 +828,7 @@ Namespace RibbonData
 
                 .OlContact = GetOutlookKontakt(.EntryID, .StoreID)
                 If .OlContact IsNot Nothing Then
-                    XAttribute.Value = $"{ .OlContact.FullName}{If(.OlContact.CompanyName.IsNotStringNothingOrEmpty, String.Format(" ({0})", .OlContact.CompanyName), DfltStringEmpty)}".XMLMaskiereZeichen
+                    XAttribute.Value = $"{ .OlContact.FullName}{If(.OlContact.CompanyName.IsNotStringNothingOrEmpty, String.Format(" ({0})", .OlContact.CompanyName), String.Empty)}".XMLMaskiereZeichen
                 End If
 
                 XButton.Attributes.Append(XAttribute)

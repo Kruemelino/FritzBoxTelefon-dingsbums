@@ -19,7 +19,7 @@ Public Class FritzBoxWählClient
     ''' <returns></returns>
     Friend Function TR064Dial(DialCode As String, Telefon As Telefoniegerät, Auflegen As Boolean) As Boolean
 
-        Dim PhoneName As String = DfltStringEmpty
+        Dim PhoneName As String = String.Empty
 
         Using FBoxTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
             ' Ereignishandler hinzufügen
@@ -50,7 +50,7 @@ Public Class FritzBoxWählClient
                         End If
 
                         ' Prüfe, ob das korrekte Telefon ausgewählt wurde.
-                        If PhoneName.AreNotEqual(.TR064Dialport) Then
+                        If PhoneName.IsNotEqual(.TR064Dialport) Then
 
                             ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
                             NLogger.Debug($"Der Phoneport wird von '{PhoneName}' auf '{ .TR064Dialport}' geändert.")
@@ -60,7 +60,7 @@ Public Class FritzBoxWählClient
 
                                 ' Prüfe, ob das Telefon tatsächlich umgestellt wurde
                                 If FBoxTR064.X_voip.DialGetConfig(PhoneName) Then
-                                    If PhoneName.AreEqual(.TR064Dialport) Then
+                                    If PhoneName.IsEqual(.TR064Dialport) Then
                                         ' Der Phoneport wurde erfolgreich umgestellt
                                         NLogger.Debug($"Der Phoneport wurde erfolgreich auf '{PhoneName}' geändert.")
                                     Else
@@ -106,13 +106,13 @@ Public Class FritzBoxWählClient
     '''' Startet den Wählvorgang
     '''' </summary>
     Friend Async Function DialTelNr(TelNr As Telefonnummer, Telefon As Telefoniegerät, CLIR As Boolean, Abbruch As Boolean) As Task(Of Boolean)
-        Dim DialCode As String = DfltStringEmpty
+        Dim DialCode As String = String.Empty
         Dim Erfolreich As Boolean = False
 
         If Abbruch Then
             NLogger.Debug("Anruf wird abgebrochen...")
 
-            DialCode = DfltStringEmpty
+            DialCode = String.Empty
 
         Else
 
@@ -126,7 +126,7 @@ Public Class FritzBoxWählClient
             End If
 
             ' Rufnummerunterdrückung
-            DialCode = $"{If(CLIR, "*31#", DfltStringEmpty)}{XMLData.POptionen.TBPräfix}{DialCode}#"
+            DialCode = $"{If(CLIR, "*31#", String.Empty)}{XMLData.POptionen.TBPräfix}{DialCode}#"
 
             NLogger.Debug($"Dialcode: {DialCode}")
 
@@ -362,17 +362,17 @@ Public Class FritzBoxWählClient
                 Dim TelNr As Telefonnummer
 
                 ' Telefonnummer aus dem Body ermitteln
-                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, Dflt1NeueZeile)}
+                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, vbCrLf)}
 
                 ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
                 aktKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object()))
 
                 If aktKontakt Is Nothing Then
                     ' vCard aus dem .Body herausfiltern
-                    vCard = $"{DfltBegin_vCard}{ .Body.GetSubString(DfltBegin_vCard, DfltEnd_vCard)}{DfltEnd_vCard}"
+                    vCard = $"BEGIN:VCARD{ .Body.GetSubString("BEGIN:VCARD", "END:VCARD")}END:VCARD"
 
                     'Wenn keine vCard im Body gefunden
-                    If vCard.AreNotEqual($"{DfltBegin_vCard}{DfltStrErrorMinusOne}{DfltEnd_vCard}") Then
+                    If vCard.IsNotEqual($"BEGIN:VCARD-1END:VCARD") Then
                         'vCard gefunden
                         aktKontakt = ErstelleKontakt(vCard, TelNr, False)
                     End If
@@ -399,6 +399,17 @@ Public Class FritzBoxWählClient
             If .OlKontakt Is Nothing AndAlso (.OutlookKontaktID.IsNotStringNothingOrEmpty And .OutlookStoreID.IsNotStringNothingOrEmpty) Then
                 ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
                 .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
+            End If
+
+            If .OlKontakt Is Nothing Then
+                If .OutlookKontaktID.IsNotStringNothingOrEmpty And .OutlookStoreID.IsNotStringNothingOrEmpty Then
+                    ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
+                    .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
+                ElseIf .VCard.IsNotStringNothingOrEmpty Then
+                    ' Erstelle einen temporären Kontsakt aus einer vCard
+                    .OlKontakt = ErstelleKontakt(.VCard, .GegenstelleTelNr, False)
+                End If
+
             End If
 
             If .OlKontakt IsNot Nothing Then

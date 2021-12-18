@@ -81,7 +81,7 @@ Public Class FBoxDataService
         Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
         ' Ermittle die SessionID. Sollte das schief gehen, kommt es zu einer Fehlermeldung im Log.
         FBoxTR064.Deviceconfig.GetSessionID(SessionID)
-        Return If(SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{CallItem.Path}&{SessionID}", DfltStringEmpty)
+        Return If(SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{CallItem.Path}&{SessionID}", String.Empty)
     End Function
 #End Region
 
@@ -99,7 +99,7 @@ Public Class FBoxDataService
 
     Public Function GetMessagges(TAM As FBoxAPI.TAMItem) As IEnumerable(Of FBoxAPI.Message) Implements IFBoxDataService.GetMessagges
 
-        Dim MessageListURL As String = DfltStringEmpty
+        Dim MessageListURL As String = String.Empty
         ' Wenn der TAM angezeigt wird, dann ermittle die URL via TR064 zur MessageList
         If TAM.Display AndAlso FBoxTR064.X_tam.GetMessageList(MessageListURL, TAM.Index) Then
             Dim MessageList As New FBoxAPI.MessageList
@@ -171,7 +171,7 @@ Public Class FBoxDataService
         Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
         ' Ermittle die SessionID. Sollte das schief gehen, kommt es zu einer Fehlermeldung im Log.
         FBoxTR064.Deviceconfig.GetSessionID(SessionID)
-        Return If(SessionID.AreNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Message.Path}&{SessionID}", DfltStringEmpty)
+        Return If(SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Message.Path}&{SessionID}", String.Empty)
     End Function
 
 #End Region

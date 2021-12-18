@@ -16,8 +16,13 @@ End Class
 End Class
 
 Friend Class Vorwahlen
-    Public Property Kennzahlen As Kennzahlen
+    Friend Property Kennzahlen As Kennzahlen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+
+    Public Sub New()
+        LadeVorwahlen()
+    End Sub
+
     Private ReadOnly Property GetDefaultLKZ() As Landeskennzahl
         Get
             Return GetDefaultLKZ(XMLData.PTelefonie.LKZ)
@@ -27,7 +32,7 @@ Friend Class Vorwahlen
         Get
             If LKZString.IsStringNothingOrEmpty Then
                 NLogger.Warn("Übergebener String ist Null oder Nothing.")
-                Return New Landeskennzahl With {.Landeskennzahl = DfltStringEmpty, .Ortsnetzkennzahlen = New List(Of Ortsnetzkennzahlen)}
+                Return New Landeskennzahl With {.Landeskennzahl = String.Empty, .Ortsnetzkennzahlen = New List(Of Ortsnetzkennzahlen)}
             Else
                 ' TODO: Absturz, wenn Telefonat eingeht, und Vorwahlen noch nicht geladen.
                 Return Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = LKZString)
@@ -41,9 +46,9 @@ Friend Class Vorwahlen
         End Get
     End Property
 
-    Friend Async Function LadeVorwahlen() As Threading.Tasks.Task(Of Kennzahlen)
-        Return Await DeserializeAsyncXML(Of Kennzahlen)(My.Resources.Vorwahlen, False)
-    End Function
+    Friend Async Sub LadeVorwahlen()
+        Kennzahlen = Await DeserializeAsyncXML(Of Kennzahlen)(My.Resources.Vorwahlen, False)
+    End Sub
 
     Friend Sub TelNrKennzahlen(TelNr As Telefonnummer, ByRef _LKZ As Landeskennzahl, ByRef _ONKZ As Ortsnetzkennzahlen)
         Dim LKZListe As List(Of Landeskennzahl)

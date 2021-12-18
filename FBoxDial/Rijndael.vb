@@ -16,7 +16,7 @@ Friend Class Rijndael
     ''' <returns>Die verschlüsselte Zeichenfolge</returns>
     Friend Function EncryptString(ToBeEncrypted As SecureString, vstrDeCryptKey As String) As String
         ' Standardwert
-        EncryptString = DfltStrErrorMinusOne
+        EncryptString = "-1"
 
         ' Test ob gültige Eingangsdaten vorhanden
         If ToBeEncrypted IsNot Nothing Then
@@ -27,7 +27,7 @@ Friend Class Rijndael
             Dim EncryptionKey() As Byte = GetRndByteArray(32)
 
             ' Speichere den Salt und Key in der Registry ab
-            SaveSetting(My.Resources.strDefShortName, DfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
+            SaveSetting(My.Resources.strDefShortName, My.Resources.strDfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
 
             ' Create the encryptor and write value to it after it is converted into a byte array
             Using rijAlg As New RijndaelManaged()
@@ -63,11 +63,11 @@ Friend Class Rijndael
     ''' <returns>Die entschlüsselte Zeichenfolge als <see cref="SecureString"/></returns>
     Friend Function DecryptString(vstrStringToBeDecrypted As String, vstrDeCryptKey As String) As SecureString
         ' Lese den Key aus der Registry aus
-        Dim DecryptionSaltKey As String = GetSetting(My.Resources.strDefShortName, DfltOptions, vstrDeCryptKey, DfltStrErrorMinusOne)
+        Dim DecryptionSaltKey As String = GetSetting(My.Resources.strDefShortName, My.Resources.strDfltOptions, vstrDeCryptKey, "-1")
         Dim buffer() As Byte = Nothing
 
         ' Test ob gültige Eingangsdaten vorhanden
-        If vstrStringToBeDecrypted.IsNotErrorString And vstrStringToBeDecrypted.IsNotStringNothingOrEmpty And DecryptionSaltKey.IsNotErrorString Then
+        If vstrStringToBeDecrypted.IsNotEqual("-1") And vstrStringToBeDecrypted.IsNotStringNothingOrEmpty And DecryptionSaltKey.IsNotEqual("-1") Then
             ' Extrahiere aus dem DecryptionSaltKey den Salt und den Key
             Dim SaltKey As Byte()() = DecryptionSaltKey.FromBase64String.SplitByte(16)
 
@@ -189,7 +189,7 @@ Friend Class Rijndael
                 If Buffer IsNot Nothing Then Array.Clear(Buffer, 0, Buffer.Length)
             End Try
         Else
-            Return DfltStringEmpty
+            Return String.Empty
         End If
 
     End Function

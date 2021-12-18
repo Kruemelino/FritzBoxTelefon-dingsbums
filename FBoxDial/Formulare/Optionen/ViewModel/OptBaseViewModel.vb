@@ -43,7 +43,7 @@
             ' Lade die aktuellen Nutzernamen herunter
             .CBoxBenutzer = DatenService.LadeFBoxUser(ValidIP(.TBFBAdr))
             ' Prüfe, ob es einen Benutzer mit dem alten namen gibt
-            If .CBoxBenutzer.Where(Function(User) User.UserName.AreEqual(OldUser)).Any Then
+            If .CBoxBenutzer.Where(Function(User) User.UserName.IsEqual(OldUser)).Any Then
                 ' Setze den alten User als den neuen
                 .TBBenutzer = OldUser
             End If

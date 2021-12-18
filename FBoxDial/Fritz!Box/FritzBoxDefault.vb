@@ -16,7 +16,7 @@
             If XMLData.POptionen.TBBenutzer.IsStringNothingOrEmpty Then XMLData.POptionen.TBBenutzer = GetDefaultUserName
 
             Using Crypter As New Rijndael
-                Return New Net.NetworkCredential(XMLData.POptionen.TBBenutzer, Crypter.DecryptString(XMLData.POptionen.TBPasswort, DfltDeCryptKey))
+                Return New Net.NetworkCredential(XMLData.POptionen.TBBenutzer, Crypter.DecryptString(XMLData.POptionen.TBPasswort, My.Resources.strDfltDeCryptKey))
             End Using
         End Get
     End Property
@@ -30,7 +30,7 @@
                 With FBTR064
                     If .Major.IsLargerOrEqual(7) And .Minor.IsLargerOrEqual(24) Then
                         ' ermittle den zuletzt angemeldeten User
-                        Dim XMLString As String = DfltStringEmpty
+                        Dim XMLString As String = String.Empty
                         Dim FritzBoxUsers As New FBoxAPI.UserList
 
                         If .LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
@@ -38,7 +38,7 @@
                             Return FritzBoxUsers.GetLastUsedUser.UserName
                         Else
                             NLogger.Warn($"Benutzername zum Login konnte nucht ermittelt werden: '{ .DisplayVersion}'")
-                            Return DfltStringEmpty
+                            Return String.Empty
                         End If
                     Else
                         ' Default Username der älteren Versionen vor 7.24
@@ -49,7 +49,7 @@
             End Using
             'Else
             '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            '    Return DfltStringEmpty
+            '    Return String.Empty
             'End If
         End Get
     End Property

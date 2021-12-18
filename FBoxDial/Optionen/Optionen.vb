@@ -48,7 +48,7 @@
     ''' <summary>
     ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
     ''' </summary>
-    <XmlElement("TBPräfix")> Public Property TBPräfix As String = DfltStringEmpty
+    <XmlElement("TBPräfix")> Public Property TBPräfix As String = String.Empty
 
     <XmlElement("CBCheckMobil")> Public Property CBCheckMobil As Boolean = True
 
@@ -147,7 +147,7 @@
 #End Region
 
 #Region "Einstellungen für die Kontaktsuche - tellows"
-    <XmlElement("TBTellowsAPIKey")> Public Property TBTellowsAPIKey As String = DfltStringEmpty
+    <XmlElement("TBTellowsAPIKey")> Public Property TBTellowsAPIKey As String = String.Empty
     <XmlElement("CBTellows")> Public Property CBTellows As Boolean = False
     <XmlElement("CBTellowsAnrMonMinScore")> Public Property CBTellowsAnrMonMinScore As Integer = 7
     <XmlElement("CBTellowsAnrMonMinComments")> Public Property CBTellowsAnrMonMinComments As Integer = 3
@@ -190,13 +190,13 @@
 
 #Region "SoftPhones"
 #Region "Phoner"
-    <XmlElement("TBPhonerPasswort")> Public Property TBPhonerPasswort As String = DfltStringEmpty
+    <XmlElement("TBPhonerPasswort")> Public Property TBPhonerPasswort As String = String.Empty
     <XmlElement("CBPhoner")> Public Property CBPhoner As Boolean = False
 
 #End Region
 
 #Region "MicroSIP"
-    <XmlElement("TBMicroSIPPath")> Public Property TBMicroSIPPath As String = DfltStringEmpty
+    <XmlElement("TBMicroSIPPath")> Public Property TBMicroSIPPath As String = String.Empty
     <XmlElement("CBMicroSIP")> Public Property CBMicroSIP As Boolean = False
 #End Region
 #End Region

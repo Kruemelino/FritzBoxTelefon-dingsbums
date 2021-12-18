@@ -58,7 +58,7 @@ Public Class Telefoniegerät
                 Case TelTypen.ISDN
                     Return $"{TelTypen.ISDN}: {Name}"
                 Case Else
-                    Return DfltStringEmpty
+                    Return String.Empty
             End Select
         End Get
     End Property

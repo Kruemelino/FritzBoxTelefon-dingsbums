@@ -2,6 +2,8 @@
 
 Friend Module KontaktIndizierer
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private ReadOnly Property DASLTagTelNrIndex As Object() = GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) $"{DfltDASLSchema}FBDB-{P.Name}").ToArray
+
 #Region "Kontaktindizierung"
 
     ''' <summary>
@@ -53,7 +55,7 @@ Friend Module KontaktIndizierer
                         End Using
                     End If
                 Else
-                    colArgs(i) = DfltStringEmpty
+                    colArgs(i) = String.Empty
                 End If
             Next
 
@@ -78,48 +80,14 @@ Friend Module KontaktIndizierer
     ''' Entfernt alle Indizierungseinträge aus einem Kontaktelement.
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der deindiziert werden soll.</param>
-    ''' <remarks>Funktion wird in Teilen nicht benötigt, da mit aktuellen Programmversionen keine benutzerdefinierten Kontaktfelder erstellt werden.
-    ''' Die Funktion dient zum bereinigen von Kontakten, die mit älteren Programmversionen indiziert wurden.</remarks>
     Friend Sub DeIndiziereKontakt(olKontakt As ContactItem)
-        ' Ab hier Code zum bereinigen, der alten Indizierungsspuren
-        Dim UserEigenschaft As UserProperty
+
         With olKontakt
-            With .UserProperties
-                For Each UserProperty As String In DfltUserProperties
-
-                    Try
-                        UserEigenschaft = .Find(UserProperty)
-                    Catch
-                        UserEigenschaft = Nothing
-                    End Try
-
-                    If UserEigenschaft IsNot Nothing Then UserEigenschaft.Delete()
-                    UserEigenschaft = Nothing
-                Next
-            End With
-            ' Ab hier neu
             ' Lösche alle Indizierungsfelder
-
             .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
 
             If .Speichern Then NLogger.Debug($"Kontakt { .FullNameAndCompany} gespeichert")
         End With
-    End Sub
-
-    ''' <summary>
-    ''' Entfernt alle Indizierungseinträge aus den Ordnern aus einem Kontaktelement.
-    ''' </summary>
-    ''' <param name="Ordner">Der Ordner der deindiziert werden soll.</param>
-    ''' <remarks>Funktion wird eigentlich nicht benötigt, da mit aktuellen Programmversionen keine benutzerdefinierten Kontaktfelder in Ordnern erstellt werden.
-    ''' Die Funktion dient zum bereinigen von Ordner, die mit älteren Programmversionen indiziert wurden.</remarks>
-    Friend Sub DeIndizierungOrdner(Ordner As MAPIFolder)
-        Try
-            With Ordner.UserDefinedProperties
-                For i = 1 To .Count
-                    If DfltUserProperties.Contains(.Item(1).Name) Then .Remove(1)
-                Next
-            End With
-        Catch : End Try
     End Sub
 
 #End Region

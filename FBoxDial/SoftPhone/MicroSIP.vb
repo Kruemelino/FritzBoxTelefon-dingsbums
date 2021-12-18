@@ -56,7 +56,7 @@
             NLogger.Debug(String.Format(Localize.LocWählclient.strMicroSIPgestartetPfad, MicroSIPPath))
 
         Else
-            Return DfltStringEmpty
+            Return String.Empty
         End If
     End Function
 

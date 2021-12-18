@@ -7,7 +7,7 @@ Friend Module FritzBoxAnrufliste
         Dim Anrufliste As New FBoxAPI.CallList With {.Calls = New List(Of FBoxAPI.Call)}
         ' Prüfe, ob Fritz!Box verfügbar
         'If Ping(XMLData.POptionen.ValidFBAdr) Then
-        Dim Pfad As String = DfltStringEmpty
+        Dim Pfad As String = String.Empty
 
         ' Ermittle Pfad zur Anrufliste
         If FBoxTR064.Bereit AndAlso FBoxTR064.X_contact.GetCallList(Pfad) Then

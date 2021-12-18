@@ -30,7 +30,7 @@ Public Class OutlookOrdnerListe
     End Function
 
     Friend Function Find(StoreID As String, FolderID As String, Verwendung As OutlookOrdnerVerwendung) As OutlookOrdner
-        Return OrdnerListe.Find(Function(fldr) fldr.FolderID.AreEqual(FolderID) And fldr.StoreID.AreEqual(StoreID) And fldr.Typ = Verwendung)
+        Return OrdnerListe.Find(Function(fldr) fldr.FolderID.IsEqual(FolderID) And fldr.StoreID.IsEqual(StoreID) And fldr.Typ = Verwendung)
     End Function
 
     Friend Function FindAll(Verwendung As OutlookOrdnerVerwendung) As List(Of OutlookOrdner)

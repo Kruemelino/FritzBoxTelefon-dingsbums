@@ -17,7 +17,7 @@ Friend Class OptionenService
         Using FBoxTr064 As New FBoxAPI.FritzBoxTR64(IPAdresse, XMLData.POptionen.TBNetworkTimeout, Nothing)
             AddHandler FBoxTr064.Status, AddressOf SetFBoxAPIStatus
 
-            Dim XMLString As String = DfltStringEmpty
+            Dim XMLString As String = String.Empty
             Dim FritzBoxUsers As New FBoxAPI.UserList
 
             If FBoxTr064.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
@@ -124,11 +124,6 @@ Friend Class OptionenService
             VerarbeiteteKontakte += 1
         Next
 
-        If Not IndexModus Then
-            ' Entfernt alle Indizierungseinträge aus den Ordnern des Kontaktelementes.
-            DeIndizierungOrdner(olOrdner)
-        End If
-
         NLogger.Info($"{If(IndexModus, "Indizierung", "Deindizierung")} des Ordners {olOrdner.Name} ist abgeschlossen ({VerarbeiteteKontakte} Kontakte verarbeitet).")
 
         ReleaseComObject(olOrdner)
@@ -225,7 +220,7 @@ Friend Class OptionenService
         Using fboxTR064 As New FBoxAPI.FritzBoxTR64(IPAdresse, XMLData.POptionen.TBNetworkTimeout, New Net.NetworkCredential(User, Password))
             AddHandler fboxTR064.Status, AddressOf SetFBoxAPIStatus
 
-            Dim SessionID As String = DfltStringEmpty
+            Dim SessionID As String = String.Empty
 
             RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(fboxTR064.Deviceconfig.GetSessionID(SessionID)))
 

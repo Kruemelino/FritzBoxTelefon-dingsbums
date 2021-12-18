@@ -31,7 +31,7 @@ Imports FBoxDial.RibbonData
             Case "Microsoft.Mso.IMLayerUI"
                 Return My.Resources.RibbonIMLayerUI
             Case Else
-                Return DfltStringEmpty
+                Return String.Empty
         End Select
     End Function
 
