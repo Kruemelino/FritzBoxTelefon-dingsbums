@@ -294,10 +294,10 @@ Friend Module KontaktSucher
         ' Standard Outlook Namens Felder 
         If Exakt Then
             ' Exakte Suche 
-            GetType(OutlookContactNameFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} = '{FilterWert}'"))
+            Filter.AddRange(GetType(OutlookContactNameFields).GetProperties.Select(Function(P) $"{P.GetValue(Nothing)} = '{FilterWert}'"))
         Else
             ' Zeichenfolge kann enthalten sein
-            GetType(OutlookContactNameFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} LIKE '%{FilterWert}%'"))
+            Filter.AddRange(GetType(OutlookContactNameFields).GetProperties.Select(Function(P) $"{P.GetValue(Nothing)} LIKE '%{FilterWert}%'"))
         End If
 
         ' Führe die Suche aus
@@ -316,18 +316,19 @@ Friend Module KontaktSucher
         If Exakt Then
             ' Exakte Suche 
             ' Standard Outlook Nummern Felder (wird nicht benötigt, da die indizierten Felder durchsucht werden sollen)
-            ' GetType(OutlookContactNumberFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} = '{FilterWert}'"))
+            ' Filter.AddRange(GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) $"{P.GetValue(Nothing)} = '{FilterWert}'"))
 
             ' Indizierte Telefonnummernfelder hinzufügen
-            DASLTagTelNrIndex.ToList.ForEach(Sub(Tag) Filter.Add($"""{Tag}/0x0000001f"" = '{FilterWert}'"))
+            Filter.AddRange(GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) $"""{DfltDASLSchema}FBDB-{P.Name}/0x0000001f"" = '{FilterWert}'"))
+
         Else
             ' Zeichenfolge kann enthalten sein
 
             ' Standard Outlook Nummern Felder 
-            GetType(OutlookContactNumberFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} LIKE '%{FilterWert}%'"))
+            Filter.AddRange(GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) $"{P.GetValue(Nothing)} LIKE '%{FilterWert}%'"))
 
             ' Indizierte Telefonnummernfelder hinzufügen
-            DASLTagTelNrIndex.ToList.ForEach(Sub(Tag) Filter.Add($"""{Tag}/0x0000001f"" LIKE '%{FilterWert}%'"))
+            Filter.AddRange(GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) $"""{DfltDASLSchema}FBDB-{P.Name}/0x0000001f"" LIKE '%{FilterWert}%'"))
         End If
 
         ' Führe die Suche aus
@@ -347,10 +348,10 @@ Friend Module KontaktSucher
 
         If Exakt Then
             ' Exakte Suche 
-            GetType(OutlookContactEMailFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} = '{FilterWert}'"))
+            Filter.AddRange(GetType(OutlookContactEMailFields).GetProperties.Select(Function(P) $"{P.GetValue(Nothing)} = '{FilterWert}'"))
         Else
             ' Zeichenfolge kann enthalten sein
-            GetType(OutlookContactEMailFields).GetProperties.ToList.ForEach(Sub(Tag) Filter.Add($"{Tag.GetValue(Nothing)} LIKE '%{FilterWert}%'"))
+            Filter.AddRange(GetType(OutlookContactEMailFields).GetProperties.Select(Function(P) $"{P.GetValue(Nothing)} LIKE '%{FilterWert}%'"))
         End If
 
         ' Führe die Suche aus
