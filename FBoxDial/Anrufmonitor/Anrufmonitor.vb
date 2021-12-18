@@ -26,10 +26,6 @@ Friend Class Anrufmonitor
     Private Const AnrMon_Port As Integer = 1012
 #End Region
 
-#Region "Timer"
-    Private Property TimerAnrMonStart As Timer
-    Private Property RestartTimerIterations As Integer
-#End Region
     Private WithEvents AnrMonTCPClient As AnrMonClient
 
     Public Sub New()
@@ -92,85 +88,13 @@ Friend Class Anrufmonitor
 
     ''' <summary>
     ''' Baut die Verbindung zum Callmonitor der Fritz!Box auf.
-    ''' Hierzu wird ein Timer verwendet, welcher nach 2 Sekunden den Verbindungsaufbau erneut versucht, falls etwas schief gegangen ist.
-    ''' Die Versuche werden maximal 15 mal durchgeführt.
     ''' </summary>
     Friend Sub Start()
         ' Falls der Anrufmonitor aktiv sein sollte, dann halte ihn sicherheitshalber an.
         If Aktiv Then Stopp()
 
-        If TimerAnrMonStart IsNot Nothing Then
-            NLogger.Debug("Timer für das Starten des Anrufmonitors wird neu gestartet.")
+        BeginnStartAnrMon()
 
-            ' Ereignishandler entfernen
-            RemoveHandler TimerAnrMonStart.Elapsed, AddressOf TimerAnrMonStart_Elapsed
-
-            ' Timer stoppen und auflösen
-            With TimerAnrMonStart
-                .Stop()
-                .AutoReset = False
-                .Enabled = False
-                .Dispose()
-            End With
-        End If
-
-        ' Initiiere einen neuen Timer
-        NLogger.Debug("Timer für Starten des Anrufmonitors wird gestartet.")
-
-        ' Setze die Zählvariable auf 0
-        RestartTimerIterations = 0
-
-        ' Initiiere den Timer mit Intervall von 2 Sekunden
-        TimerAnrMonStart = New Timer
-        With TimerAnrMonStart
-            .Interval = DfltReStartIntervall
-            .AutoReset = True
-            .Enabled = True
-            ' Starte den Timer
-            .Start()
-        End With
-
-        ' Ereignishandler hinzufügen
-        AddHandler TimerAnrMonStart.Elapsed, AddressOf TimerAnrMonStart_Elapsed
-    End Sub
-
-    Private Sub TimerAnrMonStart_Elapsed(sender As Object, e As ElapsedEventArgs)
-        ' Prüfe, ob die maximale Anzahl an Durchläufen (15) noch nicht erreicht wurde
-        If RestartTimerIterations.IsLess(DfltTryMaxRestart) Then
-            ' Wenn der Anrufmonitor aktiv ist, dann hat das Wiederverbinden geklappt.
-            If Aktiv Then
-                ' Halte den TImer an und löse ihn auf
-                With TimerAnrMonStart
-                    .Stop()
-                    .Dispose()
-                End With
-                ' Statusmeldung
-                NLogger.Info($"Anrufmonitor konnte nach {RestartTimerIterations} Versuchen erfolgreich gestartet werden.")
-            Else
-                ' Erhöhe den Wert der durchgeführten Iterationen
-                RestartTimerIterations += 1
-                ' Statusmeldung
-                NLogger.Debug($"Timer: Starte {RestartTimerIterations}. Versuch den Anrufmonitor zu starten.")
-                ' Starte den nächsten Versuch den Anrufmonitor zu verbinden
-                BeginnStartAnrMon()
-            End If
-        Else
-            ' Es konnte keine Verbindung zur Fritz!Box aufgebaut werden.
-            NLogger.Warn($"Anrufmonitor konnte nach {RestartTimerIterations} Versuchen nicht gestartet werden.")
-
-            ' Ereignishandler entfernen
-            RemoveHandler TimerAnrMonStart.Elapsed, AddressOf TimerAnrMonStart_Elapsed
-
-            ' Timer stoppen und auflösen
-            With TimerAnrMonStart
-                .Stop()
-                .AutoReset = False
-                .Enabled = False
-                .Dispose()
-            End With
-        End If
-        ' Ribbon aktualisieren
-        ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
 #Region "Anrufmonitor Events"
@@ -180,7 +104,7 @@ Friend Class Anrufmonitor
 
         ' Schleife durch alle eingegangenen Meldungen des Fritz!Box Anrufmonitors. Es kann sein, dass mehrere Meldungen gleichzeitig kommen.
         ' Leere Zeilen werden übergangen.
-        For Each AnrMonStatus In e.Value.Split(Dflt1NeueZeile).Where(Function(S) S.IsNotStringNothingOrEmpty)
+        For Each AnrMonStatus In e.Value.Split(vbCrLf).Where(Function(S) S.IsNotStringNothingOrEmpty)
             ' Hier die Daten des Fritz!Box Anrufmonitors weitergeben
             NLogger.Info($"AnrMonAktion: {AnrMonStatus}")
 
