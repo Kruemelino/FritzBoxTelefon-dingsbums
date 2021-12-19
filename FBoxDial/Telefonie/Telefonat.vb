@@ -323,25 +323,16 @@ Imports Microsoft.Office.Interop
 
     <XmlIgnore> Private Property PopupStoppUhrWPF As StoppUhrWPF
 
-    Private _TellowsErgebnis As TellowsResponse
-    <XmlElement> Public Property TellowsErgebnis() As TellowsResponse
+    Private _TellowsResult As ITellowsResult
+    <XmlIgnore> Public Property TellowsResult As ITellowsResult
         Get
-            Return _TellowsErgebnis
+            Return _TellowsResult
         End Get
         Set
-            SetProperty(_TellowsErgebnis, Value)
+            SetProperty(_TellowsResult, Value)
         End Set
     End Property
 
-    Private _ScoreListEntry As TellowsScoreListEntry
-    <XmlElement> Public Property ScoreListEntry() As TellowsScoreListEntry
-        Get
-            Return _ScoreListEntry
-        End Get
-        Set
-            SetProperty(_ScoreListEntry, Value)
-        End Set
-    End Property
 #End Region
 
     ''' <summary>
@@ -575,30 +566,30 @@ Imports Microsoft.Office.Interop
                         Using tellows = New Tellows()
 
                             ' Führe eine Suche via LiveAPI durch
-                            TellowsErgebnis = Await tellows.GetTellowsLiveAPIData(GegenstelleTelNr)
-                            If TellowsErgebnis IsNot Nothing Then
+                            TellowsResult = Await tellows.GetTellowsLiveAPIData(GegenstelleTelNr)
+                            If TellowsResult IsNot Nothing Then
 
-                                If TellowsErgebnis.Score.AreEqual(5) And TellowsErgebnis.Comments.IsLess(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
+                                If TellowsResult.Score.AreEqual(5) And TellowsResult.Comments.IsLess(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
                                     ' Verwirf das Ergebnis. Es gibt keinen Eintrag bei tellows
-                                    TellowsErgebnis = Nothing
+                                    TellowsResult = Nothing
                                     NLogger.Debug($"Kein Eintrag bei tellows für Telefonnummer '{GegenstelleTelNr.TellowsNummer}' gefunden.")
                                 Else
                                     ' Verarbeite das Tellows Ergebnis
-                                    With TellowsErgebnis
-
-                                        AnruferName = String.Join(", ", .CallerNames)
-                                        Firma = String.Join(", ", .CallerTypes.Select(Function(CT) $"{CT.Name} ({CT.Count})"))
+                                    With TellowsResult
 
                                         NLogger.Debug($"Eintrag bei tellows für Telefonnummer '{GegenstelleTelNr.TellowsNummer}' mit Score { .Score} gefunden.")
 
-                                        If XMLData.POptionen.CBTellowsAutoFBBlockList AndAlso .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAutoScoreFBBlockList) Then
-                                            ' Sperrlisteintrag erzeugen
-                                            AddToCallBarring(New List(Of String) From { .Number}, AnruferName)
-
+                                        ' Ergebnisse werden nur eingeblendet, wenn die Nutzereingaben passen
+                                        If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Comments.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
+                                            AnruferName = .CallerName
+                                            Firma = .CallerType
                                         End If
 
+                                        If XMLData.POptionen.CBTellowsAutoFBBlockList AndAlso .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAutoScoreFBBlockList) Then
+                                            ' Sperrlisteintrag erzeugen
+                                            AddToCallBarring(New List(Of String) From { .Number}, .CallerName)
+                                        End If
                                     End With
-
                                     AnruferErmittelt = True
                                 End If
 
@@ -607,12 +598,14 @@ Imports Microsoft.Office.Interop
                     Else
                         ' Auswertung bei importieren Anrufen via CallListAPI
                         If ThisAddIn.TellowsScoreList IsNot Nothing Then
-                            ScoreListEntry = ThisAddIn.TellowsScoreList.Find(Function(Eintrag) GegenstelleTelNr.Equals(Eintrag.Number))
-                            If ScoreListEntry IsNot Nothing Then
-                                With ScoreListEntry
+                            TellowsResult = ThisAddIn.TellowsScoreList.Find(Function(Eintrag) GegenstelleTelNr.Equals(Eintrag.Number))
+                            If TellowsResult IsNot Nothing Then
+                                With TellowsResult
                                     NLogger.Debug($"Eintrag in der tellows-ScoreList für Telefonnummer '{GegenstelleTelNr.TellowsNummer}' mit Score { .Score} gefunden.")
 
                                     AnruferName = .CallerName
+                                    Firma = .CallerType
+
                                     If XMLData.POptionen.CBTellowsAutoFBBlockList AndAlso .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAutoScoreFBBlockList) Then
                                         ' Sperrlisteintrag erzeugen
                                         AddToCallBarring(New List(Of String) From { .Number}, AnruferName)
@@ -857,10 +850,8 @@ Imports Microsoft.Office.Interop
 
 #Region "Anrufmonitor"
     Private Sub AnrMonRING()
-        NLogger.Debug($"Start Abfrage Blockierung: {Now}")
         ' prüfe, ob die anrufende Nummer auf der Rufsperre der Fritz!Box steht
-        Blockiert = IsFBoxBlocked(GegenstelleTelNr.Unformatiert)
-        NLogger.Debug($"Ende Abfrage Blockierung: {Now}")
+        Blockiert = IsFBoxBlocked(GegenstelleTelNr)
 
         If IstRelevant Then
             ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde

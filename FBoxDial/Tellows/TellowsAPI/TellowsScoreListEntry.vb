@@ -1,10 +1,11 @@
 ﻿Imports Newtonsoft.Json
 Public Class TellowsScoreListEntry
+    Implements ITellowsResult
 
     ''' <summary>
     ''' Phone Number
     ''' </summary>
-    <JsonProperty("number")> Public Property Number As String
+    <JsonProperty("number")> Public Property Number As String Implements ITellowsResult.Number
 
     ''' <summary>
     '''tellows Score for Number:
@@ -14,12 +15,12 @@ Public Class TellowsScoreListEntry
     '''<item>score &gt; 5: negative</item>
     '''</list>
     ''' </summary>
-    <JsonProperty("score")> Public Property Score As Integer
+    <JsonProperty("score")> Public Property Score As Integer Implements ITellowsResult.Score
 
     ''' <summary>
     ''' Count Comments for phone number
     ''' </summary>
-    <JsonProperty("complains")> Public Property Complains As Integer
+    <JsonProperty("complains")> Public Property Complains As Integer Implements ITellowsResult.Comments
 
     ''' <summary>
     ''' Country Code for Phone Number
@@ -34,18 +35,18 @@ Public Class TellowsScoreListEntry
     ''' <summary>
     ''' Count Searchrequests for Phonenumber
     ''' </summary>
-    <JsonProperty("searches")> Public Property Searches As Integer
+    <JsonProperty("searches")> Public Property Searches As Integer Implements ITellowsResult.Searches
 
     ''' <summary>
     ''' Most Tagged Callertype
     ''' </summary>
-    <JsonProperty("callertype")> Public Property CallerType As String
+    <JsonProperty("callertype")> Public Property CallerType As String Implements ITellowsResult.CallerType
 
     ''' <summary>
     ''' Most possible Name of Caller (identified by user comments)
     ''' </summary>
     ''' <remarks>Optional</remarks>
-    <JsonProperty("callername")> Public Property CallerName As String
+    <JsonProperty("callername")> Public Property CallerName As String Implements ITellowsResult.CallerName
 
     ''' <summary>
     ''' Name of Prefix for Phonenumber
@@ -70,5 +71,76 @@ Public Class TellowsScoreListEntry
     ''' </summary>
     ''' <remarks>Optional</remarks>
     <JsonProperty("callertypeid")> Public Property CallerTypeID As Integer
+
+    ''' <summary>
+    ''' <list type="table">
+    ''' <listheader>
+    ''' <term>Score</term>
+    ''' <description>Color</description>
+    ''' </listheader>
+    ''' <item>
+    ''' <term>1</term>
+    ''' <description>#00fc00</description>
+    ''' </item>
+    '''  <item>
+    ''' <term>2</term>
+    ''' <description>#30f90a</description>
+    ''' </item>
+    ''' <item>
+    ''' <term>3</term>
+    ''' <description>#68ff0b</description>
+    ''' </item>
+    ''' <item>
+    ''' <term>4</term>
+    ''' <description>#8dfc08</description>
+    ''' </item>
+    ''' <item>
+    ''' <term>5</term>
+    ''' <description>#d6ff18</description>
+    ''' </item>
+    ''' <item>
+    ''' <term>6</term>
+    ''' <description>#f4d11f</description>
+    ''' </item>
+    ''' <item>
+    ''' <term>7</term>
+    ''' <description>#f79a01</description>
+    ''' </item>
+    ''' <item>
+    ''' <term>8</term>
+    ''' <description>#fb6703</description>
+    ''' </item>
+    ''' <item>
+    ''' <term>9</term>
+    ''' <description>#ff3505</description>
+    ''' </item>
+    ''' </list>
+    ''' </summary>
+    <JsonIgnore> Public ReadOnly Property ScoreColor As String Implements ITellowsResult.ScoreColor
+        Get
+            Select Case Score
+                Case 1
+                    Return "#00fc00"
+                Case 2
+                    Return "#30f90a"
+                Case 3
+                    Return "#68ff0b"
+                Case 4
+                    Return "#8dfc08"
+                Case 5
+                    Return "#d6ff18"
+                Case 6
+                    Return "#f4d11f"
+                Case 7
+                    Return "#f79a01"
+                Case 8
+                    Return "#fb6703"
+                Case 9
+                    Return "#ff3505"
+                Case Else
+                    Return "-1"
+            End Select
+        End Get
+    End Property
 
 End Class
