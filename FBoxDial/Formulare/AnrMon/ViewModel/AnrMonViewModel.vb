@@ -12,6 +12,7 @@ Public Class AnrMonViewModel
     Private Property DatenService As IAnrMonService
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend Property Instance As Dispatcher Implements IViewModelBase.Instance
+
 #Region "Eigenschaften"
 
     Private _AnrMonTelefonat As Telefonat
@@ -168,9 +169,14 @@ Public Class AnrMonViewModel
         ' Interface
         DatenService = New AnrMonService
         DialogService = New DialogService
+
+        If XMLData.POptionen.CBSetAnrMonBColor Then
+            BackgroundColor = XMLData.POptionen.TBAnrMonBColorHex
+            ForeColor = XMLData.POptionen.TBAnrMonFColorHex
+        End If
     End Sub
 
-    Private Sub LadeDaten()
+    Private Async Sub LadeDaten()
         NLogger.Trace("LadeDaten")
         ' Setze Anzuzeigende Werte
         With AnrMonTelefonat
@@ -190,13 +196,10 @@ Public Class AnrMonViewModel
             ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)
             AnrMonExInfo = .AnrMonExInfo
 
-            If XMLData.POptionen.CBSetAnrMonBColor Then
-                BackgroundColor = XMLData.POptionen.TBAnrMonBColorHex
-                ForeColor = XMLData.POptionen.TBAnrMonFColorHex
-            End If
-
             ' Setze das Kontaktbild
-            Instance.Invoke(Sub() LadeBild())
+            If Kontaktbild Is Nothing Then
+                Kontaktbild = Await Instance.Invoke(Function() DatenService.LadeBild(AnrMonTelefonat))
+            End If
 
         End With
         ' Forcing the CommandManager to raise the RequerySuggested event
@@ -204,55 +207,18 @@ Public Class AnrMonViewModel
 
     End Sub
 
-    Private Async Sub LadeBild()
-        With AnrMonTelefonat
-            ' Lade das Kontaktbild, wenn a) Option gesetzt ist oder b) ein TellowsErgebnis vorliegt und das Bild noch nicht geladen wurde
-            If (XMLData.POptionen.CBAnrMonContactImage Or .TellowsErgebnis IsNot Nothing) AndAlso Kontaktbild Is Nothing Then
+    Private Async Sub UpdateData()
+        ' Lade das Kontaktbild, wenn a) Option gesetzt ist oder b) ein TellowsErgebnis vorliegt und das Bild noch nicht geladen wurde
+        If Kontaktbild Is Nothing Then Kontaktbild = Await DatenService.LadeBild(AnrMonTelefonat)
 
-                ' Setze das Kontaktbild, falls ein Outlookkontakt verfügbar ist.
-                If .OlKontakt IsNot Nothing Then
-                    NLogger.Trace($"Lade Kontaktbild für { .OlKontakt.FullName}")
-                    Kontaktbild = .OlKontakt.KontaktBildEx
+        If AnrMonTelefonat.TellowsResult IsNot Nothing AndAlso XMLData.POptionen.CBTellowsAnrMonColor Then
+            With AnrMonTelefonat.TellowsResult
+                If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Comments.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
+                    ' Einfärben des Hintergrundes
+                    BackgroundColor = .ScoreColor
                 End If
-
-                ' Setze das Kontaktbild, falls ein Eintrag aus einem Fritz!Box Telefonbuch verfügbar ist.
-                If .FBTelBookKontakt IsNot Nothing Then
-                    ' Lade das Kontaktbild von der Fritz!Box herunter und weise es zu 
-                    Kontaktbild = Await .FBTelBookKontakt.KontaktBild
-                End If
-
-                ' Falls ein Kontaktbild aus Outlook oder den FB-Telefonbüchern schon gesetzt ist, dann irgnoriere Tellows
-                If Kontaktbild Is Nothing Then
-                    ' Setze das Kontaktbild, falls ein Eintrag aus tellows verfügbar ist.
-                    If .TellowsErgebnis IsNot Nothing Then
-                        With .TellowsErgebnis
-                            ' Wenn der Mindestscore erreicht wurde und die Mindestanzahl an Kommentaren, dann Zeige die Informationen an
-                            If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Comments.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
-                                ' tellows Score Icon 
-                                Kontaktbild = New Imaging.BitmapImage(New Uri($"pack://application:,,,/{My.Resources.strDefLongName};component/Tellows/Resources/score{ .Score}.png", UriKind.Absolute))
-                                ' Einfärben des Hintergrundes
-                                If XMLData.POptionen.CBTellowsAnrMonColor Then BackgroundColor = .ScoreColor
-                            End If
-                        End With
-                    End If
-
-                    ' Setze das Kontaktbild, falls ein Eintrag aus tellows ScoreList verfügbar ist.
-                    If .ScoreListEntry IsNot Nothing Then
-                        With .ScoreListEntry
-                            ' Wenn der Mindestscore erreicht wurde und die Mindestanzahl an Kommentaren, dann Zeige die Informationen an
-                            If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Complains.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
-                                ' tellows Score Icon 
-                                Kontaktbild = New Imaging.BitmapImage(New Uri($"pack://application:,,,/{My.Resources.strDefLongName};component/Tellows/Resources/score{ .Score}.png", UriKind.Absolute))
-                                ' Einfärben des Hintergrundes
-                                'If XMLData.POptionen.CBTellowsAnrMonColor Then BackgroundColor = .ScoreColor
-                            End If
-                        End With
-                    End If
-                End If
-
-            End If
-        End With
-
+            End With
+        End If
     End Sub
 
 #Region "Event Callback"
@@ -264,8 +230,8 @@ Public Class AnrMonViewModel
                     AnrMonAnrufer = .AnruferName
                 Case NameOf(Telefonat.Firma), NameOf(Telefonat.AnrMonExInfo)
                     AnrMonExInfo = .AnrMonExInfo
-                Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsErgebnis)
-                    Instance.Invoke(Sub() LadeBild())
+                Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsResult)
+                    Instance.Invoke(Sub() UpdateData())
                 Case Else
                     ' Nix tun
             End Select
