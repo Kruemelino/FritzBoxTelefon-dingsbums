@@ -206,7 +206,7 @@ Imports Microsoft.Office.Interop
     ''' </summary>
     <XmlIgnore> Friend ReadOnly Property IstRelevant As Boolean
         Get
-            Return EigeneTelNr.Überwacht AndAlso (Not Blockiert OrElse XMLData.POptionen.CBJournalBlockNr)
+            Return EigeneTelNr.Überwacht AndAlso (Not Blockiert OrElse (XMLData.POptionen.CBJournalBlockNr Or XMLData.POptionen.CBAnrMonBlockNr))
         End Get
     End Property
 
@@ -851,7 +851,7 @@ Imports Microsoft.Office.Interop
 #Region "Anrufmonitor"
     Private Sub AnrMonRING()
         ' prüfe, ob die anrufende Nummer auf der Rufsperre der Fritz!Box steht
-        Blockiert = IsFBoxBlocked(GegenstelleTelNr)
+        If EigeneTelNr.Überwacht Then Blockiert = IsFBoxBlocked(GegenstelleTelNr)
 
         If IstRelevant Then
             ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
