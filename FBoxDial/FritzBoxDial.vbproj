@@ -241,8 +241,8 @@
   <ItemGroup>
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
-    <Compile Include="Common\EnumDescriptionTypeConverter.vb" />
-    <Compile Include="Common\LocalizedDescriptionAttribute.vb" />
+    <Compile Include="Formulare\Common\Services\EnumDescriptionTypeConverter.vb" />
+    <Compile Include="Formulare\Common\Services\LocalizedDescriptionAttribute.vb" />
     <Compile Include="Formulare\AnrMon\Resources\LocAnrMon.Designer.vb">
       <DependentUpon>LocAnrMon.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -256,7 +256,7 @@
     <Compile Include="Formulare\Common\Services\IViewModelBase.vb" />
     <Compile Include="Formulare\Common\Services\WindowHelper.vb" />
     <Compile Include="Formulare\Common\Services\WindowBehavior.vb" />
-    <Compile Include="Common\EnumBindingSourceExtension.vb" />
+    <Compile Include="Formulare\Common\Services\EnumBindingSourceExtension.vb" />
     <Compile Include="Formulare\Common\Services\NotifyBase.vb" />
     <Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\Common\Services\RelayCommand.vb" />
@@ -537,6 +537,7 @@
     <Compile Include="Telefonie\VIPEntry.vb" />
     <Compile Include="Telefonie\Vorwahlen.vb" />
     <Compile Include="Tellows\Tellows.vb" />
+    <Compile Include="Tellows\TellowsAPI\ITellowsResult.vb" />
     <Compile Include="Tellows\TellowsAPI\TellowsNumberDetails.vb" />
     <Compile Include="Tellows\TellowsAPI\TellowsComment.vb" />
     <Compile Include="Tellows\TellowsAPI\TellowsPartnerinfo.vb" />

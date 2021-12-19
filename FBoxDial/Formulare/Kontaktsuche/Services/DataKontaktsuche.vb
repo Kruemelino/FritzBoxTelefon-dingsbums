@@ -34,7 +34,4 @@ Public Class DataKontaktsuche
         FBoxDial.WählboxStart(olContact)
     End Sub
 
-    Public Function KontaktSuche2(Text As String) As List(Of ContactItem) Implements IDataKontaktsuche.KontaktSuche2
-        Throw New NotImplementedException()
-    End Function
 End Class
