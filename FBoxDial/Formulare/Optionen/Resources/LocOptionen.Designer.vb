@@ -1557,11 +1557,30 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann die Funktionalität des Anrufmonitors und aller nachgelagerter Funktionen (z. B. Kontaktsuche, Journal) getestet werden. 
+        '''Hier werden die selben Funktionen verwendet: Im Journal und der Wahlwiederholungsliste werden diese simulierten Telefonate ebenfalls gelistet. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestAnrMonInfo() As String
+            Get
+                Return ResourceManager.GetString("strTestAnrMonInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Test des Anrufmonitors ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestAnrufmonitorHead() As String
             Get
                 Return ResourceManager.GetString("strTestAnrufmonitorHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Alle hier vorhandenen Funktionen dienen zur Fehlersuche und zum Test auf korrekte Funktionalität. Es kann zu Abstürzen kommen: Daher Nutzung auf eigene Gefahr. Sollte hier etwas nicht so funktionieren wie erhofft, dann gebt mir bitte Bescheid.  ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestInfo() As String
+            Get
+                Return ResourceManager.GetString("strTestInfo", resourceCulture)
             End Get
         End Property
         
@@ -1649,6 +1668,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Rufnummer unterdrückt (CLIR) ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestNrUnterdrückt() As String
+            Get
+                Return ResourceManager.GetString("strTestNrUnterdrückt", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Ortsnetzkennzahl ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestONKZ() As String
@@ -1663,6 +1691,51 @@ Namespace Localize
         Public Shared ReadOnly Property strTestONKZName() As String
             Get
                 Return ResourceManager.GetString("strTestONKZName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zufällig ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestRnd() As String
+            Get
+                Return ResourceManager.GetString("strTestRnd", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefonbücher ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestRndFBox() As String
+            Get
+                Return ResourceManager.GetString("strTestRndFBox", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zufallskontakt ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestRndHead() As String
+            Get
+                Return ResourceManager.GetString("strTestRndHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Outlook Kontakte ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestRndOutlook() As String
+            Get
+                Return ResourceManager.GetString("strTestRndOutlook", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Tellows ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestRndTellows() As String
+            Get
+                Return ResourceManager.GetString("strTestRndTellows", resourceCulture)
             End Get
         End Property
         

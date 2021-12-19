@@ -795,8 +795,17 @@ Warnung: Wenn viele Einträge auf die Fritz!Box geladen werden, kann diese träg
     <value>Anruf verbunden (CONNECT)</value>
     <comment>OptTestView</comment>
   </data>
+  <data name="strTestAnrMonInfo" xml:space="preserve">
+    <value>Hier kann die Funktionalität des Anrufmonitors und aller nachgelagerter Funktionen (z. B. Kontaktsuche, Journal) getestet werden. 
+Hier werden die selben Funktionen verwendet: Im Journal und der Wahlwiederholungsliste werden diese simulierten Telefonate ebenfalls gelistet.</value>
+    <comment>OptTestView</comment>
+  </data>
   <data name="strTestAnrufmonitorHead" xml:space="preserve">
     <value>Test des Anrufmonitors</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestInfo" xml:space="preserve">
+    <value>Alle hier vorhandenen Funktionen dienen zur Fehlersuche und zum Test auf korrekte Funktionalität. Es kann zu Abstürzen kommen: Daher Nutzung auf eigene Gefahr. Sollte hier etwas nicht so funktionieren wie erhofft, dann gebt mir bitte Bescheid. </value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestKontaktsucheHead" xml:space="preserve">
@@ -837,12 +846,36 @@ Seit FRITZ!OS 7.24 ist eine Anmeldung auf der Fritz!Box nur noch mit Benutzernam
     <value>Lade eingerichtete Benutzer der Fritz!Box</value>
     <comment>OptTestView</comment>
   </data>
+  <data name="strTestNrUnterdrückt" xml:space="preserve">
+    <value>Rufnummer unterdrückt (CLIR)</value>
+    <comment>OptTestView</comment>
+  </data>
   <data name="strTestONKZ" xml:space="preserve">
     <value>Ortsnetzkennzahl</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestONKZName" xml:space="preserve">
     <value>Name des Ortsnetzes</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestRnd" xml:space="preserve">
+    <value>Zufällig</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestRndFBox" xml:space="preserve">
+    <value>Fritz!Box Telefonbücher</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestRndHead" xml:space="preserve">
+    <value>Zufallskontakt</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestRndOutlook" xml:space="preserve">
+    <value>Outlook Kontakte</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestRndTellows" xml:space="preserve">
+    <value>Tellows</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestRWSHead" xml:space="preserve">

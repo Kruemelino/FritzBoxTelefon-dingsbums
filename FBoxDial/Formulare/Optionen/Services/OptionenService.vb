@@ -2,6 +2,7 @@
 Imports System.Threading
 Imports System.Threading.Tasks
 Imports System.Windows.Threading
+Imports Microsoft.Office.Interop
 Imports Microsoft.Office.Interop.Outlook
 
 Friend Class OptionenService
@@ -258,28 +259,100 @@ Friend Class OptionenService
 #End Region
 
 #Region "Test Anrufmonitor"
-    Public Sub StartAnrMonTest(TelNr As String, CONNECT As Boolean) Implements IOptionenService.StartAnrMonTest
-        Dim rnd As New Random()
-
-        Dim D As Landeskennzahl = ThisAddIn.PVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(LKZ) LKZ.Landeskennzahl = "49")
-        Dim i As Integer = rnd.Next(0, D.Ortsnetzkennzahlen.Count)
-        Dim N As Integer = rnd.Next(9999, 9999999)
+    Public Async Sub StartAnrMonTest(TelNr As String, CONNECT As Boolean, rnd As Boolean, rndOutlook As Boolean, rndFBox As Boolean, rndTellows As Boolean, clir As Boolean) Implements IOptionenService.StartAnrMonTest
+        Dim RndGen As New Random()
 
         If TelNr.IsStringNothingOrEmpty Then
-            TelNr = $"0{D.Ortsnetzkennzahlen.Item(i).Ortsnetzkennzahl}{N}"
+
+            If rnd Then
+                ' Generiere eine zufällige Telefonnummer aus Deutschland
+                Dim LKZ As Landeskennzahl = ThisAddIn.PVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(L) L.Landeskennzahl = "49")
+                Dim OKZ As Integer = RndGen.Next(0, LKZ.Ortsnetzkennzahlen.Count)
+                Dim Nr As Integer = RndGen.Next(9999, 9999999)
+
+                TelNr = $"0{LKZ.Ortsnetzkennzahlen.Item(OKZ).Ortsnetzkennzahl}{Nr}"
+            End If
+
+            ' Telefonnummer aus Outlookkontakten
+            If rndOutlook Then
+                ' Ermittle einen Kontakt aus den durchsuchten Ordnern
+                ' Ermittle Ordner
+                Dim OrdnerListe As List(Of OutlookOrdner) = XMLData.POptionen.OutlookOrdner.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
+
+                ' Füge den Standardkontaktordner hinzu, falls keine anderen Ordner definiert wurden.
+                If Not OrdnerListe.Any Then
+                    OrdnerListe.Add(New OutlookOrdner(GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche))
+                End If
+
+                ' Erstelle eine Liste aller Kontakte, welche durchsucht werden sollen
+                Dim OLC As New List(Of ContactItem)
+                OrdnerListe.ForEach(Sub(F) OLC.AddRange(F.MAPIFolder.Items.Cast(Of ContactItem)))
+
+                ' Ermittle einen zufälligen Kontakt
+                Dim C As ContactItem = OLC.Item(RndGen.Next(0, OLC.Count))
+
+                ' Ermittle eine zufällige Telefonnummer des Kontaktes
+                Dim NL = C.GetKontaktTelNrList
+                TelNr = NL.Item(RndGen.Next(0, NL.Count)).Unformatiert
+
+                OLC.ForEach(Sub(Co) ReleaseComObject(Co))
+            End If
+
+            ' Telefonnummer aus Fritz!Box Telefonbüchern
+            If rndFBox Then
+                If ThisAddIn.PhoneBookXML Is Nothing Then 'OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                    ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
+                    ' Dann lade die Telefonbücher herunter
+                    NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
+                    Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
+                        ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
+                    End Using
+                End If
+
+                Dim FBC As New List(Of FBoxAPI.Contact)
+                ThisAddIn.PhoneBookXML.ToList.ForEach(Sub(F) FBC.AddRange(F.Phonebook.Contacts.Where(Function(T) Not T.IstTelefon)))
+
+                ' Ermittle einen zufälligen Kontakt
+                Dim C As FBoxAPI.Contact = FBC.Item(RndGen.Next(0, FBC.Count))
+
+                Dim NL = C.GetKontaktTelNrList
+                TelNr = NL.Item(RndGen.Next(0, NL.Count)).Unformatiert
+            End If
+
+            ' Telefonnummer aus Tellows
+            If rndTellows Then
+                If ThisAddIn.TellowsScoreList Is Nothing Then
+                    Using tellows As New Tellows
+                        ThisAddIn.TellowsScoreList = Await tellows.LadeScoreList
+                    End Using
+                End If
+
+                If ThisAddIn.TellowsScoreList IsNot Nothing Then
+                    Using t As New Telefonnummer With {.SetNummer = ThisAddIn.TellowsScoreList.Item(RndGen.Next(0, ThisAddIn.TellowsScoreList.Count)).Number}
+                        TelNr = t.Unformatiert
+                    End Using
+                End If
+            End If
+
+            ' Unterdrückte Telefonnummer
+            If clir Then TelNr = ""
         Else
+            ' Ermittle die unformatierte Nummer der Nutzereingabe
             Using t As New Telefonnummer With {.SetNummer = TelNr}
                 TelNr = t.Unformatiert
             End Using
         End If
 
-        Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {"23.06.18 13:20:24", "RING", "1", TelNr, XMLData.PTelefonie.Telefonnummern(rnd.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl, "SIP4"}}
+        ' Starte ein eingehendes Telefonat
+        Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {Now.ToString("G"), "RING", "99", TelNr, XMLData.PTelefonie.Telefonnummern(RndGen.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl, "SIP4"}}
 
         ' 23.06.18 13:20:44;CONNECT;1;40;0123456789;
-        If CONNECT Then AktivesTelefonat.SetAnrMonCONNECT = {"23.06.18 13:20:52", "CONNECT", "1", $"{XMLData.PTelefonie.Telefoniegeräte(rnd.Next(0, XMLData.PTelefonie.Telefoniegeräte.Count)).AnrMonID}", TelNr}
+        If CONNECT Then AktivesTelefonat.SetAnrMonCONNECT = {Now.ToString("G"), "CONNECT", "99", $"{XMLData.PTelefonie.Telefoniegeräte(RndGen.Next(0, XMLData.PTelefonie.Telefoniegeräte.Count)).AnrMonID}", TelNr}
 
         ' 23.06.18 13:20:52;DISCONNECT;1;9;
-        AktivesTelefonat.SetAnrMonDISCONNECT = {"23.06.18 13:20:44", "DISCONNECT", "1", "9"}
+        AktivesTelefonat.SetAnrMonDISCONNECT = {Now.ToString("G"), "DISCONNECT", "99", "60"}
+
+        RndGen = Nothing
     End Sub
 #End Region
 End Class

@@ -19,6 +19,8 @@
     
     <StackPanel x:Name="MainStackPanel" Margin="8">
 
+        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestInfo}"/>
+        
         <Expander Style="{StaticResource OptExpander}" 
                   Header="{x:Static localize:LocOptionen.strTestTelNrHead}">
 
@@ -161,16 +163,60 @@
         <Expander Style="{StaticResource OptExpander}"
                   Header="{x:Static localize:LocOptionen.strTestAnrufmonitorHead}">
             <StackPanel>
-                <TextBox Style="{StaticResource OptTextBox}"
-                             Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
-                             Text="{Binding TBTestAnrMonInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestAnrMonInfo}"/>
 
                 <CheckBox Style="{StaticResource OptCheckBox}" 
                           Content="{x:Static localize:LocOptionen.strTestAnrMonCONNECT}" 
                           IsChecked="{Binding TBTestAnrMonCONNECT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+                <GroupBox Header="{x:Static localize:LocOptionen.strTestRndHead}">
+                    <StackPanel>
+                        <TextBox Style="{StaticResource OptTextBox}"
+                             Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
+                             Text="{Binding TBTestAnrMonInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestRnd}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBRnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestRndOutlook}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBRndOutlook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestRndFBox}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBRndFBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestRndTellows}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBRndTellows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestNrUnterdrückt}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBCLIR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </GroupBox>
+
+
+                
+                
+                
+                
+
+                
                 <Button Content="{x:Static localize:LocOptionen.strTestStartAnrMon}"
                         Command="{Binding TestAnrMonCommand}" Height="25"/>
+                
+
+
+
+
             </StackPanel>
         </Expander>
 

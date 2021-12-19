@@ -333,8 +333,58 @@
         End Set
     End Property
 
+    Private _RBBRnd As Boolean = True
+    Public Property RBBRnd As Boolean
+        Get
+            Return _RBBRnd
+        End Get
+        Set
+            SetProperty(_RBBRnd, Value)
+        End Set
+    End Property
+
+    Private _RBBRndOutlook As Boolean = False
+    Public Property RBBRndOutlook As Boolean
+        Get
+            Return _RBBRndOutlook
+        End Get
+        Set
+            SetProperty(_RBBRndOutlook, Value)
+        End Set
+    End Property
+
+    Private _RBBRndFBox As Boolean = False
+    Public Property RBBRndFBox As Boolean
+        Get
+            Return _RBBRndFBox
+        End Get
+        Set
+            SetProperty(_RBBRndFBox, Value)
+        End Set
+    End Property
+
+    Private _RBBRndTellows As Boolean = False
+    Public Property RBBRndTellows As Boolean
+        Get
+            Return _RBBRndTellows
+        End Get
+        Set
+            SetProperty(_RBBRndTellows, Value)
+        End Set
+    End Property
+
+    Private _RBBCLIR As Boolean = False
+    Public Property RBBCLIR As Boolean
+        Get
+            Return _RBBCLIR
+        End Get
+        Set
+            SetProperty(_RBBCLIR, Value)
+        End Set
+    End Property
+
     Private Sub StartAnrMonTest(obj As Object)
-        DatenService.StartAnrMonTest(TBTestAnrMonInput, TBTestAnrMonCONNECT)
+        DatenService.StartAnrMonTest(TBTestAnrMonInput, TBTestAnrMonCONNECT, RBBRnd, RBBRndOutlook, RBBRndFBox, RBBRndTellows, RBBCLIR)
     End Sub
 #End Region
 End Class
