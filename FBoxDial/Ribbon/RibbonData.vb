@@ -187,7 +187,7 @@ Namespace RibbonData
             If AddinFenster Is Nothing Then
                 ' Neuen Wählclient generieren
                 Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(Globals.ThisAddIn.OutookApplication.ActiveExplorer.Selection)
+                WählClient.WählboxStart(Globals.ThisAddIn.Application.ActiveExplorer.Selection)
                 ' Fenster zuweisen
                 AddinFenster = WählClient.WPFWindow
 

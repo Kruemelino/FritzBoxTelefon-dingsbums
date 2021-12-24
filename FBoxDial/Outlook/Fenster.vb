@@ -39,7 +39,7 @@ Friend Module Fenster
     ''' <param name="Activate">Gibt an, ob der Inspector aktiviert werden soll (true) oder ob er gespeichert werden soll (false)</param>
     Friend Sub KeepoInspActivated(Activate As Boolean)
 
-        If Globals.ThisAddIn.OutookApplication IsNot Nothing Then
+        If Globals.ThisAddIn.Application IsNot Nothing Then
             If Activate Then
                 If OInsp IsNot Nothing Then
                     If Not OInsp.WindowState = Outlook.OlWindowState.olMinimized Then
@@ -52,7 +52,7 @@ Friend Module Fenster
                 End If
             Else
                 If OInsp Is Nothing Then
-                    With Globals.ThisAddIn.OutookApplication
+                    With Globals.ThisAddIn.Application
                         If .ActiveWindow Is .ActiveInspector Then
                             If UnSaveMethods.GetWindowText(UnSaveMethods.GetForegroundWindow) = .ActiveInspector.Caption Then
                                 NLogger.Debug($"Aktiver Outlook Inspektor '{ .ActiveInspector.Caption}' detektiert.")

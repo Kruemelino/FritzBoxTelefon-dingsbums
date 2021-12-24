@@ -157,7 +157,7 @@ Public Class OutlookFolderViewModel
         ' Lade Outlook Folders
         Task.Run(Sub()
                      ' Lade die Outlook Folders
-                     _Stores.AddRange(From Store In Globals.ThisAddIn.OutookApplication.Session.Stores() Select New OlFolderViewModel(CType(Store, Store).GetRootFolder, OutlookItemType))
+                     _Stores.AddRange(From Store In Globals.ThisAddIn.Application.Session.Stores() Select New OlFolderViewModel(CType(Store, Store).GetRootFolder, OutlookItemType))
 
                      NLogger.Debug($"Outlook Ordner für TreeView ({Verwendung}) geladen.")
                  End Sub)

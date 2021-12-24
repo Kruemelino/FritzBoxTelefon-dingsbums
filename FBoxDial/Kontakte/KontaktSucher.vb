@@ -85,7 +85,7 @@ Friend Module KontaktSucher
     Private Async Function KontaktSucheFilter(sFilter As String, ct As CancellationToken) As Task(Of List(Of Outlook.ContactItem))
         Dim olKontaktListe As New List(Of Outlook.ContactItem)
 
-        If Globals.ThisAddIn.OutookApplication IsNot Nothing AndAlso sFilter.IsNotStringNothingOrEmpty Then
+        If Globals.ThisAddIn.Application IsNot Nothing AndAlso sFilter.IsNotStringNothingOrEmpty Then
 
             NLogger.Trace($"Kontaktsuche mit Filter gestartet: {sFilter}")
 
@@ -178,7 +178,7 @@ Friend Module KontaktSucher
 
         If SMTPAdresse.Addresse.IsNotStringNothingOrEmpty Then
             ' Empfänger generieren
-            Dim Empfänger As Outlook.Recipient = Globals.ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
+            Dim Empfänger As Outlook.Recipient = Globals.ThisAddIn.Application.Session.CreateRecipient(SMTPAdresse.Addresse)
 
             With Empfänger
                 .Resolve()
@@ -196,7 +196,7 @@ Friend Module KontaktSucher
 
         If SMTPAdresse.Addresse.IsNotStringNothingOrEmpty Then
             ' Empfänger generieren
-            Dim Empfänger As Outlook.Recipient = Globals.ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse.Addresse)
+            Dim Empfänger As Outlook.Recipient = Globals.ThisAddIn.Application.Session.CreateRecipient(SMTPAdresse.Addresse)
 
             With Empfänger
                 .Resolve()
@@ -225,7 +225,7 @@ Friend Module KontaktSucher
                     Return KontaktSuche(New EMailType With {.Addresse = Kontaktkarte.Address, .OutlookTyp = OutlookEMailType.SMTP})
 
                 Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeOutlook
-                    Dim Adresseintrag As Outlook.AddressEntry = Globals.ThisAddIn.OutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
+                    Dim Adresseintrag As Outlook.AddressEntry = Globals.ThisAddIn.Application.Session.GetAddressEntryFromID(Kontaktkarte.Address)
 
                     If Adresseintrag?.AddressEntryUserType = Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry Then
                         Return Adresseintrag.GetContact
@@ -260,7 +260,7 @@ Friend Module KontaktSucher
                     Return KontaktSucheExchangeUser(New EMailType With {.Addresse = Kontaktkarte.Address, .OutlookTyp = OutlookEMailType.EX})
 
                 Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeOutlook
-                    Dim Adresseintrag As Outlook.AddressEntry = Globals.ThisAddIn.OutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
+                    Dim Adresseintrag As Outlook.AddressEntry = Globals.ThisAddIn.Application.Session.GetAddressEntryFromID(Kontaktkarte.Address)
 
                     Select Case Adresseintrag?.AddressEntryUserType
                         Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry

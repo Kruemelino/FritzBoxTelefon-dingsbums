@@ -744,14 +744,14 @@ Imports Microsoft.Office.Interop
 
         If XMLData.POptionen.CBJournal Then
 
-            If Globals.ThisAddIn.OutookApplication IsNot Nothing Then
+            If Globals.ThisAddIn.Application IsNot Nothing Then
 
                 Dim olJournal As Outlook.JournalItem = Nothing
                 Dim olJournalFolder As OutlookOrdner
 
                 Try
                     ' Erstelle ein Journaleintrag im STandard-Ordner.
-                    olJournal = CType(Globals.ThisAddIn.OutookApplication.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
+                    olJournal = CType(Globals.ThisAddIn.Application.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
                 Catch ex As Exception
                     NLogger.Error(ex)
                 End Try
@@ -799,7 +799,7 @@ Imports Microsoft.Office.Interop
                         olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
 
                         If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing AndAlso
-                        Not olJournalFolder.Equals(Globals.ThisAddIn.OutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
+                        Not olJournalFolder.Equals(Globals.ThisAddIn.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
                             ' Verschiebe den Journaleintrag in den ausgewählten Ordner
                             ' Damit wird der Kontakt gleichzeitig im Zielordner gespeichert.
                             .Move(olJournalFolder.MAPIFolder)
@@ -810,7 +810,7 @@ Imports Microsoft.Office.Interop
                         Else
                             ' Speicher den Journaleintrag im Standard-Ordner
                             .Close(Outlook.OlInspectorClose.olSave)
-                            With Globals.ThisAddIn.OutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)
+                            With Globals.ThisAddIn.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)
                                 NLogger.Info($"Journaleintrag im Standardordner { .Name} (Store: { .Store.DisplayName}) erstellt: { olJournal.Start}, { olJournal.Subject}, { olJournal.Duration}")
                             End With
                         End If

@@ -5,7 +5,6 @@ Imports Microsoft.Office.Interop.Outlook
 Public NotInheritable Class ThisAddIn
 
     Friend Property POutlookRibbons() As OutlookRibbons
-    Friend Property OutookApplication As Application
     Friend Property PAnrufmonitor As Anrufmonitor
     Friend Property PhoneBookXML As IEnumerable(Of PhonebookEx)
     Friend Property PVorwahlen As Vorwahlen
@@ -31,9 +30,7 @@ Public NotInheritable Class ThisAddIn
         LogManager.Configuration = DefaultNLogConfig()
 
         ' Outlook.Application initialisieren
-        If OutookApplication Is Nothing Then OutookApplication = Application
-
-        If OutookApplication.ActiveExplorer IsNot Nothing Then
+        If Application.ActiveExplorer IsNot Nothing Then
             ' Ereignishandler für StandBy / Resume
             NLogger.Debug("Füge Ereignishandler für PowerModeChanged hinzu.")
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf PowerModeChanged
@@ -179,8 +176,7 @@ Public NotInheritable Class ThisAddIn
 
         BeendeAddinFunktionen()
 
-        ReleaseComObject(OutookApplication)
-        OutookApplication = Nothing
+        ReleaseComObject(Application)
     End Sub
 
 #Region "Standby Wakeup TimerStart"

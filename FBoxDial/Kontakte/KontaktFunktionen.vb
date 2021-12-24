@@ -21,7 +21,7 @@ Friend Module KontaktFunktionen
 
         If Not TelNr.Unterdrückt Then
 
-            olKontakt = CType(Globals.ThisAddIn.OutookApplication.CreateItem(OlItemType.olContactItem), ContactItem)
+            olKontakt = CType(Globals.ThisAddIn.Application.CreateItem(OlItemType.olContactItem), ContactItem)
 
             With olKontakt
 
@@ -88,7 +88,7 @@ Friend Module KontaktFunktionen
 
         If Not TelNr.Unterdrückt Then
 
-            Dim olKontakt As ContactItem = CType(Globals.ThisAddIn.OutookApplication.CreateItem(OlItemType.olContactItem), ContactItem)
+            Dim olKontakt As ContactItem = CType(Globals.ThisAddIn.Application.CreateItem(OlItemType.olContactItem), ContactItem)
 
             With olKontakt
 
@@ -220,7 +220,7 @@ Friend Module KontaktFunktionen
     Friend Function GetOutlookKontakt(ByRef KontaktID As String, ByRef StoreID As String) As ContactItem
         GetOutlookKontakt = Nothing
         Try
-            GetOutlookKontakt = CType(Globals.ThisAddIn.OutookApplication?.Session.GetItemFromID(KontaktID, StoreID), ContactItem)
+            GetOutlookKontakt = CType(Globals.ThisAddIn.Application.Session.GetItemFromID(KontaktID, StoreID), ContactItem)
         Catch ex As System.Exception
             NLogger.Error(ex)
         End Try
@@ -231,7 +231,7 @@ Friend Module KontaktFunktionen
 
         If Not KontaktIDStoreID.Contains(DfltErrorvalue) Then
             Try
-                GetOutlookKontakt = CType(Globals.ThisAddIn.OutookApplication.Session.GetItemFromID(KontaktIDStoreID.First.ToString, KontaktIDStoreID.Last.ToString), ContactItem)
+                GetOutlookKontakt = CType(Globals.ThisAddIn.Application.Session.GetItemFromID(KontaktIDStoreID.First.ToString, KontaktIDStoreID.Last.ToString), ContactItem)
             Catch ex As System.Exception
                 NLogger.Error(ex)
             End Try
@@ -248,13 +248,13 @@ Friend Module KontaktFunktionen
     Friend Function GetOutlookFolder(FolderID As String, StoreID As String) As MAPIFolder
         GetOutlookFolder = Nothing
 
-        If Globals.ThisAddIn.OutookApplication IsNot Nothing AndAlso Globals.ThisAddIn.OutookApplication.Session IsNot Nothing Then
+        If Globals.ThisAddIn.Application IsNot Nothing AndAlso Globals.ThisAddIn.Application.Session IsNot Nothing Then
             If FolderID.IsNotEqual("-1") And StoreID.IsNotEqual("-1") Then
                 Try
                     ' Überprüfe, ob der Store vorhanden ist
-                    Dim store = Globals.ThisAddIn.OutookApplication.Session.GetStoreFromID(StoreID)
+                    Dim store = Globals.ThisAddIn.Application.Session.GetStoreFromID(StoreID)
                     ' Ermittle den Folder
-                    GetOutlookFolder = Globals.ThisAddIn.OutookApplication.Session.GetFolderFromID(FolderID, StoreID)
+                    GetOutlookFolder = Globals.ThisAddIn.Application.Session.GetFolderFromID(FolderID, StoreID)
                 Catch ex As System.Exception
                     NLogger.Error(ex)
                 End Try
@@ -271,7 +271,7 @@ Friend Module KontaktFunktionen
     ''' <param name="FolderType">Der Typ des zurückzugebenden standardmäßigen Ordners.</param>
     ''' <returns>Ein Objekt vom Typ <see cref="MAPIFolder"/>, das den standardmäßigen Ordner des angeforderten Typs für das aktuelle Profil darstellt.</returns>
     Friend Function GetDefaultMAPIFolder(FolderType As OlDefaultFolders) As MAPIFolder
-        Return Globals.ThisAddIn.OutookApplication.Session.GetDefaultFolder(FolderType)
+        Return Globals.ThisAddIn.Application.Session.GetDefaultFolder(FolderType)
     End Function
 
     Private Function GetOutlookChildFolders(BaseFolder As MAPIFolder, ItemType As OlItemType) As List(Of MAPIFolder)
