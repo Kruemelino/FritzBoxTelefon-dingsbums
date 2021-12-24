@@ -519,18 +519,18 @@ Imports Microsoft.Office.Interop
             If Not AnruferErmittelt Then
                 If XMLData.POptionen.CBKontaktSucheFritzBox Then
 
-                    If ThisAddIn.PhoneBookXML Is Nothing Then 'OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                    If Globals.ThisAddIn.PhoneBookXML Is Nothing Then 'OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
                         ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
                         ' Dann lade die Telefonbücher herunter
                         NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
                         Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-                            ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
+                            Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
                         End Using
                     End If
 
                     ' Wenn die Telefonbücher immer noch nicht zur Verfügung stehen, brich an dieser Stelle ab
-                    If ThisAddIn.PhoneBookXML IsNot Nothing Then 'AndAlso Not ThisAddIn.PhoneBookXML.NurHeaderDaten Then
-                        FBTelBookKontakt = Telefonbücher.Find(ThisAddIn.PhoneBookXML, GegenstelleTelNr)
+                    If Globals.ThisAddIn.PhoneBookXML IsNot Nothing Then 'AndAlso Not ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                        FBTelBookKontakt = Telefonbücher.Find(Globals.ThisAddIn.PhoneBookXML, GegenstelleTelNr)
                     Else
                         NLogger.Warn("Kontaktsuche in Fritz!Box Telefonbüchern ist nicht möglich: Telefonbücher sind nicht heruntergeladen worden.")
                     End If
@@ -597,8 +597,8 @@ Imports Microsoft.Office.Interop
                         End Using
                     Else
                         ' Auswertung bei importieren Anrufen via CallListAPI
-                        If ThisAddIn.TellowsScoreList IsNot Nothing Then
-                            TellowsResult = ThisAddIn.TellowsScoreList.Find(Function(Eintrag) GegenstelleTelNr.Equals(Eintrag.Number))
+                        If Globals.ThisAddIn.TellowsScoreList IsNot Nothing Then
+                            TellowsResult = Globals.ThisAddIn.TellowsScoreList.Find(Function(Eintrag) GegenstelleTelNr.Equals(Eintrag.Number))
                             If TellowsResult IsNot Nothing Then
                                 With TellowsResult
                                     NLogger.Debug($"Eintrag in der tellows-ScoreList für Telefonnummer '{GegenstelleTelNr.TellowsNummer}' mit Score { .Score} gefunden.")
@@ -744,14 +744,14 @@ Imports Microsoft.Office.Interop
 
         If XMLData.POptionen.CBJournal Then
 
-            If ThisAddIn.OutookApplication IsNot Nothing Then
+            If Globals.ThisAddIn.OutookApplication IsNot Nothing Then
 
                 Dim olJournal As Outlook.JournalItem = Nothing
                 Dim olJournalFolder As OutlookOrdner
 
                 Try
                     ' Erstelle ein Journaleintrag im STandard-Ordner.
-                    olJournal = CType(ThisAddIn.OutookApplication.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
+                    olJournal = CType(Globals.ThisAddIn.OutookApplication.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
                 Catch ex As Exception
                     NLogger.Error(ex)
                 End Try
@@ -799,7 +799,7 @@ Imports Microsoft.Office.Interop
                         olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
 
                         If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing AndAlso
-                        Not olJournalFolder.Equals(ThisAddIn.OutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
+                        Not olJournalFolder.Equals(Globals.ThisAddIn.OutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
                             ' Verschiebe den Journaleintrag in den ausgewählten Ordner
                             ' Damit wird der Kontakt gleichzeitig im Zielordner gespeichert.
                             .Move(olJournalFolder.MAPIFolder)
@@ -810,7 +810,7 @@ Imports Microsoft.Office.Interop
                         Else
                             ' Speicher den Journaleintrag im Standard-Ordner
                             .Close(Outlook.OlInspectorClose.olSave)
-                            With ThisAddIn.OutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)
+                            With Globals.ThisAddIn.OutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)
                                 NLogger.Info($"Journaleintrag im Standardordner { .Name} (Store: { .Store.DisplayName}) erstellt: { olJournal.Start}, { olJournal.Subject}, { olJournal.Duration}")
                             End With
                         End If
@@ -939,7 +939,7 @@ Imports Microsoft.Office.Interop
         If Not AnrMonEingeblendet Then
 
             ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
-            If ThisAddIn.OffeneAnrMonWPF Is Nothing Then ThisAddIn.OffeneAnrMonWPF = New List(Of AnrMonWPF)
+            If Globals.ThisAddIn.OffeneAnrMonWPF Is Nothing Then Globals.ThisAddIn.OffeneAnrMonWPF = New List(Of AnrMonWPF)
 
             ' Erstelle einen neues Popup
             PopUpAnrMonWPF = New AnrMonWPF
@@ -967,7 +967,7 @@ Imports Microsoft.Office.Interop
             AnrMonEingeblendet = True
 
             ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
-            ThisAddIn.OffeneAnrMonWPF.Add(PopUpAnrMonWPF)
+            Globals.ThisAddIn.OffeneAnrMonWPF.Add(PopUpAnrMonWPF)
             ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
             AddHandler PopUpAnrMonWPF.Geschlossen, AddressOf PopupAnrMonGeschlossen
 
@@ -977,7 +977,7 @@ Imports Microsoft.Office.Interop
     Friend Sub StoppUhrEinblenden()
         If Not StoppUhrEingeblendet Then
             ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
-            If ThisAddIn.OffeneStoppUhrWPF Is Nothing Then ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
+            If Globals.ThisAddIn.OffeneStoppUhrWPF Is Nothing Then Globals.ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
 
             ' Erstelle einen neues Popup
             PopupStoppUhrWPF = New StoppUhrWPF
@@ -998,7 +998,7 @@ Imports Microsoft.Office.Interop
             StoppUhrEingeblendet = True
 
             ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
-            ThisAddIn.OffeneStoppUhrWPF.Add(PopupStoppUhrWPF)
+            Globals.ThisAddIn.OffeneStoppUhrWPF.Add(PopupStoppUhrWPF)
 
             ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
             AddHandler PopupStoppUhrWPF.Geschlossen, AddressOf PopupStoppUhrGeschlossen
@@ -1012,8 +1012,8 @@ Imports Microsoft.Office.Interop
         AnrMonEingeblendet = False
 
         ' Entferne den Anrufmonitor von der Liste der offenen Popups
-        ThisAddIn.OffeneAnrMonWPF.Remove(PopUpAnrMonWPF)
-        NLogger.Debug($"Anruffenster geschlossen: {AnruferName}: Noch {ThisAddIn.OffeneAnrMonWPF.Count} offene Anrufmonitor")
+        Globals.ThisAddIn.OffeneAnrMonWPF.Remove(PopUpAnrMonWPF)
+        NLogger.Debug($"Anruffenster geschlossen: {AnruferName}: Noch {Globals.ThisAddIn.OffeneAnrMonWPF.Count} offene Anrufmonitor")
 
         PopUpAnrMonWPF = Nothing
     End Sub
@@ -1022,8 +1022,8 @@ Imports Microsoft.Office.Interop
 
         StoppUhrEingeblendet = False
         ' Entferne die Stoppuhr von der Liste der offenen Popups
-        ThisAddIn.OffeneStoppUhrWPF.Remove(PopupStoppUhrWPF)
-        NLogger.Debug($"Stoppuhr geschlossen: {AnruferName}: Noch {ThisAddIn.OffeneStoppUhrWPF.Count} offene Stoppuhren")
+        Globals.ThisAddIn.OffeneStoppUhrWPF.Remove(PopupStoppUhrWPF)
+        NLogger.Debug($"Stoppuhr geschlossen: {AnruferName}: Noch {Globals.ThisAddIn.OffeneStoppUhrWPF.Count} offene Stoppuhren")
 
         PopupStoppUhrWPF = Nothing
     End Sub

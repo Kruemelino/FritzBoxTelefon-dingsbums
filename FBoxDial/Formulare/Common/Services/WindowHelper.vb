@@ -151,7 +151,7 @@ Friend Class WindowHelper
 
         Return New Point With {
             .X = SystemParameters.WorkArea.Right - Width - XMLData.POptionen.TBAnrMonAbstand - XMLData.POptionen.TBAnrMonModPosX,
-            .Y = SystemParameters.WorkArea.Bottom - Height - XMLData.POptionen.TBAnrMonAbstand - XMLData.POptionen.TBAnrMonModPosY - (ThisAddIn.OffeneAnrMonWPF.Count * (XMLData.POptionen.TBAnrMonAbstand + Height))
+            .Y = SystemParameters.WorkArea.Bottom - Height - XMLData.POptionen.TBAnrMonAbstand - XMLData.POptionen.TBAnrMonModPosY - (Globals.ThisAddIn.OffeneAnrMonWPF.Count * (XMLData.POptionen.TBAnrMonAbstand + Height))
         }
 
     End Function

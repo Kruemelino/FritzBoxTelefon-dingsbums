@@ -68,7 +68,7 @@ Friend Class Anrufmonitor
             End If
         End If
         ' Ribbon aktualisieren
-        ThisAddIn.POutlookRibbons.RefreshRibbon()
+        Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
     ''' <summary>
@@ -83,7 +83,7 @@ Friend Class Anrufmonitor
             NLogger.Debug("Anrufmonitor gewollt angehalten")
         End If
         ' Ribbon aktualisieren
-        ThisAddIn.POutlookRibbons.RefreshRibbon()
+        Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
     ''' <summary>
@@ -153,7 +153,7 @@ Friend Class Anrufmonitor
 
     Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
         'Aktiv = False
-        ThisAddIn.POutlookRibbons.RefreshRibbon()
+        Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
         NLogger.Info($"Anrufmonitor getrennt von {XMLData.POptionen.ValidFBAdr}:{AnrMon_Port}")
     End Sub
 #End Region

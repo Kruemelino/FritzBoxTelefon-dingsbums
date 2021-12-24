@@ -250,7 +250,7 @@ Public Module Extensions
 
             End With
         End If
-        ThisAddIn.POutlookRibbons.RefreshRibbon()
+        Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
     ' TODO: Warum wird das nicht verwendet?
@@ -261,7 +261,7 @@ Public Module Extensions
 
         Liste.Insert(0, item)
 
-        ThisAddIn.POutlookRibbons.RefreshRibbon()
+        Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 #End Region
 

@@ -463,7 +463,6 @@
       <DependentUpon>DirectDialView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\FritzBoxJSONStruct.vb" />
-    <Compile Include="Kontakte\KontaktInspector.vb" />
     <Compile Include="Fritz!Box\FritzBoxAnrufliste.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
@@ -495,6 +494,8 @@
     </Compile>
     <Compile Include="Optionen\Utf8StringWriter.vb" />
     <Compile Include="Optionen\WebFunctions.vb" />
+    <Compile Include="Outlook\ExplorerWrapper.vb" />
+    <Compile Include="Outlook\InspectorWrapper.vb" />
     <Compile Include="Outlook\OutlookContactFields.vb" />
     <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="Kontakte\NummernTypen.vb" />

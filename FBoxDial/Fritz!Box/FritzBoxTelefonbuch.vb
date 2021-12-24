@@ -97,7 +97,7 @@ Namespace Telefonbücher
                         End If
                     Next
                     ' Setze diese unvollständige Liste global.
-                    If ThisAddIn.PhoneBookXML Is Nothing Then ThisAddIn.PhoneBookXML = AlleTelefonbücher
+                    If Globals.ThisAddIn.PhoneBookXML Is Nothing Then Globals.ThisAddIn.PhoneBookXML = AlleTelefonbücher
 
                     Return AlleTelefonbücher
                 End If

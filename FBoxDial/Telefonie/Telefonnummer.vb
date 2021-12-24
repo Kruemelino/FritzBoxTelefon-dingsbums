@@ -149,7 +149,7 @@ Public Class Telefonnummer
             TelNr = Unformatiert
 
             ' Ermittle die Vorwahlen
-            ThisAddIn.PVorwahlen.TelNrKennzahlen(Me, _LKZ, _ONKZ)
+            Globals.ThisAddIn.PVorwahlen.TelNrKennzahlen(Me, _LKZ, _ONKZ)
 
             ' Weise die Eigenschaften der Landeskennzahl zu
             If _LKZ IsNot Nothing Then

@@ -39,7 +39,7 @@ Friend Module Fenster
     ''' <param name="Activate">Gibt an, ob der Inspector aktiviert werden soll (true) oder ob er gespeichert werden soll (false)</param>
     Friend Sub KeepoInspActivated(Activate As Boolean)
 
-        If ThisAddIn.OutookApplication IsNot Nothing Then
+        If Globals.ThisAddIn.OutookApplication IsNot Nothing Then
             If Activate Then
                 If OInsp IsNot Nothing Then
                     If Not OInsp.WindowState = Outlook.OlWindowState.olMinimized Then
@@ -52,7 +52,7 @@ Friend Module Fenster
                 End If
             Else
                 If OInsp Is Nothing Then
-                    With ThisAddIn.OutookApplication
+                    With Globals.ThisAddIn.OutookApplication
                         If .ActiveWindow Is .ActiveInspector Then
                             If UnSaveMethods.GetWindowText(UnSaveMethods.GetForegroundWindow) = .ActiveInspector.Caption Then
                                 NLogger.Debug($"Aktiver Outlook Inspektor '{ .ActiveInspector.Caption}' detektiert.")
@@ -67,7 +67,7 @@ Friend Module Fenster
 
     Friend Function AddWindow(Of T As Windows.Window)() As T
         ' Blendet ein neue Kontaktsuche ein
-        Dim AddinFenster As T = CType(ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is T), T)
+        Dim AddinFenster As T = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is T), T)
 
         If AddinFenster Is Nothing Then
             ' Neues Window generieren
@@ -75,7 +75,7 @@ Friend Module Fenster
             ' Ereignishandler hinzufügen
             AddHandler AddinFenster.Closed, AddressOf Window_Closed
             ' Window in die Liste aufnehmen
-            ThisAddIn.AddinWindows.Add(AddinFenster)
+            Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
         Else
             AddinFenster.Activate()
         End If
@@ -89,7 +89,7 @@ Friend Module Fenster
         ' Ereignishandler entfernen
         RemoveHandler Window.Closed, AddressOf Window_Closed
         ' Window aus der Liste entfernen
-        ThisAddIn.AddinWindows.Remove(Window)
+        Globals.ThisAddIn.AddinWindows.Remove(Window)
 
         NLogger.Debug("Fenster aus der Gesamtliste entfernt.")
     End Sub

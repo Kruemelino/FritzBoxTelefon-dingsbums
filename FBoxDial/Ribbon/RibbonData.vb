@@ -161,7 +161,7 @@ Namespace RibbonData
         ''' Einblenden der Direktwahl. (Routine wird über Reflection.Invoke eingeblendet)
         ''' </summary>
         Private Sub DirectCall()
-            Dim AddinFenster As WählclientWPF = CType(ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
+            Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
 
             If AddinFenster Is Nothing Then
                 ' Neuen Wählclient generieren
@@ -172,7 +172,7 @@ Namespace RibbonData
                 ' Ereignishandler hinzufügen
                 AddHandler AddinFenster.Closed, AddressOf Window_Closed
                 ' Window in die Liste aufnehmen
-                ThisAddIn.AddinWindows.Add(AddinFenster)
+                Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
             Else
                 AddinFenster.Activate()
             End If
@@ -182,12 +182,12 @@ Namespace RibbonData
         ''' Einblenden der Kontaktwahl. (Routine wird über Reflection.Invoke eingeblendet)
         ''' </summary>
         Private Sub Dial()
-            Dim AddinFenster As WählclientWPF = CType(ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
+            Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
 
             If AddinFenster Is Nothing Then
                 ' Neuen Wählclient generieren
                 Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(ThisAddIn.OutookApplication.ActiveExplorer.Selection)
+                WählClient.WählboxStart(Globals.ThisAddIn.OutookApplication.ActiveExplorer.Selection)
                 ' Fenster zuweisen
                 AddinFenster = WählClient.WPFWindow
 
@@ -195,7 +195,7 @@ Namespace RibbonData
                     ' Ereignishandler hinzufügen
                     AddHandler AddinFenster.Closed, AddressOf Window_Closed
                     ' Window in die Liste aufnehmen
-                    ThisAddIn.AddinWindows.Add(AddinFenster)
+                    Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
                 End If
             Else
                 AddinFenster.Activate()
@@ -207,7 +207,7 @@ Namespace RibbonData
         ''' </summary>
         ''' <param name="OutlookInspector"></param>
         Private Sub Dial(OutlookInspector As Outlook.Inspector)
-            Dim AddinFenster As WählclientWPF = CType(ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
+            Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
 
             If AddinFenster Is Nothing Then
                 ' Neuen Wählclient generieren
@@ -220,7 +220,7 @@ Namespace RibbonData
                     ' Ereignishandler hinzufügen
                     AddHandler AddinFenster.Closed, AddressOf Window_Closed
                     ' Window in die Liste aufnehmen
-                    ThisAddIn.AddinWindows.Add(AddinFenster)
+                    Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
                 End If
             Else
                 AddinFenster.Activate()
@@ -243,9 +243,9 @@ Namespace RibbonData
         ''' </summary>
         Private Sub CallMonitor(pressed As Boolean)
             ' Wenn der Anrufmonor Nothing ist, dann initiiere ihn
-            If ThisAddIn.PAnrufmonitor Is Nothing Then ThisAddIn.PAnrufmonitor = New Anrufmonitor
+            If Globals.ThisAddIn.PAnrufmonitor Is Nothing Then Globals.ThisAddIn.PAnrufmonitor = New Anrufmonitor
             ' Wenn der Anrufmonitor aktiv ist, dann trenne ihn, ansonsten starte ihn
-            With ThisAddIn.PAnrufmonitor
+            With Globals.ThisAddIn.PAnrufmonitor
                 If .Aktiv Then
                     .Stopp()
                 Else
@@ -534,7 +534,7 @@ Namespace RibbonData
 
 #Region "Ribbon Pressed"
         Friend Function GetPressedAnrMon() As Boolean
-            Return ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso ThisAddIn.PAnrufmonitor.Aktiv
+            Return Globals.ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso Globals.ThisAddIn.PAnrufmonitor.Aktiv
         End Function
 
         Friend Function GetPressedVIP(Kontakt As Outlook.ContactItem) As Boolean
@@ -551,7 +551,7 @@ Namespace RibbonData
 
 #Region "Anrufmonitor"
         Friend Function AnrMonRibbonContent(Key As String, DatenTyp As Typ) As String
-            Return GetRibbonContent($"{If(ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso ThisAddIn.PAnrufmonitor.Aktiv, "Online", "Offline")}{Key}", DatenTyp)
+            Return GetRibbonContent($"{If(Globals.ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso Globals.ThisAddIn.PAnrufmonitor.Aktiv, "Online", "Offline")}{Key}", DatenTyp)
         End Function
 
 #End Region
@@ -656,10 +656,10 @@ Namespace RibbonData
                 .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
 
                 ' Ermittle die verfügbaren Quellen für die Telefonbuchnamen
-                If ThisAddIn.PhoneBookXML Is Nothing Then ThisAddIn.PhoneBookXML = Telefonbücher.LadeTelefonbücherNamen
+                If Globals.ThisAddIn.PhoneBookXML Is Nothing Then Globals.ThisAddIn.PhoneBookXML = Telefonbücher.LadeTelefonbücherNamen
 
                 ' Trage die einzelnen Bücher ein
-                For Each Buch As PhonebookEx In ThisAddIn.PhoneBookXML
+                For Each Buch As PhonebookEx In Globals.ThisAddIn.PhoneBookXML
                     .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Name, Buch.ID, Buch.Rufsperren, ListName))
                 Next
             End With

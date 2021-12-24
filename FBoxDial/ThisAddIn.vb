@@ -4,15 +4,16 @@ Imports Microsoft.Office.Interop.Outlook
 
 Public NotInheritable Class ThisAddIn
 
-    Friend Shared Property POutlookRibbons() As OutlookRibbons
-    Friend Shared Property OutookApplication As Application
-    Friend Shared Property PAnrufmonitor As Anrufmonitor
-    Friend Shared Property PhoneBookXML As IEnumerable(Of PhonebookEx)
-    Friend Shared Property PVorwahlen As Vorwahlen
-    Friend Shared Property TellowsScoreList As List(Of TellowsScoreListEntry)
-    Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
-    Friend Shared Property OffeneStoppUhrWPF As List(Of StoppUhrWPF)
-    Friend Shared Property AddinWindows As New List(Of Windows.Window)
+    Friend Property POutlookRibbons() As OutlookRibbons
+    Friend Property OutookApplication As Application
+    Friend Property PAnrufmonitor As Anrufmonitor
+    Friend Property PhoneBookXML As IEnumerable(Of PhonebookEx)
+    Friend Property PVorwahlen As Vorwahlen
+    Friend Property TellowsScoreList As List(Of TellowsScoreListEntry)
+    Friend Property OffeneAnrMonWPF As List(Of AnrMonWPF)
+    Friend Property OffeneStoppUhrWPF As List(Of StoppUhrWPF)
+    Friend Property AddinWindows As New List(Of Windows.Window)
+
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Timer für Raktivierung nach StandBy"
@@ -76,7 +77,7 @@ Public NotInheritable Class ThisAddIn
         NLogger.Debug("Outlook-Explorer Ereignishandler erfasst...")
 
         ' Outlook Inspektoren erfassen
-        OutlookInspectors = Application.Inspectors
+        SetInspector()
         NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
 
         ' Anrufmonitor starten
@@ -150,6 +151,16 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Sub BeendeAddinFunktionen()
+
+        ' Inspector
+        RemoveHandler InspectorListe.NewInspector, AddressOf Inspectoren_NewInspector
+        InspectorListe = Nothing
+        InspectorWrappers = Nothing
+
+        ' Explorer
+        RemoveHandler ExplorerListe.NewExplorer, AddressOf Explorer_NewExplorer
+        ExplorerListe = Nothing
+        ExplorerWrappers = Nothing
 
         ' Listen leeren
         If PVorwahlen IsNot Nothing Then PVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
@@ -269,74 +280,49 @@ Public NotInheritable Class ThisAddIn
 #End Region
 
 #Region "Outlook Explorer"
-    Private WithEvents OutlookExplorers As Explorers
-    Private WithEvents OutlookMainExplorer As Explorer
+    Friend ExplorerWrappers As Dictionary(Of Explorer, ExplorerWrapper)
+    Private Property ExplorerListe As Explorers
 
     Private Sub SetExplorer()
+        ' Liste aller Outlook Explorer erfassen
+        ExplorerListe = Application.Explorers
+        ' Eventhandler hinzufügen
+        AddHandler ExplorerListe.NewExplorer, AddressOf Explorer_NewExplorer
+        ' ExplorerWrappers initiieren
+        ExplorerWrappers = New Dictionary(Of Explorer, ExplorerWrapper)
 
-        ' Outlook Haupt Explorer festlegen
-        OutlookMainExplorer = Application.ActiveExplorer
-
-        ' Outlook Explorer erfassen
-        OutlookExplorers = Application.Explorers
+        For Each E As Explorer In ExplorerListe
+            Explorer_NewExplorer(E)
+        Next
 
     End Sub
 
-    ''' <summary>
-    ''' Tritt ein, wenn ein neues Explorer-Fenster geöffnet wird, entweder als Ergebnis einer Benutzeraktion oder durch Programmcode.
-    ''' </summary>
-    Private Sub OutlookExplorers_NewExplorer(Explorer As Explorer) Handles OutlookExplorers.NewExplorer
-        NLogger.Debug("Ein neues Explorer-Fenster wird geöffnet")
-        AddHandler Explorer.BeforeItemPaste, AddressOf OutlookExplorer_BeforeItemPaste
-
-        AddHandler Explorer.SelectionChange, AddressOf OutlookExplorer_SelectionChange
-    End Sub
-
-    Private Sub OutlookExplorer_SelectionChange() Handles OutlookMainExplorer.SelectionChange
-        POutlookRibbons.RefreshRibbon()
-    End Sub
-
-    ''' <summary>
-    ''' Tritt ein, wenn ein Outlook-Element eingefügt wird.
-    ''' </summary>
-    Private Sub OutlookExplorer_BeforeItemPaste(ByRef ClipboardContent As Object, Target As MAPIFolder, ByRef Cancel As Boolean) Handles OutlookMainExplorer.BeforeItemPaste
-
-        ' Ist der Inhalt eine Selection? (Im Besten Fall eine Anzahl an Kontakten)
-        If TypeOf ClipboardContent Is Selection Then
-            ' Schleife durch alle Elemente der selektierten Objekte
-            For Each ClipboardObject As Object In CType(ClipboardContent, Selection)
-
-                ' Wenn es sich um Kontakte handelt, dann (de-)indiziere den Kontakt
-                If TypeOf ClipboardObject Is ContactItem Then
-
-                    IndiziereKontakt(CType(ClipboardObject, ContactItem), Target, True)
-
-                End If
-            Next
-        End If
+    Private Sub Explorer_NewExplorer(e As Explorer)
+        ExplorerWrappers.Add(e, New ExplorerWrapper(e))
     End Sub
 
 #End Region
 
 #Region "Outlook Inspector"
-    Private WithEvents OutlookInspectors As Inspectors
-    Friend Shared Property KontakInsepektorenListe As List(Of KontaktInspector)
 
-    ''' <summary>
-    ''' Tritt ein, wenn als Ergebnis einer Benutzeraktion oder durch Programmcode ein neues Inspektor-Fenster geöffnet wird.
-    ''' </summary>
-    Private Sub OutlookInspectors_NewInspector(Inspector As Inspector) Handles OutlookInspectors.NewInspector
+    Friend InspectorWrappers As Dictionary(Of Inspector, InspectorWrapper)
+    Private Property InspectorListe As Inspectors
 
-        ' Handelt es sich um einen Kontakt-ispektor?
+    Private Sub SetInspector()
+        ' Liste aller Outlook Inspectoren erfassen
+        InspectorListe = Application.Inspectors
+        ' Eventhandler hinzufügen
+        AddHandler InspectorListe.NewInspector, AddressOf Inspectoren_NewInspector
+        ' InspectorWrappers initiieren
+        InspectorWrappers = New Dictionary(Of Inspector, InspectorWrapper)
+        For Each I As Inspector In InspectorListe
+            Inspectoren_NewInspector(I)
+        Next
+    End Sub
+    Private Sub Inspectoren_NewInspector(Inspector As Inspector)
         If TypeOf Inspector.CurrentItem Is ContactItem Then
-
-            ' Initiiere die Liste der Offenen Kontaktinspektoren, falls noch nicht geschehen
-            If KontakInsepektorenListe Is Nothing Then KontakInsepektorenListe = New List(Of KontaktInspector)
-
-            ' Füge diesen Kontaktinspektor hinzu
-            KontakInsepektorenListe.Add(New KontaktInspector() With {.OlKontakt = CType(Inspector.CurrentItem, ContactItem)})
+            InspectorWrappers.Add(Inspector, New InspectorWrapper(Inspector))
         End If
     End Sub
-
 #End Region
 End Class

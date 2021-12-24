@@ -228,8 +228,8 @@ Public Class FBoxDataService
 #Region "Fritz!Box Telefonbücher"
     Public Async Function GetFBContacts() As Task(Of IEnumerable(Of PhonebookEx)) Implements IFBoxDataService.GetTelefonbücher
         ' Telefonbücher asynchron herunterladen
-        ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
-        Return ThisAddIn.PhoneBookXML
+        Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
+        Return Globals.ThisAddIn.PhoneBookXML
     End Function
 
     Public Async Function AddPhonebook(Name As String) As Task(Of PhonebookEx) Implements IFBoxDataService.AddTelefonbuch

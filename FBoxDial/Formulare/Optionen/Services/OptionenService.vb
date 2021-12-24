@@ -266,7 +266,7 @@ Friend Class OptionenService
 
             If rnd Then
                 ' Generiere eine zufällige Telefonnummer aus Deutschland
-                Dim LKZ As Landeskennzahl = ThisAddIn.PVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(L) L.Landeskennzahl = "49")
+                Dim LKZ As Landeskennzahl = Globals.ThisAddIn.PVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(L) L.Landeskennzahl = "49")
                 Dim OKZ As Integer = RndGen.Next(0, LKZ.Ortsnetzkennzahlen.Count)
                 Dim Nr As Integer = RndGen.Next(9999, 9999999)
 
@@ -300,17 +300,17 @@ Friend Class OptionenService
 
             ' Telefonnummer aus Fritz!Box Telefonbüchern
             If rndFBox Then
-                If ThisAddIn.PhoneBookXML Is Nothing Then 'OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                If Globals.ThisAddIn.PhoneBookXML Is Nothing Then 'OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
                     ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
                     ' Dann lade die Telefonbücher herunter
                     NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
                     Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-                        ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
+                        Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
                     End Using
                 End If
 
                 Dim FBC As New List(Of FBoxAPI.Contact)
-                ThisAddIn.PhoneBookXML.ToList.ForEach(Sub(F) FBC.AddRange(F.Phonebook.Contacts.Where(Function(T) Not T.IstTelefon)))
+                Globals.ThisAddIn.PhoneBookXML.ToList.ForEach(Sub(F) FBC.AddRange(F.Phonebook.Contacts.Where(Function(T) Not T.IstTelefon)))
 
                 ' Ermittle einen zufälligen Kontakt
                 Dim C As FBoxAPI.Contact = FBC.Item(RndGen.Next(0, FBC.Count))
@@ -321,14 +321,14 @@ Friend Class OptionenService
 
             ' Telefonnummer aus Tellows
             If rndTellows Then
-                If ThisAddIn.TellowsScoreList Is Nothing Then
+                If Globals.ThisAddIn.TellowsScoreList Is Nothing Then
                     Using tellows As New Tellows
-                        ThisAddIn.TellowsScoreList = Await tellows.LadeScoreList
+                        Globals.ThisAddIn.TellowsScoreList = Await tellows.LadeScoreList
                     End Using
                 End If
 
-                If ThisAddIn.TellowsScoreList IsNot Nothing Then
-                    Using t As New Telefonnummer With {.SetNummer = ThisAddIn.TellowsScoreList.Item(RndGen.Next(0, ThisAddIn.TellowsScoreList.Count)).Number}
+                If Globals.ThisAddIn.TellowsScoreList IsNot Nothing Then
+                    Using t As New Telefonnummer With {.SetNummer = Globals.ThisAddIn.TellowsScoreList.Item(RndGen.Next(0, Globals.ThisAddIn.TellowsScoreList.Count)).Number}
                         TelNr = t.Unformatiert
                     End Using
                 End If
