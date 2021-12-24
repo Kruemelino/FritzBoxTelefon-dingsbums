@@ -1,6 +1,6 @@
 ﻿#include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "5.0.2.5"
+#define MyAppVersion "5.0.2.6"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2019), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
@@ -25,7 +25,7 @@ OutputBaseFilename = FBDBSetup_{#MyAppVersion}_{#MyAppTime}
 Compression = lzma2
 SolidCompression = yes
 PrivilegesRequired = none
-SignTool = WinSDK /t $qhttp://timestamp.digicert.com$q /du $q{#MyAppURL}$q /d $q{#MyAppDescription}$q $f
+SignTool = FBoxDial /t $qhttp://timestamp.digicert.com$q /du $q{#MyAppURL}$q /d $q{#MyAppDescription}$q $f
 SignedUninstaller = yes
 WizardStyle = modern
 

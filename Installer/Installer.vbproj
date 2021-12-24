@@ -85,7 +85,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)Inno\iscc.exe $(ProjectDir)installer.iss
+    <PostBuildEvent>E:\Inno\iscc.exe $(ProjectDir)installer.iss
 
 </PostBuildEvent>
   </PropertyGroup>

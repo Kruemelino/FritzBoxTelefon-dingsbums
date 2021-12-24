@@ -272,7 +272,7 @@ Friend Module FritzBoxRufsperre
     ''' <returns>Anzahl neu angelegter Telefonnummern</returns>
     Friend Async Function BlockTellowsNumbers(fboxTR064 As FBoxAPI.FritzBoxTR64, MinScore As Integer, MaxNrbyEntry As Integer, Einträge As IEnumerable(Of TellowsScoreListEntry), ct As CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
         Return Await Task.Run(Async Function()
-                                  Using tellows As New Tellows ', fboxTR064 As New SOAP.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+                                  Using tellows As New Tellows
                                       ' Lade die Rufsperre herunter
                                       Dim RufsperreFritzBox = Await Telefonbücher.LadeSperrliste(fboxTR064)
                                       ' hochzuladende Einträge
