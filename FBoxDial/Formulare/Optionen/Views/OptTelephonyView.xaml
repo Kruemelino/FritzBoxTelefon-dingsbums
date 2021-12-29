@@ -53,13 +53,8 @@
         <Expander Header="{x:Static localize:LocOptionen.strTelephonyHeadPhones}" IsExpanded="True">
 
             <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                      HeadersVisibility="Column" AutoGenerateColumns="False" 
-                      GridLinesVisibility="Horizontal"        
-                      HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
-                      VerticalGridLinesBrush="{StaticResource ContainerBorder}"
-                      CanUserAddRows="False" CanUserDeleteRows="False"
-                      IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
-                      MaxHeight="150" Margin="0,4" BorderThickness="0" >
+                      Style="{DynamicResource DataGridTemplate}"
+                      MaxHeight="150" Margin="0,4" BorderThickness="0" >   
 
                 <DataGrid.Columns>
                     <DataGridTemplateColumn>
@@ -97,12 +92,8 @@
                 <TextBlock Text="{x:Static localize:LocOptionen.strTelephonyNumbersInfo}"/>
 
                 <DataGrid ItemsSource="{Binding OptVM.TelNrListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                          HeadersVisibility="None" AutoGenerateColumns="False" 
-                          GridLinesVisibility="Horizontal"        
-                          HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
-                          VerticalGridLinesBrush="{StaticResource ContainerBorder}"
-                          CanUserAddRows="False" CanUserDeleteRows="False"
-                          IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                          Style="{DynamicResource DataGridTemplate}" 
+                          HeadersVisibility="None"
                           MaxHeight="150" Margin="0,4" BorderThickness="0" >
                 
                     <DataGrid.Columns>

@@ -6,9 +6,6 @@
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <fbd:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    <fbd:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
-
     <Style x:Key="AnrMonZeit" TargetType="{x:Type TextBlock}">
         <Setter Property="TextWrapping" Value="NoWrap" />
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -58,19 +55,6 @@
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="FontSize" Value="12" />
-    </Style>
-
-    <Style x:Key="MiniIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Margin" Value="0,4,4,0" />
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="Margin" Value="0,4,4,0" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="Width" Value="20" />
-        <Setter Property="Height" Value="20" />        
-
     </Style>
 
 </ResourceDictionary>

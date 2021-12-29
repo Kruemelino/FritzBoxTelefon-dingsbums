@@ -24,7 +24,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -75,10 +75,7 @@
         </GroupBox>
 
         <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                            HeadersVisibility="Column" AutoGenerateColumns="False"
-                            HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
-                            VerticalGridLinesBrush="{StaticResource ContainerBorder}"
-                            CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
+                            Style="{DynamicResource DataGridTemplate}"
                             ItemsSource="{Binding Path=TellowsList, UpdateSourceTrigger=PropertyChanged}"
                             ShowStatusBar="False" ShowElapsedTime="False"                                 
                             DateFormatString="d"  FilterLanguage="German">

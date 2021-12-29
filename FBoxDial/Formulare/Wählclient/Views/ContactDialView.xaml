@@ -47,10 +47,11 @@
                    Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
         </Border>
 
-        <DataGrid DockPanel.Dock="Left" Style="{StaticResource DGTelNr}"
+        <DataGrid DockPanel.Dock="Left" Style="{StaticResource DataGridTemplate}"
                   ItemsSource="{Binding Path=DialNumberList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                   SelectedItem="{Binding Path=DialVM.TelNr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                  IsEnabled="{Binding Path=DialVM.IsNotDialing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
+                  IsEnabled="{Binding Path=DialVM.IsNotDialing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  HeadersVisibility="None" Margin="4,4,4,0">
             
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">

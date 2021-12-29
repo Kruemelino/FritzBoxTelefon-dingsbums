@@ -6,15 +6,10 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Icons.xaml"/>
         <ResourceDictionary Source="Colors.xaml"/>
+        <ResourceDictionary Source="Converter.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
-    <Style x:Key="ITB" TargetType="{x:Type Button}"  >
-        <Setter Property="Margin" Value="8" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-
-    </Style>
     
+    <!--MiniIconButton: Anrufmonitor, Optionen,Stoppuhr, Wählclient-->
     <Style x:Key="MiniIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Margin" Value="0,4,4,0" />
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -26,7 +21,51 @@
         <Setter Property="Height" Value="20" />
     </Style>
 
-    <Style x:Key="DataGridIconButton" TargetType="{x:Type Button}" >
+    <!--MiniIconToggleButton: Wählclient-->
+    <Style x:Key="MiniIconToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}" >
+        <Setter Property="Margin" Value="0,4,4,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Margin" Value="0,4,4,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentControl>
+                        <ContentControl.Style>
+                            <Style TargetType="{x:Type ContentControl}" BasedOn="{StaticResource {x:Type ContentControl}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" Value="True">
+                                        <Setter Property="Content" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" Value="False">
+                                        <Setter Property="Content" Value="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--DataGridIconButton: Fritz!Box Daten-->
+    <Style x:Key="DataGridIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Margin" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -37,6 +76,20 @@
         <Setter Property="Height" Value="16" />
     </Style>
 
+    <!--DataGridIconButton: Fritz!Box Daten: Anrufliste+Tellows, Optionen: Telefonie, Wählclient-->
+    <Style x:Key="DataGridTemplate" TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ContainerBorder}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource ContainerBorder}" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="GridLinesVisibility" Value="Horizontal" />
+        <Setter Property="SelectionUnit" Value="FullRow" />        
+        
+    </Style>       
+    
     <Style x:Key="OptComboBox" TargetType="{x:Type ComboBox}" >
         <Setter Property="Template">
             <Setter.Value>
@@ -167,5 +220,149 @@
             </MultiTrigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="OptHeader" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
+        <Setter Property="Margin" Value="0,2,0,4"/>
+        <Setter Property="Background" Value="{DynamicResource ControlDarkerBackground}"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
 
+    <DataTemplate x:Key="HeaderTemplate">
+        <Border Background="{DynamicResource ControlDarkerBackground}" 
+                CornerRadius="2">
+
+            <TextBlock Text="{Binding}" 
+                       VerticalAlignment="Center"
+                       FontWeight="DemiBold"                  
+                       Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}"
+                       TextTrimming="CharacterEllipsis"                    
+                       Margin="2,0,0,0"/>
+        </Border>
+    </DataTemplate>
+
+    <Style x:Key="OptExpander" TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}" >
+        <Setter Property="Margin" Value="0,2,0,4"/>
+        <Setter Property="HeaderTemplate" Value="{StaticResource HeaderTemplate}"/>
+    </Style>
+
+    <Style x:Key="OptCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="151.5"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Grid.Column="0"/>
+
+                        <BulletDecorator Background="Transparent" 
+                                         SnapsToDevicePixels="True"
+                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                         Grid.Column="1" >
+
+                            <BulletDecorator.Bullet>
+                                <CheckBox IsChecked="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                            </BulletDecorator.Bullet>
+                        </BulletDecorator>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="OptRadioButton" TargetType="{x:Type RadioButton}" >
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="151.5"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Grid.Column="0"/>
+
+                        <RadioButton IsChecked="{Binding Path=IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RadioButton}}}"
+                                     Grid.Column="1" 
+                                     Margin="0"/>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CheckBoxRadioButton" TargetType="{x:Type RadioButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Grid>
+                        <!--<CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" 
+                                  Content="{TemplateBinding Content}"
+                                  Margin="2,0,0,0" IsHitTestVisible="False"/>-->
+                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" 
+                                  Content="{TemplateBinding Content}" Margin="1,0,0,0"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ConsoleTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="MaxHeight" Value="75"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <ScrollViewer RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer.RenderTransform>
+                            <ScaleTransform ScaleY="-1"/>
+                        </ScrollViewer.RenderTransform>
+                        <TextBox Text="{TemplateBinding Text}" RenderTransformOrigin="0.5,0.5">
+                            <TextBox.RenderTransform>
+                                <ScaleTransform ScaleY="-1"/>
+                            </TextBox.RenderTransform>
+                        </TextBox>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ResultTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="MaxHeight" Value="150"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+
+    <Style x:Key="TelNrItemStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <ContentPresenter />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

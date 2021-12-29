@@ -7,11 +7,6 @@
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <fbd:BoolToVisibilityConverter x:Key="IsEditConverter"/>
-    <fbd:NullToVisibilityConverter x:Key="SelectedContactConverter"/>
-    <fbd:IntegerToBoolConverter x:Key="FavoriteContactConverter"/>
-    <fbd:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
-
     <DataTemplate DataType="{x:Type fbd:FBoxDataTAMViewModel}">
         <fbd:FboxTAMView />
     </DataTemplate>
@@ -257,5 +252,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
 
 </ResourceDictionary>
