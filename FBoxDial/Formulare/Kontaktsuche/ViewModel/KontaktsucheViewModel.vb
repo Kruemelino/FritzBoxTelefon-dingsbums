@@ -35,7 +35,7 @@ Public Class KontaktsucheViewModel
             SetProperty(_olKontaktVM, Value)
 
             ' Wählcomando absenden
-            If OLKontaktVM IsNot Nothing Then DatenService.DialContact(OLKontaktVM?.OlKontakt)
+            If OLKontaktVM IsNot Nothing Then DatenService.DialContact(OLKontaktVM.OlKontakt)
         End Set
     End Property
 #End Region
@@ -46,7 +46,8 @@ Public Class KontaktsucheViewModel
         ' Interface
         DatenService = New DataKontaktsuche
         'DialogService = New DialogService
-
+        ' Theme
+        DatenService.UpdateTheme()
     End Sub
 
     ''' <summary>

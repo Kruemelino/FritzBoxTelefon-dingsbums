@@ -839,6 +839,9 @@ Public Class OptionenViewModel
         ' Interface
         DatenService = New OptionenService
 
+        ' Theme
+        DatenService.UpdateTheme()
+
         ' Child Views
         With PageViewModels
             .Add(New OptBaseViewModel())

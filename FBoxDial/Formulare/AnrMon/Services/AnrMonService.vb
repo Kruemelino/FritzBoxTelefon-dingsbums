@@ -4,6 +4,10 @@ Imports System.Windows.Media.Imaging
 Public Class AnrMonService
     Implements IAnrMonService
 
+    Friend Sub UpdateTheme() Implements IAnrMonService.UpdateTheme
+        OfficeColors.UpdateTheme()
+    End Sub
+
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend Sub BlockNumber(TelNr As Telefonnummer) Implements IAnrMonService.BlockNumber
         AddNrToBlockList(TelNr)

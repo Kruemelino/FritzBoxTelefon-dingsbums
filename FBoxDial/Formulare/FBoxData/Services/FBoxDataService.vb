@@ -1,6 +1,9 @@
 ﻿Imports System.Threading.Tasks
 Public Class FBoxDataService
     Implements IFBoxDataService
+    Friend Sub UpdateTheme() Implements IFBoxDataService.UpdateTheme
+        OfficeColors.UpdateTheme()
+    End Sub
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property FBoxTR064 As FBoxAPI.FritzBoxTR64

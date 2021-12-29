@@ -2,6 +2,8 @@
 Imports Microsoft.Office.Interop.Outlook
 Friend Interface IOptionenService
 
+    Sub UpdateTheme()
+
 #Region "Grunddaten"
     Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User)
 #End Region

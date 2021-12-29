@@ -27,11 +27,9 @@
     <AssemblyName>Fritz!Box Telefon-Dingsbums</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject />
     <IsWebBootstrapper>False</IsWebBootstrapper>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <NuGetPackageImportStamp />
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>Veröffentlichen\</PublishUrl>
     <InstallUrl />
@@ -102,8 +100,7 @@
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <NoWarn>
-    </NoWarn>
+    <NoWarn />
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <!--
@@ -123,8 +120,7 @@
       Warning level for the compiler.
   -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants />
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <DebugType>pdbonly</DebugType>
@@ -133,8 +129,7 @@
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <NoWarn>
-    </NoWarn>
+    <NoWarn />
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <!--
@@ -241,6 +236,9 @@
   <ItemGroup>
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
+    <Compile Include="App.xaml.vb">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\Common\Services\EnumDescriptionTypeConverter.vb" />
     <Compile Include="Formulare\Common\Services\LocalizedDescriptionAttribute.vb" />
     <Compile Include="Formulare\AnrMon\Resources\LocAnrMon.Designer.vb">
@@ -260,6 +258,12 @@
     <Compile Include="Formulare\Common\Services\NotifyBase.vb" />
     <Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\Common\Services\RelayCommand.vb" />
+    <Compile Include="Formulare\Common\Themes\DarkTheme.xaml.vb">
+      <DependentUpon>DarkTheme.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Common\Themes\LightTheme.xaml.vb">
+      <DependentUpon>LightTheme.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\FBoxData\Controls\TimePicker.vb" />
     <Compile Include="Formulare\AnrMon\ViewModel\AnrMonViewModel.vb" />
     <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
@@ -334,9 +338,6 @@
     <Compile Include="Formulare\Kontaktsuche\Views\ContactItemView.xaml.vb">
       <DependentUpon>ContactItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Controls\OptionsTextBlock.xaml.vb">
-      <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Formulare\Optionen\Services\BindingProxy.vb" />
     <Compile Include="Formulare\Optionen\Services\PassthroughMouseWheelBehavior.vb" />
     <Compile Include="Formulare\Optionen\Services\IOlFolderViewModel.vb" />
@@ -381,7 +382,7 @@
     <Compile Include="Fritz!Box\Extended\ContactEx.vb" />
     <Compile Include="Fritz!Box\Extended\PhonebookEx.vb" />
     <Compile Include="Fritz!Box\FritzBoxStatus.vb" />
-    <Compile Include="KeyboardHooking.vb" />
+    <Compile Include="Misc\KeyboardHooking.vb" />
     <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Localize\Länder.Designer.vb">
@@ -404,9 +405,6 @@
     </Compile>
     <Compile Include="Formulare\Optionen\Controls\OptionsLink.xaml.vb">
       <DependentUpon>OptionsLink.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Controls\OptionsHinweis.xaml.vb">
-      <DependentUpon>OptionsHinweis.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptMicroSIPView.xaml.vb">
       <DependentUpon>OptMicroSIPView.xaml</DependentUpon>
@@ -464,8 +462,8 @@
     </Compile>
     <Compile Include="Fritz!Box\FritzBoxJSONStruct.vb" />
     <Compile Include="Fritz!Box\FritzBoxAnrufliste.vb" />
-    <Compile Include="DfltWerte.vb" />
-    <Compile Include="Extensions.vb" />
+    <Compile Include="Misc\DfltWerte.vb" />
+    <Compile Include="Misc\Extensions.vb" />
     <Compile Include="Formulare\Common\Services\NotifyEventArgs.vb" />
     <Compile Include="Localize\resImageMso.Designer.vb">
       <DependentUpon>resImageMso.resx</DependentUpon>
@@ -496,6 +494,7 @@
     <Compile Include="Optionen\WebFunctions.vb" />
     <Compile Include="Outlook\ExplorerWrapper.vb" />
     <Compile Include="Outlook\InspectorWrapper.vb" />
+    <Compile Include="Outlook\OfficeColors.vb" />
     <Compile Include="Outlook\OutlookContactFields.vb" />
     <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="Kontakte\NummernTypen.vb" />
@@ -515,7 +514,7 @@
     <Compile Include="Kontakte\Rückwärtssuche.vb" />
     <Compile Include="Kontakte\VCard.vb" />
     <Compile Include="Logging\Logging.vb" />
-    <Compile Include="Nutzerdaten.vb" />
+    <Compile Include="Misc\Nutzerdaten.vb" />
     <Compile Include="Optionen\OutlookOrdner.vb" />
     <Compile Include="Optionen\OutlookOrdnerListe.vb" />
     <Compile Include="Optionen\Serializer.vb" />
@@ -524,7 +523,7 @@
     <Compile Include="Outlook\Fenster.vb" />
     <Compile Include="SoftPhone\Phoner.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
-    <Compile Include="Rijndael.vb" />
+    <Compile Include="Misc\Rijndael.vb" />
     <Compile Include="Formulare\Common\Services\Converters.vb" />
     <Compile Include="Formulare\Common\Services\IDialogService.vb" />
     <Compile Include="Formulare\Common\Services\DialogService.vb" />
@@ -548,7 +547,7 @@
     <Compile Include="ThisAddIn.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UnSaveNativeMethods.vb" />
+    <Compile Include="Misc\UnSaveNativeMethods.vb" />
     <None Include="packages.config" />
     <None Include="Telefonie\Listen\Vorwahlen.xsd">
       <SubType>Designer</SubType>
@@ -636,6 +635,15 @@
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="My Project\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
     <Page Include="Formulare\AnrMon\AnrMonWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -643,6 +651,14 @@
     <Page Include="Formulare\Common\Controls\WatermarkTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\Common\Themes\DarkTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Common\Themes\LightTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\FBoxData\FBoxDataWPF.xaml">
       <SubType>Designer</SubType>
@@ -700,10 +716,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Formulare\Optionen\Controls\OptionsTextBlock.xaml">
-      <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
     <Page Include="Formulare\Optionen\Resources\Optionen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -757,10 +769,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Controls\OptionsLink.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\Optionen\Controls\OptionsHinweis.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

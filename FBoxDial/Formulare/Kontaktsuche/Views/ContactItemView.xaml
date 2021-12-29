@@ -4,10 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fbd="clr-namespace:FBoxDial"
-             xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=fbd:ContactItemViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="25" d:DesignWidth="400">
+             d:DesignHeight="25" d:DesignWidth="400" >
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -26,10 +25,6 @@
 
         <ContentPresenter Grid.Column="0" 
                           Content="{StaticResource ContactCard_16x}"/>
-
-        <!--<Image Grid.Column="0" 
-               Margin="5"
-               Source="{StaticResource DefaultContactImage}"/>-->
 
         <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="5"
                    Text="{Binding FullName, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />    

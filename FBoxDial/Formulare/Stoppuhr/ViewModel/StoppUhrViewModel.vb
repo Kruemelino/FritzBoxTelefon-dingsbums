@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Windows.Input
+Imports System.Windows.Media
 Imports System.Windows.Threading
 
 Public Class StoppUhrViewModel
@@ -148,6 +149,7 @@ Public Class StoppUhrViewModel
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)
         ' Window Command
         ClosingCommand = New RelayCommand(AddressOf Closing)
+
     End Sub
 
     Private Sub LadeDaten()
@@ -171,6 +173,9 @@ Public Class StoppUhrViewModel
         If XMLData.POptionen.CBSetStoppUhrBColor Then
             BackgroundColor = XMLData.POptionen.TBStoppUhrBColorHex
             ForeColor = XMLData.POptionen.TBStoppUhrFColorHex
+        Else
+            BackgroundColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColour"), SolidColorBrush).Color.ToString()
+            ForeColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("ControlDefaultForeground"), SolidColorBrush).Color.ToString()
         End If
 
         ' Starte die Stoppuhr
@@ -263,7 +268,6 @@ Public Class StoppUhrViewModel
 
         NLogger.Debug($"Stoppuhr angehalten")
     End Sub
-
 
 #Region "Stoppuhr"
     Private Sub StoppUhrTick(sender As Object, e As EventArgs)

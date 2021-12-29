@@ -29,8 +29,7 @@
                   SelectedValuePath="Unformatiert"
                   Text="{Binding Path=TelNr.Unformatiert, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
         
-        <Button Style="{StaticResource IconTextButton}"
-                Content="{x:Static localize:LocWählclient.strDial}" 
+        <Button Content="{x:Static localize:LocWählclient.strDial}" 
                 Tag="{StaticResource CallTo_16x}"
                 Command="{Binding DialVM.DialCommand}" 
                 CommandParameter="{Binding ElementName=CBoxTelNr, Path=Text}"               

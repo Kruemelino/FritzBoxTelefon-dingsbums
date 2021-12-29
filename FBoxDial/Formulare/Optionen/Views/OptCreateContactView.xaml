@@ -21,7 +21,8 @@
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strCreateContactsHead}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strCreateContactsInfo}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strCreateContactsInfo}"/>
         
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strCreateContactsCBKErstellen}" 

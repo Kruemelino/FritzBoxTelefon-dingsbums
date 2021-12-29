@@ -68,6 +68,9 @@ Es liegt mir fern, fremden Code als meinen zu verkaufen. (Falls ich was vergesse
 * WPF TimePicker: Michael Detras [Creating a WPF Custom Control](http://www.nullskull.com/a/1401/creating-a-wpf-custom-control.aspx)
 * Passwortverschlüsselung: [Rijndael Encryption in VB.NET](http://www.freevbcode.com/ShowCode.asp?ID=4520)
 * Routine zur Überprüfung der installierten .NET Version: Christoph Nahr [Check .NET Version with Inno Setup](http://kynosarges.org/DotNetVersion.html)
+* WPF in VSTO Addins [Using WPF resource dictionary from separate assembly in Excel VSTO](https://github.com/didzispetkus/vsto-external-resource-library)
+* WPF Dark Theme: AngryCarrot789 [WPFDarkTheme](https://github.com/AngryCarrot789/WPFDarkTheme)
+* WPF Dark DataGrid: Chris Davis [Data Grid XAML Styling](https://gist.github.com/chrdavis/288d743362b963b875832cc493d2cc94)
 
 ### Datenschutz
 Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.

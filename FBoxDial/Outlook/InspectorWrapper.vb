@@ -2,7 +2,6 @@
 
 Friend Class InspectorWrapper
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-
     Private Property Inspektor As Inspector
     Private Property OlKontakt As ContactItem
 

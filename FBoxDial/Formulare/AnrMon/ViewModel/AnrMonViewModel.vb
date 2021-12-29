@@ -170,9 +170,15 @@ Public Class AnrMonViewModel
         DatenService = New AnrMonService
         DialogService = New DialogService
 
+        ' Theme
+        DatenService.UpdateTheme()
+
         If XMLData.POptionen.CBSetAnrMonBColor Then
             BackgroundColor = XMLData.POptionen.TBAnrMonBColorHex
             ForeColor = XMLData.POptionen.TBAnrMonFColorHex
+        Else
+            BackgroundColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColour"), SolidColorBrush).Color.ToString()
+            ForeColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("ControlDefaultForeground"), SolidColorBrush).Color.ToString()
         End If
     End Sub
 

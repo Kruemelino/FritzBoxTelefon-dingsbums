@@ -20,3 +20,4 @@ Public Class KontaktsucheWPF
         Show()
     End Sub
 End Class
+

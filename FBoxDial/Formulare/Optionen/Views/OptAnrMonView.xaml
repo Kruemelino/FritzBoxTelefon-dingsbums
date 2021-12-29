@@ -34,8 +34,9 @@
                  Text="{Binding OptVM.TBEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                  IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strAnrMonHideInfo}"
-                            IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strAnrMonHideInfo}"
+               IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
         
         <CheckBox Style="{StaticResource OptCheckBox}"
                   Content="{x:Static localize:LocOptionen.strAnrMonCBHideCONNECT}" 
@@ -73,7 +74,8 @@
 
         </Grid>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strAnrMonPosInfo}" />
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strAnrMonPosInfo}" />
         
         <TextBox Style="{StaticResource OptTextBox}"
                  Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosX}"

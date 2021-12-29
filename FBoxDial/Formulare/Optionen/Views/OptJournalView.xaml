@@ -40,8 +40,9 @@
 
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strJournalHead}"/>
-        
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strJournalInfo}"/>     
+
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strJournalInfo}"/>     
 
         <fbd:OutlookFolderView DataContext="{Binding Root}" />
         

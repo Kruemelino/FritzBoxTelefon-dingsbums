@@ -7,14 +7,15 @@
         xmlns:localize="clr-namespace:FBoxDial.Localize"
         mc:Ignorable="d" 
         MinHeight="450" MinWidth="600" Height="520" Width="700" Focusable="False" IsTabStop="False" Name="Optionen"
-        d:DataContext="{d:DesignInstance Type=fbd:OptionenViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=fbd:OptionenViewModel, IsDesignTimeCreatable=False}"
         fbd:WindowBehavior.Loaded="{Binding LoadedCommand}"
-        Title="{x:Static localize:LocOptionen.strConfig}">
-    
+        Title="{x:Static localize:LocOptionen.strConfig}"
+        Style="{DynamicResource CustomToolWindowStyle}" >
+
     <Window.DataContext>
         <fbd:OptionenViewModel/>
     </Window.DataContext>
-    
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -69,30 +70,24 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Style="{StaticResource IconTextButton}"
-                    Content="{x:Static localize:LocOptionen.strSave}" 
-                    Tag="{DynamicResource Save_16x}"
-                    IsDefault="True" 
+            <Button Content="{x:Static localize:LocOptionen.strSave}" 
+                    IsDefault="True" Margin="8"
                     Grid.Column="0"
                     Command="{Binding SaveCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
 
-            <Button Style="{StaticResource IconTextButton}"
-                    Content="{x:Static localize:LocOptionen.strUndo}" 
-                    Tag="{DynamicResource Undo_16x}"
+            <Button Content="{x:Static localize:LocOptionen.strUndo}" 
                     IsCancel="False" 
-                    Grid.Column="1"
+                    Grid.Column="1" Margin="8"
                     Command="{Binding UndoCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
 
-            <Button Style="{StaticResource IconTextButton}"
-                    Content="{x:Static localize:LocOptionen.strCancel}" 
-                    Tag="{DynamicResource Cancel_16x}"
+            <Button Content="{x:Static localize:LocOptionen.strCancel}" 
                     IsCancel="True" 
-                    Grid.Column="2"
+                    Grid.Column="2" Margin="8"
                     Command="{Binding CancelCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
-            
+
         </Grid>
     </Grid>
 

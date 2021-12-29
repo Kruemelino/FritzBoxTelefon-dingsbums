@@ -22,7 +22,8 @@
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strTellowsHeadInfo}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTellowsInfo}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strTellowsInfo}"/>
         
         <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strTellowsHomepage}" 
                          URL="https://www.tellows.de/" 
@@ -68,8 +69,9 @@
 
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strTellowsHeadFBoxRufsperre}"/>
-        
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTellowsInfoFBRufsperre}"/>
+
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strTellowsInfoFBRufsperre}"/>
         
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strTellowsAutoUpdateScoreList}" 
@@ -84,14 +86,11 @@
                  Tag="{x:Static localize:LocOptionen.strTellowsEntryNumberCount}"
                  Text="{Binding OptVM.CBTellowsEntryNumberCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Expander Style="{StaticResource OptExpander}"
-                  Header="{x:Static localize:LocOptionen.strTellowsHeadAccountInfo}">
+        <Expander Header="{x:Static localize:LocOptionen.strTellowsHeadAccountInfo}">
 
             <StackPanel>
-                <Button Style="{StaticResource IconTextButton}"
-                        Tag="{DynamicResource Import_16x}" Height="25"
-                        Content="{x:Static localize:LocOptionen.strTellowsLadeAccountInfo}" 
-                        Margin="4"
+                <Button Content="{x:Static localize:LocOptionen.strTellowsLadeAccountInfo}" 
+                        Margin="4" Height="25"
                         Command="{Binding TellowsAccountInfoCommand}" />
 
                 <TextBox Margin="0,0,0,4"
@@ -108,18 +107,15 @@
             </StackPanel>
         </Expander>
         
-        <Expander Style="{StaticResource OptExpander}"
-                  Header="{x:Static localize:LocOptionen.strTellowsTest}">
+        <Expander Header="{x:Static localize:LocOptionen.strTellowsTest}">
             
             <StackPanel>
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
                          Text="{Binding TBTestTellowsInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <Button Style="{StaticResource IconTextButton}"
-                        Tag="{DynamicResource Import_16x}" Height="25"
-                        Content="{x:Static localize:LocOptionen.strTellowsStartLiveRequest}" 
-                        Margin="4"
+                <Button Content="{x:Static localize:LocOptionen.strTellowsStartLiveRequest}" 
+                        Margin="4" Height="25"
                         Command="{Binding TellowsLiveAPICommand}" />
 
                 <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
@@ -160,8 +156,13 @@
 
                     <Label Grid.Row="0" Grid.Column="2" Content="{x:Static localize:LocOptionen.strTellowsCallerNames}" VerticalAlignment="Bottom"/>
                     <DataGrid Grid.Row="1" Grid.Column="2" MaxHeight="100"
-                              ItemsSource="{Binding TellowsResponse.CallerTypes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                              Style="{StaticResource DataGridStyle}">
+                              HeadersVisibility="Column" AutoGenerateColumns="False" 
+                              GridLinesVisibility="Horizontal"        
+                              HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
+                              VerticalGridLinesBrush="{StaticResource ContainerBorder}"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                              ItemsSource="{Binding TellowsResponse.CallerTypes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Path=Name}" />

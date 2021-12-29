@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:fbd="clr-namespace:FBoxDial"
-                    xmlns:localize="clr-namespace:FBoxDial.Localize">
+                    xmlns:fbd="clr-namespace:FBoxDial">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
@@ -57,15 +56,16 @@
         <fbd:OptTestView />
     </DataTemplate>
    
-    <Style x:Key="OptHeader" TargetType="{x:Type TextBlock}" >
+    <Style x:Key="OptHeader" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}"/>
         <Setter Property="FontWeight" Value="DemiBold"/>
         <Setter Property="Margin" Value="0,2,0,4"/>
-        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource ControlDarkerBackground}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>        
     </Style>
 
     <DataTemplate x:Key="HeaderTemplate">
-        <Border Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" 
+        <Border Background="{DynamicResource ControlDarkerBackground}" 
                 CornerRadius="2">
             
             <TextBlock Text="{Binding}" 
@@ -77,12 +77,12 @@
         </Border>
     </DataTemplate>
 
-    <Style x:Key="OptExpander" TargetType="{x:Type Expander}" >
+    <Style x:Key="OptExpander" TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}" >
         <Setter Property="Margin" Value="0,2,0,4"/>
         <Setter Property="HeaderTemplate" Value="{StaticResource HeaderTemplate}"/>
     </Style>
 
-    <Style x:Key="OptCheckBox" TargetType="{x:Type CheckBox}" >
+    <Style x:Key="OptCheckBox" TargetType="{x:Type CheckBox}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -146,27 +146,18 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RadioButton}">
                     <Grid>
-                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" IsHitTestVisible="False" Content="{TemplateBinding Content}"/>
-                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" Content="{TemplateBinding Content}" Opacity="0"/>
+                        <!--<CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" 
+                                  Content="{TemplateBinding Content}"
+                                  Margin="2,0,0,0" IsHitTestVisible="False"/>-->
+                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" 
+                                  Content="{TemplateBinding Content}" Margin="1,0,0,0"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}" >
-        <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="CanUserAddRows" Value="False"/>
-        <Setter Property="CanUserDeleteRows" Value="False"/>
-        <Setter Property="GridLinesVisibility" Value="None"/>
-        <Setter Property="MinHeight" Value="20"/>
-        <Setter Property="MaxHeight" Value="180"/>
-        <Setter Property="Margin" Value="4"/>
-        <Setter Property="SelectionMode" Value="Single"/>
-        <Setter Property="HeadersVisibility" Value="None"/>
-    </Style>
-
-    <Style x:Key="ConsoleTextBox" TargetType="{x:Type TextBox}">
+    <Style x:Key="ConsoleTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="AcceptsReturn" Value="True"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -191,8 +182,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="ResultTextBox" TargetType="{x:Type TextBox}">
+
+    <Style x:Key="ResultTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="AcceptsReturn" Value="True"/>
         <Setter Property="TextWrapping" Value="Wrap"/>

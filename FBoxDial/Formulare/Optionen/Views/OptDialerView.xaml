@@ -19,8 +19,7 @@
     
     <StackPanel x:Name="MainStackPanel" Margin="8">
 
-        <TextBlock Style="{StaticResource OptHeader}" 
-                   Text="{x:Static localize:LocOptionen.strDialerHead}"/>
+        <TextBlock Text="{x:Static localize:LocOptionen.strDialerHead}"/>
         
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strDialerCBForceDialLKZ}" 

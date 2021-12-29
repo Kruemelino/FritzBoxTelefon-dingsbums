@@ -29,7 +29,8 @@
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strMicroSIPHeadConfig}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strMicroSIPInfo}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strMicroSIPInfo}"/>
 
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strMicroSIPCBMicroSIP}" 
@@ -48,7 +49,7 @@
 
             <Button Grid.Column="2" Margin="0"
                     Content="{DynamicResource ImportFile_16x}" 
-                    Style="{StaticResource MiniIconButton}"
+                    Style="{DynamicResource MiniIconButton}"
                     Command="{Binding MicroSIPPathCommand}" />
 
             <TextBox Grid.Column="3" IsReadOnly="True"
@@ -57,43 +58,39 @@
 
         </Grid>
 
-        <fbd:OptionsTextBlock Label="{x:Static localize:LocOptionen.strMicroSIPPhoneInfo}"/>
+        <TextBlock Text="{x:Static localize:LocOptionen.strMicroSIPPhoneInfo}"/>
 
-        <Border BorderThickness="0.5" Margin="0,0,0,4">
-            <Border.BorderBrush>
-                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
-            </Border.BorderBrush>
+        <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  HeadersVisibility="None" AutoGenerateColumns="False"               
+                  GridLinesVisibility="Horizontal"        
+                  HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
+                  VerticalGridLinesBrush="{StaticResource ContainerBorder}"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" 
+                  MaxHeight="150" Margin="0,4">
 
-            <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                      Style="{StaticResource DataGridStyle}" >
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <RadioButton GroupName="MicroSIP" 
+                                         Content="{Binding Path=Name}" 
+                                         IsChecked="{Binding Path=IsMicroSIP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Style="{StaticResource CheckBoxRadioButton}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
 
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <RadioButton GroupName="MicroSIP" 
-                                             Content="{Binding Path=Name}" 
-                                             IsChecked="{Binding Path=IsMicroSIP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                             Style="{StaticResource CheckBoxRadioButton}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-
-                <DataGrid.ItemContainerStyle>
-                    <Style TargetType="DataGridRow">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsIPPhone}" 
-                                         Value="False">
-
-                                <Setter Property="Visibility" 
-                                        Value="Collapsed"/>
-
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.ItemContainerStyle>
-            </DataGrid>
-        </Border>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsIPPhone}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+        </DataGrid>
     </StackPanel>
 </UserControl>

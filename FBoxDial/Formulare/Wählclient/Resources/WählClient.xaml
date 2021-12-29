@@ -24,11 +24,11 @@
                                   ContactDialTemplate="{StaticResource ContactDialTemplate}"/>
 
 
-    <Style x:Key="DGTelNr" TargetType="{x:Type DataGrid}">
+    <Style x:Key="DGTelNr" TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
         <Setter Property="HeadersVisibility" Value="None" />
         <Setter Property="AutoGenerateColumns" Value="False"  />
-        <Setter Property="HorizontalGridLinesBrush" Value="LightGray"  />
-        <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource ContainerBorder}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource ContainerBorder}" />
         <Setter Property="CanUserAddRows" Value="False" />
         <Setter Property="CanUserDeleteRows" Value="False" />
         <Setter Property="CanUserReorderColumns" Value="False" />
@@ -40,7 +40,7 @@
         <Setter Property="Margin" Value="4,4,4,0" />
     </Style>
 
-    <Style x:Key="MiniIconButton" TargetType="{x:Type Button}" >
+    <Style x:Key="MiniIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" >
         <Setter Property="Margin" Value="0,4,4,0" />
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -52,7 +52,7 @@
         <Setter Property="Height" Value="20" />
     </Style>
 
-    <Style x:Key="MiniIconToggleButton" TargetType="{x:Type ToggleButton}" >
+    <Style x:Key="MiniIconToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}" >
         <Setter Property="Margin" Value="0,4,4,0" />
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Top"/>
@@ -62,10 +62,9 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Width" Value="20" />
         <Setter Property="Height" Value="20" />
-        <Setter Property="Foreground" Value="#FF424242"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ToggleButton">
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Background="{TemplateBinding Background}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
@@ -78,7 +77,7 @@
                 <DataTemplate>
                     <ContentControl>
                         <ContentControl.Style>
-                            <Style TargetType="{x:Type ContentControl}">
+                            <Style TargetType="{x:Type ContentControl}" BasedOn="{StaticResource {x:Type ContentControl}}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" Value="True">
                                         <Setter Property="Content" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}" />
@@ -103,38 +102,11 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="Foreground" Value="Red" />
     </Style>
-    
-    <Style x:Key="DirektCallComboBox" TargetType="{x:Type ComboBox}">
+
+    <Style x:Key="DirektCallComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="Margin" Value="4"/>
         <Setter Property="IsEditable" Value="True"/>
         <Setter Property="FontSize" Value="14"/>
-    </Style>
-    
-    <Style x:Key="IconTextButton" TargetType="{x:Type Button}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid Margin="0,0,24,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="24"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
-                        <ContentControl Content="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" 
-                                        Grid.Column="0" Margin="4,0"                                    
-                                        HorizontalAlignment="Left"/>
-
-                        <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Center"/>
-
-                    </Grid>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
 </ResourceDictionary>

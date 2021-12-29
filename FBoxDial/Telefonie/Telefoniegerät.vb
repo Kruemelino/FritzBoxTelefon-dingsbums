@@ -29,6 +29,12 @@ Public Class Telefoniegerät
         End Get
     End Property
 
+    <XmlIgnore> Public ReadOnly Property IsIPPhone As Boolean
+        Get
+            Return TelTyp = TelTypen.IP
+        End Get
+    End Property
+
     <XmlIgnore> Public ReadOnly Property IsDialable As Boolean
         Get
             ' Kein Fax

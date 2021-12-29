@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fbd="clr-namespace:FBoxDial"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Style="{DynamicResource CustomToolWindowStyle}"
         Focusable="False" IsTabStop="False" ResizeMode="NoResize"
-        d:DesignHeight="140" d:DesignWidth="200" Height="140" Width="200"
+        Height="140" Width="200"
         d:DataContext="{d:DesignInstance Type=fbd:StoppUhrViewModel, IsDesignTimeCreatable=True}"         
         fbd:WindowBehavior.Closing="{Binding ClosingCommand}"
-        Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-        Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, TargetNullValue={StaticResource {x:Static SystemColors.WindowBrushKey}}}">
+        Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+        Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -18,9 +18,7 @@
                 <ResourceDictionary Source="Resources/Stoppuhr.xaml"/>
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="Foreground" 
-                                     Color="{Binding ForeColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, 
-                                                                TargetNullValue={StaticResource {x:Static SystemColors.ControlTextColorKey}}, 
-                                                                FallbackValue={StaticResource {x:Static SystemColors.ControlTextColorKey}}}"/>
+                                     Color="{Binding ForeColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -49,48 +47,42 @@
 
             <DockPanel Grid.Row="0">
                 <TextBlock DockPanel.Dock="Left"
-                           Style="{StaticResource Gegenstelle}"
-                           Foreground="{StaticResource Foreground}" 
+                           Style="{StaticResource Gegenstelle}" Foreground="{StaticResource Foreground}"
                            Text="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
                 <TextBlock DockPanel.Dock="Right"
-                           Foreground="{StaticResource Foreground}" 
-                           Style="{StaticResource EigeneNummer}"
+                           Style="{StaticResource EigeneNummer}" Foreground="{StaticResource Foreground}"
                            Text="{Binding Path=EigeneTelNr}"/>
             </DockPanel>
-
             
             <TextBlock Grid.Row="1"
-                       Foreground="{StaticResource Foreground}" 
-                       Style="{StaticResource Zeit}"
+                       Style="{StaticResource Zeit}" Foreground="{StaticResource Foreground}"
                        Text="{Binding Path=Beginn, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"/>
 
             <Grid Grid.Row="2">
                 <ContentControl HorizontalAlignment="Left" Width="15" Margin="4">
                     <ContentControl.Style>
                         <Style TargetType="ContentControl">
-                            <Setter Property="ContentTemplate" Value="{StaticResource CallMade}" />
+                            <Setter Property="ContentTemplate" Value="{DynamicResource CallMade}" />
                             
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=Eingehend, Mode=OneWay}" Value="True">
-                                    <Setter Property="ContentTemplate" Value="{StaticResource CallReceived}" />
+                                    <Setter Property="ContentTemplate" Value="{DynamicResource CallReceived}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </ContentControl.Style>
                 </ContentControl>
 
-                <TextBlock HorizontalAlignment="Center"
+                <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource Foreground}"
                            Style="{StaticResource Stoppuhr}" FontSize="20"
-                           Foreground="{StaticResource Foreground}" 
                            Text="{Binding Path=Dauer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=hh\\:mm\\:ss}"/>
             </Grid>
             
 
 
             <TextBlock Grid.Row="3"
-                       Foreground="{StaticResource Foreground}" 
-                       Style="{StaticResource Zeit}"
+                       Style="{StaticResource Zeit}" Foreground="{StaticResource Foreground}"
                        Text="{Binding Path=Ende, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=g}"
                        Visibility="{Binding Ende, Converter={StaticResource DateToVisibilityConverter}}">
                                

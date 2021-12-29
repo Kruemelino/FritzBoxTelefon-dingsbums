@@ -33,5 +33,7 @@ Public Class DataKontaktsuche
         Dim FBoxDial As New FritzBoxWählClient
         FBoxDial.WählboxStart(olContact)
     End Sub
-
+    Friend Sub UpdateTheme() Implements IDataKontaktsuche.UpdateTheme
+        OfficeColors.UpdateTheme()
+    End Sub
 End Class
