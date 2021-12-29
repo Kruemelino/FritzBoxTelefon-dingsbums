@@ -18,7 +18,7 @@
     </UserControl.Resources>
     
     <StackPanel x:Name="MainStackPanel" Margin="8">
-        <Expander Style="{StaticResource OptExpander}" IsExpanded="True"
+        <Expander IsExpanded="True" Style="{StaticResource OptExpander}"
                   Header="{x:Static localize:LocOptionen.strBaseHeadFB}">            
             
             <StackPanel>     
@@ -57,12 +57,13 @@
             </StackPanel>
         </Expander>
 
-        <Expander Style="{StaticResource OptExpander}" IsExpanded="True"
+        <Expander IsExpanded="True"
                   Header="{x:Static localize:LocOptionen.strBaseHeadTel}">
 
-            <StackPanel>                
+            <StackPanel>
 
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strBaseInfoKZ}"/>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strBaseInfoKZ}"/>
         
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strBaseTBOrtsKZ}"
@@ -75,11 +76,10 @@
             </StackPanel>
         </Expander>
         
-        <Expander Style="{StaticResource OptExpander}" IsExpanded="True"
+        <Expander IsExpanded="True"
                   Header="{x:Static localize:LocOptionen.strBaseHeadFormatTel}">
 
             <StackPanel>
-        
                 <CheckBox Style="{StaticResource OptCheckBox}" 
                           Content="{x:Static localize:LocOptionen.strBaseCBTelNrGruppieren}" 
                           IsChecked="{Binding OptVM.CBTelNrGruppieren, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>   
@@ -94,7 +94,7 @@
             </StackPanel>
         </Expander>       
 
-        <Expander Style="{StaticResource OptExpander}" IsExpanded="True"
+        <Expander IsExpanded="True"
                   Header="{x:Static localize:LocOptionen.strBaseHeadList}">
             <StackPanel>     
         
@@ -104,7 +104,7 @@
             </StackPanel>
         </Expander>
 
-        <Expander Style="{StaticResource OptExpander}" IsExpanded="True"
+        <Expander IsExpanded="True"
                   Header="{x:Static localize:LocOptionen.strBaseHeadLog}">
             <StackPanel>
 
@@ -122,24 +122,26 @@
             </StackPanel>
         </Expander>
         
-        <Expander Style="{StaticResource OptExpander}"
-                  Header="{x:Static localize:LocOptionen.strBaseHeadTweak}">
+        <Expander Header="{x:Static localize:LocOptionen.strBaseHeadTweak}">
             
             <StackPanel>
-                
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strBaseTweakKeyboardInfo}"/>
+
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strBaseTweakKeyboardInfo}"/>
 
                 <CheckBox Style="{StaticResource OptCheckBox}" 
                           Content="{x:Static localize:LocOptionen.strBaseTweakKeyboard}" 
                           IsChecked="{Binding OptVM.CBKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strBaseTweakDisableMailCheckInfo}"/>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strBaseTweakDisableMailCheckInfo}"/>
                 
                 <CheckBox Style="{StaticResource OptCheckBox}" 
                           Content="{x:Static localize:LocOptionen.strBaseTweakDisableMailCheck}" 
                           IsChecked="{Binding OptVM.CBDisableMailCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeoutInfo}"/>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeoutInfo}"/>
                 
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeout}"

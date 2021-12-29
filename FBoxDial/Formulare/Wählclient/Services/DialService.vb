@@ -3,6 +3,10 @@
 Public Class DialService
     Implements IDialService
 
+    Friend Sub UpdateTheme() Implements IDialService.UpdateTheme
+        OfficeColors.UpdateTheme()
+    End Sub
+
     Friend ReadOnly Property GetMobil As Boolean Implements IDialService.GetMobil
         Get
             Return XMLData.POptionen.CBCheckMobil

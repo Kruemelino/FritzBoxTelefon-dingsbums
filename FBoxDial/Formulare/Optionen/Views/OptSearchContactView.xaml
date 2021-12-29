@@ -22,7 +22,8 @@
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strSearchContactHeadSearch}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strSearchContactInfo}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strSearchContactInfo}"/>
         
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strSearchContactCBSucheUnterordner}" 

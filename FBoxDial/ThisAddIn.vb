@@ -12,7 +12,7 @@ Public NotInheritable Class ThisAddIn
     Friend Property OffeneAnrMonWPF As List(Of AnrMonWPF)
     Friend Property OffeneStoppUhrWPF As List(Of StoppUhrWPF)
     Friend Property AddinWindows As New List(Of Windows.Window)
-
+    Friend Property WPFApplication As App
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Timer für Raktivierung nach StandBy"
@@ -29,6 +29,10 @@ Public NotInheritable Class ThisAddIn
         ' Logging konfigurieren
         LogManager.Configuration = DefaultNLogConfig()
 
+        ' Application laden https://github.com/didzispetkus/vsto-external-resource-library
+        If Windows.Application.Current Is Nothing Then WPFApplication = New App
+        Windows.Application.Current.ShutdownMode = Windows.ShutdownMode.OnExplicitShutdown
+
         ' Outlook.Application initialisieren
         If Application.ActiveExplorer IsNot Nothing Then
             ' Ereignishandler für StandBy / Resume
@@ -36,7 +40,7 @@ Public NotInheritable Class ThisAddIn
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf PowerModeChanged
 
             ' Starte die Funktionen des Addins asynchron
-            NLogger.Info($"Starte {My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version}...")
+            NLogger.Info($"Starte {My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} ({Globals.ThisAddIn.Application.Name} {Globals.ThisAddIn.Application.Version})...")
 
             StarteAddinFunktionen()
         Else
@@ -173,8 +177,10 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
-
         BeendeAddinFunktionen()
+
+        ' //github.com/didzispetkus/vsto-external-resource-library
+        If Windows.Application.Current IsNot Nothing Then Windows.Application.Current.Shutdown()
 
         ReleaseComObject(Application)
     End Sub

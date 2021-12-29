@@ -3,6 +3,8 @@
 Public Interface IFBoxDataService
     Sub Finalize()
 
+    Sub UpdateTheme()
+
 #Region "TAM Anrufbeantworter"
     Function GetTAMItems() As IEnumerable(Of FBoxAPI.TAMItem)
     Function GetMessagges(TAM As FBoxAPI.TAMItem) As IEnumerable(Of FBoxAPI.Message)
@@ -85,6 +87,5 @@ Public Interface IFBoxDataService
     Sub Dial(XMLDaten As FBoxAPI.Contact)
 #End Region
 #End Region
-
 
 End Interface

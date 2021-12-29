@@ -53,15 +53,13 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Button Grid.Column="0" Grid.Row="0"
-                        Style="{StaticResource IconTextButton}"
+                <Button Grid.Column="0" Grid.Row="0" Margin="8"
                         Content="{x:Static localize:LocFBoxData.strTellowsAddtoBlockListe}"
                         Tag="{DynamicResource StatusNo_16x}" 
                         Command="{Binding BlockCommand}"
                         IsEnabled="{Binding IsNotAktiv}" />
 
-                <Button Grid.Column="1" Grid.Row="0"
-                        Style="{StaticResource IconTextButton}"
+                <Button Grid.Column="1" Grid.Row="0" Margin="8"
                         Content="{x:Static localize:LocFBoxData.strCancel}" 
                         Tag="{DynamicResource Cancel_16x}"
                         Command="{Binding CancelCommand}" 
@@ -77,40 +75,44 @@
         </GroupBox>
 
         <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                            Style="{StaticResource DataGridStyle}" 
+                            HeadersVisibility="Column" AutoGenerateColumns="False"
+                            HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
+                            VerticalGridLinesBrush="{StaticResource ContainerBorder}"
+                            CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
                             ItemsSource="{Binding Path=TellowsList, UpdateSourceTrigger=PropertyChanged}"
                             ShowStatusBar="False" ShowElapsedTime="False"                                 
                             DateFormatString="d"  FilterLanguage="German">
             
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
+                    <Setter Property="Foreground" Value="{StaticResource ControlInvertedForeground}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Score}" Value="1">
-                            <Setter Property="Background" Value="{StaticResource score1}"></Setter>
+                            <Setter Property="Background" Value="{StaticResource score1}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Score}" Value="2">
-                            <Setter Property="Background" Value="{StaticResource score2}"></Setter>
+                            <Setter Property="Background" Value="{StaticResource score2}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Score}" Value="3">
-                            <Setter Property="Background" Value="{StaticResource score3}"></Setter>
+                            <Setter Property="Background" Value="{StaticResource score3}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Score}" Value="4">
-                            <Setter Property="Background" Value="{StaticResource score4}"></Setter>
+                            <Setter Property="Background" Value="{StaticResource score4}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Score}" Value="5">
-                            <Setter Property="Background" Value="{StaticResource score5}"></Setter>
+                            <Setter Property="Background" Value="{StaticResource score5}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Score}" Value="6">
-                            <Setter Property="Background" Value="{StaticResource score6}"></Setter>
+                            <Setter Property="Background" Value="{StaticResource score6}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Score}" Value="7">
-                            <Setter Property="Background" Value="{StaticResource score7}"></Setter>
+                            <Setter Property="Background" Value="{StaticResource score7}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Score}" Value="8">
-                            <Setter Property="Background" Value="{StaticResource score8}"></Setter>
+                            <Setter Property="Background" Value="{StaticResource score8}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Score}" Value="9">
-                            <Setter Property="Background" Value="{StaticResource score9}"></Setter>
+                            <Setter Property="Background" Value="{StaticResource score9}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

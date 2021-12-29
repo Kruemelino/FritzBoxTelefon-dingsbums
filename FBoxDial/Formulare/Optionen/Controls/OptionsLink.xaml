@@ -15,6 +15,7 @@
             </Style>
            
             <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockStyle">
+                <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             </Style>
@@ -26,11 +27,13 @@
 
         <DockPanel Style="{StaticResource DockPanelStyle}">
             <TextBlock Style="{StaticResource LinkTextBlockStyle}" DockPanel.Dock="Right">
-                <Hyperlink NavigateUri="{Binding Path=URL}" Hyperlink.RequestNavigate="Hyperlink_RequestNavigate">
-                    <TextBlock Text="{Binding Path=LinkLabel}" />
+                <Hyperlink NavigateUri="{Binding Path=URL, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
+                           Hyperlink.RequestNavigate="Hyperlink_RequestNavigate">
+                    
+                    <TextBlock Text="{Binding Path=LinkLabel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
                 </Hyperlink>
             </TextBlock>
-            <TextBlock Text="{Binding Path=Label}" Style="{StaticResource TextBlockStyle}" DockPanel.Dock="Left"/>            
+            <TextBlock Text="{Binding Path=Label, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource TextBlockStyle}" DockPanel.Dock="Left"/>            
         </DockPanel>
     </Grid>
 </UserControl>

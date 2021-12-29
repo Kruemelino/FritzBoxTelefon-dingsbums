@@ -79,19 +79,17 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Button Grid.Column="0" Grid.Row="0"
-                        Style="{StaticResource IconTextButton}"
+                <Button Grid.Column="0" Grid.Row="0" Margin="8"
                         Content="{x:Static localize:LocFBoxData.strStartJounalImport}"
                         Tag="{DynamicResource ShowTrimmedCallTree_16x}" 
                         Command="{Binding ImportCommand}"
                         IsEnabled="{Binding IsNotAktiv}"/>
 
-                <Button Grid.Column="1" Grid.Row="0"
-                        Style="{StaticResource IconTextButton}"
+                <Button Grid.Column="1" Grid.Row="0" Margin="8"
                         Content="{x:Static localize:LocFBoxData.strCancel}" 
                         Tag="{DynamicResource Cancel_16x}"
                         Command="{Binding CancelCommand}" 
-                        IsEnabled="{Binding IsAktiv}"/>
+                        IsEnabled="{Binding IsAktiv}" Cursor="Hand"/>
 
                 <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
                     <Label Content="{x:Static localize:LocFBoxData.strStatus}" Margin="8,0"/>
@@ -102,8 +100,12 @@
             </Grid>
         </GroupBox>
 
-        <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                            Style="{StaticResource DataGridStyle}" 
+        <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0"
+                            HeadersVisibility="Column" AutoGenerateColumns="False"
+                            HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
+                            VerticalGridLinesBrush="{StaticResource ContainerBorder}"
+                            CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
+                            SelectionUnit="FullRow"
                             ItemsSource="{Binding CallList, UpdateSourceTrigger=PropertyChanged}"
                             ShowStatusBar="False" ShowElapsedTime="False" ShowRowsCount="False"                                
                             DateFormatString="d" FilterLanguage="German" >

@@ -23,7 +23,7 @@
                     Content="{DynamicResource ContactCard_16x}" 
                     Command="{Binding ShowContactCommand}" />
 
-            <ToggleButton Style="{StaticResource MiniIconToggleButton}"
+            <ToggleButton Style="{StaticResource MiniIconToggleButton}" 
                           IsChecked="{Binding IsVIP, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                           IsEnabled="{Binding VIPEnabled}"
                           Command="{Binding VIPCommand}" 
@@ -34,7 +34,7 @@
 
         <Border x:Name="BoAnrBild" 
                 DockPanel.Dock="Right" 
-                BorderBrush="DimGray" 
+                BorderBrush="{StaticResource ContainerBorder}" 
                 BorderThickness="1" 
                 VerticalAlignment="top" 
                 Width="100"
@@ -53,7 +53,7 @@
                   IsEnabled="{Binding Path=DialVM.IsNotDialing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
             
             <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}">
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
                     <Setter Property="FontWeight">
                         <Setter.Value>
                             <MultiBinding Converter="{StaticResource TelNrToFontWeightConverter}" ConverterParameter="SemiBold">

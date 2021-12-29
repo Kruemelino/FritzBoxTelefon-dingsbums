@@ -19,6 +19,7 @@ Public Class StoppUhrWPF
 
         ' Erzeuge die Klasse für das automatische Ausblenden
         WindowHelper = New WindowHelper(Me)
+
     End Sub
 
     ''' <summary>

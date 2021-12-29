@@ -193,6 +193,8 @@ Public Class WählClientViewModel
         ' Interface
         DatenService = New DialService
         DialogService = New DialogService
+        ' Theme
+        DatenService.UpdateTheme()
     End Sub
 
     Private Sub SetData()

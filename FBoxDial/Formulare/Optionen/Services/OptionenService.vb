@@ -2,13 +2,17 @@
 Imports System.Threading
 Imports System.Threading.Tasks
 Imports System.Windows.Threading
-Imports Microsoft.Office.Interop
 Imports Microsoft.Office.Interop.Outlook
 
 Friend Class OptionenService
     Implements IOptionenService
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+
+    Friend Sub UpdateTheme() Implements IOptionenService.UpdateTheme
+        OfficeColors.UpdateTheme()
+    End Sub
+
 #Region "Grunddaten"
     Friend Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
 

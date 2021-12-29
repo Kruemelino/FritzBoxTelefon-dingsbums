@@ -19,7 +19,7 @@
     
     <StackPanel x:Name="MainStackPanel" Margin="8">
         <TextBlock Style="{StaticResource OptHeader}" 
-                   Text="{Binding OptVM.AddinVersion}"/>
+                   Text="{Binding OptVM.AddinVersion, FallbackValue=Version}"/>
 
         <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strInfoMail}" 
                          URL="mailto:kruemelino@gert-michael.de" 
@@ -36,22 +36,26 @@
         <TextBlock Style="{StaticResource OptHeader}"
                    Text="{x:Static localize:LocOptionen.strInfoHeadHaftung}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strInfoHaftung}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strInfoHaftung}"/>
 
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strInfoHeadDatenschutz}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strInfoDatenschutz}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strInfoDatenschutz}"/>
 
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strInfoHeadMarkenrecht}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strInfoMarkenrecht}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strInfoMarkenrecht}"/>
 
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strInfoSpendeHead}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strInfoSpende}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strInfoSpende}"/>
 
         <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strInfoSpendeLink}" 
                          URL="https://www.paypal.com/paypalme/gertmichael" 

@@ -55,6 +55,9 @@
         DatenService = New FBoxDataService
         DialogService = New DialogService
 
+        ' Themes
+        DatenService.UpdateTheme()
+
         ' Child Views
         With PageViewModels
             .Add(New FBoxDataCallListViewModel(DatenService, DialogService) With {.FBoxDataVM = Me})

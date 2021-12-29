@@ -1,6 +1,5 @@
 ﻿Imports System.Windows
 Imports System.Windows.Controls
-
 Public Class WatermarkTextBox
     Inherits UserControl
 

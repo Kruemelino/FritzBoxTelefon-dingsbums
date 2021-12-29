@@ -19,20 +19,20 @@
     
     <StackPanel x:Name="MainStackPanel" Margin="8">
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestInfo}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strTestInfo}"/>
         
-        <Expander Style="{StaticResource OptExpander}" 
-                  Header="{x:Static localize:LocOptionen.strTestTelNrHead}">
+        <Expander Header="{x:Static localize:LocOptionen.strTestTelNrHead}">
 
             <StackPanel>
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestTelNrInfo}"/>
-
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestTelNrInfo}"/>
+                
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
                          Text="{Binding TBTestTelNrInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Button Style="{StaticResource IconTextButton}"
-                        Tag="{DynamicResource Import_16x}" Height="25"
+                <Button Tag="{DynamicResource Import_16x}" Height="25"
                         Content="{x:Static localize:LocOptionen.strTestTelNrStart}" 
                         Margin="4"
                         Command="{Binding TestTelNrCommand}" />
@@ -75,18 +75,18 @@
             </StackPanel>
         </Expander>
 
-        <Expander Style="{StaticResource OptExpander}"
-                  Header="{x:Static localize:LocOptionen.strTestLoginHead}">
+        <Expander Header="{x:Static localize:LocOptionen.strTestLoginHead}">
             <StackPanel>
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestLoginInfo}"/>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestLoginInfo}"/>
+                
                 <TextBox Style="{StaticResource OptTextBox}" Margin="4"
                          Tag="{x:Static localize:LocOptionen.strBaseTBFBAdr}"
                          Text="{Binding TBFBAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 
                 <Button Margin="4"
                         Tag="{DynamicResource Refresh_16x}"
-                        Content="{x:Static localize:LocOptionen.strTestLoginLoadUserList}" 
-                        Style="{StaticResource IconTextButton}"                            
+                        Content="{x:Static localize:LocOptionen.strTestLoginLoadUserList}"                       
                         Command="{Binding TestUserListCommand}" />
 
                 <ComboBox Style="{StaticResource OptComboBox}" Margin="4"
@@ -108,8 +108,7 @@
                 
                 <Button Margin="4"
                         Tag="{DynamicResource Login_16x}"
-                        Content="{x:Static localize:LocOptionen.strTestStartLogin}" 
-                        Style="{StaticResource IconTextButton}"                            
+                        Content="{x:Static localize:LocOptionen.strTestStartLogin}"                            
                         Command="{Binding TestLoginCommand}" 
                         CommandParameter="{Binding ElementName=PwTest}"/>
 
@@ -118,17 +117,16 @@
             </StackPanel>
         </Expander>
 
-        <Expander Style="{StaticResource OptExpander}"
-                  Header="{x:Static localize:LocOptionen.strTestKontaktsucheHead}">
+        <Expander Header="{x:Static localize:LocOptionen.strTestKontaktsucheHead}">
             <StackPanel>
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestKontaktsucheInfo}"/>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestKontaktsucheInfo}"/>
 
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
                          Text="{Binding TBTestKontaktsucheInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Button Style="{StaticResource IconTextButton}"
-                        Tag="{DynamicResource Import_16x}" Height="25"
+                <Button Tag="{DynamicResource Import_16x}" Height="25"
                         Content="{x:Static localize:LocOptionen.strTestKontaktsucheStart}" 
                         Margin="4"
                         Command="{Binding TestKontaktsucheCommand}" />
@@ -138,18 +136,17 @@
             </StackPanel>
         </Expander>
 
-        <Expander Style="{StaticResource OptExpander}"
-                  Header="{x:Static localize:LocOptionen.strTestRWSHead}">
+        <Expander Header="{x:Static localize:LocOptionen.strTestRWSHead}">
             <StackPanel>
-                
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestRWSInfo}"/>
+
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestRWSInfo}"/>
                 
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
                          Text="{Binding TBTestRWSInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Button Style="{StaticResource IconTextButton}"
-                        Tag="{DynamicResource Import_16x}" Height="25"
+                <Button Tag="{DynamicResource Import_16x}" Height="25"
                         Content="{x:Static localize:LocOptionen.strTestRWSStart}" 
                         Margin="4"
                         Command="{Binding TestRWSCommand}" />
@@ -160,11 +157,11 @@
             </StackPanel>
         </Expander>
 
-        <Expander Style="{StaticResource OptExpander}"
-                  Header="{x:Static localize:LocOptionen.strTestAnrufmonitorHead}">
+        <Expander Header="{x:Static localize:LocOptionen.strTestAnrufmonitorHead}">
             <StackPanel>
 
-                <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strTestAnrMonInfo}"/>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestAnrMonInfo}"/>
 
                 <CheckBox Style="{StaticResource OptCheckBox}" 
                           Content="{x:Static localize:LocOptionen.strTestAnrMonCONNECT}" 
@@ -202,20 +199,9 @@
                                      IsChecked="{Binding RBBCLIR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </GroupBox>
-
-
-                
-                
-                
-                
-
                 
                 <Button Content="{x:Static localize:LocOptionen.strTestStartAnrMon}"
                         Command="{Binding TestAnrMonCommand}" Height="25"/>
-                
-
-
-
 
             </StackPanel>
         </Expander>

@@ -4,22 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fbd="clr-namespace:FBoxDial"
-        mc:Ignorable="d"
-        Height="104" Width="400" Focusable="False" IsTabStop="False" WindowStyle="None" 
-        MinWidth="400" MinHeight="100" ResizeMode="NoResize" AllowsTransparency="True"
+        mc:Ignorable="d" Style="{DynamicResource PopupWindowStyle}"
+        Height="104" Width="400" AllowsTransparency="True"
         d:DataContext="{d:DesignInstance Type=fbd:AnrMonViewModel, IsDesignTimeCreatable=False}"
         fbd:WindowBehavior.Closing="{Binding ClosingCommand}" 
-        Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, TargetNullValue={StaticResource {x:Static SystemColors.WindowBrushKey}}}">
+        Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/AnrMon.xaml"/>
-                <ResourceDictionary>
+                <ResourceDictionary>                    
                     <SolidColorBrush x:Key="Foreground" 
-                                     Color="{Binding ForeColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, 
-                                                                TargetNullValue={StaticResource {x:Static SystemColors.ControlTextColorKey}}, 
-                                                                FallbackValue={StaticResource {x:Static SystemColors.ControlTextColorKey}}}"/>
+                                     Color="{Binding ForeColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -29,7 +26,7 @@
         <fbd:AnrMonViewModel/>
     </Window.DataContext>
 
-    <Border BorderBrush="DimGray" BorderThickness="2">
+    <Border >
         <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
 
@@ -70,20 +67,17 @@
 
                 <!--Zeit-->
                 <TextBlock Grid.Row="0" Grid.Column="0" 
-                           Foreground="{StaticResource Foreground}" 
-                           Style="{StaticResource AnrMonZeit}"
+                           Style="{StaticResource AnrMonZeit}" Foreground="{StaticResource Foreground}"
                            Text="{Binding Path=Zeit, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=\{0:F\}}"/>
                 
                 <!--Gerät-->
                 <TextBlock Grid.Row="0" Grid.Column="1"
-                           Foreground="{StaticResource Foreground}" 
-                           Style="{StaticResource AnrMonEigeneNummer}"
+                           Style="{StaticResource AnrMonEigeneNummer}" Foreground="{StaticResource Foreground}"
                            Text="{Binding Path=AnrMonEigeneTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
                 <!--Telefonnummer-->
                 <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
-                           Foreground="{StaticResource Foreground}" 
-                           Style="{StaticResource AnrMonNummer}"
+                           Style="{StaticResource AnrMonNummer}" Foreground="{StaticResource Foreground}"
                            Text="{Binding Path=AnrMonTelNr, 
                                           FallbackValue='', 
                                           UpdateSourceTrigger=PropertyChanged, 
@@ -91,8 +85,7 @@
                            Visibility="{Binding ZeigeTelNr, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <!--Anrufer-->
-                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                           Foreground="{StaticResource Foreground}" >
+                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Foreground="{StaticResource Foreground}" >
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource AnrMonMainInfo}">
                             <Style.Triggers>
@@ -112,8 +105,7 @@
                 
                 <!--Firma-->
                 <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
-                           Foreground="{StaticResource Foreground}" 
-                           Style="{StaticResource AnrMonFirmenbezeichnung}"
+                           Style="{StaticResource AnrMonFirmenbezeichnung}" Foreground="{StaticResource Foreground}"
                            Text="{Binding Path=AnrMonExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            Visibility="{Binding ZeigeExInfo, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </Grid>

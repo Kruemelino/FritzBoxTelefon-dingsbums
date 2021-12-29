@@ -10,7 +10,8 @@
         Height="450" Width="900"
         Title="{x:Static localize:LocFBoxData.FBoxDataMainHeader}"
         fbd:WindowBehavior.Loaded="{Binding LoadedCommand}"
-        fbd:WindowBehavior.Closed="{Binding ClosedCommand}">
+        fbd:WindowBehavior.Closed="{Binding ClosedCommand}" 
+        Style="{DynamicResource CustomToolWindowStyle}">
 
     <Window.DataContext>
         <fbd:FBoxDataViewModel/>

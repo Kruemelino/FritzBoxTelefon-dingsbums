@@ -114,21 +114,6 @@
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
-    <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}" >
-        <Setter Property="Margin" Value="0,10,0,0"/>
-        <Setter Property="HeadersVisibility" Value="Column"/>
-        <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="HorizontalGridLinesBrush" Value="LightGray"/>
-        <Setter Property="VerticalGridLinesBrush" Value="LightGray"/>
-        <Setter Property="CanUserAddRows" Value="False"/>
-        <Setter Property="CanUserDeleteRows" Value="False"/>
-        <Setter Property="CanUserReorderColumns" Value="True"/>
-        <Setter Property="CanUserResizeRows" Value="True"/>
-        <Setter Property="CanUserSortColumns" Value="True"/>
-        <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="SelectionUnit" Value="FullRow"/>
-    </Style>
-
     <Style x:Key="DataGridCellCenter" TargetType="{x:Type DataGridCell}">
         <Setter Property="TextBlock.TextAlignment" Value="Center" />
     </Style>

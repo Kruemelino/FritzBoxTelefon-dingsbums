@@ -22,17 +22,20 @@
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strPhonerHeadInfo}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strPhonerInfo}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strPhonerInfo}"/>
 
-        <fbd:OptionsTextBlock Label="{x:Static localize:LocOptionen.strPhonerCopyRight}"/>
+        <TextBlock Text="{x:Static localize:LocOptionen.strPhonerCopyRight}"/>
         
         <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strSoftPhoneHomepage}" 
                          URL="http://phoner.de" LinkLabel="www.phoner.de"/>
 
         <TextBlock Style="{StaticResource OptHeader}" Text="{x:Static localize:LocOptionen.strPhonerHeadConfig}"/>
 
-        <fbd:OptionsHinweis Label="{x:Static localize:LocOptionen.strPhonerInfoConfig}"/>
-        <fbd:OptionsTextBlock Label="{x:Static localize:LocOptionen.strPhonerInfoLight}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strPhonerInfoConfig}"/>
+        
+        <TextBlock Text="{x:Static localize:LocOptionen.strPhonerInfoLight}"/>
        
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strPhonerOptCheckBox}" 
@@ -42,39 +45,39 @@
                                 Value="{Binding Path=OptVM.TBPhonerPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 DeCryptKey="{Binding Path=OptVM.DfltPhonerDeCryptKey, Mode=OneWay}"/>
 
-        <fbd:OptionsTextBlock Label="{x:Static localize:LocOptionen.strPhonerstrPhonerPhoneInfo}"/>
+        <TextBlock Text="{x:Static localize:LocOptionen.strPhonerstrPhonerPhoneInfo}"/>
         
-        <Border BorderThickness="0.5" Margin="0,0,0,4">
-            <Border.BorderBrush>
-                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
-            </Border.BorderBrush>
+        <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  HeadersVisibility="None" AutoGenerateColumns="False"                      
+                  GridLinesVisibility="Horizontal"        
+                  HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
+                  VerticalGridLinesBrush="{StaticResource ContainerBorder}"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" 
+                  MaxHeight="150" Margin="0,4">
 
-            <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                      Style="{StaticResource DataGridStyle}" >
-
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <RadioButton GroupName="Phoner" 
-                                             Content="{Binding Path=Name}" 
-                                             IsChecked="{Binding Path=IsPhoner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                             Style="{StaticResource CheckBoxRadioButton}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>                            
+                            <RadioButton GroupName="Phoner"
+                                         Content="{Binding Path=Name}" 
+                                         IsChecked="{Binding Path=IsPhoner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Style="{StaticResource CheckBoxRadioButton}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
                 
-                <DataGrid.ItemContainerStyle>
-                    <Style TargetType="DataGridRow">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsIPPhone}" Value="False">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>    
-                </DataGrid.ItemContainerStyle>
-            </DataGrid>
-        </Border>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsIPPhone}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>    
+            </DataGrid.ItemContainerStyle>
+        </DataGrid>
     </StackPanel>
 </UserControl>

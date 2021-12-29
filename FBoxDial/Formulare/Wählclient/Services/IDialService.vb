@@ -1,4 +1,5 @@
 ﻿Public Interface IDialService
+    Sub UpdateTheme()
 
 #Region "GetData"
     ''' <summary>

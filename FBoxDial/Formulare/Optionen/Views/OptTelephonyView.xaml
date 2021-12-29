@@ -27,8 +27,7 @@
             </Style>            
         </StackPanel.Resources>
         
-        <Expander Style="{StaticResource OptExpander}" 
-                  Header="{x:Static localize:LocOptionen.strTelephonyHeadImport}">
+        <Expander Header="{x:Static localize:LocOptionen.strTelephonyHeadImport}">
             
             <Border BorderThickness="0.5" 
                     Margin="0,0,0,4">
@@ -38,12 +37,10 @@
                 </Border.BorderBrush>
             
                 <StackPanel>
-                    <Button Style="{StaticResource IconTextButton}"
-                            Tag="{DynamicResource Import_16x}" Height="25"
-                            Content="{x:Static localize:LocOptionen.strTelephonyImportStart}" 
-                            Margin="4" 
+                    <Button Content="{x:Static localize:LocOptionen.strTelephonyImportStart}" 
+                            Margin="4" Height="25"
                             Command="{Binding ImportCommand}"
-                            IsEnabled="{Binding Path=IsNotAktiv, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                            IsEnabled="{Binding Path=IsNotAktiv, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Cursor="Hand" />
 
                     <TextBox Style="{StaticResource ConsoleTextBox}"
                              Text="{Binding EinlesenStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
@@ -53,78 +50,71 @@
 
         </Expander>
 
-        <Expander Style="{StaticResource OptExpander}" IsExpanded="True"
-                  Header="{x:Static localize:LocOptionen.strTelephonyHeadPhones}">
-     
-            <Border BorderThickness="0.5" 
-                    Margin="0,0,0,4">
-            
-                <Border.BorderBrush>
-                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
-                </Border.BorderBrush>
+        <Expander Header="{x:Static localize:LocOptionen.strTelephonyHeadPhones}" IsExpanded="True">
 
-                <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                          Style="{StaticResource DataGridStyle}" IsReadOnly="True"
-                          HeadersVisibility="Column" MaxHeight="150">
+            <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                      HeadersVisibility="Column" AutoGenerateColumns="False" 
+                      GridLinesVisibility="Horizontal"        
+                      HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
+                      VerticalGridLinesBrush="{StaticResource ContainerBorder}"
+                      CanUserAddRows="False" CanUserDeleteRows="False"
+                      IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                      MaxHeight="150" Margin="0,4" BorderThickness="0" >
+
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <RadioButton GroupName="Telefone" HorizontalAlignment="Center" 
+                                             IsChecked="{Binding Path=StdTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             Style="{StaticResource CheckBoxRadioButton}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Binding="{Binding Path=Name}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneName}"/>
+                    <DataGridTextColumn Binding="{Binding Path=TelTyp}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneType}"/>
+                    <DataGridTextColumn Binding="{Binding Path=AnrMonID}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneID}"/>
+                    <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyPhoneIncomming}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ListBox ItemsSource="{Binding Path=StrEinTelNr}" BorderThickness="0" Padding="0"
+                                         ItemContainerStyle="{StaticResource TelNrItemStyle}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Path=Intern}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneIntern}"/>
+                    <DataGridTextColumn Binding="{Binding Path=TR064Dialport}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneDialport}"/>
+                    
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </Expander>
+
+        <Expander Header="{x:Static localize:LocOptionen.strTelephonyHeadNumbers}">
+
+            <StackPanel>
+                <TextBlock Text="{x:Static localize:LocOptionen.strTelephonyNumbersInfo}"/>
+
+                <DataGrid ItemsSource="{Binding OptVM.TelNrListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          HeadersVisibility="None" AutoGenerateColumns="False" 
+                          GridLinesVisibility="Horizontal"        
+                          HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
+                          VerticalGridLinesBrush="{StaticResource ContainerBorder}"
+                          CanUserAddRows="False" CanUserDeleteRows="False"
+                          IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                          MaxHeight="150" Margin="0,4" BorderThickness="0" >
                 
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <RadioButton GroupName="Telefone" HorizontalAlignment="Center" 
-                                                 IsChecked="{Binding Path=StdTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                 Style="{StaticResource CheckBoxRadioButton}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>                                
+                                    <CheckBox Content="{Binding Path=Einwahl}" IsChecked="{Binding Path=Überwacht, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>                        
+                            </DataGridTemplateColumn.CellTemplate>                        
                         </DataGridTemplateColumn>
-
-                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneName}"/>
-                        <DataGridTextColumn Binding="{Binding Path=TelTyp}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneType}"/>
-                        <DataGridTextColumn Binding="{Binding Path=AnrMonID}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneID}"/>
-                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyPhoneIncomming}">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ListBox ItemsSource="{Binding Path=StrEinTelNr}" BorderThickness="0" Padding="0"
-                                             ItemContainerStyle="{StaticResource TelNrItemStyle}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Binding="{Binding Path=Intern}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneIntern}"/>
-                        <DataGridTextColumn Binding="{Binding Path=TR064Dialport}" Header="{x:Static localize:LocOptionen.strTelephonyPhoneDialport}"/>
-                    
                     </DataGrid.Columns>
-
                 </DataGrid>
-            </Border>
-        </Expander>
-
-        <Expander Style="{StaticResource OptExpander}" 
-                  Header="{x:Static localize:LocOptionen.strTelephonyHeadNumbers}">
-
-            <StackPanel>
-                <fbd:OptionsTextBlock Label="{x:Static localize:LocOptionen.strTelephonyNumbersInfo}"/>
-        
-                <Border BorderThickness="0.5" Margin="0,0,0,4">
-                    <Border.BorderBrush>
-                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
-                    </Border.BorderBrush>
-
-                    <DataGrid ItemsSource="{Binding OptVM.TelNrListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                              Style="{StaticResource DataGridStyle}" 
-                              HeadersVisibility="None" 
-                              MaxHeight="150">
-                
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>                                
-                                        <CheckBox Content="{Binding Path=Einwahl}" IsChecked="{Binding Path=Überwacht, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    </DataTemplate>                        
-                                </DataGridTemplateColumn.CellTemplate>                        
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Border>
             </StackPanel>
         </Expander>
    

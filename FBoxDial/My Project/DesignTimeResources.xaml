@@ -1,0 +1,5 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Fritz!Box Telefon-Dingsbums;component/Formulare/Common/Themes/LightTheme.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>
