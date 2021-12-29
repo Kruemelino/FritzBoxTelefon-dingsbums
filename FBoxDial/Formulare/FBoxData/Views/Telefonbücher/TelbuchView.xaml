@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="TelbuchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=fbd:TelefonbuchViewModel, IsDesignTimeCreatable=False}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Telefonbuch.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="225"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Grid.Column="0" Header="{x:Static localize:LocFBoxData.strFilter}">
+            <TextBox Text="{Binding ContactsVM.FilterName, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource EditBox}"/>
+        </GroupBox>
+
+        <Grid Grid.Column="0" Grid.Row="1">
+
+            <ListView ItemsSource="{Binding ContactsVM.FBoxTelefonbuch.Contacts}" 
+                      SelectedItem="{Binding ContactsVM.FBoxKontakt}"
+                      BorderThickness="0">
+
+                <ListView.ContextMenu>
+                    <ContextMenu>
+
+                        <MenuItem Header="{x:Static localize:LocFBoxData.strDelete}"
+                              Icon="{DynamicResource Cancel_16x}"
+                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Command="{Binding LöscheFritzBoxKontakte}"/>
+
+                    </ContextMenu>
+                </ListView.ContextMenu>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <fbd:KontaktView/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <GridSplitter Grid.Column="0" Grid.Row="1" Width="1"  />
+
+        <Grid Grid.Column="1" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="151*"/>
+                <RowDefinition Height="74*"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer Margin="0" Grid.RowSpan="2">
+                <ContentControl>
+                    <ContentControl.Content>
+                        <fbd:DetailsView DataContext="{Binding ContactsVM}"/>
+                    </ContentControl.Content>
+                </ContentControl>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

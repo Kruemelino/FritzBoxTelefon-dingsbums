@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Installer", "Installer\Installer.vbproj", "{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{985D1FE4-4B82-4553-B487-E6C998671AAD} = {985D1FE4-4B82-4553-B487-E6C998671AAD}
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FritzBoxDial", "FBoxDial\FritzBoxDial.vbproj", "{985D1FE4-4B82-4553-B487-E6C998671AAD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1BA86D89-2BC9-4E8E-9F02-E260548D3092}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FBoxAPI", "..\FBoxAPI\FBoxAPI.vbproj", "{9E2DF865-E261-426A-9E05-1A2F60BD7323}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.All|Any CPU.Build.0 = Release|Any CPU
+		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{985D1FE4-4B82-4553-B487-E6C998671AAD}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{985D1FE4-4B82-4553-B487-E6C998671AAD}.All|Any CPU.Build.0 = Release|Any CPU
+		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E2DF865-E261-426A-9E05-1A2F60BD7323}.All|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E2DF865-E261-426A-9E05-1A2F60BD7323}.All|Any CPU.Build.0 = Debug|Any CPU
+		{9E2DF865-E261-426A-9E05-1A2F60BD7323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E2DF865-E261-426A-9E05-1A2F60BD7323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E2DF865-E261-426A-9E05-1A2F60BD7323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E2DF865-E261-426A-9E05-1A2F60BD7323}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7AA8846E-6F14-4C7F-8E6D-0398DF916635}
+	EndGlobalSection
+EndGlobal

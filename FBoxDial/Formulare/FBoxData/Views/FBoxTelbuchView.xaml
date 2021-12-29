@@ -1,0 +1,143 @@
+﻿<UserControl x:Class="FBoxTelbuchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             d:DataContext="{d:DesignInstance Type=fbd:FBoxDataTelBuchViewModel, IsDesignTimeCreatable=False}" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Telefonbuch.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <!-- Tools -->
+        <Grid Height="40" DockPanel.Dock="Top" Background="{StaticResource BlueGreyGradient}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Height="40" >
+
+                <!--Phonebooks Download-->
+                <Button Style="{StaticResource MenuToolButton}"
+                        ToolTip="{x:Static localize:LocFBoxData.strToolTippTelBuchDown}"
+                        Command="{Binding BookVM.LadeFritzBoxTelefonbücher}">
+
+                    <Button.Content>
+                        <ContentControl ContentTemplate="{StaticResource Download}"/>
+                    </Button.Content>
+                </Button>
+
+                <!--Phonebook Add-->
+                <Button Style="{StaticResource MenuToolButton}"
+                        ToolTip="{x:Static localize:LocFBoxData.strToolTippTelBuchAdd}"
+                        Command="{Binding BookVM.NeuesFritzBoxTelefonbuch}">
+
+                    <Button.Content>
+                        <ContentControl ContentTemplate="{StaticResource PhoneBookAdd}"/>
+                    </Button.Content>
+                </Button>
+
+            </StackPanel>
+
+            <Grid Grid.Column="1">
+
+                <ItemsControl ItemsSource="{Binding BookVM.Telefonbücher}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{StaticResource BlueHorizon}" BorderThickness="1,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition MaxWidth="20"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <RadioButton Grid.Column="0" Style="{StaticResource MenuTabToggleButton}"
+                                                 Content="{Binding Name}" GroupName="phonebooks"
+                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.LadeFritzBoxKontakte}"
+                                                 CommandParameter="{Binding}"
+                                                 Visibility="{Binding Path=IsBookDisplayMode, Converter={StaticResource IsEditConverter}}"/>
+
+                                    <TextBox Style="{StaticResource MenuTabTextBox}"
+                                             Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Visibility="{Binding Path=IsBookEditMode, Converter={StaticResource IsEditConverter}}">
+                                        <TextBox.InputBindings>
+                                            <KeyBinding Key="Return"  
+                                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.NeuerTelefonbuchName}"                                         
+                                                        CommandParameter="{Binding}"/>
+
+                                            <KeyBinding Key="Esc"  
+                                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.LöscheFritzBoxTelefonbuch}"                                         
+                                                        CommandParameter="{Binding}"/>
+                                        </TextBox.InputBindings>
+                                    </TextBox>
+
+                                    <!--Rename-->
+                                    <Button Grid.Column="1" Style="{StaticResource MenuIconButton}" HorizontalAlignment="Right"
+                                            ToolTip="{x:Static localize:LocFBoxData.strToolTippTelBuchRename}"
+                                            Visibility="{Binding Path=IsBookEditMode, Converter={StaticResource IsEditConverter}}"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.NeuerTelefonbuchName}"
+                                            CommandParameter="{Binding}">
+
+                                        <Button.Content>
+                                            <ContentControl ContentTemplate="{StaticResource PhoneBookRename}"/>
+                                        </Button.Content>
+                                    </Button>
+
+                                    <!--Delete-->
+                                    <Button Grid.Column="1" Style="{StaticResource MenuIconButton}" HorizontalAlignment="Right"
+                                            ToolTip="{x:Static localize:LocFBoxData.strToolTippTelBuchDel}"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.LöscheFritzBoxTelefonbuch}"
+                                            CommandParameter="{Binding}">
+
+                                        <Button.Content>
+                                            <ContentControl ContentTemplate="{StaticResource PhoneBookRemove}"/>
+                                        </Button.Content>
+                                    </Button>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+
+            <!--Contact Tool Buttons-->
+            <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" >
+
+                <!--Add-->
+                <Button Style="{StaticResource MenuToolButton}"
+                        ToolTip="{x:Static localize:LocFBoxData.strToolTippKontaktAdd}"
+                        Command="{Binding BookVM.ContactsVM.AddContact}">
+
+                    <Button.Content>
+                        <ContentControl ContentTemplate="{StaticResource ContactAdd}" />
+                    </Button.Content>
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+
+        <Grid DockPanel.Dock="Bottom">
+            <ContentControl Content="{Binding CurrentView}" Margin="0" />
+        </Grid>
+    </DockPanel>
+
+</UserControl>

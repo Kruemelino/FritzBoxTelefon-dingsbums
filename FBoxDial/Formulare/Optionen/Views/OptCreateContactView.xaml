@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="OptCreateContactView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=fbd:OptCreateContactViewModel, IsDesignTimeCreatable=True}">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strCreateContactsHead}"/>
+
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strCreateContactsInfo}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strCreateContactsCBKErstellen}" 
+                  IsChecked="{Binding OptVM.CBKErstellen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>    
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strCreateContactsCBNoContactNotes}" 
+                  IsChecked="{Binding OptVM.CBNoContactNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <fbd:OutlookFolderView DataContext="{Binding Root}" />
+    </StackPanel>
+
+
+</UserControl>

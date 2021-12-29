@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddVIP_ScreenTipp" xml:space="preserve">
+    <value>Fügt diesen Kontakt zur VIP-Liste hinzu...</value>
+  </data>
+  <data name="CallList_Label" xml:space="preserve">
+    <value>Wahlwiederholung</value>
+  </data>
+  <data name="CallList_ScreenTipp" xml:space="preserve">
+    <value>Öffnet den Wähldialog für die Wahlwiederholung...</value>
+  </data>
+  <data name="CallMonitor_Label" xml:space="preserve">
+    <value>Anrufmonitor</value>
+  </data>
+  <data name="CallMonitor_ScreenTipp" xml:space="preserve">
+    <value>Startet oder beendert den Anrufmonitor...</value>
+  </data>
+  <data name="Config_Label" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Config_ScreenTipp" xml:space="preserve">
+    <value>Öffnet die Einstellungen...</value>
+  </data>
+  <data name="CreateContact_Label" xml:space="preserve">
+    <value>Kontakt erstellen</value>
+  </data>
+  <data name="CreateContact_ScreenTipp" xml:space="preserve">
+    <value>Erstellt einen neuen Kontakt...</value>
+  </data>
+  <data name="DeleteList_Label" xml:space="preserve">
+    <value>Liste löschen...</value>
+  </data>
+  <data name="DeleteList_ScreenTipp" xml:space="preserve">
+    <value>Lösche diese Liste...</value>
+  </data>
+  <data name="Dial_Label" xml:space="preserve">
+    <value>Wählen</value>
+  </data>
+  <data name="Dial_ScreenTipp" xml:space="preserve">
+    <value>Öffnet den Wahldialog um das ausgewählte Element anzurufen...</value>
+  </data>
+  <data name="DirectCall_Label" xml:space="preserve">
+    <value>Direktwahl</value>
+  </data>
+  <data name="DirectCall_ScreenTipp" xml:space="preserve">
+    <value>Öffnet den Wähldialog für die Direktwahl...</value>
+  </data>
+  <data name="DynListDel_Label" xml:space="preserve">
+    <value>Liste löschen...</value>
+  </data>
+  <data name="DynListDel_ScreenTipp" xml:space="preserve">
+    <value>Entfernt alle Einträge dieser Liste...</value>
+  </data>
+  <data name="FritzBoxData_Label" xml:space="preserve">
+    <value>Fritz!Box Daten</value>
+  </data>
+  <data name="FritzBoxData_ScreenTipp" xml:space="preserve">
+    <value>Öffne die Verwaltung der Fritz!Box Daten...</value>
+  </data>
+  <data name="mmFBox_Label" xml:space="preserve">
+    <value>Fritz!Box</value>
+  </data>
+  <data name="RemoveVIP_ScreenTipp" xml:space="preserve">
+    <value>Entfernt diesen Kontakt von der VIP-Liste...</value>
+  </data>
+  <data name="RingList_Label" xml:space="preserve">
+    <value>Rückruf</value>
+  </data>
+  <data name="RingList_ScreenTipp" xml:space="preserve">
+    <value>Öffnet den Wähldialog für den Rückruf...</value>
+  </data>
+  <data name="RWS_Label" xml:space="preserve">
+    <value>Rückwärtssuche</value>
+  </data>
+  <data name="RWS_ScreenTipp" xml:space="preserve">
+    <value>Sucht zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche...</value>
+  </data>
+  <data name="Search_Label" xml:space="preserve">
+    <value>Kontaktsuche</value>
+  </data>
+  <data name="Search_ScreenTipp" xml:space="preserve">
+    <value>Sucht einen Kontakt anhand des Namens, E-Mail oder Telefonnummer</value>
+  </data>
+  <data name="ShowCallMonitor_Label" xml:space="preserve">
+    <value>Anzeigen</value>
+  </data>
+  <data name="ShowCallMonitor_ScreenTipp" xml:space="preserve">
+    <value>Zeigt den letzten Anruf an...</value>
+  </data>
+  <data name="ShowContact_Label" xml:space="preserve">
+    <value>Kontakt anzeigen</value>
+  </data>
+  <data name="ShowContact_ScreenTipp" xml:space="preserve">
+    <value>Zeigt den Kontakt an...</value>
+  </data>
+  <data name="Tab_Label" xml:space="preserve">
+    <value>Fritz!Box Telefon-dingsbums</value>
+  </data>
+  <data name="Tab_ScreenTipp" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UploadCreateContact" xml:space="preserve">
+    <value>angelegt</value>
+  </data>
+  <data name="UploadError" xml:space="preserve">
+    <value>Fehler: Der Kontakt {0} konnte nicht im Telefonbuch {1} der Fritz!Box {2} werden.</value>
+  </data>
+  <data name="UploadOverwriteContact" xml:space="preserve">
+    <value>überschrieben</value>
+  </data>
+  <data name="UploadResultMessageHeader" xml:space="preserve">
+    <value>Upload von {0} Kontakten abgeschlossen. Ergebnis: {1}{2}</value>
+  </data>
+  <data name="UploadSuccess" xml:space="preserve">
+    <value>Der Kontakt {0} wurde im Telefonbuch {1} der Fritz!Box {2} (ID {3}).</value>
+  </data>
+  <data name="Upload_Label" xml:space="preserve">
+    <value>Hochladen</value>
+  </data>
+  <data name="Upload_ScreenTipp" xml:space="preserve">
+    <value>Lädt diesen Kontakt auf die Fritz!Box hoch....</value>
+  </data>
+  <data name="VIPList_Label" xml:space="preserve">
+    <value>VIP-Liste</value>
+  </data>
+  <data name="VIPList_ScreenTipp" xml:space="preserve">
+    <value>Öffnet den Wahldialog um einen VIP anzurufen...</value>
+  </data>
+  <data name="VIP_Label" xml:space="preserve">
+    <value>VIP</value>
+  </data>
+</root>

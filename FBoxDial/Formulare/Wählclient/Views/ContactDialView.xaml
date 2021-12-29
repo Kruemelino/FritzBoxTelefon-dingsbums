@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="ContactDialView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:fbd="clr-namespace:FBoxDial"
+            mc:Ignorable="d" 
+            d:DesignHeight="200" d:DesignWidth="400"
+            d:DataContext="{d:DesignInstance Type=fbd:ContactDialViewModel, IsDesignTimeCreatable=false}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/WählClient.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <DockPanel VerticalAlignment="Stretch">
+        <StackPanel VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
+
+            <Button Style="{StaticResource MiniIconButton}"
+                    Content="{DynamicResource ContactCard_16x}" 
+                    Command="{Binding ShowContactCommand}" />
+
+            <ToggleButton Style="{StaticResource MiniIconToggleButton}" 
+                          IsChecked="{Binding IsVIP, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                          IsEnabled="{Binding VIPEnabled}"
+                          Command="{Binding VIPCommand}" 
+                          Tag="{StaticResource FavoriteYellow_16x}"
+                          Content="{StaticResource FavoriteOutline_16x}"/>
+        
+        </StackPanel>
+
+        <Border x:Name="BoAnrBild" 
+                DockPanel.Dock="Right" 
+                BorderBrush="{StaticResource ContainerBorder}" 
+                BorderThickness="1" 
+                VerticalAlignment="top" 
+                Width="100"
+                Margin="4"
+                Visibility="{Binding ZeigeBild, Converter={StaticResource BoolToVisibilityConverter}}">
+            
+            <Image x:Name="AnrBild" 
+                   HorizontalAlignment="Left" 
+                   Margin="0" VerticalAlignment="Top" 
+                   Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+        </Border>
+
+        <DataGrid DockPanel.Dock="Left" Style="{StaticResource DGTelNr}"
+                  ItemsSource="{Binding Path=DialNumberList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                  SelectedItem="{Binding Path=DialVM.TelNr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                  IsEnabled="{Binding Path=DialVM.IsNotDialing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
+            
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <Setter Property="FontWeight">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource TelNrToFontWeightConverter}" ConverterParameter="SemiBold">
+                                <!--Die Telefonnummer der DataGrid Zeile-->
+                                <Binding Path="."/>
+                                <!--Die zuletzt angerufene Telefonnummer -->
+                                <Binding Path="DataContext.DialVM.ZuletztGewählteTelNr" RelativeSource="{RelativeSource FindAncestor, AncestorType=UserControl}"/>
+                            </MultiBinding>                                
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="Typ" Width="100" Binding="{Binding Path=Typ.TelNrType, Converter={StaticResource EnumDescriptionConverter}}" />
+                <DataGridTextColumn x:Name="TelNr" Width="*" Binding="{Binding Path=Formatiert}" />
+            </DataGrid.Columns>
+            
+        </DataGrid>
+    </DockPanel>
+    
+</UserControl>

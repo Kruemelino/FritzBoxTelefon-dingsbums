@@ -1,0 +1,210 @@
+﻿<UserControl x:Class="OptTestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=fbd:OptTestViewModel, IsDesignTimeCreatable=True}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strTestInfo}"/>
+        
+        <Expander Header="{x:Static localize:LocOptionen.strTestTelNrHead}">
+
+            <StackPanel>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestTelNrInfo}"/>
+                
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
+                         Text="{Binding TBTestTelNrInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Tag="{DynamicResource Import_16x}" Height="25"
+                        Content="{x:Static localize:LocOptionen.strTestTelNrStart}" 
+                        Margin="4"
+                        Command="{Binding TestTelNrCommand}" />
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrUnformatiert}"
+                         Text="{Binding TBTestTelNrUnformatiert, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTestLKZ}"
+                         Text="{Binding TBTestTelNrLKZ, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTestLKZID}"
+                         Text="{Binding TBTestTelNrLKZID, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTestLKZName}"
+                         Text="{Binding TBTestTelNrLKZName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTestONKZ}"
+                         Text="{Binding TBTestTelNrONKZ, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTestONKZName}"
+                         Text="{Binding TBTestTelNrONKZName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrEinwahl}"
+                         Text="{Binding TBTestTelNrEinwahl, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrDurchwahl}"
+                         Text="{Binding TBTestTelNrDurchwahl, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrFormatiert}"
+                         Text="{Binding TBTestTelNrFormatiert, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Expander>
+
+        <Expander Header="{x:Static localize:LocOptionen.strTestLoginHead}">
+            <StackPanel>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestLoginInfo}"/>
+                
+                <TextBox Style="{StaticResource OptTextBox}" Margin="4"
+                         Tag="{x:Static localize:LocOptionen.strBaseTBFBAdr}"
+                         Text="{Binding TBFBAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <Button Margin="4"
+                        Tag="{DynamicResource Refresh_16x}"
+                        Content="{x:Static localize:LocOptionen.strTestLoginLoadUserList}"                       
+                        Command="{Binding TestUserListCommand}" />
+
+                <ComboBox Style="{StaticResource OptComboBox}" Margin="4"
+                          Tag="{x:Static localize:LocOptionen.strBaseTBBenutzer}"
+                          ItemsSource="{Binding Path=CBoxBenutzer}"
+                          SelectedValue="{Binding TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayMemberPath="UserName"
+                          SelectedValuePath="UserName" />
+
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="150"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{x:Static localize:LocOptionen.strBaseTBPasswort}" Grid.Column="0" />
+                    <PasswordBox x:Name="PwTest" Grid.Column="1"/>
+                </Grid>
+                
+                <Button Margin="4"
+                        Tag="{DynamicResource Login_16x}"
+                        Content="{x:Static localize:LocOptionen.strTestStartLogin}"                            
+                        Command="{Binding TestLoginCommand}" 
+                        CommandParameter="{Binding ElementName=PwTest}"/>
+
+                <TextBox Style="{StaticResource ResultTextBox}"
+                         Text="{Binding TBTestLoginOutput, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Expander>
+
+        <Expander Header="{x:Static localize:LocOptionen.strTestKontaktsucheHead}">
+            <StackPanel>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestKontaktsucheInfo}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
+                         Text="{Binding TBTestKontaktsucheInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Tag="{DynamicResource Import_16x}" Height="25"
+                        Content="{x:Static localize:LocOptionen.strTestKontaktsucheStart}" 
+                        Margin="4"
+                        Command="{Binding TestKontaktsucheCommand}" />
+
+                <TextBox Style="{StaticResource ResultTextBox}"
+                         Text="{Binding TBTestKontaktsucheOutput, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Expander>
+
+        <Expander Header="{x:Static localize:LocOptionen.strTestRWSHead}">
+            <StackPanel>
+
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestRWSInfo}"/>
+                
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
+                         Text="{Binding TBTestRWSInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Tag="{DynamicResource Import_16x}" Height="25"
+                        Content="{x:Static localize:LocOptionen.strTestRWSStart}" 
+                        Margin="4"
+                        Command="{Binding TestRWSCommand}" />
+
+                <TextBox Style="{StaticResource ResultTextBox}"
+                         Text="{Binding TBTestRWSOutput, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </StackPanel>
+        </Expander>
+
+        <Expander Header="{x:Static localize:LocOptionen.strTestAnrufmonitorHead}">
+            <StackPanel>
+
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTestAnrMonInfo}"/>
+
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strTestAnrMonCONNECT}" 
+                          IsChecked="{Binding TBTestAnrMonCONNECT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <GroupBox Header="{x:Static localize:LocOptionen.strTestRndHead}">
+                    <StackPanel>
+                        <TextBox Style="{StaticResource OptTextBox}"
+                             Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
+                             Text="{Binding TBTestAnrMonInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestRnd}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBRnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestRndOutlook}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBRndOutlook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestRndFBox}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBRndFBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestRndTellows}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBRndTellows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <RadioButton Style="{StaticResource OptRadioButton}"
+                                     Content="{x:Static localize:LocOptionen.strTestNrUnterdrückt}"
+                                     GroupName="RndCntct"
+                                     IsChecked="{Binding RBBCLIR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </GroupBox>
+                
+                <Button Content="{x:Static localize:LocOptionen.strTestStartAnrMon}"
+                        Command="{Binding TestAnrMonCommand}" Height="25"/>
+
+            </StackPanel>
+        </Expander>
+
+    </StackPanel>
+</UserControl>

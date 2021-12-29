@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabContact">
+        <group id="Tab_Contact" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
+          <button id="Dial_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnActionI" getEnabled="DialEnabled"/>
+          <separator id="Seperator_C1"/>
+          <dynamicMenu id="RWS_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" getContent="FillDynamicMenuRWS"/>
+          <toggleButton id="VIP_C" getLabel="GetItemLabel" getImage="GetItemImageMsoVIP" getScreentip="GetItemScreenTipVIP" size="normal" getPressed="TBtnPressedVIP" onAction="ToggleBtnOnActionVIP"/>
+          <dynamicMenu id="Upload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="FillDynamicMenuTelBk" invalidateContentOnDrop="true" />
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+

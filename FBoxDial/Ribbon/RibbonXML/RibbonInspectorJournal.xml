@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabJournal">
+        <group id="Tab_Journal" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
+          <button id="Dial_J" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" getEnabled="DialEnabled" onAction="BtnOnActionI"/>
+          <button id="RWS_J" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" onAction="BtnOnActionI" tag="DoNotDeleteTag"/>
+          <button id="Contact_J" getLabel="GetItemLabelJournal" getImage="GetItemImageMsoJournal" getScreentip="GetItemScreenTipJournal" size="normal" onAction="BtnOnActionI"/>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+

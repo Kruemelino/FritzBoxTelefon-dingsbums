@@ -1,0 +1,205 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:fbd="clr-namespace:FBoxDial">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <fbd:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+    <DataTemplate DataType="{x:Type fbd:OptBaseViewModel}">
+        <fbd:OptBaseView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type fbd:OptAnrMonViewModel}">
+        <fbd:OptAnrMonView />
+    </DataTemplate>    
+    
+    <DataTemplate DataType="{x:Type fbd:OptDialerViewModel}">
+        <fbd:OptDialerView />
+    </DataTemplate>  
+    
+    <DataTemplate DataType="{x:Type fbd:OptJournalViewModel}">
+        <fbd:OptJournalView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type fbd:OptSearchContactViewModel}">
+        <fbd:OptSearchContactView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type fbd:OptCreateContactViewModel}">
+        <fbd:OptCreateContactView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:OptTelephonyViewModel}">
+        <fbd:OptTelephonyView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:OptPhonerViewModel}">
+        <fbd:OptPhonerView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:OptMicroSIPViewModel}">
+        <fbd:OptMicroSIPView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:OptTellowsViewModel}">
+        <fbd:OptTellowsView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:OptInfoViewModel}">
+        <fbd:OptInfoView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:OptTestViewModel}">
+        <fbd:OptTestView />
+    </DataTemplate>
+   
+    <Style x:Key="OptHeader" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
+        <Setter Property="Margin" Value="0,2,0,4"/>
+        <Setter Property="Background" Value="{DynamicResource ControlDarkerBackground}"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>        
+    </Style>
+
+    <DataTemplate x:Key="HeaderTemplate">
+        <Border Background="{DynamicResource ControlDarkerBackground}" 
+                CornerRadius="2">
+            
+            <TextBlock Text="{Binding}" 
+                       VerticalAlignment="Center"
+                       FontWeight="DemiBold"                  
+                       Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}"
+                       TextTrimming="CharacterEllipsis"                    
+                       Margin="2,0,0,0"/>
+        </Border>
+    </DataTemplate>
+
+    <Style x:Key="OptExpander" TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}" >
+        <Setter Property="Margin" Value="0,2,0,4"/>
+        <Setter Property="HeaderTemplate" Value="{StaticResource HeaderTemplate}"/>
+    </Style>
+
+    <Style x:Key="OptCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="151.5"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Grid.Column="0"/>
+
+                        <BulletDecorator Background="Transparent" 
+                                         SnapsToDevicePixels="True"
+                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                         Grid.Column="1" >
+
+                            <BulletDecorator.Bullet>
+                                <CheckBox IsChecked="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                            </BulletDecorator.Bullet>
+                        </BulletDecorator>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="OptRadioButton" TargetType="{x:Type RadioButton}" >
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="151.5"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Grid.Column="0"/>
+
+                        <RadioButton IsChecked="{Binding Path=IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RadioButton}}}"
+                                     Grid.Column="1" 
+                                     Margin="0"/>
+                        
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CheckBoxRadioButton" TargetType="{x:Type RadioButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Grid>
+                        <!--<CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" 
+                                  Content="{TemplateBinding Content}"
+                                  Margin="2,0,0,0" IsHitTestVisible="False"/>-->
+                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" 
+                                  Content="{TemplateBinding Content}" Margin="1,0,0,0"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ConsoleTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="MaxHeight" Value="75"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>        
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <ScrollViewer RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer.RenderTransform>
+                            <ScaleTransform ScaleY="-1"/>
+                        </ScrollViewer.RenderTransform>
+                        <TextBox Text="{TemplateBinding Text}" RenderTransformOrigin="0.5,0.5">
+                            <TextBox.RenderTransform>
+                                <ScaleTransform ScaleY="-1"/>
+                            </TextBox.RenderTransform>
+                        </TextBox>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ResultTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="MaxHeight" Value="150"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+
+    <Style x:Key="TelNrItemStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <ContentPresenter />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

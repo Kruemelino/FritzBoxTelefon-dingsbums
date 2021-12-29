@@ -1,0 +1,152 @@
+﻿<UserControl x:Class="OptBaseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=fbd:OptBaseViewModel, IsDesignTimeCreatable=True}" >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+        <Expander IsExpanded="True" Style="{StaticResource OptExpander}"
+                  Header="{x:Static localize:LocOptionen.strBaseHeadFB}">            
+            
+            <StackPanel>     
+       
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strBaseTBFBAdr}"
+                         Text="{Binding OptVM.TBFBAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+                <Grid Margin="0,0,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="150"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="{x:Static localize:LocOptionen.strBaseTBBenutzer}"/>
+
+                    <Button Grid.Column="1" Margin="1"
+                            Content="{DynamicResource Refresh_16x}" 
+                            Style="{StaticResource MiniIconButton}"
+                            Command="{Binding UpdateUserListCommand}" />
+
+                    <ComboBox Grid.Column="2"
+                              ItemsSource="{Binding Path=OptVM.CBoxBenutzer}"
+                              SelectedValue="{Binding OptVM.TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              DisplayMemberPath="UserName"
+                              SelectedValuePath="UserName"
+                              IsEditable="True"/>
+
+                </Grid>
+
+                <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strBaseTBPasswort}"
+                                        Value="{Binding Path=OptVM.TBPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        DeCryptKey="{Binding Path=OptVM.DfltDeCryptKey, Mode=OneWay}"/>
+            </StackPanel>
+        </Expander>
+
+        <Expander IsExpanded="True"
+                  Header="{x:Static localize:LocOptionen.strBaseHeadTel}">
+
+            <StackPanel>
+
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strBaseInfoKZ}"/>
+        
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strBaseTBOrtsKZ}"
+                         Text="{Binding OptVM.TBOrtsKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strBaseTBLandesKZ}"
+                         Text="{Binding OptVM.TBLandesKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                
+            </StackPanel>
+        </Expander>
+        
+        <Expander IsExpanded="True"
+                  Header="{x:Static localize:LocOptionen.strBaseHeadFormatTel}">
+
+            <StackPanel>
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strBaseCBTelNrGruppieren}" 
+                          IsChecked="{Binding OptVM.CBTelNrGruppieren, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>   
+        
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strBaseCBintl}" 
+                          IsChecked="{Binding OptVM.CBintl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strBaseTBTelNrMaske}"
+                         Text="{Binding OptVM.TBTelNrMaske, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Expander>       
+
+        <Expander IsExpanded="True"
+                  Header="{x:Static localize:LocOptionen.strBaseHeadList}">
+            <StackPanel>     
+        
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strBaseTBNumEntryList}"
+                         Text="{Binding OptVM.TBNumEntryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Expander>
+
+        <Expander IsExpanded="True"
+                  Header="{x:Static localize:LocOptionen.strBaseHeadLog}">
+            <StackPanel>
+
+        
+                <ComboBox Style="{StaticResource OptComboBox}" 
+                          Tag="{x:Static localize:LocOptionen.strBaseCBoxLogLevel}"
+                          ItemsSource="{Binding Path=OptVM.CBoxLogLevel}"
+                          SelectedValue="{Binding OptVM.CBoxMinLogLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=Debug}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Name" />
+
+                <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strBaseWorkDir}" 
+                                 LinkLabel="{x:Static localize:LocOptionen.strBaseLinkOpen}"
+                                 URL="{Binding Path=OptVM.PfadArbeitsverzeichnis}" />
+            </StackPanel>
+        </Expander>
+        
+        <Expander Header="{x:Static localize:LocOptionen.strBaseHeadTweak}">
+            
+            <StackPanel>
+
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strBaseTweakKeyboardInfo}"/>
+
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strBaseTweakKeyboard}" 
+                          IsChecked="{Binding OptVM.CBKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strBaseTweakDisableMailCheckInfo}"/>
+                
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strBaseTweakDisableMailCheck}" 
+                          IsChecked="{Binding OptVM.CBDisableMailCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeoutInfo}"/>
+                
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeout}"
+                         Text="{Binding OptVM.TBNetworkTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Expander>
+    </StackPanel>
+</UserControl>

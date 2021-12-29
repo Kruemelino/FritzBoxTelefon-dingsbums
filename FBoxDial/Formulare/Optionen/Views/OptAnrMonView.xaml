@@ -1,0 +1,126 @@
+﻿<UserControl x:Class="OptAnrMonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="420"
+             d:DataContext="{d:DesignInstance Type=fbd:OptAnrMonViewModel, IsDesignTimeCreatable=True}">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>                
+                <ResourceDictionary Source="../Resources/Optionen.xaml"/>                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strAnrMonHeadAnrMon}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strAnrMonCBAnrMonAuto}" 
+                  IsChecked="{Binding OptVM.CBAnrMonAuto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strAnrMonCBAutoClose}" 
+                  IsChecked="{Binding OptVM.CBAutoClose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBEnblDauer}"
+                 Text="{Binding OptVM.TBEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strAnrMonHideInfo}"
+               IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="{x:Static localize:LocOptionen.strAnrMonCBHideCONNECT}" 
+                  IsChecked="{Binding OptVM.CBAnrMonHideCONNECT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="{x:Static localize:LocOptionen.strJournalCBJournalBlockNr}" 
+                  IsChecked="{Binding OptVM.CBAnrMonBlockNr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="{x:Static localize:LocOptionen.strAnrMonCBAnrMonZeigeKontakt}" 
+                  IsChecked="{Binding OptVM.CBAnrMonZeigeKontakt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="{x:Static localize:LocOptionen.strAnrMonCBAnrMonContactImage}" 
+                  IsChecked="{Binding OptVM.CBAnrMonContactImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="{x:Static localize:LocOptionen.strAnrMonSetBColor}" 
+                  IsChecked="{Binding OptVM.CBSetAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Grid Visibility="{Binding OptVM.CBSetAnrMonBColor, Converter={StaticResource BoolToVisibilityConverter}}" 
+              Margin="0,0,0,4"               >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{x:Static localize:LocOptionen.strAnrMonBColorInfo}"/>
+
+            <colorpicker:PortableColorPicker Grid.Column="1" ShowAlpha="True"
+                                             SelectedColor="{Binding OptVM.TBAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             SecondaryColor="{Binding OptVM.TBAnrMonFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        </Grid>
+
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strAnrMonPosInfo}" />
+        
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosX}"
+                 Text="{Binding OptVM.TBAnrMonModPosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosY}"
+                 Text="{Binding OptVM.TBAnrMonModPosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+       
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonAbstand}"
+                 Text="{Binding OptVM.TBAnrMonAbstand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />    
+        
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strAnrMonHeadStoppUhr}"/>
+     
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strAnrMonCBStoppUhrEinblenden}" 
+                  IsChecked="{Binding OptVM.CBStoppUhrEinblenden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strAnrMonCBStoppUhrAusblenden}" 
+                  IsChecked="{Binding OptVM.CBStoppUhrAusblenden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAnrMonTBStoppUhrAusblendverzögerung}"
+                 Text="{Binding OptVM.TBStoppUhrAusblendverzögerung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 IsEnabled="{Binding OptVM.CBStoppUhrAusblenden, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <CheckBox Style="{StaticResource OptCheckBox}"
+                  Content="{x:Static localize:LocOptionen.strAnrMonStoppUhrSetBColor}" 
+                  IsChecked="{Binding OptVM.CBSetStoppUhrBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Grid Visibility="{Binding OptVM.CBSetStoppUhrBColor, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,4"               >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{x:Static localize:LocOptionen.strAnrMonBColorInfo}"/>
+
+            <colorpicker:PortableColorPicker Grid.Column="1" ShowAlpha="True"
+                                             SelectedColor="{Binding OptVM.TBStoppUhrBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             SecondaryColor="{Binding OptVM.TBStoppUhrFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        </Grid>
+    </StackPanel>
+</UserControl>
