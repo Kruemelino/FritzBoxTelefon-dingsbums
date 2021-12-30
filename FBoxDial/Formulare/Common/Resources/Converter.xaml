@@ -7,4 +7,6 @@
     <fbd:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
     <fbd:TelNrToFontWeightConverter x:Key="TelNrToFontWeightConverter"/>
     <fbd:IntegerToBoolConverter x:Key="FavoriteContactConverter"/>
+
+    <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
 </ResourceDictionary>

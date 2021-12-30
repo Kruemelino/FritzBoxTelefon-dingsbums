@@ -1,5 +1,5 @@
 ﻿Imports System.Windows
-Partial Public Class DarkTheme
+Partial Public Class ThemeBase
     Private Sub CloseWindow_Event(sender As Object, e As RoutedEventArgs)
         If e.Source IsNot Nothing Then
             Try
@@ -43,5 +43,4 @@ Partial Public Class DarkTheme
     Public Sub MinimizeWind(window As Window)
         window.WindowState = WindowState.Minimized
     End Sub
-
 End Class

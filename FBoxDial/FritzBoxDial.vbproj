@@ -258,11 +258,8 @@
     <Compile Include="Formulare\Common\Services\NotifyBase.vb" />
     <Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\Common\Services\RelayCommand.vb" />
-    <Compile Include="Formulare\Common\Themes\DarkTheme.xaml.vb">
-      <DependentUpon>DarkTheme.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Common\Themes\LightTheme.xaml.vb">
-      <DependentUpon>LightTheme.xaml</DependentUpon>
+    <Compile Include="Formulare\Common\Themes\ThemeBase.xaml.vb">
+      <DependentUpon>ThemeBase.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\FBoxData\Controls\TimePicker.vb" />
     <Compile Include="Formulare\AnrMon\ViewModel\AnrMonViewModel.vb" />
