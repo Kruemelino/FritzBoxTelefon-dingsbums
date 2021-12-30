@@ -101,7 +101,7 @@
         </GroupBox>
 
         <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0"
-                            Style="{DynamicResource FilterDatagridStyle}"
+                            Style="{DynamicResource DataGridTemplate}"
                             ItemsSource="{Binding CallList, UpdateSourceTrigger=PropertyChanged}"
                             ShowStatusBar="False" ShowElapsedTime="False" ShowRowsCount="False"                                
                             DateFormatString="d" FilterLanguage="German" >

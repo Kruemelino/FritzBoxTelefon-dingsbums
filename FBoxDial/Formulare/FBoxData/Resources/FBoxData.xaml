@@ -28,9 +28,9 @@
     </DataTemplate>
 
     <!--https://stackoverflow.com/a/56616523-->
-    <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
+    <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}" >
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Background" Value="Lavender"/>
+        <Setter Property="Background" Value="{DynamicResource ControlDefaultBackground}"/>
         <Setter Property="MinWidth" Value="24" />
         <Setter Property="Template">
             <Setter.Value>
@@ -52,7 +52,7 @@
                     </ControlTemplate.Resources>
 
                     <Grid MinWidth="{TemplateBinding MinWidth}">
-                        <Border Margin="1,0,1,0" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Height="16" BorderBrush="{StaticResource Button.Static.Border}"
+                        <Border Margin="1,0,1,0" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Height="16" BorderBrush="{DynamicResource ControlDefaultBorderBrush}"
                                 Background="Transparent" x:Name="RangeBorder" />
 
                         <Ellipse x:Name="Thumb" Width="16" Height="16" Fill="{TemplateBinding Background}" StrokeThickness="1" HorizontalAlignment="Left">
@@ -68,8 +68,7 @@
                         <!--You can modify your own style changes here-->
 
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Thumb" Property="Fill" Value="Green"/>
-                            <Setter TargetName="RangeBorder" Property="BorderBrush" Value="DarkGray"/>
+                            <Setter TargetName="Thumb" Property="Fill" Value="{DynamicResource ControlPrimarySelectedBackground}"/>
                             <Trigger.ExitActions>
                                 <BeginStoryboard Storyboard="{StaticResource OnUnchecking}" x:Name="OnUnchecking_BeginStoryboard"/>
                             </Trigger.ExitActions>
@@ -252,7 +251,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
 
 </ResourceDictionary>

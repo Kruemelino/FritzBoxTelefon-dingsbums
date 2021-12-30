@@ -20,7 +20,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Visibility="{Binding FBoxKontakt, Converter={StaticResource SelectedContactConverter}}">
+    <Grid Visibility="{Binding FBoxKontakt, Converter={StaticResource NullToVisibilityConverter}}">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -39,12 +39,15 @@
                     <StackPanel HorizontalAlignment="Center">
 
                         <TextBox Text="{Binding FBoxKontakt.Person.RealName, FallbackValue=NULL, Mode=TwoWay}"
-                                 Visibility="{Binding IsEditMode, Converter={StaticResource IsEditConverter}}"
-                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                                 Margin="5" Style="{StaticResource EditBox}"/>
+                                 Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}"
+                                 VerticalContentAlignment="Center" 
+                                 HorizontalContentAlignment="Center"
+                                 FontSize="24"
+                                 Margin="2,4"
+                                 Style="{StaticResource EditBox}"/>
 
                         <Label Content="{Binding FBoxKontakt.Person.RealName, FallbackValue=NULL}"
-                               Visibility="{Binding IsDisplayMode, Converter={StaticResource IsEditConverter}}"
+                               Visibility="{Binding IsDisplayMode, Converter={StaticResource BoolToVisibilityConverter}}"
                                HorizontalAlignment="Center"
                                FontSize="24"/>
                     </StackPanel>
@@ -54,30 +57,33 @@
                 </StackPanel>
                 
                 <Grid Height="125" Width="125" HorizontalAlignment="Left">
-                    <Border BorderBrush="{StaticResource AlmostBlack}" BorderThickness="1">
+                    <Border BorderBrush="{DynamicResource ContainerBorder}" BorderThickness="1">
                         <Image Height="100" Width="100" Source="{Binding FBoxKontakt.Person.ImageData, IsAsync=True, FallbackValue={StaticResource DefaultContactImage}, TargetNullValue={StaticResource DefaultContactImage}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Border>                    
                 </Grid>
             </StackPanel>
 
             <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Orientation="Vertical">
-                <Button Style="{StaticResource IconTextButton}" Background="{StaticResource ReptileGreen}"
+                <Button Style="{StaticResource IconTextButton}" 
+                        Visibility="{Binding IsDisplayMode, Converter={StaticResource BoolToVisibilityConverter}}"
                         Content="{x:Static localize:LocFBoxData.strDial}" Tag="{DynamicResource Phone}"
                         Command="{Binding DialCommand}" IsCancel="False"/>
                 
-                <Button Style="{StaticResource IconTextButton}" Background="{StaticResource FusionRed}"
+                <Button Style="{StaticResource IconTextButton}" 
                         Content="{x:Static localize:LocFBoxData.strDelete}" Tag="{DynamicResource ContactDelete}"
                         Command="{Binding DeleteCommand}" IsCancel="False"/>
                 
-                <Button Style="{StaticResource IconTextButton}" Background="{StaticResource Flirtatious}"
+                <Button Style="{StaticResource IconTextButton}" 
                         Content="{x:Static localize:LocFBoxData.strEdit}" Tag="{DynamicResource ContactEdit}"
                         Command="{Binding EditCommand}" IsCancel="False"/>
 
-                <Button Style="{StaticResource IconTextButton}" Background="{StaticResource FusionRed}"
+                <Button Style="{StaticResource IconTextButton}" 
+                        Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}"
                         Content="{x:Static localize:LocFBoxData.strCancel}" Tag="{DynamicResource Cancel}"
                         Command="{Binding CancelCommand}" IsCancel="True"/>
 
-                <Button Style="{StaticResource IconTextButton}" Background="{StaticResource MaximumBlueGreen}"
+                <Button Style="{StaticResource IconTextButton}" 
+                        Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}"
                         Content="{x:Static localize:LocFBoxData.strSave}" Tag="{DynamicResource SaveIcon}"
                         Command="{Binding SaveCommand}" IsCancel="False"/>
 
@@ -91,16 +97,21 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="20"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" FontWeight="Bold" Foreground="#FFF5F7F9" Content="{x:Static localize:LocFBoxData.strHeaderPhone}"/>
-                        <Button Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource EditButton}"
-                                Visibility="{Binding IsEditMode, Converter={StaticResource IsEditConverter}}" Command="{Binding AddNumber}">
+                        <Label Grid.Column="0" 
+                               FontWeight="Bold" 
+                               Content="{x:Static localize:LocFBoxData.strHeaderPhone}"/>
+                        
+                        <Button Grid.Column="1" 
+                                HorizontalAlignment="Right" 
+                                Style="{StaticResource EditButton}"
+                                Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" 
+                                Command="{Binding AddNumber}">
                                 
                             <ContentControl ContentTemplate="{StaticResource PhoneAdd}"/>
                         </Button>
-                    </Grid>
-                    
+                    </Grid>                    
                 </Border>
 
                 <StackPanel>
@@ -108,7 +119,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Grid.Row="3">
-                                    <Grid Visibility="{Binding Path=DataContext.IsDisplayMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}">
+                                    <Grid Visibility="{Binding Path=DataContext.IsDisplayMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
@@ -117,18 +128,16 @@
                                         
                                         <!--Displaymode: Label Telefonnummer-->
                                         <Label Grid.Column="0"
-                                               Style="{StaticResource ContentLabel}"
                                                Content="{Binding Number, FallbackValue=N/A}"/>
                                         
                                         <!--Displaymode: Label Typ-->
                                         <Label Grid.Column="1"
-                                               Style="{StaticResource DetailLabel}" 
                                                Content="{Binding Type, FallbackValue=notset, Converter={StaticResource EnumDescriptionConverter}}"/>
 
                                     </Grid>
 
 
-                                    <Grid Visibility="{Binding Path=DataContext.IsEditMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}">
+                                    <Grid Visibility="{Binding Path=DataContext.IsEditMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
@@ -179,11 +188,16 @@
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         
-                        <Label FontWeight="Bold" Foreground="#FFF5F7F9" 
+                        <Label FontWeight="Bold"
                                Grid.Column="0"
-                               Content="{x:Static localize:LocFBoxData.strHeaderMail}" HorizontalAlignment="Left" Width="416"/>
-                        <Button Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource EditButton}"
-                                Visibility="{Binding IsEditMode, Converter={StaticResource IsEditConverter}}" Command="{Binding AddMail}">
+                               Content="{x:Static localize:LocFBoxData.strHeaderMail}" />
+                        
+                        <Button Grid.Column="1" 
+                                HorizontalAlignment="Right" 
+                                Style="{StaticResource EditButton}"
+                                Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" 
+                                Command="{Binding AddMail}">
+                            
                             <ContentControl ContentTemplate="{StaticResource MailAdd}"/>
                         </Button>
                     </Grid>
@@ -194,7 +208,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Grid.Row="3">
-                                    <Grid Visibility="{Binding Path=DataContext.IsDisplayMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}">
+                                    <Grid Visibility="{Binding Path=DataContext.IsDisplayMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
@@ -203,18 +217,15 @@
 
                                         <!--Displaymode: Label Telefonnummer-->
                                         <Label Grid.Column="0"
-                                               Style="{StaticResource ContentLabel}"
                                                Content="{Binding EMail, FallbackValue=N/A}"/>
 
                                         <!--Displaymode: Label Typ-->
                                         <Label Grid.Column="1"
-                                               Style="{StaticResource DetailLabel}" 
                                                Content="{Binding Classifier, FallbackValue=notset, Converter={StaticResource EnumDescriptionConverter}}"/>
 
                                     </Grid>
 
-
-                                    <Grid Visibility="{Binding Path=DataContext.IsEditMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource IsEditConverter}}">
+                                    <Grid Visibility="{Binding Path=DataContext.IsEditMode, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>

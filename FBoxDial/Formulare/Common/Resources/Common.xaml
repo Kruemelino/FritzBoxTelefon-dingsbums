@@ -5,7 +5,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Icons.xaml"/>
-        <ResourceDictionary Source="Colors.xaml"/>
         <ResourceDictionary Source="Converter.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
@@ -86,8 +85,7 @@
         <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource ContainerBorder}" />
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="GridLinesVisibility" Value="Horizontal" />
-        <Setter Property="SelectionUnit" Value="FullRow" />        
-        
+        <Setter Property="SelectionUnit" Value="FullRow" /> 
     </Style>       
     
     <Style x:Key="OptComboBox" TargetType="{x:Type ComboBox}" >
@@ -220,6 +218,7 @@
             </MultiTrigger>
         </Style.Triggers>
     </Style>
+    
     <Style x:Key="OptHeader" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}"/>
         <Setter Property="FontWeight" Value="DemiBold"/>

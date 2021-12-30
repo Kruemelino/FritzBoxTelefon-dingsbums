@@ -13,46 +13,25 @@
         <fbd:TelbuchView/>
     </DataTemplate>
 
-    <fbd:BoolToVisibilityConverter x:Key="IsEditConverter"/>
-    <fbd:NullToVisibilityConverter x:Key="SelectedContactConverter"/>
-    <fbd:IntegerToBoolConverter x:Key="FavoriteContactConverter"/>
-    <fbd:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
-
-    <!-- Controls -->
-    <Style x:Key="MenuTabButton" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource BlueGreyGradient}"/>
-        <Setter Property="Foreground" Value="{StaticResource Innuendo}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Padding" Value="5"/>
-    </Style>
-
-    <Style x:Key="MenuIconButton" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource BlueGreyGradient}"/>
+    <Style x:Key="MenuIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="2"/>
     </Style>
 
-    <Style x:Key="MenuTabTextBox" TargetType="TextBox">
-        <Setter Property="Background" Value="{StaticResource TwinkleBlue}"/>
-        <Setter Property="Foreground" Value="{StaticResource AlmostBlack}"/>
+    <Style x:Key="MenuToolButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="MinWidth" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="5"/>
+    </Style>
+
+    <Style x:Key="MenuTabTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
 
-    <Style x:Key="MenuToolButton" TargetType="Button">
-        <Setter Property="MinWidth" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" />
-        <Setter Property="Background" Value="{StaticResource BlueGreyGradient}"/>
-        <Setter Property="Padding" Value="5"/>
-        <Setter Property="BorderThickness" Value="0"/>
-
-    </Style>
-
     <Style x:Key="MenuTabToggleButton" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Background" Value="{StaticResource BlueGreyGradient}"/>
-        <Setter Property="Foreground" Value="{StaticResource Innuendo}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Padding" Value="5"/>
@@ -67,90 +46,71 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-           
-            <Trigger Property="IsMouseOver" Value="true">
-                <Setter Property="Background" Value="{StaticResource Button.MouseOver.Background}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="true">
-                <Setter Property="Background" Value="{StaticResource Button.Pressed.Background}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}"/>
-            </Trigger>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Background" Value="#FFBCDDEE"/>
-                <Setter Property="BorderBrush" Value="#FF245A83"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Opacity" Value="0.7"/>
-            </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                    <Condition Property="IsChecked" Value="False"/>
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource ControlDefaultBackground}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource ControlDefaultBorderBrush}"/>
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                    <Condition Property="IsChecked" Value="True"/>
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource ControlPrimaryDefaultBackground}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource ControlPrimaryDefaultBorderBrush}"/>
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsChecked" Value="False"/>
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource ControlMouseOverBackground}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource ControlMouseOverBorderBrush}"/>
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsChecked" Value="True"/>
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource ControlPrimarySelectedMouseOverBackground}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource ControlPrimarySelectedMouseOverBorderBrush}"/>
+                </MultiTrigger.Setters>
+            </MultiTrigger>
         </Style.Triggers>
     </Style>
-    
 
-    <Style x:Key="EditButton" TargetType="Button">
-        <Setter Property="Background" Value="Transparent"/>
+    <Style x:Key="EditButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="BorderThickness" Value="0"/>
-
         <Setter Property="MinHeight" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" />
     </Style>
     
-    <Style x:Key="DetailLabel" TargetType="Label">
-        <Setter Property="Foreground" Value="{StaticResource BlueGrey}"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="14"/>
-    </Style>
-
-    <Style x:Key="ContentLabel" TargetType="Label">
-        <Setter Property="Foreground" Value="{StaticResource AlmostBlack}"/>
-        <Setter Property="FontWeight" Value="DemiBold"/>
-        <Setter Property="FontSize" Value="14"/>
-    </Style>
-
     <Style x:Key="DetailBorder" TargetType="Border">
-        <Setter Property="CornerRadius" Value="0"/>
-        <Setter Property="Background" Value="{StaticResource LightBlueGreyGradient}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ContainerBorder}"/>
+        <Setter Property="Background" Value="{DynamicResource ContainerBackground}"/>
     </Style>
 
-    <Style x:Key="EditComboBox" TargetType="{x:Type ComboBox}">
-        <Setter Property="MinWidth" Value="120"/>
-        <Setter Property="MinHeight" Value="20"/>
+    <Style x:Key="EditComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="AllowDrop" Value="true"/>
-        <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
-    <Style x:Key="EditBox" TargetType="{x:Type TextBoxBase}">
+    <Style x:Key="EditBox" TargetType="{x:Type TextBoxBase}" BasedOn="{StaticResource {x:Type TextBoxBase}}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="MinWidth" Value="120"/>
-        <Setter Property="MinHeight" Value="20"/>
-        <Setter Property="AllowDrop" Value="true"/>
-        <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <!-- What are control templates? Visit: https://dzone.com/articles/control-templates-wpf -->
-                <ControlTemplate TargetType="{x:Type TextBoxBase}">
-                    <Border Name="Border" CornerRadius="0" Padding="2" 
-                            Background="White" 
-                            BorderBrush="{StaticResource BlueHorizon}" 
-                            BorderThickness="1" >
-
-                        <!-- What is this? Visit: http://paulstovell.com/blog/wpf-part-names -->
-                        <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="#FFa5b1c2"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#FF69717C"/>
-                            <Setter Property="Foreground" Value="#FFd1d8e0"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style x:Key="favoriteCheckbox" TargetType="{x:Type CheckBox}">
@@ -178,8 +138,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="IconTextButton" TargetType="{x:Type Button}" >
-        <Setter Property="Background" Value="{StaticResource BlueGreyGradient}"/>
+    <Style x:Key="IconTextButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Width" Value="100"/>
@@ -190,18 +149,20 @@
                 <DataTemplate >
 
                     <DockPanel Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-
+                            <!--Icon-->
                             <ContentControl ContentTemplate="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                                        Grid.Column="0" Margin="8,0" Height="16"
-                                        HorizontalAlignment="Left"/>
-     
-                        
+                                            Grid.Column="0" 
+                                            Margin="8,0" 
+                                            Height="16"
+                                            HorizontalAlignment="Left" />
+                            <!--Text-->
                             <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                                        Grid.Column="0" Margin="0,0"
-                                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                              Grid.Column="0"
+                                              Margin="0,0"
+                                              HorizontalAlignment="Left" 
+                                              VerticalAlignment="Center"/>
                         
-                    </DockPanel>  
-                     
+                    </DockPanel>                      
 
                 </DataTemplate>
             </Setter.Value>
