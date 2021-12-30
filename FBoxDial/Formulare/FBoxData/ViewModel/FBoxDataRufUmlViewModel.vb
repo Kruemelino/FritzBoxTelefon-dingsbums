@@ -31,7 +31,12 @@
     End Sub
     Public Sub Init() Implements IFBoxData.Init
 
-        RufUmlListe = New ObservableCollectionEx(Of RufUmlViewModel)(DatenService.GetDeflectionList.Deflections.Select(Function(Defl) New RufUmlViewModel(DatenService) With {.Deflection = Defl, .Enable = Defl.Enable}))
+        Dim FBoxDeflections As FBoxAPI.DeflectionList = DatenService.GetDeflectionList
+        If FBoxDeflections IsNot Nothing AndAlso FBoxDeflections.Deflections IsNot Nothing Then
+
+            RufUmlListe = New ObservableCollectionEx(Of RufUmlViewModel)(FBoxDeflections.Deflections.Select(Function(Defl) New RufUmlViewModel(DatenService) With {.Deflection = Defl, .Enable = Defl.Enable}))
+
+        End If
 
     End Sub
 
