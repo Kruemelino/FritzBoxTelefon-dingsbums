@@ -168,7 +168,7 @@ Friend Module FritzBoxRufsperre
     ''' <param name="TelNr">Zu prüfende Nummer</param>
     Friend Function IsFBoxBlocked(TelNr As Telefonnummer) As Boolean
         Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-            If FBoxTR064.Bereit Then
+            If FBoxTR064.Ready Then
                 If TelNr.Unterdrückt Then
                     ' Abfrage, ob unterdrückte Nummern generell nicht signalisiert werden.
                     Dim DeflectionList As New FBoxAPI.DeflectionList

@@ -10,7 +10,7 @@ Friend Module FritzBoxAnrufliste
         Dim Pfad As String = String.Empty
 
         ' Ermittle Pfad zur Anrufliste
-        If FBoxTR064.Bereit AndAlso FBoxTR064.X_contact.GetCallList(Pfad) Then
+        If FBoxTR064.Ready AndAlso FBoxTR064.X_contact.GetCallList(Pfad) Then
             With Await DeserializeAsyncXML(Of FBoxAPI.CallList)(Pfad, True)
                 Anrufliste.Calls.AddRange(.Calls)
                 Anrufliste.Timestamp = .Timestamp

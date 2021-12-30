@@ -10,7 +10,7 @@ Namespace Telefonbücher
         Friend Async Function LadeTelefonbücher(FBoxTR064 As FBoxAPI.FritzBoxTR64) As Task(Of IEnumerable(Of PhonebookEx))
 
             ' Prüfe, ob Fritz!Box verfügbar
-            If FBoxTR064.Bereit Then
+            If FBoxTR064.Ready Then
                 With FBoxTR064.X_contact
                     ' Ermittle alle verfügbaren Telefonbücher
                     Dim PhonebookIDs As Integer() = {}

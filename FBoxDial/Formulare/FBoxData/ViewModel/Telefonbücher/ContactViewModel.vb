@@ -31,14 +31,16 @@
 
     Public Sub New(contact As FBoxAPI.Contact)
         _Kontakt = contact
-        With Kontakt
-            ' Setze Felder
-            Kategorie = .Category
-            Uniqueid = .Uniqueid
+        If Kontakt IsNot Nothing Then
+            With Kontakt
+                ' Setze Felder
+                Kategorie = .Category
+                Uniqueid = .Uniqueid
 
-            Person = New PersonViewModel(.Person)
-            Telefonie = New TelephonyViewModel(.Telephony)
-        End With
+                Person = New PersonViewModel(.Person)
+                Telefonie = New TelephonyViewModel(.Telephony)
+            End With
+        End If
     End Sub
 
     ''' <summary>

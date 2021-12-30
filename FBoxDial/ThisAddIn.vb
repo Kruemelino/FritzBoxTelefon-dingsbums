@@ -96,7 +96,7 @@ Public NotInheritable Class ThisAddIn
             ' TR064 Schnittstelle initiieren
             FBoxTR064.Init(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
 
-            If FBoxTR064.Bereit Then
+            If FBoxTR064.Ready Then
                 ' Schreibe in das Log noch Informationen zur Fritz!Box
                 NLogger.Info($"{FBoxTR064.FriendlyName} {FBoxTR064.DisplayVersion}")
 

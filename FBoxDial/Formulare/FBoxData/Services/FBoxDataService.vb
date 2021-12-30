@@ -184,7 +184,7 @@ Public Class FBoxDataService
         'Dim DeflectionListVM As IEnumerable(Of FBoxDeflectionItemViewModel) = Nothing
         Dim DeflectionList As New FBoxAPI.DeflectionList
 
-        If FBoxTR064.Bereit Then FBoxTR064.X_contact.GetDeflections(DeflectionList)
+        If FBoxTR064.Ready Then FBoxTR064.X_contact.GetDeflections(DeflectionList)
 
         Return DeflectionList
     End Function

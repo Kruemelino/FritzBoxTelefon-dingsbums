@@ -25,7 +25,7 @@ Public Class FritzBoxWählClient
             ' Ereignishandler hinzufügen
             AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
 
-            If FBoxTR064.Bereit Then
+            If FBoxTR064.Ready Then
 
                 With Telefon
                     If Not FBoxTR064.X_voip.DialGetConfig(PhoneName) Then
