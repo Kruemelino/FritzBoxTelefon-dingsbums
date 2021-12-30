@@ -306,13 +306,11 @@ Public Class FBoxDataCallListViewModel
     Private Function CanShowContact(o As Object) As Boolean
         If o IsNot Nothing Then
             Dim AnrufListetListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
-
-            Return AnrufListetListe.First.Gegenstelle.IsNotStringNothingOrEmpty
+            Return AnrufListetListe.Any AndAlso AnrufListetListe.First.Gegenstelle.IsNotStringNothingOrEmpty
         Else
             Return False
         End If
     End Function
-
 #End Region
 
 #End Region
