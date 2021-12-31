@@ -6,11 +6,12 @@
         <ResourceDictionary Source="ThemeBase.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <!-- Window Colours. Background, Border and TitleBar colours. --> 
+    <!-- Window Colours. Background, Border and TitleBar colours. -->
+    <Color x:Key="CtrlPSMOBB">#FF96D2FF</Color>
+
     <SolidColorBrush x:Key="BackgroundColour"                           Color="#FFF8F8F8" />
     <SolidColorBrush x:Key="WindowBorderColour"                         Color="#FFE0E0E0" />
     <SolidColorBrush x:Key="WindowTitleColour"                          Color="WhiteSmoke" />
-
     <!-- Control colour themes. dont mess with em okay unless youre good at styles -->
     <!-- Complete DarkTheme Colours -->
     <SolidColorBrush x:Key="TransparentBrush"                           Color="Transparent" />
@@ -49,12 +50,11 @@
     <SolidColorBrush x:Key="ControlPrimaryDisabledBackground"           Color="#FFB9E1FF" />
     <SolidColorBrush x:Key="ControlPrimaryDisabledBorderBrush"          Color="#FFAFD7FF" />
     <SolidColorBrush x:Key="ControlPrimaryMouseOverBackground"          Color="#FFA0DCFF" />
-    <SolidColorBrush x:Key="ControlPrimaryMouseOverBorderBrush"         Color="#FF96D2FF" />
+    <SolidColorBrush x:Key="ControlPrimaryMouseOverBorderBrush"         Color="{StaticResource CtrlPSMOBB}" />
     <SolidColorBrush x:Key="ControlPrimarySelectedBackground"           Color="#FFB4E6FF" />
     <SolidColorBrush x:Key="ControlPrimarySelectedBorderBrush"          Color="#FFA0DCFF" />
     <SolidColorBrush x:Key="ControlPrimarySelectedMouseOverBackground"  Color="#FFAFE1FF" />
     <SolidColorBrush x:Key="ControlPrimarySelectedMouseOverBorderBrush" Color="#FFAAD2FF" />
-
     <SolidColorBrush x:Key="ControlPrimaryCaretSelectionBackground"     Color="#FF5AAFFF" />
     <SolidColorBrush x:Key="ControlPrimaryCaretBackground"              Color="#FF50B4FF" />
     <SolidColorBrush x:Key="ControlPrimaryGlythColour"                  Color="#FF4BAFFF" />

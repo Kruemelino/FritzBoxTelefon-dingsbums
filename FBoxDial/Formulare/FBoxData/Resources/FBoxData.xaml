@@ -138,17 +138,16 @@
         </Border>
 
         <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="ContentContainer"
-                        Property="Background"
-                        Value="LightBlue">
-                </Setter>
-            </Trigger>
             <Trigger Property="Button.IsDefaulted" Value="True">
                 <Setter TargetName="ContentContainer"
                         Property="Background"
-                        Value="LightBlue">
-                </Setter>
+                        Value="{DynamicResource ControlMouseOverBorderBrush}"/>
+            </Trigger>
+            
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="ContentContainer"
+                        Property="Background"
+                        Value="{DynamicResource ControlPrimaryMouseOverBackground}"/>
             </Trigger>
             <Trigger Property="ButtonBase.IsPressed" Value="True">
                 <Setter TargetName="Content" 
@@ -167,11 +166,7 @@
                 </Setter>
             </Trigger>
             <Trigger Property="UIElement.IsEnabled" Value="False">
-                <Setter Property="TextElement.Foreground">
-                    <Setter.Value>
-                        <DynamicResource ResourceKey="{x:Static SystemColors.GrayTextBrushKey}" />
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource ControlDisabledGlythColour}"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -179,7 +174,7 @@
     <Style x:Key="{x:Type fbd:TimePicker}" TargetType="{x:Type fbd:TimePicker}">
         <Setter Property="Width" Value="100"/>
         <Setter Property="Height" Value="23"/>
-        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlDefaultBorderBrush}"/>
         <Setter Property="BorderThickness" Value="0.5"/>
         <Setter Property="Template">
             <Setter.Value>

@@ -7,7 +7,8 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Window Colours. Background, Border and TitleBar colours. -->
-
+    <Color x:Key="CtrlPSMOBB">#FF2896F5</Color>
+    
     <SolidColorBrush x:Key="BackgroundColour"                           Color="#FF232323" />
     <SolidColorBrush x:Key="WindowBorderColour"                         Color="#FF343434" />
     <SolidColorBrush x:Key="WindowTitleColour"                          Color="#FF242424" />
@@ -49,7 +50,7 @@
     <SolidColorBrush x:Key="ControlPrimaryDisabledBackground"           Color="#FF3278C8" />
     <SolidColorBrush x:Key="ControlPrimaryDisabledBorderBrush"          Color="#FF3C78C8" />
     <SolidColorBrush x:Key="ControlPrimaryMouseOverBackground"          Color="#FF208CF0" />
-    <SolidColorBrush x:Key="ControlPrimaryMouseOverBorderBrush"         Color="#FF2896F5" />
+    <SolidColorBrush x:Key="ControlPrimaryMouseOverBorderBrush"         Color="{StaticResource CtrlPSMOBB}" />
     <SolidColorBrush x:Key="ControlPrimarySelectedBackground"           Color="#FF1482DC" />
     <SolidColorBrush x:Key="ControlPrimarySelectedBorderBrush"          Color="#FF28A0F0" />
     <SolidColorBrush x:Key="ControlPrimarySelectedMouseOverBackground"  Color="#FF1484D1" />
