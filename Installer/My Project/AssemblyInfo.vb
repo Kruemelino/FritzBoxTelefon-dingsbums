@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Werte der Assemblyattribute überprüfen
 
-<Assembly: AssemblyTitle("Installer")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("Installer")>
-<Assembly: AssemblyCopyright("Copyright ©  2020")>
+<Assembly: AssemblyTitle("Fritz!Box Telefon-Dingsbums - Installer")>
+<Assembly: AssemblyDescription("Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche.")>
+<Assembly: AssemblyCompany("Fritz!Box Telefon-Dingsbums")>
+<Assembly: AssemblyProduct("Fritz!Box Telefon-Dingsbums")>
+<Assembly: AssemblyCopyright("Gert Michael (Kruemelino) © 2022")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
