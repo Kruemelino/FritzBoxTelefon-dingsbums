@@ -844,18 +844,18 @@ Public Class OptionenViewModel
 
         ' Child Views
         With PageViewModels
-            .Add(New OptBaseViewModel())
+            .Add(New OptBaseViewModel(DatenService))
             .Add(New OptAnrMonViewModel())
             .Add(New OptDialerViewModel())
             .Add(New OptJournalViewModel())
-            .Add(New OptSearchContactViewModel())
+            .Add(New OptSearchContactViewModel(DatenService))
             .Add(New OptCreateContactViewModel())
-            .Add(New OptTelephonyViewModel())
+            .Add(New OptTelephonyViewModel(DatenService))
             .Add(New OptPhonerViewModel())
-            .Add(New OptMicroSIPViewModel())
-            .Add(New OptTellowsViewModel())
+            .Add(New OptMicroSIPViewModel(DatenService))
+            .Add(New OptTellowsViewModel(DatenService))
             .Add(New OptInfoViewModel())
-            .Add(New OptTestViewModel())
+            .Add(New OptTestViewModel(DatenService))
         End With
 
         ' Lade die Grundeinstellungen

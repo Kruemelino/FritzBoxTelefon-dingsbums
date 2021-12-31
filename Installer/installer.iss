@@ -1,5 +1,4 @@
-﻿#include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
-#define MyAppName "Fritz!Box Telefon-dingsbums"
+﻿#define MyAppName "Fritz!Box Telefon-dingsbums"
 #define MyAppVersion "5.0.2.7"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
@@ -75,6 +74,8 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 var Versionspfad:String;
 var Version:String;
 
+var DownloadPage: TDownloadWizardPage;
+
 var inst_dotnetfx:boolean;
 var inst_VSTO2010_Redistributable:boolean;
 
@@ -86,22 +87,40 @@ begin
     Result := '{' + '{#myGUID}' +  '}'
 end;
 
-function PrepareToInstall(var NeedsRestart: Boolean): String;
-    var
-    ResultCode : Integer;
-   
-    begin
-        if inst_dotnetfx then
-            Result := '';
-            
-            begin
-                ShellExec('open', ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'), '/q /passive /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
-        end;
+function OnDownloadProgress(const Url, FileName: String; const Progress, ProgressMax: Int64): Boolean;
+begin
+  if Progress = ProgressMax then
+    Log(Format('Successfully downloaded file to {tmp}: %s', [FileName]));
+  Result := True;
+end;
 
-        if inst_VSTO2010_Redistributable then
-            begin
-                ShellExec('open', ExpandConstant('{tmp}\vstor_redist.exe'), '/q /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
-        end;
+procedure InitializeWizard;
+begin
+  DownloadPage := CreateDownloadPage(SetupMessage(msgWizardPreparing), SetupMessage(msgPreparingDesc), @OnDownloadProgress);
+end;
+
+function NextButtonClick(CurPageID: Integer): Boolean;
+begin
+  if CurPageID = wpReady then begin
+    DownloadPage.Clear;
+    if inst_dotnetfx then
+      DownloadPage.Add(dotnetfx_url, ExpandConstant('ndp48-x86-x64-allos-enu.exe'), '');
+    if inst_VSTO2010_Redistributable then
+      DownloadPage.Add(VSTO2010_Redistributable_url, ExpandConstant('vstor_redist.exe'), '');
+    DownloadPage.Show;
+    try
+      try
+        DownloadPage.Download;
+        Result := True;
+      except
+        SuppressibleMsgBox(AddPeriod(GetExceptionMessage), mbCriticalError, MB_OK, IDOK);
+        Result := False;
+      end;
+    finally
+      DownloadPage.Hide;
+    end;
+  end else
+    Result := True;
 end;
 
 function GetHKLM: Integer;
@@ -243,6 +262,25 @@ function DefDirRoot(Param: String): String;
     else Result := ExpandConstant('{pf}')
 end;
 
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+    var
+    ResultCode : Integer;
+   
+    begin
+        if inst_dotnetfx then
+            Result := '';
+            
+            begin
+                ShellExec('open', ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'), '/q /passive /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+        end;
+
+        if inst_VSTO2010_Redistributable then
+            begin
+                ShellExec('open', ExpandConstant('{tmp}\vstor_redist.exe'), '/q /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+        end;
+        
+end;
+
 function InitializeSetup(): Boolean;
     var
         strNET, strNET2, strERR:String;
@@ -301,11 +339,7 @@ function InitializeSetup(): Boolean;
 
                     if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then
                         begin
-                            if inst_dotnetfx then
-                                ITD_AddFileSize(dotnetfx_url, ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'),43000680);                        
 
-                            if inst_VSTO2010_Redistributable then
-                                ITD_AddFileSize(VSTO2010_Redistributable_url, ExpandConstant('{tmp}\vstor_redist.exe'),40029664);
                             Result := true
                         end
                 end

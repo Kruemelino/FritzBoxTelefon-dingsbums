@@ -29,7 +29,7 @@
     Public Property TestKontaktsucheCommand As RelayCommand
     Public Property TestAnrMonCommand As RelayCommand
 #End Region
-    Public Sub New()
+    Public Sub New(ds As IOptionenService)
         ' Commands
         TestTelNrCommand = New RelayCommand(AddressOf StartTelNrTest)
         TestRWSCommand = New RelayCommand(AddressOf StartRWSTest, AddressOf CanRunTestRWS)
@@ -39,7 +39,7 @@
         TestAnrMonCommand = New RelayCommand(AddressOf StartAnrMonTest)
 
         ' Interface
-        DatenService = New OptionenService
+        _DatenService = ds
     End Sub
 
 #Region "Telefonnummerntest"

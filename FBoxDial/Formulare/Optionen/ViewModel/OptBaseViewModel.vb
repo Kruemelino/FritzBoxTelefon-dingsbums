@@ -24,12 +24,12 @@
 
     Public Property UpdateUserListCommand As RelayCommand
 
-    Public Sub New()
+    Public Sub New(ds As IOptionenService)
         ' Commands
         UpdateUserListCommand = New RelayCommand(AddressOf UpdateUserList, AddressOf CanUpdateUserList)
 
         ' Interface
-        DatenService = New OptionenService
+        _DatenService = ds
     End Sub
 
     Private Function CanUpdateUserList(o As Object) As Boolean

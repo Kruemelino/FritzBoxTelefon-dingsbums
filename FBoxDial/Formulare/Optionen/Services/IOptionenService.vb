@@ -1,6 +1,6 @@
 ﻿Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop.Outlook
-Friend Interface IOptionenService
+Public Interface IOptionenService
 
     Sub UpdateTheme()
 

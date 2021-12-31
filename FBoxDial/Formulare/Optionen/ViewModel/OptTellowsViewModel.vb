@@ -68,13 +68,13 @@ Public Class OptTellowsViewModel
 
     Public Property TellowsAccountInfoCommand As RelayCommand
     Public Property TellowsLiveAPICommand As RelayCommand
-    Public Sub New()
+    Public Sub New(ds As IOptionenService)
 
         TellowsLiveAPICommand = New RelayCommand(AddressOf StartLiveAPI, AddressOf CanUsetellows)
         TellowsAccountInfoCommand = New RelayCommand(AddressOf LadeAccountDaten, AddressOf CanUsetellows)
 
         ' Interface
-        DatenService = New OptionenService
+        _DatenService = ds
     End Sub
 
     Private Function CanUsetellows(o As Object) As Boolean

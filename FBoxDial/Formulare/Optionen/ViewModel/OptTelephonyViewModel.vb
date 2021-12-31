@@ -55,12 +55,12 @@
     Public Property ImportCommand As RelayCommand
 #End Region
 
-    Public Sub New()
+    Public Sub New(ds As IOptionenService)
         ' Commands
         ImportCommand = New RelayCommand(AddressOf StartImport)
 
         ' Interface
-        DatenService = New OptionenService
+        _DatenService = ds
     End Sub
 
     Private Sub StartImport(obj As Object)

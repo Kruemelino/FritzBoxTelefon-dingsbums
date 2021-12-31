@@ -57,6 +57,14 @@ Public NotInheritable Class ThisAddIn
         Dim UserData As New NutzerDaten
         NLogger.Debug("Nutzererinstellungen geladen...")
 
+        ' Explorer Ereignishandler festlegen
+        SetExplorer()
+        NLogger.Debug("Outlook-Explorer Ereignishandler erfasst...")
+
+        ' Outlook Inspektoren erfassen
+        SetInspector()
+        NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
+
         ' Initiiere die TR064 Schnittstelle für die Abfragen der Daten der Fritz!Box
         TimerStart()
 
@@ -72,14 +80,6 @@ Public NotInheritable Class ThisAddIn
         Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
         Dim TaskTelefonbücher As Task(Of IEnumerable(Of PhonebookEx)) = Nothing
         Dim TaskAnrList As Task(Of FBoxAPI.CallList) = Nothing
-
-        ' Explorer Ereignishandler festlegen
-        SetExplorer()
-        NLogger.Debug("Outlook-Explorer Ereignishandler erfasst...")
-
-        ' Outlook Inspektoren erfassen
-        SetInspector()
-        NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
 
         ' Anrufmonitor starten
         If XMLData.POptionen.CBAnrMonAuto Then
@@ -244,6 +244,7 @@ Public NotInheritable Class ThisAddIn
     Private Sub NeustartTimer_Elapsed(sender As Object, e As Timers.ElapsedEventArgs)
         ' Prüfe, ob die maximale Anzahl an Durchläufen (15) noch nicht erreicht wurde
         If NeustartTimerIterations.IsLess(15) Then
+
             ' Wenn ein Ping zur Fritz!Box erfolgreich war, dann hat das Wiederverbinden geklappt.
             If Ping(XMLData.POptionen.ValidFBAdr) Then
                 ' Halte den TImer an und löse ihn auf

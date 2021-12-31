@@ -103,13 +103,13 @@ Public Class OptSearchContactViewModel
     Private Property CTS As CancellationTokenSource
 #End Region
 
-    Public Sub New()
+    Public Sub New(ds As IOptionenService)
         ' Commands
         CancelCommand = New RelayCommand(AddressOf CancelImport)
         IndexCommand = New RelayCommand(AddressOf StartIndex)
 
         ' Interface
-        DatenService = New OptionenService
+        _DatenService = ds
     End Sub
 
 #Region "ICommand Callback"

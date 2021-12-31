@@ -25,13 +25,13 @@
 
     Public Property MicroSIPPathCommand As RelayCommand
 
-    Public Sub New()
+    Public Sub New(ds As IOptionenService)
         ' Commands
         MicroSIPPathCommand = New RelayCommand(AddressOf GetMicroSIPPath)
 
         ' Interface
         DialogService = New DialogService
-        DatenService = New OptionenService
+        _DatenService = ds
     End Sub
 
     Private Sub GetMicroSIPPath(o As Object)
