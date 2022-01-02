@@ -44,12 +44,20 @@ Für die Nutzung des Addins wird benötigt:
    4. Der Fritz!Box CallMonitor muss aktiviert sein: Hierzu den Telefoncode `#96*5*` per Telefon wählen.
    5. Zur Kommunikation mit der Fritz!Box wird u. a. die TR064-Schnittstelle verwendet. Daher darf diese nicht deaktiviert werden.
 2. Microsoft Outlook (2010 bis 2019 inkl. 365)
-3. Gegebenenfalls vorab installieren:
-   1. [Microsoft .NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48)
-   2. [Microsoft Visual Studio 2010 Tools for Office Runtime Redistributable (VSTO 2010)](https://www.microsoft.com/de-DE/download/details.aspx?id=48217)
+3. [Microsoft .NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48) und [Microsoft Visual Studio 2010 Tools for Office Runtime Redistributable (VSTO 2010)](https://www.microsoft.com/de-DE/download/details.aspx?id=48217)
+   Bei der Installation wird geprüft, ob beides bereits installiert ist. Falls nicht, werden beide Komponenten heruntergeladen und installiert. **Ich empfehle jedoch, diese beiden Komponenten vorab zu installieren.**
 
 ### Links
 Forum für Hilfestellungen ([IP Phone Forum](https://www.ip-phone-forum.de/)): [Fritz!Box Telefon-dingsbums (Ein MS Outlook Addin)](https://www.ip-phone-forum.de/threads/fritz-box-telefon-dingsbums-ein-ms-outlook-addin.237086/)
+
+### Verwendete Drittanbieter-Bibliotheken​
+Aktuell werden folgende Drittanbieter-Bibliotheken​ in das Addin eingebunden:
+* [Dirkster.TreeLib](https://github.com/Dirkster99/TreeLib)
+* [FilterDataGrid](https://github.com/macgile/DataGridFilter)
+* [MixERP.Net.VCards](https://github.com/mixerp/mixerp.net.vcards)
+* [Newtonsoft.Json](https://www.newtonsoft.com/json)
+* [NLog](https://nlog-project.org/)
+* [PixiEditor.ColorPicker](https://github.com/PixiEditor/ColorPicker)
 
 ### Quellen
 Ursprüngliche Thread von 2006 im [IP Phone Forum](https://www.ip-phone-forum.de/): [Outlook Wählhilfe (Makro) ohne Box zu modifizieren](https://www.ip-phone-forum.de/threads/outlook-w%C3%A4hlhilfe-makro-ohne-box-zu-modifizieren.102096/)
@@ -57,14 +65,13 @@ Ursprüngliche Thread von 2006 im [IP Phone Forum](https://www.ip-phone-forum.de
 Das Addin ist nicht ohne Hilfestellung anderer Entwickler und von denen zur Verfügung gestellten Programmcode entstanden. Im folgenden werde ich Quellen auflisten, bei denen ich Codefragmente, Lösungen und Ideen entnommen habe.
 Es liegt mir fern, fremden Code als meinen zu verkaufen. (Falls ich was vergessen habe, so werde ich es natürlich gerne ergänzen.)
 * TCP-Client für den Anrufmonitor: ErfinderDesRades [VersuchsChat mit leistungsfähigem Server](https://www.vb-paradise.de/index.php/Thread/61948-VersuchsChat-mit-leistungsf%C3%A4higem-Server)
-* WPF TreeView: Dirk Bahle [TreeLib](https://github.com/Dirkster99/TreeLib), [Advanced WPF TreeView in C#/VB.Net Part 6 of n](https://www.codeproject.com/Articles/1224943/Advanced-WPF-TreeView-in-Csharp-VB-Net-Part-of-n)
+* WPF TreeView: Dirk Bahle [Advanced WPF TreeView in C#/VB.Net Part 6 of n](https://www.codeproject.com/Articles/1224943/Advanced-WPF-TreeView-in-Csharp-VB-Net-Part-of-n)
 * WPF Telefonbuch: Tosker [ContactBook-Tutorial](https://github.com/Tosker/ContactBook-Tutorial), [WPF Contact Book - Part 1 [Getting Started]](https://www.youtube.com/watch?v=bmw68zxjwG4)
 * WPF Navigation in Einstellungen: Rachel Lim [Navigation with MVVM](https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/)
 * WPF RelayCommand: Nofear23m [Command's in WPF](https://www.vb-paradise.de/index.php/Thread/128963-Command-s-in-WPF/?postID=1116045#post1116045)
 * WPF Enums: Brian Lagunas [BindingEnumsInWpf](https://github.com/brianlagunas/BindingEnumsInWpf), [A Better Way to Data Bind Enums in WPF](https://brianlagunas.com/a-better-way-to-data-bind-enums-in-wpf/),
   [Localize Enum Descriptions in WPF](https://brianlagunas.com/localize-enum-descriptions-in-wpf/)
 * Expanded ObservableCollection: Rachel Lim [Stack Overflow: how to sort ObservableCollection](https://stackoverflow.com/a/7285548)
-* WPF Spaltenfilter im Datagrid: Macabies Gilles [Filterable DataGrid, multi language](https://github.com/macgile/DataGridFilter)
 * WPF TimePicker: Michael Detras [Creating a WPF Custom Control](http://www.nullskull.com/a/1401/creating-a-wpf-custom-control.aspx)
 * Passwortverschlüsselung: [Rijndael Encryption in VB.NET](http://www.freevbcode.com/ShowCode.asp?ID=4520)
 * Routine zur Überprüfung der installierten .NET Version: Christoph Nahr [Check .NET Version with Inno Setup](http://kynosarges.org/DotNetVersion.html)
