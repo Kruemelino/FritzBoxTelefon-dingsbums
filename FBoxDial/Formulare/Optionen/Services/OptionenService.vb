@@ -17,8 +17,7 @@ Friend Class OptionenService
     Private Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
 
         Dim UserList As New ObservableCollectionEx(Of FBoxAPI.User)
-        '' Prüfe, ob Fritz!Box verfügbar
-        'If Ping(IPAdresse) Then
+
         Using FBoxTr064 As New FBoxAPI.FritzBoxTR64(IPAdresse, XMLData.POptionen.TBNetworkTimeout, Nothing)
             AddHandler FBoxTr064.Status, AddressOf SetFBoxAPIStatus
 
@@ -36,9 +35,6 @@ Friend Class OptionenService
             RemoveHandler FBoxTr064.Status, AddressOf SetFBoxAPIStatus
 
         End Using
-        'Else
-        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-        'End If
 
         Return UserList
     End Function

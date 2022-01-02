@@ -7,7 +7,7 @@
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="400"
-             d:DataContext="{d:DesignInstance Type=fbd:OptBaseViewModel, IsDesignTimeCreatable=True}" >
+             d:DataContext="{d:DesignInstance Type=fbd:OptBaseViewModel, IsDesignTimeCreatable=false}" >
 
     <UserControl.Resources>
         <ResourceDictionary>
