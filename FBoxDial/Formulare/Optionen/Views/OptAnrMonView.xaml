@@ -8,7 +8,7 @@
              xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="420"
-             d:DataContext="{d:DesignInstance Type=fbd:OptAnrMonViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=fbd:OptAnrMonViewModel, IsDesignTimeCreatable=False}">
     
     <UserControl.Resources>
         <ResourceDictionary>
@@ -69,6 +69,7 @@
             <TextBlock Text="{x:Static localize:LocOptionen.strAnrMonBColorInfo}"/>
 
             <colorpicker:PortableColorPicker Grid.Column="1" ShowAlpha="True"
+                                             Style="{DynamicResource DefaultColorPickerStyle}"
                                              SelectedColor="{Binding OptVM.TBAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              SecondaryColor="{Binding OptVM.TBAnrMonFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -118,6 +119,7 @@
             <TextBlock Text="{x:Static localize:LocOptionen.strAnrMonBColorInfo}"/>
 
             <colorpicker:PortableColorPicker Grid.Column="1" ShowAlpha="True"
+                                             Style="{DynamicResource DefaultColorPickerStyle}"
                                              SelectedColor="{Binding OptVM.TBStoppUhrBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              SecondaryColor="{Binding OptVM.TBStoppUhrFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 

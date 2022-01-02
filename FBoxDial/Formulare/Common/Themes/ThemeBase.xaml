@@ -12,13 +12,7 @@
     <Color x:Key="LightSilver">#FFE7EAEA</Color>
     <Color x:Key="Iceberg">#FF73A9D8</Color>
     <Color x:Key="Calypso">#FF436b8d</Color>
-    
-    <SolidColorBrush x:Key="DavysGrey"                  Color="#FF595959"/>
-    <SolidColorBrush x:Key="SpiroDiscoBall"             Color="#FF27C7F7"/>
-    <SolidColorBrush x:Key="Water"                      Color="#FFCCEEFB"/> 
-    <SolidColorBrush x:Key="PaleCyan"                   Color="#FF82DFFB"/>
- 
-
+     
     <!--#region Default Brushes-->
     <SolidColorBrush x:Key="ChineseBlack"               Color="#FF131313" />
     <SolidColorBrush x:Key="RaisinBlack"                Color="#FF212121" />
@@ -32,8 +26,11 @@
     <SolidColorBrush x:Key="Carmine"                    Color="#FF940A14"/>
     <SolidColorBrush x:Key="PigmentRed"                 Color="#FFF01428"/>
     <SolidColorBrush x:Key="FieryRose"                  Color="#FFFC5C65"/>
-
-
+    
+      <SolidColorBrush x:Key="DavysGrey"                  Color="#FF595959"/>
+    <SolidColorBrush x:Key="SpiroDiscoBall"             Color="#FF27C7F7"/>
+    <SolidColorBrush x:Key="Water"                      Color="#FFCCEEFB"/> 
+    <SolidColorBrush x:Key="PaleCyan"                   Color="#FF82DFFB"/>  
     <!--#endregion-->
 
     <!--#region tellows Brushes-->
@@ -628,7 +625,24 @@
         </Setter>
     </Style>
     <!--#endregion-->
-
+    
+    <!--#region Colorpicker-->
+    <!--https://github.com/PixiEditor/ColorPicker-->
+    <Style TargetType="UserControl" x:Key="DefaultColorPickerStyle">
+        <Style.Resources>
+            <ResourceDictionary>
+                <Style TargetType="Grid" >
+                    <Style.Triggers>
+                        <Trigger Property="Name" Value="MainGrid">
+                            <Setter Property="Background" Value="{DynamicResource ContainerBackground}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ResourceDictionary>
+        </Style.Resources>
+    </Style>
+    <!--#endregion-->
+    
     <!--#region ComboBox and ComboBoxItems-->
     <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
         <Setter Property="Background" Value="{DynamicResource ControlDefaultBackground}"/>
