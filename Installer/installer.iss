@@ -89,37 +89,40 @@ end;
 
 function OnDownloadProgress(const Url, FileName: String; const Progress, ProgressMax: Int64): Boolean;
 begin
-  if Progress = ProgressMax then
-    Log(Format('Successfully downloaded file to {tmp}: %s', [FileName]));
-  Result := True;
+    if Progress = ProgressMax then
+        Log(Format('Successfully downloaded file to {tmp}: %s', [FileName]));
+    Result := True;
 end;
 
 procedure InitializeWizard;
 begin
-  DownloadPage := CreateDownloadPage(SetupMessage(msgWizardPreparing), SetupMessage(msgPreparingDesc), @OnDownloadProgress);
+    DownloadPage := CreateDownloadPage(SetupMessage(msgWizardPreparing), SetupMessage(msgPreparingDesc), @OnDownloadProgress);
 end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
 begin
-  if CurPageID = wpReady then begin
+    if CurPageID = wpReady then begin
     DownloadPage.Clear;
     if inst_dotnetfx then
-      DownloadPage.Add(dotnetfx_url, ExpandConstant('ndp48-x86-x64-allos-enu.exe'), '');
+        DownloadPage.Add(dotnetfx_url, ExpandConstant('ndp48-x86-x64-allos-enu.exe'), '');
+
     if inst_VSTO2010_Redistributable then
-      DownloadPage.Add(VSTO2010_Redistributable_url, ExpandConstant('vstor_redist.exe'), '');
+        DownloadPage.Add(VSTO2010_Redistributable_url, ExpandConstant('vstor_redist.exe'), '');
+    
     DownloadPage.Show;
+
     try
-      try
+        try
         DownloadPage.Download;
         Result := True;
-      except
+        except
         SuppressibleMsgBox(AddPeriod(GetExceptionMessage), mbCriticalError, MB_OK, IDOK);
         Result := False;
-      end;
+        end;
     finally
-      DownloadPage.Hide;
+        DownloadPage.Hide;
     end;
-  end else
+    end else
     Result := True;
 end;
 
@@ -127,10 +130,10 @@ function GetHKLM: Integer;
     // Check IsWin64 before using a 64-bit-only feature to
     // avoid an exception when running on 32-bit Windows.
     begin
-      if IsWin64 then
-        Result := HKLM64
-      else
-        Result := HKLM32;
+        if IsWin64 then
+            Result := HKLM64
+        else
+            Result := HKLM32;
 end;
 
 // http://kynosarges.org/DotNetVersion.html

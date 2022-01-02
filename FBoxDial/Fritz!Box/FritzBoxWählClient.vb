@@ -7,7 +7,13 @@ Public Class FritzBoxWählClient
 #Region "Properties"
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend Property WPFWindow As WählclientWPF
+
+    Private Property DialDatenService As DialService
 #End Region
+
+    Public Sub New()
+        DialDatenService = New DialService(Me)
+    End Sub
 
 #Region "Wählen per TR-064"
     ''' <summary>
@@ -438,10 +444,9 @@ Public Class FritzBoxWählClient
 
         WPFWindow = New WählclientWPF
         With WPFWindow
-            .DataContext = New WählClientViewModel With {.Wählclient = Me,
-                                                         .Instance = WPFWindow.Dispatcher,
-                                                         .IsContactDial = True,
-                                                         .SetOutlookFBoxXMLKontakt = Kontakt}
+            .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
+                                                                           .IsContactDial = True,
+                                                                           .SetOutlookFBoxXMLKontakt = Kontakt}
 
             .Show()
         End With
@@ -457,10 +462,9 @@ Public Class FritzBoxWählClient
             WPFWindow = New WählclientWPF
 
             With WPFWindow
-                .DataContext = New WählClientViewModel With {.Wählclient = Me,
-                                                             .Instance = WPFWindow.Dispatcher,
-                                                             .IsContactDial = True,
-                                                             .SetOutlookKontakt = oContact}
+                .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
+                                                                               .IsContactDial = True,
+                                                                               .SetOutlookKontakt = oContact}
 
                 .Show()
             End With
@@ -480,11 +484,10 @@ Public Class FritzBoxWählClient
             WPFWindow = New WählclientWPF
 
             With WPFWindow
-                .DataContext = New WählClientViewModel With {.Wählclient = Me,
-                                                             .Instance = WPFWindow.Dispatcher,
-                                                             .IsContactDial = True,
-                                                             .ZuletztGewählteTelNr = TelNr,
-                                                             .SetOutlookKontakt = oContact}
+                .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
+                                                                               .IsContactDial = True,
+                                                                               .ZuletztGewählteTelNr = TelNr,
+                                                                               .SetOutlookKontakt = oContact}
 
                 .Show()
             End With
@@ -504,10 +507,9 @@ Public Class FritzBoxWählClient
             WPFWindow = New WählclientWPF
 
             With WPFWindow
-                .DataContext = New WählClientViewModel With {.Wählclient = Me,
-                                                             .Instance = WPFWindow.Dispatcher,
-                                                             .IsContactDial = True,
-                                                             .SetOutlookExchangeUser = oExchangeNutzer}
+                .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
+                                                                               .IsContactDial = True,
+                                                                               .SetOutlookExchangeUser = oExchangeNutzer}
 
                 .Show()
             End With
@@ -528,10 +530,9 @@ Public Class FritzBoxWählClient
             WPFWindow = New WählclientWPF
 
             With WPFWindow
-                .DataContext = New WählClientViewModel With {.Wählclient = Me,
-                                                             .Instance = WPFWindow.Dispatcher,
-                                                             .IsContactDial = False,
-                                                             .SetTelNr = TelNr}
+                .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
+                                                                               .IsContactDial = False,
+                                                                               .SetTelNr = TelNr}
 
                 .Show()
             End With
@@ -549,9 +550,8 @@ Public Class FritzBoxWählClient
         WPFWindow = New WählclientWPF
 
         With WPFWindow
-            .DataContext = New WählClientViewModel With {.Wählclient = Me,
-                                                         .Instance = WPFWindow.Dispatcher,
-                                                         .IsContactDial = False}
+            .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
+                                                                           .IsContactDial = False}
 
             .Show()
         End With

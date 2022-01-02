@@ -4,16 +4,15 @@ Imports System.Windows.Media.Imaging
 Public Class AnrMonService
     Implements IAnrMonService
 
-    Friend Sub UpdateTheme() Implements IAnrMonService.UpdateTheme
+    Private Sub UpdateTheme() Implements IAnrMonService.UpdateTheme
         OfficeColors.UpdateTheme()
     End Sub
 
-    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Friend Sub BlockNumber(TelNr As Telefonnummer) Implements IAnrMonService.BlockNumber
+    Private Sub BlockNumber(TelNr As Telefonnummer) Implements IAnrMonService.BlockNumber
         AddNrToBlockList(TelNr)
     End Sub
 
-    Public Async Function LadeBild(AnrMonTelefonat As Telefonat) As Task(Of BitmapImage) Implements IAnrMonService.LadeBild
+    Private Async Function LadeBild(AnrMonTelefonat As Telefonat) As Task(Of BitmapImage) Implements IAnrMonService.LadeBild
 
         With AnrMonTelefonat
             ' Lade das Kontaktbild, wenn a) Option gesetzt ist oder b) ein TellowsErgebnis vorliegt und das Bild noch nicht geladen wurde

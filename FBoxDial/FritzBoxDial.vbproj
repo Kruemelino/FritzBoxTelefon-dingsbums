@@ -276,7 +276,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocFBoxData.resx</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\FBoxData\Services\FboxConverter.vb" />
     <Compile Include="Formulare\FBoxData\Services\FBoxDataService.vb" />
     <Compile Include="Formulare\FBoxData\Services\IFBoxData.vb" />
     <Compile Include="Formulare\FBoxData\Services\IFBoxDataService.vb" />

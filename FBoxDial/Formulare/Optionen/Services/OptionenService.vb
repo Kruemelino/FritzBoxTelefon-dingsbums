@@ -9,12 +9,12 @@ Friend Class OptionenService
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-    Friend Sub UpdateTheme() Implements IOptionenService.UpdateTheme
+    Private Sub UpdateTheme() Implements IOptionenService.UpdateTheme
         OfficeColors.UpdateTheme()
     End Sub
 
 #Region "Grunddaten"
-    Friend Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
+    Private Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
 
         Dim UserList As New ObservableCollectionEx(Of FBoxAPI.User)
         '' Prüfe, ob Fritz!Box verfügbar
@@ -48,11 +48,11 @@ Friend Class OptionenService
 
 #Region "Import Telefoniedaten"
     Private Property FritzBoxDaten As Telefonie
-    Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Telefonie)) Implements IOptionenService.Beendet
-    Friend Event Status As EventHandler(Of String) Implements IOptionenService.Status
-    Friend Event FBoxAPIStatus As EventHandler(Of String)
+    Private Event Beendet As EventHandler(Of NotifyEventArgs(Of Telefonie)) Implements IOptionenService.Beendet
+    Private Event Status As EventHandler(Of String) Implements IOptionenService.Status
+    Private Event FBoxAPIStatus As EventHandler(Of String)
 
-    Friend Sub StartImport() Implements IOptionenService.StartImport
+    Private Sub StartImport() Implements IOptionenService.StartImport
 
         ' Neue Telefonie erstellen
         FritzBoxDaten = New Telefonie
@@ -91,7 +91,7 @@ Friend Class OptionenService
 #End Region
 
 #Region "Indizierung"
-    Public Function ZähleKontakte(olFolders As List(Of MAPIFolder)) As Integer Implements IOptionenService.ZähleOutlookKontakte
+    Private Function ZähleKontakte(olFolders As List(Of MAPIFolder)) As Integer Implements IOptionenService.ZähleOutlookKontakte
         Dim retval As Integer = 0
         For Each olFolder In olFolders
             retval += olFolder.Items.Count
@@ -135,7 +135,7 @@ Friend Class OptionenService
         Return VerarbeiteteKontakte
     End Function
 
-    Friend Async Function Indexer(OrdnerListe As List(Of MAPIFolder), IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer) Implements IOptionenService.Indexer
+    Private Async Function Indexer(OrdnerListe As List(Of MAPIFolder), IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer) Implements IOptionenService.Indexer
 
         Dim IndexTasks As New List(Of Task(Of Integer))
 
@@ -159,7 +159,7 @@ Friend Class OptionenService
 #End Region
 
 #Region "MicroSIP"
-    Public Function GetMicroSIPExecutablePath() As String Implements IOptionenService.GetMicroSIPExecutablePath
+    Private Function GetMicroSIPExecutablePath() As String Implements IOptionenService.GetMicroSIPExecutablePath
         Using MicroSIP As New MicroSIP
             Return MicroSIP.MicroSIPPath
         End Using
@@ -167,9 +167,9 @@ Friend Class OptionenService
 #End Region
 
 #Region "Test Rückwärtssuche"
-    Friend Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetRWS
+    Private Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetRWS
 
-    Friend Async Sub StartRWSTest(TelNr As String) Implements IOptionenService.StartRWSTest
+    Private Async Sub StartRWSTest(TelNr As String) Implements IOptionenService.StartRWSTest
 
         ' Ereignishandler hinzufügen
         AddHandler Rückwärtssuche.Beendet, AddressOf RWSTestBeendet
@@ -193,13 +193,13 @@ Friend Class OptionenService
 #End Region
 
 #Region "Tellows"
-    Public Async Function GetTellowsAccountData(XAuthToken As String) As Task(Of TellowsPartnerInfo) Implements IOptionenService.GetTellowsAccountData
+    Private Async Function GetTellowsAccountData(XAuthToken As String) As Task(Of TellowsPartnerInfo) Implements IOptionenService.GetTellowsAccountData
         Using tellows = New Tellows(XAuthToken)
             Return Await tellows.GetTellowsAccountInfo()
         End Using
     End Function
 
-    Public Async Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Task(Of TellowsResponse) Implements IOptionenService.GetTellowsLiveAPIData
+    Private Async Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Task(Of TellowsResponse) Implements IOptionenService.GetTellowsLiveAPIData
         If TelNr.IsNotStringNothingOrEmpty Then
             Using Tel As New Telefonnummer With {.SetNummer = TelNr}
                 If Tel.TellowsNummer.IsNotStringNothingOrEmpty Then
@@ -217,9 +217,9 @@ Friend Class OptionenService
 #End Region
 
 #Region "Test Login"
-    Public Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetLogin
+    Private Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetLogin
 
-    Friend Sub StartLoginTest(IPAdresse As String, User As String, Password As SecureString) Implements IOptionenService.StartLoginTest
+    Private Sub StartLoginTest(IPAdresse As String, User As String, Password As SecureString) Implements IOptionenService.StartLoginTest
         '' Prüfe, ob Fritz!Box verfügbar
         'If Ping(IPAdresse) Then
         Using fboxTR064 As New FBoxAPI.FritzBoxTR64(IPAdresse, XMLData.POptionen.TBNetworkTimeout, New Net.NetworkCredential(User, Password))
@@ -238,9 +238,9 @@ Friend Class OptionenService
 #End Region
 
 #Region "Test Kontaktsuche"
-    Public Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetKontaktsuche
+    Private Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetKontaktsuche
 
-    Friend Async Sub StartKontaktsucheTest(TelNr As String) Implements IOptionenService.StartKontaktsucheTest
+    Private Async Sub StartKontaktsucheTest(TelNr As String) Implements IOptionenService.StartKontaktsucheTest
         ' Ereignishandler hinzufügen
         AddHandler KontaktSucher.Beendet, AddressOf KontaktsucheTestBeendet
         AddHandler KontaktSucher.Status, AddressOf SetStatus
@@ -263,7 +263,7 @@ Friend Class OptionenService
 #End Region
 
 #Region "Test Anrufmonitor"
-    Public Async Sub StartAnrMonTest(TelNr As String, CONNECT As Boolean, rnd As Boolean, rndOutlook As Boolean, rndFBox As Boolean, rndTellows As Boolean, clir As Boolean) Implements IOptionenService.StartAnrMonTest
+    Private Async Sub StartAnrMonTest(TelNr As String, CONNECT As Boolean, rnd As Boolean, rndOutlook As Boolean, rndFBox As Boolean, rndTellows As Boolean, clir As Boolean) Implements IOptionenService.StartAnrMonTest
         Dim RndGen As New Random()
 
         If TelNr.IsStringNothingOrEmpty Then

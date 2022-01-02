@@ -10,7 +10,7 @@ Public Class DataKontaktsuche
     Private Property SuchTask As Task(Of List(Of ContactItem))
     Private AltesWort As String = ""
 
-    Public Async Function KontaktSuche(Wort As String) As Task(Of List(Of ContactItem)) Implements IDataKontaktsuche.KontaktSuche
+    Private Async Function KontaktSuche(Wort As String) As Task(Of List(Of ContactItem)) Implements IDataKontaktsuche.KontaktSuche
 
         If SuchTask IsNot Nothing AndAlso Not SuchTask.IsCompleted Then
             NLogger.Trace($"SuchTask abgebrochen: Alters Wort: {AltesWort} Neues Wort: {Wort}")
@@ -21,19 +21,19 @@ Public Class DataKontaktsuche
 
         ' Erstelle eine neue Abbruchtoken
         TokenSource = New CancellationTokenSource
-        CT = tokenSource.Token
+        CT = TokenSource.Token
 
         NLogger.Trace($"SuchTask gestartet: Neues Wort: {Wort}")
 
-        SuchTask = Task.Run(Function() KontaktSucheNameField(Wort, False, ct), ct)
+        SuchTask = Task.Run(Function() KontaktSucheNameField(Wort, False, CT), CT)
         Return Await SuchTask
     End Function
 
-    Public Sub DialContact(olContact As ContactItem) Implements IDataKontaktsuche.DialContact
+    Private Sub DialContact(olContact As ContactItem) Implements IDataKontaktsuche.DialContact
         Dim FBoxDial As New FritzBoxWählClient
         FBoxDial.WählboxStart(olContact)
     End Sub
-    Friend Sub UpdateTheme() Implements IDataKontaktsuche.UpdateTheme
+    Private Sub UpdateTheme() Implements IDataKontaktsuche.UpdateTheme
         OfficeColors.UpdateTheme()
     End Sub
 End Class

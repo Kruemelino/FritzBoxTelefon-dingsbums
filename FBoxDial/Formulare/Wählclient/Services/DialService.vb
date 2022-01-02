@@ -3,23 +3,29 @@
 Public Class DialService
     Implements IDialService
 
-    Friend Sub UpdateTheme() Implements IDialService.UpdateTheme
+    Private Property Wählclient As FritzBoxWählClient
+
+    Friend Sub New(wc As FritzBoxWählClient)
+        _Wählclient = wc
+    End Sub
+
+    Private Sub UpdateTheme() Implements IDialService.UpdateTheme
         OfficeColors.UpdateTheme()
     End Sub
 
-    Friend ReadOnly Property GetMobil As Boolean Implements IDialService.GetMobil
+    Private ReadOnly Property GetMobil As Boolean Implements IDialService.GetMobil
         Get
             Return XMLData.POptionen.CBCheckMobil
         End Get
     End Property
 
-    Friend ReadOnly Property GetCLIR As Boolean Implements IDialService.GetCLIR
+    Private ReadOnly Property GetCLIR As Boolean Implements IDialService.GetCLIR
         Get
             Return XMLData.POptionen.CBCLIR
         End Get
     End Property
 
-    Friend Function GetDialabePhones() As IEnumerable(Of Telefoniegerät) Implements IDialService.GetDialabePhones
+    Private Function GetDialabePhones() As IEnumerable(Of Telefoniegerät) Implements IDialService.GetDialabePhones
         If XMLData.PTelefonie.Telefoniegeräte IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte.Any Then
             Return XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) TG.IsDialable)
 
@@ -30,7 +36,7 @@ Public Class DialService
 
     End Function
 
-    Friend Function GetSelectedPhone() As Telefoniegerät Implements IDialService.GetSelectedPhone
+    Private Function GetSelectedPhone() As Telefoniegerät Implements IDialService.GetSelectedPhone
         If XMLData.PTelefonie.Telefoniegeräte IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte.Any Then
 
             If XMLData.PTelefonie.Telefoniegeräte.Exists(Function(TG) TG.StdTelefon) Then
@@ -48,7 +54,7 @@ Public Class DialService
         End If
     End Function
 
-    Friend Function GetLastTelNr() As IEnumerable(Of Telefonnummer) Implements IDialService.GetLastTelNr
+    Private Function GetLastTelNr() As IEnumerable(Of Telefonnummer) Implements IDialService.GetLastTelNr
         If XMLData.PTelListen.CALLListe IsNot Nothing AndAlso XMLData.PTelListen.CALLListe.Any Then
             Return XMLData.PTelListen.GetTelNrList(XMLData.PTelListen.CALLListe)
         Else
@@ -56,10 +62,9 @@ Public Class DialService
         End If
     End Function
 
-    Friend Async Function DialNumber(Wählclient As FritzBoxWählClient,
-                               TelNr As Telefonnummer,
-                               Telefon As Telefoniegerät,
-                               CLIR As Boolean, Abbruch As Boolean) As Task(Of Boolean) Implements IDialService.DialNumber
+    Private Async Function DialTelNr(TelNr As Telefonnummer,
+                                     Telefon As Telefoniegerät,
+                                     CLIR As Boolean, Abbruch As Boolean) As Task(Of Boolean) Implements IDialService.DialTelNr
 
         ' Start den Wählvorgang
         Return Await Wählclient.DialTelNr(TelNr, Telefon, CLIR, Abbruch)

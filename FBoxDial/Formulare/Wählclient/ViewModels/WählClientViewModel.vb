@@ -3,7 +3,6 @@ Imports Microsoft.Office.Interop
 Public Class WählClientViewModel
     Inherits NotifyBase
     ' Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Friend Property Wählclient As FritzBoxWählClient
     Private Property DatenService As IDialService
     Private Property DialogService As IDialogService
     Friend Property Instance As Dispatcher
@@ -186,12 +185,12 @@ Public Class WählClientViewModel
     Public Property DialCommand As RelayCommand
 #End Region
 
-    Public Sub New()
+    Public Sub New(ds As DialService)
         ' Commands
         CancelCommand = New RelayCommand(AddressOf CancelCall)
         DialCommand = New RelayCommand(AddressOf Dial, AddressOf CanDial)
         ' Interface
-        DatenService = New DialService
+        _DatenService = ds
         DialogService = New DialogService
         ' Theme
         DatenService.UpdateTheme()
@@ -231,7 +230,7 @@ Public Class WählClientViewModel
         Status = Localize.LocWählclient.strStatusHangUp
 
         ' Breche den Wahlvorgang ab
-        IsDialing = Not Await Wählclient.DialTelNr(Nothing, TelGerät, CLIR, True)
+        IsDialing = Await DatenService.DialTelNr(Nothing, TelGerät, CLIR, True)
 
     End Sub
 
@@ -284,9 +283,9 @@ Public Class WählClientViewModel
             Status = Localize.LocWählclient.strStatusWait
 
             ' Wählvorgang einleiten
-            If Wählclient IsNot Nothing And DialTelNr IsNot Nothing Then
+            If DialTelNr IsNot Nothing Then
 
-                IsDialing = Await Wählclient.DialTelNr(DialTelNr, TelGerät, CLIR, False)
+                IsDialing = Await DatenService.DialTelNr(DialTelNr, TelGerät, CLIR, False)
 
                 Status = If(IsDialing, Localize.LocWählclient.strStatusPickUp, Localize.LocWählclient.strStatusError)
 

@@ -42,15 +42,13 @@
     ''' <summary>
     ''' Startet das Anwählen der übergebenen Telefonnummer auf dem ausgewählten Telefon.
     ''' </summary>
-    ''' <param name="Wählclient">Der Wählclient, der das Telefonat initiieren soll.</param>
     ''' <param name="TelNr">Die zu wählende Telefonnummer</param>
     ''' <param name="Telefon">Das Telefon, über das gewählt werden soll</param>
     ''' <param name="CLIR">Rufnummernunterdrückung</param>
     ''' <param name="Abbruch">Angabe, ob der Wählvorgang abgebrochen werden soll</param>
     ''' <returns>Boolean, ob erfolgreich</returns>
-    Function DialNumber(Wählclient As FritzBoxWählClient,
-                        TelNr As Telefonnummer,
-                        Telefon As Telefoniegerät,
-                        CLIR As Boolean, Abbruch As Boolean) As Threading.Tasks.Task(Of Boolean)
+    Function DialTelNr(TelNr As Telefonnummer,
+                       Telefon As Telefoniegerät,
+                       CLIR As Boolean, Abbruch As Boolean) As Threading.Tasks.Task(Of Boolean)
 
 End Interface
