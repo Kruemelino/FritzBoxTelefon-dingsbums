@@ -24,13 +24,11 @@
         
         <ListView Grid.Row="1"
                   ItemsSource="{Binding MessageListe}">
-
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <fbd:TAMMessageView DataContext="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
     </Grid>
 </UserControl>

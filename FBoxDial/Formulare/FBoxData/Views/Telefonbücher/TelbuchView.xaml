@@ -43,9 +43,9 @@
                     <ContextMenu>
 
                         <MenuItem Header="{x:Static localize:LocFBoxData.strDelete}"
-                              Icon="{DynamicResource Cancel_16x}"
-                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
-                              Command="{Binding LöscheFritzBoxKontakte}"/>
+                                  Icon="{DynamicResource Cancel_16x}"
+                                  CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                                  Command="{Binding LöscheFritzBoxKontakte}"/>
 
                     </ContextMenu>
                 </ListView.ContextMenu>

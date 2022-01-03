@@ -23,7 +23,7 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Margin="2" VerticalAlignment="Center">
-            <CheckBox Style="{StaticResource CheckBoxStyle}" 
+            <CheckBox Style="{StaticResource SliderCheckBox}" 
                       IsChecked="{Binding Enable, FallbackValue=false, Mode=TwoWay}" 
                       Command="{Binding ToggleCommand}"/>
 
