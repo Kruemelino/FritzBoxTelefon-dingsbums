@@ -247,11 +247,8 @@ Public Class FBoxDataService
         Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
 
         ' Prüfe, ob Fritz!Box verfügbar
-        'If Ping(XMLData.POptionen.ValidFBAdr) Then
         FBoxTR064.Deviceconfig.GetSessionID(SessionID)
-        'Else
-        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-        'End If
+
         Return SessionID
     End Function
 

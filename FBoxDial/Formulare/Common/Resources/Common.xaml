@@ -161,7 +161,6 @@
     <Style x:Key="ToggleButtonStyle" TargetType="{x:Type RadioButton}" >
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="35"/>
-        <Setter Property="GroupName" Value="SelOpt"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
