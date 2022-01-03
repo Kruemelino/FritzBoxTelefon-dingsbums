@@ -30,11 +30,11 @@ Friend NotInheritable Class NutzerDaten
         ' Setze einige Felder
 
         With XMLData.POptionen
+            ' Ermittle eine gülte IP-Adresse
             .ValidFBAdr = ValidIP(.TBFBAdr)
+
+            ' Passe Loglevel an
+            SetLogLevel(.CBoxMinLogLevel)
         End With
-
-        ' Passe Loglevel an
-        SetLogLevel()
-
     End Sub
 End Class

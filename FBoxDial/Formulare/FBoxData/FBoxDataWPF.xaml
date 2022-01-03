@@ -40,8 +40,9 @@
             <ItemsControl ItemsSource="{Binding PageViewModels}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <RadioButton Style="{StaticResource ToggleButtonStyle}"
-                                     IsChecked="{Binding InitialSelected}"
+                        <RadioButton GroupName="SelOpt"
+                                     Style="{StaticResource ToggleButtonStyle}"
+                                     IsChecked="{Binding InitialSelected}"                                     
                                      Content="{Binding Name}"
                                      Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                      CommandParameter="{Binding}" />
@@ -52,7 +53,7 @@
 
         <Border Grid.Column="1" 
                 BorderBrush="{DynamicResource ContainerBorder}" 
-                BorderThickness="0" 
+                BorderThickness="0.5" 
                 Margin="0" 
                 Grid.RowSpan="2">
             <ContentControl Content="{Binding CurrentPageViewModel}" IsEnabled="{Binding DatenGeladen, FallbackValue=False}"/>

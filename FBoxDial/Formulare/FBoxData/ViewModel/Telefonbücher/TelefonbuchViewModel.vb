@@ -155,6 +155,9 @@ Public Class TelefonbuchViewModel
     Private Sub LadeKontakte(o As Object)
 
         Telefonbuch = CType(o, PhonebookViewModel)
+
+        Telefonbuch.IsSelected = True
+
         ContactsVM.LadeKontakte(Telefonbuch)
 
     End Sub

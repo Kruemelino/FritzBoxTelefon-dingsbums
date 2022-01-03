@@ -15,6 +15,7 @@ Public Class StoppUhrWPF
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
 
         ' Erzeuge die Klasse für das automatische Ausblenden

@@ -187,7 +187,6 @@
     <XmlElement("CBoxMinLogLevel")> Public Property CBoxMinLogLevel As String = LogLevel.Info.Name
 #End If
 #End Region
-
 #Region "SoftPhones"
 #Region "Phoner"
     <XmlElement("TBPhonerPasswort")> Public Property TBPhonerPasswort As String = String.Empty

@@ -44,7 +44,6 @@ Public Class PhonebookViewModel
     Friend Property ID As Integer
 
     Private _IsBookEditMode As Boolean
-
     Public Property IsBookEditMode As Boolean
         Get
             Return _IsBookEditMode
@@ -61,6 +60,15 @@ Public Class PhonebookViewModel
         End Get
     End Property
 
+    Private _IsSelected As Boolean
+    Public Property IsSelected As Boolean
+        Get
+            Return _IsSelected
+        End Get
+        Set
+            SetProperty(_IsSelected, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Eigene Routinen"

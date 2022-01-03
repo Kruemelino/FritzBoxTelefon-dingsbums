@@ -40,13 +40,13 @@ Friend Module NLogging
         Return config
     End Function
 
-    Friend Sub SetLogLevel()
+    Friend Sub SetLogLevel(minLogLevel As String)
         With LogManager.Configuration
             ' Entferne alle vorhandenen Regeln (es sollte nur eine sein)
             .LoggingRules.Clear()
             ' Füge für jedes Target eine Regel hinzu
             For Each Target As Targets.Target In LogManager.Configuration.AllTargets
-                .AddRule(LogLevel.FromString(XMLData.POptionen.CBoxMinLogLevel), LogLevel.Fatal, Target)
+                .AddRule(LogLevel.FromString(minLogLevel), LogLevel.Fatal, Target)
             Next
             LogManager.ReconfigExistingLoggers()
         End With

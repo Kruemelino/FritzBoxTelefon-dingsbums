@@ -68,7 +68,7 @@
                                         <ColumnDefinition MaxWidth="20"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <RadioButton Grid.Column="0" Style="{StaticResource MenuTabToggleButton}"
+                                    <RadioButton Grid.Column="0" Style="{StaticResource ToggleButtonStyle}"
                                                  Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" GroupName="phonebooks"
                                                  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.LadeFritzBoxKontakte}"
                                                  CommandParameter="{Binding}"

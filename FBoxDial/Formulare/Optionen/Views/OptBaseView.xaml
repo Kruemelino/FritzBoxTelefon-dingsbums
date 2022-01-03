@@ -107,7 +107,6 @@
         <Expander IsExpanded="True"
                   Header="{x:Static localize:LocOptionen.strBaseHeadLog}">
             <StackPanel>
-
         
                 <ComboBox Style="{StaticResource OptComboBox}" 
                           Tag="{x:Static localize:LocOptionen.strBaseCBoxLogLevel}"
