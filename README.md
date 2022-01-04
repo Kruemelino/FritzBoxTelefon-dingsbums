@@ -7,6 +7,7 @@ Dieses Addin ist in meiner Freizeit entstanden. Ich erwarte keine Gegenleistung.
 
 [![Donate](https://img.shields.io/badge/Spenden-PayPal-green.svg)](https://www.paypal.com/paypalme/gertmichael)
 
+![Anrufmonitor](./doc/Übersicht.png)
 
 ### Zielsetzung
 Ziel ist es, die Produkte der Firma AVM (Fritz!Box) aus Berlin besser mit Outlook zu verknüpfen. Hierbei soll nur auf die Standardfunktionen der Fritz!Box zurückgegriffen werden,
@@ -14,24 +15,24 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
 
 ### Funktionsumfang
 #### Unterstütze Funktionen (was geht)
-* Starten von Telefonaten
-* Signalisierung eingehender Anrufer
-* Anzeige verfügbarer Informationen zum Gesprächspartner
-* Ermittlung der Kontaktdaten erfolgt verschiedenen Quellen
-  * Outlook Adressbüchern
-  * Telefonbücher der Fritz!Box
-  * Rückwärtssuche
-  * [tellows](https://tellows.de) (Es wird ein kostenpflichtiger [API Key](https://shop.tellows.de/de/tellows-api-key.html) benötigt.)
-* Ein- und Ausschalten der Rufumleitungen und Anrufbeantworter der Fritz!Box
-* Abhören von Nachrichten auf dem Anrufbeantworter
-* Protokollierung aller Telefonate
-* Signalisierung der aktuellen Gesprächsdauer (Stoppuhr)
-* Datentransfer zwischen Outlook und den Fritz!Box Telefonbüchern (aktuell noch im Aufbau)
-* Nutzung der Softwaretelefonen ([Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org)) (PhonerLite wird nicht unterstützt)
-* Rückruf- und Wahlwiederholungsliste
-* VIP-Liste für häufig anzurufende Kontakte
+* [x] Starten von Telefonaten
+* [x] Signalisierung eingehender Anrufer
+* [x] Anzeige verfügbarer Informationen zum Gesprächspartner
+* [x] Ermittlung der Kontaktdaten erfolgt verschiedenen Quellen
+  * [x] Outlook Adressbüchern
+  * [x] Telefonbücher der Fritz!Box
+  * [x] Rückwärtssuche
+  * [x] [tellows](https://tellows.de) (Es wird ein kostenpflichtiger [API Key](https://shop.tellows.de/de/tellows-api-key.html) benötigt.)
+* [x] Ein- und Ausschalten der Rufumleitungen und Anrufbeantworter der Fritz!Box
+* [x] Abhören von Nachrichten auf dem Anrufbeantworter
+* [x] Protokollierung aller Telefonate
+* [x] Signalisierung der aktuellen Gesprächsdauer (Stoppuhr)
+* [x] Datentransfer zwischen Outlook und den Fritz!Box Telefonbüchern
+* [x] Nutzung der Softwaretelefonen ([Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org)) (PhonerLite wird nicht unterstützt)
+* [x] Rückruf- und Wahlwiederholungsliste
+* [x] VIP-Liste für häufig anzurufende Kontakte
 #### Ausschlüsse (was nicht geht)
-* Nutzung von angeschlossenen IP-Telefonen. Hier fehlt einfach die Unterstützung der Fritz!Box. Einzige Ausnahmen sind die Programme [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/), 
+* [ ] Nutzung von angeschlossenen IP-Telefonen. Hier fehlt einfach die Unterstützung der Fritz!Box. Einzige Ausnahmen sind die Programme [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/), 
   da diese eine eigene Schnittstelle haben. 
 
 ### Voraussetzungen
