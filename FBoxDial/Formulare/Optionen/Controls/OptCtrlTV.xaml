@@ -6,7 +6,7 @@
              xmlns:fbd="clr-namespace:FBoxDial"                         
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=fbd:OutlookFolderViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=fbd:OutlookFolderViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="128" d:DesignWidth="150" >
     <!--
     In Anlehnung. Dirk Bahle

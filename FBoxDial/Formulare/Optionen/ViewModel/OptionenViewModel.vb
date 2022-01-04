@@ -2,7 +2,6 @@
 Imports System.Windows
 Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop
-Imports System.Threading
 ''' <summary>
 ''' https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/
 ''' </summary>
@@ -739,7 +738,6 @@ Public Class OptionenViewModel
 
 #Region "Logging"
     Private _CBoxMinLogLevel As String
-
     Public Property CBoxMinLogLevel As String
         Get
             Return _CBoxMinLogLevel
@@ -842,14 +840,14 @@ Public Class OptionenViewModel
         ' Theme
         DatenService.UpdateTheme()
 
-        ' Child Views
+        ' Child ViewModel
         With PageViewModels
             .Add(New OptBaseViewModel(DatenService))
             .Add(New OptAnrMonViewModel())
             .Add(New OptDialerViewModel())
-            .Add(New OptJournalViewModel())
+            .Add(New OptJournalViewModel(DatenService))
             .Add(New OptSearchContactViewModel(DatenService))
-            .Add(New OptCreateContactViewModel())
+            .Add(New OptCreateContactViewModel(DatenService))
             .Add(New OptTelephonyViewModel(DatenService))
             .Add(New OptPhonerViewModel())
             .Add(New OptMicroSIPViewModel(DatenService))
@@ -857,10 +855,8 @@ Public Class OptionenViewModel
             .Add(New OptInfoViewModel())
             .Add(New OptTestViewModel(DatenService))
         End With
-
         ' Lade die Grundeinstellungen
         Navigate(PageViewModels.First)
-
     End Sub
 
 #Region "ICommand Callback"
@@ -1018,10 +1014,13 @@ Public Class OptionenViewModel
 
         End With
 
-        XMLData.POptionen.OutlookOrdner = OutlookOrdnerListe
+        With XMLData.POptionen
+            .OutlookOrdner = OutlookOrdnerListe
 
-        ' Loglevel Aktualisieren
-        SetLogLevel()
+            ' Loglevel Aktualisieren
+            SetLogLevel(.CBoxMinLogLevel)
+        End With
+
 
         ' Speichern in Datei anstoßen
         XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))

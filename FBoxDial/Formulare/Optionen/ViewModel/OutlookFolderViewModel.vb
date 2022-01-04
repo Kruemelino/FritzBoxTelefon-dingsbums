@@ -1,6 +1,4 @@
-﻿Imports System.Threading
-Imports System.Threading.Tasks
-Imports System.Windows.Input
+﻿Imports System.Windows.Input
 Imports Microsoft.Office.Interop.Outlook
 
 ''' <summary>
@@ -13,8 +11,6 @@ Public Class OutlookFolderViewModel
 
     Friend Property OutlookItemType As OlItemType
     Friend Property Verwendung As OutlookOrdnerVerwendung
-
-    Private _CheckItemCommand As ICommand
 
     Private _OptVM As OptionenViewModel
     Public Property OptVM As OptionenViewModel
@@ -39,6 +35,14 @@ Public Class OutlookFolderViewModel
         End Set
     End Property
 
+    Private ReadOnly _Stores As ObservableCollectionEx(Of OlFolderViewModel) = Nothing
+    Public ReadOnly Property Stores As IEnumerable(Of OlFolderViewModel)
+        Get
+            Return _Stores
+        End Get
+    End Property
+
+    Private _CheckItemCommand As ICommand
     ''' <summary>
     ''' Gets a command that checks all children And parent items
     ''' in a tree view in dependency of the check state of the
@@ -57,6 +61,22 @@ Public Class OutlookFolderViewModel
             Return _CheckItemCommand
         End Get
     End Property
+
+    Public Sub New(OutlookStoreRootFolder As IEnumerable(Of MAPIFolder), OlItemType As OlItemType, Usage As OutlookOrdnerVerwendung)
+        OutlookItemType = OlItemType
+        Verwendung = Usage
+
+        _Stores = New ObservableCollectionEx(Of OlFolderViewModel)
+
+        ' Lade die Root-Folder jedes Outlook Stores Outlook
+        'Task.Run(Sub()
+        '             ' Lade die Outlook Folders
+        _Stores.AddRange(From F In OutlookStoreRootFolder Select New OlFolderViewModel(F, OutlookItemType))
+
+        '             NLogger.Debug($"Outlook Ordner für TreeView ({Verwendung}) geladen.")
+        '         End Sub)
+
+    End Sub
 
     ''' <summary>
     ''' Method executes when the corresponding command executes to re-evaluate
@@ -135,33 +155,6 @@ Public Class OutlookFolderViewModel
 
             End If
         End If
-    End Sub
-
-    Private ReadOnly _Stores As ObservableCollectionEx(Of OlFolderViewModel) = Nothing
-    Public ReadOnly Property Stores As IEnumerable(Of OlFolderViewModel)
-        Get
-            Return _Stores
-        End Get
-    End Property
-
-    Public Sub New()
-
-    End Sub
-
-    Public Sub New(OlItemType As OlItemType, Usage As OutlookOrdnerVerwendung)
-        OutlookItemType = OlItemType
-        Verwendung = Usage
-
-        _Stores = New ObservableCollectionEx(Of OlFolderViewModel)
-
-        ' Lade Outlook Folders
-        Task.Run(Sub()
-                     ' Lade die Outlook Folders
-                     _Stores.AddRange(From Store In Globals.ThisAddIn.Application.Session.Stores() Select New OlFolderViewModel(CType(Store, Store).GetRootFolder, OutlookItemType))
-
-                     NLogger.Debug($"Outlook Ordner für TreeView ({Verwendung}) geladen.")
-                 End Sub)
-
     End Sub
 
     ''' <summary>

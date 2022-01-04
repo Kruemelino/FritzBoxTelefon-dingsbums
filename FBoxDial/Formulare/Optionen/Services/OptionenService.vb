@@ -9,6 +9,18 @@ Friend Class OptionenService
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
+    Private _OutlookStoreRootFolder As IEnumerable(Of MAPIFolder)
+    Private Function GetOutlookStoreRootFolder() As IEnumerable(Of MAPIFolder) Implements IOptionenService.GetOutlookStoreRootFolder
+        ' Ermittle die Wurzelordner jedes Stores
+        If _OutlookStoreRootFolder Is Nothing Then
+            _OutlookStoreRootFolder = From S In Globals.ThisAddIn.Application.Session.Stores() Select CType(S, Store).GetRootFolder
+
+            NLogger.Debug($"Outlook RootFolder erstmalig eingelesen: {_OutlookStoreRootFolder.Count}")
+        End If
+
+        Return _OutlookStoreRootFolder
+    End Function
+
     Private Sub UpdateTheme() Implements IOptionenService.UpdateTheme
         OfficeColors.UpdateTheme()
     End Sub
@@ -17,9 +29,12 @@ Friend Class OptionenService
     Private Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
 
         Dim UserList As New ObservableCollectionEx(Of FBoxAPI.User)
-
-        Using FBoxTr064 As New FBoxAPI.FritzBoxTR64(IPAdresse, XMLData.POptionen.TBNetworkTimeout, Nothing)
+        NLogger.Trace($"Starte neue TR-064 Instanz: {IPAdresse} mit {XMLData.POptionen.TBNetworkTimeout}ms Timeout")
+        Using FBoxTr064 As New FBoxAPI.FritzBoxTR64()
             AddHandler FBoxTr064.Status, AddressOf SetFBoxAPIStatus
+
+            ' Ausgelagertes Init, um die Logs des Konstruktors zu erhalten
+            FBoxTr064.Init(IPAdresse, XMLData.POptionen.TBNetworkTimeout, Nothing)
 
             Dim XMLString As String = String.Empty
             Dim FritzBoxUsers As New FBoxAPI.UserList
@@ -28,8 +43,10 @@ Friend Class OptionenService
                 UserList.AddRange(FritzBoxUsers.UserListe)
 
                 RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(True))
+                NLogger.Trace($"Userliste ermittelt: {XMLString}")
             Else
                 RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(False))
+                NLogger.Trace($"Userliste nicht ermittelt")
             End If
 
             RemoveHandler FBoxTr064.Status, AddressOf SetFBoxAPIStatus
@@ -38,12 +55,11 @@ Friend Class OptionenService
 
         Return UserList
     End Function
-
-
 #End Region
 
 #Region "Import Telefoniedaten"
     Private Property FritzBoxDaten As Telefonie
+
     Private Event Beendet As EventHandler(Of NotifyEventArgs(Of Telefonie)) Implements IOptionenService.Beendet
     Private Event Status As EventHandler(Of String) Implements IOptionenService.Status
     Private Event FBoxAPIStatus As EventHandler(Of String)
@@ -354,5 +370,6 @@ Friend Class OptionenService
 
         RndGen = Nothing
     End Sub
+
 #End Region
 End Class

@@ -6,6 +6,7 @@ Public Interface IOptionenService
 
 #Region "Grunddaten"
     Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User)
+    Function GetOutlookStoreRootFolder() As IEnumerable(Of MAPIFolder)
 #End Region
 
 #Region "Import Telefoniedaten"

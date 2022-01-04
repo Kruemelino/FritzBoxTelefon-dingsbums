@@ -7,6 +7,10 @@ Public Class OptSearchContactViewModel
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IOptionenService
+
+    Private Const Verwendung As OutlookOrdnerVerwendung = OutlookOrdnerVerwendung.KontaktSuche
+    Private Const ItemType As OlItemType = OlItemType.olContactItem
+
 #Region "Felder"
 
     Private _OptVM As OptionenViewModel
@@ -27,10 +31,12 @@ Public Class OptSearchContactViewModel
 
     Public Property InitialSelected As Boolean = False Implements IPageViewModel.InitialSelected
 
-    Private Property RootVM As OutlookFolderViewModel = New OutlookFolderViewModel(OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSuche)
+    Private Property RootVM As OutlookFolderViewModel
 
     Public ReadOnly Property Root As OutlookFolderViewModel
         Get
+            If RootVM Is Nothing Then RootVM = New OutlookFolderViewModel(DatenService.GetOutlookStoreRootFolder, ItemType, Verwendung)
+
             RootVM.OptVM = OptVM
             Return RootVM
         End Get
@@ -111,6 +117,7 @@ Public Class OptSearchContactViewModel
         ' Interface
         _DatenService = ds
     End Sub
+
 
 #Region "ICommand Callback"
     Private Sub CancelImport(o As Object)
