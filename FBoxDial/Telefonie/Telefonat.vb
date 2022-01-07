@@ -671,13 +671,16 @@ Imports Microsoft.Office.Interop
         ' 4. Es ist nur eine Nummer hinterlegt
         ' 5. Es ist nichts hinterlegt.
 
-        If OlKontakt Is Nothing AndAlso OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty Then
-            ' Verknüpfe den bestehenden Outlook-Kontakt
+        If OlKontakt IsNot Nothing Then
+            ' Blende den Kontakt ein
+            OlKontakt.Display()
+
+        ElseIf OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty Then
+            ' Ermittle den bestehenden Outlook-Kontakt
             OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
 
             ' Blende den Kontakt ein
             If OlKontakt IsNot Nothing Then OlKontakt.Display()
-
         Else
             ' ein Kontaktitem, welches eingeblendet werden kann muss erst erzeugt werden
             If FBTelBookKontakt IsNot Nothing Then
