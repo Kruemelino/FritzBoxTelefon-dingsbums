@@ -5,7 +5,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Fritz!Box Telefon-Dingsbums;component/Formulare/Common/Themes/LightTheme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/EasyWPFThemeLib;component/Themes/LightTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -99,7 +99,7 @@
                 </Setter>
             </Trigger>
             <Trigger Property="UIElement.IsEnabled" Value="False">
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource ControlDisabledGlythColour}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource ControlDisabledForeground}"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -108,7 +108,7 @@
         <Setter Property="Width" Value="100"/>
         <Setter Property="Height" Value="23"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ControlDefaultBorderBrush}"/>
-        <Setter Property="BorderThickness" Value="0.5"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type fbd:TimePicker}">

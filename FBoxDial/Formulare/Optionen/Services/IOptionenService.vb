@@ -9,6 +9,12 @@ Public Interface IOptionenService
     Function GetOutlookStoreRootFolder() As IEnumerable(Of MAPIFolder)
 #End Region
 
+#Region "Design"
+    Sub ShowDesignTest()
+    Sub ToogleDesign()
+#End Region
+
+
 #Region "Import Telefoniedaten"
     Event Status As EventHandler(Of String)
     Event Beendet As EventHandler(Of NotifyEventArgs(Of Telefonie))

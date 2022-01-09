@@ -37,7 +37,7 @@
     </Style>
     
     <Style x:Key="DetailBorder" TargetType="Border">
-        <Setter Property="BorderBrush" Value="{DynamicResource ContainerBorder}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ContainerBorderBrush}"/>
         <Setter Property="Background" Value="{DynamicResource ContainerBackground}"/>
     </Style>
 
@@ -46,9 +46,10 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
-    <Style x:Key="EditBox" TargetType="{x:Type TextBoxBase}" BasedOn="{StaticResource {x:Type TextBoxBase}}">
+    <Style x:Key="EditBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="12"/>
     </Style>
 
     <Style x:Key="favoriteCheckbox" TargetType="{x:Type CheckBox}">

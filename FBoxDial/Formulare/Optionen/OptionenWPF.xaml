@@ -24,7 +24,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="MainGrid" Margin="0,8,16,0">
+    <Grid x:Name="MainGrid" Margin="0,0,16,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
@@ -52,7 +52,7 @@
         </ScrollViewer>
 
         <Border Grid.Column="1"
-                BorderBrush="{DynamicResource ContainerBorder}" 
+                BorderBrush="{DynamicResource ContainerBorderBrush}" 
                 BorderThickness="0.5" 
                 Grid.ColumnSpan="2">
             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">

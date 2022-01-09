@@ -28,83 +28,106 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        
-        <GroupBox Grid.Row="0" Grid.Column="0" Header="{x:Static localize:LocFBoxData.strZeitraum}">
-            <Grid Width="260" HorizontalAlignment="Left">
+
+        <GroupBox Grid.Row="0" Grid.Column="0" 
+                  Margin="0,0,1,2"
+                  Header="{x:Static localize:LocFBoxData.strZeitraum}">
+            
+            <Grid >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                
+                <!--#region Startzeit-->
+                <TextBlock Grid.Row="0" Grid.Column="0" 
+                           Text="{x:Static localize:LocFBoxData.strStartTime}" 
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
+                
+                <DatePicker x:Name="DPSDatum" Margin="2"
+                            Grid.Row="0" Grid.Column="1" 
+                            SelectedDateFormat="Short" 
+                            FirstDayOfWeek="Monday" 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Stretch"                           
+                            SelectedDate="{Binding Path=StartDatum, Mode=TwoWay, TargetNullValue={x:Static sys:DateTime.Now}}"/>
+                
+                <fbd:TimePicker x:Name="TPSZeit" Margin="2"  
+                                Grid.Row="0" Grid.Column="2" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Stretch"
+                                Height="{Binding ActualHeight, ElementName=DPSDatum}"
+                                SelectedTime="{Binding Path=StartZeit, Mode=TwoWay}"/>
+                <!--#endregion-->
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localize:LocFBoxData.strDate}" VerticalAlignment="Center"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localize:LocFBoxData.strTime}" VerticalAlignment="Center"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static localize:LocFBoxData.strStartTime}" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static localize:LocFBoxData.strEndTime}" HorizontalAlignment="Center"/>
+                <!--#region Endzeit-->
+                <TextBlock Grid.Row="1" Grid.Column="0" 
+                           Text="{x:Static localize:LocFBoxData.strEndTime}" 
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
 
-                <DatePicker x:Name="DPSDatum" Grid.Row="1" Grid.Column="1" Margin="2"
-                        SelectedDateFormat="Short" FirstDayOfWeek="Monday" HorizontalAlignment="Left" 
-                        Width="{Binding ActualWidth, ElementName=TPSZeit}"
-                        SelectedDate="{Binding Path=StartDatum, Mode=TwoWay, TargetNullValue={x:Static sys:DateTime.Now}}"/>
+                <DatePicker x:Name="DPEDatum" Margin="2"
+                            Grid.Row="1" Grid.Column="1" 
+                            SelectedDateFormat="Short" 
+                            FirstDayOfWeek="Monday" 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Stretch"                            
+                            SelectedDate="{Binding Path=StartDatum, Mode=TwoWay, TargetNullValue={x:Static sys:DateTime.Now}}"/>
 
-                <DatePicker x:Name="DPEDatum" Grid.Row="1" Grid.Column="2" Margin="2"
-                        SelectedDateFormat="Short" FirstDayOfWeek="Monday" HorizontalAlignment="Left" 
-                        Width="{Binding ActualWidth, ElementName=TPEZeit}"
-                        SelectedDate="{Binding Path=EndDatum, Mode=TwoWay, TargetNullValue={x:Static sys:DateTime.Now}}"/>
+                <fbd:TimePicker x:Name="TPEZeit" Margin="2"  
+                                Grid.Row="1" Grid.Column="2" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Stretch"
+                                Height="{Binding ActualHeight, ElementName=DPEDatum}"
+                                SelectedTime="{Binding Path=StartZeit, Mode=TwoWay}"/>
+                <!--#endregion-->
 
-                <fbd:TimePicker x:Name="TPSZeit" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="2"  
-                            Height="{Binding ActualHeight, ElementName=DPSDatum}"
-                            SelectedTime="{Binding Path=StartZeit, Mode=TwoWay}"/>
-
-                <fbd:TimePicker x:Name="TPEZeit" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="2"
-                            Height="{Binding ActualHeight, ElementName=DPEDatum}"
-                            SelectedTime="{Binding Path=EndZeit, Mode=TwoWay}"/>
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="0" Grid.Column="1" Header="{x:Static localize:LocFBoxData.strJournalImport}">
-            <Grid>
+        <GroupBox Grid.Row="0" Grid.Column="1" 
+                  Margin="1,0,0,2"
+                  Header="{x:Static localize:LocFBoxData.strJournalImport}">
+            
+            <Grid  >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Button Grid.Column="0" Grid.Row="0" Margin="8"
+                <Button Grid.Column="0" Grid.Row="0" Margin="8,0"
                         Content="{x:Static localize:LocFBoxData.strStartJounalImport}"
-                        Tag="{DynamicResource ShowTrimmedCallTree_16x}" 
                         Command="{Binding ImportCommand}"
                         IsEnabled="{Binding IsNotAktiv}"/>
 
-                <Button Grid.Column="1" Grid.Row="0" Margin="8"
+                <Button Grid.Column="1" Grid.Row="0" Margin="8,0"
                         Content="{x:Static localize:LocFBoxData.strCancel}" 
-                        Tag="{DynamicResource Cancel_16x}"
                         Command="{Binding CancelCommand}" 
                         IsEnabled="{Binding IsAktiv}" Cursor="Hand"/>
 
-                <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
-                    <Label Content="{x:Static localize:LocFBoxData.strStatus}" Margin="8,0"/>
-                    <ProgressBar Height="10" Margin="8,0" 
-                                 Value="{Binding Path=ImportProgressValue, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                                 Maximum="{Binding Path=ImportProgressMax, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                </DockPanel>
+                <Label Grid.Row="1" Grid.Column="0" Content="{x:Static localize:LocFBoxData.strStatus}" Margin="8,0"/>
+                <ProgressBar Grid.Row="1" Grid.Column="1"  Margin="8"
+                             Value="{Binding Path=ImportProgressValue, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                             Maximum="{Binding Path=ImportProgressMax, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
             </Grid>
         </GroupBox>
 
-        <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0"
+        <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                             Style="{DynamicResource DataGridTemplate}"
-                            ItemsSource="{Binding CallList, UpdateSourceTrigger=PropertyChanged}"
-                            ShowStatusBar="False" ShowElapsedTime="False" ShowRowsCount="False"                                
-                            DateFormatString="d" FilterLanguage="German" >
+                            ItemsSource="{Binding Path=CallList, UpdateSourceTrigger=PropertyChanged}"
+                            ShowStatusBar="False" ShowElapsedTime="False"                                 
+                            DateFormatString="d"  FilterLanguage="German">
 
             <fdg:FilterDataGrid.ContextMenu>
                 <ContextMenu>
@@ -151,13 +174,6 @@
                     <fdg:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Name="image" Margin="2" Width="10" Height="10"/>
-                            <!--1 incoming,
-                                2 missed,
-                                3 outgoing,
-                                9 active incoming,
-                                10 rejected incoming,
-                                11 active outgoing-->
-
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding Path=Typ, Mode=OneWay}" Value="1">
                                     <Setter TargetName="image" Property="ContentTemplate" Value="{StaticResource CallReceived}" />

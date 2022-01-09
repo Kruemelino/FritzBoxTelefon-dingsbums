@@ -48,6 +48,7 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 
 #if FileExists("..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.dll")
     Source: "..\FBoxDial\bin\Debug\ColorPicker.dll";                                    DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug\EasyWPFThemeLib.dll";                                DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\FBoxAPI.dll";                                        DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\FilterDataGrid.dll";                                 DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.dll";                    DestDir: "{app}"; Flags: ignoreversion

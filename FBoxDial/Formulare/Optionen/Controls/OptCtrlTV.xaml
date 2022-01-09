@@ -13,19 +13,23 @@
     https://www.codeproject.com/Articles/1224943/Advanced-WPF-TreeView-in-Csharp-VB-Net-Part-of-n
     -->
     <Grid Margin="0,0,0,4">
-        <Border BorderThickness="0.5" >
+        <!--<Border BorderThickness="0.5" >
             <Border.BorderBrush>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
-            </Border.BorderBrush>
+            </Border.BorderBrush>-->
 
-            <TreeView ItemsSource="{Binding Path=Stores}" Height="120" Margin="4" IsEnabled="{Binding DatenGeladen, FallbackValue=False}">
+            <TreeView ItemsSource="{Binding Path=Stores}" 
+                      Height="120" Margin="0" 
+                      IsEnabled="{Binding DatenGeladen, FallbackValue=False}">
+
                 <TreeView.Resources>
                     <fbd:BindingProxy x:Key="DataContextProxy" Data="{Binding}" />
                 </TreeView.Resources>
 
                 <TreeView.ItemContainerStyle>
-                    <Style TargetType="TreeViewItem">
+                    <Style TargetType="{x:Type TreeViewItem}"  BasedOn="{StaticResource {x:Type TreeViewItem}}">
                         <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
+                        <Setter Property="Margin" Value="1"/>
                         <Setter Property="fbd:VirtualToggleButton.IsVirtualToggleButton" Value="True" />
                         <Setter Property="fbd:VirtualToggleButton.IsChecked" Value="{Binding IsChecked}" />
                         <Setter Property="fbd:VirtualToggleButton.ChangedCommand" Value="{Binding Path=Data.CheckItemCommand, Mode=OneWay, Source={StaticResource DataContextProxy}}" />
@@ -33,7 +37,7 @@
                 </TreeView.ItemContainerStyle>
 
                 <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Folders, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" >
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Folders, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                         <StackPanel Orientation="Horizontal">
                             <CheckBox Focusable="False" 
                                       IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -51,7 +55,7 @@
             <b:Interaction.Behaviors>
                 <fbd:PassthroughMouseWheelBehavior />
             </b:Interaction.Behaviors>
-        </Border>
+        <!--</Border>-->
     </Grid>
     
 </UserControl>

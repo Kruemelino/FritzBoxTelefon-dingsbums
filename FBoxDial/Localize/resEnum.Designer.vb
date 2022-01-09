@@ -21,7 +21,7 @@ Imports System
 '''<summary>
 '''  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
 '''</summary>
-<Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+<Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
  Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
  Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
 Public Class resEnum
@@ -168,6 +168,33 @@ Public Class resEnum
     Public Shared ReadOnly Property DelayedOrBusy() As String
         Get
             Return ResourceManager.GetString("DelayedOrBusy", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Dunkel ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property DesignDark() As String
+        Get
+            Return ResourceManager.GetString("DesignDark", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Hell ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property DesignLight() As String
+        Get
+            Return ResourceManager.GetString("DesignLight", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Office Thema ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property DesignOffice() As String
+        Get
+            Return ResourceManager.GetString("DesignOffice", resourceCulture)
         End Get
     End Property
     

@@ -34,7 +34,7 @@
 
         <Border x:Name="BoAnrBild" 
                 DockPanel.Dock="Right" 
-                BorderBrush="{StaticResource ContainerBorder}" 
+                BorderBrush="{DynamicResource ContainerBorderBrush}" 
                 BorderThickness="1" 
                 VerticalAlignment="top" 
                 Width="100"

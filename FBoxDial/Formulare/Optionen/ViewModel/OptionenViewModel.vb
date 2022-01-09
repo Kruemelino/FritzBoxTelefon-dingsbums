@@ -781,7 +781,21 @@ Public Class OptionenViewModel
             SetProperty(_TBNetworkTimeout, Value)
         End Set
     End Property
+
 #End Region
+
+#Region "Design"
+    Private _CBoxDesignMode As DesignModes
+    Public Property CBoxDesignMode As DesignModes
+        Get
+            Return _CBoxDesignMode
+        End Get
+        Set
+            SetProperty(_CBoxDesignMode, Value)
+        End Set
+    End Property
+#End Region
+
 #End Region
 
 #Region "Window Eigenschaften"

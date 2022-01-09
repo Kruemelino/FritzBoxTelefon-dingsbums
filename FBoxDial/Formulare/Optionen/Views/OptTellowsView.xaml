@@ -148,7 +148,7 @@
                     <ListBox Grid.Row="1" Grid.Column="1" MaxHeight="100" Margin="4"
                              ItemsSource="{Binding TellowsResponse.CallerNames, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                         <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
+                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                                 <Setter Property="Height" Value="17" />
                             </Style>
                         </ListBox.ItemContainerStyle>
@@ -156,12 +156,8 @@
 
                     <Label Grid.Row="0" Grid.Column="2" Content="{x:Static localize:LocOptionen.strTellowsCallerNames}" VerticalAlignment="Bottom"/>
                     <DataGrid Grid.Row="1" Grid.Column="2" MaxHeight="100"
-                              HeadersVisibility="Column" AutoGenerateColumns="False" 
-                              GridLinesVisibility="Horizontal"        
-                              HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
-                              VerticalGridLinesBrush="{StaticResource ContainerBorder}"
-                              CanUserAddRows="False" CanUserDeleteRows="False"
-                              IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                              Style="{DynamicResource DataGridTemplate}"
+                              SelectionMode="Single" IsReadOnly="True" HeadersVisibility="None"
                               ItemsSource="{Binding TellowsResponse.CallerTypes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
 
                         <DataGrid.Columns>

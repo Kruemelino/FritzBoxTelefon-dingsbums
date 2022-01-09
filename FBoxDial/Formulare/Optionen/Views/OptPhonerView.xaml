@@ -25,7 +25,7 @@
         <Label Style="{StaticResource OptHintTextBlock}" 
                Content="{x:Static localize:LocOptionen.strPhonerInfo}"/>
 
-        <TextBlock Text="{x:Static localize:LocOptionen.strPhonerCopyRight}"/>
+        <Label Content="{x:Static localize:LocOptionen.strPhonerCopyRight}"/>
         
         <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strSoftPhoneHomepage}" 
                          URL="http://phoner.de" LinkLabel="www.phoner.de"/>
@@ -34,8 +34,8 @@
 
         <Label Style="{StaticResource OptHintTextBlock}" 
                Content="{x:Static localize:LocOptionen.strPhonerInfoConfig}"/>
-        
-        <TextBlock Text="{x:Static localize:LocOptionen.strPhonerInfoLight}"/>
+
+        <Label Content="{x:Static localize:LocOptionen.strPhonerInfoLight}"/>
        
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strPhonerOptCheckBox}" 
@@ -45,15 +45,13 @@
                                 Value="{Binding Path=OptVM.TBPhonerPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 DeCryptKey="{Binding Path=OptVM.DfltPhonerDeCryptKey, Mode=OneWay}"/>
 
-        <TextBlock Text="{x:Static localize:LocOptionen.strPhonerstrPhonerPhoneInfo}"/>
+        <Label Content="{x:Static localize:LocOptionen.strPhonerstrPhonerPhoneInfo}"/>
         
         <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                  HeadersVisibility="None" AutoGenerateColumns="False"                      
-                  GridLinesVisibility="Horizontal"        
-                  HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
-                  VerticalGridLinesBrush="{StaticResource ContainerBorder}"
-                  CanUserAddRows="False" CanUserDeleteRows="False"
-                  IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" 
+                  Style="{DynamicResource DataGridTemplate}"
+                  SelectionMode="Single" IsReadOnly="True"
+                  HeadersVisibility="None"
+                  BorderThickness="0"
                   MaxHeight="150" Margin="0,4">
 
             <DataGrid.Columns>

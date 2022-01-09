@@ -161,6 +161,18 @@
     <value>Verzögert oder bei Besetzt</value>
     <comment>AVM XML Rufumleitung Mode</comment>
   </data>
+  <data name="DesignDark" xml:space="preserve">
+    <value>Dunkel</value>
+    <comment>Design</comment>
+  </data>
+  <data name="DesignLight" xml:space="preserve">
+    <value>Hell</value>
+    <comment>Design</comment>
+  </data>
+  <data name="DesignOffice" xml:space="preserve">
+    <value>Office Thema</value>
+    <comment>Design</comment>
+  </data>
   <data name="DirectCall" xml:space="preserve">
     <value>Direkter Anruf</value>
     <comment>AVM XML Rufumleitung Mode</comment>

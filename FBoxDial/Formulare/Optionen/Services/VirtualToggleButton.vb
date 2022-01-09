@@ -4,7 +4,7 @@ Imports System.Windows.Input
 ''' <summary>
 ''' In Anlehnung an Dirk Bahle: <code>https://www.codeproject.com/Articles/1224943/Advanced-WPF-TreeView-in-Csharp-VB-Net-Part-of-n</code>
 ''' </summary>
-Module VirtualToggleButton
+Public Module VirtualToggleButton
 #Region "attached properties"
 #Region "ChangedCommand"
     ''' <summary>

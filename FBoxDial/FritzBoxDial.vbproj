@@ -29,7 +29,8 @@
     <DefineConstants>VSTO40</DefineConstants>
     <StartupObject />
     <IsWebBootstrapper>False</IsWebBootstrapper>
-    <NuGetPackageImportStamp />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>Veröffentlichen\</PublishUrl>
     <InstallUrl />
@@ -152,6 +153,7 @@
     <Reference Include="MixERP.Net.VCards, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MixERP.Net.VCards.1.0.7\lib\net461\MixERP.Net.VCards.dll</HintPath>
     </Reference>
+    <Reference Include="netstandard" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -258,9 +260,6 @@
     <Compile Include="Formulare\Common\Services\NotifyBase.vb" />
     <Compile Include="Formulare\Common\Services\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\Common\Services\RelayCommand.vb" />
-    <Compile Include="Formulare\Common\Themes\ThemeBase.xaml.vb">
-      <DependentUpon>ThemeBase.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Formulare\FBoxData\Controls\TimePicker.vb" />
     <Compile Include="Formulare\AnrMon\ViewModel\AnrMonViewModel.vb" />
     <Compile Include="Formulare\AnrMon\AnrMonWPF.xaml.vb">
@@ -585,6 +584,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocWählclient.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Localize\resImageMso.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -639,10 +639,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Common\Themes\ThemeBase.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="My Project\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -655,14 +651,6 @@
     <Page Include="Formulare\Common\Controls\WatermarkTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Formulare\Common\Themes\DarkTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\Common\Themes\LightTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\FBoxData\FBoxDataWPF.xaml">
       <SubType>Designer</SubType>
@@ -853,6 +841,10 @@
     <Resource Include="Tellows\Resources\score9.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\EasyWPFThemeLib\EasyWPFThemeLib.vbproj">
+      <Project>{44775c00-c7ae-4bc1-a15e-c58e1c57655c}</Project>
+      <Name>EasyWPFThemeLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\FBoxAPI\FBoxAPI.vbproj">
       <Project>{9e2df865-e261-426a-9e05-1a2f60bd7323}</Project>
       <Name>FBoxAPI</Name>

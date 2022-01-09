@@ -76,6 +76,11 @@
     ''' </summary>
     <XmlElement("TBNetworkTimeout")> Public Property TBNetworkTimeout As Integer = 120
 #End Region
+
+#Region "Design"
+    <XmlElement("CBoxDesignMode")> Public Property CBoxDesignMode As DesignModes = DesignModes.Light
+
+#End Region
 #End Region
 
 #Region "Anrufmonitor"
@@ -187,6 +192,7 @@
     <XmlElement("CBoxMinLogLevel")> Public Property CBoxMinLogLevel As String = LogLevel.Info.Name
 #End If
 #End Region
+
 #Region "SoftPhones"
 #Region "Phoner"
     <XmlElement("TBPhonerPasswort")> Public Property TBPhonerPasswort As String = String.Empty

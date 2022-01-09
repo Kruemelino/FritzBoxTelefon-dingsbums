@@ -57,6 +57,9 @@ Public NotInheritable Class ThisAddIn
         Dim UserData As New NutzerDaten
         NLogger.Debug("Nutzererinstellungen geladen...")
 
+        ' Theme gemäß den aktuellen Einstellungen von Office setzen
+        UpdateTheme()
+
         ' Explorer Ereignishandler festlegen
         SetExplorer()
         NLogger.Debug("Outlook-Explorer Ereignishandler erfasst...")

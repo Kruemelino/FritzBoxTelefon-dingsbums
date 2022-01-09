@@ -1,10 +1,38 @@
-﻿Imports Microsoft.Win32
+﻿Imports System.ComponentModel
+Imports Microsoft.Win32
 
-Module OfficeColors
+<TypeConverter(GetType(EnumDescriptionTypeConverter))>
+Public Enum DesignModes
+    <LocalizedDescription("DesignOffice", GetType(resEnum))> Office
+    <LocalizedDescription("DesignDark", GetType(resEnum))> Dark
+    <LocalizedDescription("DesignLight", GetType(resEnum))> Light
+End Enum
 
+Friend Module OfficeColors
+
+    Private ReadOnly Property ThemeLibName As String = "EasyWPFThemeLib"
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
+    ''' <summary>
+    ''' Aktualisiert das Farbthema.
+    ''' </summary>
     Friend Sub UpdateTheme()
+
+        Dim ThemeName As String = "Light"
+
+        Select Case XMLData.POptionen.CBoxDesignMode
+            Case DesignModes.Office
+                ThemeName = GetThemebyOffice()
+            Case DesignModes.Dark, DesignModes.Light
+                ThemeName = XMLData.POptionen.CBoxDesignMode.ToString()
+
+        End Select
+
+        SetResourceDictionary(GetActualTheme, New Uri($"pack://application:,,,/{ThemeLibName};component/Themes/{ThemeName}Theme.xaml"))
+
+    End Sub
+
+    Private Function GetThemebyOffice() As String
 
         Dim OfficeVersion As Integer = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName).ProductMajorPart
         Dim OfficeThemeKey As String = "UI Theme"
@@ -37,40 +65,74 @@ Module OfficeColors
             End Using
         End If
 
-        SetResourceDictionary(If(OfficeTheme.AreEqual(4), "Dark", "Light"))
+        Return If(OfficeTheme.AreEqual(4), "Dark", "Light")
+    End Function
+
+    Friend Sub ToogleTheme()
+        ' Ermittle das aktuelle Theme
+        ' Ermittle das aktuelle Theme Entweder DarkTheme oder LightTheme
+        Dim ActualTheme As Windows.ResourceDictionary = GetActualTheme()
+
+        If ActualTheme IsNot Nothing Then
+            SetResourceDictionary(ActualTheme, New Uri($"pack://application:,,,/{ThemeLibName};component/Themes/{If(ActualTheme.Source.AbsoluteUri.EndsWith("LightTheme.xaml"), "Dark", "Light")}Theme.xaml"))
+        Else
+            ' Setze auf Standard zurück
+            UpdateTheme()
+        End If
 
     End Sub
 
-    Private Sub SetResourceDictionary(ThemeMode As String)
-        Dim ThemeUri As New Uri($"pack://application:,,,/Fritz!Box Telefon-Dingsbums;component/Formulare/Common/Themes/{ThemeMode}Theme.xaml")
+    ''' <summary>
+    ''' Setzt das Farbthema entsprechend dem übergebenden Parameter <paramref name="ThemeUri"/>.
+    ''' </summary>
+    Private Sub SetResourceDictionary(Theme As Windows.ResourceDictionary, ThemeUri As Uri)
 
         With Globals.ThisAddIn.WPFApplication.Resources.MergedDictionaries
 
-            ' Finde das Theme. Entweder DarkTheme oder LightTheme
-            Dim RDColours As IEnumerable(Of Windows.ResourceDictionary) = .Where(Function(rd) rd.Source.AbsoluteUri.EndsWith("Theme.xaml"))
-
-            If RDColours.Count.AreEqual(1) Then
-                ' Es sollten grundsätzlich (nur) ein Theme vorhanden sein!
-                If Not .First.Source.Equals(ThemeUri) Then
-                    NLogger.Trace($"Wechsel Theme auf: {ThemeUri}")
-                    Try
-                        .First.Source = ThemeUri
-                    Catch ex As Exception
-                        NLogger.Warn(ex, $"Fehler beim Wechsel des Themes.")
-                    End Try
-
-                End If
-            Else
-                ' Irgendwas ist schiefgegangen
-                NLogger.Warn($"Es wurden { .Count} WPF Themes in den Resourcen gefunden. Setze Themes zurück: {ThemeUri}")
+            If Theme Is Nothing Then
+                ' Es ist etwas schief gelaufen. Setze zurück.
+                NLogger.Warn($"Setze Theme zurück auf: {ThemeUri}")
                 Try
                     .Clear()
                     .Add(New Windows.ResourceDictionary With {.Source = ThemeUri})
                 Catch ex As Exception
                     NLogger.Warn(ex, $"Fehler beim Zurücksetzen des Themes.")
                 End Try
+
+            Else
+                ' Normalfall. Es sollten grundsätzlich nur ein Theme vorhanden sein!
+                If Not Theme.Source.Equals(ThemeUri) Then
+                    NLogger.Trace($"Wechsel Theme auf: {ThemeUri}")
+                    Try
+                        Theme.Source = ThemeUri
+                    Catch ex As Exception
+                        NLogger.Warn(ex, $"Fehler beim Wechsel des Themes.")
+                    End Try
+
+                End If
             End If
+
         End With
     End Sub
+
+    ''' <summary>
+    ''' Ermittelt das aktuell eingestellte Farbthema.
+    ''' </summary>
+    Private Function GetActualTheme() As Windows.ResourceDictionary
+
+        With Globals.ThisAddIn.WPFApplication.Resources.MergedDictionaries
+            Dim RDColours As IEnumerable(Of Windows.ResourceDictionary) = .Where(Function(rd) rd.Source.AbsoluteUri.EndsWith("Theme.xaml"))
+
+            If RDColours.Count.AreEqual(1) Then
+                Return RDColours.First
+            Else
+                ' Irgendwas ist schiefgegangen
+                NLogger.Warn($"Es wurden { .Count} WPF Themes in den Resourcen gefunden.")
+                Return Nothing
+            End If
+
+        End With
+
+    End Function
 
 End Module

@@ -52,7 +52,7 @@
         </ScrollViewer>
 
         <Border Grid.Column="1" 
-                BorderBrush="{DynamicResource ContainerBorder}" 
+                BorderBrush="{DynamicResource ContainerBorderBrush}" 
                 BorderThickness="0.5" 
                 Margin="0" 
                 Grid.RowSpan="2">

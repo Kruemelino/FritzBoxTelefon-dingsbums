@@ -44,8 +44,8 @@
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0"
-                       Text="{x:Static localize:LocOptionen.strMicroSIPTBMicroSIPPath}" Grid.ColumnSpan="2"/>
+            <Label Grid.Column="0"
+                   Content="{x:Static localize:LocOptionen.strMicroSIPTBMicroSIPPath}" Grid.ColumnSpan="2"/>
 
             <Button Grid.Column="2" Margin="0"
                     Content="{DynamicResource ImportFile_16x}" 
@@ -58,15 +58,13 @@
 
         </Grid>
 
-        <TextBlock Text="{x:Static localize:LocOptionen.strMicroSIPPhoneInfo}"/>
+        <Label Content="{x:Static localize:LocOptionen.strMicroSIPPhoneInfo}"/>
 
         <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                  HeadersVisibility="None" AutoGenerateColumns="False"               
-                  GridLinesVisibility="Horizontal"        
-                  HorizontalGridLinesBrush="{StaticResource ContainerBorder}"
-                  VerticalGridLinesBrush="{StaticResource ContainerBorder}"
-                  CanUserAddRows="False" CanUserDeleteRows="False"
-                  IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" 
+                  Style="{DynamicResource DataGridTemplate}"
+                  SelectionMode="Single"
+                  HeadersVisibility="None"
+                  BorderThickness="0"
                   MaxHeight="150" Margin="0,4">
 
             <DataGrid.Columns>

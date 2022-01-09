@@ -557,6 +557,51 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Design (Farben/Theme) ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDesignHead() As String
+            Get
+                Return ResourceManager.GetString("strDesignHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Schlauer Text ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDesignInfo() As String
+            Get
+                Return ResourceManager.GetString("strDesignInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Modus:  ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDesignMode() As String
+            Get
+                Return ResourceManager.GetString("strDesignMode", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Design umschalten ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDesignSwitch() As String
+            Get
+                Return ResourceManager.GetString("strDesignSwitch", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Testformular einblenden ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDesignTest() As String
+            Get
+                Return ResourceManager.GetString("strDesignTest", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Wählhilfe ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strDialer() As String

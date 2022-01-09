@@ -8,6 +8,25 @@
         <ResourceDictionary Source="Converter.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
+    <!--#region Colors and Brushes-->
+    <SolidColorBrush x:Key="RaisinBlackRaisinBlack"     Color="#FF212121" />
+    <SolidColorBrush x:Key="BleuDeFrance"               Color="#FF2D98DA"/>
+    <SolidColorBrush x:Key="CrayolasGreen"              Color="#FF20BF6B"/>
+    <SolidColorBrush x:Key="FieryRose"                  Color="#FFFC5C65"/>
+
+    <!--#region tellows Brushes-->
+    <SolidColorBrush x:Key="score1"                     Color="#FF00FC00"/>
+    <SolidColorBrush x:Key="score2"                     Color="#FF30F90A"/>
+    <SolidColorBrush x:Key="score3"                     Color="#FF68FF0b"/>
+    <SolidColorBrush x:Key="score4"                     Color="#FF8DFC08"/>
+    <SolidColorBrush x:Key="score5"                     Color="#FFD6FF18"/>
+    <SolidColorBrush x:Key="score6"                     Color="#FFF4D11F"/>
+    <SolidColorBrush x:Key="score7"                     Color="#FFF79A01"/>
+    <SolidColorBrush x:Key="score8"                     Color="#FFFB6703"/>
+    <SolidColorBrush x:Key="score9"                     Color="#FFFF3505"/>
+    <!--#endregion-->
+    <!--#endregion-->
+    
     <!--MiniIconButton: Anrufmonitor, Optionen,Stoppuhr, Wählclient-->
     <Style x:Key="MiniIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Margin" Value="0,4,4,0" />
@@ -81,14 +100,12 @@
         <Setter Property="HeadersVisibility" Value="Column" />
         <Setter Property="CanUserAddRows" Value="False" />
         <Setter Property="CanUserDeleteRows" Value="False" />
-        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ContainerBorder}" />
-        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource ContainerBorder}" />
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="GridLinesVisibility" Value="Horizontal" />
         <Setter Property="SelectionUnit" Value="FullRow" /> 
-    </Style>       
-    
-    <Style x:Key="OptComboBox" TargetType="{x:Type ComboBox}" >
+    </Style>
+
+    <Style x:Key="OptComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}" >
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -97,8 +114,9 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="150"/>
                         </Grid.ColumnDefinitions>
-                        <ContentPresenter Content="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
-                                                   Grid.Column="0"/>
+                        <ContentPresenter VerticalAlignment="Center" 
+                                          Grid.Column="0"
+                                          Content="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}" />
 
                         <ComboBox   
                             ItemsSource="{Binding Path=ItemsSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
@@ -113,8 +131,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="OptHintTextBlock" TargetType="{x:Type Label}">
+
+    <Style x:Key="OptHintTextBlock" TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}" >
         <Setter Property="Margin" Value="0,0,0,4"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -137,8 +155,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="OptTextBox" TargetType="{x:Type TextBox}" >
+
+    <Style x:Key="OptTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}" >
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -158,64 +176,60 @@
         </Setter>
     </Style>
 
-    <Style x:Key="ToggleButtonStyle" TargetType="{x:Type RadioButton}" >
+    <Style x:Key="ToggleButtonStyle" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}" >
+        <Setter Property="Background" Value="{DynamicResource ControlDefaultBackground}"/>
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="35"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Border Background="{TemplateBinding Background}" BorderThickness ="0" Padding="8,0,0,0" Margin="0">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness ="0"
+                            Padding="8,0,0,0" 
+                            Margin="0">
                         <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                                <Condition Property="IsChecked" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="{DynamicResource ControlPrimaryDefaultBackground}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource ControlPrimaryDefaultBorderBrush}"/>
+                                <Setter Property="TextElement.Foreground" Value="{DynamicResource ControlSelectedForeground}"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsChecked" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="{DynamicResource ControlMouseOverBackground}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource ControlMouseOverBorderBrush}"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsChecked" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background" Value="{DynamicResource ControlPrimarySelectedMouseOverBackground}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource ControlPrimarySelectedMouseOverBorderBrush}"/>
+                                <Setter Property="TextElement.Foreground" Value="{DynamicResource ControlSelectedForeground}"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-        <Style.Triggers>           
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="False"/>
-                    <Condition Property="IsChecked" Value="False"/>
-                </MultiTrigger.Conditions>
-                <MultiTrigger.Setters>
-                    <Setter Property="Background" Value="{StaticResource ControlDefaultBackground}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource ControlDefaultBorderBrush}"/>
-                </MultiTrigger.Setters>
-            </MultiTrigger>
-
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="False"/>
-                    <Condition Property="IsChecked" Value="True"/>
-                </MultiTrigger.Conditions>
-                <MultiTrigger.Setters>
-                    <Setter Property="Background" Value="{StaticResource ControlPrimaryDefaultBackground}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource ControlPrimaryDefaultBorderBrush}"/>
-                </MultiTrigger.Setters>
-            </MultiTrigger>
-
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="True"/>
-                    <Condition Property="IsChecked" Value="False"/>
-                </MultiTrigger.Conditions>
-                <MultiTrigger.Setters>
-                    <Setter Property="Background" Value="{StaticResource ControlMouseOverBackground}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource ControlMouseOverBorderBrush}"/>
-                </MultiTrigger.Setters>
-            </MultiTrigger>
-            
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="True"/>
-                    <Condition Property="IsChecked" Value="True"/>
-                </MultiTrigger.Conditions>
-                <MultiTrigger.Setters>
-                    <Setter Property="Background" Value="{StaticResource ControlPrimarySelectedMouseOverBackground}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource ControlPrimarySelectedMouseOverBorderBrush}"/>
-                </MultiTrigger.Setters>
-            </MultiTrigger>
-        </Style.Triggers>
     </Style>
     
     <Style x:Key="OptHeader" TargetType="{x:Type TextBlock}">
@@ -244,14 +258,14 @@
         <Setter Property="HeaderTemplate" Value="{StaticResource HeaderTemplate}"/>
     </Style>
 
-    <Style x:Key="OptCheckBox" TargetType="{x:Type CheckBox}">
+    <Style x:Key="OptCheckBox" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}" >
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
                     <Grid Margin="0,0,0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="151.5"/>
+                            <ColumnDefinition Width="150"/>
                         </Grid.ColumnDefinitions>
 
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -276,7 +290,39 @@
         </Setter>
     </Style>
 
-    <Style x:Key="OptRadioButton" TargetType="{x:Type RadioButton}" >
+    <Style x:Key="OptMiniIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" >
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150.5"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Grid.Column="0"/>
+
+                        <Button Grid.Column="1"
+                                HorizontalAlignment="Left" 
+                                Style="{StaticResource MiniIconButton}"
+                                Content="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                                Command="{Binding Path=Command, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                                CommandParameter="{Binding Path=CommandParameter, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                               />
+
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="OptRadioButton" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}" >
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RadioButton}">

@@ -23,10 +23,14 @@
     Public Property InitialSelected As Boolean = True Implements IPageViewModel.InitialSelected
 
     Public Property UpdateUserListCommand As RelayCommand
+    Public Property DesignTestFormCommand As RelayCommand
+    Public Property ToogleDesignCommand As RelayCommand
 
     Public Sub New(ds As IOptionenService)
         ' Commands
         UpdateUserListCommand = New RelayCommand(AddressOf UpdateUserList, AddressOf CanUpdateUserList)
+        DesignTestFormCommand = New RelayCommand(AddressOf ShowTestDesignForm)
+        ToogleDesignCommand = New RelayCommand(AddressOf ToogleDesign)
 
         ' Interface
         _DatenService = ds
@@ -49,5 +53,13 @@
             End If
 
         End With
+    End Sub
+
+    Private Sub ShowTestDesignForm(o As Object)
+        DatenService.ShowDesignTest()
+    End Sub
+
+    Private Sub ToogleDesign(o As Object)
+        DatenService.ToogleDesign()
     End Sub
 End Class

@@ -21,10 +21,19 @@ Friend Class OptionenService
         Return _OutlookStoreRootFolder
     End Function
 
+#Region "Design"
     Private Sub UpdateTheme() Implements IOptionenService.UpdateTheme
         OfficeColors.UpdateTheme()
     End Sub
 
+    Private Sub ShowDesignTest() Implements IOptionenService.ShowDesignTest
+        AddWindow(Of EasyWPFThemeLib.TestWPF)()
+    End Sub
+
+    Private Sub ToogleDesign() Implements IOptionenService.ToogleDesign
+        ToogleTheme()
+    End Sub
+#End Region
 #Region "Grunddaten"
     Private Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
 

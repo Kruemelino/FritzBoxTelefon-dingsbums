@@ -120,7 +120,36 @@
                                  URL="{Binding Path=OptVM.PfadArbeitsverzeichnis}" />
             </StackPanel>
         </Expander>
-        
+
+        <Expander Header="{x:Static localize:LocOptionen.strDesignHead}">
+            <StackPanel>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strDesignInfo}"/>
+
+                <ComboBox Style="{StaticResource OptComboBox}" 
+                          Tag="{x:Static localize:LocOptionen.strDesignMode}"
+                          ItemsSource="{Binding Source={fbd:EnumBindingSource {x:Type fbd:DesignModes}}}"
+                          SelectedValue="{Binding OptVM.CBoxDesignMode, FallbackValue=Auto}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <Button Style="{StaticResource OptMiniIconButton}"
+                        Content="{x:Static localize:LocOptionen.strDesignTest}"
+                        Tag="{DynamicResource EditTheme_16x}" 
+                        Command="{Binding DesignTestFormCommand}"/>
+
+                <Button Style="{StaticResource OptMiniIconButton}"
+                        Content="{x:Static localize:LocOptionen.strDesignSwitch}"
+                        Tag="{DynamicResource DarkTheme_16x}" 
+                        Command="{Binding ToogleDesignCommand}"/>
+            </StackPanel>
+        </Expander>
+
         <Expander Header="{x:Static localize:LocOptionen.strBaseHeadTweak}">
             
             <StackPanel>

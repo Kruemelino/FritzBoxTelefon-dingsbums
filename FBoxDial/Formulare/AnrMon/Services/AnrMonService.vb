@@ -5,7 +5,7 @@ Public Class AnrMonService
     Implements IAnrMonService
 
     Private Sub UpdateTheme() Implements IAnrMonService.UpdateTheme
-        OfficeColors.UpdateTheme()
+        'OfficeColors.UpdateTheme()
     End Sub
 
     Private Sub BlockNumber(TelNr As Telefonnummer) Implements IAnrMonService.BlockNumber

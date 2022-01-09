@@ -28,7 +28,9 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="0" Grid.Column="0" Header="{x:Static localize:LocFBoxData.strFilter}">
+        <GroupBox Grid.Row="0" Grid.Column="0" 
+                  Margin="0,2,0,4"
+                  Header="{x:Static localize:LocFBoxData.strFilter}">
             <TextBox Text="{Binding ContactsVM.FilterName, UpdateSourceTrigger=PropertyChanged}"
                      Style="{StaticResource EditBox}"/>
         </GroupBox>

@@ -174,7 +174,7 @@ Public Class StoppUhrViewModel
             BackgroundColor = XMLData.POptionen.TBStoppUhrBColorHex
             ForeColor = XMLData.POptionen.TBStoppUhrFColorHex
         Else
-            BackgroundColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColour"), SolidColorBrush).Color.ToString()
+            BackgroundColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColor"), SolidColorBrush).Color.ToString()
             ForeColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("ControlDefaultForeground"), SolidColorBrush).Color.ToString()
         End If
 

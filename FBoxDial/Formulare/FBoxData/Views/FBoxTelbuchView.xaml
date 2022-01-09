@@ -61,15 +61,17 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="{StaticResource ControlDefaultBorderBrush}" BorderThickness="1,0">
+                            <Border BorderBrush="{StaticResource ControlDefaultBorderBrush}" BorderThickness="0">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition MaxWidth="20"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <RadioButton Grid.Column="0" Style="{StaticResource ToggleButtonStyle}"
-                                                 Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" GroupName="phonebooks"
+                                    <RadioButton GroupName="phonebooks"
+                                                 Grid.Column="0" 
+                                                 Style="{StaticResource ToggleButtonStyle}" 
+                                                 Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
                                                  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.LadeFritzBoxKontakte}"
                                                  CommandParameter="{Binding}"
                                                  IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -90,7 +92,9 @@
                                     </TextBox>
 
                                     <!--Rename-->
-                                    <Button Grid.Column="1" Style="{StaticResource MenuIconButton}" HorizontalAlignment="Right"
+                                    <Button Grid.Column="1" 
+                                            Style="{StaticResource MenuIconButton}" 
+                                            HorizontalAlignment="Right"
                                             ToolTip="{x:Static localize:LocFBoxData.strToolTippTelBuchRename}"
                                             Visibility="{Binding Path=IsBookEditMode, Converter={StaticResource BoolToVisibilityConverter}}"
                                             Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.NeuerTelefonbuchName}"
@@ -102,7 +106,9 @@
                                     </Button>
 
                                     <!--Delete-->
-                                    <Button Grid.Column="1" Style="{StaticResource MenuIconButton}" HorizontalAlignment="Right"
+                                    <Button Grid.Column="1" 
+                                            Style="{StaticResource MenuIconButton}" 
+                                            HorizontalAlignment="Right"
                                             ToolTip="{x:Static localize:LocFBoxData.strToolTippTelBuchDel}"
                                             Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.LöscheFritzBoxTelefonbuch}"
                                             CommandParameter="{Binding}">

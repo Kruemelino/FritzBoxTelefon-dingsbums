@@ -54,7 +54,9 @@
 
             <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                       Style="{DynamicResource DataGridTemplate}"
-                      MaxHeight="150" Margin="0,4" BorderThickness="0" >   
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      MaxHeight="150" Margin="0,4" >   
 
                 <DataGrid.Columns>
                     <DataGridTemplateColumn>

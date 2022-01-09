@@ -29,7 +29,8 @@
                 <ColumnDefinition/>                
             </Grid.ColumnDefinitions>
 
-            <GroupBox Header="{x:Static localize:LocWählclient.strConnectTo}" Grid.Column="0"
+            <GroupBox Header="{x:Static localize:LocWählclient.strConnectTo}" 
+                      Grid.Column="0" Margin="0,0,1,0"
                       IsEnabled="{Binding Path=IsNotDialing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
                 
                 <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
@@ -45,7 +46,8 @@
                 </DockPanel>
             </GroupBox>
 
-            <GroupBox Header="{x:Static localize:LocWählclient.strStatus}" Grid.Column="1">
+            <GroupBox Header="{x:Static localize:LocWählclient.strStatus}"
+                      Margin="1,0,0,0" Grid.Column="1">
                 <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                     <TextBlock DockPanel.Dock="Top" Style="{StaticResource Status}"                                
                                Text="{Binding Path=Status, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />

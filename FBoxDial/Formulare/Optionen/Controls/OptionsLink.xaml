@@ -14,12 +14,6 @@
                 <Setter Property="HorizontalAlignment" Value="Right"/>
             </Style>
            
-            <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockStyle">
-                <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-            </Style>
-
             <Style TargetType="{x:Type DockPanel}" x:Key="DockPanelStyle">
                 <Setter Property="Margin" Value="0,0,0,4"/>
             </Style>
@@ -28,12 +22,12 @@
         <DockPanel Style="{StaticResource DockPanelStyle}">
             <TextBlock Style="{StaticResource LinkTextBlockStyle}" DockPanel.Dock="Right">
                 <Hyperlink NavigateUri="{Binding Path=URL, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
-                           Hyperlink.RequestNavigate="Hyperlink_RequestNavigate">
-                    
-                    <TextBlock Text="{Binding Path=LinkLabel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+                           Hyperlink.RequestNavigate="Hyperlink_RequestNavigate" >
+                       <TextBlock Text="{Binding Path=LinkLabel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
                 </Hyperlink>
             </TextBlock>
-            <TextBlock Text="{Binding Path=Label, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource TextBlockStyle}" DockPanel.Dock="Left"/>            
+            <Label Content="{Binding Path=Label, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                   DockPanel.Dock="Left"/>            
         </DockPanel>
     </Grid>
 </UserControl>

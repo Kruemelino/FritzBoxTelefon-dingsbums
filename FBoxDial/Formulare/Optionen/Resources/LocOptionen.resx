@@ -339,6 +339,26 @@ Sofern Kontakte automatisch erstellt werden sollen, muss hier festgelegt werden,
 Wird kein Ordner gewählt, wird der Outlook-Standard verwendet.</value>
     <comment>OptCreateContactView</comment>
   </data>
+  <data name="strDesignHead" xml:space="preserve">
+    <value>Design (Farben/Theme)</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strDesignInfo" xml:space="preserve">
+    <value>Schlauer Text</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strDesignMode" xml:space="preserve">
+    <value>Modus: </value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strDesignSwitch" xml:space="preserve">
+    <value>Design umschalten</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strDesignTest" xml:space="preserve">
+    <value>Testformular einblenden</value>
+    <comment>OptTestView</comment>
+  </data>
   <data name="strDialer" xml:space="preserve">
     <value>Wählhilfe</value>
     <comment>MainView</comment>

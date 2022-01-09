@@ -20,7 +20,7 @@
     <StackPanel Orientation="Vertical"
                 IsEnabled="{Binding Path=DialVM.IsNotDialing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
         
-        <TextBlock Text="{x:Static localize:LocWählclient.strDirectDial}" Margin="4" TextAlignment="Center"/>
+        <Label Content="{x:Static localize:LocWählclient.strDirectDial}" Margin="4" HorizontalContentAlignment="Center"/>
 
         <ComboBox x:Name="CBoxTelNr" 
                   Style="{StaticResource DirektCallComboBox}"
