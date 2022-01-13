@@ -255,7 +255,7 @@ Public Class KontaktViewModel
 #Region "Kontakt Telefonnummer hinzufügen/entfernen"
     Private Sub AddTelNr(o As Object)
         ' Ein neues Nummernelement erzeugen
-        Dim NeueNummer As New FBoxAPI.Number
+        Dim NeueNummer As New FBoxAPI.NumberType
 
         ' Ein neues NummerViewModel erzeugen
         Dim NummernVM As New NumberViewModel(NeueNummer)
@@ -265,7 +265,7 @@ Public Class KontaktViewModel
             .Nummern.Add(NummernVM)
 
             If .Telefonie Is Nothing Then .Telefonie = New FBoxAPI.Telephony
-            If .Telefonie.Numbers Is Nothing Then .Telefonie.Numbers = New List(Of FBoxAPI.Number)
+            If .Telefonie.Numbers Is Nothing Then .Telefonie.Numbers = New List(Of FBoxAPI.NumberType)
 
             ' Nummer dem Modell hinzufügen
             .Telefonie.Numbers.Add(NeueNummer)

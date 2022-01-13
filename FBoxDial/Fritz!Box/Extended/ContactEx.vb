@@ -51,7 +51,7 @@ Friend Module ContactEx
                     ' Type = "work":    .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CompanyMainTelephoneNumber, .PrimaryTelephoneNumber
                     ' Type = "fax_work: .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber
                     Select Case TelNr.Type
-                        Case FBoxAPI.TelNrTyp.home
+                        Case FBoxAPI.TelNrTypEnum.home
                             If .HomeTelephoneNumber.IsStringNothingOrEmpty Then
                                 .HomeTelephoneNumber = tmpTelNr.Formatiert
                             ElseIf .Home2TelephoneNumber.IsStringNothingOrEmpty Then
@@ -65,7 +65,7 @@ Friend Module ContactEx
                             ElseIf .TTYTDDTelephoneNumber.IsStringNothingOrEmpty Then
                                 .TTYTDDTelephoneNumber = tmpTelNr.Formatiert
                             End If
-                        Case FBoxAPI.TelNrTyp.mobile
+                        Case FBoxAPI.TelNrTypEnum.mobile
                             If .MobileTelephoneNumber.IsStringNothingOrEmpty Then
                                 .MobileTelephoneNumber = tmpTelNr.Formatiert
                             ElseIf .PagerNumber.IsStringNothingOrEmpty Then
@@ -73,7 +73,7 @@ Friend Module ContactEx
                             ElseIf .RadioTelephoneNumber.IsStringNothingOrEmpty Then
                                 .RadioTelephoneNumber = tmpTelNr.Formatiert
                             End If
-                        Case FBoxAPI.TelNrTyp.work
+                        Case FBoxAPI.TelNrTypEnum.work
                             If .BusinessTelephoneNumber.IsStringNothingOrEmpty Then
                                 .BusinessTelephoneNumber = tmpTelNr.Formatiert
                             ElseIf .Business2TelephoneNumber.IsStringNothingOrEmpty Then
@@ -87,7 +87,7 @@ Friend Module ContactEx
                             ElseIf .PrimaryTelephoneNumber.IsStringNothingOrEmpty Then
                                 .PrimaryTelephoneNumber = tmpTelNr.Formatiert
                             End If
-                        Case FBoxAPI.TelNrTyp.fax_work
+                        Case FBoxAPI.TelNrTypEnum.fax_work
                             If .BusinessFaxNumber.IsStringNothingOrEmpty Then
                                 .BusinessFaxNumber = tmpTelNr.Formatiert
                             ElseIf .HomeFaxNumber.IsStringNothingOrEmpty Then
@@ -178,14 +178,14 @@ Friend Module ContactEx
 
     <Extension> Friend Function GetKontaktTelNrList(Contact As FBoxAPI.Contact) As List(Of Telefonnummer)
 
-        Return Contact.Telephony.Numbers.Select(Function(TelNr) New Telefonnummer With {.SetNummer = TelNr.Number, .Typ = New TelNrType With {.XML = CType(TelNr.Type, FBoxAPI.TelNrTyp)}}).ToList
+        Return Contact.Telephony.Numbers.Select(Function(TelNr) New Telefonnummer With {.SetNummer = TelNr.Number, .Typ = New TelNrType With {.XML = CType(TelNr.Type, FBoxAPI.TelNrTypEnum)}}).ToList
 
     End Function
 
     Friend Function CreateContact(InitName As String) As FBoxAPI.Contact
 
         Return New FBoxAPI.Contact With {.Person = New FBoxAPI.Person With {.RealName = InitName},
-                                         .Telephony = New FBoxAPI.Telephony With {.Numbers = New List(Of FBoxAPI.Number),
+                                         .Telephony = New FBoxAPI.Telephony With {.Numbers = New List(Of FBoxAPI.NumberType),
                                                                                   .Emails = New List(Of FBoxAPI.Email)}}
     End Function
 

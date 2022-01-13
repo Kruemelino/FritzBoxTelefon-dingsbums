@@ -79,7 +79,7 @@ Imports FBoxDial.FritzBoxDefault
                                                                         .Intern = SIPClient.InternalNumber}
                                 With Telefon
 
-                                    If SIPClient.InComingNumbers.First.Type = FBoxAPI.SIPType.eAllCalls Then
+                                    If SIPClient.InComingNumbers.First.Type = FBoxAPI.SIPTypeEnum.eAllCalls Then
                                         ' füge alle bekannten Nummern hinzu
                                         Telefonnummern.ForEach(Sub(TelNr) .StrEinTelNr.Add(TelNr.Einwahl))
                                     Else

@@ -14,35 +14,35 @@ End Enum
 
 Public Structure TelNrType
     Public Property TelNrType As OutlookNrType
-    Friend Property XML As FBoxAPI.TelNrTyp
+    Friend Property XML As FBoxAPI.TelNrTypEnum
         Get
             Select Case TelNrType
                 Case OutlookNrType.CarTelephoneNumber, OutlookNrType.HomeTelephoneNumber, OutlookNrType.Home2TelephoneNumber, OutlookNrType.ISDNNumber, OutlookNrType.TTYTDDTelephoneNumber, OutlookNrType.OtherTelephoneNumber
-                    Return FBoxAPI.TelNrTyp.home
+                    Return FBoxAPI.TelNrTypEnum.home
                 Case OutlookNrType.MobileTelephoneNumber, OutlookNrType.PagerNumber, OutlookNrType.RadioTelephoneNumber
-                    Return FBoxAPI.TelNrTyp.mobile
+                    Return FBoxAPI.TelNrTypEnum.mobile
                 Case OutlookNrType.AssistantTelephoneNumber, OutlookNrType.BusinessTelephoneNumber, OutlookNrType.Business2TelephoneNumber, OutlookNrType.CallbackTelephoneNumber, OutlookNrType.CompanyMainTelephoneNumber, OutlookNrType.PrimaryTelephoneNumber
-                    Return FBoxAPI.TelNrTyp.work
+                    Return FBoxAPI.TelNrTypEnum.work
                 Case OutlookNrType.BusinessFaxNumber, OutlookNrType.HomeFaxNumber, OutlookNrType.OtherFaxNumber, OutlookNrType.TelexNumber
-                    Return FBoxAPI.TelNrTyp.fax_work
+                    Return FBoxAPI.TelNrTypEnum.fax_work
                 Case Else
-                    Return FBoxAPI.TelNrTyp.notset
+                    Return FBoxAPI.TelNrTypEnum.notset
             End Select
 
         End Get
         Set
             Select Case Value
-                Case FBoxAPI.TelNrTyp.notset, FBoxAPI.TelNrTyp.other, FBoxAPI.TelNrTyp.intern
+                Case FBoxAPI.TelNrTypEnum.notset, FBoxAPI.TelNrTypEnum.other, FBoxAPI.TelNrTypEnum.intern
                     TelNrType = OutlookNrType.OtherFaxNumber
-                Case FBoxAPI.TelNrTyp.work
+                Case FBoxAPI.TelNrTypEnum.work
                     TelNrType = OutlookNrType.BusinessTelephoneNumber
-                Case FBoxAPI.TelNrTyp.home
+                Case FBoxAPI.TelNrTypEnum.home
                     TelNrType = OutlookNrType.HomeTelephoneNumber
-                Case FBoxAPI.TelNrTyp.mobile
+                Case FBoxAPI.TelNrTypEnum.mobile
                     TelNrType = OutlookNrType.MobileTelephoneNumber
-                Case FBoxAPI.TelNrTyp.fax_work
+                Case FBoxAPI.TelNrTypEnum.fax_work
                     TelNrType = OutlookNrType.HomeFaxNumber
-                Case FBoxAPI.TelNrTyp.memo
+                Case FBoxAPI.TelNrTypEnum.memo
                     TelNrType = OutlookNrType.CallbackTelephoneNumber
             End Select
         End Set

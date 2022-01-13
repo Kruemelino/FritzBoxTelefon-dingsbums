@@ -27,7 +27,7 @@ Friend Module FritzBoxRufsperre
                     NLogger.Info($"Ein Eintrag mit der '{TelNr}' ist in der Sperrliste bereits vorhanden.")
                 Else
                     ' füge die Telefonnummer dem hinzuzufügenden Sperreintrag hinzu
-                    .Telephony.Numbers.Add(New FBoxAPI.Number With {.Number = TelNr})
+                    .Telephony.Numbers.Add(New FBoxAPI.NumberType With {.Number = TelNr})
                 End If
             Next
 
@@ -175,7 +175,7 @@ Friend Module FritzBoxRufsperre
                     FBoxTR064.X_contact.GetDeflections(DeflectionList)
 
                     ' Finde eine Rufbehandlung, nach der unterdrückte Nummern (DeflectionType.fromAnonymous) nicht signalisiert (DeflectionMode.eNoSignal) werden.
-                    Return DeflectionList.Deflections.Find(Function(D) D.Mode = FBoxAPI.DeflectionMode.eNoSignal And D.Type = FBoxAPI.DeflectionType.fromAnonymous) IsNot Nothing
+                    Return DeflectionList.Deflections.Find(Function(D) D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And D.Type = FBoxAPI.DeflectionTypeEnum.fromAnonymous) IsNot Nothing
 
                 Else
                     ' Abfrage, ob Nummer auf der Sperrlist enthalten ist
@@ -238,7 +238,7 @@ Friend Module FritzBoxRufsperre
             If TellowsSperrEinträge IsNot Nothing AndAlso TellowsSperrEinträge.Any Then
                 NLogger.Debug($"Ein Eintrag für die Nummer {Eintrag.Number} (Score: {Eintrag.Score}) wurde gefunden")
                 ' Füge die Nummer dem ersten möglichen Eintrag hinzu
-                TellowsSperrEinträge.First.Telephony.Numbers.Add(New FBoxAPI.Number With {.Number = Eintrag.Number})
+                TellowsSperrEinträge.First.Telephony.Numbers.Add(New FBoxAPI.NumberType With {.Number = Eintrag.Number})
 
                 Return TellowsSperrEinträge.First
             Else
@@ -248,7 +248,7 @@ Friend Module FritzBoxRufsperre
                 Dim NeuerSperrEintrag As FBoxAPI.Contact = CreateContact(DfltName)
 
                 With NeuerSperrEintrag
-                    .Telephony.Numbers.Add(New FBoxAPI.Number With {.Number = Eintrag.Number})
+                    .Telephony.Numbers.Add(New FBoxAPI.NumberType With {.Number = Eintrag.Number})
                 End With
 
                 ' Füge den neuen Eintrag dem Telefonbuch hinzu

@@ -107,7 +107,12 @@ Public NotInheritable Class ThisAddIn
                 If XMLData.POptionen.CBAutoAnrList Then TaskAnrList = LadeFritzBoxAnrufliste(FBoxTR064)
 
                 ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
-                If XMLData.POptionen.CBKontaktSucheFritzBox Then TaskTelefonbücher = Telefonbücher.LadeTelefonbücher(FBoxTR064)
+                If XMLData.POptionen.CBKontaktSucheFritzBox Then
+                    TaskTelefonbücher = Telefonbücher.LadeTelefonbücher(FBoxTR064)
+                Else
+                    ' Falls die Kontaktsuche nicht über die Fritz!Box Telefonbücher laufen soll, dann lade die Telefonbuchnamen herunter
+                    TaskTelefonbücher = Task.Run(Function() Telefonbücher.LadeTelefonbücherNamen(FBoxTR064))
+                End If
 
                 ' Tellows ScoreList laden
                 If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then

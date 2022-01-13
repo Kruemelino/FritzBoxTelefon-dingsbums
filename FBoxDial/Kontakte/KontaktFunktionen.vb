@@ -519,17 +519,15 @@ Friend Module KontaktFunktionen
     <Extension> Friend Function ErstelleFBoxKontakt(olContact As ContactItem, Optional UID As Integer = -1) As FBoxAPI.Contact
 
         ' Erstelle ein nen neuen XMLKontakt
-        Dim XMLKontakt As New FBoxAPI.Contact
+        Dim XMLKontakt As FBoxAPI.Contact = CreateContact(Localize.resCommon.strOhneName)
 
         With XMLKontakt
             ' Weise den Namen zu
-
             If olContact.FullName.IsStringNothingOrEmpty Then
                 .Person.RealName = If(olContact.CompanyName.IsStringNothingOrEmpty, Localize.resCommon.strOhneName, olContact.CompanyName)
             Else
                 .Person.RealName = olContact.FullName
             End If
-            '.Person.RealName = olContact.FullNameAndCompany
 
             If UID.AreDifferentTo(-1) Then .Uniqueid = UID
 
@@ -550,7 +548,7 @@ Friend Module KontaktFunktionen
                 ' Weise die Telefonnummern zu
                 With .Numbers
                     For Each TelNr In GetKontaktTelNrList(olContact)
-                        .Add(New FBoxAPI.Number With {.Number = TelNr.Unformatiert, .Type = TelNr.Typ.XML})
+                        .Add(New FBoxAPI.NumberType With {.Number = TelNr.Unformatiert, .Type = TelNr.Typ.XML})
                     Next
                 End With
 
@@ -640,7 +638,6 @@ Friend Module KontaktFunktionen
             .Save()
         End With
     End Sub
-
 
 #Region "Bilder"
 

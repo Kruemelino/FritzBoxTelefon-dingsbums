@@ -846,7 +846,7 @@
       <Name>EasyWPFThemeLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\FBoxAPI\FBoxAPI.vbproj">
-      <Project>{9e2df865-e261-426a-9e05-1a2f60bd7323}</Project>
+      <Project>{cb430a10-e464-4cb9-b2f4-4898adc6c3ed}</Project>
       <Name>FBoxAPI</Name>
     </ProjectReference>
   </ItemGroup>

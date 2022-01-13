@@ -23,8 +23,6 @@
 
     Friend Shared ReadOnly Property GetDefaultUserName As String
         Get
-            '' Prüfe, ob Fritz!Box verfügbar
-            'If Ping(XMLData.POptionen.ValidFBAdr) Then
             ' Eine Unterscheidung nach Firmware ist erforderlich.
             Using FBTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, Nothing)
                 With FBTR064
@@ -47,10 +45,6 @@
                     End If
                 End With
             End Using
-            'Else
-            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            '    Return String.Empty
-            'End If
         End Get
     End Property
 End Class

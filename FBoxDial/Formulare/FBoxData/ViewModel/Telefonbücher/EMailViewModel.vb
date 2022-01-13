@@ -12,7 +12,7 @@
         End Get
         Set
             SetProperty(_Classifier, Value)
-            Mail.Classifier = CType(Value, FBoxAPI.EMailTyp)
+            Mail.Classifier = CType(Value, FBoxAPI.EMailTypEnum)
         End Set
     End Property
 

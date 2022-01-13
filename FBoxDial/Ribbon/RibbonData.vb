@@ -656,12 +656,15 @@ Namespace RibbonData
                 .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
 
                 ' Ermittle die verfügbaren Quellen für die Telefonbuchnamen
-                If Globals.ThisAddIn.PhoneBookXML Is Nothing Then Globals.ThisAddIn.PhoneBookXML = Telefonbücher.LadeTelefonbücherNamen
+                If Globals.ThisAddIn.PhoneBookXML IsNot Nothing Then
+                    ' Trage die einzelnen Bücher ein
+                    For Each Buch As PhonebookEx In Globals.ThisAddIn.PhoneBookXML
+                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Name, Buch.ID, Buch.Rufsperren, ListName))
+                    Next
+                Else
+                    NLogger.Warn($"Telefonbücher sind nicht bekannt.")
+                End If
 
-                ' Trage die einzelnen Bücher ein
-                For Each Buch As PhonebookEx In Globals.ThisAddIn.PhoneBookXML
-                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Name, Buch.ID, Buch.Rufsperren, ListName))
-                Next
             End With
 
             Return XDynaMenu.InnerXml

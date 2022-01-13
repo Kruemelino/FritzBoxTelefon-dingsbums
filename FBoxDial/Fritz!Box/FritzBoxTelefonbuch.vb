@@ -24,7 +24,7 @@ Namespace Telefonbücher
                         Dim xslt As New Xsl.XslCompiledTransform
                         xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
 
-                        Dim AktuellePhoneBookXML As FBoxAPI.Phonebooks
+                        Dim AktuellePhoneBookXML As FBoxAPI.PhonebooksType
 
                         ' Schleife durch alle ermittelten IDs
                         For Each PhonebookID In PhonebookIDs
@@ -35,7 +35,7 @@ Namespace Telefonbücher
                                 NLogger.Debug($"Telefonbuch {PhonebookID} heruntergeladen: {PhonebookURL} ")
 
                                 ' Lade das Telefonbuch herunter
-                                AktuellePhoneBookXML = Await DeserializeAsyncXML(Of FBoxAPI.Phonebooks)(PhonebookURL, True, xslt)
+                                AktuellePhoneBookXML = Await DeserializeAsyncXML(Of FBoxAPI.PhonebooksType)(PhonebookURL, True, xslt)
 
                                 If AktuellePhoneBookXML IsNot Nothing Then
                                     ' Verarbeite die Telefonbücher
@@ -72,7 +72,6 @@ Namespace Telefonbücher
 
         Friend Function LadeTelefonbücherNamen(FBoxTR064 As FBoxAPI.FritzBoxTR64) As IEnumerable(Of PhonebookEx)
             '' Prüfe, ob Fritz!Box verfügbar
-            'If Ping(XMLData.POptionen.ValidFBAdr) Then
             With FBoxTR064.X_contact
                 ' Ermittle alle verfügbaren Telefonbücher
                 Dim PhonebookIDs As Integer() = {}
@@ -104,18 +103,14 @@ Namespace Telefonbücher
 
                 Return Nothing
             End With
-            'Else
-            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            '    Return Nothing
-            'End If
 
         End Function
 
-        Friend Function LadeTelefonbücherNamen() As IEnumerable(Of PhonebookEx)
-            Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-                Return LadeTelefonbücherNamen(FBoxTR064)
-            End Using
-        End Function
+        'Friend Function LadeTelefonbücherNamen() As IEnumerable(Of PhonebookEx)
+        '    Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
+        '        Return LadeTelefonbücherNamen(FBoxTR064)
+        '    End Using
+        'End Function
 
         Friend Async Function LadeSperrliste(FBoxTR064 As FBoxAPI.FritzBoxTR64) As Task(Of IEnumerable(Of PhonebookEx))
 
@@ -127,13 +122,13 @@ Namespace Telefonbücher
                 Dim xslt As New Xsl.XslCompiledTransform
                 xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
 
-                Dim CallBarringXML As New FBoxAPI.Phonebooks
+                Dim CallBarringXML As New FBoxAPI.PhonebooksType
 
                 If .GetCallBarringList(PhonebookURL) Then
                     NLogger.Debug($"Rufsperren heruntergeladen: {PhonebookURL} ")
 
                     ' Lade das Telefonbuch herunter
-                    CallBarringXML = Await DeserializeAsyncXML(Of FBoxAPI.Phonebooks)(PhonebookURL, True, xslt)
+                    CallBarringXML = Await DeserializeAsyncXML(Of FBoxAPI.PhonebooksType)(PhonebookURL, True, xslt)
 
                     If CallBarringXML IsNot Nothing Then
                         ' Verarbeite die Telefonbücher
@@ -222,7 +217,7 @@ Namespace Telefonbücher
                                 Dim xslt As New Xsl.XslCompiledTransform
                                 xslt.Load(XmlReader.Create(Assembly.GetExecutingAssembly.GetManifestResourceStream("FBoxDial.ToLower.xslt")))
 
-                                With Await DeserializeAsyncXML(Of FBoxAPI.Phonebooks)(PhonebookURL, True, xslt)
+                                With Await DeserializeAsyncXML(Of FBoxAPI.PhonebooksType)(PhonebookURL, True, xslt)
                                     ' Setze die ID und gib das Telefonbuch zurück
                                     Return New PhonebookEx(.Phonebooks.First) With {.ID = PhonebookID}
                                 End With

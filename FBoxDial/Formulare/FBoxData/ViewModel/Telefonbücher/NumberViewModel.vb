@@ -2,7 +2,7 @@
     Inherits NotifyBase
 
 #Region "Models"
-    Public Property Nummer As FBoxAPI.Number
+    Public Property Nummer As FBoxAPI.NumberType
 #End Region
 
     Private _Type As XMLTelNrTyp
@@ -12,7 +12,7 @@
         End Get
         Set
             SetProperty(_Type, Value)
-            Nummer.Type = CType(Value, FBoxAPI.TelNrTyp)
+            Nummer.Type = CType(Value, FBoxAPI.TelNrTypEnum)
         End Set
     End Property
 
@@ -61,7 +61,7 @@
         End Set
     End Property
 
-    Public Sub New(oNummer As FBoxAPI.Number)
+    Public Sub New(oNummer As FBoxAPI.NumberType)
         _Nummer = oNummer
         ' Setze Felder
         With Nummer
