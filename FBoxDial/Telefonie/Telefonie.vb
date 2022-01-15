@@ -13,7 +13,7 @@ Imports FBoxDial.FritzBoxDefault
     ''' <summary>
     ''' Ortskennzahl des Telefonanschlusses. Wird automatisch ermittelt. Kann in den Einstellungen überschrieben werden.
     ''' </summary>
-    <XmlElement("TBOrtsKZ")> Public Property OKZ As String
+    <XmlElement("TBOrtsKZ")> Public Property OKZ As String = String.Empty
 
     ''' <summary>
     ''' Landeskennzahl der Telefonanschlusses. Wird automatisch ermittelt. Kann in den Einstellungen überschrieben werden.
