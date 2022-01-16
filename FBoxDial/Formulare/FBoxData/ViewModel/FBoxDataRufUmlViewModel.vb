@@ -29,9 +29,9 @@
     Public Sub New(dataService As IFBoxDataService)
         _DatenService = dataService
     End Sub
-    Public Sub Init() Implements IFBoxData.Init
+    Public Async Sub Init() Implements IFBoxData.Init
 
-        Dim FBoxDeflections As FBoxAPI.DeflectionList = DatenService.GetDeflectionList
+        Dim FBoxDeflections As FBoxAPI.DeflectionList = Await DatenService.GetDeflectionList
         If FBoxDeflections IsNot Nothing AndAlso FBoxDeflections.Deflections IsNot Nothing Then
 
             RufUmlListe = New ObservableCollectionEx(Of RufUmlViewModel)(FBoxDeflections.Deflections.Select(Function(Defl) New RufUmlViewModel(DatenService) With {.Deflection = Defl, .Enable = Defl.Enable}))

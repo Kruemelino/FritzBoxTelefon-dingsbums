@@ -6,7 +6,7 @@ Public Interface IFBoxDataService
     Sub UpdateTheme()
 
 #Region "TAM Anrufbeantworter"
-    Function GetTAMItems() As IEnumerable(Of FBoxAPI.TAMItem)
+    Function GetTAMItems() As Task(Of IEnumerable(Of FBoxAPI.TAMItem))
     Function GetMessagges(TAM As FBoxAPI.TAMItem) As IEnumerable(Of FBoxAPI.Message)
     Function ToggleTAM(TAM As FBoxAPI.TAMItem) As Boolean
     Function MarkMessage(Message As FBoxAPI.Message) As Boolean
@@ -51,7 +51,7 @@ Public Interface IFBoxDataService
 #End Region
 
 #Region "Deflection - Rufumleitung"
-    Function GetDeflectionList() As FBoxAPI.DeflectionList
+    Function GetDeflectionList() As Task(Of FBoxAPI.DeflectionList)
     Function ToggleRufuml(Deflection As FBoxAPI.Deflection) As Boolean
 #End Region
 

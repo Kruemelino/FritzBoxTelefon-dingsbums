@@ -41,10 +41,10 @@
         _DatenService = dataService
         _DialogService = dialogService
     End Sub
-    Private Sub Init() Implements IFBoxData.Init
+    Private Async Sub Init() Implements IFBoxData.Init
         TAMListe = New ObservableCollectionEx(Of TAMItemViewModel)
 
-        Dim TAMItems As IEnumerable(Of FBoxAPI.TAMItem) = DatenService.GetTAMItems
+        Dim TAMItems As IEnumerable(Of FBoxAPI.TAMItem) = Await DatenService.GetTAMItems
 
         If TAMItems.Any Then
             TAMListe.AddRange(TAMItems.Select(Function(TAM) New TAMItemViewModel(DatenService, DialogService, TAM)))

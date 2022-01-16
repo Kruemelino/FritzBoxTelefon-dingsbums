@@ -89,15 +89,10 @@ Public Class FBoxDataService
 #End Region
 
 #Region "TAM Anrufbeantworter"
-    Private Function GetTAMItems() As IEnumerable(Of FBoxAPI.TAMItem) Implements IFBoxDataService.GetTAMItems
-        Dim ABListe As FBoxAPI.TAMList = Nothing
-
+    Private Async Function GetTAMItems() As Task(Of IEnumerable(Of FBoxAPI.TAMItem)) Implements IFBoxDataService.GetTAMItems
         ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
-        If FBoxTR064.X_tam.GetList(ABListe) Then
-            Return ABListe.Items
-        Else
-            Return New List(Of FBoxAPI.TAMItem)
-        End If
+        Dim ABListe As FBoxAPI.TAMList = Await LadeFritzBoxTAM(FBoxTR064)
+        Return ABListe.Items
     End Function
 
     Private Function GetMessagges(TAM As FBoxAPI.TAMItem) As IEnumerable(Of FBoxAPI.Message) Implements IFBoxDataService.GetMessagges
@@ -180,13 +175,9 @@ Public Class FBoxDataService
 #End Region
 
 #Region "Deflection - Rufbehandlung"
-    Private Function GetDeflectionList() As FBoxAPI.DeflectionList Implements IFBoxDataService.GetDeflectionList
-        'Dim DeflectionListVM As IEnumerable(Of FBoxDeflectionItemViewModel) = Nothing
-        Dim DeflectionList As New FBoxAPI.DeflectionList
-
-        If FBoxTR064.Ready Then FBoxTR064.X_contact.GetDeflections(DeflectionList)
-
-        Return DeflectionList
+    Private Async Function GetDeflectionList() As Task(Of FBoxAPI.DeflectionList) Implements IFBoxDataService.GetDeflectionList
+        ' Lade Deflections via TR-064 
+        Return Await LadeDeflections(FBoxTR064)
     End Function
 
     Private Function ToggleRufuml(Deflection As FBoxAPI.Deflection) As Boolean Implements IFBoxDataService.ToggleRufuml

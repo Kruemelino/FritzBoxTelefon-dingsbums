@@ -200,6 +200,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Daten ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDownloader() As String
+            Get
+                Return ResourceManager.GetString("strDownloader", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Dauer ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strDuration() As String

@@ -109,62 +109,6 @@ Friend Module WebFunctions
 
 #Region "GET"
     ''' <summary>
-    ''' Lädt die angeforderte Ressource als <see cref="String"/> synchron herunter. Die herunterzuladende Ressource ist als <see cref="Uri"/> angegeben.
-    ''' </summary>
-    ''' <param name="UniformResourceIdentifier">Ein <see cref="Uri"/>-Objekt, das den herunterzuladenden URI enthält.</param>
-    ''' <param name="Response">Ein <see cref="String"/> mit der angeforderten Ressource.</param>
-    ''' <param name="ZeichenCodierung">(Optional) Legt die <see cref="Encoding"/> für den Download von Zeichenfolgen fest.</param>
-    ''' <param name="Headers">(Optional) Zusätzliche Header für den Download von Zeichenfolgen</param>
-    ''' <returns>Boolean, je nach Erfolg der Abfrage.</returns>
-    Friend Function DownloadString(UniformResourceIdentifier As Uri, ByRef Response As String, Optional ZeichenCodierung As Encoding = Nothing, Optional Headers As WebHeaderCollection = Nothing) As Boolean
-
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-
-        Select Case UniformResourceIdentifier.Scheme
-            Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
-
-                Using webClient As New WebClient With {.Proxy = Nothing,
-                                                       .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache),
-                                                       .Encoding = If(ZeichenCodierung, Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox))}
-                    With webClient
-
-                        With .Headers
-                            .Set(HttpRequestHeader.UserAgent, DefaultHeaderUserAgent)
-                            .Set(HttpRequestHeader.KeepAlive, DefaultHeaderKeepAlive.ToString)
-                            
-                            If Headers IsNot Nothing Then .Add(Headers)
-                        End With
-
-                        Try
-                            Response = .DownloadString(UniformResourceIdentifier)
-                            Return True
-
-                        Catch ex As ArgumentNullException
-                            ' Der address-Parameter ist null.
-                            NLogger.Error(ex, "Der address-Parameter ist null.")
-
-                        Catch ex As WebException
-                            ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
-                            ' - oder -
-                            ' Fehler beim Herunterladen der Ressource.
-
-                            NLogger.Error(ex, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
-
-                        Catch ex As NotSupportedException
-                            ' Die Methode wurde gleichzeitig für mehrere Threads aufgerufen.
-                            NLogger.Error(ex, "Die Methode wurde gleichzeitig für mehrere Threads aufgerufen.")
-
-                        End Try
-                    End With
-                End Using
-            Case Else
-                NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
-
-        End Select
-        Return False
-    End Function
-
-    ''' <summary>
     ''' Lädt die angeforderte Ressource als <see cref="String"/> asynchron herunter. Die herunterzuladende Ressource ist als <see cref="Uri"/> angegeben.
     ''' </summary>
     ''' <param name="UniformResourceIdentifier">Ein <see cref="Uri"/>-Objekt, das den herunterzuladenden URI enthält.</param>
