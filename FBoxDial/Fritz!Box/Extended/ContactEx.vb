@@ -184,9 +184,7 @@ Friend Module ContactEx
 
     Friend Function CreateContact(InitName As String) As FBoxAPI.Contact
 
-        Return New FBoxAPI.Contact With {.Person = New FBoxAPI.Person With {.RealName = InitName},
-                                         .Telephony = New FBoxAPI.Telephony With {.Numbers = New List(Of FBoxAPI.NumberType),
-                                                                                  .Emails = New List(Of FBoxAPI.Email)}}
+        Return New FBoxAPI.Contact With {.Person = New FBoxAPI.Person With {.RealName = InitName}, .Telephony = New FBoxAPI.Telephony}
     End Function
 
     Friend Async Function GetPersonImage(Link As String) As Task(Of Imaging.BitmapImage)

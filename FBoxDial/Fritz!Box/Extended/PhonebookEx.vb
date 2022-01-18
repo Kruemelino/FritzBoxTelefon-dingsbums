@@ -8,8 +8,8 @@
     Friend Property ID As Integer
     Friend Property Rufsperren As Boolean = False
     Friend Property Name As String
-#Region "Funktionen"
 
+#Region "Funktionen"
     ''' <summary>
     ''' Fügt den übergebenen Kontakt hinzu. 
     ''' Kontakte mit der selben ID werden entfernt (sollte beim Aktualisieren nur einer sein.

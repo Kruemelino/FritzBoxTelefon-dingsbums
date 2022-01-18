@@ -106,12 +106,6 @@ Namespace Telefonbücher
 
         End Function
 
-        'Friend Function LadeTelefonbücherNamen() As IEnumerable(Of PhonebookEx)
-        '    Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-        '        Return LadeTelefonbücherNamen(FBoxTR064)
-        '    End Using
-        'End Function
-
         Friend Async Function LadeSperrliste(FBoxTR064 As FBoxAPI.FritzBoxTR64) As Task(Of IEnumerable(Of PhonebookEx))
 
             With FBoxTR064.X_contact
@@ -179,7 +173,6 @@ Namespace Telefonbücher
         ''' <returns>XML-Telefonbuch</returns>
         Friend Async Function ErstelleTelefonbuch(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchName As String) As Task(Of PhonebookEx)
             ' Prüfe, ob Fritz!Box verfügbar
-            'If Ping(XMLData.POptionen.ValidFBAdr) Then
             With FBoxTR064.X_contact
                 ' Hole die momentan verfügbaren Ids der Telefonbücher
                 Dim IdsA As Integer() = {}
@@ -229,10 +222,6 @@ Namespace Telefonbücher
                 Return Nothing
             End With
 
-            'Else
-            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            '    Return Nothing
-            'End If
         End Function
 
         ''' <summary>
@@ -244,7 +233,6 @@ Namespace Telefonbücher
         ''' <remarks>Wenn die ID nicht vorhanden ist, wird trotzdem <c>True</c> zurückgegeben.</remarks>
         Friend Function LöscheTelefonbuch(fbtr064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer) As Boolean
             '' Prüfe, ob Fritz!Box verfügbar
-            'If Ping(XMLData.POptionen.ValidFBAdr) Then
             With fbtr064.X_contact
                 ' Hole die momentan verfügbaren Ids der Telefonbücher
                 Dim IdsA As Integer() = {}
@@ -267,10 +255,6 @@ Namespace Telefonbücher
 
                 Return True
             End With
-            'Else
-            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            '    Return Nothing
-            'End If
 
         End Function
 
@@ -288,8 +272,7 @@ Namespace Telefonbücher
         ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
         Friend Function SetTelefonbuchEintrag(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, XMLDaten As String) As Integer
             If XMLDaten.IsNotStringNothingOrEmpty Then
-                ' Prüfe, ob Fritz!Box verfügbar
-                'If Ping(XMLData.POptionen.ValidFBAdr) Then
+
                 With FBoxTR064.X_contact
                     Dim UID As Integer = -1
                     If .SetPhonebookEntryUID(TelefonbuchID, XMLDaten, UID) Then
@@ -297,10 +280,6 @@ Namespace Telefonbücher
                         Return UID
                     End If
                 End With
-                'Else
-                '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-                '    Return Nothing
-                'End If
             End If
             Return -1
         End Function
@@ -313,9 +292,6 @@ Namespace Telefonbücher
         ''' <param name="OutlookKontakte">Auflistung der hochzuladenden Outlook Kontakte</param>
         ''' <remarks>Wird durch die Ribbons des Addins aufgerufen.</remarks>
         Friend Async Sub SetTelefonbuchEintrag(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, OutlookKontakte As IEnumerable(Of ContactItem))
-
-            '' Prüfe, ob Fritz!Box verfügbar
-            'If Ping(XMLData.POptionen.ValidFBAdr) Then
 
             ' Generiere eine Liste an Task
             Dim TaskList As New List(Of Task(Of String))
@@ -352,10 +328,6 @@ Namespace Telefonbücher
             Await Task.WhenAll(TaskList)
             ' Gib eine finale Statusmeldung heraus
             Windows.MessageBox.Show(String.Format(Localize.resRibbon.UploadResultMessageHeader, OutlookKontakte.Count, vbCrLf & vbCrLf, String.Join(vbCrLf, TaskList.Select(Function(R) R.Result))), My.Resources.strDefLongName, Windows.MessageBoxButton.OK)
-            'Else
-            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-
-            'End If
         End Sub
 
         ''' <summary>
@@ -378,8 +350,6 @@ Namespace Telefonbücher
         ''' <returns>Boolean, ob erfolgreich, oder nicht.</returns>
         ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
         Friend Function DeleteTelefonbuchEintrag(FBoxTR064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, UID As Integer) As Boolean
-            '' Prüfe, ob Fritz!Box verfügbar
-            'If Ping(XMLData.POptionen.ValidFBAdr) Then
             With FBoxTR064.X_contact
                 If .DeletePhonebookEntryUID(TelefonbuchID, UID) Then
                     NLogger.Info($"Kontakt mit der ID '{UID}' im Telefonbuch {TelefonbuchID} auf der Fritz!Box gelöscht.")
@@ -392,10 +362,7 @@ Namespace Telefonbücher
                 End If
             End With
             Return True
-            'Else
-            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            '    Return False
-            'End If
+
         End Function
 
         ''' <summary>
@@ -407,8 +374,7 @@ Namespace Telefonbücher
         ''' <returns>Boolean, ob erfolgreich, oder nicht.</returns>
         ''' <remarks>Wird durch das Formular Telefonbuch des Addins aufgerufen.</remarks>
         Friend Function DeleteTelefonbuchEinträge(fbtr064 As FBoxAPI.FritzBoxTR64, TelefonbuchID As Integer, Einträge As IEnumerable(Of FBoxAPI.Contact)) As Boolean
-            '' Prüfe, ob Fritz!Box verfügbar
-            'If Ping(XMLData.POptionen.ValidFBAdr) Then
+
             With fbtr064.X_contact
                 For Each Kontakt In Einträge
                     If .DeletePhonebookEntryUID(TelefonbuchID, Kontakt.Uniqueid) Then
@@ -423,10 +389,7 @@ Namespace Telefonbücher
                 Next
             End With
             Return True
-            'Else
-            '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-            '    Return False
-            'End If
+
         End Function
 
 #End Region
