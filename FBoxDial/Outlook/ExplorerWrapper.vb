@@ -135,7 +135,7 @@ Friend Class ExplorerWrapper
 
             ' Entferne Pane Eventhandler
             RemoveHandler CallListPane.VisibleChanged, AddressOf CallListPane_VisibleChanged
-            NLogger.Debug($"Das CallListPane wird aus den CustomTaskPanes für Explorer {OlExplorer} entfernt.")
+            NLogger.Debug("Das CallListPane wird aus den CustomTaskPanes entfernt.")
             ' Entferne Pane
             Globals.ThisAddIn.CustomTaskPanes.Remove(CallListPane)
         End If

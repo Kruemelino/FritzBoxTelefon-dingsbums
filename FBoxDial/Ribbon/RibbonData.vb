@@ -516,7 +516,7 @@ Namespace RibbonData
 
                     With CType(Context, Outlook.ContactItem)
                         ' Hat der Kontakt Telefonnummern?
-                        Return .GetTelNrArray.Any
+                        Return .GetKontaktTelNrList.Any
                     End With
 
                 Case TypeOf Context Is Outlook.JournalItem
