@@ -851,6 +851,14 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
+    Private Sub SetMissedCallPane()
+        If XMLData.POptionen.CBShowMissedCallPane Then
+            ' Schleife durch jeden offenen Explorer
+            Globals.ThisAddIn.ExplorerWrappers.Values.ToList.ForEach(Sub(ew) ew.AddMissedCall(Me))
+        End If
+
+    End Sub
+
 #Region "Anrufmonitor"
     Private Sub AnrMonRING()
         ' prüfe, ob die anrufende Nummer auf der Rufsperre der Fritz!Box steht
@@ -864,6 +872,7 @@ Imports Microsoft.Office.Interop
             ' Anrufmonitor einblenden,
             ShowAnrMon()
 
+            ' Aktualisiere die Rückrufliste
             UpdateRingCallList()
 
         End If
@@ -898,6 +907,7 @@ Imports Microsoft.Office.Interop
                 End If
             End If
 
+            ' Aktualisiere die Wahlwiederholungsliste
             UpdateRingCallList()
         End If
 
@@ -932,6 +942,10 @@ Imports Microsoft.Office.Interop
             ' Stoppuhr ausblenden, wenn dies in den Einstellungen gesetzt ist
             If StoppUhrEingeblendet And XMLData.POptionen.CBStoppUhrAusblenden Then PopupStoppUhrWPF.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBStoppUhrAusblendverzögerung))
 
+            ' CallListPane füllen
+            If Not Angenommen Then SetMissedCallPane()
+
+            ' Journaleintrag
             ErstelleJournalEintrag()
         End If
 
@@ -1016,7 +1030,7 @@ Imports Microsoft.Office.Interop
 
         ' Entferne den Anrufmonitor von der Liste der offenen Popups
         Globals.ThisAddIn.OffeneAnrMonWPF.Remove(PopUpAnrMonWPF)
-        NLogger.Debug($"Anruffenster geschlossen: {AnruferName}: Noch {Globals.ThisAddIn.OffeneAnrMonWPF.Count} offene Anrufmonitor")
+        NLogger.Debug($"Anruffenster geschlossen: {NameGegenstelle}: Noch {Globals.ThisAddIn.OffeneAnrMonWPF.Count} offene Anrufmonitor")
 
         PopUpAnrMonWPF = Nothing
     End Sub
@@ -1026,7 +1040,7 @@ Imports Microsoft.Office.Interop
         StoppUhrEingeblendet = False
         ' Entferne die Stoppuhr von der Liste der offenen Popups
         Globals.ThisAddIn.OffeneStoppUhrWPF.Remove(PopupStoppUhrWPF)
-        NLogger.Debug($"Stoppuhr geschlossen: {AnruferName}: Noch {Globals.ThisAddIn.OffeneStoppUhrWPF.Count} offene Stoppuhren")
+        NLogger.Debug($"Stoppuhr geschlossen: {NameGegenstelle}: Noch {Globals.ThisAddIn.OffeneStoppUhrWPF.Count} offene Stoppuhren")
 
         PopupStoppUhrWPF = Nothing
     End Sub

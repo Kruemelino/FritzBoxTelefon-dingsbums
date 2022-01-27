@@ -22,7 +22,7 @@ Namespace Localize
     '''<summary>
     '''  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class resRibbon
@@ -340,6 +340,24 @@ Namespace Localize
         Public Shared ReadOnly Property ShowContact_ScreenTipp() As String
             Get
                 Return ResourceManager.GetString("ShowContact_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Verpasste Anrufe ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property ShowMissedCalls_Label() As String
+            Get
+                Return ResourceManager.GetString("ShowMissedCalls_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt die verpassten Anrufe in einem SidePane an. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property ShowMissedCalls_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("ShowMissedCalls_ScreenTipp", resourceCulture)
             End Get
         End Property
         

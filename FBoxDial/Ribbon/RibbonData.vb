@@ -137,7 +137,7 @@ Namespace RibbonData
 
 #Region "Ribbon Action"
         ''' <summary>
-        ''' Einblenden der Einstellungen. (Routine wird über Reflection.Invoke eingeblendet)
+        ''' Einblenden der Einstellungen. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         Private Sub Einstellungen()
             ' Blendet ein neues Einstellungsfenster ein
@@ -145,7 +145,7 @@ Namespace RibbonData
         End Sub
 
         ''' <summary>
-        ''' Einblenden des Anrufmonitors. (Routine wird über Reflection.Invoke eingeblendet)
+        ''' Einblenden des Anrufmonitors. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         Private Sub ShowCallMonitor()
             If XMLData.PTelListen.RINGListe.Count.IsNotZero Then
@@ -158,7 +158,14 @@ Namespace RibbonData
         End Sub
 
         ''' <summary>
-        ''' Einblenden der Direktwahl. (Routine wird über Reflection.Invoke eingeblendet)
+        ''' Einblenden verpasster Anrufe. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
+        ''' </summary>
+        Private Sub ShowMissedCalls()
+            Globals.ThisAddIn.ExplorerWrappers.Values.ToList.ForEach(Sub(ew) ew.ShowCallListPane())
+        End Sub
+
+        ''' <summary>
+        ''' Einblenden der Direktwahl. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         Private Sub DirectCall()
             Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
@@ -179,7 +186,7 @@ Namespace RibbonData
         End Sub
 
         ''' <summary>
-        ''' Einblenden der Kontaktwahl. (Routine wird über Reflection.Invoke eingeblendet)
+        ''' Einblenden der Kontaktwahl. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         Private Sub Dial()
             Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
@@ -203,7 +210,7 @@ Namespace RibbonData
         End Sub
 
         ''' <summary>
-        ''' Einblenden der Kontaktwahl aus Inspektorfenster. (Routine wird über Reflection.Invoke eingeblendet)
+        ''' Einblenden der Kontaktwahl aus Inspektorfenster. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         ''' <param name="OutlookInspector"></param>
         Private Sub Dial(OutlookInspector As Outlook.Inspector)

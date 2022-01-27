@@ -8,7 +8,7 @@ Public Class DataKontaktsuche
     Private Property TokenSource As CancellationTokenSource
     Private Property CT As CancellationToken
     Private Property SuchTask As Task(Of List(Of ContactItem))
-    Private AltesWort As String = ""
+    Private Property AltesWort As String = String.Empty
 
     Private Async Function KontaktSuche(Wort As String) As Task(Of List(Of ContactItem)) Implements IDataKontaktsuche.KontaktSuche
 

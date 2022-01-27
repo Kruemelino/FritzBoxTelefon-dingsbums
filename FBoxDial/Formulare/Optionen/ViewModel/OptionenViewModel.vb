@@ -220,6 +220,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _CBSetAnrMonBColor As Boolean
+    ''' <summary>
+    ''' Angabe, ob die Farben des Anrufmonitors geändert werden soll
+    ''' </summary>
     Public Property CBSetAnrMonBColor As Boolean
         Get
             Return _CBSetAnrMonBColor
@@ -230,6 +233,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _TBAnrMonBColor As Media.Color
+    ''' <summary>
+    ''' Hintergrundfarbe als Farbobjekt
+    ''' </summary>
     Public Property TBAnrMonBColor As Media.Color
         Get
             Return _TBAnrMonBColor
@@ -238,7 +244,9 @@ Public Class OptionenViewModel
             SetProperty(_TBAnrMonBColor, Value)
         End Set
     End Property
-
+    ''' <summary>
+    ''' Schriftfarbe als HEX-String #00000000
+    ''' </summary>
     Public Property TBAnrMonBColorHex As String
         Get
             Return _TBAnrMonBColor.ToString
@@ -249,6 +257,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _TBAnrMonFColor As Media.Color
+    ''' <summary>
+    ''' Schriftfarbe als Farbobjekt
+    ''' </summary>
     Public Property TBAnrMonFColor As Media.Color
         Get
             Return _TBAnrMonFColor
@@ -258,6 +269,9 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    ''' <summary>
+    ''' Schriftfarbe als HEX-String #00000000
+    ''' </summary>
     Public Property TBAnrMonFColorHex As String
         Get
             Return _TBAnrMonFColor.ToString
@@ -268,6 +282,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _TBAnrMonModPosX As Double
+    ''' <summary>
+    ''' Positionskorrektur des Anrufmonitors in X-Richtung
+    ''' </summary>
     Public Property TBAnrMonModPosX As Double
         Get
             Return _TBAnrMonModPosX
@@ -278,6 +295,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _TBAnrMonModPosY As Double
+    ''' <summary>
+    ''' Positionskorrektur des Anrufmonitors in Y-Richtung
+    ''' </summary>
     Public Property TBAnrMonModPosY As Double
         Get
             Return _TBAnrMonModPosY
@@ -288,6 +308,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _TBAnrMonAbstand As Double
+    ''' <summary>
+    ''' Grundabstand des Anrufmonitors
+    ''' </summary>
     Public Property TBAnrMonAbstand As Double
         Get
             Return _TBAnrMonAbstand
@@ -297,24 +320,51 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-
+    Private _CBShowMissedCallPane As Boolean
     ''' <summary>
-    ''' Returns Or sets a list as Telefonnummern             
+    ''' Angabe, ob verpasste Anrufe im CallPane angezeigt werden sollen.
     ''' </summary>
-    Private _TelNrListe As ObservableCollectionEx(Of Telefonnummer)
-    Public Property TelNrListe As ObservableCollectionEx(Of Telefonnummer)
+    Public Property CBShowMissedCallPane As Boolean
         Get
-            Return _TelNrListe
+            Return _CBShowMissedCallPane
         End Get
         Set
-            SetProperty(_TelNrListe, Value)
+            SetProperty(_CBShowMissedCallPane, Value)
         End Set
     End Property
 
+    Private _CBCloseEmptyCallPane As Boolean
+    ''' <summary>
+    ''' Angabe, ob das CallPane automatisch geschlossen werden soll, wenn Anrufliste leer ist.
+    ''' </summary>
+    Public Property CBCloseEmptyCallPane As Boolean
+        Get
+            Return _CBCloseEmptyCallPane
+        End Get
+        Set
+            SetProperty(_CBCloseEmptyCallPane, Value)
+        End Set
+    End Property
+
+    Private _CBClearCallPaneAtClose As Boolean
+    ''' <summary>
+    ''' Angabe, ob beim Schließen des CallPane alle enthaltenen Anrufe entfernt werden sollen.
+    ''' </summary>
+    Public Property CBClearCallPaneAtClose As Boolean
+        Get
+            Return _CBClearCallPaneAtClose
+        End Get
+        Set
+            SetProperty(_CBClearCallPaneAtClose, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Stoppuhr"
     Private _CBStoppUhrEinblenden As Boolean
+    ''' <summary>
+    ''' Angabe, ob die Stoppuhr angezeigt werden soll
+    ''' </summary>
     Public Property CBStoppUhrEinblenden As Boolean
         Get
             Return _CBStoppUhrEinblenden
@@ -325,6 +375,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _CBStoppUhrAusblenden As Boolean
+    ''' <summary>
+    ''' Angabe, ob die Stoppuhr nach dem Telefonat automatisch ausgeblendet werden soll
+    ''' </summary>
     Public Property CBStoppUhrAusblenden As Boolean
         Get
             Return _CBStoppUhrAusblenden
@@ -335,6 +388,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _TBStoppUhrAusblendverzögerung As Integer
+    ''' <summary>
+    ''' Zeitangabe, nachdem die Stoppuhr ausgeblendet werden soll. (Korresbondiert zu <see cref="CBStoppUhrAusblenden"/>)
+    ''' </summary>
     Public Property TBStoppUhrAusblendverzögerung As Integer
         Get
             Return _TBStoppUhrAusblendverzögerung
@@ -345,6 +401,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _CBSetStoppUhrBColor As Boolean
+    ''' <summary>
+    ''' Angabe, ob die Farben der Stoppuhr geändert werden soll
+    ''' </summary>
     Public Property CBSetStoppUhrBColor As Boolean
         Get
             Return _CBSetStoppUhrBColor
@@ -355,6 +414,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _TBStoppUhrBColor As Media.Color
+    ''' <summary>
+    ''' Hintergrundfarbe als Farbobjekt
+    ''' </summary>
     Public Property TBStoppUhrBColor As Media.Color
         Get
             Return _TBStoppUhrBColor
@@ -364,6 +426,9 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    ''' <summary>
+    ''' Hintergrundfarbe als HEX-String #00000000
+    ''' </summary>
     Public Property TBStoppUhrBColorHex As String
         Get
             Return _TBStoppUhrBColor.ToString
@@ -374,6 +439,9 @@ Public Class OptionenViewModel
     End Property
 
     Private _TBStoppUhrFColor As Media.Color
+    ''' <summary>
+    ''' Schriftfarbe als Farbobjekt
+    ''' </summary>
     Public Property TBStoppUhrFColor As Media.Color
         Get
             Return _TBStoppUhrFColor
@@ -383,6 +451,9 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    ''' <summary>
+    ''' Schriftfarbe als HEX-String #00000000
+    ''' </summary>
     Public Property TBStoppUhrFColorHex As String
         Get
             Return _TBStoppUhrFColor.ToString
@@ -675,7 +746,20 @@ Public Class OptionenViewModel
 #End Region
 #End Region
 
-#Region "Telefoniegeräte"
+#Region "Telefoniedaten"
+    ''' <summary>
+    ''' Returns Or sets a list as Telefonnummern             
+    ''' </summary>
+    Private _TelNrListe As ObservableCollectionEx(Of Telefonnummer)
+    Public Property TelNrListe As ObservableCollectionEx(Of Telefonnummer)
+        Get
+            Return _TelNrListe
+        End Get
+        Set
+            SetProperty(_TelNrListe, Value)
+        End Set
+    End Property
+
     Private _TelGerListe As ObservableCollectionEx(Of Telefoniegerät)
     Public Property TelGeräteListe As ObservableCollectionEx(Of Telefoniegerät)
         Get

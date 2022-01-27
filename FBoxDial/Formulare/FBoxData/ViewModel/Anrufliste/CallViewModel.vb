@@ -134,6 +134,6 @@
     End Sub
 
     Private Sub PlayMessage(obj As Object)
-        DatenService.PlayCallMessage(CallItem)
+        DatenService.PlayMessage(CallItem)
     End Sub
 End Class

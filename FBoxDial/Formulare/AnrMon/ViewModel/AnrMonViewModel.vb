@@ -170,9 +170,6 @@ Public Class AnrMonViewModel
         DatenService = New AnrMonService
         DialogService = New DialogService
 
-        ' Theme
-        DatenService.UpdateTheme()
-
         If XMLData.POptionen.CBSetAnrMonBColor Then
             BackgroundColor = XMLData.POptionen.TBAnrMonBColorHex
             ForeColor = XMLData.POptionen.TBAnrMonFColorHex
@@ -197,6 +194,9 @@ Public Class AnrMonViewModel
             AnrMonAnrufer = .AnruferName
 
             ' Eigene Telefonnummer setzen
+            If .EigeneTelNr Is Nothing AndAlso .OutEigeneTelNr.IsNotStringNothingOrEmpty Then
+                .EigeneTelNr = New Telefonnummer With {.SetNummer = AnrMonTelefonat.OutEigeneTelNr}
+            End If
             AnrMonEigeneTelNr = .EigeneTelNr?.Einwahl
 
             ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)

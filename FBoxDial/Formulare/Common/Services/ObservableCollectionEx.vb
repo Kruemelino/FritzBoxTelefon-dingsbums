@@ -28,7 +28,7 @@ Public Class ObservableCollectionEx(Of T)
     ''' </summary>
     ''' <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     ''' <param name="keySelector">A function to extract a key from an item.</param>
-    Public Sub Sort(Of TKey)(keySelector As Func(Of T, TKey))
+    Public Sub SortAscending(Of TKey)(keySelector As Func(Of T, TKey))
         InternalSort(Items.OrderBy(keySelector))
     End Sub
 

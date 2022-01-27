@@ -129,11 +129,38 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Entferne alle Anrufe beim Schließen des Seitenfensters ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonCBClearCallPaneAtClose() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonCBClearCallPaneAtClose", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Schließe Seitenfenster, wenn die keine verpassten Anrufe vorhanden ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonCBCloseEmptyCallPane() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonCBCloseEmptyCallPane", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Anrufmonitor bei Rufannahme ausblenden ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonCBHideCONNECT() As String
             Get
                 Return ResourceManager.GetString("strAnrMonCBHideCONNECT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeige verpasste Anrufe in einem Seitenfenster ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonCBShowMissedCallPane() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonCBShowMissedCallPane", resourceCulture)
             End Get
         End Property
         
@@ -161,6 +188,15 @@ Namespace Localize
         Public Shared ReadOnly Property strAnrMonHeadAnrMon() As String
             Get
                 Return ResourceManager.GetString("strAnrMonHeadAnrMon", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Einstellungen für das Seitenfenster verpasster Anrufe ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonHeadSidePane() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonHeadSidePane", resourceCulture)
             End Get
         End Property
         
@@ -197,6 +233,15 @@ Namespace Localize
         Public Shared ReadOnly Property strAnrMonSetBColor() As String
             Get
                 Return ResourceManager.GetString("strAnrMonSetBColor", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Verpasste Anrufe können in einem Seitenfenster (SidePane) von Outlook angezeigt werden. Wird ein Anruf nicht angenommen, wird dieser in die Liste aufgenommen. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonSidePaneInfo() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonSidePaneInfo", resourceCulture)
             End Get
         End Property
         

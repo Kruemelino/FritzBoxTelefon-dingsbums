@@ -143,7 +143,6 @@ Public Class StoppUhrViewModel
 #End Region
 
     Public Sub New()
-        ' Schick wäre auch noch, die überwachte oder rauswählende Nummer im Fenster von Anrufmonitor und Stoppuhr zu haben. Ich meine, das war in der v3x möglich.
 
         ' Init Command
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)

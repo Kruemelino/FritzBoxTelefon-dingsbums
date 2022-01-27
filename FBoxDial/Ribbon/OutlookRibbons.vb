@@ -135,6 +135,14 @@ Imports FBoxDial.RibbonData
         Return False
     End Function
 
+#Disable Warning IDE0060 ' Nicht verwendete Parameter entfernen
+    Public Function CallPaneEnabled(control As IRibbonControl) As Boolean
+        If XMLData.POptionen.CBShowMissedCallPane Then
+            Return Globals.ThisAddIn.ExplorerWrappers.Values.Where(Function(ew) ew.CallListPaneVM.MissedCallList.Any).Any
+        End If
+        Return False
+    End Function
+#Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
     ''' <summary>
     ''' Die Ribbons der Inspectoren sollen nur eingeblendet werden, wenn ein Explorer vorhanden ist.
     ''' </summary>

@@ -21,7 +21,7 @@ Imports System
 '''<summary>
 '''  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
 '''</summary>
-<Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+<Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
  Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
  Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
 Public Class resImageMso
@@ -240,6 +240,15 @@ Public Class resImageMso
     Public Shared ReadOnly Property ShowContact_ImageMso() As String
         Get
             Return ResourceManager.GetString("ShowContact_ImageMso", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die ViewWorkAvailabilityShow ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property ShowMissedCalls_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("ShowMissedCalls_ImageMso", resourceCulture)
         End Get
     End Property
     

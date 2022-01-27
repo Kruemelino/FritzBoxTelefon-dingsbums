@@ -318,14 +318,18 @@ Friend Class OptionenService
 
                 ' Ermittle eine zufällige Telefonnummer des Kontaktes
                 Dim NL = C.GetKontaktTelNrList
-                TelNr = NL.Item(RndGen.Next(0, NL.Count)).Unformatiert
+                If NL.Any Then
+                    TelNr = NL.Item(RndGen.Next(0, NL.Count)).Unformatiert
+                Else
+                    TelNr = String.Empty
+                End If
 
                 OLC.ForEach(Sub(Co) ReleaseComObject(Co))
             End If
 
             ' Telefonnummer aus Fritz!Box Telefonbüchern
             If rndFBox Then
-                If Globals.ThisAddIn.PhoneBookXML Is Nothing Then 'OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                If Globals.ThisAddIn.PhoneBookXML Is Nothing OrElse Globals.ThisAddIn.PhoneBookXML.First.Phonebook Is Nothing Then
                     ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
                     ' Dann lade die Telefonbücher herunter
                     NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")

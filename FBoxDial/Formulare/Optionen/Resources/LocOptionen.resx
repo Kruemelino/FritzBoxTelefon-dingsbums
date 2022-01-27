@@ -146,8 +146,20 @@ Sekundarfarbe: Schrift</value>
     <value>Anruffenster automatisch ausblenden</value>
     <comment>OptAnrMonView</comment>
   </data>
+  <data name="strAnrMonCBClearCallPaneAtClose" xml:space="preserve">
+    <value>Entferne alle Anrufe beim Schließen des Seitenfensters</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonCBCloseEmptyCallPane" xml:space="preserve">
+    <value>Schließe Seitenfenster, wenn die keine verpassten Anrufe vorhanden</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strAnrMonCBHideCONNECT" xml:space="preserve">
     <value>Anrufmonitor bei Rufannahme ausblenden</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonCBShowMissedCallPane" xml:space="preserve">
+    <value>Zeige verpasste Anrufe in einem Seitenfenster</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonCBStoppUhrAusblenden" xml:space="preserve">
@@ -161,6 +173,9 @@ Sekundarfarbe: Schrift</value>
   <data name="strAnrMonHeadAnrMon" xml:space="preserve">
     <value>Einstellungen für den Anrufmonitor</value>
     <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonHeadSidePane" xml:space="preserve">
+    <value>Einstellungen für das Seitenfenster verpasster Anrufe</value>
   </data>
   <data name="strAnrMonHeadStoppUhr" xml:space="preserve">
     <value>Einstellungen für die Stoppuhr</value>
@@ -176,6 +191,10 @@ Sekundarfarbe: Schrift</value>
   </data>
   <data name="strAnrMonSetBColor" xml:space="preserve">
     <value>Setze Hintergrundfarbe des Anrufmonitors</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonSidePaneInfo" xml:space="preserve">
+    <value>Verpasste Anrufe können in einem Seitenfenster (SidePane) von Outlook angezeigt werden. Wird ein Anruf nicht angenommen, wird dieser in die Liste aufgenommen.</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonStoppUhrSetBColor" xml:space="preserve">

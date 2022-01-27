@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="MissedCallView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             Height="102"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=fbd:MissedCallViewModel, IsDesignTimeCreatable=False}"
+             d:DesignHeight="102" d:DesignWidth="200" 
+             Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/CallListPane.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Border BorderBrush="{DynamicResource ControlDefaultBorderBrush}"
+            BorderThickness="0">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="28"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="22"/>
+                <RowDefinition/>
+                <RowDefinition Height="22"/>
+            </Grid.RowDefinitions>
+            
+            <Image Width="72" Margin="4,4,4,0" 
+                   Grid.Column="0" Grid.RowSpan="4"
+                   Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                   Visibility="{Binding ZeigeBild, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+            <TextBlock Grid.Row="0" Grid.Column="1"
+                           Style="{StaticResource DefaultZeit}"
+                           Text="{Binding Path=Zeit, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=\{0:dd/MM/yyyy HH:mm:ss tt\}}"/>            
+            
+            <TextBlock Grid.Row="0" Grid.Column="2"
+                           Style="{StaticResource DefaultEigeneNummer}"
+                           Text="{Binding Path=EigeneTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"                             
+                           Style="{StaticResource DefaultNummer}"
+                           Text="{Binding Path=TelNr, FallbackValue='', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                           Visibility="{Binding ZeigeTelNr, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+            <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"  >
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultMainInfo}">
+                        <Style.Triggers>
+
+                            <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="True">
+                                <Setter Property="Text" Value="{Binding Path=Anrufer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="False">
+                                <Setter Property="Text" Value="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"                          
+                           Style="{StaticResource DefaultExtInfo}"
+                           Text="{Binding Path=ExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                           Visibility="{Binding ZeigeExInfo, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+
+            <StackPanel VerticalAlignment="Stretch" DockPanel.Dock="Right" Orientation="Vertical"
+                        Grid.Column="3" Grid.RowSpan="4">
+
+                <Button Style="{StaticResource MiniIconButton}" 
+                    Content="{DynamicResource Close_16x}"
+                    Command="{Binding CloseCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+
+                <Button Style="{StaticResource MiniIconButton}"
+                    Content="{DynamicResource CallTo_16x}" 
+                    Command="{Binding CallCommand}" />
+
+                <Button Style="{StaticResource MiniIconButton}"
+                    Content="{DynamicResource ContactCard_16x}" 
+                    Command="{Binding ShowContactCommand}" />
+
+                <Button Style="{StaticResource MiniIconButton}"
+                    Content="{DynamicResource StatusNo_16x}" 
+                    Command="{Binding BlockCommand}" />
+            </StackPanel>         
+        </Grid>
+
+    </Border>
+</UserControl>

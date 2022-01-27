@@ -7,7 +7,7 @@
         xmlns:localize="clr-namespace:FBoxDial.Localize"
         mc:Ignorable="d" 
         d:DesignHeight="450" d:DesignWidth="500" 
-        d:DataContext="{d:DesignInstance Type=fbd:KontaktsucheViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=fbd:KontaktsucheViewModel, IsDesignTimeCreatable=False}"
         Height="450" Width="500"
         Title="{x:Static localize:LocKontaktsuche.strHeader}" 
         Style="{DynamicResource CustomToolWindowStyle}">

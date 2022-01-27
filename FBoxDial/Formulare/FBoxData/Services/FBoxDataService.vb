@@ -1,4 +1,5 @@
-﻿Imports System.Threading.Tasks
+﻿Imports System.ComponentModel
+Imports System.Threading.Tasks
 Public Class FBoxDataService
     Implements IFBoxDataService
     Friend Sub UpdateTheme() Implements IFBoxDataService.UpdateTheme
@@ -22,9 +23,14 @@ Public Class FBoxDataService
 
     Protected Overrides Sub Finalize() Implements IFBoxDataService.Finalize
 
+        ' TR-064 Schnittstelle
+        ' Entferne Ereignishandler
         RemoveHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
-
+        ' Gib Resourcen der TR-064 Schnittstelle frei
         FBoxTR064.Dispose()
+
+        ' SoundPlayer
+        ' Gib Resourcen des Soundplayer frei
         SoundPlayer?.Dispose()
 
         MyBase.Finalize()
@@ -61,7 +67,7 @@ Public Class FBoxDataService
         End Using
     End Sub
 
-    Private Sub PlayMessage(CallItem As FBoxAPI.Call) Implements IFBoxDataService.PlayCallMessage
+    Private Sub PlayMessage(CallItem As FBoxAPI.Call) Implements IFBoxDataService.PlayMessage
 
         Dim Pfad As String = CompleteURL(CallItem)
 
@@ -292,37 +298,26 @@ Public Class FBoxDataService
 #End Region
 
 #Region "SoundPlayer"
-    Private Async Sub PlayRecord(Pfad As String)
-        ' TODO: Fehlermeldung als Messagebox rausgeben
+    Private Sub PlayRecord(Pfad As String)
 
         If Not Pfad.Contains(FritzBoxDefault.DfltFritzBoxSessionID) Then
-            If SoundPlayer Is Nothing Then SoundPlayer = New Media.SoundPlayer
+            If SoundPlayer Is Nothing Then SoundPlayer = New Media.SoundPlayer With {.Tag = String.Empty}
+
             With SoundPlayer
                 ' halte die aktuelle Wiedergabe an
                 .Stop()
+
+                .SoundLocation = Pfad
+
                 ' Lade die neue Wiedergabedatei
-                Using wc As New Net.WebClient()
-                    Try
-                        .Stream = Await GetStreamTaskAsync(New Uri(Pfad))
-                        .Play()
-                    Catch ex As Net.WebException
-                        ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
-                        ' - oder -
-                        ' Fehler beim Herunterladen der Ressource.
-                        NLogger.Error(ex, $"Link: {Pfad} ")
+                .Play()
 
-                    Catch ex As ArgumentNullException
-                        ' Der address-Parameter ist null.
-                        NLogger.Error(ex, "Der address-Parameter ist null.")
-
-                    End Try
-
-                End Using
             End With
         Else
-
+            NLogger.Warn($"TAM Message kann nicht heruntergeladen werden: {Pfad} ")
         End If
     End Sub
+
 #End Region
 
 End Class

@@ -187,6 +187,7 @@
       <HintPath>..\packages\Dirkster.TreeLib.1.2.0\lib\net40\TreeLib.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -241,6 +242,19 @@
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
     <Compile Include="App.xaml.vb">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\CallListPane\Resources\LocCallListPane.Designer.vb">
+      <DependentUpon>LocCallListPane.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Formulare\CallListPane\ViewModel\CallListPaneViewModel.vb" />
+    <Compile Include="Formulare\CallListPane\ViewModel\MissedCallViewModel.vb" />
+    <Compile Include="Formulare\CallListPane\View\CallListPaneView.xaml.vb">
+      <DependentUpon>CallListPaneView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\CallListPane\View\MissedCallView.xaml.vb">
+      <DependentUpon>MissedCallView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Common\Services\EnumDescriptionTypeConverter.vb" />
     <Compile Include="Formulare\Common\Services\LocalizedDescriptionAttribute.vb" />
@@ -563,6 +577,11 @@
       <LastGenOutput>LocAnrMon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\CallListPane\Resources\LocCallListPane.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocCallListPane.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formulare\FBoxData\Resources\LocFBoxData.resx">
       <CustomToolNamespace>Localize</CustomToolNamespace>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -635,6 +654,18 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\CallListPane\Resources\CallListPane.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\CallListPane\View\CallListPaneView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\CallListPane\View\MissedCallView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -853,6 +884,7 @@
       <Name>FBoxAPI</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

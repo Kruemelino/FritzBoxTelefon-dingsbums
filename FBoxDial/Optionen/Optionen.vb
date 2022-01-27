@@ -110,21 +110,68 @@
     ''' Angabe, ob ein Kontaktbild angezeigt werden soll.
     ''' </summary>
     <XmlElement("CBAnrMonContactImage")> Public Property CBAnrMonContactImage As Boolean = True
+    ''' <summary>
+    ''' Angabe, ob die Farben des Anrufmonitors geändert werden soll
+    ''' </summary>
     <XmlElement("CBSetAnrMonBColor")> Public Property CBSetAnrMonBColor As Boolean = False
+    ''' <summary>
+    ''' Hintergrundfarbe als HEX-String #00000000
+    ''' </summary>
     <XmlElement("TBAnrMonBColorHex")> Public Property TBAnrMonBColorHex As String
+    ''' <summary>
+    ''' Schriftfarbe als HEX-String #00000000
+    ''' </summary>
     <XmlElement("TBAnrMonFColorHex")> Public Property TBAnrMonFColorHex As String
+    ''' <summary>
+    ''' Positionskorrektur des Anrufmonitors in X-Richtung
+    ''' </summary>
     <XmlElement("TBAnrMonModPosX")> Public Property TBAnrMonModPosX As Double = 0.0R
+    ''' <summary>
+    ''' Positionskorrektur des Anrufmonitors in Y-Richtung
+    ''' </summary>
     <XmlElement("TBAnrMonModPosY")> Public Property TBAnrMonModPosY As Double = 0.0R
+    ''' <summary>
+    ''' Grundabstand des Anrufmonitors
+    ''' </summary>
     <XmlElement("TBAnrMonAbstand")> Public Property TBAnrMonAbstand As Double = 10.0R
-
+    ''' <summary>
+    ''' Angabe, ob verpasste Anrufe im CallPane angezeigt werden sollen.
+    ''' </summary>
+    <XmlElement("CBShowMissedCallPane")> Public Property CBShowMissedCallPane As Boolean = False
+    ''' <summary>
+    ''' Angabe, ob das CallPane automatisch geschlossen werden soll, wenn Anrufliste leer ist.
+    ''' </summary>
+    <XmlElement("CBCloseEmptyCallPane")> Public Property CBCloseEmptyCallPane As Boolean = True
+    ''' <summary>
+    ''' Angabe, ob beim Schließen des CallPane alle enthaltenen Anrufe entfernt werden sollen.
+    ''' </summary>
+    <XmlElement("CBClearCallPaneAtClose")> Public Property CBClearCallPaneAtClose As Boolean = True
 #End Region
 
 #Region "Stoppuhr"
+    ''' <summary>
+    ''' Angabe, ob die Stoppuhr angezeigt werden soll
+    ''' </summary>
     <XmlElement("CBStoppUhrEinblenden")> Public Property CBStoppUhrEinblenden As Boolean = False
+    ''' <summary>
+    ''' Angabe, ob die Stoppuhr nach dem Telefonat automatisch ausgeblendet werden soll
+    ''' </summary>
     <XmlElement("CBStoppUhrAusblenden")> Public Property CBStoppUhrAusblenden As Boolean = False
+    ''' <summary>
+    ''' Zeitangabe, nachdem die Stoppuhr ausgeblendet werden soll. (Korresbondiert zu <see cref="CBStoppUhrAusblenden"/>)
+    ''' </summary>
     <XmlElement("TBStoppUhrAusblendverzögerung")> Public Property TBStoppUhrAusblendverzögerung As Integer = 10
+    ''' <summary>
+    ''' Angabe, ob die Farben der Stoppuhr geändert werden soll
+    ''' </summary>
     <XmlElement("CBSetStoppUhrBColor")> Public Property CBSetStoppUhrBColor As Boolean = False
+    ''' <summary>
+    ''' Hintergrundfarbe als HEX-String #00000000
+    ''' </summary>
     <XmlElement("TBStoppUhrBColorHex")> Public Property TBStoppUhrBColorHex As String
+    ''' <summary>
+    ''' Schriftfarbe als HEX-String #00000000
+    ''' </summary>
     <XmlElement("TBStoppUhrFColorHex")> Public Property TBStoppUhrFColorHex As String
 #End Region
 #End Region

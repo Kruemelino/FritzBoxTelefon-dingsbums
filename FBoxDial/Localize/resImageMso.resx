@@ -177,6 +177,9 @@
   <data name="ShowContact_ImageMso" xml:space="preserve">
     <value>ShowContactPage</value>
   </data>
+  <data name="ShowMissedCalls_ImageMso" xml:space="preserve">
+    <value>ViewWorkAvailabilityShow</value>
+  </data>
   <data name="Tab_ImageMso" xml:space="preserve">
     <value />
   </data>

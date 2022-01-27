@@ -286,47 +286,6 @@ Friend Module WebFunctions
         Return False
     End Function
 
-    Friend Function GetStreamTaskAsync(UniformResourceIdentifier As Uri) As Task(Of IO.Stream)
-
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-
-        Select Case UniformResourceIdentifier.Scheme
-            Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
-
-                Using webClient As New WebClient With {.Proxy = Nothing,
-                                                       .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)}
-                    With webClient
-
-                        With .Headers
-                            .Set(HttpRequestHeader.UserAgent, DefaultHeaderUserAgent)
-                            .Set(HttpRequestHeader.KeepAlive, DefaultHeaderKeepAlive.ToString)
-                        End With
-
-                        Try
-                            Return .OpenReadTaskAsync(UniformResourceIdentifier)
-
-                        Catch ex As WebException
-                            ' Der durch Kombinieren von BaseAddress und address gebildete URI ist ungültig.
-                            ' - oder -
-                            ' Fehler beim Herunterladen der Ressource.
-                            NLogger.Error(ex, $"Link: {UniformResourceIdentifier.AbsoluteUri} ")
-                            Return Nothing
-
-                        Catch ex As ArgumentNullException
-                            ' Der address-Parameter ist null.
-                            NLogger.Error(ex, "Der address-Parameter ist null.")
-                            Return Nothing
-
-                        End Try
-                    End With
-                End Using
-            Case Else
-
-                NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
-                Return Nothing
-        End Select
-    End Function
-
 #End Region
 
 #Region "POST"

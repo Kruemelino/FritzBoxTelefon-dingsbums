@@ -18,6 +18,7 @@
 						<toggleButton id="CallMonitor_K" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
 						<menu id="mnu_K2">
 							<button id="ShowCallMonitor_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+							<button id="ShowMissedCalls_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getEnabled="CallPaneEnabled"/>
 						</menu>
 					</splitButton>
 					<button id="FritzBoxData_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
@@ -44,6 +45,7 @@
 						<toggleButton id="CallMonitor_C" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
 						<menu id="mnu_C2">
 							<button id="ShowCallMonitor_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+							<button id="ShowMissedCalls_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getEnabled="CallPaneEnabled"/>
 						</menu>
 					</splitButton>
 					<button id="FritzBoxData_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
@@ -70,6 +72,7 @@
 						<toggleButton id="CallMonitor_J" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
 						<menu id="mnu_J2">
 							<button id="ShowCallMonitor_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+							<button id="ShowMissedCalls_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getEnabled="CallPaneEnabled"/>
 						</menu>
 					</splitButton>
 					<button id="FritzBoxData_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
@@ -96,6 +99,7 @@
 						<toggleButton id="CallMonitor_M" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
 						<menu id="mnu_M2">
 							<button id="ShowCallMonitor_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+							<button id="ShowMissedCalls_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getEnabled="CallPaneEnabled"/>
 						</menu>
 					</splitButton>
 					<button id="FritzBoxData_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
@@ -125,6 +129,7 @@
 							<toggleButton id="CallMonitor_NM" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
 							<menu id="mnu_NM2">
 								<button id="ShowCallMonitor_nM" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+								<button id="ShowMissedCalls_nM" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getEnabled="CallPaneEnabled"/>
 							</menu>
 						</splitButton>
 						<button id="FritzBoxData_NM" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>

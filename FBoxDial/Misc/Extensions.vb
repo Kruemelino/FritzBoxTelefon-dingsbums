@@ -233,7 +233,6 @@ Public Module Extensions
         If Not Anrufliste.Contains(Anruf) Then
 
             ' Eintrag hinzufügen
-            'Anrufliste.Add(Anruf)
             Anrufliste.Insert(0, Anruf)
             ' Liste sortieren
             Anrufliste = Anrufliste.OrderByDescending(Function(TF) TF?.ZeitBeginn).ToList
@@ -254,15 +253,15 @@ Public Module Extensions
     End Sub
 
     ' TODO: Warum wird das nicht verwendet?
-    <Extension> Public Sub Insert(ByRef Liste As List(Of VIPEntry), item As VIPEntry)
+    '<Extension> Public Sub Insert(ByRef Liste As List(Of VIPEntry), item As VIPEntry)
 
-        ' Liste initialisieren, falls erforderlich
-        If Liste Is Nothing Then Liste = New List(Of VIPEntry)
+    '    ' Liste initialisieren, falls erforderlich
+    '    If Liste Is Nothing Then Liste = New List(Of VIPEntry)
 
-        Liste.Insert(0, item)
+    '    Liste.Insert(0, item)
 
-        Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
-    End Sub
+    '    Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
+    'End Sub
 #End Region
 
 #Region "Zahlenkonvertierungen"
