@@ -9,7 +9,6 @@ Public Class OptionenWPF
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
-        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
         ' Startup Position festlegen
         WindowStartupLocation = WindowStartupLocation.CenterScreen

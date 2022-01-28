@@ -137,10 +137,10 @@ Imports FBoxDial.RibbonData
 
 #Disable Warning IDE0060 ' Nicht verwendete Parameter entfernen
     Public Function CallPaneEnabled(control As IRibbonControl) As Boolean
-        If XMLData.POptionen.CBShowMissedCallPane Then
-            Return Globals.ThisAddIn.ExplorerWrappers.Values.Where(Function(ew) ew.CallListPaneVM.MissedCallList.Any).Any
-        End If
-        Return False
+        'If XMLData.POptionen.CBShowMissedCallPane Then
+        '    Return Globals.ThisAddIn.ExplorerWrappers.Values.Where(Function(ew) ew.CallListPaneVM.MissedCallList.Any).Any
+        'End If
+        Return True
     End Function
 #Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
     ''' <summary>

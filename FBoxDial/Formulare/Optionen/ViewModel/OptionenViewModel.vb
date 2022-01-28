@@ -358,6 +358,32 @@ Public Class OptionenViewModel
             SetProperty(_CBClearCallPaneAtClose, Value)
         End Set
     End Property
+
+    Private _TBCallPaneStartWidth As Integer
+    ''' <summary>
+    ''' Gibt die Standardbreite des Pane bei Start an.
+    ''' </summary>
+    Public Property TBCallPaneStartWidth As Integer
+        Get
+            Return _TBCallPaneStartWidth
+        End Get
+        Set
+            SetProperty(_TBCallPaneStartWidth, Value)
+        End Set
+    End Property
+
+    Private _CBShowCallPaneAtStart As Boolean
+    ''' <summary>
+    ''' Angabe, ob Seiten Fenster bei Outlookstart bereits eingeblendet werden soll.
+    ''' </summary>
+    Public Property CBShowCallPaneAtStart As Boolean
+        Get
+            Return _CBShowCallPaneAtStart
+        End Get
+        Set
+            SetProperty(_CBShowCallPaneAtStart, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Stoppuhr"

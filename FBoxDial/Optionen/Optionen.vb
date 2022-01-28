@@ -146,6 +146,14 @@
     ''' Angabe, ob beim Schließen des CallPane alle enthaltenen Anrufe entfernt werden sollen.
     ''' </summary>
     <XmlElement("CBClearCallPaneAtClose")> Public Property CBClearCallPaneAtClose As Boolean = True
+    ''' <summary>
+    ''' Angabe, ob Seiten Fenster bei Outlookstart bereits eingeblendet werden soll.
+    ''' </summary>
+    <XmlElement("CBShowCallPaneAtStart")> Public Property CBShowCallPaneAtStart As Boolean = False
+    ''' <summary>
+    ''' Gibt die Standardbreite des Pane bei Start an.
+    ''' </summary>
+    <XmlElement("TBCallPaneStartWidth")> Public Property TBCallPaneStartWidth As Integer = 400
 #End Region
 
 #Region "Stoppuhr"

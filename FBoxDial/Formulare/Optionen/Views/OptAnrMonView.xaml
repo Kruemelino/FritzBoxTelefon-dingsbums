@@ -7,7 +7,7 @@
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="420"
+             d:DesignHeight="780" d:DesignWidth="420"
              d:DataContext="{d:DesignInstance Type=fbd:OptAnrMonViewModel, IsDesignTimeCreatable=False}">
     
     <UserControl.Resources>
@@ -144,6 +144,11 @@
                           IsChecked="{Binding OptVM.CBShowMissedCallPane, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strAnrMonCBShowCallPaneAtStart}" 
+                          IsChecked="{Binding OptVM.CBShowCallPaneAtStart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsEnabled="{Binding OptVM.CBShowMissedCallPane, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <CheckBox Style="{StaticResource OptCheckBox}" 
                           Content="{x:Static localize:LocOptionen.strAnrMonCBCloseEmptyCallPane}" 
                           IsChecked="{Binding OptVM.CBCloseEmptyCallPane, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           IsEnabled="{Binding OptVM.CBShowMissedCallPane, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -152,6 +157,12 @@
                           Content="{x:Static localize:LocOptionen.strAnrMonCBClearCallPaneAtClose}" 
                           IsChecked="{Binding OptVM.CBClearCallPaneAtClose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           IsEnabled="{Binding OptVM.CBShowMissedCallPane, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strAnrMonTBCallPaneStartWidth}"
+                         Text="{Binding OptVM.TBCallPaneStartWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         IsEnabled="{Binding OptVM.CBShowMissedCallPane, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                
             </StackPanel>
         </Expander>
     </StackPanel>

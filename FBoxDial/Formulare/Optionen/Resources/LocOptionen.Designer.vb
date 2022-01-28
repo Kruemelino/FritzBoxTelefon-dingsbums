@@ -156,6 +156,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Blende Seitenfenster bei Outlookstart ein ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonCBShowCallPaneAtStart() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonCBShowCallPaneAtStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Zeige verpasste Anrufe in einem Seitenfenster ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonCBShowMissedCallPane() As String
@@ -278,6 +287,15 @@ Namespace Localize
         Public Shared ReadOnly Property strAnrMonTBAnrMonModPosY() As String
             Get
                 Return ResourceManager.GetString("strAnrMonTBAnrMonModPosY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Breite des Seitenfensters beim Start ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonTBCallPaneStartWidth() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonTBCallPaneStartWidth", resourceCulture)
             End Get
         End Property
         

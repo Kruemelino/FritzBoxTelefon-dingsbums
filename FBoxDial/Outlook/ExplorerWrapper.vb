@@ -45,10 +45,12 @@ Friend Class ExplorerWrapper
 
                 ' Pane hinzufügen
                 CallListPane = Globals.ThisAddIn.CustomTaskPanes.Add(UC, Localize.LocCallListPane.strPaneHead, OlExplorer)
+                AddHandler CallListPane.VisibleChanged, AddressOf CallListPane_VisibleChanged
 
                 NLogger.Debug("Ein neues CallListPane wurde erstellt")
 
-                AddHandler CallListPane.VisibleChanged, AddressOf CallListPane_VisibleChanged
+                If XMLData.POptionen.CBShowCallPaneAtStart Then ShowCallListPane()
+
             End If
 
         End If
@@ -63,7 +65,7 @@ Friend Class ExplorerWrapper
     Friend Sub ShowCallListPane()
         If CallListPane IsNot Nothing Then
             ' Lege die Breite fest, falls der Pane nicht eigeblendet ist
-            If Not CallListPane.Visible Then CallListPane.Width = 400
+            If Not CallListPane.Visible Then CallListPane.Width = XMLData.POptionen.TBCallPaneStartWidth
             ' Blende das CallListPane ein
             CallListPane.Visible = True
         Else

@@ -158,6 +158,10 @@ Sekundarfarbe: Schrift</value>
     <value>Anrufmonitor bei Rufannahme ausblenden</value>
     <comment>OptAnrMonView</comment>
   </data>
+  <data name="strAnrMonCBShowCallPaneAtStart" xml:space="preserve">
+    <value>Blende Seitenfenster bei Outlookstart ein</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strAnrMonCBShowMissedCallPane" xml:space="preserve">
     <value>Zeige verpasste Anrufe in einem Seitenfenster</value>
     <comment>OptAnrMonView</comment>
@@ -211,6 +215,10 @@ Sekundarfarbe: Schrift</value>
   </data>
   <data name="strAnrMonTBAnrMonModPosY" xml:space="preserve">
     <value>Y-Richtung</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strAnrMonTBCallPaneStartWidth" xml:space="preserve">
+    <value>Breite des Seitenfensters beim Start</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonTBEnblDauer" xml:space="preserve">
