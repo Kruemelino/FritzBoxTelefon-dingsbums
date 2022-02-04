@@ -45,7 +45,7 @@ Friend Module Journal
                             Abfrage.ForAll(Async Sub(Anruf)
                                                ' in ErstelleTelefonat wird auch die Wahlwiederholungs- und Rückrufliste ausgewertet.
                                                Using t As Telefonat = Await ErstelleTelefonat(Anruf)
-                                                   If t IsNot Nothing Then t.SetUpOlLists()
+                                                   If t IsNot Nothing Then t.SetUpOlLists(True)
                                                End Using
                                            End Sub)
                         End Sub)

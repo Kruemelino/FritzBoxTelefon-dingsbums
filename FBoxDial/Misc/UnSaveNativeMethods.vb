@@ -433,6 +433,10 @@ End Enum
     <DllImport("user32.dll", SetLastError:=True)>
     Friend Shared Function GetKeyState(nVirtKey As Integer) As Short
     End Function
+
+    <DllImport("winmm.dll")>
+    Friend Shared Function mciSendString(command As String, buffer As StringBuilder, bufferSize As Integer, hwndCallback As IntPtr) As Integer
+    End Function
 End Class
 
 Public NotInheritable Class UnSaveMethods
@@ -512,6 +516,21 @@ Public NotInheritable Class UnSaveMethods
     Friend Shared ReadOnly Property GetKeyState(nVirtKey As Integer) As Short
         Get
             Return UnsafeNativeMethods.GetKeyState(nVirtKey)
+        End Get
+    End Property
+
+    Friend Shared ReadOnly Property GetWAVDuration(filePath As String) As Integer
+        Get
+            Dim lengthBuf As New StringBuilder(32)
+
+            UnsafeNativeMethods.mciSendString($"open ""{filePath}"" type waveaudio alias wave", Nothing, 0, IntPtr.Zero)
+            UnsafeNativeMethods.mciSendString($"status wave length", lengthBuf, lengthBuf.Capacity, IntPtr.Zero)
+            UnsafeNativeMethods.mciSendString($"close wave", Nothing, 0, IntPtr.Zero)
+
+            Dim length As Integer = 0
+            Integer.TryParse(lengthBuf.ToString(), length)
+
+            Return length
         End Get
     End Property
 End Class

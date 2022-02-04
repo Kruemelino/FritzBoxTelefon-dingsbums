@@ -246,7 +246,8 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Verpasste Anrufe können in einem Seitenfenster (SidePane) von Outlook angezeigt werden. Wird ein Anruf nicht angenommen, wird dieser in die Liste aufgenommen. ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Verpasste Anrufe können in einem Seitenfenster (SidePane) von Outlook angezeigt werden. Wird ein Anruf nicht angenommen, wird dieser in die Liste aufgenommen.
+        '''Das Seitenfenster wird beim manuellen Importieren der Anrufliste (Journalimport) nicht aktualisiert. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonSidePaneInfo() As String
             Get

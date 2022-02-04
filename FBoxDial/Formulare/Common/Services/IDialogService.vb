@@ -5,5 +5,6 @@
 ''' </summary>
 Public Interface IDialogService
     Function OpenFile(filter As String, Optional initialDirectory As String = "") As String
+    Function SaveFile(filter As String, Optional initialDirectory As String = "", Optional initialFilename As String = "") As String
     Function ShowMessageBox(message As String) As Windows.MessageBoxResult
 End Interface

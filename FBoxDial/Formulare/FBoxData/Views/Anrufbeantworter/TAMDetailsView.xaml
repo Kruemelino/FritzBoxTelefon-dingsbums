@@ -24,6 +24,13 @@
         
         <ListView Grid.Row="1"
                   ItemsSource="{Binding MessageListe}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource ControlDefaultBorderBrush}"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <fbd:TAMMessageView DataContext="{Binding}"/>

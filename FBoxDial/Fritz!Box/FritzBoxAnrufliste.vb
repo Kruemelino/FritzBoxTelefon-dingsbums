@@ -34,7 +34,7 @@ Friend Module FritzBoxAnrufliste
                                   For Each Anruf In Anrufliste
                                       ' Journaleintrag erstellen
                                       Using t = Await ErstelleTelefonat(Anruf)
-                                          If t IsNot Nothing Then t.SetUpOlLists()
+                                          If t IsNot Nothing Then t.SetUpOlLists(False)
                                       End Using
 
                                       ' Zählvariable hochsetzen

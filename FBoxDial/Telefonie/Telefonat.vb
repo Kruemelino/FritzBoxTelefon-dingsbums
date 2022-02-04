@@ -210,7 +210,6 @@ Imports Microsoft.Office.Interop
         End Get
     End Property
 
-
 #End Region
 
 #Region "Date"
@@ -731,13 +730,16 @@ Imports Microsoft.Office.Interop
     ''' <summary>
     ''' Wird durch die Auswertung der Anrufliste aufgerufen. Erstellt Jounaleinträge und aktualisiert die Listen.
     ''' </summary>
-    Friend Sub SetUpOlLists()
+    Friend Sub SetUpOlLists(UpdateCallPane As Boolean)
         If IstRelevant Then
             ' Erstelle einen Journaleintrag
             ErstelleJournalEintrag()
 
             ' Anruflisten aktualisieren
             UpdateRingCallList()
+
+            ' CallPane ergänzen
+            If UpdateCallPane Then SetMissedCallPane()
         Else
             NLogger.Debug($"Anruf {ID} wurde nicht importiert.")
         End If
@@ -753,7 +755,7 @@ Imports Microsoft.Office.Interop
                 Dim olJournalFolder As OutlookOrdner
 
                 Try
-                    ' Erstelle ein Journaleintrag im STandard-Ordner.
+                    ' Erstelle ein Journaleintrag im Standard-Ordner.
                     olJournal = CType(Globals.ThisAddIn.Application.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
                 Catch ex As Exception
                     NLogger.Error(ex)
@@ -853,10 +855,11 @@ Imports Microsoft.Office.Interop
 
     Private Sub SetMissedCallPane()
         If XMLData.POptionen.CBShowMissedCallPane Then
-            ' Schleife durch jeden offenen Explorer
-            Globals.ThisAddIn.ExplorerWrappers.Values.ToList.ForEach(Sub(ew) ew.AddMissedCall(Me))
+            If Not Angenommen And AnrufRichtung = AnrufRichtungen.Eingehend Then
+                ' Schleife durch jeden offenen Explorer
+                Globals.ThisAddIn.ExplorerWrappers.Values.ToList.ForEach(Sub(ew) ew.AddMissedCall(Me))
+            End If
         End If
-
     End Sub
 
 #Region "Anrufmonitor"
@@ -942,8 +945,8 @@ Imports Microsoft.Office.Interop
             ' Stoppuhr ausblenden, wenn dies in den Einstellungen gesetzt ist
             If StoppUhrEingeblendet And XMLData.POptionen.CBStoppUhrAusblenden Then PopupStoppUhrWPF.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBStoppUhrAusblendverzögerung))
 
-            ' CallListPane füllen
-            If Not Angenommen Then SetMissedCallPane()
+            ' CallListPane füllen, wenn es sich um einen eingehenden Anruf handelt.
+            SetMissedCallPane()
 
             ' Journaleintrag
             ErstelleJournalEintrag()

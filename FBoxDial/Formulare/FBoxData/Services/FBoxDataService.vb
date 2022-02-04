@@ -1,15 +1,18 @@
-﻿Imports System.ComponentModel
-Imports System.Threading.Tasks
+﻿Imports System.Threading.Tasks
+Imports System.Windows.Media
+
 Public Class FBoxDataService
     Implements IFBoxDataService
+
     Friend Sub UpdateTheme() Implements IFBoxDataService.UpdateTheme
         OfficeColors.UpdateTheme()
     End Sub
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property FBoxTR064 As FBoxAPI.FritzBoxTR64
-    Private Property SoundPlayer As Media.SoundPlayer
+    Private Property SoundPlayer As SoundPlayerEx
     Friend Property SessionID As String
+
     Public Sub New()
         FBoxTR064 = New FBoxAPI.FritzBoxTR64()
 
@@ -30,8 +33,16 @@ Public Class FBoxDataService
         FBoxTR064.Dispose()
 
         ' SoundPlayer
-        ' Gib Resourcen des Soundplayer frei
-        SoundPlayer?.Dispose()
+        If SoundPlayer IsNot Nothing Then
+            With SoundPlayer
+                ' Beende das Abspielen, falls aktiv
+                If .PlayingAsync Then .Stop()
+
+                RemoveHandler .SoundFinished, AddressOf SoundPlayer_SoundFinished
+                ' Gib Resourcen des Soundplayer frei
+                .Dispose()
+            End With
+        End If
 
         MyBase.Finalize()
     End Sub
@@ -161,21 +172,26 @@ Public Class FBoxDataService
         End With
     End Function
 
-    Private Sub PlayMessage(Message As FBoxAPI.Message) Implements IFBoxDataService.PlayMessage
+    Private Sub PlayMessage(MessageURL As String) Implements IFBoxDataService.PlayMessage
 
-        Dim Pfad As String = CompleteURL(Message)
+        NLogger.Debug($"Anrufbeantworternachricht via TAM für Eintrag: {MessageURL}")
 
-        NLogger.Debug($"Anrufbeantworternachricht via TAM für Eintrag {Message.ID}: {Pfad}")
-
-        PlayRecord(Pfad)
+        PlayRecord(MessageURL)
 
     End Sub
 
-    Private Function CompleteURL(Message As FBoxAPI.Message) As String
+    Private Sub StoppMessage(MessageURL As String) Implements IFBoxDataService.StoppMessage
+
+
+        StoppRecord(MessageURL)
+
+    End Sub
+
+    Private Function CompleteURL(PathSegment As String) As String Implements IFBoxDataService.CompleteURL
         Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
         ' Ermittle die SessionID. Sollte das schief gehen, kommt es zu einer Fehlermeldung im Log.
         FBoxTR064.Deviceconfig.GetSessionID(SessionID)
-        Return If(SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Message.Path}&{SessionID}", String.Empty)
+        Return If(SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{PathSegment}&{SessionID}", String.Empty)
     End Function
 
 #End Region
@@ -298,24 +314,43 @@ Public Class FBoxDataService
 #End Region
 
 #Region "SoundPlayer"
+    Private Event SoundFinished As EventHandler(Of NotifyEventArgs(Of String)) Implements IFBoxDataService.SoundFinished
+
     Private Sub PlayRecord(Pfad As String)
 
         If Not Pfad.Contains(FritzBoxDefault.DfltFritzBoxSessionID) Then
-            If SoundPlayer Is Nothing Then SoundPlayer = New Media.SoundPlayer With {.Tag = String.Empty}
+
+            If SoundPlayer Is Nothing Then
+                SoundPlayer = New SoundPlayerEx()
+                AddHandler SoundPlayer.SoundFinished, AddressOf SoundPlayer_SoundFinished
+
+            End If
 
             With SoundPlayer
-                ' halte die aktuelle Wiedergabe an
-                .Stop()
+                If .PlayingAsync Then .Stop()
 
-                .SoundLocation = Pfad
-
-                ' Lade die neue Wiedergabedatei
-                .Play()
+                .LocationURL = Pfad
+                .PlayAsync()
 
             End With
         Else
             NLogger.Warn($"TAM Message kann nicht heruntergeladen werden: {Pfad} ")
         End If
+    End Sub
+
+    Private Sub StoppRecord(Pfad As String)
+        If SoundPlayer IsNot Nothing Then
+            With SoundPlayer
+                If .PlayingAsync Then .Stop()
+            End With
+        End If
+    End Sub
+
+    Private Sub SoundPlayer_SoundFinished(sender As Object, e As NotifyEventArgs(Of String))
+
+        RaiseEvent SoundFinished(Me, e)
+
+        SoundPlayer.LocationURL = String.Empty
     End Sub
 
 #End Region

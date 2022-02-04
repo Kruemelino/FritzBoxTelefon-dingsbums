@@ -395,6 +395,9 @@
     <Compile Include="Fritz!Box\FritzBoxStatus.vb" />
     <Compile Include="Fritz!Box\FritzBoxTAM.vb" />
     <Compile Include="Misc\KeyboardHooking.vb" />
+    <Compile Include="Misc\SoundPlayerEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Localize\Länder.Designer.vb">

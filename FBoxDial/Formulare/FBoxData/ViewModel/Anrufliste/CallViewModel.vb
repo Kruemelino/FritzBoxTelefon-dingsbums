@@ -118,6 +118,18 @@
             Return ButtonVisible AndAlso CallItem.Path.Contains("fax")
         End Get
     End Property
+
+    Private _IsPlaying As Boolean
+    Public Property IsPlaying As Boolean
+        Get
+            Return _IsPlaying
+        End Get
+        Set
+            SetProperty(_IsPlaying, Value)
+        End Set
+    End Property
+
+    Public Property MessageURL As String
 #End Region
 
     Public Sub New(dataService As IFBoxDataService)
@@ -129,11 +141,40 @@
         DownloadFaxCommand = New RelayCommand(AddressOf DownloadFax)
     End Sub
 
-    Private Sub DownloadFax(obj As Object)
+    Private Sub DownloadFax(o As Object)
         DatenService.DownloadFax(CallItem)
     End Sub
 
-    Private Sub PlayMessage(obj As Object)
-        DatenService.PlayMessage(CallItem)
+    Private Sub PlayMessage(o As Object)
+
+        If CBool(o) Then
+            ' Playback Stoppen
+            ' Setze das Flag, dass das Abhören der Message abgebrochen wird.
+            IsPlaying = False
+
+            DatenService.StoppMessage(MessageURL)
+        Else
+            ' Ereignishandler hinzufügem
+            AddHandler DatenService.SoundFinished, AddressOf DatenService_SoundFinished
+            ' Setze das Flag, dass die Message abgehört wird.
+            IsPlaying = True
+            ' Ermittle die komplette URL
+            If MessageURL.IsStringNothingOrEmpty Then MessageURL = DatenService.CompleteURL(CallItem.Path)
+            ' Spiele die Message ab.
+            DatenService.PlayMessage(MessageURL)
+            ' Setze die Message auf abgehört
+            ' If Neu Then MarkMessage(o)
+        End If
+    End Sub
+
+    Private Sub DatenService_SoundFinished(sender As Object, e As NotifyEventArgs(Of String))
+
+        ' Prüfe, ob die beendete Wiedergabe zu dieser TAM Message gehört.
+        If e.Value.IsEqual(MessageURL) Then
+            ' Enferne Ereignishandler
+            RemoveHandler DatenService.SoundFinished, AddressOf DatenService_SoundFinished
+            ' Setze das Flag, dass die Message nicht mehr abgehört wird.
+            IsPlaying = False
+        End If
     End Sub
 End Class

@@ -694,7 +694,7 @@ Friend Module KontaktFunktionen
             End With
 
             ' Bild wieder löschen
-            DelKontaktBild(BildPfad)
+            LöscheDatei(BildPfad)
 
             Return biImg
         End If
@@ -705,13 +705,13 @@ Friend Module KontaktFunktionen
     ''' <summary>
     ''' Löscht das Kontaktbild in den Arbeitsorder. 
     ''' </summary>
-    ''' <param name="PfadKontaktBild">Pfad zum extrahierten Kontaktbild</param>
-    Friend Sub DelKontaktBild(PfadKontaktBild As String)
-        If PfadKontaktBild.IsNotStringNothingOrEmpty Then
+    ''' <param name="DateiPfad">Pfad zum extrahierten Kontaktbild</param>
+    Friend Sub LöscheDatei(DateiPfad As String)
+        If DateiPfad.IsNotStringNothingOrEmpty Then
             With My.Computer.FileSystem
-                If .FileExists(PfadKontaktBild) Then
-                    .DeleteFile(PfadKontaktBild, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
-                    NLogger.Debug($"Kontaktbild {PfadKontaktBild} gelöscht.")
+                If .FileExists(DateiPfad) Then
+                    .DeleteFile(DateiPfad, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                    NLogger.Debug($"Datei {DateiPfad} gelöscht.")
                 End If
             End With
         End If

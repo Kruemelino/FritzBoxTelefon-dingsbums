@@ -7,7 +7,7 @@
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=fbd:TAMMessageViewModel, IsDesignTimeCreatable=False}" 
-             d:DesignHeight="75" d:DesignWidth="500">
+             d:DesignHeight="82" d:DesignWidth="500">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -72,12 +72,28 @@
 
 
         <StackPanel Grid.Column="5" Grid.RowSpan="2">
-            <Button Style="{StaticResource MiniIconButton}" Content="{StaticResource SoundFile_16x}"
-                    Command="{Binding PlayMessageCommand}"/>
+            <Button Command="{Binding PlayMessageCommand}">
+                <Button.Style >
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MiniIconButton}">
+
+                        <Setter Property="Content" Value="{StaticResource Play_16x}"/>
+                        <Setter Property="CommandParameter" Value="False"/>
+                        
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                <Setter Property="Content" Value="{StaticResource Stopp_16x}"/>
+                                <Setter Property="CommandParameter" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            
+            <Button Style="{StaticResource MiniIconButton}" Content="{StaticResource Download_16x}"
+                    Command="{Binding DownloadMessageCommand}"/>
             
             <Button Style="{StaticResource MiniIconButton}" Content="{StaticResource Cancel_16x}"
                     Command="{Binding DeleteMessageCommand}"/>
-            
         </StackPanel>
                 
     </Grid>

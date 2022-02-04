@@ -198,7 +198,8 @@ Sekundarfarbe: Schrift</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonSidePaneInfo" xml:space="preserve">
-    <value>Verpasste Anrufe können in einem Seitenfenster (SidePane) von Outlook angezeigt werden. Wird ein Anruf nicht angenommen, wird dieser in die Liste aufgenommen.</value>
+    <value>Verpasste Anrufe können in einem Seitenfenster (SidePane) von Outlook angezeigt werden. Wird ein Anruf nicht angenommen, wird dieser in die Liste aufgenommen.
+Das Seitenfenster wird beim manuellen Importieren der Anrufliste (Journalimport) nicht aktualisiert.</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonStoppUhrSetBColor" xml:space="preserve">

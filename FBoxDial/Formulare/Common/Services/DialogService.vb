@@ -16,6 +16,15 @@ Public Class DialogService
 
     End Function
 
+    Public Function SaveFile(filter As String, Optional initialDirectory As String = "", Optional initialFilename As String = "") As String Implements IDialogService.SaveFile
+        Dim dialog = New SaveFileDialog() With {.Filter = filter,
+                                                .InitialDirectory = IO.Path.GetDirectoryName(initialDirectory),
+                                                .AddExtension = True, .FileName = initialFilename}
+
+        Return If(dialog.ShowDialog() = True, dialog.FileName, String.Empty)
+
+    End Function
+
     Public Function ShowMessageBox(Frage As String) As Windows.MessageBoxResult Implements IDialogService.ShowMessageBox
 
         Return Windows.MessageBox.Show(Frage, My.Resources.strDefLongName, Windows.MessageBoxButton.YesNo)

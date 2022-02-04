@@ -117,7 +117,7 @@ Friend Module ContactEx
                     NLogger.Warn(ex)
                 Finally
                     ' Lösche das Bild auf dem Dateisystem
-                    DelKontaktBild(Pfad)
+                    LöscheDatei(Pfad)
                 End Try
             End If
 

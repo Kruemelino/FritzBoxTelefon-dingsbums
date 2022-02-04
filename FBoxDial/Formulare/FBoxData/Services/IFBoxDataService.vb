@@ -11,7 +11,11 @@ Public Interface IFBoxDataService
     Function ToggleTAM(TAM As FBoxAPI.TAMItem) As Boolean
     Function MarkMessage(Message As FBoxAPI.Message) As Boolean
     Function DeleteMessage(Message As FBoxAPI.Message) As Boolean
-    Sub PlayMessage(Message As FBoxAPI.Message)
+    Sub PlayMessage(MessageURL As String)
+    Sub StoppMessage(MessageURL As String)
+    Function CompleteURL(PathSegment As String) As String
+
+    Event SoundFinished As EventHandler(Of NotifyEventArgs(Of String))
 #End Region
 
 #Region "Anrufliste"
