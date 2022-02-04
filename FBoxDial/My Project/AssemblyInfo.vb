@@ -11,7 +11,7 @@ Imports System.Security
 ' Werte der Assemblyattribute überprüfen
 
 <Assembly: AssemblyTitle("Fritz!Box Telefon-Dingsbums")>
-<Assembly: AssemblyDescription("Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche.")>
+<Assembly: AssemblyDescription("Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus Outlook ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche.")>
 <Assembly: AssemblyCompany("Fritz!Box Telefon-Dingsbums")>
 <Assembly: AssemblyProduct("Fritz!Box Telefon-Dingsbums")>
 <Assembly: AssemblyCopyright("Gert Michael (Kruemelino) © 2022")>
@@ -36,8 +36,8 @@ Imports System.Security
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("5.0.3.2")>
-<Assembly: AssemblyFileVersion("5.0.3.2")>
+<Assembly: AssemblyVersion("5.0.3.3")>
+<Assembly: AssemblyFileVersion("5.0.3.3")>
 <Assembly: NeutralResourcesLanguage("de-DE")>
 Friend Module DesignTimeConstants
     Public Const RibbonTypeSerializer As String = "Microsoft.VisualStudio.Tools.Office.Ribbon.Serialization.RibbonTypeCodeDomSerializer, Microsoft.VisualStudio.Tools.Office.Designer, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"

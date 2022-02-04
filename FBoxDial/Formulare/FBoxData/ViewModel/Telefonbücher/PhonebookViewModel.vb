@@ -37,7 +37,7 @@ Public Class PhonebookViewModel
 
         Contacts = New ObservableCollectionEx(Of ContactViewModel)(Telefonbuch.Phonebook.Contacts.Select(Function(C) New ContactViewModel(C)))
 
-        LadeBilder()
+        ' LadeBilder()
     End Sub
 
 #Region "Eigene Eigenschaften"
