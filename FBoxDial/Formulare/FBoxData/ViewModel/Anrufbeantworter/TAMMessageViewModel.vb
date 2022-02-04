@@ -105,8 +105,8 @@
 
     End Sub
 
-    Private Async Sub DownloadMessage(o As Object)
-        Dim Pfad As String = DialogService.SaveFile("WAV Audiodatei|*.wav",
+    Private Sub DownloadMessage(o As Object)
+        Dim Pfad As String = DialogService.SaveFile("WAV Audio|*.wav",
                                                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                                                     $"TAM{Message.Tam}_{Message.Number}_{CDate(Message.Date):yyMMdd-HHmm}.wav")
 
@@ -114,7 +114,7 @@
             ' Ermittle die komplette URL
             If MessageURL.IsStringNothingOrEmpty Then MessageURL = DatenService.CompleteURL(Message.Path)
             ' Herunterladen
-            Await DownloadToFileTaskAsync(New Uri(MessageURL), Pfad)
+            DatenService.DownloadMessage(MessageURL, Pfad)
         End If
     End Sub
 #End Region

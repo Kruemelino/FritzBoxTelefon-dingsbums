@@ -181,10 +181,12 @@ Public Class FBoxDataService
     End Sub
 
     Private Sub StoppMessage(MessageURL As String) Implements IFBoxDataService.StoppMessage
-
-
         StoppRecord(MessageURL)
+    End Sub
 
+    Public Async Sub DownloadMessage(MessageURL As String, FilePath As String) Implements IFBoxDataService.DownloadMessage
+        ' Herunterladen
+        Await DownloadToFileTaskAsync(New Uri(MessageURL), FilePath)
     End Sub
 
     Private Function CompleteURL(PathSegment As String) As String Implements IFBoxDataService.CompleteURL
@@ -352,6 +354,7 @@ Public Class FBoxDataService
 
         SoundPlayer.LocationURL = String.Empty
     End Sub
+
 
 #End Region
 

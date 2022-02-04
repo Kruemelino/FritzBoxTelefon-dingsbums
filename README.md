@@ -24,13 +24,16 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
   * [x] Rückwärtssuche
   * [x] [tellows](https://tellows.de) (Es wird ein kostenpflichtiger [API Key](https://shop.tellows.de/de/tellows-api-key.html) benötigt.)
 * [x] Ein- und Ausschalten der Rufumleitungen und Anrufbeantworter der Fritz!Box
-* [x] Abhören von Nachrichten auf dem Anrufbeantworter
+* [x] Abhören, Herunterladen und Löschen von Nachrichten auf dem Anrufbeantworter
 * [x] Protokollierung aller Telefonate
 * [x] Signalisierung der aktuellen Gesprächsdauer (Stoppuhr)
-* [x] Datentransfer zwischen Outlook und den Fritz!Box Telefonbüchern
+* [x] Bearbeiten von Kontakten in den Fritz!Box Telefonbüchern
+* [x] Hochladen von Outlook Kontakten zu den Fritz!Box Telefonbüchern
+* [x] Bearbeiten der Fritz!Box Sperrliste
 * [x] Nutzung der Softwaretelefonen ([Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org)) (PhonerLite wird nicht unterstützt)
 * [x] Rückruf- und Wahlwiederholungsliste
 * [x] VIP-Liste für häufig anzurufende Kontakte
+* [x] Anzeige verpasster Anrufe in einem Outlook Seitenfenster ([CustomTaskPane](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.tools.customtaskpane?view=vsto-2017))
 #### Ausschlüsse (was nicht geht)
 * [ ] Nutzung von angeschlossenen IP-Telefonen. Hier fehlt einfach die Unterstützung der Fritz!Box. Einzige Ausnahmen sind die Programme [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/), 
   da diese eine eigene Schnittstelle haben. 

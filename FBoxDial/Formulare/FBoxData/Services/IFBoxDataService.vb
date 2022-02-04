@@ -13,6 +13,7 @@ Public Interface IFBoxDataService
     Function DeleteMessage(Message As FBoxAPI.Message) As Boolean
     Sub PlayMessage(MessageURL As String)
     Sub StoppMessage(MessageURL As String)
+    Sub DownloadMessage(MessageURL As String, FilePath As String)
     Function CompleteURL(PathSegment As String) As String
 
     Event SoundFinished As EventHandler(Of NotifyEventArgs(Of String))
