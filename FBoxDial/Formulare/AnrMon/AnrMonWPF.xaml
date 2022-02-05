@@ -25,13 +25,76 @@
     <Window.DataContext>
         <fbd:AnrMonViewModel/>
     </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="28"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15" MaxHeight="15"/>
+            <RowDefinition Height="22" MaxHeight="22"/>
+            <RowDefinition/>
+            <RowDefinition Height="22" MaxHeight="22"/>
+        </Grid.RowDefinitions>
 
-    <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
+        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Margin="4,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Style="{StaticResource DefaultZeit}"
+                       Text="{Binding Path=Zeit, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=\{0:F\}}"/>
+
+            <TextBlock Grid.Column="1"
+                       Style="{StaticResource DefaultEigeneNummer}"
+                       Text="{Binding Path=EigeneTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+        </Grid>
+
+        <Image Width="72" Margin="4" 
+               Grid.Row="1"
+               Grid.Column="0" Grid.RowSpan="3"
+               Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+               Visibility="{Binding ZeigeBild, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"                             
+                   Style="{StaticResource DefaultNummer}"
+                   Text="{Binding Path=TelNr, FallbackValue='', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                   Visibility="{Binding ZeigeTelNr, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" >
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultMainInfo}">
+                    <Style.Triggers>
+
+                        <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="True">
+                            <Setter Property="Text" Value="{Binding Path=Anrufer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="False">
+                            <Setter Property="Text" Value="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        </DataTrigger>
+
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <!--Erweiterte Informationen-->
+        <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"                          
+                   Style="{StaticResource DefaultExtInfo}"
+                   Text="{Binding Path=AnrMonExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                   Visibility="{Binding ZeigeExInfo, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <StackPanel VerticalAlignment="Stretch" DockPanel.Dock="Right" Orientation="Vertical"
+                    Grid.Column="3" Grid.RowSpan="4">
 
             <Button Style="{StaticResource MiniIconButton}" 
                     Content="{DynamicResource Close_16x}"
-                    Command="{Binding CloseCommand}" IsCancel="True"
+                    Command="{Binding CloseCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
 
             <Button Style="{StaticResource MiniIconButton}"
@@ -44,66 +107,10 @@
 
             <Button Style="{StaticResource MiniIconButton}"
                     Content="{DynamicResource StatusNo_16x}" 
-                    Command="{Binding BlockCommand}" />
+                    Command="{Binding BlockCommand}" 
+                    Visibility="{Binding ZeigeBlockButton, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
         </StackPanel>
+    </Grid>
 
-        <Image Width="72" Margin="4,4,4,0" 
-                Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                Visibility="{Binding ZeigeBild, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-        <Grid Margin="4,1,0,1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="15"/>
-                <RowDefinition Height="22"/>
-                <RowDefinition/>
-                <RowDefinition Height="22"/>
-            </Grid.RowDefinitions>
-
-            <!--Zeit-->
-            <TextBlock Grid.Row="0" Grid.Column="0" 
-                       Style="{StaticResource AnrMonZeit}" Foreground="{StaticResource Foreground}"
-                       Text="{Binding Path=Zeit, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=\{0:F\}}"/>
-
-            <!--Gerät-->
-            <TextBlock Grid.Row="0" Grid.Column="1"
-                       Style="{StaticResource AnrMonEigeneNummer}" Foreground="{StaticResource Foreground}"
-                       Text="{Binding Path=AnrMonEigeneTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-
-            <!--Telefonnummer-->
-            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
-                       Style="{StaticResource AnrMonNummer}" Foreground="{StaticResource Foreground}"
-                       Text="{Binding Path=AnrMonTelNr, FallbackValue='', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"                           
-                       Visibility="{Binding ZeigeTelNr, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-            <!--Anrufer-->
-            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Foreground="{StaticResource Foreground}" >
-                <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource AnrMonMainInfo}">
-                        <Style.Triggers>
-
-                            <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="True">
-                                <Setter Property="Text" Value="{Binding Path=AnrMonAnrufer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                            </DataTrigger>
-
-                            <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="False">
-                                <Setter Property="Text" Value="{Binding Path=AnrMonTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                            </DataTrigger>
-
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-
-            <!--Firma-->
-            <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
-                       Style="{StaticResource AnrMonFirmenbezeichnung}" Foreground="{StaticResource Foreground}"
-                       Text="{Binding Path=AnrMonExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                       Visibility="{Binding ZeigeExInfo, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        </Grid>
-    </DockPanel>
 </Window>

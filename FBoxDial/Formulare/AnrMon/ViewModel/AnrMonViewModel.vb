@@ -41,34 +41,34 @@ Public Class AnrMonViewModel
         End Set
     End Property
 
-    Private _AnrMonEigeneTelNr As String
-    Public Property AnrMonEigeneTelNr As String
+    Private _EigeneTelNr As String
+    Public Property EigeneTelNr As String
         Get
-            Return _AnrMonEigeneTelNr
+            Return _EigeneTelNr
         End Get
         Set
-            SetProperty(_AnrMonEigeneTelNr, Value)
+            SetProperty(_EigeneTelNr, Value)
         End Set
     End Property
 
-    Private _AnrMonTelNr As String
-    Public Property AnrMonTelNr As String
+    Private _TelNr As String
+    Public Property TelNr As String
         Get
-            Return _AnrMonTelNr
+            Return _TelNr
         End Get
         Set
-            SetProperty(_AnrMonTelNr, Value)
+            SetProperty(_TelNr, Value)
             OnPropertyChanged(NameOf(ZeigeTelNr))
         End Set
     End Property
 
-    Private _AnrMonAnrufer As String
-    Public Property AnrMonAnrufer As String
+    Private _Anrufer As String
+    Public Property Anrufer As String
         Get
-            Return _AnrMonAnrufer
+            Return _Anrufer
         End Get
         Set
-            SetProperty(_AnrMonAnrufer, Value)
+            SetProperty(_Anrufer, Value)
             OnPropertyChanged(NameOf(ZeigeAnruferName))
             OnPropertyChanged(NameOf(ZeigeTelNr))
         End Set
@@ -145,6 +145,17 @@ Public Class AnrMonViewModel
             Return AnrMonTelefonat IsNot Nothing AndAlso Not AnrMonTelefonat.NrUnterdrückt
         End Get
     End Property
+
+    ''' <summary>
+    ''' Gibt zurück, ob der Anrufer auf die Sperrliste gesetzt werden kann.
+    ''' Dies ist nicht möglich, wenn der Kontakt in Outlook oder den Fritz!Box Telefonbüchern gefunden wurde.
+    ''' Ebenso ist es nicht möglich, wenn die Nummer unterdrückt ist.
+    ''' </summary>
+    Public ReadOnly Property ZeigeBlockButton As Boolean
+        Get
+            Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.AnruferUnbekannt
+        End Get
+    End Property
 #End Region
 
 #Region "ICommand"
@@ -161,7 +172,7 @@ Public Class AnrMonViewModel
         CloseCommand = New RelayCommand(AddressOf Close)
         CallCommand = New RelayCommand(AddressOf [Call], AddressOf CanCall)
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)
-        BlockCommand = New RelayCommand(AddressOf BlockNumber, AddressOf CanBlock)
+        BlockCommand = New RelayCommand(AddressOf BlockNumber)
 
         ' Window Command
         ClosingCommand = New RelayCommand(AddressOf Closing)
@@ -188,16 +199,16 @@ Public Class AnrMonViewModel
             Zeit = .ZeitBeginn
 
             ' Anrufende Telefonnummer
-            AnrMonTelNr = .GegenstelleTelNr?.Formatiert
+            TelNr = .GegenstelleTelNr?.Formatiert
 
             ' Anrufer Name setzen
-            AnrMonAnrufer = .AnruferName
+            Anrufer = .AnruferName
 
             ' Eigene Telefonnummer setzen
             If .EigeneTelNr Is Nothing AndAlso .OutEigeneTelNr.IsNotStringNothingOrEmpty Then
                 .EigeneTelNr = New Telefonnummer With {.SetNummer = AnrMonTelefonat.OutEigeneTelNr}
             End If
-            AnrMonEigeneTelNr = .EigeneTelNr?.Einwahl
+            EigeneTelNr = .EigeneTelNr?.Einwahl
 
             ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)
             AnrMonExInfo = .AnrMonExInfo
@@ -225,6 +236,8 @@ Public Class AnrMonViewModel
                 End If
             End With
         End If
+
+        OnPropertyChanged(NameOf(ZeigeBlockButton))
     End Sub
 
 #Region "Event Callback"
@@ -233,7 +246,7 @@ Public Class AnrMonViewModel
         With AnrMonTelefonat
             Select Case e.PropertyName
                 Case NameOf(Telefonat.AnruferName)
-                    AnrMonAnrufer = .AnruferName
+                    Anrufer = .AnruferName
                 Case NameOf(Telefonat.Firma), NameOf(Telefonat.AnrMonExInfo)
                     AnrMonExInfo = .AnrMonExInfo
                 Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsResult)
@@ -275,13 +288,6 @@ Public Class AnrMonViewModel
         End If
 
     End Sub
-    ''' <summary>
-    ''' Gibt zurück, ob der Anrufer auf die Sperrliste gesetzt werden kann.
-    ''' Dies ist nicht möglich, wenn der Kontakt in Outlook oder den Fritz!Box Telefonbüchern gefunden wurde.
-    ''' Ebenso ist es nicht möglich, wenn die Nummer unterdrückt ist.
-    ''' </summary>
-    Private Function CanBlock(o As Object) As Boolean
-        Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.AnruferUnbekannt
-    End Function
+
 #End Region
 End Class
