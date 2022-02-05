@@ -104,9 +104,10 @@ Imports FBoxDial.FritzBoxDefault
                             For Each AB In ABListe.Items.Where(Function(T) T.Display)
 
                                 Dim Telefon As New Telefoniegerät With {.Name = AB.Name,
-                                                    .TelTyp = TelTypen.TAM,
-                                                    .StrEinTelNr = New List(Of String),
-                                                    .Intern = InternBase.TAM + AB.Index}
+                                                                        .TelTyp = TelTypen.TAM,
+                                                                        .StrEinTelNr = New List(Of String),
+                                                                        .Intern = InternBase.TAM + AB.Index,
+                                                                        .AnrMonID = AnrMonTelIDBase.TAM + AB.Index}
 
                                 ' Ermittle die Nummer, auf den der AB reagiert.
                                 Dim TAMInfo As New FBoxAPI.TAMInfo

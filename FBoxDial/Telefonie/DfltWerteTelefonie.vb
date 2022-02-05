@@ -29,6 +29,7 @@ Public NotInheritable Class DfltWerteTelefonie
         Fax = 5
         DECT = 10
         IP = 20
+        TAM = 40
         S0 = 50
         Mobil = 99
     End Enum
