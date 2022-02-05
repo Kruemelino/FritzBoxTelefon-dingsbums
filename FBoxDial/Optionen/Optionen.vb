@@ -107,6 +107,10 @@
     ''' </summary>
     <XmlElement("CBAnrMonZeigeKontakt")> Public Property CBAnrMonZeigeKontakt As Boolean = False
     ''' <summary>
+    ''' Angabe, ob Anrufe, die an einen Anrufbeantworter gegangen sind, als verpasst behandelt werden sollen.
+    ''' </summary>
+    <XmlElement("CBIsTAMMissed")> Public Property CBIsTAMMissed As Boolean = True
+    ''' <summary>
     ''' Angabe, ob ein Kontaktbild angezeigt werden soll.
     ''' </summary>
     <XmlElement("CBAnrMonContactImage")> Public Property CBAnrMonContactImage As Boolean = True
@@ -134,6 +138,7 @@
     ''' Grundabstand des Anrufmonitors
     ''' </summary>
     <XmlElement("TBAnrMonAbstand")> Public Property TBAnrMonAbstand As Double = 10.0R
+#Region "CallPane"
     ''' <summary>
     ''' Angabe, ob verpasste Anrufe im CallPane angezeigt werden sollen.
     ''' </summary>
@@ -155,7 +160,7 @@
     ''' </summary>
     <XmlElement("TBCallPaneStartWidth")> Public Property TBCallPaneStartWidth As Integer = 400
 #End Region
-
+#End Region
 #Region "Stoppuhr"
     ''' <summary>
     ''' Angabe, ob die Stoppuhr angezeigt werden soll

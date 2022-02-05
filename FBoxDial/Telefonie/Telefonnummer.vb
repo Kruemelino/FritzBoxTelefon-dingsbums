@@ -316,6 +316,9 @@ Public Class Telefonnummer
     End Function
     Public Overloads Function Equals(other As String) As Boolean
 
+        ' Eine Nummer muss übergeben sein
+        If other.IsStringNothingOrEmpty Then Return False
+
         ' Keine internen Nummenr der Box vergleichen
         If other.StartsWith("*") Then Return False
 

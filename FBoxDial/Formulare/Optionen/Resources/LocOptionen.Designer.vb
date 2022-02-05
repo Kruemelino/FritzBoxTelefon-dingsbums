@@ -156,6 +156,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anrufbeantworter wie verpasste Anrufe behandeln ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAnrMonCBIsTAMMissed() As String
+            Get
+                Return ResourceManager.GetString("strAnrMonCBIsTAMMissed", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Blende Seitenfenster bei Outlookstart ein ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonCBShowCallPaneAtStart() As String

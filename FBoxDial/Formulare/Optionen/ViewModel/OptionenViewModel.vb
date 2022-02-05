@@ -193,6 +193,19 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBIsTAMMissed As Boolean = True
+    ''' <summary>
+    ''' Angabe, ob Anrufe, die an einen Anrufbeantworter gegangen sind, als verpasst behandelt werden sollen.
+    ''' </summary>
+    Public Property CBIsTAMMissed As Boolean
+        Get
+            Return _CBIsTAMMissed
+        End Get
+        Set
+            SetProperty(_CBIsTAMMissed, Value)
+        End Set
+    End Property
+
     Private _CBAnrMonBlockNr As Boolean
     ''' <summary>
     ''' Angabe, ob der Anrufmonitor eingeblendet werden soll, falls sich der Anrufer auf der Sperrliste befindet

@@ -127,6 +127,16 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
+    Private _TAMMessagePath As String
+    <XmlElement> Public Property TAMMessagePath As String
+        Get
+            Return _TAMMessagePath
+        End Get
+        Set
+            SetProperty(_TAMMessagePath, Value)
+        End Set
+    End Property
+
     <XmlIgnore> Friend ReadOnly Property AnrMonExInfo As String
         Get
             If Firma.IsNotStringNothingOrEmpty Then
@@ -432,7 +442,7 @@ Imports Microsoft.Office.Interop
                     Case 3 ' Nebenstellennummer, eindeutige Zuordnung des Telefons
                         NebenstellenNummer = CInt(FBStatus(i))
                     Case 4 ' Gewählte Telefonnummer (CALL) bzw. eingehende Telefonnummer (RING)
-                        GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
+                        If Not GegenstelleTelNr.Equals(FBStatus(i)) Then GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
                 End Select
             Next
 
@@ -745,6 +755,9 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
+    ''' <summary>
+    ''' Routine zum erstellen eines Outlook Journaleintrages.
+    ''' </summary>
     Friend Sub ErstelleJournalEintrag()
 
         If XMLData.POptionen.CBJournal Then
@@ -835,6 +848,9 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
+    ''' <summary>
+    ''' Routine zum Aktialisieren der Wahlwiederholungs- und Rückrufliste. Das Telefonat wird in die entsprechende Liste aufgenommen.
+    ''' </summary>
     Friend Sub UpdateRingCallList()
 
         If XMLData.POptionen.CBAnrListeUpdateCallLists Then
@@ -853,12 +869,54 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
+    ''' <summary>
+    ''' Routine zum Aktualisieren des Outlook Seitenfensters. Das Telefonat wird in die Liste aufgenommen.
+    ''' </summary>
     Private Sub SetMissedCallPane()
         If XMLData.POptionen.CBShowMissedCallPane Then
             If Not Angenommen And AnrufRichtung = AnrufRichtungen.Eingehend Then
                 ' Schleife durch jeden offenen Explorer
                 Globals.ThisAddIn.ExplorerWrappers.Values.ToList.ForEach(Sub(ew) ew.AddMissedCall(Me))
             End If
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Routine zur Ermittlung der aufgenommenen Nachricht auf einem der eingerichteten Fritz!Box Anrufbeantworter.
+    ''' </summary>
+    Private Sub GetTAMMessage()
+        ' Wenn der Fritz!Box Anrufbeantworter rangegangen ist, liegt eine Nachricht ggf. vor. Anhand der Gegenstellennummer, der eigenen Nummer und der Anrufzeit wird der Eintrag ermittelt.
+
+        ' Überrpüfung, ob ein Anrufbeantworter rangegangen ist
+        If TelGerät?.TelTyp = DfltWerteTelefonie.TelTypen.TAM Then
+            Using FBoxTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
+                ' lade die MessageList herunter, Ermittle anhand der ID den relevanten Anrufbeantworter
+                Dim TAM_ID As Integer = TelGerät.AnrMonID - DfltWerteTelefonie.AnrMonTelIDBase.TAM
+                With GetTAMMessagges(FBoxTR064, TAM_ID)
+                    ' Im Fehlerfall ist die Liste leer.
+                    ' Es wird verglichen:
+                    ' A: Gegenstellennummer mit der Nummer des anrufenden
+                    ' B: Eigene Nummer, welche Angerufen wurde
+                    ' C: Zeit des Verbindens: Die Zeit wird ohne Sekundenangabe übergeben. Daher wird diese rausgerechnet
+                    Dim MList As IEnumerable(Of FBoxAPI.Message) = .Where(Function(M) GegenstelleTelNr.Equals(M.Number) AndAlso
+                                                                                      EigeneTelNr.Equals(M.Called) AndAlso
+                                                                                      ZeitVerbunden.AddSeconds(-ZeitVerbunden.Second).Equals(CDate(M.Date)))
+                    If MList.Any Then
+                        If MList.Count.AreEqual(1) Then
+                            With MList.First
+                                ' Wenn Messages gefunden wurden...
+                                NLogger.Debug($"Anrufbeantworter ({TAM_ID}): Benachrichtigung gefunden ({ .Index}): { .Date}, { .Number}, { .Path}")
+
+                                ' Merke den Pfad zur Audiodatei
+                                TAMMessagePath = .Path
+                            End With
+                        Else
+                            NLogger.Warn($"Es wurden mehr als eine passende TAM Benachrichtigung gefunden.")
+                        End If
+
+                    End If
+                End With
+            End Using
         End If
     End Sub
 
@@ -917,13 +975,19 @@ Imports Microsoft.Office.Interop
     End Sub
 
     Private Sub AnrMonCONNECT()
-        Angenommen = True
 
         If IstRelevant Then
             ' Telefoniegerät ermitteln
             TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
-            If TelGerät Is Nothing Then NLogger.Warn($"Telefoniegerät für Anruf {ID} mit AnrMonID {NebenstellenNummer} nicht gefunden.")
+            ' Setze Flag, dass das Telefonat angenommen wurde.
+            If TelGerät Is Nothing Then
+                NLogger.Warn($"Telefoniegerät für Anruf {ID} mit AnrMonID {NebenstellenNummer} nicht gefunden.")
+                ' Eine überprüfung, ob es sich um ein TAM handelt, kann nicht durchgeführt werden.
+                Angenommen = True
+            Else
+                Angenommen = Not (TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM AndAlso XMLData.POptionen.CBIsTAMMissed)
+            End If
 
             ' Anrufmonitor ausblenden einleiten, falls dies beim CONNECT geschehen soll
             If XMLData.POptionen.CBAutoClose And XMLData.POptionen.CBAnrMonHideCONNECT Then
@@ -950,10 +1014,14 @@ Imports Microsoft.Office.Interop
 
             ' Journaleintrag
             ErstelleJournalEintrag()
+
+            ' Ermittle die aufgenommene Benachrichtigung des Anrufbeantwortes
+            GetTAMMessage()
         End If
 
     End Sub
 
+#Region "Anrufmonitor-Fenster"
     Friend Sub AnrMonEinblenden()
         ' Zeige den Anrufmonitor nur an, wenn gerade nicht schon eingeblendet.
         If Not AnrMonEingeblendet Then
@@ -994,39 +1062,6 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
-    Friend Sub StoppUhrEinblenden()
-        If Not StoppUhrEingeblendet Then
-            ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
-            If Globals.ThisAddIn.OffeneStoppUhrWPF Is Nothing Then Globals.ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
-
-            ' Erstelle einen neues Popup
-            PopupStoppUhrWPF = New StoppUhrWPF
-
-            ' Merke den aktuell offenen Inspektor
-            KeepoInspActivated(False)
-
-            With PopupStoppUhrWPF
-                ' Übergib dieses Telefonat an das Viewmodel
-                With CType(.DataContext, StoppUhrViewModel)
-                    ' Übergib dieses Telefonat an das Viewmodel
-                    .StoppUhrTelefonat = Me
-                End With
-                ' Zeige den ANrufmonitor an
-                .Show()
-            End With
-
-            StoppUhrEingeblendet = True
-
-            ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
-            Globals.ThisAddIn.OffeneStoppUhrWPF.Add(PopupStoppUhrWPF)
-
-            ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
-            AddHandler PopupStoppUhrWPF.Geschlossen, AddressOf PopupStoppUhrGeschlossen
-
-            KeepoInspActivated(True)
-        End If
-    End Sub
-
     Private Sub PopupAnrMonGeschlossen(sender As Object, e As EventArgs)
 
         AnrMonEingeblendet = False
@@ -1037,30 +1072,6 @@ Imports Microsoft.Office.Interop
 
         PopUpAnrMonWPF = Nothing
     End Sub
-
-    Private Sub PopupStoppUhrGeschlossen(sender As Object, e As EventArgs)
-
-        StoppUhrEingeblendet = False
-        ' Entferne die Stoppuhr von der Liste der offenen Popups
-        Globals.ThisAddIn.OffeneStoppUhrWPF.Remove(PopupStoppUhrWPF)
-        NLogger.Debug($"Stoppuhr geschlossen: {NameGegenstelle}: Noch {Globals.ThisAddIn.OffeneStoppUhrWPF.Count} offene Stoppuhren")
-
-        PopupStoppUhrWPF = Nothing
-    End Sub
-
-    Public Function StartSTATask(Of T)(func As Func(Of T)) As Task(Of T)
-        Dim tcs = New TaskCompletionSource(Of T)()
-        Dim thread As New Thread(Sub()
-                                     Try
-                                         tcs.SetResult(func())
-                                     Catch e As Exception
-                                         tcs.SetException(e)
-                                     End Try
-                                 End Sub)
-        thread.SetApartmentState(ApartmentState.STA)
-        thread.Start()
-        Return tcs.Task
-    End Function
 
     Private Async Sub ShowAnrMon()
 
@@ -1094,6 +1105,52 @@ Imports Microsoft.Office.Interop
 
     End Sub
 
+#End Region
+
+#Region "Stoppuhr-Fenster"
+    Friend Sub StoppUhrEinblenden()
+        If Not StoppUhrEingeblendet Then
+            ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
+            If Globals.ThisAddIn.OffeneStoppUhrWPF Is Nothing Then Globals.ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
+
+            ' Erstelle einen neues Popup
+            PopupStoppUhrWPF = New StoppUhrWPF
+
+            ' Merke den aktuell offenen Inspektor
+            KeepoInspActivated(False)
+
+            With PopupStoppUhrWPF
+                ' Übergib dieses Telefonat an das Viewmodel
+                With CType(.DataContext, StoppUhrViewModel)
+                    ' Übergib dieses Telefonat an das Viewmodel
+                    .StoppUhrTelefonat = Me
+                End With
+                ' Zeige den ANrufmonitor an
+                .Show()
+            End With
+
+            StoppUhrEingeblendet = True
+
+            ' Füge dieses Anruffenster der Liste eingeblendeten Anrufmonitorfenster hinzu
+            Globals.ThisAddIn.OffeneStoppUhrWPF.Add(PopupStoppUhrWPF)
+
+            ' Fügen den Ereignishandler hinzu, der das Event für 'Geschlossen' verarbeitet
+            AddHandler PopupStoppUhrWPF.Geschlossen, AddressOf PopupStoppUhrGeschlossen
+
+            KeepoInspActivated(True)
+        End If
+    End Sub
+
+    Private Sub PopupStoppUhrGeschlossen(sender As Object, e As EventArgs)
+
+        StoppUhrEingeblendet = False
+        ' Entferne die Stoppuhr von der Liste der offenen Popups
+        Globals.ThisAddIn.OffeneStoppUhrWPF.Remove(PopupStoppUhrWPF)
+        NLogger.Debug($"Stoppuhr geschlossen: {NameGegenstelle}: Noch {Globals.ThisAddIn.OffeneStoppUhrWPF.Count} offene Stoppuhren")
+
+        PopupStoppUhrWPF = Nothing
+    End Sub
+
     Private Async Sub ShowStoppUhr()
 
         Await StartSTATask(Function() As Boolean
@@ -1110,6 +1167,21 @@ Imports Microsoft.Office.Interop
                                Return False
                            End Function)
     End Sub
+
+#End Region
+    Public Function StartSTATask(Of T)(func As Func(Of T)) As Task(Of T)
+        Dim tcs = New TaskCompletionSource(Of T)()
+        Dim thread As New Thread(Sub()
+                                     Try
+                                         tcs.SetResult(func())
+                                     Catch e As Exception
+                                         tcs.SetException(e)
+                                     End Try
+                                 End Sub)
+        thread.SetApartmentState(ApartmentState.STA)
+        thread.Start()
+        Return tcs.Task
+    End Function
 
 #End Region
 

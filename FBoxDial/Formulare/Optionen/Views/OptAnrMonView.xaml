@@ -47,7 +47,11 @@
                 <CheckBox Style="{StaticResource OptCheckBox}"
                           Content="{x:Static localize:LocOptionen.strJournalCBJournalBlockNr}" 
                           IsChecked="{Binding OptVM.CBAnrMonBlockNr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        
+                
+                <CheckBox Style="{StaticResource OptCheckBox}"
+                          Content="{x:Static localize:LocOptionen.strAnrMonCBIsTAMMissed}" 
+                          IsChecked="{Binding OptVM.CBIsTAMMissed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                
                 <CheckBox Style="{StaticResource OptCheckBox}"
                           Content="{x:Static localize:LocOptionen.strAnrMonCBAnrMonZeigeKontakt}" 
                           IsChecked="{Binding OptVM.CBAnrMonZeigeKontakt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

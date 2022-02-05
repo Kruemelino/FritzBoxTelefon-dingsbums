@@ -35,6 +35,23 @@ Public Class MissedCallViewModel
             Return VerpasstesTelefonat IsNot Nothing AndAlso Not VerpasstesTelefonat.NrUnterdrückt
         End Get
     End Property
+
+    Public ReadOnly Property TAMMessageAvailable As Boolean
+        Get
+            Return VerpasstesTelefonat IsNot Nothing AndAlso VerpasstesTelefonat.TAMMessagePath.IsNotStringNothingOrEmpty
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Gibt zurück, ob der Anrufer auf die Sperrliste gesetzt werden kann.
+    ''' Dies ist nicht möglich, wenn der Kontakt in Outlook oder den Fritz!Box Telefonbüchern gefunden wurde.
+    ''' Ebenso ist es nicht möglich, wenn die Nummer unterdrückt ist.
+    ''' </summary>
+    Public ReadOnly Property ZeigeBlockButton As Boolean
+        Get
+            Return VerpasstesTelefonat IsNot Nothing AndAlso VerpasstesTelefonat.AnruferUnbekannt
+        End Get
+    End Property
 #End Region
 
 #Region "Eigenschaften"
@@ -131,16 +148,27 @@ Public Class MissedCallViewModel
         End Set
     End Property
 
-#End Region
+    Private _IsPlaying As Boolean
+    Public Property IsPlaying As Boolean
+        Get
+            Return _IsPlaying
+        End Get
+        Set
+            SetProperty(_IsPlaying, Value)
+        End Set
+    End Property
 
+    Public Property MessageURL As String
+
+#End Region
 
 #Region "ICommand"
     Public Property CloseCommand As RelayCommand
     Public Property CallCommand As RelayCommand
     Public Property ShowContactCommand As RelayCommand
     Public Property BlockCommand As RelayCommand
+    Public Property PlayMessageCommand As RelayCommand
 #End Region
-
     Public Sub New(dataService As IAnrMonService, dialogservice As IDialogService)
 
         ' Interface
@@ -150,7 +178,8 @@ Public Class MissedCallViewModel
         CloseCommand = New RelayCommand(AddressOf Close)
         CallCommand = New RelayCommand(AddressOf [Call], AddressOf CanCall)
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)
-        BlockCommand = New RelayCommand(AddressOf BlockNumber, AddressOf CanBlock)
+        BlockCommand = New RelayCommand(AddressOf BlockNumber)
+        PlayMessageCommand = New RelayCommand(AddressOf PlayMessage)
     End Sub
 
     Private Async Sub LadeDaten()
@@ -200,6 +229,9 @@ Public Class MissedCallViewModel
                 End If
             End With
         End If
+
+        OnPropertyChanged(NameOf(ZeigeBlockButton))
+
     End Sub
 
 #Region "Event Callback"
@@ -213,6 +245,8 @@ Public Class MissedCallViewModel
                     ExInfo = .AnrMonExInfo
                 Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsResult)
                     UpdateData()
+                Case NameOf(Telefonat.TAMMessagePath)
+                    OnPropertyChanged(NameOf(TAMMessageAvailable))
                 Case Else
                     ' Nix tun
             End Select
@@ -247,14 +281,43 @@ Public Class MissedCallViewModel
             DatenService.RemoveMissedCall(Me)
         End If
     End Sub
-    ''' <summary>
-    ''' Gibt zurück, ob der Anrufer auf die Sperrliste gesetzt werden kann.
-    ''' Dies ist nicht möglich, wenn der Kontakt in Outlook oder den Fritz!Box Telefonbüchern gefunden wurde.
-    ''' Ebenso ist es nicht möglich, wenn die Nummer unterdrückt ist.
-    ''' </summary>
-    Private Function CanBlock(o As Object) As Boolean
-        Return VerpasstesTelefonat IsNot Nothing AndAlso VerpasstesTelefonat.AnruferUnbekannt
-    End Function
+
+
+    Private Sub PlayMessage(o As Object)
+
+        If CBool(o) Then
+            ' Playback Stoppen
+            ' Setze das Flag, dass das Abhören der Message abgebrochen wird.
+            IsPlaying = False
+
+            DatenService.StoppMessage(MessageURL)
+        Else
+            ' Ereignishandler hinzufügem
+            AddHandler DatenService.SoundFinished, AddressOf DatenService_SoundFinished
+            ' Setze das Flag, dass die Message abgehört wird.
+            IsPlaying = True
+            ' Ermittle die komplette URL
+            If MessageURL.IsStringNothingOrEmpty Then MessageURL = DatenService.CompleteURL(VerpasstesTelefonat.TAMMessagePath)
+            ' Spiele die Message ab.
+            DatenService.PlayMessage(MessageURL)
+
+        End If
+
+    End Sub
+
+    Private Sub DatenService_SoundFinished(sender As Object, e As NotifyEventArgs(Of String))
+
+        ' Prüfe, ob die beendete Wiedergabe zu dieser TAM Message gehört.
+        If e.Value.IsEqual(MessageURL) Then
+            ' Enferne Ereignishandler
+            RemoveHandler DatenService.SoundFinished, AddressOf DatenService_SoundFinished
+
+            ' Setze das Flag, dass die Message nicht mehr abgehört wird.
+            IsPlaying = False
+        End If
+
+    End Sub
+
 #End Region
 
 

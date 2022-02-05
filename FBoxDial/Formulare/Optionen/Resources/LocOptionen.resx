@@ -158,6 +158,10 @@ Sekundarfarbe: Schrift</value>
     <value>Anrufmonitor bei Rufannahme ausblenden</value>
     <comment>OptAnrMonView</comment>
   </data>
+  <data name="strAnrMonCBIsTAMMissed" xml:space="preserve">
+    <value>Anrufbeantworter wie verpasste Anrufe behandeln</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strAnrMonCBShowCallPaneAtStart" xml:space="preserve">
     <value>Blende Seitenfenster bei Outlookstart ein</value>
     <comment>OptAnrMonView</comment>
@@ -180,6 +184,7 @@ Sekundarfarbe: Schrift</value>
   </data>
   <data name="strAnrMonHeadSidePane" xml:space="preserve">
     <value>Einstellungen für das Seitenfenster verpasster Anrufe</value>
+    <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonHeadStoppUhr" xml:space="preserve">
     <value>Einstellungen für die Stoppuhr</value>

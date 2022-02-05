@@ -47,4 +47,14 @@
             End Using
         End Get
     End Property
+
+    Friend Shared Function CompleteURL(FBoxTR064 As FBoxAPI.FritzBoxTR64, PathSegment As String) As String
+        Dim SessionID As String = DfltFritzBoxSessionID
+        ' Ermittle die SessionID. Sollte das schief gehen, kommt es zu einer Fehlermeldung im Log.
+        If FBoxTR064.Deviceconfig.GetSessionID(SessionID) Then
+            Return $"https://{XMLData.POptionen.ValidFBAdr}:{DfltTR064PortSSL}{PathSegment}&{SessionID}"
+        Else
+            Return String.Empty
+        End If
+    End Function
 End Class

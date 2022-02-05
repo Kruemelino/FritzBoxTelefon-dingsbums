@@ -1,5 +1,4 @@
 ﻿Imports System.Threading.Tasks
-Imports System.Windows.Media
 
 Public Class FBoxDataService
     Implements IFBoxDataService
@@ -113,63 +112,19 @@ Public Class FBoxDataService
     End Function
 
     Private Function GetMessagges(TAM As FBoxAPI.TAMItem) As IEnumerable(Of FBoxAPI.Message) Implements IFBoxDataService.GetMessagges
-
-        Dim MessageListURL As String = String.Empty
-        ' Wenn der TAM angezeigt wird, dann ermittle die URL via TR064 zur MessageList
-        If TAM.Display AndAlso FBoxTR064.X_tam.GetMessageList(MessageListURL, TAM.Index) Then
-            Dim MessageList As New FBoxAPI.MessageList
-            ' Deserialisiere die MessageList
-            If DeserializeXML(MessageListURL, True, MessageList) Then
-                NLogger.Debug($"{MessageList.Messages.Count} TAM Einträge von {MessageListURL} eingelesen.")
-                Return MessageList.Messages
-            Else
-                NLogger.Warn($"TAM Einträge von {MessageListURL} nicht eingelesen.")
-            End If
-        End If
-        ' Gib eine leere Liste Zurück
-        Return New List(Of FBoxAPI.Message)
+        Return GetTAMMessagges(FBoxTR064, TAM)
     End Function
 
     Private Function ToggleTAM(TAM As FBoxAPI.TAMItem) As Boolean Implements IFBoxDataService.ToggleTAM
-        ' Ermittle den aktuellen Status des Anrufbeantworters von der Fritz!Box
-        With FBoxTR064.X_tam
-
-            Dim TAMInfo As New FBoxAPI.TAMInfo
-            ' Lade die erweiterten TAM Infosätze herunter
-            If FBoxTR064.X_tam.GetTAMInfo(TAMInfo, TAM.Index) Then
-                Dim NewEnableState As Boolean = Not TAMInfo.Enable
-
-                If .SetEnable(TAM.Index, NewEnableState) Then TAM.Enable = NewEnableState
-
-                NLogger.Info($"Anrufbeantworter {TAM.Name} ({TAM.Index}) {If(NewEnableState, "aktiviert", "deaktiviert")}.")
-
-            End If
-        End With
-        Return TAM.Enable
+        Return ToggleTAMItem(FBoxTR064, TAM)
     End Function
 
     Private Function MarkMessage(Message As FBoxAPI.Message) As Boolean Implements IFBoxDataService.MarkMessage
-        With Message
-            ' Andersrum: If the MarkedAsRead state variable is set to 1, the message is marked as read, when it is 0, the message is marked as unread.
-            Dim NewMarkState As Boolean = .[New]
-            If FBoxTR064.X_tam.MarkMessage(.Tam, .Index, NewMarkState) Then
-                .[New] = Not NewMarkState
-
-                NLogger.Info($"Anrufbeantworter Message {Message.Index} auf {If(Message.[New], "neu", "abgehört")} gesetzt.")
-
-            Else
-
-                NLogger.Warn($"Anrufbeantworter Message {Message.Index} nicht auf {If(Message.[New], "neu", "abgehört")} gesetzt.")
-
-            End If
-            Return .[New]
-        End With
+        Return MarkTAMMessage(FBoxTR064, Message)
     End Function
 
     Private Function DeleteMessage(Message As FBoxAPI.Message) As Boolean Implements IFBoxDataService.DeleteMessage
-        With Message
-            Return FBoxTR064.X_tam.DeleteMessage(.Tam, .Index)
-        End With
+        Return DeleteTAMMessage(FBoxTR064, Message)
     End Function
 
     Private Sub PlayMessage(MessageURL As String) Implements IFBoxDataService.PlayMessage
@@ -190,10 +145,7 @@ Public Class FBoxDataService
     End Sub
 
     Private Function CompleteURL(PathSegment As String) As String Implements IFBoxDataService.CompleteURL
-        Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
-        ' Ermittle die SessionID. Sollte das schief gehen, kommt es zu einer Fehlermeldung im Log.
-        FBoxTR064.Deviceconfig.GetSessionID(SessionID)
-        Return If(SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{PathSegment}&{SessionID}", String.Empty)
+        Return FritzBoxDefault.CompleteURL(FBoxTR064, PathSegment)
     End Function
 
 #End Region
@@ -354,7 +306,6 @@ Public Class FBoxDataService
 
         SoundPlayer.LocationURL = String.Empty
     End Sub
-
 
 #End Region
 

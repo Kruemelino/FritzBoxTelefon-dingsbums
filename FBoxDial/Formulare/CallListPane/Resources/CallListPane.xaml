@@ -1,55 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
-    
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <!--Nutze die Definitionen des Anrufmonitors-->
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
+        <ResourceDictionary Source="../../AnrMon/Resources/AnrMon.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
-    <Style x:Key="DefaultZeit" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="NoWrap" />
-        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="FontSize" Value="10" />        
-    </Style>
-
-    <Style x:Key="DefaultEigeneNummer" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="NoWrap" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="FontSize" Value="10" />
-        <Setter Property="TextAlignment" Value="Right" />
-        <Setter Property="TextTrimming" Value="CharacterEllipsis" />        
-    </Style>
-
-    <Style x:Key="DefaultMainInfo" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="NoWrap" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource ControlSelectedBackground}"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style x:Key="DefaultNummer" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="NoWrap" />
-        <Setter Property="VerticalAlignment" Value="Bottom" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-    </Style>
-
-    <Style x:Key="DefaultExtInfo" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="NoWrap" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-    </Style>
 
 </ResourceDictionary>
