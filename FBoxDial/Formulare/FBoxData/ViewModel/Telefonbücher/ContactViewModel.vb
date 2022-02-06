@@ -1,6 +1,8 @@
 ﻿Public Class ContactViewModel
     Inherits NotifyBase
 
+    Private Property DatenService As IFBoxDataService
+
 #Region "Models"
     Public Property Kontakt As FBoxAPI.Contact
     Public Property KontaktKlone As FBoxAPI.Contact
@@ -28,21 +30,6 @@
     End Property
 
     Private _Uniqueid As Integer
-
-    Public Sub New(contact As FBoxAPI.Contact)
-        _Kontakt = contact
-        If Kontakt IsNot Nothing Then
-            With Kontakt
-                ' Setze Felder
-                Kategorie = .Category
-                Uniqueid = .Uniqueid
-
-                Person = New PersonViewModel(.Person)
-                Telefonie = New TelephonyViewModel(.Telephony)
-            End With
-        End If
-    End Sub
-
     ''' <summary>
     ''' Unique ID for a single contact (new since 2013-04-20) 
     ''' </summary> 
@@ -55,6 +42,24 @@
             Kontakt.Uniqueid = Value
         End Set
     End Property
-
 #End Region
+
+    Public Sub New(dataservice As IFBoxDataService, contact As FBoxAPI.Contact)
+        ' Datenservice übernehmen
+        DatenService = dataservice
+        ' übergebenen Kontakt übernehmen
+        _Kontakt = contact
+
+        If Kontakt IsNot Nothing Then
+            With Kontakt
+                ' Setze Felder
+                Kategorie = .Category
+                Uniqueid = .Uniqueid
+
+                Person = New PersonViewModel(DatenService, .Person)
+                Telefonie = New TelephonyViewModel(.Telephony)
+
+            End With
+        End If
+    End Sub
 End Class

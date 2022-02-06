@@ -72,7 +72,7 @@
                                                  Grid.Column="0" 
                                                  Style="{StaticResource ToggleButtonStyle}" 
                                                  Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
-                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.LadeFritzBoxKontakte}"
+                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.BookVM.LadeFritzBoxTelefonbuch}"
                                                  CommandParameter="{Binding}"
                                                  IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  Visibility="{Binding Path=IsBookDisplayMode, Converter={StaticResource BoolToVisibilityConverter}}"/>

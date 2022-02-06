@@ -118,7 +118,7 @@ Public Class KontaktViewModel
 
     End Sub
 
-    Public Sub LadeKontakte(Telefonbuch As PhonebookViewModel)
+    Public Sub SetupFilter(Telefonbuch As PhonebookViewModel)
 
         FBoxTelefonbuch = Telefonbuch
 
@@ -171,7 +171,7 @@ Public Class KontaktViewModel
         Dim NeuerKontakt As FBoxAPI.Contact = CreateContact("N/A")
 
         ' Neues KontaktViewModel erzeugen
-        Dim NeuesKontaktVM = New ContactViewModel(NeuerKontakt)
+        Dim NeuesKontaktVM = New ContactViewModel(DatenService, NeuerKontakt)
 
         ' Füge den Kontakt hinzu ...
         ' ... dem Fritz!Box Telefonbuch
@@ -222,7 +222,7 @@ Public Class KontaktViewModel
 #Region "Kontakt editieren"
     Private Sub CancelEdit(o As Object)
         ' Setze den Clone zurück
-        FBoxKontakt = New ContactViewModel(XMLClone(FBoxKontakt.KontaktKlone))
+        FBoxKontakt = New ContactViewModel(DatenService, XMLClone(FBoxKontakt.KontaktKlone))
 
         ' Beende den Editiermodus
         IsEditMode = False

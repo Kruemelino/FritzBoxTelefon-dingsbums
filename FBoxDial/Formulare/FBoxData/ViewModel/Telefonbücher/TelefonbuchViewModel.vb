@@ -39,7 +39,7 @@ Public Class TelefonbuchViewModel
 
 #Region "ICommand"
     Public Property LadeFritzBoxTelefonbücher As ICommand
-    Public Property LadeFritzBoxKontakte As ICommand
+    Public Property LadeFritzBoxTelefonbuch As ICommand
     Public Property NeuesFritzBoxTelefonbuch As ICommand
     Public Property LöscheFritzBoxTelefonbuch As ICommand
     Public Property NeuerTelefonbuchName As ICommand
@@ -53,7 +53,7 @@ Public Class TelefonbuchViewModel
         DialogService = IDialogeService
 
         LadeFritzBoxTelefonbücher = New RelayCommand(AddressOf LadeTelefonbücher)
-        LadeFritzBoxKontakte = New RelayCommand(AddressOf LadeKontakte)
+        LadeFritzBoxTelefonbuch = New RelayCommand(AddressOf LadeTelefonbuch)
 
         NeuesFritzBoxTelefonbuch = New RelayCommand(AddressOf NeuesTelefonbuch, AddressOf CanAdd)
         LöscheFritzBoxTelefonbuch = New RelayCommand(AddressOf LöscheTelefonbuch, AddressOf CanRemove)
@@ -64,6 +64,9 @@ Public Class TelefonbuchViewModel
 
 #Region "ICommand Callback"
 #Region "Telefonbücher Laden"
+    ''' <summary>
+    ''' Initiiert ein erneutes Herunterladen der Telefonbücher durch Klick auf den Button.
+    ''' </summary>
     Private Async Sub LadeTelefonbücher(o As Object)
         ' leere die Collection
         Telefonbücher.Clear()
@@ -75,8 +78,10 @@ Public Class TelefonbuchViewModel
     Friend Sub InitTelefonbücher(Bücher As IEnumerable(Of PhonebookEx))
         If Bücher IsNot Nothing Then
             Telefonbücher.AddRange(Bücher.Select(Function(pb) New PhonebookViewModel(DatenService, pb)))
-
-            If Telefonbücher.Any Then LadeKontakte(Telefonbücher.First)
+            ' Selektiere das erste Telefonbuch
+            ' Dies ist deaktiviert, da es sonst automatisch beim Starten der Fritz!Box Daten alle Bilder dieses Telefonbuches geladen werde. 
+            ' Das kann zu sehr unschönen Effekten führen. Insbesondere, wenn die Bilder nicht verfügbar sind.
+            'LadeTelefonbuch(Telefonbücher.First)
         End If
     End Sub
 #End Region
@@ -113,8 +118,7 @@ Public Class TelefonbuchViewModel
             End If
 
             OnPropertyChanged(NameOf(Telefonbücher))
-            LadeKontakte(o)
-
+            LadeTelefonbuch(o)
         End With
 
     End Sub
@@ -152,14 +156,13 @@ Public Class TelefonbuchViewModel
 #End Region
 
 #Region "Kontakte Laden"
-    Private Sub LadeKontakte(o As Object)
-
+    Private Sub LadeTelefonbuch(o As Object)
+        ' Setze das übergebene Telefonbuch
         Telefonbuch = CType(o, PhonebookViewModel)
-
+        ' Setze Flag, dass es selektiert ist
         Telefonbuch.IsSelected = True
-
-        ContactsVM.LadeKontakte(Telefonbuch)
-
+        ' Aktualisiere die Filterfunktion
+        ContactsVM.SetupFilter(Telefonbuch)
     End Sub
 
 #End Region

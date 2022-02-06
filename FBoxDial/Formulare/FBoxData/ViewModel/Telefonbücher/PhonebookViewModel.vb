@@ -3,7 +3,7 @@
 Public Class PhonebookViewModel
     Inherits NotifyBase
     Private Property DatenService As IFBoxDataService
-    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    ' Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Models"
     Public Property Telefonbuch As PhonebookEx
@@ -35,9 +35,15 @@ Public Class PhonebookViewModel
 
         _ID = Telefonbuch.ID
 
-        Contacts = New ObservableCollectionEx(Of ContactViewModel)(Telefonbuch.Phonebook.Contacts.Select(Function(C) New ContactViewModel(C)))
+    End Sub
 
-        ' LadeBilder()
+    ''' <summary>
+    ''' Lädt die Kontakte in die ObservableCollection, falls noch nicht geschehen. 
+    ''' </summary>
+    Private Sub LadeKontakte()
+        If Contacts Is Nothing Then
+            Contacts = New ObservableCollectionEx(Of ContactViewModel)(Telefonbuch.Phonebook.Contacts.Select(Function(C) New ContactViewModel(DatenService, C)))
+        End If
     End Sub
 
 #Region "Eigene Eigenschaften"
@@ -67,20 +73,10 @@ Public Class PhonebookViewModel
         End Get
         Set
             SetProperty(_IsSelected, Value)
+            ' Wenn das Telefonbuch selektiert wird, sollen die Kontakte geladen werden.
+            If Value Then LadeKontakte()
         End Set
     End Property
-#End Region
-
-#Region "Eigene Routinen"
-    Private Async Sub LadeBilder()
-
-        For Each Contact In Contacts
-            Contact.Person.ImageData = Await Dispatcher.CurrentDispatcher.Invoke(Async Function() As Threading.Tasks.Task(Of Windows.Media.ImageSource)
-                                                                                     Return Await DatenService.LadeKontaktbild(Contact.Person.Person)
-                                                                                 End Function)
-
-        Next
-    End Sub
 #End Region
 
 End Class

@@ -2,7 +2,7 @@
 
 Public Class PersonViewModel
     Inherits NotifyBase
-
+    Private Property DatenService As IFBoxDataService
 #Region "Models"
     Public Property Person As FBoxAPI.Person
 #End Region
@@ -33,9 +33,20 @@ Public Class PersonViewModel
     End Property
 
 #End Region
-    Public Sub New(person As FBoxAPI.Person)
+    Public Sub New(dataservice As IFBoxDataService, person As FBoxAPI.Person)
+        DatenService = dataservice
+
         _Person = person
         ' Setze Felder
         RealName = person.RealName
+
+        ' Kontaktbiler
+        If person.ImageURL.IsNotStringNothingOrEmpty Then LadeBild()
     End Sub
+
+#Region "Routinen für Personen"
+    Private Async Sub LadeBild()
+        ImageData = Await DatenService.LadeKontaktbild(Person)
+    End Sub
+#End Region
 End Class
