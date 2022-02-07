@@ -61,6 +61,11 @@
                         <Image Height="100" Width="100" Source="{Binding FBoxKontakt.Person.ImageData, IsAsync=True, FallbackValue={StaticResource DefaultContactImage}, TargetNullValue={StaticResource DefaultContactImage}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Border>                    
                 </Grid>
+
+                <TextBlock Text="{x:Static localize:LocFBoxData.strHintBugPicture}" 
+                           TextWrapping="Wrap" 
+                           FontSize="10"
+                           Visibility="{Binding FBoxKontakt.Person.ImageData, Converter={StaticResource NullToVisibilityConverter}}" />
             </StackPanel>
 
             <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Orientation="Vertical">

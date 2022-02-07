@@ -290,6 +290,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Beim Speichern dieses Kontaktes wird das Kontaktbild nicht mehr verfügbar sein. Dies ist ein Fehler in der Firmware der Fritz!Box, welcher bereits an AVM gemeldet und auch bestätigt wurde. Bitte den Kontakt über die Fritz!Box ändern und nicht über dieses Formular. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strHintBugPicture() As String
+            Get
+                Return ResourceManager.GetString("strHintBugPicture", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Import der Anrufliste ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strImportCallerList() As String

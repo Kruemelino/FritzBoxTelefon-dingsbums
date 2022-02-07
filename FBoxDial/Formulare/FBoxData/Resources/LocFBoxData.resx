@@ -192,6 +192,9 @@
   <data name="strHeaderPhone" xml:space="preserve">
     <value>Telefonnummern</value>
   </data>
+  <data name="strHintBugPicture" xml:space="preserve">
+    <value>Beim Speichern dieses Kontaktes wird das Kontaktbild nicht mehr verfügbar sein. Dies ist ein Fehler in der Firmware der Fritz!Box, welcher bereits an AVM gemeldet und auch bestätigt wurde. Bitte den Kontakt über die Fritz!Box ändern und nicht über dieses Formular.</value>
+  </data>
   <data name="strImportCallerList" xml:space="preserve">
     <value>Import der Anrufliste</value>
   </data>
