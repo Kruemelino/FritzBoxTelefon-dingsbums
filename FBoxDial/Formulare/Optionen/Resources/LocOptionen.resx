@@ -346,6 +346,10 @@ Ein Neustart von Outlook ist erforderlich!</value>
     <value>Abbrechen</value>
     <comment>MainView</comment>
   </data>
+  <data name="strCBSoftPhoneSuffix" xml:space="preserve">
+    <value>Raute (#) an die zu wählende Nummer anhängen.</value>
+    <comment>OptMicroSIPView, OptPhonerView</comment>
+  </data>
   <data name="strConfig" xml:space="preserve">
     <value>Einstellungen</value>
     <comment>MainView</comment>

@@ -20,7 +20,7 @@ Friend Class Phoner
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property PhonerEndpoint As IPAddress = IPAddress.Loopback
     Private ReadOnly Property PhonerEndpointPort As Integer = 2012
-
+    Public Property AppendSuffix As Boolean = True Implements IIPPhone.AppendSuffix
     Friend ReadOnly Property PhonerReady As Boolean Implements IIPPhone.IPPhoneReady
         Get
             Return Process.GetProcessesByName(PhonerProgressName).Length.IsNotZero
@@ -79,9 +79,11 @@ Friend Class Phoner
                                             SW.WriteLine(PhonerDISCONNECT)
                                             NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
                                         Else
+                                            If AppendSuffix Then DialCode += "#"
+
                                             ' Aufbau des Telefonates mittels CONNECT
                                             SW.WriteLine($"{PhonerCONNECT} {DialCode}")
-                                            NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneAbbruch, DialCode, PhonerProgressName))
+                                            NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneErfolgreich, DialCode, PhonerProgressName))
                                         End If
 
                                         Dial = True

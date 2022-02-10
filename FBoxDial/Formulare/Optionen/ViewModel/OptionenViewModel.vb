@@ -834,6 +834,16 @@ Public Class OptionenViewModel
             SetProperty(_CBPhoner, Value)
         End Set
     End Property
+
+    Private _CBPhonerSuffix As Boolean
+    Public Property CBPhonerSuffix As Boolean
+        Get
+            Return _CBPhonerSuffix
+        End Get
+        Set
+            SetProperty(_CBPhonerSuffix, Value)
+        End Set
+    End Property
 #End Region
 #Region "MicroSIP"
     Private _TBMicroSIPPath As String
@@ -853,6 +863,16 @@ Public Class OptionenViewModel
         End Get
         Set
             SetProperty(_CBMicroSIP, Value)
+        End Set
+    End Property
+
+    Private _CBMicroSIPSuffix As Boolean
+    Public Property CBMicroSIPSuffix As Boolean
+        Get
+            Return _CBMicroSIPSuffix
+        End Get
+        Set
+            SetProperty(_CBMicroSIPSuffix, Value)
         End Set
     End Property
 #End Region

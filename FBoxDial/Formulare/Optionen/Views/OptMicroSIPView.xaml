@@ -35,7 +35,11 @@
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strMicroSIPCBMicroSIP}" 
                   IsChecked="{Binding OptVM.CBMicroSIP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strCBSoftPhoneSuffix}" 
+                  IsChecked="{Binding OptVM.CBMicroSIPSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        
         <Grid Margin="0,0,0,4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="115*" />

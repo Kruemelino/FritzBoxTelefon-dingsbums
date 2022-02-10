@@ -574,6 +574,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Raute (#) an die zu wählende Nummer anhängen. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCBSoftPhoneSuffix() As String
+            Get
+                Return ResourceManager.GetString("strCBSoftPhoneSuffix", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Einstellungen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strConfig() As String

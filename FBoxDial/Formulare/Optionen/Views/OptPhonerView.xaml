@@ -44,7 +44,11 @@
         <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strPhonerTBPhonerPasswort}"
                                 Value="{Binding Path=OptVM.TBPhonerPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 DeCryptKey="{Binding Path=OptVM.DfltPhonerDeCryptKey, Mode=OneWay}"/>
-
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strCBSoftPhoneSuffix}" 
+                  IsChecked="{Binding OptVM.CBPhonerSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
         <Label Content="{x:Static localize:LocOptionen.strPhonerstrPhonerPhoneInfo}"/>
         
         <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 

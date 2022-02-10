@@ -121,7 +121,6 @@ Public Class FritzBoxWählClient
             DialCode = String.Empty
 
         Else
-
             ' Status setzen
             NLogger.Debug("Anruf wird vorbereitet...")
             ' Entferne 1x # am Ende
@@ -132,7 +131,7 @@ Public Class FritzBoxWählClient
             End If
 
             ' Rufnummerunterdrückung
-            DialCode = $"{If(CLIR, "*31#", String.Empty)}{XMLData.POptionen.TBPräfix}{DialCode}#"
+            DialCode = $"{If(CLIR, "*31#", String.Empty)}{XMLData.POptionen.TBPräfix}{DialCode}"
 
             NLogger.Debug($"Dialcode: {DialCode}")
 
@@ -144,7 +143,7 @@ Public Class FritzBoxWählClient
                 ' Initiere Phoner, wenn erforderlich
                 If XMLData.POptionen.CBPhoner Then
 
-                    Using PhonerApp = New Phoner
+                    Using PhonerApp = New Phoner With {.AppendSuffix = XMLData.POptionen.CBPhonerSuffix}
 
                         If PhonerApp.PhonerReady Then
                             ' Telefonat an Phoner übergeben
@@ -163,7 +162,7 @@ Public Class FritzBoxWählClient
                 ' Initiere MicroSIP, wenn erforderlich
                 If XMLData.POptionen.CBMicroSIP Then
 
-                    Using MicroSIPApp = New MicroSIP
+                    Using MicroSIPApp = New MicroSIP With {.AppendSuffix = XMLData.POptionen.CBMicroSIPSuffix}
 
                         If MicroSIPApp.MicroSIPReady Then
                             ' Telefonat an Phoner übergeben
@@ -179,15 +178,13 @@ Public Class FritzBoxWählClient
             End If
 
         Else
+            ' Hänge die # an, um der Fritz!Box das Ende der Nummer zu signalisieren.
+            DialCode += "#"
+
             ' Telefonat über TR064Dial an Fritz!Box weiterreichen
             NLogger.Info($"Wählclient TR064Dial: '{DialCode}', Dialport: '{Telefon.TR064Dialport}'")
 
-            Erfolreich = Await Task.Run(Function()
-                                            'If Ping(XMLData.POptionen.ValidFBAdr) Then
-                                            Return TR064Dial(DialCode, Telefon, Abbruch)
-                                            'Else Return False
-                                            'End If
-                                        End Function)
+            Erfolreich = Await Task.Run(Function() TR064Dial(DialCode, Telefon, Abbruch))
 
         End If
 

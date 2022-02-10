@@ -5,13 +5,13 @@
     Private Const MicroSIPProgressName As String = "MicroSIP"
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Public Property AppendSuffix As Boolean = True Implements IIPPhone.AppendSuffix
+
     Friend ReadOnly Property MicroSIPReady As Boolean Implements IIPPhone.IPPhoneReady
         Get
             Return Process.GetProcessesByName(MicroSIPProgressName).Length.IsNotZero
         End Get
     End Property
-
-
     Friend ReadOnly Property MicroSIPPath As String
 
 #Region "MicroSIP Commandline"
@@ -92,10 +92,12 @@
 
                 NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
             Else
+                If AppendSuffix Then DialCode += "#"
+
                 ' Aufbau des Telefonates mittels Parameter 
                 Process.Start(MicroSIPPath, DialCode)
 
-                NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneAbbruch, DialCode, MicroSIPProgressName))
+                NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneErfolgreich, DialCode, MicroSIPProgressName))
             End If
 
         Else
