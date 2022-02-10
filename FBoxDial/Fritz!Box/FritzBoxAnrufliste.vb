@@ -62,29 +62,43 @@ Friend Module FritzBoxAnrufliste
             With tmpTelefonat
 
                 If [Call].Type.AreEqual(1) Or [Call].Type.AreEqual(3) Then ' incoming, outgoing
-                    ' Testweise wird auch nach dem Namen des Gerätes gesucht, wenn über den Port nichts gefunden wurde.
-                    .TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID = [Call].Port OrElse TG.Name = [Call].Device)
+                    ' Es wird auch nach dem Namen des Gerätes gesucht, wenn über den Port nichts gefunden wurde.
+                    .TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual([Call].Port) OrElse TG.Name.IsEqual([Call].Device))
+
                     ' Umwandlung von "hh:mm" in Sekundenwert
                     With CDate([Call].Duration)
                         tmpTelefonat.Dauer = New TimeSpan(.Hour, .Minute, .Second).TotalSeconds.ToInt
                     End With
 
+                    ' Das Flag, ob ein Telefonat angenommen wurde, wird anhand der Dauer festgelegt.
                     .Angenommen = .Dauer.IsNotZero
+
+                    ' Falls es sich um ein TAM handelt: Setze Flag, dass das Telefonat nicht angenommen wurde.
+                    If .TelGerät IsNot Nothing AndAlso .TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM AndAlso XMLData.POptionen.CBIsTAMMissed Then
+                        .Angenommen = True
+                    End If
+
                 End If
 
                 If [Call].Type.AreEqual(1) Or [Call].Type.AreEqual(2) Or [Call].Type.AreEqual(10) Then ' incoming, missed, rejected
                     .AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
+
                     ' Own Number of called party (incoming call)
                     tmpTelNr = New Telefonnummer With {.SetNummer = [Call].CalledNumber}
                     .EigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(Tel) Tel.Equals(tmpTelNr))
+
                     ' Falls keine Nummer übereinstimmt, dann setze den tmpTelNr
                     If .EigeneTelNr Is Nothing Then .EigeneTelNr = tmpTelNr
+
                     ' Wert für Serialisierung in separater Eigenschaft ablegen
                     .OutEigeneTelNr = .EigeneTelNr.Unformatiert
 
                     ' Number of calling party 
                     .GegenstelleTelNr = New Telefonnummer With {.SetNummer = [Call].Caller}
                     .NrUnterdrückt = .GegenstelleTelNr.Unterdrückt
+
+                    ' Merke den Pfad zur TAM-Message bzw. FAX nachricht
+                    .TAMMessagePath = [Call].Path
 
                 End If
 
