@@ -1,4 +1,4 @@
-﻿
+﻿<DebuggerStepThrough>
 Friend Module FritzBoxStatus
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
