@@ -2,6 +2,7 @@
     Inherits NotifyBase
 
     Private Property DatenService As IFBoxDataService
+    Private Property DialogService As IDialogService
 
 #Region "ICommand"
     Public Property ToggleCommand As RelayCommand
@@ -30,7 +31,7 @@
     Public Sub New(dataService As IFBoxDataService, dialogService As IDialogService, tam As FBoxAPI.TAMItem)
         ' Interface
         _DatenService = dataService
-
+        _DialogService = dialogService
         ' Commands
         ToggleCommand = New RelayCommand(AddressOf ToggleTAMEnableState)
 
@@ -41,8 +42,11 @@
         Enable = TAMItem.Enable
 
         ' Lade die zugehörigen Nachrichten
-        MessageListe = New ObservableCollectionEx(Of TAMMessageViewModel)(DatenService.GetMessagges(TAMItem).Select(Function(m) New TAMMessageViewModel(dataService, dialogService) With {.TAMVM = Me, .Message = m, .Neu = m.[New]}))
+        LadeTAMMessages()
+    End Sub
 
+    Private Async Sub LadeTAMMessages()
+        MessageListe = New ObservableCollectionEx(Of TAMMessageViewModel)((Await DatenService.GetMessages(TAMItem)).Select(Function(m) New TAMMessageViewModel(DatenService, DialogService) With {.TAMVM = Me, .Message = m, .Neu = m.[New]}))
     End Sub
 
     Friend Sub ToggleTAMEnableState(o As Object)

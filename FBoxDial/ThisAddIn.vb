@@ -1,4 +1,5 @@
-﻿Imports System.Threading.Tasks
+﻿Imports System.Net
+Imports System.Threading.Tasks
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop.Outlook
 
@@ -13,6 +14,8 @@ Public NotInheritable Class ThisAddIn
     Friend Property OffeneStoppUhrWPF As List(Of StoppUhrWPF)
     Friend Property AddinWindows As New List(Of Windows.Window)
     Friend Property WPFApplication As App
+    Friend Property FBoxTR064 As FBoxAPI.FritzBoxTR64
+    Friend Property FBoxhttpClient As AddinHTTPClient
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Timer für Raktivierung nach StandBy"
@@ -49,6 +52,9 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Sub StarteAddinFunktionen()
+
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
         ' Initialisiere die Landes- und Ortskennzahlen und beginne das Einlesen
         PVorwahlen = New Vorwahlen
         NLogger.Debug("Landes- und Ortskennzahlen geladen...")
@@ -68,11 +74,14 @@ Public NotInheritable Class ThisAddIn
         SetInspector()
         NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
 
-        ' Initiiere die TR064 Schnittstelle für die Abfragen der Daten der Fritz!Box
+        ' TR064 Schnittstelle definieren. Das Init erfolgt erst, wenn eine Verbindung zur Fritz!Box aufgebaut wurde
+        FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+
+        ' Initiiere den timergesteuerten Start der einzelnen Funktionen
         TimerStart()
 
         ' enable keyboard intercepts
-        If XMLData.POptionen.CBKeyboard Then KeyboardHooking.SetHook()
+        SetupKeyboardHooking()
     End Sub
 
     ''' <summary>
@@ -80,9 +89,15 @@ Public NotInheritable Class ThisAddIn
     ''' </summary>
     Private Async Sub InitFBoxConnection()
 
+        'Dim TR064Init As Task(Of Boolean) = Nothing
         Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
         Dim TaskTelefonbücher As Task(Of IEnumerable(Of PhonebookEx)) = Nothing
         Dim TaskAnrList As Task(Of FBoxAPI.CallList) = Nothing
+
+        FBoxhttpClient = New AddinHTTPClient
+
+        ' Ereignishandler hinzufügen
+        AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
 
         ' Anrufmonitor starten
         If XMLData.POptionen.CBAnrMonAuto Then
@@ -92,75 +107,58 @@ Public NotInheritable Class ThisAddIn
             NLogger.Debug("Anrufmonitor gestartet...")
         End If
 
-        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64()
+        ' Schreibe in das Log noch Informationen zur Fritz!Box
+        NLogger.Info($"{FBoxTR064.FriendlyName} {FBoxTR064.DisplayVersion}")
 
-            ' Ereignishandler hinzufügen
-            AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
-            ' TR064 Schnittstelle initiieren
-            FBoxTR064.Init(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
+        ' Lade die Anrufliste herunter
+        If XMLData.POptionen.CBAutoAnrList Then TaskAnrList = LadeFritzBoxAnrufliste()
 
-            If FBoxTR064.Ready Then
-                ' Schreibe in das Log noch Informationen zur Fritz!Box
-                NLogger.Info($"{FBoxTR064.FriendlyName} {FBoxTR064.DisplayVersion}")
+        ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
+        If XMLData.POptionen.CBKontaktSucheFritzBox Then
+            TaskTelefonbücher = Telefonbücher.LadeTelefonbücher()
+        Else
+            ' Falls die Kontaktsuche nicht über die Fritz!Box Telefonbücher laufen soll, dann lade die Telefonbuchnamen herunter
+            TaskTelefonbücher = Task.Run(Function() Telefonbücher.LadeTelefonbücherNamen())
+        End If
 
-                ' Lade die Anrufliste herunter
-                If XMLData.POptionen.CBAutoAnrList Then TaskAnrList = LadeFritzBoxAnrufliste(FBoxTR064)
+        ' Tellows ScoreList laden
+        If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
+            Using tellows As New Tellows
+                TaskScoreListe = tellows.LadeScoreList
+            End Using
+        End If
 
-                ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
-                If XMLData.POptionen.CBKontaktSucheFritzBox Then
-                    TaskTelefonbücher = Telefonbücher.LadeTelefonbücher(FBoxTR064)
-                Else
-                    ' Falls die Kontaktsuche nicht über die Fritz!Box Telefonbücher laufen soll, dann lade die Telefonbuchnamen herunter
-                    TaskTelefonbücher = Task.Run(Function() Telefonbücher.LadeTelefonbücherNamen(FBoxTR064))
-                End If
+        ' Beendigung des Task für das Herunterladen der Fritz!Box Telefonbücher abwarten
+        If TaskTelefonbücher IsNot Nothing Then
+            PhoneBookXML = Await TaskTelefonbücher
+            NLogger.Debug($"Fritz!Box Telefonbücher geladen...")
+        End If
 
-                ' Tellows ScoreList laden
-                If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
-                    Using tellows As New Tellows
-                        TaskScoreListe = tellows.LadeScoreList
-                    End Using
-                End If
+        ' Beendigung des Task für das Herunterladen der tellows ScoreList abwarten
+        If TaskScoreListe IsNot Nothing Then
+            TellowsScoreList = Await TaskScoreListe
+            If TellowsScoreList IsNot Nothing Then
+                NLogger.Debug($"Die tellows Scorelist mit {TellowsScoreList.Count} Einträgen geladen.")
             Else
-                NLogger.Warn("TR064 Schnittstelle der Fritz!Box nicht verfügbar.")
+                NLogger.Warn($"Die tellows Scorelist konnte nicht geladen werden.")
             End If
+        End If
 
-            ' Beendigung des Task für das Herunterladen der Fritz!Box Telefonbücher abwarten
-            If TaskTelefonbücher IsNot Nothing Then
-                PhoneBookXML = Await TaskTelefonbücher
-                NLogger.Debug($"Fritz!Box Telefonbücher geladen...")
-            End If
+        ' Anrufliste auswerten
+        If TaskAnrList IsNot Nothing Then
+            NLogger.Debug("Auswertung Anrufliste gestartet...")
+            AutoAnrListe(Await TaskAnrList)
+        End If
 
-            ' Beendigung des Task für das Herunterladen der tellows ScoreList abwarten
-            If TaskScoreListe IsNot Nothing Then
-                TellowsScoreList = Await TaskScoreListe
-                If TellowsScoreList IsNot Nothing Then
-                    NLogger.Debug($"Die tellows Scorelist mit {TellowsScoreList.Count} Einträgen geladen.")
-                Else
-                    NLogger.Warn($"Die tellows Scorelist konnte nicht geladen werden.")
-                End If
-            End If
-
-            ' Anrufliste auswerten
-            If TaskAnrList IsNot Nothing Then
-                NLogger.Debug("Auswertung Anrufliste gestartet...")
-                AutoAnrListe(Await TaskAnrList)
-            End If
-
-            ' Aktualisierung der tellows Sperrliste
-            If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
-                NLogger.Debug("Update Rufsperre durch tellows gestartet...")
-                AutoBlockListe(FBoxTR064)
-            End If
-
-            ' Ereignishandler entfernen
-            RemoveHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
-
-        End Using
+        ' Aktualisierung der tellows Sperrliste
+        If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
+            NLogger.Debug("Update Rufsperre durch tellows gestartet...")
+            AutoBlockListe()
+        End If
 
     End Sub
 
     Private Sub BeendeAddinFunktionen()
-
         ' Inspector
         RemoveHandler InspectorListe.NewInspector, AddressOf Inspectoren_NewInspector
         InspectorListe = Nothing
@@ -173,10 +171,22 @@ Public NotInheritable Class ThisAddIn
 
         ' Listen leeren
         If PVorwahlen IsNot Nothing Then PVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
+
         ' Anrufmonitor beenden
         If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
+
+        ' Ereignishandler entfernen
+        RemoveHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
+
+        ' TR-064-Schnittstelle auflösen
+        FBoxTR064.Dispose()
+
+        ' HttpClient auflösen
+        FBoxhttpClient?.Dispose()
+
         ' Eintrag ins Log
         NLogger.Info($"{My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} beendet.")
+
         ' XML-Datei Speichern
         XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
 
@@ -335,5 +345,17 @@ Public NotInheritable Class ThisAddIn
             InspectorWrappers.Add(Inspector, New InspectorWrapper(Inspector))
         End If
     End Sub
+#End Region
+
+#Region "KeyboardHooking"
+    Friend Sub SetupKeyboardHooking()
+        If XMLData.POptionen.CBKeyboard Then
+            KeyboardHooking.SetHook(XMLData.POptionen.CBKeyboardModifierShift, XMLData.POptionen.CBKeyboardModifierControl)
+        Else
+            KeyboardHooking.ReleaseHook()
+        End If
+    End Sub
+
+
 #End Region
 End Class

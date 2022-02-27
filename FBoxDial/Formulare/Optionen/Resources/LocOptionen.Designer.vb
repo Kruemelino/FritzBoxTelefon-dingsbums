@@ -491,6 +491,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nach dem Setzen des Passwortes ist ein Neustart von Outlook zwingend erforderlich! ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseTBPasswortInfo() As String
+            Get
+                Return ResourceManager.GetString("strBaseTBPasswortInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Maske ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strBaseTBTelNrMaske() As String
@@ -527,13 +536,30 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Es besteht die Möglichkeit die Kontaktsuche mittels F2 zu öffnen.
-        '''Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu Problemen mit anderen Programmen kommt.
-        '''Ein Neustart von Outlook ist erforderlich! ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Es besteht die Möglichkeit die Kontaktsuche mittels F2 zu öffnen. Auch eine zusätzliche Kombination mit der Umschalttaste und/oder Steuerungstaste ist möglich.
+        '''Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu Problemen mit anderen Programmen oder Funktionen kommt. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strBaseTweakKeyboardInfo() As String
             Get
                 Return ResourceManager.GetString("strBaseTweakKeyboardInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Tastenkobination mit Control (Steuerungstaste, strg, ctrl) ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseTweakKeyboardModifierControl() As String
+            Get
+                Return ResourceManager.GetString("strBaseTweakKeyboardModifierControl", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Tastenkobination mit Shift (Umschalttaste) ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strBaseTweakKeyboardModifierShift() As String
+            Get
+                Return ResourceManager.GetString("strBaseTweakKeyboardModifierShift", resourceCulture)
             End Get
         End Property
         

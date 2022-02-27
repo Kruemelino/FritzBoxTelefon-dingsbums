@@ -34,33 +34,23 @@ Friend Class OptionenService
         ToogleTheme()
     End Sub
 #End Region
+
 #Region "Grunddaten"
     Private Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
 
         Dim UserList As New ObservableCollectionEx(Of FBoxAPI.User)
-        NLogger.Trace($"Starte neue TR-064 Instanz: {IPAdresse} mit {XMLData.POptionen.TBNetworkTimeout}ms Timeout")
-        Using FBoxTr064 As New FBoxAPI.FritzBoxTR64()
-            AddHandler FBoxTr064.Status, AddressOf SetFBoxAPIStatus
+        Dim XMLString As String = String.Empty
+        Dim FritzBoxUsers As New FBoxAPI.UserList
 
-            ' Ausgelagertes Init, um die Logs des Konstruktors zu erhalten
-            FBoxTr064.Init(IPAdresse, XMLData.POptionen.TBNetworkTimeout, Nothing)
+        If Globals.ThisAddIn.FBoxTR064.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
+            UserList.AddRange(FritzBoxUsers.UserListe)
 
-            Dim XMLString As String = String.Empty
-            Dim FritzBoxUsers As New FBoxAPI.UserList
-
-            If FBoxTr064.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
-                UserList.AddRange(FritzBoxUsers.UserListe)
-
-                RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(True))
-                NLogger.Trace($"Userliste ermittelt: {XMLString}")
-            Else
-                RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(False))
-                NLogger.Trace($"Userliste nicht ermittelt")
-            End If
-
-            RemoveHandler FBoxTr064.Status, AddressOf SetFBoxAPIStatus
-
-        End Using
+            'RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(True))
+            NLogger.Trace($"Userliste ermittelt: {XMLString}")
+        Else
+            'RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(False))
+            NLogger.Trace($"Userliste nicht ermittelt")
+        End If
 
         Return UserList
     End Function
@@ -237,26 +227,17 @@ Friend Class OptionenService
     End Function
 #End Region
 
-#Region "Test Login"
-    Private Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetLogin
+    '#Region "Test Login"
+    '    Private Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetLogin
 
-    Private Sub StartLoginTest(IPAdresse As String, User As String, Password As SecureString) Implements IOptionenService.StartLoginTest
-        '' Prüfe, ob Fritz!Box verfügbar
-        'If Ping(IPAdresse) Then
-        Using fboxTR064 As New FBoxAPI.FritzBoxTR64(IPAdresse, XMLData.POptionen.TBNetworkTimeout, New Net.NetworkCredential(User, Password))
-            AddHandler fboxTR064.Status, AddressOf SetFBoxAPIStatus
+    '    Private Sub StartLoginTest(IPAdresse As String, User As String, Password As SecureString) Implements IOptionenService.StartLoginTest
 
-            Dim SessionID As String = String.Empty
+    '        Dim SessionID As String = String.Empty
 
-            RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(fboxTR064.Deviceconfig.GetSessionID(SessionID)))
+    '        RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(Globals.ThisAddIn.FBoxTR064.Deviceconfig.GetSessionID(SessionID)))
 
-            RemoveHandler fboxTR064.Status, AddressOf SetFBoxAPIStatus
-        End Using
-        'Else
-        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-        'End If
-    End Sub
-#End Region
+    '    End Sub
+    '#End Region
 
 #Region "Test Kontaktsuche"
     Private Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetKontaktsuche
@@ -333,9 +314,7 @@ Friend Class OptionenService
                     ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
                     ' Dann lade die Telefonbücher herunter
                     NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
-                    Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-                        Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
-                    End Using
+                    Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher()
                 End If
 
                 Dim FBC As New List(Of FBoxAPI.Contact)

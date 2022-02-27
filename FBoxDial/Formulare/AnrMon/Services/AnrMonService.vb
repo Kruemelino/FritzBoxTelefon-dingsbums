@@ -67,9 +67,7 @@ Public Class AnrMonService
     End Sub
 
     Public Function CompleteURL(PathSegment As String) As String Implements IAnrMonService.CompleteURL
-        Using FBoxTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-            Return FritzBoxDefault.CompleteURL(FBoxTR064, PathSegment)
-        End Using
+        Return FritzBoxDefault.CompleteURL(PathSegment)
     End Function
 
 #Region "SoundPlayer"

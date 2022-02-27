@@ -308,6 +308,10 @@ Falls keine Werte gefunden wurden, können die Werte hier eingetragen werden.</v
     <value>Fritz!Box Passwort</value>
     <comment>OptBaseView</comment>
   </data>
+  <data name="strBaseTBPasswortInfo" xml:space="preserve">
+    <value>Nach dem Setzen des Passwortes ist ein Neustart von Outlook zwingend erforderlich!</value>
+    <comment>OptBaseView</comment>
+  </data>
   <data name="strBaseTBTelNrMaske" xml:space="preserve">
     <value>Maske</value>
     <comment>OptBaseView</comment>
@@ -325,9 +329,16 @@ Falls keine Werte gefunden wurden, können die Werte hier eingetragen werden.</v
     <comment>OptBaseView</comment>
   </data>
   <data name="strBaseTweakKeyboardInfo" xml:space="preserve">
-    <value>Es besteht die Möglichkeit die Kontaktsuche mittels F2 zu öffnen.
-Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu Problemen mit anderen Programmen kommt.
-Ein Neustart von Outlook ist erforderlich!</value>
+    <value>Es besteht die Möglichkeit die Kontaktsuche mittels F2 zu öffnen. Auch eine zusätzliche Kombination mit der Umschalttaste und/oder Steuerungstaste ist möglich.
+Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu Problemen mit anderen Programmen oder Funktionen kommt.</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTweakKeyboardModifierControl" xml:space="preserve">
+    <value>Tastenkobination mit Control (Steuerungstaste, strg, ctrl)</value>
+    <comment>OptBaseView</comment>
+  </data>
+  <data name="strBaseTweakKeyboardModifierShift" xml:space="preserve">
+    <value>Tastenkobination mit Shift (Umschalttaste)</value>
     <comment>OptBaseView</comment>
   </data>
   <data name="strBaseTweakNetworkTimeout" xml:space="preserve">

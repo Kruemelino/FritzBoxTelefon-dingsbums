@@ -1,13 +1,13 @@
 ﻿Imports System.Threading.Tasks
 
 Public Interface IFBoxDataService
-    Sub Finalize()
+    Sub TR064HttpClient()
 
     Sub UpdateTheme()
 
 #Region "TAM Anrufbeantworter"
     Function GetTAMItems() As Task(Of IEnumerable(Of FBoxAPI.TAMItem))
-    Function GetMessagges(TAM As FBoxAPI.TAMItem) As IEnumerable(Of FBoxAPI.Message)
+    Function GetMessages(TAM As FBoxAPI.TAMItem) As Task(Of IEnumerable(Of FBoxAPI.Message))
     Function ToggleTAM(TAM As FBoxAPI.TAMItem) As Boolean
     Function MarkMessage(Message As FBoxAPI.Message) As Boolean
     Function DeleteMessage(Message As FBoxAPI.Message) As Boolean

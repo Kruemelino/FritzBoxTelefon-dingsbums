@@ -905,6 +905,26 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBKeyboardModifierShift As Boolean
+    Public Property CBKeyboardModifierShift As Boolean
+        Get
+            Return _CBKeyboardModifierShift
+        End Get
+        Set
+            SetProperty(_CBKeyboardModifierShift, Value)
+        End Set
+    End Property
+
+    Private _CBKeyboardModifierControl As Boolean
+    Public Property CBKeyboardModifierControl As Boolean
+        Get
+            Return _CBKeyboardModifierControl
+        End Get
+        Set
+            SetProperty(_CBKeyboardModifierControl, Value)
+        End Set
+    End Property
+
     Private _CBDisableMailCheck As Boolean
     Public Property CBDisableMailCheck As Boolean
         Get
@@ -1056,25 +1076,25 @@ Public Class OptionenViewModel
     Friend Async Sub LadeDaten(o As Object)
         NLogger.Debug("Lade die Daten aus der XML-Datei in das ViewModel Optionen")
 
-        Dim T As Task = Task.Run(Sub()
-                                     ' Schleife durch alle Properties dieser Klasse
-                                     For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
-                                         ' Suche das passende Property in den Optionen
-                                         Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.IsEqual(ViewModelPropertyInfo.Name))
+        Dim LadeTask As Task = Task.Run(Sub()
+                                            ' Schleife durch alle Properties dieser Klasse
+                                            For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
+                                                ' Suche das passende Property in den Optionen
+                                                Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.IsEqual(ViewModelPropertyInfo.Name))
 
-                                         If OptionPropertyInfo IsNot Nothing Then
-                                             Try
-                                                 If ViewModelPropertyInfo.CanWrite Then
-                                                     ViewModelPropertyInfo.SetValue(Me, OptionPropertyInfo.GetValue(XMLData.POptionen))
-                                                     OnPropertyChanged(ViewModelPropertyInfo.Name)
-                                                     NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geladen.")
-                                                 End If
-                                             Catch ex As Exception
-                                                 NLogger.Error(ex, $"Fehler beim Laden des Feldes {ViewModelPropertyInfo.Name}.")
-                                             End Try
-                                         End If
-                                     Next
-                                 End Sub)
+                                                If OptionPropertyInfo IsNot Nothing Then
+                                                    Try
+                                                        If ViewModelPropertyInfo.CanWrite Then
+                                                            ViewModelPropertyInfo.SetValue(Me, OptionPropertyInfo.GetValue(XMLData.POptionen))
+                                                            OnPropertyChanged(ViewModelPropertyInfo.Name)
+                                                            NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geladen.")
+                                                        End If
+                                                    Catch ex As Exception
+                                                        NLogger.Error(ex, $"Fehler beim Laden des Feldes {ViewModelPropertyInfo.Name}.")
+                                                    End Try
+                                                End If
+                                            Next
+                                        End Sub)
 
         ' Landes- und Ortskennzahl aus der Telefonie holen
         TBLandesKZ = XMLData.PTelefonie.LKZ
@@ -1092,7 +1112,7 @@ Public Class OptionenViewModel
         OutlookOrdnerListe = New OutlookOrdnerListe
         OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
 
-        Await T
+        Await LadeTask
         ' Fritz!Box Benutzer laden
         CBoxBenutzer = DatenService.LadeFBoxUser(TBFBAdr)
 
@@ -1108,20 +1128,21 @@ Public Class OptionenViewModel
         NLogger.Debug("Speichere die Daten aus dem ViewModel Optionen in die XML-Datei")
 
         Dim TaskList As New List(Of Task) From {
-                    Task.Run(Sub()
-                                 ' Schleife durch alle Properties dieser Klasse
-                                 For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
-                                     ' Suche das passende Property in den Optionen
-                                     Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.IsEqual(ViewModelPropertyInfo.Name))
+                                                Task.Run(Sub()
+                                                             ' Schleife durch alle Properties dieser Klasse
+                                                             For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
+                                                                 ' Suche das passende Property in den Optionen
+                                                                 Dim OptionPropertyInfo As PropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties,
+                                                                                                                     Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.IsEqual(ViewModelPropertyInfo.Name))
 
-                                     If OptionPropertyInfo IsNot Nothing Then
+                                                                 If OptionPropertyInfo IsNot Nothing Then
 
-                                         OptionPropertyInfo.SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
-                                         NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geschrieben.")
+                                                                     OptionPropertyInfo.SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
+                                                                     NLogger.Trace($"Feld {ViewModelPropertyInfo.Name} mit Wert '{ViewModelPropertyInfo.GetValue(Me)}' geschrieben.")
 
-                                     End If
-                                 Next
-                             End Sub)}
+                                                                 End If
+                                                             Next
+                                                         End Sub)}
 
         ' Landes- und Ortskennzahl in die Telefonie schreiben
         XMLData.PTelefonie.LKZ = TBLandesKZ
@@ -1160,14 +1181,12 @@ Public Class OptionenViewModel
             If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
             TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, False, Nothing, Nothing)))
 
-
             ' indiziere:
             MAPIFolderList = OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
 
             ' Füge die Unterordner hinzu
             If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
             TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, True, Nothing, Nothing)))
-
 
         End With
 
@@ -1178,6 +1197,11 @@ Public Class OptionenViewModel
             SetLogLevel(.CBoxMinLogLevel)
         End With
 
+        ' Anmeldeinformationen für Fritz!Box aktualisieren
+        Globals.ThisAddIn.FBoxTR064.UpdateCredential(FritzBoxDefault.Anmeldeinformationen)
+
+        ' Tastenkombination setzen
+        Globals.ThisAddIn.SetupKeyboardHooking()
 
         ' Speichern in Datei anstoßen
         XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))

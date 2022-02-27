@@ -138,12 +138,16 @@
     This section specifies references for the project.
   -->
   <ItemGroup>
-    <Reference Include="ColorPicker, Version=3.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PixiEditor.ColorPicker.3.1.0\lib\net45\ColorPicker.dll</HintPath>
+    <Reference Include="ColorPicker, Version=3.2.1.0, Culture=neutral, PublicKeyToken=1c61eec504ce2276, processorArchitecture=MSIL">
+      <HintPath>..\packages\PixiEditor.ColorPicker.3.2.0\lib\net451\ColorPicker.dll</HintPath>
     </Reference>
     <Reference Include="FilterDataGrid, Version=1.2.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FilterDataGrid.1.2.5\lib\net472\FilterDataGrid.dll</HintPath>
     </Reference>
+    <Reference Include="HttpClientFactoryLite, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HttpClientFactoryLite.0.4.0\lib\netstandard2.0\HttpClientFactoryLite.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -158,7 +162,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.13\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.14\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -394,6 +398,7 @@
     <Compile Include="Fritz!Box\FritzBoxDeflection.vb" />
     <Compile Include="Fritz!Box\FritzBoxStatus.vb" />
     <Compile Include="Fritz!Box\FritzBoxTAM.vb" />
+    <Compile Include="Misc\AddinHTTPClient.vb" />
     <Compile Include="Misc\KeyboardHooking.vb" />
     <Compile Include="Misc\SoundPlayerEx.vb">
       <SubType>Component</SubType>
@@ -861,9 +866,6 @@
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Optionen\ToLower.xslt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Telefonie\Listen\Vorwahlen.xml" />

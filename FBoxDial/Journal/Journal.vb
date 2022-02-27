@@ -14,7 +14,7 @@ Friend Module Journal
         End If
     End Sub
 
-    Friend Async Sub AutoBlockListe(fboxTR064 As FBoxAPI.FritzBoxTR64)
+    Friend Async Sub AutoBlockListe()
 
         With XMLData.POptionen
             If Now.Subtract(.LetzteSperrlistenAktualisierung).TotalHours.IsLargerOrEqual(24) Then
@@ -24,7 +24,7 @@ Friend Module Journal
                 Dim progressIndicator = New Progress(Of Integer)(Sub(status)
                                                                  End Sub)
 
-                Await BlockTellowsNumbers(fboxTR064, .CBTellowsAutoScoreFBBlockList, .CBTellowsEntryNumberCount, Globals.ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
+                Await BlockTellowsNumbers(.CBTellowsAutoScoreFBBlockList, .CBTellowsEntryNumberCount, Globals.ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
 
                 .LetzteSperrlistenAktualisierung = Now
 

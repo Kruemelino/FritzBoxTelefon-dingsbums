@@ -1,26 +1,37 @@
 ﻿Imports System.Windows.Forms
 ''' <summary>
 ''' https://stackoverflow.com/questions/57604675/get-keyboard-input-for-word-process-in-vsto-addin
+''' https://stackoverflow.com/a/10257266
 ''' </summary>
-Friend Class KeyboardHooking
+Friend NotInheritable Class KeyboardHooking
 
-    Private Shared ReadOnly _proc As LowLevelKeyboardProc = AddressOf HookCallback
-    Private Shared _hookID As IntPtr = IntPtr.Zero
+    Private Shared ReadOnly Property Proc As LowLevelKeyboardProc = AddressOf HookCallback
+    Private Shared Property HookID As IntPtr = IntPtr.Zero
 
-    'declare the mouse hook constant.
-    'For other hook types, you can obtain these values from Winuser.h in the Microsoft SDK.
-    Private Const WH_KEYBOARD As Integer = 2 ' mouse
+    Private Const WH_KEYBOARD As Integer = 2
     Private Const HC_ACTION As Integer = 0
 
-    Friend Shared Sub SetHook()
-        ' Ignore this compiler warning, as SetWindowsHookEx doesn't work with ManagedThreadId
+    Private Shared Property Shift As Boolean
+    Private Shared Property Control As Boolean
+
+    Friend Shared Sub SetHook(useShift As Boolean, useCtrl As Boolean)
+        Shift = useShift
+        Control = useCtrl
+
+        If HookID = IntPtr.Zero Then
+            ' Ignore this compiler warning, as SetWindowsHookEx doesn't work with ManagedThreadId
 #Disable Warning BC40000 ' Typ oder Element ist veraltet
-        _hookID = UnSaveMethods.SetWindowsHookEx(WH_KEYBOARD, _proc, IntPtr.Zero, CUInt(AppDomain.GetCurrentThreadId()))
+            HookID = UnSaveMethods.SetWindowsHookEx(WH_KEYBOARD, Proc, IntPtr.Zero, CUInt(AppDomain.GetCurrentThreadId()))
 #Enable Warning BC40000 ' Typ oder Element ist veraltet
+        End If
+
     End Sub
 
     Friend Shared Sub ReleaseHook()
-        Dim b = UnSaveMethods.UnhookWindowsHookEx(_hookID)
+        If Not HookID = IntPtr.Zero Then
+            Dim b As Boolean = UnSaveMethods.UnhookWindowsHookEx(HookID)
+        End If
+        HookID = IntPtr.Zero
     End Sub
 
 
@@ -28,19 +39,28 @@ Friend Class KeyboardHooking
     'It will trap if BOTH keys are pressed down.
     Private Shared Function HookCallback(nCode As Integer, wParam As IntPtr, lParam As IntPtr) As Integer
         If nCode < 0 Then
-            Return CInt(UnSaveMethods.CallNextHookEx(_hookID, nCode, wParam, lParam))
+            Return CInt(UnSaveMethods.CallNextHookEx(HookID, nCode, wParam, lParam))
         Else
 
             If nCode = HC_ACTION Then
                 Dim keyData As Keys = CType(wParam, Keys)
 
-                If IsKeyDown(Keys.F2) Then
-                    AddWindow(Of KontaktsucheWPF)()
-                End If
+                Dim ModifierKey As Boolean
+
+                If Shift And Control Then ModifierKey = IsKeyDown(Keys.ShiftKey) AndAlso IsKeyDown(Keys.ControlKey)
+
+                If Shift And Not Control Then ModifierKey = IsKeyDown(Keys.ShiftKey) AndAlso Not IsKeyDown(Keys.ControlKey)
+
+                If Not Shift And Control Then ModifierKey = Not IsKeyDown(Keys.ShiftKey) AndAlso IsKeyDown(Keys.ControlKey)
+
+                If Not Shift And Not Control Then ModifierKey = Not IsKeyDown(Keys.ShiftKey) AndAlso Not IsKeyDown(Keys.ControlKey)
+
+                ' Prüfe, ob die Modifier-Keys und die definierte Taste gedrückt wurden
+                If IsKeyDown(keyData) And keyData = Keys.F2 And ModifierKey Then AddWindow(Of KontaktsucheWPF)()
 
             End If
 
-            Return CInt(UnSaveMethods.CallNextHookEx(_hookID, nCode, wParam, lParam))
+            Return CInt(UnSaveMethods.CallNextHookEx(_HookID, nCode, wParam, lParam))
         End If
     End Function
 

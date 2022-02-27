@@ -71,19 +71,18 @@ Public Module Rückwärtssuche
             PushStatus(LogLevel.Debug, $"Start RWS{i}: {baseurl}search_inv&ph={tmpTelNr}")
 
             ' Fange Fehlermeldungen der Rückwärtssuche ab: Wenn die Nummer nicht gefunden wurde, dann wird ein Fehler zurückgeben.
-            htmlRWS = Await DownloadStringTaskAsync(New Uri($"{baseurl}search_inv&ph={tmpTelNr}"), ZeichenCodierung:=Encoding.UTF8, IgnoreWebExcepton:=True)
+            htmlRWS = Await Globals.ThisAddIn.FBoxhttpClient.GetString(New Uri($"{baseurl}search_inv&ph={tmpTelNr}"), Encoding.UTF8)
 
             If htmlRWS.IsNotStringNothingOrEmpty Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
                 ' Aus dem Response muss die ID des Eintrages ermittelt werden. Es gibt mehrere Möglichkeiten
                 EintragsID = htmlRWS.GetSubString("var handlerData =[['", "']];").Split("','").First
-                'EintragsID = htmlRWS.GetSubString($"{baseurl}detail&amp;id=", "&amp;recuid=")
 
                 If EintragsID.IsNotEqual("-1") Then
                     ' Link zum Herunterladen der vCard suchen
                     PushStatus(LogLevel.Debug, $"Link vCard: {baseurl}vcard&id={EintragsID}")
 
-                    VCard = Await DownloadStringTaskAsync(New Uri($"{baseurl}vcard&id={EintragsID}"), ZeichenCodierung:=Encoding.Default)
+                    VCard = Await Globals.ThisAddIn.FBoxhttpClient.GetString(New Uri($"{baseurl}vcard&id={EintragsID}"), Encoding.Default)
                 Else
                     PushStatus(LogLevel.Warn, $"ID des Eintrages für {tmpTelNr} kann nicht ermittelt werden.")
                 End If
@@ -112,6 +111,7 @@ Public Module Rückwärtssuche
     ''' </summary>
     ''' <param name="Level">NLog LogLevel</param>
     ''' <param name="StatusMessage">Die auszugebende Statusmeldung.</param>
+    <DebuggerStepThrough>
     Private Sub PushStatus(Level As LogLevel, StatusMessage As String)
         NLogger.Log(Level, StatusMessage)
         RaiseEvent Status(Nothing, StatusMessage)

@@ -32,7 +32,7 @@ Public Class SoundPlayerEx
                          Dim URL As String = LocationURL
                          TmpFilePath = $"{IO.Path.GetTempPath}{IO.Path.GetRandomFileName}"
                          ' Lade die Datei in eine temporäre Datei
-                         If Await DownloadToFileTaskAsync(New Uri(URL), TmpFilePath) Then
+                         If Await Globals.ThisAddIn.FBoxTR064.HttpService.DownloadToFileSystem(New Uri(URL), TmpFilePath) Then
                              Try
                                  ' Ermittle die Länge der Datei. 
                                  Dim stopAt As Date = Date.Now.AddMilliseconds(UnSaveMethods.GetWAVDuration(TmpFilePath))

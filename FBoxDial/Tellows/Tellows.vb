@@ -1,4 +1,5 @@
-﻿Imports System.Net
+﻿Imports System.IO
+Imports System.Net
 Imports System.Threading.Tasks
 
 Friend Class Tellows
@@ -9,7 +10,7 @@ Friend Class Tellows
     ''' </summary>
     Private ReadOnly Property XAuthToken As String
     Private ReadOnly Property Headers As WebHeaderCollection
-    Private ReadOnly Property Pfad As String = IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.json")
+    Private ReadOnly Property Pfad As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.json")
     Private ReadOnly Property Ready As Boolean
         Get
             Return XAuthToken.IsNotStringNothingOrEmpty
@@ -37,10 +38,15 @@ Friend Class Tellows
 
 #Region "Basisfunktionen"
 
-    Private Async Function GetTellowsResponseXML(UniformResourceIdentifier As Uri, Headers As WebHeaderCollection) As Task(Of TellowsResponse)
+    Private Async Function GetTellowsResponseXML(UniformResourceIdentifier As Uri) As Task(Of TellowsResponse)
         Dim Response As New TellowsResponse
+
+        Dim RequestMessage As New Http.HttpRequestMessage With {.Method = Http.HttpMethod.Get,
+                                                                    .RequestUri = UniformResourceIdentifier}
+        RequestMessage.Headers.Add("X-Auth-Token", XAuthToken)
+
         ' Deserialisieren
-        If Not DeserializeXML(Await DownloadStringTaskAsync(UniformResourceIdentifier, ZeichenCodierung:=Encoding.UTF8, Headers:=Headers), False, Response) Then
+        If Not DeserializeXML(Await Globals.ThisAddIn.FBoxhttpClient.GetString(RequestMessage, Encoding.UTF8), False, Response) Then
             NLogger.Error($"Die Tellows Abfrage zu '{UniformResourceIdentifier}' war nicht erfolgreich.")
             Return Nothing
         End If
@@ -48,9 +54,9 @@ Friend Class Tellows
         Return Response
     End Function
 
-    Private Async Function GetTellowsResponseJSON(Pfad As Uri, Optional Headers As WebHeaderCollection = Nothing) As Task(Of List(Of TellowsScoreListEntry))
+    Private Async Function GetTellowsResponseJSON() As Task(Of List(Of TellowsScoreListEntry))
 
-        Dim TellowsResponse As String = Await DownloadStringTaskAsync(Pfad, ZeichenCodierung:=Encoding.UTF8, Headers:=Headers)
+        Dim TellowsResponse As String = File.ReadAllText(Pfad)
 
         If TellowsResponse.Contains(NotAuthorized) Then
             NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich, da kein gültiger API-Key eingegeben wurde.")
@@ -74,7 +80,7 @@ Friend Class Tellows
                                            .Path = "/api/getpartnerinfo",
                                            .Query = String.Join("&", {"xml=1"})}
 
-            Return (Await GetTellowsResponseXML(ub.Uri, Headers)).Partnerinfo
+            Return (Await GetTellowsResponseXML(ub.Uri)).Partnerinfo
         Else
             NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich, da kein API-Key eingegeben wurde.")
             Return New TellowsPartnerInfo With {.Info = "Kein tellows ApiKey vorhanden."}
@@ -95,7 +101,7 @@ Friend Class Tellows
                                            .Path = $"/basic/num/{TelNr.TellowsNummer}",
                                            .Query = String.Join("&", {"xml=1", "country=de", "lang=de", "showcomments=10"})}
 
-            Return Await GetTellowsResponseXML(ub.Uri, Headers)
+            Return Await GetTellowsResponseXML(ub.Uri)
         Else
             NLogger.Warn($"Abfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer} nicht möglich, da kein API-Key eingegeben wurde.")
             Return Nothing
@@ -118,7 +124,7 @@ Friend Class Tellows
             End If
 
             ' Lade die Daten aus der Datei
-            Return Await GetTellowsResponseJSON(New Uri(Pfad))
+            Return Await GetTellowsResponseJSON()
         Else
             NLogger.Warn($"Ein tellows API-Key wurde nicht eingegeben.")
             ' Gib eine leere Liste zurück
@@ -146,7 +152,12 @@ Friend Class Tellows
                                                                       $"mincomments={XMLData.POptionen.CBTellowsAnrMonMinComments}",
                                                                        "showcallername=1"})}
 
-            Return Await DownloadToFileTaskAsync(ub.Uri, Pfad, Encoding.UTF8, Headers)
+            Dim RequestMessage As New Http.HttpRequestMessage With {.Method = Http.HttpMethod.Get,
+                                                                    .RequestUri = ub.Uri}
+            RequestMessage.Headers.Add("X-Auth-Token", XAuthToken)
+
+            Return Await Globals.ThisAddIn.FBoxhttpClient.GetFile(RequestMessage, Pfad)
+
         Else
             Return False
         End If

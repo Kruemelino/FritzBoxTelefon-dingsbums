@@ -1,4 +1,5 @@
 ﻿Imports System.Threading.Tasks
+Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 
 Public Class FritzBoxWählClient
@@ -27,83 +28,78 @@ Public Class FritzBoxWählClient
 
         Dim PhoneName As String = String.Empty
 
-        Using FBoxTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-            ' Ereignishandler hinzufügen
-            AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
+        With Globals.ThisAddIn.FBoxTR064
 
-            If FBoxTR064.Ready Then
+            If .Ready Then
 
-                With Telefon
-                    If Not FBoxTR064.X_voip.DialGetConfig(PhoneName) Then
-                        ' Es kann sein, dass die Fritz!Box Wählhilfe aktiviert ist, aber kein Telefon ausgewählt ist.
-                        ' In diesem Fall: Versuche das gewünschte Telefon zu setzen
-                        If FBoxTR064.X_voip.DialSetConfig(.TR064Dialport) Then
-                            ' Das einstellen hat geklappt. Fahre normal Fort
-                        End If
+                If Not .X_voip.DialGetConfig(PhoneName) Then
+                    ' Es kann sein, dass die Fritz!Box Wählhilfe aktiviert ist, aber kein Telefon ausgewählt ist.
+                    ' In diesem Fall: Versuche das gewünschte Telefon zu setzen
+                    If .X_voip.DialSetConfig(Telefon.TR064Dialport) Then
+                        ' Das einstellen hat geklappt. Fahre normal Fort
+                    End If
+                End If
+
+                ' Ermittle das aktuell eingestellte Telefon.
+                If .X_voip.DialGetConfig(PhoneName) Then
+
+                    ' Vorprüfung, ist der hinterlegte Dialport korrekt
+                    ' Es kann vorkommen, dass der Dialport leer ist. Das bedeutet, dass er nicht korrekt eingelesen wurde. 
+                    ' Es muss in dem Fall auf den Rückfallwert zurückgegriffen werden.
+                    If Telefon.TR064Dialport.IsStringNothingOrEmpty Then
+                        Telefon.TR064Dialport = Telefon.GetDialPortFallback
+
+                        ' Log schreiben
+                        NLogger.Info($"Der TR064Dialport für Telefon {Telefon.Name} wurde auf den Rückfallwert geändert: {Telefon.TR064Dialport}")
                     End If
 
-                    ' Ermittle das aktuell eingestellte Telefon.
-                    If FBoxTR064.X_voip.DialGetConfig(PhoneName) Then
+                    ' Prüfe, ob das korrekte Telefon ausgewählt wurde.
+                    If PhoneName.IsNotEqual(Telefon.TR064Dialport) Then
 
-                        ' Vorprüfung, ist der hinterlegte Dialport korrekt
-                        ' Es kann vorkommen, dass der Dialport leer ist. Das bedeutet, dass er nicht korrekt eingelesen wurde. 
-                        ' Es muss in dem Fall auf den Rückfallwert zurückgegriffen werden.
-                        If .TR064Dialport.IsStringNothingOrEmpty Then
-                            .TR064Dialport = .GetDialPortFallback
+                        ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
+                        NLogger.Debug($"Der Phoneport wird von '{PhoneName}' auf '{Telefon.TR064Dialport}' geändert.")
 
-                            ' Log schreiben
-                            NLogger.Info($"Der TR064Dialport für Telefon { .Name} wurde auf den Rückfallwert geändert: { .TR064Dialport}")
-                        End If
+                        ' Stelle das Telefon um.
+                        If .X_voip.DialSetConfig(Telefon.TR064Dialport) Then
 
-                        ' Prüfe, ob das korrekte Telefon ausgewählt wurde.
-                        If PhoneName.IsNotEqual(.TR064Dialport) Then
-
-                            ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
-                            NLogger.Debug($"Der Phoneport wird von '{PhoneName}' auf '{ .TR064Dialport}' geändert.")
-
-                            ' Stelle das Telefon um.
-                            If FBoxTR064.X_voip.DialSetConfig(.TR064Dialport) Then
-
-                                ' Prüfe, ob das Telefon tatsächlich umgestellt wurde
-                                If FBoxTR064.X_voip.DialGetConfig(PhoneName) Then
-                                    If PhoneName.IsEqual(.TR064Dialport) Then
-                                        ' Der Phoneport wurde erfolgreich umgestellt
-                                        NLogger.Debug($"Der Phoneport wurde erfolgreich auf '{PhoneName}' geändert.")
-                                    Else
-                                        ' Der Phoneport wurde nicht umgestellt
-                                        NLogger.Error($"Der Phoneport konnte nicht von '{PhoneName}' auf '{ .TR064Dialport}' geändert werden.")
-                                        Return False
-                                    End If
+                            ' Prüfe, ob das Telefon tatsächlich umgestellt wurde
+                            If .X_voip.DialGetConfig(PhoneName) Then
+                                If PhoneName.IsEqual(Telefon.TR064Dialport) Then
+                                    ' Der Phoneport wurde erfolgreich umgestellt
+                                    NLogger.Debug($"Der Phoneport wurde erfolgreich auf '{PhoneName}' geändert.")
                                 Else
-                                    ' Genereller Fehler
-                                    NLogger.Error($"Der aktuelle Phoneport konnte nach der Umstellung auf { .TR064Dialport} nicht ausgelesen werden.")
+                                    ' Der Phoneport wurde nicht umgestellt
+                                    NLogger.Error($"Der Phoneport konnte nicht von '{PhoneName}' auf '{Telefon.TR064Dialport}' geändert werden.")
                                     Return False
                                 End If
-
                             Else
                                 ' Genereller Fehler
-                                NLogger.Error($"Der Phoneport konnte nicht von '{PhoneName}' auf '{ .TR064Dialport}' umgestellt werden.")
+                                NLogger.Error($"Der aktuelle Phoneport konnte nach der Umstellung auf {Telefon.TR064Dialport} nicht ausgelesen werden.")
                                 Return False
                             End If
-                        End If
-                        ' Hier kommt man nur hin, wenn es zu keinem Fehler gekommen ist.
-                        NLogger.Debug($"Übermittle das Wählkomando an die Fritz!box: Auflegen: '{Auflegen}', '{DialCode}', '{PhoneName}'")
-                        ' Das Telefon der Fritz!Box Wählhilfe muss nicht geändert werden
-                        ' Senden des Wählkomandos und Rückmeldung, ob das Wählen erfolgreich war
-                        Return If(Auflegen, FBoxTR064.X_voip.DialHangup, FBoxTR064.X_voip.DialNumber(DialCode))
-                    Else
-                        ' Genereller Fehler
-                        NLogger.Error($"Der aktuelle Phoneport konnte nicht ausgelesen werden.")
-                        Return False
-                    End If
 
-                    ' Ereignishandler entfernen
-                    RemoveHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
-                End With
+                        Else
+                            ' Genereller Fehler
+                            NLogger.Error($"Der Phoneport konnte nicht von '{PhoneName}' auf '{Telefon.TR064Dialport}' umgestellt werden.")
+                            Return False
+                        End If
+                    End If
+                    ' Hier kommt man nur hin, wenn es zu keinem Fehler gekommen ist.
+                    NLogger.Debug($"Übermittle das Wählkomando an die Fritz!box: Auflegen: '{Auflegen}', '{DialCode}', '{PhoneName}'")
+                    ' Das Telefon der Fritz!Box Wählhilfe muss nicht geändert werden
+                    ' Senden des Wählkomandos und Rückmeldung, ob das Wählen erfolgreich war
+                    Return If(Auflegen, .X_voip.DialHangup, .X_voip.DialNumber(DialCode))
+                Else
+                    ' Genereller Fehler
+                    NLogger.Error($"Der aktuelle Phoneport konnte nicht ausgelesen werden.")
+                    Return False
+                End If
+
             Else
                 Return False
             End If
-        End Using
+
+        End With
     End Function
 
 #End Region
@@ -285,7 +281,7 @@ Public Class FritzBoxWählClient
     ''' <summary>
     ''' Wählen aus einer IM Contactcard
     ''' </summary>
-    Friend Overloads Sub WählboxStart(ContactCard As Microsoft.Office.Core.IMsoContactCard)
+    Friend Overloads Sub WählboxStart(ContactCard As IMsoContactCard)
 
         ' Es gibt zwei Möglichkeiten:
         ' A: Ein klassischer Kontakt ist hinterlegt

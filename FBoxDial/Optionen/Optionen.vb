@@ -64,7 +64,8 @@
     ''' Gibt an, ob die Tastatursteuerung aktiviert werden soll.
     ''' </summary>
     <XmlElement("CBKeyboard")> Public Property CBKeyboard As Boolean = True
-
+    <XmlElement("CBKeyboardModifierShift")> Public Property CBKeyboardModifierShift As Boolean = False
+    <XmlElement("CBKeyboardModifierControl")> Public Property CBKeyboardModifierControl As Boolean = False
     ''' <summary>
     ''' Gibt an, ob bei der Prüfung des Enabled-State des Wählenbuttons im Ribbon deaktiviert wird.
     ''' Dies ist bei verzögertem E-Mail versand notwendig.
@@ -77,7 +78,7 @@
     <XmlElement("TBNetworkTimeout")> Public Property TBNetworkTimeout As Integer = 120
 #End Region
 
-#Region "Design"
+#Region "Grundeinstlleungen - Design"
     <XmlElement("CBoxDesignMode")> Public Property CBoxDesignMode As DesignModes = DesignModes.Light
 
 #End Region

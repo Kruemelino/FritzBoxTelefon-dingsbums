@@ -141,7 +141,7 @@ Friend Module ContactEx
         If Kontakt IsNot Nothing Then
             Pfad = $"{Path.GetTempPath}{Path.GetRandomFileName}" '.RegExReplace(".{3}$", "jpg")
 
-            Await DownloadToFileTaskAsync(New Uri(CompleteImageURL(Kontakt.Person)), Pfad)
+            Await Globals.ThisAddIn.FBoxTR064.HttpService.DownloadToFileSystem(New Uri(FritzBoxDefault.CompleteURL(Kontakt.Person.ImageURL)), Pfad)
 
             NLogger.Debug($"Bild des Kontaktes {Kontakt.Person.RealName} unter Pfad {Pfad} gespeichert.")
         End If
@@ -156,20 +156,6 @@ Friend Module ContactEx
         NLogger.Trace($"Kontakt {Kontakt.Person.RealName} serialisiert: {XMLKontakt}")
 
         Return XMLKontakt
-    End Function
-
-    <Extension> Friend Function CompleteImageURL(Person As FBoxAPI.Person) As String
-        Dim SessionID As String = FritzBoxDefault.DfltFritzBoxSessionID
-
-        ' Wird bei Anzeige im Anrufmonitor benötigt.
-        'If Ping(XMLData.POptionen.ValidFBAdr) Then
-        Using fbtr064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-            fbtr064.Deviceconfig.GetSessionID(SessionID)
-            ' Session ID erhalten, ansonsten DfltFritzBoxSessionID
-        End Using
-        'End If
-
-        Return If(SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Person.ImageURL}&{SessionID}", String.Empty)
     End Function
 
     <Extension> Friend Function CompleteImageURL(Person As FBoxAPI.Person, SessionID As String) As String
@@ -194,7 +180,7 @@ Friend Module ContactEx
             Dim b As Byte() = {}
             NLogger.Debug($"Lade Kontaktbild von Pfad: ' {Link} '")
             ' Lade das Bild herunter
-            b = Await DownloadDataTaskAsync(New Uri(Link))
+            b = Await Globals.ThisAddIn.FBoxTR064.HttpService.GetData(New Uri(Link))
             If b.Any Then
                 Dim biImg As New Imaging.BitmapImage()
                 Dim ms As New MemoryStream(b)

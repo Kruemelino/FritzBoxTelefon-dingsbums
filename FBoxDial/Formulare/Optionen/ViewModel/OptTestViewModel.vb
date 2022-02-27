@@ -33,8 +33,8 @@
         ' Commands
         TestTelNrCommand = New RelayCommand(AddressOf StartTelNrTest)
         TestRWSCommand = New RelayCommand(AddressOf StartRWSTest, AddressOf CanRunTestRWS)
-        TestUserListCommand = New RelayCommand(AddressOf StartLoadUserListTest, AddressOf CanLoadUserList)
-        TestLoginCommand = New RelayCommand(AddressOf StartLoginTest, AddressOf CanStartLoginTest)
+        'TestUserListCommand = New RelayCommand(AddressOf StartLoadUserListTest, AddressOf CanLoadUserList)
+        'TestLoginCommand = New RelayCommand(AddressOf StartLoginTest, AddressOf CanStartLoginTest)
         TestKontaktsucheCommand = New RelayCommand(AddressOf StartKontaktsucheTest, AddressOf CanRunTestKontaktsuche)
         TestAnrMonCommand = New RelayCommand(AddressOf StartAnrMonTest)
 
@@ -173,38 +173,38 @@
         Return TBFBAdr.IsNotStringNothingOrEmpty
     End Function
 
-    Private Function CanStartLoginTest(o As Object) As Boolean
-        Return TBBenutzer.IsNotStringNothingOrEmpty
-    End Function
+    'Private Function CanStartLoginTest(o As Object) As Boolean
+    '    Return TBBenutzer.IsNotStringNothingOrEmpty
+    'End Function
 
-    Private Sub StartLoadUserListTest(o As Object)
-        ' Vorheriges Ergebnis löschen
-        TBTestLoginOutput = String.Empty
+    'Private Sub StartLoadUserListTest(o As Object)
+    '    ' Vorheriges Ergebnis löschen
+    '    TBTestLoginOutput = String.Empty
 
-        ' Ereignishandler hinzufügen
-        AddHandler DatenService.Status, AddressOf LoginTestStatus
-        AddHandler DatenService.BeendetLogin, AddressOf LoginTestBeendet
-        ' Lade die aktuellen Nutzernamen herunter
-        CBoxBenutzer = DatenService.LadeFBoxUser(ValidIP(TBFBAdr))
+    '    ' Ereignishandler hinzufügen
+    '    AddHandler DatenService.Status, AddressOf LoginTestStatus
+    '    AddHandler DatenService.BeendetLogin, AddressOf LoginTestBeendet
+    '    ' Lade die aktuellen Nutzernamen herunter
+    '    CBoxBenutzer = DatenService.LadeFBoxUser(ValidIP(TBFBAdr))
 
-    End Sub
+    'End Sub
 
-    Private Sub StartLoginTest(o As Object)
-        ' Ereignishandler hinzufügen
-        AddHandler DatenService.Status, AddressOf LoginTestStatus
-        AddHandler DatenService.BeendetLogin, AddressOf LoginTestBeendet
+    'Private Sub StartLoginTest(o As Object)
+    '    ' Ereignishandler hinzufügen
+    '    AddHandler DatenService.Status, AddressOf LoginTestStatus
+    '    AddHandler DatenService.BeendetLogin, AddressOf LoginTestBeendet
 
-        DatenService.StartLoginTest(ValidIP(TBFBAdr), TBBenutzer, CType(o, Windows.Controls.PasswordBox).SecurePassword)
-    End Sub
-    Private Sub LoginTestStatus(sender As Object, e As String)
-        TBTestLoginOutput += e & Environment.NewLine
-    End Sub
+    '    DatenService.StartLoginTest(ValidIP(TBFBAdr), TBBenutzer, CType(o, Windows.Controls.PasswordBox).SecurePassword)
+    'End Sub
+    'Private Sub LoginTestStatus(sender As Object, e As String)
+    '    TBTestLoginOutput += e & Environment.NewLine
+    'End Sub
 
-    Private Sub LoginTestBeendet(sender As Object, e As NotifyEventArgs(Of Boolean))
-        ' Ereignishandler entfernen
-        RemoveHandler DatenService.Status, AddressOf LoginTestStatus
-        RemoveHandler DatenService.BeendetLogin, AddressOf LoginTestBeendet
-    End Sub
+    'Private Sub LoginTestBeendet(sender As Object, e As NotifyEventArgs(Of Boolean))
+    '    ' Ereignishandler entfernen
+    '    RemoveHandler DatenService.Status, AddressOf LoginTestStatus
+    '    RemoveHandler DatenService.BeendetLogin, AddressOf LoginTestBeendet
+    'End Sub
 
 #End Region
 

@@ -2,7 +2,6 @@
 Imports System.Threading.Tasks
 Imports System.Xml
 Imports System.Xml.Serialization
-Imports System.Xml.Xsl
 Imports Newtonsoft.Json
 
 Friend Module Serializer
@@ -67,37 +66,33 @@ Friend Module Serializer
     ''' <param name="IsPath">Angabe, ob es sich um einen Pfad handelt.</param>
     ''' <param name="ReturnObj">Deserialisiertes Datenobjekt vom Type <typeparamref name="T"/>.</param>
     ''' <returns>True oder False, je nach Ergebnis der Deserialisierung</returns>
-    Friend Function DeserializeXML(Of T)(Data As String, IsPath As Boolean, ByRef ReturnObj As T, Optional xslt As XslCompiledTransform = Nothing) As Boolean
+    Friend Function DeserializeXML(Of T)(Data As String, IsPath As Boolean, ByRef ReturnObj As T) As Boolean
 
         Dim xDoc As New XmlDocument
         If CheckXMLData(Data, IsPath, xDoc) Then
 
-            Dim Serializer As New XmlSerializer(GetType(T))
-
             ' Erstelle einen XMLReader zum Deserialisieren des XML-Documentes
             Using Reader As New XmlNodeReader(xDoc)
 
-                If xslt Is Nothing Then
-                    ' Deserialisiere das XML-Objekt ohne Transformation
-                    Return DeserializeObject(Reader, ReturnObj)
+                Dim Serializer As New XmlSerializer(GetType(T))
 
+                If Serializer.CanDeserialize(Reader) Then
+                    Try
+                        ReturnObj = CType(Serializer.Deserialize(Reader, New XmlDeserializationEvents With {.OnUnknownAttribute = AddressOf On_UnknownAttribute,
+                                                                                                            .OnUnknownElement = AddressOf On_UnknownElement,
+                                                                                                            .OnUnknownNode = AddressOf On_UnknownNode,
+                                                                                                            .OnUnreferencedObject = AddressOf On_UnreferencedObject}), T)
+
+                        Return True
+
+                    Catch ex As InvalidOperationException
+
+                        NLogger.Fatal(ex, $"Bei der Deserialisierung ist ein Fehler aufgetreten.")
+                        Return False
+                    End Try
                 Else
-                    ' Führe eine Transformation durch
-                    Dim TransformationOutput As New StringBuilder
-
-                    ' Erstelle einen XMLWriter
-                    Using transformedData As XmlWriter = XmlWriter.Create(TransformationOutput, New XmlWriterSettings With {.OmitXmlDeclaration = True})
-                        ' Transformiere das XML-Objekt
-                        xslt.Transform(Reader, transformedData)
-
-                        ' Lies das transformierte XML-Objekt ein
-                        Using ReaderTransformed As XmlReader = XmlReader.Create(New StringReader(TransformationOutput.ToString()))
-
-                            ' Deserialisiere das transformierte XML-Objekt
-                            Return DeserializeObject(ReaderTransformed, ReturnObj)
-
-                        End Using
-                    End Using
+                    NLogger.Fatal($"Fehler beim Deserialisieren.")
+                    Return False
                 End If
 
             End Using
@@ -110,37 +105,6 @@ Friend Module Serializer
         xDoc = Nothing
     End Function
 
-    ''' <summary>
-    ''' Deserialisiert den übergebenen <paramref name="Reader"/> (<see cref="XmlReader"/>).
-    ''' </summary>
-    ''' <typeparam name="T">Typ des deserialsierten Objektes.</typeparam>
-    ''' <param name="Reader">Der <see cref="XmlReader"/>.</param>
-    ''' <param name="ReturnObj">Deserialisiertes Datenobjekt vom Type <typeparamref name="T"/>.</param>
-    ''' <returns>True oder False, je nach Ergebnis der Deserialisierung</returns>
-    Private Function DeserializeObject(Of T)(Reader As XmlReader, ByRef ReturnObj As T) As Boolean
-
-        Dim Serializer As New XmlSerializer(GetType(T))
-
-        If Serializer.CanDeserialize(Reader) Then
-            Try
-                ReturnObj = CType(Serializer.Deserialize(Reader, New XmlDeserializationEvents With {.OnUnknownAttribute = AddressOf On_UnknownAttribute,
-                                                                                                    .OnUnknownElement = AddressOf On_UnknownElement,
-                                                                                                    .OnUnknownNode = AddressOf On_UnknownNode,
-                                                                                                    .OnUnreferencedObject = AddressOf On_UnreferencedObject}), T)
-
-                Return True
-
-            Catch ex As InvalidOperationException
-
-                NLogger.Fatal(ex, $"Bei der Deserialisierung ist ein Fehler aufgetreten.")
-                Return False
-            End Try
-        Else
-            NLogger.Fatal($"Fehler beim Deserialisieren.")
-            Return False
-        End If
-
-    End Function
 #End Region
 
 #Region "Asynchron"
@@ -150,13 +114,12 @@ Friend Module Serializer
     ''' <typeparam name="T">Zieltdatentyp</typeparam>
     ''' <param name="Data">Speicherort</param>
     ''' <param name="IsPath">Angabe, ob es sich um einen Pfad handelt.</param>
-    ''' <param name="xslt">XSLT-Transformation</param>
     ''' <returns>Das Ergebnis des Deserialisierungsvorganges.</returns>
-    Friend Async Function DeserializeAsyncXML(Of T)(Data As String, IsPath As Boolean, Optional xslt As XslCompiledTransform = Nothing) As Task(Of T)
-        Return Await Task.Run(Function()
-                                  Dim ReturnObj As T
-                                  Return If(DeserializeXML(Data, IsPath, ReturnObj, xslt), ReturnObj, Nothing)
-                              End Function)
+    Friend Function DeserializeAsyncXML(Of T)(Data As String, IsPath As Boolean) As Task(Of T)
+        Return Task.Run(Function()
+                            Dim ReturnObj As T
+                            Return If(DeserializeXML(Data, IsPath, ReturnObj), ReturnObj, Nothing)
+                        End Function)
     End Function
 #End Region
 

@@ -94,7 +94,7 @@
 
     Friend Sub EntladeDaten(o As Object)
 
-        DatenService.Finalize()
+        DatenService.TR064HttpClient()
 
         ' Deaktiviere die Eingabemaske, nachdem alle Daten geladen wurden
         DatenGeladen = False

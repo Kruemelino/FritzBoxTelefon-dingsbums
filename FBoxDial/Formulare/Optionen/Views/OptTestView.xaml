@@ -75,7 +75,7 @@
             </StackPanel>
         </Expander>
 
-        <Expander Header="{x:Static localize:LocOptionen.strTestLoginHead}">
+        <Expander Header="{x:Static localize:LocOptionen.strTestLoginHead}" IsEnabled="False">
             <StackPanel>
                 <Label Style="{StaticResource OptHintTextBlock}" 
                        Content="{x:Static localize:LocOptionen.strTestLoginInfo}"/>

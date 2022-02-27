@@ -3,26 +3,15 @@
 Friend Module FritzBoxAnrufliste
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "Anrufliste Laden"
-    Friend Async Function LadeFritzBoxAnrufliste(FBoxTR064 As FBoxAPI.FritzBoxTR64) As Task(Of FBoxAPI.CallList)
-        Dim Anrufliste As New FBoxAPI.CallList With {.Calls = New List(Of FBoxAPI.Call)}
-        ' Prüfe, ob Fritz!Box verfügbar
-        'If Ping(XMLData.POptionen.ValidFBAdr) Then
-        Dim Pfad As String = String.Empty
-
+    Friend Async Function LadeFritzBoxAnrufliste() As Task(Of FBoxAPI.CallList)
         ' Ermittle Pfad zur Anrufliste
-        If FBoxTR064.Ready AndAlso FBoxTR064.X_contact.GetCallList(Pfad) Then
-            With Await DeserializeAsyncXML(Of FBoxAPI.CallList)(Pfad, True)
-                Anrufliste.Calls.AddRange(.Calls)
-                Anrufliste.Timestamp = .Timestamp
-            End With
-
+        If Globals.ThisAddIn.FBoxTR064?.Ready Then
+            'Anrufliste =
+            Return If(Await Globals.ThisAddIn.FBoxTR064.X_contact.GetCallList(), New FBoxAPI.CallList)
         Else
             NLogger.Warn("Pfad zur XML-Anrufliste konnte nicht ermittelt werden.")
+            Return New FBoxAPI.CallList
         End If
-        'Else
-        '    NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
-        'End If
-        Return Anrufliste
     End Function
 #End Region
 
@@ -52,6 +41,7 @@ Friend Module FritzBoxAnrufliste
 
     End Function
 #End Region
+
     Friend Async Function ErstelleTelefonat([Call] As FBoxAPI.Call) As Task(Of Telefonat)
 
         If [Call].Type.IsLessOrEqual(3) Or [Call].Type.AreEqual(10) Then

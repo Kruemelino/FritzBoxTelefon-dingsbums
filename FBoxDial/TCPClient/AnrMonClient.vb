@@ -56,8 +56,9 @@ Friend Class AnrMonClient
         If Verbunden And Not IsDisposed Then
             Try ' Nach einem Standby kann es zu einem Fehler kommen.
                 Dim read As Integer = AnrMonStream.EndRead(ar)
-                If read.IsZero Then 'leere Datenübermittlung signalisiert Verbindungsabbruch
-                    Dispose
+                If read.IsZero Then
+                    NLogger.Warn("Verbindungsabbruch detektiert aufgrund einer leere Datenübermittlung.")
+                    Dispose()
                 Else
                     With New StringBuilder(Encoding.UTF8.GetString(Buf, 0, read))
                         Do While AnrMonStream.DataAvailable

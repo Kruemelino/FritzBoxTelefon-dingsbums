@@ -24,8 +24,8 @@
     Friend Shared ReadOnly Property GetDefaultUserName As String
         Get
             ' Eine Unterscheidung nach Firmware ist erforderlich.
-            Using FBTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, Nothing)
-                With FBTR064
+            If Globals.ThisAddIn.FBoxTR064 IsNot Nothing Then
+                With Globals.ThisAddIn.FBoxTR064
                     If .Major.IsLargerOrEqual(7) And .Minor.IsLargerOrEqual(24) Then
                         ' ermittle den zuletzt angemeldeten User
                         Dim XMLString As String = String.Empty
@@ -44,14 +44,17 @@
                         Return "admin"
                     End If
                 End With
-            End Using
+            Else
+                NLogger.Info("Benutzername zum Login konnte nucht ermittelt werden, da TR-064 nicht bereit.")
+                Return String.Empty
+            End If
         End Get
     End Property
 
-    Friend Shared Function CompleteURL(FBoxTR064 As FBoxAPI.FritzBoxTR64, PathSegment As String) As String
+    Friend Shared Function CompleteURL(PathSegment As String) As String
         Dim SessionID As String = DfltFritzBoxSessionID
         ' Ermittle die SessionID. Sollte das schief gehen, kommt es zu einer Fehlermeldung im Log.
-        If FBoxTR064.Deviceconfig.GetSessionID(SessionID) Then
+        If Globals.ThisAddIn.FBoxTR064.Deviceconfig.GetSessionID(SessionID) Then
             Return $"https://{XMLData.POptionen.ValidFBAdr}:{DfltTR064PortSSL}{PathSegment}&{SessionID}"
         Else
             Return String.Empty

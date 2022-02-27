@@ -160,9 +160,6 @@
   <data name="strDfltTellowsDeCryptKey" xml:space="preserve">
     <value>ZugangTellows</value>
   </data>
-  <data name="ToLower" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\optionen\tolower.xslt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="Vorwahlen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\telefonie\listen\vorwahlen.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>

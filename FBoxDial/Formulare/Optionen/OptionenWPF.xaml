@@ -10,7 +10,7 @@
         d:DataContext="{d:DesignInstance Type=fbd:OptionenViewModel, IsDesignTimeCreatable=False}"
         fbd:WindowBehavior.Loaded="{Binding LoadedCommand}"
         Title="{x:Static localize:LocOptionen.strConfig}"
-        Style="{DynamicResource CustomToolWindowStyle}" >
+        Style="{DynamicResource CustomWindowStyle}" >
 
     <Window.DataContext>
         <fbd:OptionenViewModel/>

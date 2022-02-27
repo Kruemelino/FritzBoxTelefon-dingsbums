@@ -58,6 +58,7 @@ Forum für Hilfestellungen ([IP Phone Forum](https://www.ip-phone-forum.de/)): [
 Aktuell werden folgende Drittanbieter-Bibliotheken​ in das Addin eingebunden:
 * [Dirkster.TreeLib](https://github.com/Dirkster99/TreeLib)
 * [FilterDataGrid](https://github.com/macgile/DataGridFilter)
+* [HttpClientFactoryLite](https://github.com/uhaciogullari/HttpClientFactoryLite)
 * [MixERP.Net.VCards](https://github.com/mixerp/mixerp.net.vcards)
 * [Newtonsoft.Json](https://www.newtonsoft.com/json)
 * [NLog](https://nlog-project.org/)

@@ -45,10 +45,10 @@ Public Interface IOptionenService
     Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Task(Of TellowsResponse)
 #End Region
 
-#Region "Test Login"
-    Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean))
-    Sub StartLoginTest(FbAdr As String, User As String, Password As Security.SecureString)
-#End Region
+    '#Region "Test Login"
+    '    Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean))
+    '    Sub StartLoginTest(FbAdr As String, User As String, Password As Security.SecureString)
+    '#End Region
 
 #Region "Test Kontaktsuche"
     Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean))

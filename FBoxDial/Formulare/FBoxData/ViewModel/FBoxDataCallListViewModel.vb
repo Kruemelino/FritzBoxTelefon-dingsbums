@@ -154,7 +154,9 @@ Public Class FBoxDataCallListViewModel
     Public Async Sub Init() Implements IFBoxData.Init
 
         ' Dummyeintrag. Ansonsten wird das FilteredDataGrid nicht ordentlich geladen
-        CallList.Add(New CallViewModel(DatenService) With {.CallItem = New FBoxAPI.Call With {.Name = "Dummy", .[Date] = Now.ToString("g"), .Duration = "00:00"}})
+        CallList.Add(New CallViewModel(DatenService) With {.CallItem = New FBoxAPI.Call With {.Name = Localize.LocFBoxData.strDataError,
+                                                                                              .[Date] = Now.ToString("g"),
+                                                                                              .Duration = "00:00"}})
 
         ' Setze Startzeitpunkt = Zeitpunkt letzter Import
         StartDatum = DatenService.GetLastImport

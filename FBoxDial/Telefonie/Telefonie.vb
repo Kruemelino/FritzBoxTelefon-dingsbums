@@ -36,171 +36,161 @@ Imports FBoxDial.FritzBoxDefault
 
     Friend Async Sub GetFritzBoxDaten()
 
-        Dim SessionID As String = DfltFritzBoxSessionID
 
-        ' Starte die TR-064 Schnittstelle zur Fritz!Box
-        Using FBoxTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, Anmeldeinformationen)
+        With Globals.ThisAddIn.FBoxTR064
 
-            ' FBoxAPI Status abfangen
-            AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
+            Dim SessionID As String = String.Empty
 
-            With FBoxTR064
-                ' Ermittle die SessionID für Fritz!Box Query
-                If .Deviceconfig.GetSessionID(SessionID) Then
+            ' Ermittle die SessionID für Fritz!Box Query
+            If .Deviceconfig.GetSessionID(SessionID) Then
 
-                    ' Ermittle die Landeskennzahl (LKZ) und die Ortskennzahl (OKZ)
-                    If .X_voip.GetVoIPCommonCountryCode(LKZ) And .X_voip.GetVoIPCommonAreaCode(OKZ) Then
+                ' Ermittle die Landeskennzahl (LKZ) und die Ortskennzahl (OKZ)
+                If .X_voip.GetVoIPCommonCountryCode(LKZ) And .X_voip.GetVoIPCommonAreaCode(OKZ) Then
 
-                        If LKZ.IsStringNothingOrEmpty Then
-                            LKZ = If(XMLData.PTelefonie.LKZ.IsStringNothingOrEmpty, "49", XMLData.PTelefonie.LKZ)
-                            PushStatus(LogLevel.Warn, $"Landeskennzahl konnte nicht ermittelt werden (Setze Wert aus Einstellungen: '{LKZ}').")
-                        End If
+                    If LKZ.IsStringNothingOrEmpty Then
+                        LKZ = If(XMLData.PTelefonie.LKZ.IsStringNothingOrEmpty, "49", XMLData.PTelefonie.LKZ)
+                        PushStatus(LogLevel.Warn, $"Landeskennzahl konnte nicht ermittelt werden (Setze Wert aus Einstellungen: '{LKZ}').")
+                    End If
 
-                        If OKZ.IsStringNothingOrEmpty Then PushStatus(LogLevel.Warn, $"Ortskennzahl konnte nicht ermittelt werden.")
+                    If OKZ.IsStringNothingOrEmpty Then PushStatus(LogLevel.Warn, $"Ortskennzahl konnte nicht ermittelt werden.")
 
-                        PushStatus(LogLevel.Debug, $"Kennzahlen: {LKZ}; {OKZ}")
+                    PushStatus(LogLevel.Debug, $"Kennzahlen: {LKZ}; {OKZ}")
 
-                        ' Lade Telefonnummern via TR-064 
-                        Dim NummernListe As FBoxAPI.SIPTelNrList = Nothing
-                        ' Füge die Nummer zu den eigenen Nummern hinzu
-                        If .X_voip.GetNumbers(NummernListe) Then NummernListe.TelNrList.ForEach(Sub(S) AddEigeneTelNr(S.Number, S.Index))
+                    ' Lade Telefonnummern via TR-064 
+                    Dim NummernListe As FBoxAPI.SIPTelNrList = Nothing
+                    ' Füge die Nummer zu den eigenen Nummern hinzu
+                    If .X_voip.GetNumbers(NummernListe) Then NummernListe.TelNrList.ForEach(Sub(S) AddEigeneTelNr(S.Number, S.Index))
 
-                        ' Lade SIP Clients via TR-064 
-                        Dim SIPList As FBoxAPI.SIPClientList = Nothing
-                        If .X_voip.GetClients(SIPList) Then
+                    ' Lade SIP Clients via TR-064 
+                    Dim SIPList As FBoxAPI.SIPClientList = Nothing
+                    If .X_voip.GetClients(SIPList) Then
 
-                            ' Werte alle SIP Clients aus
-                            For Each SIPClient In SIPList.SIPClients
+                        ' Werte alle SIP Clients aus
+                        For Each SIPClient In SIPList.SIPClients
 
-                                Dim Telefon As New Telefoniegerät With {.Name = SIPClient.PhoneName,
-                                                                        .TelTyp = TelTypen.IP,
-                                                                        .AnrMonID = AnrMonTelIDBase.IP + SIPClient.ClientIndex,
-                                                                        .StrEinTelNr = New List(Of String),
-                                                                        .Intern = SIPClient.InternalNumber}
-                                With Telefon
+                            Dim Telefon As New Telefoniegerät With {.Name = SIPClient.PhoneName,
+                                                                            .TelTyp = TelTypen.IP,
+                                                                            .AnrMonID = AnrMonTelIDBase.IP + SIPClient.ClientIndex,
+                                                                            .StrEinTelNr = New List(Of String),
+                                                                            .Intern = SIPClient.InternalNumber}
+                            With Telefon
 
-                                    If SIPClient.InComingNumbers.First.Type = FBoxAPI.SIPTypeEnum.eAllCalls Then
-                                        ' füge alle bekannten Nummern hinzu
-                                        Telefonnummern.ForEach(Sub(TelNr) .StrEinTelNr.Add(TelNr.Einwahl))
-                                    Else
-                                        ' Füge die angegebenen eigehenden Telefonnummern hinzu
-                                        SIPClient.InComingNumbers.ForEach(Sub(T) .StrEinTelNr.Add(AddEigeneTelNr(T.Number, T.Index).Einwahl))
-                                    End If
+                                If SIPClient.InComingNumbers.First.Type = FBoxAPI.SIPTypeEnum.eAllCalls Then
+                                    ' füge alle bekannten Nummern hinzu
+                                    Telefonnummern.ForEach(Sub(TelNr) .StrEinTelNr.Add(TelNr.Einwahl))
+                                Else
+                                    ' Füge die angegebenen eigehenden Telefonnummern hinzu
+                                    SIPClient.InComingNumbers.ForEach(Sub(T) .StrEinTelNr.Add(AddEigeneTelNr(T.Number, T.Index).Einwahl))
+                                End If
 
-                                    PushStatus(LogLevel.Debug, $"Telefon { .TelTyp}: { .AnrMonID}; { .Name}; { .Intern}")
-                                End With
+                                PushStatus(LogLevel.Debug, $"Telefon { .TelTyp}: { .AnrMonID}; { .Name}; { .Intern}")
+                            End With
 
-                                ' Telefon der Liste von Geräten hinzufügen
-                                Telefoniegeräte.Add(Telefon)
+                            ' Telefon der Liste von Geräten hinzufügen
+                            Telefoniegeräte.Add(Telefon)
+                        Next
+                    End If
 
-                                'NLogger.Debug($"Test Dialport Fallback IP-Telefon: '{Telefon.GetDialPortFallback}'")
-                            Next
-                        End If
+                    ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
+                    Dim ABListe As FBoxAPI.TAMList = Await .X_tam.GetList
+                    ' Werte alle TAMs aus, welche in der Fritz!Box sichtbar sind.
+                    For Each AB In ABListe.Items.Where(Function(T) T.Display)
 
-                        ' Lade Anrufbeantworter, TAM (telephone answering machine) via TR-064 
-                        Dim ABListe As FBoxAPI.TAMList = Nothing
-                        If .X_tam.GetList(ABListe) Then
-                            ' Werte alle TAMs aus, welche in der Fritz!Box sichtbar sind.
-                            For Each AB In ABListe.Items.Where(Function(T) T.Display)
-
-                                Dim Telefon As New Telefoniegerät With {.Name = AB.Name,
+                        Dim Telefon As New Telefoniegerät With {.Name = AB.Name,
                                                                         .TelTyp = TelTypen.TAM,
                                                                         .StrEinTelNr = New List(Of String),
                                                                         .Intern = InternBase.TAM + AB.Index,
                                                                         .AnrMonID = AnrMonTelIDBase.TAM + AB.Index}
 
-                                ' Ermittle die Nummer, auf den der AB reagiert.
-                                Dim TAMInfo As New FBoxAPI.TAMInfo
-                                If .X_tam.GetTAMInfo(TAMInfo, AB.Index) Then
-                                    If TAMInfo.PhoneNumbers.Length.AreEqual(1) AndAlso TAMInfo.PhoneNumbers.First.IsStringNothingOrEmpty Then
-                                        ' Empty string represents all numbers.
-                                        Telefonnummern.ForEach(Sub(TelNr) Telefon.StrEinTelNr.Add(TelNr.Einwahl))
+                        ' Ermittle die Nummer, auf den der AB reagiert.
+                        Dim TAMInfo As New FBoxAPI.TAMInfo
+                        If .X_tam.GetTAMInfo(TAMInfo, AB.Index) Then
+                            If TAMInfo.PhoneNumbers.Length.AreEqual(1) AndAlso TAMInfo.PhoneNumbers.First.IsStringNothingOrEmpty Then
+                                ' Empty string represents all numbers.
+                                Telefonnummern.ForEach(Sub(TelNr) Telefon.StrEinTelNr.Add(TelNr.Einwahl))
 
-                                    Else
-                                        ' Comma (,) separated list represents specific phone numbers.
-                                        For Each T In TAMInfo.PhoneNumbers
-                                            Telefon.StrEinTelNr.Add(GetEigeneTelNr(T)?.Einwahl)
-                                        Next
+                            Else
+                                ' Comma (,) separated list represents specific phone numbers.
+                                For Each T In TAMInfo.PhoneNumbers
+                                    Telefon.StrEinTelNr.Add(GetEigeneTelNr(T)?.Einwahl)
+                                Next
 
-                                    End If
-                                End If
-                                PushStatus(LogLevel.Debug, $"Telefon { Telefon.TelTyp}: { Telefon.AnrMonID}; { Telefon.Name}; { Telefon.Intern}")
-                                ' Telefon der Liste von Geräten hinzufügen
-                                Telefoniegeräte.Add(Telefon)
-
-                                'NLogger.Debug($"Test Dialport Fallback TAM: '{Telefon.GetDialPortFallback}'")
-                            Next
+                            End If
                         End If
+                        PushStatus(LogLevel.Debug, $"Telefon { Telefon.TelTyp}: { Telefon.AnrMonID}; { Telefon.Name}; { Telefon.Intern}")
+                        ' Telefon der Liste von Geräten hinzufügen
+                        Telefoniegeräte.Add(Telefon)
+                    Next
 
-                        ' Asynchroner Task für das Einlesen der FON-Geräte via Query
-                        Dim TaskFON As Task(Of List(Of Telefoniegerät)) = GetFON(SessionID)
+                    ' Asynchroner Task für das Einlesen der FON-Geräte via Query
+                    Dim TaskFON As Task(Of List(Of Telefoniegerät)) = GetFON(SessionID)
 
-                        ' Asynchroner Task für das Einlesen der DECT-Geräte via Query
-                        Dim TaskDECT As Task(Of List(Of Telefoniegerät)) = GetDECT(SessionID)
+                    ' Asynchroner Task für das Einlesen der DECT-Geräte via Query
+                    Dim TaskDECT As Task(Of List(Of Telefoniegerät)) = GetDECT(SessionID)
 
-                        ' Asynchroner Task für das Einlesen der S0-Geräte via Query
-                        Dim TaskS0 As Task(Of List(Of Telefoniegerät)) = GetS0(SessionID)
+                    ' Asynchroner Task für das Einlesen der S0-Geräte via Query
+                    Dim TaskS0 As Task(Of List(Of Telefoniegerät)) = GetS0(SessionID)
 
-                        ' Asynchroner Task für das Einlesen der Mobil-Geräte sowie integrieten Faxempfang via Query
-                        Dim TaskMobilFax As Task(Of List(Of Telefoniegerät)) = GetFaxMailMobil(SessionID)
+                    ' Asynchroner Task für das Einlesen der Mobil-Geräte sowie integrieten Faxempfang via Query
+                    Dim TaskMobilFax As Task(Of List(Of Telefoniegerät)) = GetFaxMailMobil(SessionID)
 
-                        ' Füge die ermittelten FON-Geräte hinzu
-                        Telefoniegeräte.AddRange(Await TaskFON)
+                    ' Füge die ermittelten FON-Geräte hinzu
+                    Telefoniegeräte.AddRange(Await TaskFON)
 
-                        ' Füge die ermittelten DECT-Geräte hinzu 
-                        Telefoniegeräte.AddRange(Await TaskDECT)
+                    ' Füge die ermittelten DECT-Geräte hinzu 
+                    Telefoniegeräte.AddRange(Await TaskDECT)
 
-                        ' Füge die ermittelten S0-Geräte hinzu 
-                        Telefoniegeräte.AddRange(Await TaskS0)
+                    ' Füge die ermittelten S0-Geräte hinzu 
+                    Telefoniegeräte.AddRange(Await TaskS0)
 
-                        ' Füge die ermittelten Mobil-Geräte sowie integrieten Faxempfang hinzu
-                        Telefoniegeräte.AddRange(Await TaskMobilFax)
+                    ' Füge die ermittelten Mobil-Geräte sowie integrieten Faxempfang hinzu
+                    Telefoniegeräte.AddRange(Await TaskMobilFax)
 
-                        ' ISDN/DECT Rundruf, falls S0 oder DECT Geräte verfügbar 
-                        Telefoniegeräte.AddRange(GetRundruf)
+                    ' ISDN/DECT Rundruf, falls S0 oder DECT Geräte verfügbar 
+                    Telefoniegeräte.AddRange(GetRundruf)
 
-                        ' Ermittle TR-064 Phoneports
-                        ' Für die Fritz!Box Wählhilfe nutzbare Telefone ermitteln
-                        Dim WählhilfeTelefone As List(Of Telefoniegerät) = Telefoniegeräte.FindAll(Function(Telefon) Telefon.TelTyp = TelTypen.FON Or Telefon.TelTyp = TelTypen.DECT Or Telefon.TelTyp = TelTypen.ISDN)
-                        If WählhilfeTelefone.Any Then
-                            ' Ermittle alle Phoneports via X_AVM-DE_GetPhonePort
-                            ' X_AVM-DE_PhoneName Empty string to disable feature to dial a number.
-                            ' Examples:
-                            ' FON1: Telefon
-                            ' FON2: Telefon
-                            ' ISDN: ISDN/ DECT Rundruf
-                            ' DECT: Mobilteil 1 
+                    ' Ermittle TR-064 Phoneports
+                    ' Für die Fritz!Box Wählhilfe nutzbare Telefone ermitteln
+                    Dim WählhilfeTelefone As List(Of Telefoniegerät) = Telefoniegeräte.FindAll(Function(Telefon) Telefon.TelTyp = TelTypen.FON Or Telefon.TelTyp = TelTypen.DECT Or Telefon.TelTyp = TelTypen.ISDN)
+                    If WählhilfeTelefone.Any Then
+                        ' Ermittle alle Phoneports via X_AVM-DE_GetPhonePort
+                        ' X_AVM-DE_PhoneName Empty string to disable feature to dial a number.
+                        ' Examples:
+                        ' FON1: Telefon
+                        ' FON2: Telefon
+                        ' ISDN: ISDN/ DECT Rundruf
+                        ' DECT: Mobilteil 1 
 
-                            ' Schleife durch alle wählbaren Telefone
-                            For i = 1 To WählhilfeTelefone.Count
-                                Dim Phoneport As String = String.Empty
-                                If .X_voip.GetPhonePort(Phoneport, i) Then
-                                    ' Erfolgreich ermittelt
-                                    Dim Telefon As Telefoniegerät = WählhilfeTelefone.Find(Function(Tel) Phoneport.EndsWith(Tel.Name))
-                                    If Telefon IsNot Nothing Then
-                                        With Telefon
-                                            .TR064Dialport = Phoneport
-                                            PushStatus(LogLevel.Debug, $"Setze Phoneport für Telefon { .Name} ({ .TelTyp}): '{ .TR064Dialport}'; Rückfallwert: '{ .GetDialPortFallback}'")
-                                        End With
-                                    End If
+                        ' Schleife durch alle wählbaren Telefone
+                        For i = 1 To WählhilfeTelefone.Count
+                            Dim Phoneport As String = String.Empty
+                            If .X_voip.GetPhonePort(Phoneport, i) Then
+                                ' Erfolgreich ermittelt
+                                Dim Telefon As Telefoniegerät = WählhilfeTelefone.Find(Function(Tel) Phoneport.EndsWith(Tel.Name))
+                                If Telefon IsNot Nothing Then
+                                    With Telefon
+                                        .TR064Dialport = Phoneport
+                                        PushStatus(LogLevel.Debug, $"Setze Phoneport für Telefon { .Name} ({ .TelTyp}): '{ .TR064Dialport}'; Rückfallwert: '{ .GetDialPortFallback}'")
+                                    End With
                                 End If
-                            Next
-                        End If
-
-                        ' Aufräumen
-                        PushStatus(LogLevel.Info, $"Einlesen der Telefoniedaten abgeschlossen...")
-                        RaiseEvent Beendet()
-                    Else
-
-                        PushStatus(LogLevel.Error, $"Fehler Einlesen nicht erfolgreich")
+                            End If
+                        Next
                     End If
 
+                    ' Aufräumen
+                    PushStatus(LogLevel.Info, $"Einlesen der Telefoniedaten abgeschlossen...")
+
+                Else
+
+                    PushStatus(LogLevel.Error, $"Fehler: Einlesen nicht möglich: Landes- bzw. Ortsnetzkennzahlen konnten nicht abgerufen werden.")
                 End If
-            End With
+            Else
 
-            RemoveHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
+                PushStatus(LogLevel.Error, $"Fehler: Login nicht möglich.")
+            End If
+        End With
 
-        End Using
+        RaiseEvent Beendet()
 
     End Sub
 
@@ -220,7 +210,7 @@ Imports FBoxDial.FritzBoxDefault
         TelQuery.Add("FON=telcfg:settings/MSN/Port/list(Name,Fax,AllIncomingCalls)")
         ' Führe Abfrage aus
 
-        If JSONDeserializeObjectFromString(Await FritzBoxAsyncQuery(SessionID, TelQuery), MSNList) Then
+        If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), MSNList) Then
             ' Wenn es eine interne Nummer gibt, sind die DECT-Geräte aktiv
             For Each FONTelefon In MSNList.FON.Where(Function(F) F.Name.IsNotStringNothingOrEmpty)
                 ' Dimensioniere ein neues Telefon und setze Daten
@@ -240,7 +230,7 @@ Imports FBoxDial.FritzBoxDefault
 
                 ' Führe Abfrage aus
                 Dim FONNr As New FBoxFONNr
-                If JSONDeserializeObjectFromString(Await FritzBoxAsyncQuery(SessionID, TelQuery), FONNr) Then
+                If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), FONNr) Then
 
                     ' Verarbeite alle Nummer des FON-Telefones
                     If FONTelefon.AllIncomingCalls Then
@@ -281,7 +271,7 @@ Imports FBoxDial.FritzBoxDefault
         TelQuery.Add("DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)")
 
         ' Führe Abfrage aus
-        If JSONDeserializeObjectFromString(Await FritzBoxAsyncQuery(SessionID, TelQuery), DECTTelList) Then
+        If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), DECTTelList) Then
             ' Wenn es eine interne Nummer gibt, sind die DECT-Geräte aktiv
             For Each DECTTelefon In DECTTelList.DECT.Where(Function(D) D.Intern.IsNotStringNothingOrEmpty)
                 ' Dimensioniere ein neues Telefon und setze Daten
@@ -300,7 +290,7 @@ Imports FBoxDial.FritzBoxDefault
 
                 ' Führe Abfrage aus
                 Dim DECTNr As New FBoxDECTNr
-                If JSONDeserializeObjectFromString(Await FritzBoxAsyncQuery(SessionID, TelQuery), DECTNr) Then
+                If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), DECTNr) Then
                     ' Veraarbeite alle Nummer des DECT-Telefones
                     If DECTNr.DECTRingOnAllMSNs Then
                         ' Weise dem Telefon alle bekannten Nummern zu
@@ -351,7 +341,7 @@ Imports FBoxDial.FritzBoxDefault
 
             ' Führe Abfrage aus
             Dim S0Tel As New FBoxS0
-            If JSONDeserializeObjectFromString(Await FritzBoxAsyncQuery(SessionID, TelQuery), S0Tel) Then
+            If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), S0Tel) Then
                 ' Wenn es einen Namen gibt, sind die S0-Geräte aktiv
                 If S0Tel.S0Name.IsNotStringNothingOrEmpty Then
 
@@ -397,7 +387,7 @@ Imports FBoxDial.FritzBoxDefault
 
         ' Führe Abfrage aus
         Dim MailMobilTel As New FaxMailMobil
-        If JSONDeserializeObjectFromString(Await FritzBoxAsyncQuery(SessionID, TelQuery), MailMobilTel) Then
+        If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), MailMobilTel) Then
             ' Verarbeite Mobilgerät, wenn es eine Mobilnummer gibt.
             If MailMobilTel.Mobile.IsNotStringNothingOrEmpty Then
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.Mobil,
@@ -408,7 +398,6 @@ Imports FBoxDial.FritzBoxDefault
                 PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
                 TelList.Add(Telefon)
 
-                'NLogger.Debug($"Test Dialport Fallback Mobile: '{Telefon.GetDialPortFallback}'")
             End If
 
             ' Verarbeite internen Faxempfang (FaxMail)
@@ -431,7 +420,7 @@ Imports FBoxDial.FritzBoxDefault
 
                 ' Führe Abfrage aus
                 Dim FaxNr As New FBoxFaxNr
-                If JSONDeserializeObjectFromString(Await FritzBoxAsyncQuery(SessionID, TelQuery), FaxNr) Then
+                If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), FaxNr) Then
                     For Each FaxTelNr In FaxNr.FAXList.Where(Function(M) M.IsNotStringNothingOrEmpty)
 
                         Telefon.StrEinTelNr.Add(GetEigeneTelNr(FaxTelNr)?.Einwahl)
@@ -506,16 +495,6 @@ Imports FBoxDial.FritzBoxDefault
             Telefonnummern.Add(AddEigeneTelNr)
             PushStatus(LogLevel.Debug, $"Telefonnummern: '{TelNr}' ({ID}); F: '{AddEigeneTelNr.Formatiert}'; U: '{AddEigeneTelNr.Unformatiert}'")
         End If
-    End Function
-
-    ''' <summary>
-    ''' Führt die Abfrage zur Fritz!Box aus.
-    ''' </summary>
-    ''' <param name="SessionID">Die gültige SessionID</param>
-    ''' <param name="Abfrage">Die auszuführende Abfrage.</param>
-    ''' <returns></returns>
-    Private Async Function FritzBoxAsyncQuery(SessionID As String, Abfrage As List(Of String)) As Task(Of String)
-        Return Await DownloadStringTaskAsync(New Uri($"https://{XMLData.POptionen.ValidFBAdr}/query.lua?{SessionID}&{String.Join("&", Abfrage.ToArray)}"))
     End Function
 
     ''' <summary>

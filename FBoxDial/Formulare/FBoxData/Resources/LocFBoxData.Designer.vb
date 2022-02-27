@@ -155,6 +155,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fehler: Log prüfen! ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDataError() As String
+            Get
+                Return ResourceManager.GetString("strDataError", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Datum ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strDate() As String

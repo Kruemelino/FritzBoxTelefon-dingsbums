@@ -532,9 +532,7 @@ Imports Microsoft.Office.Interop
                         ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
                         ' Dann lade die Telefonbücher herunter
                         NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
-                        Using FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-                            Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher(FBoxTR064)
-                        End Using
+                        Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher()
                     End If
 
                     ' Wenn die Telefonbücher immer noch nicht zur Verfügung stehen, brich an dieser Stelle ab
@@ -884,39 +882,37 @@ Imports Microsoft.Office.Interop
     ''' <summary>
     ''' Routine zur Ermittlung der aufgenommenen Nachricht auf einem der eingerichteten Fritz!Box Anrufbeantworter.
     ''' </summary>
-    Private Sub GetTAMMessage()
+    Private Async Sub GetTAMMessage()
         ' Wenn der Fritz!Box Anrufbeantworter rangegangen ist, liegt eine Nachricht ggf. vor. Anhand der Gegenstellennummer, der eigenen Nummer und der Anrufzeit wird der Eintrag ermittelt.
 
         ' Überrpüfung, ob ein Anrufbeantworter rangegangen ist
         If TelGerät?.TelTyp = DfltWerteTelefonie.TelTypen.TAM Then
-            Using FBoxTR064 As New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, XMLData.POptionen.TBNetworkTimeout, FritzBoxDefault.Anmeldeinformationen)
-                ' lade die MessageList herunter, Ermittle anhand der ID den relevanten Anrufbeantworter
-                Dim TAM_ID As Integer = TelGerät.AnrMonID - DfltWerteTelefonie.AnrMonTelIDBase.TAM
-                With GetTAMMessagges(FBoxTR064, TAM_ID)
-                    ' Im Fehlerfall ist die Liste leer.
-                    ' Es wird verglichen:
-                    ' A: Gegenstellennummer mit der Nummer des anrufenden
-                    ' B: Eigene Nummer, welche Angerufen wurde
-                    ' C: Zeit des Verbindens: Die Zeit wird ohne Sekundenangabe übergeben. Daher wird diese rausgerechnet
-                    Dim MList As IEnumerable(Of FBoxAPI.Message) = .Where(Function(M) GegenstelleTelNr.Equals(M.Number) AndAlso
-                                                                                      EigeneTelNr.Equals(M.Called) AndAlso
-                                                                                      ZeitVerbunden.AddSeconds(-ZeitVerbunden.Second).Equals(CDate(M.Date)))
-                    If MList.Any Then
-                        If MList.Count.AreEqual(1) Then
-                            With MList.First
-                                ' Wenn Messages gefunden wurden...
-                                NLogger.Debug($"Anrufbeantworter ({TAM_ID}): Benachrichtigung gefunden ({ .Index}): { .Date}, { .Number}, { .Path}")
+            ' lade die MessageList herunter, Ermittle anhand der ID den relevanten Anrufbeantworter
+            Dim TAM_ID As Integer = TelGerät.AnrMonID - DfltWerteTelefonie.AnrMonTelIDBase.TAM
+            With Await GetTAMMessages(TAM_ID)
+                ' Im Fehlerfall ist die Liste leer.
+                ' Es wird verglichen:
+                ' A: Gegenstellennummer mit der Nummer des anrufenden
+                ' B: Eigene Nummer, welche Angerufen wurde
+                ' C: Zeit des Verbindens: Die Zeit wird ohne Sekundenangabe übergeben. Daher wird diese rausgerechnet
+                Dim MList As IEnumerable(Of FBoxAPI.Message) = .Where(Function(M) GegenstelleTelNr.Equals(M.Number) AndAlso
+                                                                                  EigeneTelNr.Equals(M.Called) AndAlso
+                                                                                  ZeitVerbunden.AddSeconds(-ZeitVerbunden.Second).Equals(CDate(M.Date)))
+                If MList.Any Then
+                    If MList.Count.AreEqual(1) Then
+                        With MList.First
+                            ' Wenn Messages gefunden wurden...
+                            NLogger.Debug($"Anrufbeantworter ({TAM_ID}): Benachrichtigung gefunden ({ .Index}): { .Date}, { .Number}, { .Path}")
 
-                                ' Merke den Pfad zur Audiodatei
-                                TAMMessagePath = .Path
-                            End With
-                        Else
-                            NLogger.Warn($"Es wurden mehr als eine passende TAM Benachrichtigung gefunden.")
-                        End If
-
+                            ' Merke den Pfad zur Audiodatei
+                            TAMMessagePath = .Path
+                        End With
+                    Else
+                        NLogger.Warn($"Es wurden mehr als eine passende TAM Benachrichtigung gefunden.")
                     End If
-                End With
-            End Using
+
+                End If
+            End With
         End If
     End Sub
 
