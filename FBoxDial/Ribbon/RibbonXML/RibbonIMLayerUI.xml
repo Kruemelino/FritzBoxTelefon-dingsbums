@@ -2,11 +2,7 @@
   <contextMenus>
     <contextMenu idMso="ContextMenuContactCardRecipient">      
       <menuSeparator id="Seperator_CMR1"/>
-      <button id="Dial_CMR2" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction" getEnabled="DialEnabled"/>
+      <button id="Dial_CMR2" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnActionCC" getEnabled="DialEnabled"/>
     </contextMenu>
-    <!--<contextMenu idMso="ContextMenuContactCardOverflowDropdown">
-      <menuSeparator id="Seperator_CMR2"/>
-      <button id="Dial_CMR1" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction" getEnabled="DialEnabled"/>
-    </contextMenu>-->
   </contextMenus>
 </customUI>

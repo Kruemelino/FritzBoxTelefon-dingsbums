@@ -250,6 +250,17 @@ Imports FBoxDial.RibbonData
     End Sub
 
     ''' <summary>
+    ''' Ruft die jeweilige Funktion auf, die dem Button im Kontextmenü auf einer Kontaktkarte hinterlegt ist.
+    ''' </summary>
+    ''' <param name="control">Die Object, was im Ribbon angeklickt wurde.</param>>
+    Public Sub BtnOnActionCC(control As IRibbonControl)
+        GetRibbonAction(control.Id, CType(control.Context, IMsoContactCard), control.Tag)
+        ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
+        ' Zeichne Ribbon neu
+        RibbonObjekt.Invalidate()
+    End Sub
+
+    ''' <summary>
     ''' Ruft die jeweilige Funktion auf, die dem ToogleButton hinterlegt ist.
     ''' </summary>
     ''' <param name="control">ToogleButton</param>

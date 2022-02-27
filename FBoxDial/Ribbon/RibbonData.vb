@@ -1,5 +1,6 @@
 ﻿Imports System.Reflection
 Imports System.Xml
+Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 
 Namespace RibbonData
@@ -212,7 +213,6 @@ Namespace RibbonData
         ''' <summary>
         ''' Einblenden der Kontaktwahl aus Inspektorfenster. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
-        ''' <param name="OutlookInspector"></param>
         Private Sub Dial(OutlookInspector As Outlook.Inspector)
             Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
 
@@ -220,6 +220,30 @@ Namespace RibbonData
                 ' Neuen Wählclient generieren
                 Dim WählClient As New FritzBoxWählClient
                 WählClient.WählboxStart(OutlookInspector)
+                ' Fenster zuweisen
+                AddinFenster = WählClient.WPFWindow
+
+                If AddinFenster IsNot Nothing Then
+                    ' Ereignishandler hinzufügen
+                    AddHandler AddinFenster.Closed, AddressOf Window_Closed
+                    ' Window in die Liste aufnehmen
+                    Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
+                End If
+            Else
+                AddinFenster.Activate()
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' Einblenden der Kontaktwahl aus dem Inspektorfenster einer ContactCard. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
+        ''' </summary>
+        Private Sub Dial(ContactCard As IMsoContactCard)
+            Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
+
+            If AddinFenster Is Nothing Then
+                ' Neuen Wählclient generieren
+                Dim WählClient As New FritzBoxWählClient
+                WählClient.WählboxStart(ContactCard)
                 ' Fenster zuweisen
                 AddinFenster = WählClient.WPFWindow
 
@@ -508,8 +532,8 @@ Namespace RibbonData
                     ' B: Ein Exchange-User existiert.
 
                     ' Rekursiver Aufruf
-                    Return EnableDial(KontaktSuche(CType(Context, Microsoft.Office.Core.IMsoContactCard))) OrElse
-                           EnableDial(KontaktSucheExchangeUser(CType(Context, Microsoft.Office.Core.IMsoContactCard)))
+                    Return EnableDial(KontaktSuche(CType(Context, IMsoContactCard))) OrElse
+                           EnableDial(KontaktSucheExchangeUser(CType(Context, IMsoContactCard)))
 
                 Case TypeOf Context Is Outlook.ContactItem
                     ' Ermittelt, ob der Kontakt angerufen werden kann
