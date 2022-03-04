@@ -74,9 +74,6 @@ Public NotInheritable Class ThisAddIn
         SetInspector()
         NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
 
-        ' TR064 Schnittstelle definieren. Das Init erfolgt erst, wenn eine Verbindung zur Fritz!Box aufgebaut wurde
-        FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
-
         ' Initiiere den timergesteuerten Start der einzelnen Funktionen
         TimerStart()
 
@@ -88,12 +85,14 @@ Public NotInheritable Class ThisAddIn
     ''' Routine wird mittels Timer gestartet. Auch nach dem Aufwachen aus dem Standby.
     ''' </summary>
     Private Async Sub InitFBoxConnection()
-
-        'Dim TR064Init As Task(Of Boolean) = Nothing
         Dim TaskScoreListe As Task(Of List(Of TellowsScoreListEntry)) = Nothing
         Dim TaskTelefonbücher As Task(Of IEnumerable(Of PhonebookEx)) = Nothing
         Dim TaskAnrList As Task(Of FBoxAPI.CallList) = Nothing
 
+        ' TR064 Schnittstelle definieren. Das Init erfolgt erst, wenn eine Verbindung zur Fritz!Box aufgebaut wurde
+        FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+
+        ' Globaler httpClient für Rückwärtssuche und Tellows
         FBoxhttpClient = New AddinHTTPClient
 
         ' Ereignishandler hinzufügen

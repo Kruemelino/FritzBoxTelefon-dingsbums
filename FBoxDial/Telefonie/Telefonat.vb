@@ -137,18 +137,13 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    <XmlIgnore> Friend ReadOnly Property AnrMonExInfo As String
+    <XmlIgnore> Friend ReadOnly Property GegenstellenNummerLocation As String
         Get
-            If Firma.IsNotStringNothingOrEmpty Then
-                ' Gib die Firmeninformation zurück
-                Return Firma
+            If Not GegenstelleTelNr.Unterdrückt Then
+                Return $"{GegenstelleTelNr.Location}" & If(GegenstelleTelNr.IstInland, String.Empty, $" ({Localize.Länder.ResourceManager.GetString(GegenstelleTelNr.AreaCode)})")
             Else
-                If Not GegenstelleTelNr.Unterdrückt Then
-                    Return $"{GegenstelleTelNr.Location}" & If(GegenstelleTelNr.IstInland, String.Empty, $" ({Localize.Länder.ResourceManager.GetString(GegenstelleTelNr.AreaCode)})")
-                Else
-                    ' Gib ein leeren String zurück
-                    Return String.Empty
-                End If
+                ' Gib ein leeren String zurück
+                Return String.Empty
             End If
         End Get
     End Property

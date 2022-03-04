@@ -41,18 +41,6 @@
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
-    <Style x:Key="DataGridCellCenter" TargetType="{x:Type DataGridCell}">
-        <Setter Property="TextBlock.TextAlignment" Value="Center" />
-    </Style>
-
-    <Style x:Key="DataGridCellRight" TargetType="{x:Type DataGridCell}">
-        <Setter Property="TextBlock.TextAlignment" Value="Right" />
-    </Style>
-
-    <Style x:Key="DataGridCellLeft" TargetType="{x:Type DataGridCell}">
-        <Setter Property="TextBlock.TextAlignment" Value="Left" />
-    </Style>
-
     <ControlTemplate x:Key="TimePickerButtonTemplate" TargetType="ButtonBase">
         <Border x:Name="ContentContainer" 
                 Background="{TemplateBinding Background}" 

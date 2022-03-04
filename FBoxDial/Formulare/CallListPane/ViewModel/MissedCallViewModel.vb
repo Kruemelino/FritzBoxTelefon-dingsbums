@@ -14,21 +14,6 @@ Public Class MissedCallViewModel
             Return XMLData.POptionen.CBAnrMonContactImage And Kontaktbild IsNot Nothing
         End Get
     End Property
-    Public ReadOnly Property ZeigeTelNr As Boolean
-        Get
-            Return VerpasstesTelefonat IsNot Nothing AndAlso (Not VerpasstesTelefonat.NrUnterdrückt And VerpasstesTelefonat.AnruferName.IsNotStringNothingOrEmpty)
-        End Get
-    End Property
-    Public ReadOnly Property ZeigeAnruferName As Boolean
-        Get
-            Return VerpasstesTelefonat IsNot Nothing AndAlso VerpasstesTelefonat.AnruferName.IsNotStringNothingOrEmpty
-        End Get
-    End Property
-    Public ReadOnly Property ZeigeExInfo As Boolean
-        Get
-            Return VerpasstesTelefonat IsNot Nothing AndAlso VerpasstesTelefonat.AnrMonExInfo.IsNotStringNothingOrEmpty
-        End Get
-    End Property
 
     Public ReadOnly Property ReCallEnabled As Boolean
         Get
@@ -99,7 +84,6 @@ Public Class MissedCallViewModel
         End Get
         Set
             SetProperty(_TelNr, Value)
-            OnPropertyChanged(NameOf(ZeigeTelNr))
         End Set
     End Property
 
@@ -110,8 +94,6 @@ Public Class MissedCallViewModel
         End Get
         Set
             SetProperty(_Anrufer, Value)
-            OnPropertyChanged(NameOf(ZeigeAnruferName))
-            OnPropertyChanged(NameOf(ZeigeTelNr))
         End Set
     End Property
 
@@ -122,7 +104,16 @@ Public Class MissedCallViewModel
         End Get
         Set
             SetProperty(_ExInfo, Value)
-            OnPropertyChanged(NameOf(ZeigeExInfo))
+        End Set
+    End Property
+
+    Private _MainInfo As String
+    Public Property MainInfo As String
+        Get
+            Return _MainInfo
+        End Get
+        Set
+            SetProperty(_MainInfo, Value)
         End Set
     End Property
 
@@ -138,7 +129,7 @@ Public Class MissedCallViewModel
         End Set
     End Property
 
-    Private _BackgroundColor As String
+    Private _BackgroundColor As String = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColor"), SolidColorBrush).Color.ToString()
     Public Property BackgroundColor As String
         Get
             Return _BackgroundColor
@@ -180,6 +171,7 @@ Public Class MissedCallViewModel
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)
         BlockCommand = New RelayCommand(AddressOf BlockNumber)
         PlayMessageCommand = New RelayCommand(AddressOf PlayMessage)
+
     End Sub
 
     Private Async Sub LadeDaten()
@@ -190,20 +182,14 @@ Public Class MissedCallViewModel
             ' Anruferzeit festlegen: Beginn des Telefonates
             Zeit = .ZeitBeginn
 
-            ' Anrufende Telefonnummer
-            TelNr = .GegenstelleTelNr?.Formatiert
-
-            ' Anrufer Name setzen
-            Anrufer = .AnruferName
+            ' Setze die anzuzeigenden Daten des Telefonates
+            AnzuzeigendeDaten()
 
             ' Eigene Telefonnummer setzen
             If .EigeneTelNr Is Nothing AndAlso .OutEigeneTelNr.IsNotStringNothingOrEmpty Then
                 .EigeneTelNr = New Telefonnummer With {.SetNummer = VerpasstesTelefonat.OutEigeneTelNr}
             End If
             EigeneTelNr = .EigeneTelNr?.Einwahl
-
-            ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)
-            ExInfo = .AnrMonExInfo
 
             ' Setze das Kontaktbild
             If Kontaktbild Is Nothing Then
@@ -239,10 +225,8 @@ Public Class MissedCallViewModel
         NLogger.Trace($"MissedCallViewModel: Eigenschaft {e.PropertyName} verändert.")
         With VerpasstesTelefonat
             Select Case e.PropertyName
-                Case NameOf(Telefonat.AnruferName)
-                    Anrufer = .AnruferName
-                Case NameOf(Telefonat.Firma), NameOf(Telefonat.AnrMonExInfo)
-                    ExInfo = .AnrMonExInfo
+                Case NameOf(Telefonat.AnruferName), NameOf(Telefonat.Firma)
+                    AnzuzeigendeDaten()
                 Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsResult)
                     UpdateData()
                 Case NameOf(Telefonat.TAMMessagePath)
@@ -320,5 +304,46 @@ Public Class MissedCallViewModel
 
 #End Region
 
+    Private Sub AnzuzeigendeDaten()
+        If VerpasstesTelefonat IsNot Nothing Then
+            ' Unterscheidung der anzuzeigenden Daten
+            With VerpasstesTelefonat
+                ' Eine Telefonnummer ist nicht vorhanden 
+                If .GegenstelleTelNr.Unterdrückt Then
+
+                Else
+                    ' Setze die Telefonnummer
+                    TelNr = .GegenstelleTelNr.Formatiert
+
+                    ' Ort der Nummer
+                    ExInfo = .GegenstellenNummerLocation
+
+                    ' Nur wenn eine Telefonnummer vorhanden ist, können Daten ausgegeben werden
+                    If .AnruferName.IsNotStringNothingOrEmpty Then
+
+                        ' Setze den Anrufernamen
+                        MainInfo = .AnruferName
+
+                        ' Erweiterte Informationen
+                        If .Firma.IsNotStringNothingOrEmpty Then
+                            ' Firmennamen ausgeben
+                            ExInfo = .Firma
+                        End If
+
+                    ElseIf .Firma.IsNotStringNothingOrEmpty Then
+                        ' Setze den Firmennamen
+                        MainInfo = .Firma
+
+                    Else
+                        ' Setze die Telefonnummer
+                        TelNr = Nothing
+
+                        ' Setze die Telefonnummer als Hauptinformation
+                        MainInfo = .GegenstelleTelNr.Formatiert
+                    End If
+                End If
+            End With
+        End If
+    End Sub
 
 End Class

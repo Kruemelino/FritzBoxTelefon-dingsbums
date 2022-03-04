@@ -118,7 +118,8 @@
             <fdg:FilterDataGrid.Columns>
                 <fdg:DataGridTextColumn IsColumnFiltered="True" FieldName="Score"
                                         Header="{x:Static localize:LocFBoxData.strTellowsScore}" Width="60"
-                                        Binding="{Binding Path=Score, UpdateSourceTrigger=PropertyChanged}" CellStyle="{StaticResource DataGridCellCenter}"/>
+                                        Binding="{Binding Path=Score, UpdateSourceTrigger=PropertyChanged}" 
+                                        TextBlock.TextAlignment="Center"/>
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True"
                                         Header="{x:Static localize:LocFBoxData.strTellowsNumber}" Width="100"
@@ -147,12 +148,12 @@
                 <fdg:DataGridTextColumn IsColumnFiltered="True"
                                         Header="{x:Static localize:LocFBoxData.strTellowsComplains}" Width="100"
                                         Binding="{Binding Path=Complains, UpdateSourceTrigger=PropertyChanged}"
-                                        CellStyle="{StaticResource DataGridCellRight}" />
+                                        TextBlock.TextAlignment="Right" />
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True"
                                         Header="{x:Static localize:LocFBoxData.strTellowsSearches}" Width="100"
                                         Binding="{Binding Path=Searches, UpdateSourceTrigger=PropertyChanged}"
-                                        CellStyle="{StaticResource DataGridCellRight}" />
+                                        TextBlock.TextAlignment="Right" />
                 
             </fdg:FilterDataGrid.Columns>
         </fdg:FilterDataGrid>

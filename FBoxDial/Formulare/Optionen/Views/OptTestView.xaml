@@ -32,7 +32,7 @@
                          Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
                          Text="{Binding TBTestTelNrInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Button Tag="{DynamicResource Import_16x}" Height="25"
+                <Button Height="25"
                         Content="{x:Static localize:LocOptionen.strTestTelNrStart}" 
                         Margin="4"
                         Command="{Binding TestTelNrCommand}" />
@@ -85,7 +85,6 @@
                          Text="{Binding TBFBAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 
                 <Button Margin="4"
-                        Tag="{DynamicResource Refresh_16x}"
                         Content="{x:Static localize:LocOptionen.strTestLoginLoadUserList}"                       
                         Command="{Binding TestUserListCommand}" />
 
@@ -126,7 +125,7 @@
                          Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
                          Text="{Binding TBTestKontaktsucheInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Button Tag="{DynamicResource Import_16x}" Height="25"
+                <Button Height="25"
                         Content="{x:Static localize:LocOptionen.strTestKontaktsucheStart}" 
                         Margin="4"
                         Command="{Binding TestKontaktsucheCommand}" />
@@ -146,7 +145,7 @@
                          Tag="{x:Static localize:LocOptionen.strTestTelNrInput}"
                          Text="{Binding TBTestRWSInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Button Tag="{DynamicResource Import_16x}" Height="25"
+                <Button Height="25"
                         Content="{x:Static localize:LocOptionen.strTestRWSStart}" 
                         Margin="4"
                         Command="{Binding TestRWSCommand}" />

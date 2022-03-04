@@ -51,43 +51,27 @@
 
             <TextBlock Grid.Column="1"
                        Style="{StaticResource DefaultEigeneNummer}"
-                       Text="{Binding Path=EigeneTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                       Text="{Binding Path=EigeneTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
         </Grid>
 
         <Image Width="72" Margin="4" 
                Grid.Row="1"
                Grid.Column="0" Grid.RowSpan="3"
                Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-               Visibility="{Binding ZeigeBild, Converter={StaticResource BoolToVisibilityConverter}}"/>
+               Visibility="{Binding ZeigeBild, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"                             
                    Style="{StaticResource DefaultNummer}"
-                   Text="{Binding Path=TelNr, FallbackValue='', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                   Visibility="{Binding ZeigeTelNr, Converter={StaticResource BoolToVisibilityConverter}}" />
+                   Text="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" >
-            <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultMainInfo}">
-                    <Style.Triggers>
-
-                        <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="True">
-                            <Setter Property="Text" Value="{Binding Path=Anrufer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                        </DataTrigger>
-
-                        <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="False">
-                            <Setter Property="Text" Value="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                        </DataTrigger>
-
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
+                   Style="{StaticResource DefaultMainInfo}"
+                   Text="{Binding Path=AnrMonMainInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--Erweiterte Informationen-->
         <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"                          
                    Style="{StaticResource DefaultExtInfo}"
-                   Text="{Binding Path=AnrMonExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                   Visibility="{Binding ZeigeExInfo, Converter={StaticResource BoolToVisibilityConverter}}" />
+                   Text="{Binding Path=AnrMonExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <StackPanel VerticalAlignment="Stretch" DockPanel.Dock="Right" Orientation="Vertical"
                     Grid.Column="3" Grid.RowSpan="4">

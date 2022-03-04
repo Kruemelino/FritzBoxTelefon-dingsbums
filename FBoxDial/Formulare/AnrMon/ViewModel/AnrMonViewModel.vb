@@ -58,7 +58,6 @@ Public Class AnrMonViewModel
         End Get
         Set
             SetProperty(_TelNr, Value)
-            OnPropertyChanged(NameOf(ZeigeTelNr))
         End Set
     End Property
 
@@ -69,8 +68,6 @@ Public Class AnrMonViewModel
         End Get
         Set
             SetProperty(_Anrufer, Value)
-            OnPropertyChanged(NameOf(ZeigeAnruferName))
-            OnPropertyChanged(NameOf(ZeigeTelNr))
         End Set
     End Property
 
@@ -81,7 +78,16 @@ Public Class AnrMonViewModel
         End Get
         Set
             SetProperty(_AnrMonExInfo, Value)
-            OnPropertyChanged(NameOf(ZeigeExInfo))
+        End Set
+    End Property
+
+    Private _AnrMonMainInfo As String
+    Public Property AnrMonMainInfo As String
+        Get
+            Return _AnrMonMainInfo
+        End Get
+        Set
+            SetProperty(_AnrMonMainInfo, Value)
         End Set
     End Property
 
@@ -122,21 +128,6 @@ Public Class AnrMonViewModel
     Public ReadOnly Property ZeigeBild As Boolean
         Get
             Return XMLData.POptionen.CBAnrMonContactImage And Kontaktbild IsNot Nothing
-        End Get
-    End Property
-    Public ReadOnly Property ZeigeTelNr As Boolean
-        Get
-            Return AnrMonTelefonat IsNot Nothing AndAlso (Not AnrMonTelefonat.NrUnterdrückt And AnrMonTelefonat.AnruferName.IsNotStringNothingOrEmpty)
-        End Get
-    End Property
-    Public ReadOnly Property ZeigeAnruferName As Boolean
-        Get
-            Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.AnruferName.IsNotStringNothingOrEmpty
-        End Get
-    End Property
-    Public ReadOnly Property ZeigeExInfo As Boolean
-        Get
-            Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.AnrMonExInfo.IsNotStringNothingOrEmpty
         End Get
     End Property
 
@@ -198,20 +189,14 @@ Public Class AnrMonViewModel
             ' Anruferzeit festlegen: Beginn des Telefonates
             Zeit = .ZeitBeginn
 
-            ' Anrufende Telefonnummer
-            TelNr = .GegenstelleTelNr?.Formatiert
-
-            ' Anrufer Name setzen
-            Anrufer = .AnruferName
+            ' Setze die anzuzeigenden Daten des Telefonates
+            AnzuzeigendeDaten()
 
             ' Eigene Telefonnummer setzen
             If .EigeneTelNr Is Nothing AndAlso .OutEigeneTelNr.IsNotStringNothingOrEmpty Then
                 .EigeneTelNr = New Telefonnummer With {.SetNummer = AnrMonTelefonat.OutEigeneTelNr}
             End If
             EigeneTelNr = .EigeneTelNr?.Einwahl
-
-            ' Erweiterte Informationen setzen (Firma oder Name des Ortsnetzes, Land)
-            AnrMonExInfo = .AnrMonExInfo
 
             ' Setze das Kontaktbild
             If Kontaktbild Is Nothing Then
@@ -245,10 +230,8 @@ Public Class AnrMonViewModel
         NLogger.Trace($"AnrMonVM: Eigenschaft {e.PropertyName} verändert.")
         With AnrMonTelefonat
             Select Case e.PropertyName
-                Case NameOf(Telefonat.AnruferName)
-                    Anrufer = .AnruferName
-                Case NameOf(Telefonat.Firma), NameOf(Telefonat.AnrMonExInfo)
-                    AnrMonExInfo = .AnrMonExInfo
+                Case NameOf(Telefonat.AnruferName), NameOf(Telefonat.Firma)
+                    AnzuzeigendeDaten()
                 Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsResult)
                     Instance.Invoke(Sub() UpdateData())
                 Case Else
@@ -257,6 +240,48 @@ Public Class AnrMonViewModel
         End With
     End Sub
 #End Region
+
+    Private Sub AnzuzeigendeDaten()
+        If AnrMonTelefonat IsNot Nothing Then
+            ' Unterscheidung der anzuzeigenden Daten
+            With AnrMonTelefonat
+                ' Eine Telefonnummer ist nicht vorhanden 
+                If .GegenstelleTelNr.Unterdrückt Then
+
+                Else
+                    ' Setze die Telefonnummer
+                    TelNr = .GegenstelleTelNr.Formatiert
+
+                    ' Ort der Nummer
+                    AnrMonExInfo = .GegenstellenNummerLocation
+
+                    ' Nur wenn eine Telefonnummer vorhanden ist, können Daten ausgegeben werden
+                    If .AnruferName.IsNotStringNothingOrEmpty Then
+
+                        ' Setze den Anrufernamen
+                        AnrMonMainInfo = .AnruferName
+
+                        ' Erweiterte Informationen
+                        If .Firma.IsNotStringNothingOrEmpty Then
+                            ' Firmennamen ausgeben
+                            AnrMonExInfo = .Firma
+                        End If
+
+                    ElseIf .Firma.IsNotStringNothingOrEmpty Then
+                        ' Setze den Firmennamen
+                        AnrMonMainInfo = .Firma
+
+                    Else
+                        ' Setze die Telefonnummer
+                        TelNr = Nothing
+
+                        ' Setze die Telefonnummer als Hauptinformation
+                        AnrMonMainInfo = .GegenstelleTelNr.Formatiert
+                    End If
+                End If
+            End With
+        End If
+    End Sub
 
 #Region "ICommand Callback"
     Private Sub Close(o As Object)

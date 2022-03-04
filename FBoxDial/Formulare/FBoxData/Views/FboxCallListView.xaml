@@ -205,17 +205,17 @@
                                         Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="EigeneNummer"
-                                        CellStyle="{StaticResource DataGridCellRight}"
+                                        TextBlock.TextAlignment="Right"
                                         Header="{x:Static localize:LocFBoxData.strMyNumber}"
                                         Binding="{Binding Path=EigeneNummer, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Gegenstelle"
-                                        CellStyle="{StaticResource DataGridCellRight}"
+                                        TextBlock.TextAlignment="Right"
                                         Header="{x:Static localize:LocFBoxData.strRemoteCaller}"
                                         Binding="{Binding Path=Gegenstelle, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <fdg:DataGridTextColumn IsColumnFiltered="True" Width="*" FieldName="Dauer"
-                                        CellStyle="{StaticResource DataGridCellRight}"
+                                        TextBlock.TextAlignment="Right"
                                         Header="{x:Static localize:LocFBoxData.strDuration}"
                                         Binding="{Binding Path=Dauer, StringFormat='{}{0:hh\\:mm}', UpdateSourceTrigger=PropertyChanged}"/>
 

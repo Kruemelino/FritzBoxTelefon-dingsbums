@@ -56,31 +56,15 @@
 
         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"                             
                    Style="{StaticResource DefaultNummer}"
-                   Text="{Binding Path=TelNr, FallbackValue='', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                   Visibility="{Binding ZeigeTelNr, Converter={StaticResource BoolToVisibilityConverter}}" />
+                   Text="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" >
-            <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultMainInfo}">
-                    <Style.Triggers>
-
-                        <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="True">
-                            <Setter Property="Text" Value="{Binding Path=Anrufer, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                        </DataTrigger>
-
-                        <DataTrigger Binding="{Binding Path=ZeigeAnruferName}" Value="False">
-                            <Setter Property="Text" Value="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                        </DataTrigger>
-
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
+                   Style="{StaticResource DefaultMainInfo}"
+                   Text="{Binding Path=MainInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"                          
                    Style="{StaticResource DefaultExtInfo}"
-                   Text="{Binding Path=ExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                   Visibility="{Binding ZeigeExInfo, Converter={StaticResource BoolToVisibilityConverter}}" />
+                   Text="{Binding Path=ExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <StackPanel VerticalAlignment="Stretch" DockPanel.Dock="Right" Orientation="Vertical"
                     Grid.Column="3" Grid.RowSpan="4">
@@ -88,7 +72,7 @@
             <Button Style="{StaticResource MiniIconButton}" 
                     Content="{DynamicResource Close_16x}"
                     Command="{Binding CloseCommand}" 
-                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
 
             <Button Style="{StaticResource MiniIconButton}"
                     Content="{DynamicResource CallTo_16x}" 
