@@ -202,15 +202,16 @@ Imports FBoxDial.FritzBoxDefault
     Private Async Function GetFON(SessionID As String) As Task(Of List(Of Telefoniegerät))
         Dim TelQuery As New List(Of String)
         Dim FONList As New List(Of Telefoniegerät)
-        Dim MSNList As New FBoxFON
+
 
         NLogger.Trace("GetFON - Start")
 
         ' Frage alle angeschlossenen und aktiven FON Telefone ab.
         TelQuery.Add("FON=telcfg:settings/MSN/Port/list(Name,Fax,AllIncomingCalls)")
         ' Führe Abfrage aus
+        Dim MSNList As FBoxFON = Await JSONDeserializeFromStreamAsync(Of FBoxFON)(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponseStream(SessionID, TelQuery))
 
-        If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), MSNList) Then
+        If MSNList IsNot Nothing Then
             ' Wenn es eine interne Nummer gibt, sind die DECT-Geräte aktiv
             For Each FONTelefon In MSNList.FON.Where(Function(F) F.Name.IsNotStringNothingOrEmpty)
                 ' Dimensioniere ein neues Telefon und setze Daten
@@ -229,8 +230,9 @@ Imports FBoxDial.FritzBoxDefault
                 Next
 
                 ' Führe Abfrage aus
-                Dim FONNr As New FBoxFONNr
-                If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), FONNr) Then
+                Dim FONNr As FBoxFONNr = Await JSONDeserializeFromStreamAsync(Of FBoxFONNr)(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponseStream(SessionID, TelQuery))
+
+                If FONNr IsNot Nothing Then
 
                     ' Verarbeite alle Nummer des FON-Telefones
                     If FONTelefon.AllIncomingCalls Then
@@ -263,15 +265,16 @@ Imports FBoxDial.FritzBoxDefault
     Private Async Function GetDECT(SessionID As String) As Task(Of List(Of Telefoniegerät))
         Dim TelQuery As New List(Of String)
         Dim DECTList As New List(Of Telefoniegerät)
-        Dim DECTTelList As New FBoxDECT
 
         NLogger.Trace("GetDECT - Start")
 
         ' Frage alle angeschlossenen und aktiven DECT Telefone ab.
         TelQuery.Add("DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)")
 
+        Dim DECTTelList As FBoxDECT = Await JSONDeserializeFromStreamAsync(Of FBoxDECT)(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponseStream(SessionID, TelQuery))
+
         ' Führe Abfrage aus
-        If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), DECTTelList) Then
+        If DECTTelList IsNot Nothing Then
             ' Wenn es eine interne Nummer gibt, sind die DECT-Geräte aktiv
             For Each DECTTelefon In DECTTelList.DECT.Where(Function(D) D.Intern.IsNotStringNothingOrEmpty)
                 ' Dimensioniere ein neues Telefon und setze Daten
@@ -289,8 +292,8 @@ Imports FBoxDial.FritzBoxDefault
                 TelQuery.Add($"DECTNr=telcfg:settings/Foncontrol/User{DECTTelefon.Id}/MSN/list(Number)")
 
                 ' Führe Abfrage aus
-                Dim DECTNr As New FBoxDECTNr
-                If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), DECTNr) Then
+                Dim DECTNr As FBoxDECTNr = Await JSONDeserializeFromStreamAsync(Of FBoxDECTNr)(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponseStream(SessionID, TelQuery))
+                If DECTNr IsNot Nothing Then
                     ' Veraarbeite alle Nummer des DECT-Telefones
                     If DECTNr.DECTRingOnAllMSNs Then
                         ' Weise dem Telefon alle bekannten Nummern zu
@@ -340,8 +343,9 @@ Imports FBoxDial.FritzBoxDefault
             End With
 
             ' Führe Abfrage aus
-            Dim S0Tel As New FBoxS0
-            If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), S0Tel) Then
+            Dim S0Tel As FBoxS0 = Await JSONDeserializeFromStreamAsync(Of FBoxS0)(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponseStream(SessionID, TelQuery))
+
+            If S0Tel IsNot Nothing Then
                 ' Wenn es einen Namen gibt, sind die S0-Geräte aktiv
                 If S0Tel.S0Name.IsNotStringNothingOrEmpty Then
 
@@ -386,8 +390,9 @@ Imports FBoxDial.FritzBoxDefault
         End With
 
         ' Führe Abfrage aus
-        Dim MailMobilTel As New FaxMailMobil
-        If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), MailMobilTel) Then
+        Dim MailMobilTel As FaxMailMobil = Await JSONDeserializeFromStreamAsync(Of FaxMailMobil)(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponseStream(SessionID, TelQuery))
+
+        If MailMobilTel IsNot Nothing Then
             ' Verarbeite Mobilgerät, wenn es eine Mobilnummer gibt.
             If MailMobilTel.Mobile.IsNotStringNothingOrEmpty Then
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.Mobil,
@@ -419,8 +424,8 @@ Imports FBoxDial.FritzBoxDefault
                 End With
 
                 ' Führe Abfrage aus
-                Dim FaxNr As New FBoxFaxNr
-                If JSONDeserializeObjectFromString(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponse(SessionID, TelQuery), FaxNr) Then
+                Dim FaxNr As FBoxFaxNr = Await JSONDeserializeFromStreamAsync(Of FBoxFaxNr)(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponseStream(SessionID, TelQuery))
+                If FaxNr IsNot Nothing Then
                     For Each FaxTelNr In FaxNr.FAXList.Where(Function(M) M.IsNotStringNothingOrEmpty)
 
                         Telefon.StrEinTelNr.Add(GetEigeneTelNr(FaxTelNr)?.Einwahl)

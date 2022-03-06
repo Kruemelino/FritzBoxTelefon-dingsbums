@@ -2,6 +2,7 @@
     Inherits NotifyBase
     Implements IFBoxData
 
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IFBoxDataService
     Private Property DialogService As IDialogService
 
@@ -10,6 +11,8 @@
             Return Localize.LocFBoxData.strTAM
         End Get
     End Property
+
+    Private Property DebugBeginnLadeDaten As Date Implements IFBoxData.DebugBeginnLadeDaten
 
     Private _FBoxDataVM As FBoxDataViewModel
     Public Property FBoxDataVM As FBoxDataViewModel Implements IFBoxData.FBoxDataVM
@@ -45,6 +48,9 @@
         TAMListe = New ObservableCollectionEx(Of TAMItemViewModel)
 
         Dim TAMItems As IEnumerable(Of FBoxAPI.TAMItem) = Await DatenService.GetTAMItems
+
+        ' Debugmeldung
+        NLogger.Debug($"Ende: Lade Daten für {Name} in {(Date.Now - DebugBeginnLadeDaten).TotalSeconds} Sekunden")
 
         If TAMItems.Any Then
             TAMListe.AddRange(TAMItems.Select(Function(TAM) New TAMItemViewModel(DatenService, DialogService, TAM)))

@@ -6,6 +6,7 @@ Public Class FBoxDataTellowsViewModel
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IFBoxDataService
+    Private Property DebugBeginnLadeDaten As Date Implements IFBoxData.DebugBeginnLadeDaten
 
     Public ReadOnly Property Name As String Implements IFBoxData.Name
         Get
@@ -124,10 +125,13 @@ Public Class FBoxDataTellowsViewModel
         BlockCommand = New RelayCommand(AddressOf BlockNumbers)
 
     End Sub
-    Public Async Sub Init() Implements IFBoxData.Init
+    Private Async Sub Init() Implements IFBoxData.Init
 
         ' Lade die tellows ScoreList
         TellowsList.AddRange(Await DatenService.GetTellowsScoreList)
+
+        ' Debugmeldung
+        NLogger.Debug($"Ende: Lade Daten für {Name} in {(Date.Now - DebugBeginnLadeDaten).TotalSeconds} Sekunden")
 
         NutzeTellows = TellowsList.Any
 
@@ -175,5 +179,6 @@ Public Class FBoxDataTellowsViewModel
         CTS?.Cancel()
         NLogger.Info($"Übertragung der tellows Score Liste in die Fritz!Box Rufsperre abgebrochen.")
     End Sub
+
 #End Region
 End Class

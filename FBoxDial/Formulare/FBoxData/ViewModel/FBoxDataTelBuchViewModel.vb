@@ -6,7 +6,6 @@
 Public Class FBoxDataTelBuchViewModel
     Inherits NotifyBase
     Implements IFBoxData
-
     Private Property DatenService As IFBoxDataService
     Private Property DialogService As IDialogService
 
@@ -15,6 +14,8 @@ Public Class FBoxDataTelBuchViewModel
             Return Localize.LocFBoxData.strTelBuch
         End Get
     End Property
+
+    Private Property DebugBeginnLadeDaten As Date Implements IFBoxData.DebugBeginnLadeDaten
 
     Private _FBoxDataVM As FBoxDataViewModel
     Public Property FBoxDataVM As FBoxDataViewModel Implements IFBoxData.FBoxDataVM
@@ -54,10 +55,11 @@ Public Class FBoxDataTelBuchViewModel
         _DialogService = dialogService
     End Sub
 
-    Public Async Sub Init() Implements IFBoxData.Init
-        BookVM = New TelefonbuchViewModel(DatenService, DialogService)
+    Private Async Sub Init() Implements IFBoxData.Init
+        BookVM = New TelefonbuchViewModel(DatenService, DialogService, DebugBeginnLadeDaten)
         CurrentView = BookVM
 
         BookVM.InitTelefonbücher(Await DatenService.GetTelefonbücher())
     End Sub
+
 End Class

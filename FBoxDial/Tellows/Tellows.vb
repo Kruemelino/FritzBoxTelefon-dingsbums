@@ -42,29 +42,17 @@ Friend Class Tellows
         Dim Response As New TellowsResponse
 
         Dim RequestMessage As New Http.HttpRequestMessage With {.Method = Http.HttpMethod.Get,
-                                                                    .RequestUri = UniformResourceIdentifier}
+                                                                .RequestUri = UniformResourceIdentifier}
+
         RequestMessage.Headers.Add("X-Auth-Token", XAuthToken)
 
         ' Deserialisieren
         If Not DeserializeXML(Await Globals.ThisAddIn.FBoxhttpClient.GetString(RequestMessage, Encoding.UTF8), False, Response) Then
             NLogger.Error($"Die Tellows Abfrage zu '{UniformResourceIdentifier}' war nicht erfolgreich.")
-            Return Nothing
+            Return New TellowsResponse
         End If
 
         Return Response
-    End Function
-
-    Private Async Function GetTellowsResponseJSON() As Task(Of List(Of TellowsScoreListEntry))
-
-        Dim TellowsResponse As String = File.ReadAllText(Pfad)
-
-        If TellowsResponse.Contains(NotAuthorized) Then
-            NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich, da kein gültiger API-Key eingegeben wurde.")
-            Return Nothing
-        Else
-            Return Await JSONDeserializeFromStringAsync(Of List(Of TellowsScoreListEntry))(TellowsResponse)
-        End If
-
     End Function
 
 #End Region
@@ -110,21 +98,52 @@ Friend Class Tellows
     End Function
 
 #Region "Herunterladen der ScoreList"
+    ''' <summary>
+    ''' Führt eine Abfrage beim tellows zum Herunterladen der ScoreList durch.
+    ''' </summary>
+    ''' <returns>Antwort von tellows als <see cref="List(Of TellowsScoreListEntry)"/></returns>
     Friend Async Function LadeScoreList() As Task(Of List(Of TellowsScoreListEntry))
         NLogger.Debug($"Lade tellows ScoreList")
 
         If Ready Then
-            If Await DownloadTellowsScoreList() Then
-                ' Die Datei wurde neu heruntergeladen
-                NLogger.Debug($"tellows ScoreList von tellows direkt geladen und unter '{Pfad}' gespeichert.")
+
+            If Not File.Exists(Pfad) OrElse (Now.Subtract(File.GetLastWriteTime(Pfad)).TotalHours.IsLargerOrEqual(24) Or New FileInfo(Pfad).Length.IsZero) Then
+                Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
+                                               .Host = "www.tellows.de",
+                                               .Path = "/stats/partnerscoredata",
+                                               .Query = String.Join("&", {$"apikeyMd5={XAuthToken}",
+                                                                           "json=1",
+                                                                           "country=de",
+                                                                           "lang=de",
+                                                                           "minscore=1",
+                                                                           "showprefixname=1",
+                                                                          $"mincomments={XMLData.POptionen.CBTellowsAnrMonMinComments}",
+                                                                           "showcallername=1"})}
+
+                Dim TellowsList As List(Of TellowsScoreListEntry) = Await JSONDeserializeFromStreamAsync(Of List(Of TellowsScoreListEntry))(Await Globals.ThisAddIn.FBoxhttpClient.GetStream(ub.Uri))
+
+                If TellowsList IsNot Nothing Then
+                    ' Speicher die TellowsDatei
+                    JSONSerializeToFileAsync(Pfad, TellowsList)
+
+                    ' Debug Meldung
+                    NLogger.Debug($"tellows ScoreList von tellows direkt geladen und unter '{Pfad}' gespeichert.")
+
+                    ' Rückgabe
+                    Return TellowsList
+                Else
+                    NLogger.Error($"Die ScoreList von Tellows ' {ub.Uri} ' konnte nicht ermittelt werden.")
+
+                    Return New List(Of TellowsScoreListEntry)
+                End If
 
             Else
-                ' Die Datei ist aktuell und kann verwendet werden
+                ' Debug Meldung
                 NLogger.Debug($"tellows ScoreList von Pfad '{Pfad}' geladen")
+
+                Return Await JSONDeserializeFromFileAsync(Of List(Of TellowsScoreListEntry))(Pfad)
             End If
 
-            ' Lade die Daten aus der Datei
-            Return Await GetTellowsResponseJSON()
         Else
             NLogger.Warn($"Ein tellows API-Key wurde nicht eingegeben.")
             ' Gib eine leere Liste zurück
@@ -133,35 +152,6 @@ Friend Class Tellows
 
     End Function
 
-    ''' <summary>
-    ''' Führt eine Abfrage beim tellows zum Herunterladen der ScoreList durch.
-    ''' </summary>
-    ''' <returns>Antwort von tellows als <see cref="List(Of TellowsScoreListEntry)"/></returns>
-    Private Async Function DownloadTellowsScoreList() As Task(Of Boolean)
-
-        If Not IO.File.Exists(Pfad) OrElse (Now.Subtract(IO.File.GetLastWriteTime(Pfad)).TotalHours.IsLargerOrEqual(24) Or New IO.FileInfo(Pfad).Length.IsZero) Then
-            Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
-                                           .Host = "www.tellows.de",
-                                           .Path = "/stats/partnerscoredata",
-                                           .Query = String.Join("&", {$"apikeyMd5={XAuthToken}",
-                                                                       "json=1",
-                                                                       "country=de",
-                                                                       "lang=de",
-                                                                       "minscore=1",
-                                                                       "showprefixname=1",
-                                                                      $"mincomments={XMLData.POptionen.CBTellowsAnrMonMinComments}",
-                                                                       "showcallername=1"})}
-
-            Dim RequestMessage As New Http.HttpRequestMessage With {.Method = Http.HttpMethod.Get,
-                                                                    .RequestUri = ub.Uri}
-            RequestMessage.Headers.Add("X-Auth-Token", XAuthToken)
-
-            Return Await Globals.ThisAddIn.FBoxhttpClient.GetFile(RequestMessage, Pfad)
-
-        Else
-            Return False
-        End If
-    End Function
 #End Region
 
 #Region "IDisposable Support"

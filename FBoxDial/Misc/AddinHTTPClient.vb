@@ -76,28 +76,23 @@ Friend Class AddinHTTPClient
         Return Nothing
     End Function
 
-    ''' <summary>
-    ''' Lädt eine Datei auf das Dateisystem herunter. Wird momentan für Tellows benötigt.
-    ''' </summary>
-    ''' <param name="RequestMessage"></param>
-    ''' <param name="DateiPfad"></param>
-    Friend Async Function GetFile(RequestMessage As HttpRequestMessage, DateiPfad As String) As Task(Of Boolean)
+    Friend Async Function GetStream(RequestUri As Uri) As Task(Of IO.Stream)
 
-        Dim ResponseMessage As HttpResponseMessage = Await ClientGetCore(RequestMessage)
+        Dim Client As HttpClient = ClientFactory.CreateClient("FritzBoxDial")
 
-        ' Speichere die Datei
-        If ResponseMessage?.IsSuccessStatusCode Then
-            Using s As IO.Stream = Await ResponseMessage.Content.ReadAsStreamAsync
-                Dim fileinfo As New IO.FileInfo(DateiPfad)
-                Using fs As IO.FileStream = fileinfo.OpenWrite
-                    Await s.CopyToAsync(fs)
-                End Using
-            End Using
-            Return True
-        Else
-            Return False
-        End If
+        Try
+            Return Await Client.GetStreamAsync(RequestUri)
+        Catch ex As ArgumentNullException
+            ' RequestMessage is Nothing
+            NLogger.Error(ex, RequestUri.AbsoluteUri)
+        Catch ex As HttpRequestException
+            ' Die Anforderung konnte wg. eines zugrunde liegenden Problems wie Netzwerkkonnektivität, DNS-Fehler, Überprüfung des Serverzertifikats (oder Timeout – nur .NET Framework) nicht durchgeführt werden.
+            NLogger.Error(ex, RequestUri.AbsoluteUri)
+        End Try
+
+        Return Nothing
     End Function
+
 #End Region
 
 #Region "IDisposable Support"

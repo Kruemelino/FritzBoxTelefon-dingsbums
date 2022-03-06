@@ -9,8 +9,13 @@ Imports System.Windows.Input
 Public Class TelefonbuchViewModel
     Inherits NotifyBase
 
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+
     Private Property DatenService As IFBoxDataService
     Private Property DialogService As IDialogService
+
+    Private ReadOnly Property DebugBeginnLadeDaten As Date
+
 #Region "Fritz!Box Telefonbücher"
     Public Property Telefonbücher As New ObservableCollectionEx(Of PhonebookViewModel)
 
@@ -47,7 +52,9 @@ Public Class TelefonbuchViewModel
 
 #End Region
 
-    Public Sub New(IDataService As IFBoxDataService, IDialogeService As IDialogService)
+    Public Sub New(IDataService As IFBoxDataService, IDialogeService As IDialogService, ZeitDatenStart As Date)
+        DebugBeginnLadeDaten = ZeitDatenStart
+
         ContactsVM = New KontaktViewModel(IDataService, IDialogeService)
         DatenService = IDataService
         DialogService = IDialogeService
@@ -82,6 +89,9 @@ Public Class TelefonbuchViewModel
             ' Dies ist deaktiviert, da es sonst automatisch beim Starten der Fritz!Box Daten alle Bilder dieses Telefonbuches geladen werde. 
             ' Das kann zu sehr unschönen Effekten führen. Insbesondere, wenn die Bilder nicht verfügbar sind.
             'LadeTelefonbuch(Telefonbücher.First)
+
+            ' Debugmeldung
+            NLogger.Debug($"Ende: Lade Daten für {Localize.LocFBoxData.strTelBuch} in {(Date.Now - DebugBeginnLadeDaten).TotalSeconds} Sekunden")
         End If
     End Sub
 #End Region

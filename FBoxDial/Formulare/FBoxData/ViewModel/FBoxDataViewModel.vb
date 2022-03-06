@@ -1,4 +1,5 @@
-﻿Public Class FBoxDataViewModel
+﻿Imports System.Threading.Tasks
+Public Class FBoxDataViewModel
     Inherits NotifyBase
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IFBoxDataService
@@ -83,6 +84,10 @@
 
         ' Initiiere alle Pageviewmodels
         PageViewModels.ForEach(Sub(P)
+                                   ' Debug: Zeitstempel merken
+                                   P.DebugBeginnLadeDaten = Now
+
+                                   ' Initiierung der Daten anstoßen
                                    P.Init()
                                    ' Lade die Grundeinstellungen
                                    If P.InitialSelected Then Navigate(P)
@@ -90,6 +95,8 @@
 
         ' Aktiviere die Eingabemaske, nachdem alle Daten geladen wurden
         DatenGeladen = True
+
+        NLogger.Debug("Daten geladen")
     End Sub
 
     Friend Sub EntladeDaten(o As Object)

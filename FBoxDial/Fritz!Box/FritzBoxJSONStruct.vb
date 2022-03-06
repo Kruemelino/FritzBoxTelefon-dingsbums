@@ -1,18 +1,18 @@
 ﻿Imports Newtonsoft.Json
 
 #Region "FON"
-Friend Structure MSNEntry
+Friend Class MSNEntry
     <JsonProperty("_Node")> Public Property Node As String
     Public Property AllIncomingCalls As Boolean
     Public Property Name As String
     Public Property Fax As Boolean
-End Structure
+End Class
 
-Friend Structure FBoxFON
+Friend Class FBoxFON
     Public Property FON As List(Of MSNEntry)
-End Structure
+End Class
 
-Friend Structure FBoxFONNr
+Friend Class FBoxFONNr
     Public Property MSN0 As String
     Public Property MSN1 As String
     Public Property MSN2 As String
@@ -30,47 +30,47 @@ Friend Structure FBoxFONNr
         End Get
     End Property
 
-End Structure
+End Class
 #End Region
 
 #Region "DECT"
-Friend Structure DECTEntry
+Friend Class DECTEntry
     Public Property Name As String
     Public Property Intern As String
     Public Property Id As Integer
-End Structure
+End Class
 
-Friend Structure DECTNr
+Friend Class DECTNr
     Public Property Number As String
-End Structure
+End Class
 
-Friend Structure FBoxDECT
+Friend Class FBoxDECT
     Public Property DECT As List(Of DECTEntry)
-End Structure
+End Class
 
-Friend Structure FBoxDECTNr
+Friend Class FBoxDECTNr
     Public Property DECTNr As List(Of DECTNr)
     Public Property DECTRingOnAllMSNs As Boolean
 
-End Structure
+End Class
 #End Region
 
 #Region "S0"
-Friend Structure FBoxS0
+Friend Class FBoxS0
     Public Property S0Name As String
     Public Property S0Number As String
     Public Property S0Type As String
-End Structure
+End Class
 #End Region
 
 #Region "FaxMail, Mobil"
-Friend Structure FaxMailMobil
+Friend Class FaxMailMobil
     Public Property FaxMailActive As Boolean
     Public Property MobileName As String
     Public Property Mobile As String
-End Structure
+End Class
 
-Friend Structure FBoxFaxNr
+Friend Class FBoxFaxNr
     Public Property FAX0 As String
     Public Property FAX1 As String
     Public Property FAX2 As String
@@ -88,7 +88,7 @@ Friend Structure FBoxFaxNr
         End Get
     End Property
 
-End Structure
+End Class
 
 #End Region
 

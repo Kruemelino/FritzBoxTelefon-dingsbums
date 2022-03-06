@@ -1,5 +1,5 @@
 ﻿Imports Newtonsoft.Json
-Public Class CustomBooleanJsonConverter
+Public Class JsonBooleanConverter
     Inherits JsonConverter(Of Boolean)
 
     Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Boolean, hasExistingValue As Boolean, serializer As JsonSerializer) As Boolean

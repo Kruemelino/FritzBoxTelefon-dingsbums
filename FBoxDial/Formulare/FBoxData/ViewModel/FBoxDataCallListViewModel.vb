@@ -1,16 +1,18 @@
 ﻿Imports System.Collections
 Imports System.Threading
-Imports System.Threading.Tasks
 
 Public Class FBoxDataCallListViewModel
     Inherits NotifyBase
     Implements IFBoxData
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Public ReadOnly Property Name As String Implements IFBoxData.Name
         Get
             Return Localize.LocFBoxData.strAnrList
         End Get
     End Property
+
+    Private Property DebugBeginnLadeDaten As Date Implements IFBoxData.DebugBeginnLadeDaten
 
     Private _FBoxDataVM As FBoxDataViewModel
     Public Property FBoxDataVM As FBoxDataViewModel Implements IFBoxData.FBoxDataVM
@@ -23,7 +25,6 @@ Public Class FBoxDataCallListViewModel
     End Property
 
     Public Property InitialSelected As Boolean = True Implements IFBoxData.InitialSelected
-    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IFBoxDataService
     Private Property DialogService As IDialogService
 
@@ -151,7 +152,7 @@ Public Class FBoxDataCallListViewModel
         ShowContactCommand = New RelayCommand(AddressOf ShowContact, AddressOf CanShowContact)
     End Sub
 
-    Public Async Sub Init() Implements IFBoxData.Init
+    Private Async Sub Init() Implements IFBoxData.Init
 
         ' Dummyeintrag. Ansonsten wird das FilteredDataGrid nicht ordentlich geladen
         CallList.Add(New CallViewModel(DatenService) With {.CallItem = New FBoxAPI.Call With {.Name = Localize.LocFBoxData.strDataError,
@@ -171,6 +172,8 @@ Public Class FBoxDataCallListViewModel
                 CallList.Clear()
                 CallList.AddRange(From CallItem In .Calls Select New CallViewModel(DatenService) With {.CallItem = CallItem})
             End If
+            ' Debugmeldung
+            NLogger.Debug($"Ende: Lade Daten für {Name} in {(Date.Now - DebugBeginnLadeDaten).TotalSeconds} Sekunden")
         End With
     End Sub
 
@@ -215,7 +218,6 @@ Public Class FBoxDataCallListViewModel
 
 #Region "Cancel"
     Private Property CTS As CancellationTokenSource
-
     Private Sub CancelProcess(o As Object)
         CTS?.Cancel()
         NLogger.Debug("Manueller Journalimport abgebrochen.")

@@ -403,7 +403,7 @@
     <Compile Include="Misc\SoundPlayerEx.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Optionen\CustomBooleanJsonConverter.vb" />
+    <Compile Include="JSON\JsonBooleanConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Localize\Länder.Designer.vb">
       <AutoGen>True</AutoGen>
