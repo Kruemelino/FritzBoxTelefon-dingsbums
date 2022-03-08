@@ -120,11 +120,11 @@ Friend Class Tellows
                                                                           $"mincomments={XMLData.POptionen.CBTellowsAnrMonMinComments}",
                                                                            "showcallername=1"})}
 
-                Dim TellowsList As List(Of TellowsScoreListEntry) = Await JSONDeserializeFromStreamAsync(Of List(Of TellowsScoreListEntry))(Await Globals.ThisAddIn.FBoxhttpClient.GetStream(ub.Uri))
+                Dim TellowsList As List(Of TellowsScoreListEntry) = Await JSONDeserializeFromStreamAsync(Of List(Of TellowsScoreListEntry))(Await Globals.ThisAddIn.FBoxhttpClient.GetStream(ub.Uri), True)
 
                 If TellowsList IsNot Nothing Then
-                    ' Speicher die TellowsDatei
-                    JSONSerializeToFileAsync(Pfad, TellowsList)
+                    ' Speichere die TellowsDatei
+                    JSONSerializeToFileAsync(Pfad, TellowsList, True)
 
                     ' Debug Meldung
                     NLogger.Debug($"tellows ScoreList von tellows direkt geladen und unter '{Pfad}' gespeichert.")
@@ -141,7 +141,7 @@ Friend Class Tellows
                 ' Debug Meldung
                 NLogger.Debug($"tellows ScoreList von Pfad '{Pfad}' geladen")
 
-                Return Await JSONDeserializeFromFileAsync(Of List(Of TellowsScoreListEntry))(Pfad)
+                Return Await JSONDeserializeFromFileAsync(Of List(Of TellowsScoreListEntry))(Pfad, True)
             End If
 
         Else
