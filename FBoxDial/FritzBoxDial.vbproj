@@ -398,12 +398,13 @@
     <Compile Include="Fritz!Box\FritzBoxDeflection.vb" />
     <Compile Include="Fritz!Box\FritzBoxStatus.vb" />
     <Compile Include="Fritz!Box\FritzBoxTAM.vb" />
+    <Compile Include="JSON\JSONTraceWriter.vb" />
     <Compile Include="Misc\AddinHTTPClient.vb" />
     <Compile Include="Misc\KeyboardHooking.vb" />
     <Compile Include="Misc\SoundPlayerEx.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="JSON\JsonBooleanConverter.vb" />
+    <Compile Include="JSON\JSONBooleanConverter.vb" />
     <Compile Include="Fritz!Box\FritzBoxRufsperre.vb" />
     <Compile Include="Localize\Länder.Designer.vb">
       <AutoGen>True</AutoGen>

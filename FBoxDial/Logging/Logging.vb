@@ -1,9 +1,17 @@
 ﻿Imports System.IO
 
 Friend Module NLogging
+    Friend ReadOnly Property LevelMap As Dictionary(Of TraceLevel, LogLevel) = New Dictionary(Of TraceLevel, LogLevel) From {{TraceLevel.Verbose, LogLevel.Debug},
+                                                                                                                             {TraceLevel.Info, LogLevel.Info},
+                                                                                                                             {TraceLevel.Warning, LogLevel.Warn},
+                                                                                                                             {TraceLevel.Error, LogLevel.Error},
+                                                                                                                             {TraceLevel.Off, LogLevel.Fatal}}
+
+
     Friend Function DefaultNLogConfig() As Config.LoggingConfiguration
 
         Dim config = New Config.LoggingConfiguration
+
         Dim BaseDir As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName)
 
         Dim LayoutText As String() = {"${date:format=dd.MM.yyyy HH\:mm\:ss.fff}",

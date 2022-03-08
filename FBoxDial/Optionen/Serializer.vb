@@ -218,7 +218,8 @@ Friend Module Serializer
 #Region "JSON Deserialisieren"
 
     Private ReadOnly Property JSS As New JsonSerializerSettings With {.[Error] = AddressOf OnJSONDeserializeError,
-                                                                      .Converters = {New JsonBooleanConverter}}
+                                                                      .Converters = {New JSONBooleanConverter},
+                                                                      .TraceWriter = New JSONTraceWriter}
 
     Friend Async Function JSONDeserializeFromFileAsync(Of T)(FilePath As String) As Task(Of T)
         Return Await Task.Run(Function()
@@ -273,6 +274,10 @@ Friend Module Serializer
 #End Region
 
 #Region "JSON OnError"
+    ''' <summary>
+    ''' Fehlerbehandlung während des Serialisierens.
+    ''' <see href="https://www.newtonsoft.com/json/help/html/SerializationErrorHandling.htm"/>
+    ''' </summary>
     Private Sub OnJSONDeserializeError(sender As Object, e As Newtonsoft.Json.Serialization.ErrorEventArgs)
         With e.ErrorContext
             ' Log Message
