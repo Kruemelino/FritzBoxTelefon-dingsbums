@@ -90,13 +90,10 @@ Public NotInheritable Class ThisAddIn
         Dim TaskAnrList As Task(Of FBoxAPI.CallList) = Nothing
 
         ' TR064 Schnittstelle definieren. Das Init erfolgt erst, wenn eine Verbindung zur Fritz!Box aufgebaut wurde
-        FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen)
+        FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen, New FBoxAPILog)
 
         ' Globaler httpClient für Rückwärtssuche und Tellows
         FBoxhttpClient = New AddinHTTPClient
-
-        ' Ereignishandler hinzufügen
-        AddHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
 
         ' Anrufmonitor starten
         If XMLData.POptionen.CBAnrMonAuto Then
@@ -173,9 +170,6 @@ Public NotInheritable Class ThisAddIn
 
         ' Anrufmonitor beenden
         If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
-
-        ' Ereignishandler entfernen
-        RemoveHandler FBoxTR064.Status, AddressOf FBoxAPIMessage
 
         ' TR-064-Schnittstelle auflösen
         FBoxTR064.Dispose()

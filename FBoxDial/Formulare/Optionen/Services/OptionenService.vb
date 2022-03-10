@@ -82,11 +82,6 @@ Friend Class OptionenService
         RaiseEvent Status(Me, e)
     End Sub
 
-    Private Sub SetFBoxAPIStatus(sender As Object, e As FBoxAPI.NotifyEventArgs(Of FBoxAPI.LogMessage))
-        NLogger.Log(LogLevel.FromOrdinal(e.Value.Level), e.Value.Message)
-        SetStatus(sender, e.Value.Message)
-    End Sub
-
     Private Sub FritzBoxDatenImportBeendet()
 
         ' Signalisiere, das beenden des Einlesens
