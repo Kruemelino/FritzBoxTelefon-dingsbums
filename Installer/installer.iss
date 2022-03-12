@@ -2,7 +2,7 @@
 #define MyAppVersion "5.0.3.5"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
-#define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2019), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
+#define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2021), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
 #define MyGUID "051D5E77-4942-477E-8071-12F262FDE4F3" 
 #define MyAppNameKurz "FritzOutlookV5"
 #define MyAppTime GetDateTimeString('yymmdd-hhnn', '', '') 
@@ -45,7 +45,6 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: not Outlookx64;   Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest";       ValueData: "file:///{app}/Fritz!Box Telefon-Dingsbums.vsto|vstolocal"
 
 [Files]
-
 #if FileExists("..\FBoxDial\bin\Debug\Fritz!Box Telefon-Dingsbums.dll")
     Source: "..\FBoxDial\bin\Debug\ColorPicker.dll";                                    DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug\EasyWPFThemeLib.dll";                                DestDir: "{app}"; Flags: ignoreversion
@@ -226,11 +225,16 @@ function GetOutlookVersion(): String;
     begin
         VersionsNr := 0;
         if RegQueryStringValue(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\OUTLOOK.EXE', '', Versionspfad) then
-        begin
-            GetVersionNumbersString(Versionspfad, Version);
+            begin
+                GetVersionNumbersString(Versionspfad, Version);
 
-            Result := Copy(Version, 0, Pos('.', Version) -1);        
-    end
+                Result := Copy(Version, 0, Pos('.', Version) -1); 
+            end
+        else 
+            begin
+            // Outlook wurde nicht gefunden
+            Result := '-1';
+        end
 end;
 
 function Outlookx64: boolean;
@@ -252,7 +256,7 @@ function Outlookx64: boolean;
            if RegQueryStringValue(GetHKLM, 'SOFTWARE\Microsoft\Office\' + GetOutlookVersion +  '.0\Outlook', 'Bitness', x86) then 
                Result := x86 = 'x64'                      
            else 
-               result := false;           
+               Result := false;           
         end;
 end;
 
@@ -282,24 +286,36 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
         if inst_VSTO2010_Redistributable then
             begin
                 ShellExec('open', ExpandConstant('{tmp}\vstor_redist.exe'), '/q /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
-        end;
-        
+        end;        
 end;
 
 function InitializeSetup(): Boolean;
     var
         strNET, strNET2, strERR:String;
         VSTORFeature: Cardinal;
+        boolOl: boolean;
     begin
-        Version:= GetOutlookVersion;
+        Version := GetOutlookVersion;
         Result := true;
 
         // Minimale erforderliche .NET Version
         strNET := 'v4.8';
         strNET2 := '.NET Framework 4.8';
 
+        // prüfe, ob die Outlook-Version ermittelt werden konnte. Wenn Version -1, dann wurde die Version nicht ermittelt.
+        // Dann frage den User, ob das Addin dennoch installiert werden soll.
+
+        if StrToInt(Version) = -1 then
+            begin
+                boolOl := MsgBox('Die installierte Version von Microsoft Outlook konnte nicht ermittelt werden. Soll das Addin dennoch installiert werden?', mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES;
+            end
+        else
+            begin
+                boolOl := StrToInt(Version) >= 14;
+        end;
+
         // Prüfe, ob mindestens Office 2010 installiert ist
-        if StrToInt(Version) >= 14 then
+        if boolOl then
             begin
                 // Prüfe, ob VSTO installiert ist
                 if IsWin64 then // Handelt es sich um eine 64 bit-Version
@@ -351,8 +367,8 @@ function InitializeSetup(): Boolean;
             end 
     else
         begin
-        // Outlook ist nicht installiert
-        strERR := 'Microsoft Outlook wurde auf Ihrem Rechner nicht gefunden. {#MyAppName} kann nicht installiert werden.';
+        // Outlook ist nicht installiert oder Version ist nicht ausreichend
+        MsgBox('Die Installation von {#MyAppName} wurde abgebrochen.', mbInformation, MB_OK)
         Result := false
     end;
 end;
