@@ -24,10 +24,10 @@ Friend Module NLogging
                                       "${onexception:${newline}Exception\: ${exception:format=type,message,method,properties,stackTrace :maxInnerExceptionLevel=50 :innerFormat=shortType,message,method,stackTrace :separator=\r\n}}"}
 
         ' Level  Typical Use
-        ' Fatal  Something bad happened; application Is going down
-        ' Error  Something failed; application may Or may Not Continue
+        ' Fatal  Something bad happened; application is going down
+        ' Error  Something failed; application may or may not Continue
         ' Warn   Something unexpected; application will continue
-        ' Info   Normal behavior Like mail sent, user updated profile etc.
+        ' Info   Normal behavior like mail sent, user updated profile etc.
         ' Debug  For debugging; executed query, user authenticated, session expired
         ' Trace  For trace debugging; begin method X, end method X
 

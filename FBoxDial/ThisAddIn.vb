@@ -89,8 +89,10 @@ Public NotInheritable Class ThisAddIn
         Dim TaskTelefonbücher As Task(Of IEnumerable(Of PhonebookEx)) = Nothing
         Dim TaskAnrList As Task(Of FBoxAPI.CallList) = Nothing
 
-        ' TR064 Schnittstelle definieren. Das Init erfolgt erst, wenn eine Verbindung zur Fritz!Box aufgebaut wurde
-        FBoxTR064 = New FBoxAPI.FritzBoxTR64(XMLData.POptionen.ValidFBAdr, FritzBoxDefault.Anmeldeinformationen, New FBoxAPILog)
+        ' TR064 Schnittstelle definieren. 
+        FBoxTR064 = New FBoxAPI.FritzBoxTR64(New FBoxAPI.Settings With {.Anmeldeinformationen = FritzBoxDefault.Anmeldeinformationen,
+                                                                        .FritzBoxAdresse = XMLData.POptionen.ValidFBAdr,
+                                                                        .LogWriter = New FBoxAPILog})
 
         ' Globaler httpClient für Rückwärtssuche und Tellows
         FBoxhttpClient = New AddinHTTPClient
