@@ -47,7 +47,7 @@ Für die Nutzung des Addins wird benötigt:
       `Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen` unter `System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz` deaktiviert sein.
    4. Der Fritz!Box CallMonitor muss aktiviert sein: Hierzu den Telefoncode `#96*5*` per Telefon wählen.
    5. Zur Kommunikation mit der Fritz!Box wird u. a. die TR064-Schnittstelle verwendet. Daher darf diese nicht deaktiviert werden.
-2. Microsoft Outlook (2010 bis 2019 inkl. 365)
+2. Microsoft Outlook (2010 bis 2021 inkl. 365)
 3. [Microsoft .NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48) und [Microsoft Visual Studio 2010 Tools for Office Runtime Redistributable (VSTO 2010)](https://www.microsoft.com/de-DE/download/details.aspx?id=48217)
    Bei der Installation wird geprüft, ob beides bereits installiert ist. Falls nicht, werden beide Komponenten heruntergeladen und installiert. **Ich empfehle jedoch, diese beiden Komponenten vorab zu installieren.**
 
