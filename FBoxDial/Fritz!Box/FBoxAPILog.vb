@@ -17,6 +17,7 @@ Friend Class FBoxAPILog
             Dim LogEvent As New LogEventInfo(NLog.LogLevel.FromOrdinal(.Level),
                                              .CallerClassName,
                                              .Message)
+            LogEvent.Exception = .Ex
 
             LogEvent.SetCallerInfo(.CallerClassName, .CallerMemberName, .CallerFilePath, .CallerLineNumber)
 
