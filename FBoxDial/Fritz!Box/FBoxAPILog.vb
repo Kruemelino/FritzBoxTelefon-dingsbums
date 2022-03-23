@@ -14,10 +14,11 @@ Friend Class FBoxAPILog
     ''' <param name="MessageContainer">Container, welcher alle übermittelten Log-Informationen aus der FBoxAPI Schnittstelle enthält-</param>
     Public Sub LogMessage(MessageContainer As LogMessage) Implements ILogWriter.LogMessage
         With MessageContainer
-            Dim LogEvent As New LogEventInfo(NLog.LogLevel.FromOrdinal(.Level),
-                                             .CallerClassName,
-                                             .Message)
-            LogEvent.Exception = .Ex
+
+            Dim LogEvent As New LogEventInfo() With {.Level = NLog.LogLevel.FromOrdinal(MessageContainer.Level),
+                                                     .LoggerName = MessageContainer.CallerClassName,
+                                                     .Exception = MessageContainer.Ex,
+                                                     .Message = MessageContainer.Message}
 
             LogEvent.SetCallerInfo(.CallerClassName, .CallerMemberName, .CallerFilePath, .CallerLineNumber)
 

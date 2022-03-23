@@ -81,9 +81,6 @@
     End Sub
 
     Friend Function Dial(DialCode As String, Hangup As Boolean) As Boolean Implements IIPPhone.Dial
-
-        Dial = False
-
         If MicroSIPReady Then
             ' Wählkommando senden
             If Hangup Then
@@ -99,10 +96,13 @@
 
                 NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneErfolgreich, DialCode, MicroSIPProgressName))
             End If
-
+            ' Gib Rückmeldung, damit Wählclient kein Fehler ausgibt
+            Return True
         Else
-            ' Phoner nicht verfügbar
+            ' MicroSIP nicht verfügbar
             NLogger.Warn(Localize.LocWählclient.strMicroSIPNichtBereit)
+            ' Gib Rückmeldung, damit Wählclient einen Fehler ausgibt
+            Return False
         End If
     End Function
 
