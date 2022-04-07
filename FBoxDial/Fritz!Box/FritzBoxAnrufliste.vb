@@ -3,11 +3,15 @@
 Friend Module FritzBoxAnrufliste
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "Anrufliste Laden"
-    Friend Async Function LadeFritzBoxAnrufliste() As Task(Of FBoxAPI.CallList)
+    Friend Async Function LadeFritzBoxAnrufliste(Optional ID As Integer = 0, Optional TimeStamp As Integer = 0) As Task(Of FBoxAPI.CallList)
         ' Ermittle Pfad zur Anrufliste
         If Globals.ThisAddIn.FBoxTR064?.Ready Then
-            'Anrufliste =
-            Return If(Await Globals.ThisAddIn.FBoxTR064.X_contact.GetCallList(), New FBoxAPI.CallList)
+            Dim Anrufliste = If(Await Globals.ThisAddIn.FBoxTR064.X_contact.GetCallList(id:=ID, timestamp:=TimeStamp), New FBoxAPI.CallList)
+
+            ' CallList TimeStamp merken (0 ist ungültig)
+            If Anrufliste.TimeStamp.IsNotZero Then XMLData.POptionen.FBoxCallListTimeStamp = Anrufliste.TimeStamp
+
+            Return Anrufliste
         Else
             NLogger.Warn("Pfad zur XML-Anrufliste konnte nicht ermittelt werden.")
             Return New FBoxAPI.CallList
@@ -16,6 +20,9 @@ Friend Module FritzBoxAnrufliste
 #End Region
 
 #Region "Anrufliste auswerten"
+    ''' <summary>
+    ''' Manueller Import der Telefonate aus der Anrufliste
+    ''' </summary>
     Friend Async Function SetUpOutlookListen(Anrufliste As IEnumerable(Of FBoxAPI.Call), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
         Return Await Task.Run(Async Function()
                                   Dim Einträge As Integer = 0

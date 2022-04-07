@@ -6,10 +6,25 @@ Friend Module Journal
     Friend Async Sub AutoAnrListe(Anrufliste As FBoxAPI.CallList)
 
         If Anrufliste IsNot Nothing Then
-            NLogger.Debug($"Anrufliste mit {Anrufliste.Calls.Count} Einträgen geladen.")
+            NLogger.Debug($"Werte {Anrufliste.Calls.Count} neue Telefonate der Anrufliste aus.")
 
             ' Starte die Auswertung der Anrufliste
-            Await ImportCalls(Anrufliste.Calls, XMLData.POptionen.LetzteAuswertungAnrList, Now)
+            Await Task.Run(Sub()
+                               Dim Abfrage As ParallelQuery(Of FBoxAPI.Call)
+
+                               Abfrage = From Anruf In Anrufliste.Calls.AsParallel() Where Anruf.Type.IsLessOrEqual(3) And
+                                                                                           XMLData.POptionen.LetzteAuswertungAnrList <= CDate(Anruf.Date) And
+                                                                                           Now >= CDate(Anruf.Date) Select Anruf
+
+                               Abfrage.ForAll(Async Sub(Anruf)
+                                                  Using t As Telefonat = Await ErstelleTelefonat(Anruf)
+                                                      ' Aktualisiere die Wahlwiederholungs- und Rückrufliste
+                                                      ' Erstelle Journaleinträge,
+                                                      ' Ergänze das Callpane
+                                                      If t IsNot Nothing Then t.SetUpOlLists(True)
+                                                  End Using
+                                              End Sub)
+                           End Sub)
 
         End If
     End Sub
@@ -35,21 +50,6 @@ Friend Module Journal
 
         End With
     End Sub
-
-    Private Function ImportCalls(Anrufliste As IEnumerable(Of FBoxAPI.Call), DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task
-        Return Task.Run(Sub()
-                            Dim Abfrage As ParallelQuery(Of FBoxAPI.Call)
-
-                            Abfrage = From Anruf In Anrufliste.AsParallel() Where Anruf.Type.IsLessOrEqual(3) And DatumZeitAnfang <= CDate(Anruf.Date) And DatumZeitEnde >= CDate(Anruf.Date) Select Anruf
-
-                            Abfrage.ForAll(Async Sub(Anruf)
-                                               ' in ErstelleTelefonat wird auch die Wahlwiederholungs- und Rückrufliste ausgewertet.
-                                               Using t As Telefonat = Await ErstelleTelefonat(Anruf)
-                                                   If t IsNot Nothing Then t.SetUpOlLists(True)
-                                               End Using
-                                           End Sub)
-                        End Sub)
-    End Function
 
     Friend Async Sub StartJournalRWS(olJournal As Outlook.JournalItem)
         With olJournal

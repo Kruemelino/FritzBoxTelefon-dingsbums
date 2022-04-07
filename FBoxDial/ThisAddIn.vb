@@ -109,7 +109,8 @@ Public NotInheritable Class ThisAddIn
         NLogger.Info($"{FBoxTR064.FriendlyName} {FBoxTR064.DisplayVersion}")
 
         ' Lade die Anrufliste herunter
-        If XMLData.POptionen.CBAutoAnrList Then TaskAnrList = LadeFritzBoxAnrufliste()
+        If XMLData.POptionen.CBAutoAnrList Then TaskAnrList = LadeFritzBoxAnrufliste(XMLData.POptionen.FBoxCallListLastImportedID,
+                                                                                     XMLData.POptionen.FBoxCallListTimeStamp)
 
         ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
         If XMLData.POptionen.CBKontaktSucheFritzBox Then

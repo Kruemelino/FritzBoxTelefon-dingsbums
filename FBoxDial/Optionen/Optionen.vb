@@ -235,7 +235,8 @@
 #Region "Auswertung der Fritz!box Anrufliste - Auswertung der Anrufliste"
 
     <XmlElement("LetzteAuswertungAnrList")> Public Property LetzteAuswertungAnrList As Date = Now
-
+    <XmlElement("FBoxCallListTimeStamp")> Public Property FBoxCallListTimeStamp As Integer = 0
+    <XmlElement("FBoxCallListLastImportedID")> Public Property FBoxCallListLastImportedID As Integer = 0
     <XmlElement("CBAutoAnrList")> Public Property CBAutoAnrList As Boolean = False
 
     <XmlElement("CBAnrListeUpdateCallLists")> Public Property CBAnrListeUpdateCallLists As Boolean = False

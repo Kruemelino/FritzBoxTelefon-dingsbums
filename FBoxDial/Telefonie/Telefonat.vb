@@ -746,6 +746,9 @@ Imports Microsoft.Office.Interop
         Else
             NLogger.Debug($"Anruf {ID} wurde nicht importiert.")
         End If
+
+        ' Die Auswertung ist abgeschlossen. Merke dir die ID dieses Eintrages, wenn er größer/neuer ist
+        XMLData.POptionen.FBoxCallListLastImportedID = ID.GetLarger(XMLData.POptionen.FBoxCallListLastImportedID)
     End Sub
 
     ''' <summary>

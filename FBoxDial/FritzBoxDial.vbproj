@@ -138,11 +138,8 @@
     This section specifies references for the project.
   -->
   <ItemGroup>
-    <Reference Include="ColorPicker, Version=3.2.1.0, Culture=neutral, PublicKeyToken=1c61eec504ce2276, processorArchitecture=MSIL">
-      <HintPath>..\packages\PixiEditor.ColorPicker.3.2.0\lib\net451\ColorPicker.dll</HintPath>
-    </Reference>
-    <Reference Include="FilterDataGrid, Version=1.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FilterDataGrid.1.2.5\lib\net472\FilterDataGrid.dll</HintPath>
+    <Reference Include="ColorPicker, Version=3.3.1.0, Culture=neutral, PublicKeyToken=1c61eec504ce2276, processorArchitecture=MSIL">
+      <HintPath>..\packages\PixiEditor.ColorPicker.3.3.1\lib\net451\ColorPicker.dll</HintPath>
     </Reference>
     <Reference Include="HttpClientFactoryLite, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HttpClientFactoryLite.0.4.0\lib\netstandard2.0\HttpClientFactoryLite.dll</HintPath>
@@ -162,7 +159,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.14\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.15\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -882,6 +879,10 @@
     <Resource Include="Tellows\Resources\score9.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DataGridFilter\FilterDataGrid\FilterDataGrid.csproj">
+      <Project>{1284f448-055d-49b6-9a1b-81e9bbf447c8}</Project>
+      <Name>FilterDataGrid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\EasyWPFThemeLib\EasyWPFThemeLib.vbproj">
       <Project>{44775c00-c7ae-4bc1-a15e-c58e1c57655c}</Project>
       <Name>EasyWPFThemeLib</Name>
