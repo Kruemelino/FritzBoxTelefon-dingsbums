@@ -247,7 +247,7 @@ Public Class AnrMonViewModel
             With AnrMonTelefonat
                 ' Eine Telefonnummer ist nicht vorhanden 
                 If .GegenstelleTelNr.Unterdrückt Then
-
+                    AnrMonMainInfo = Localize.LocAnrMon.strNrUnterdrückt
                 Else
                     ' Setze die Telefonnummer
                     TelNr = .GegenstelleTelNr.Formatiert

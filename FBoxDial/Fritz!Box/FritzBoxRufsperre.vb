@@ -156,7 +156,9 @@ Friend Module FritzBoxRufsperre
                 Globals.ThisAddIn.FBoxTR064.X_contact.GetDeflections(DeflectionList)
 
                 ' Finde eine Rufbehandlung, nach der unterdrückte Nummern (DeflectionType.fromAnonymous) nicht signalisiert (DeflectionMode.eNoSignal) werden.
-                Return DeflectionList.Deflections.Find(Function(D) D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And D.Type = FBoxAPI.DeflectionTypeEnum.fromAnonymous) IsNot Nothing
+                Return DeflectionList.Deflections.Find(Function(D) D.Enable AndAlso
+                                                                   D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And
+                                                                   D.Type = FBoxAPI.DeflectionTypeEnum.fromAnonymous) IsNot Nothing
 
             Else
                 ' Abfrage, ob Nummer auf der Sperrlist enthalten ist
