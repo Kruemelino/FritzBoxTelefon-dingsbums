@@ -280,7 +280,7 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    Private _FBTelBookKontakt As FBoxAPI.Contact
+    Private _FBTelBookKontakt As FBoxAPI.Contact = Nothing
     <XmlElement> Public Property FBTelBookKontakt As FBoxAPI.Contact
         Get
             Return _FBTelBookKontakt
@@ -290,11 +290,12 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    Private _OlKontakt As Outlook.ContactItem
+    Private _OlKontakt As Outlook.ContactItem = Nothing
     <XmlIgnore> Friend Property OlKontakt() As Outlook.ContactItem
         Get
             ' Ermittle den Outlook-Kontakt, falls dies noch nicht geschehen ist
             Try
+                ' Versuche auf den Kontakt zuzugreifen. Ansonsten gibt es einen Fehler.
                 If _OlKontakt IsNot Nothing Then Dim tmp As String = _OlKontakt.EntryID
 
             Catch ex As Exception

@@ -42,7 +42,7 @@ Friend Class OptionenService
         Dim XMLString As String = String.Empty
         Dim FritzBoxUsers As New FBoxAPI.UserList
 
-        If Globals.ThisAddIn.FBoxTR064.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
+        If Globals.ThisAddIn.FBoxTR064?.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
             UserList.AddRange(FritzBoxUsers.UserListe)
 
             'RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(True))

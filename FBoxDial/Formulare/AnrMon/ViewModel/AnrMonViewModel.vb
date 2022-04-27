@@ -203,6 +203,8 @@ Public Class AnrMonViewModel
                 Kontaktbild = Await Instance.Invoke(Function() DatenService.LadeBild(AnrMonTelefonat))
             End If
 
+            ' Einblenden des Blockierbuttons aktualisieren
+            OnPropertyChanged(NameOf(ZeigeBlockButton))
         End With
         ' Forcing the CommandManager to raise the RequerySuggested event
         CommandManager.InvalidateRequerySuggested()
@@ -222,6 +224,7 @@ Public Class AnrMonViewModel
             End With
         End If
 
+        ' Einblenden des Blockierbuttons aktualisieren
         OnPropertyChanged(NameOf(ZeigeBlockButton))
     End Sub
 

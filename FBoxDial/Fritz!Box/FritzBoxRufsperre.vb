@@ -149,7 +149,7 @@ Friend Module FritzBoxRufsperre
     ''' </summary>
     ''' <param name="TelNr">Zu prüfende Nummer</param>
     Friend Function IsFBoxBlocked(TelNr As Telefonnummer) As Boolean
-        If Globals.ThisAddIn.FBoxTR064.Ready Then
+        If Globals.ThisAddIn.FBoxTR064?.Ready Then
             If TelNr.Unterdrückt Then
                 ' Abfrage, ob unterdrückte Nummern generell nicht signalisiert werden.
                 Dim DeflectionList As New FBoxAPI.DeflectionList

@@ -74,6 +74,9 @@ Public NotInheritable Class ThisAddIn
         SetInspector()
         NLogger.Debug("Outlook-Inspektor Ereignishandler erfasst...")
 
+        ' Globaler httpClient für Rückwärtssuche und Tellows
+        FBoxhttpClient = New AddinHTTPClient
+
         ' Initiiere den timergesteuerten Start der einzelnen Funktionen
         TimerStart()
 
@@ -93,9 +96,6 @@ Public NotInheritable Class ThisAddIn
         FBoxTR064 = New FBoxAPI.FritzBoxTR64(New FBoxAPI.Settings With {.Anmeldeinformationen = FritzBoxDefault.Anmeldeinformationen,
                                                                         .FritzBoxAdresse = XMLData.POptionen.ValidFBAdr,
                                                                         .LogWriter = New FBoxAPILog})
-
-        ' Globaler httpClient für Rückwärtssuche und Tellows
-        FBoxhttpClient = New AddinHTTPClient
 
         ' Anrufmonitor starten
         If XMLData.POptionen.CBAnrMonAuto Then
@@ -175,7 +175,7 @@ Public NotInheritable Class ThisAddIn
         If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
 
         ' TR-064-Schnittstelle auflösen
-        FBoxTR064.Dispose()
+        FBoxTR064?.Dispose()
 
         ' HttpClient auflösen
         FBoxhttpClient?.Dispose()

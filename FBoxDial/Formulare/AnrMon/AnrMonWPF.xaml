@@ -92,7 +92,7 @@
             <Button Style="{StaticResource MiniIconButton}"
                     Content="{DynamicResource StatusNo_16x}" 
                     Command="{Binding BlockCommand}" 
-                    Visibility="{Binding ZeigeBlockButton, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    Visibility="{Binding ZeigeBlockButton, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
         </StackPanel>
     </Grid>
