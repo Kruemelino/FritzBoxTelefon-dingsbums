@@ -147,7 +147,7 @@ Imports FBoxDial.FritzBoxDefault
                     Telefoniegeräte.AddRange(Await TaskMobilFax)
 
                     ' ISDN/DECT Rundruf, falls S0 oder DECT Geräte verfügbar 
-                    Telefoniegeräte.AddRange(GetRundruf)
+                    'Telefoniegeräte.AddRange(GetRundruf)
 
                     ' Ermittle TR-064 Phoneports
                     ' Für die Fritz!Box Wählhilfe nutzbare Telefone ermitteln
@@ -208,6 +208,8 @@ Imports FBoxDial.FritzBoxDefault
 
         ' Frage alle angeschlossenen und aktiven FON Telefone ab.
         TelQuery.Add("FON=telcfg:settings/MSN/Port/list(Name,Fax,AllIncomingCalls)")
+        ' TelQuery.Add("FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing,MSN)")
+
         ' Führe Abfrage aus
         Dim MSNList As FBoxFON = Await JSONDeserializeFromStreamAsync(Of FBoxFON)(Await Globals.ThisAddIn.FBoxTR064.HttpService.GetLuaResponseStream(SessionID, TelQuery))
 
@@ -330,7 +332,8 @@ Imports FBoxDial.FritzBoxDefault
         NLogger.Trace("GetS0 - Start")
 
         ' Frage alle möglichen S0 Telefone ab (1-8).
-        For idx = 1 To 8
+        ' 0 Ist der ISDN/DECT Rundruf
+        For idx = 0 To 8
             With TelQuery
                 ' Abfrageliste leeren
                 .Clear()
@@ -351,7 +354,7 @@ Imports FBoxDial.FritzBoxDefault
 
                     ' Dimensioniere ein neues Telefon und setze Daten
                     Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.ISDN,
-                                                            .AnrMonID = AnrMonTelIDBase.S0 + idx,
+                                                            .AnrMonID = AnrMonTelIDBase.S0,
                                                             .Intern = InternBase.S0 + idx,
                                                             .StrEinTelNr = New List(Of String)}
 
@@ -443,25 +446,25 @@ Imports FBoxDial.FritzBoxDefault
         Return TelList
     End Function
 
-    ''' <summary>
-    ''' Erstellt den ISDN/DECT Rundruf, sofern DECT oder S0 Geräte vorhanden sind.
-    ''' </summary>
-    ''' <returns></returns>
-    Private Function GetRundruf() As List(Of Telefoniegerät)
-        Dim TelList As New List(Of Telefoniegerät)
-        ' Verarbeitung des Telefons: ISDN/DECT Rundruf
-        If Telefoniegeräte.Find(Function(T) T.TelTyp = TelTypen.ISDN Or T.TelTyp = TelTypen.DECT) IsNot Nothing Then
+    '''' <summary>
+    '''' Erstellt den ISDN/DECT Rundruf, sofern DECT oder S0 Geräte vorhanden sind.
+    '''' </summary>
+    '''' <returns></returns>
+    'Private Function GetRundruf() As List(Of Telefoniegerät)
+    '    Dim TelList As New List(Of Telefoniegerät)
+    '    ' Verarbeitung des Telefons: ISDN/DECT Rundruf
+    '    If Telefoniegeräte.Find(Function(T) T.TelTyp = TelTypen.ISDN Or T.TelTyp = TelTypen.DECT) IsNot Nothing Then
 
-            TelList.Add(New Telefoniegerät With {.TelTyp = TelTypen.ISDN,
-                                                 .AnrMonID = AnrMonTelIDBase.S0,
-                                                 .Name = "ISDN/DECT Rundruf",
-                                                 .Intern = InternBase.S0})
+    '        TelList.Add(New Telefoniegerät With {.TelTyp = TelTypen.ISDN,
+    '                                             .AnrMonID = AnrMonTelIDBase.S0,
+    '                                             .Name = "ISDN/DECT Rundruf",
+    '                                             .Intern = InternBase.S0})
 
-            PushStatus(LogLevel.Debug, $"Telefon {TelList.First.TelTyp}: {TelList.First.AnrMonID}; {TelList.First.Name}; {TelList.First.Intern}")
+    '        PushStatus(LogLevel.Debug, $"Telefon {TelList.First.TelTyp}: {TelList.First.AnrMonID}; {TelList.First.Name}; {TelList.First.Intern}")
 
-        End If
-        Return TelList
-    End Function
+    '    End If
+    '    Return TelList
+    'End Function
 
 #End Region
 

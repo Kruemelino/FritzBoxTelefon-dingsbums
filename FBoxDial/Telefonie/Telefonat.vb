@@ -24,6 +24,7 @@ Imports Microsoft.Office.Interop
     End Property
 
     Private _NebenstellenNummer As Integer
+
     <XmlElement> Public Property NebenstellenNummer As Integer
         Get
             Return _NebenstellenNummer
@@ -200,9 +201,31 @@ Imports Microsoft.Office.Interop
     ''' Gibt an, ob die Daten zu dem Telefonat nachträglich aus der Anrufliste importiert werden.
     ''' </summary>
     <XmlIgnore> Friend Property Import As Boolean = False
+
+    ''' <summary>
+    ''' Interne Rufweiterleitung.
+    ''' </summary>
+    <XmlIgnore> Friend Property Intern As Boolean = False
+
+    ''' <summary>
+    ''' Angabe, ob Informationen zur Gegenstelle ermittelt wurden
+    ''' </summary>
     <XmlIgnore> Friend Property AnruferErmittelt As Boolean = False
+
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor zu diesem Telefonat aktuell eingeblendet ist
+    ''' </summary>
     <XmlIgnore> Friend Property AnrMonEingeblendet As Boolean = False
+
+    ''' <summary>
+    ''' Angabe, ob die Stoppuhr zu diesem Telefonat aktuell eingeblendet ist
+    ''' </summary>
     <XmlIgnore> Friend Property StoppUhrEingeblendet As Boolean = False
+
+    ''' <summary>
+    ''' Flag, ob das Ausblenden durch einen Timer gestartet werden soll.
+    ''' </summary>
+    ''' <returns></returns>
     <XmlIgnore> Friend Property AnrMonStartHideTimer As Boolean = False
 
     ''' <summary>
@@ -411,6 +434,8 @@ Imports Microsoft.Office.Interop
                         OutEigeneTelNr = EigeneTelNr.Unformatiert
 
                     Case 5 ' Gewählte (ausgehende) Telefonnummer
+                        ' Dies kann auch eine interne Nebenstellennummer sein:
+                        ' 01.05.22 10:18:04;CALL;2;4;987654;62;SIP4;
                         GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
 
                     Case 6
@@ -915,10 +940,70 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
+    ''' <summary>
+    ''' <para>Ermittelt das Telefoniegerät, mit dem das Telefonat geführt wird. Dies ist nur bei CALL und CONNECT möglich. 
+    ''' Leider kann das Telefon nicht in allen Fällen ermittelt werden.</para>
+    ''' </summary>
+    ''' <param name="AnrListDeviceName">Name des Gerätes aus der Anrufliste der Fritz!Box</param>
+    ''' <see href="link">https://freetz-ng.github.io/freetz-ng/make/callmonitor.html#ereignis-informationen-f%C3%BCr-aktionen</see>
+    Friend Sub SetTelefoniegerät(Optional AnrListDeviceName As String = "")
+
+        Select Case NebenstellenNummer
+            Case -1 ' Tritt bei der Auswertung der Anrufliste auf. Ein Ermitteln des Gerätes ist nicht möglich.
+
+            Case DfltWerteTelefonie.AnrMonTelIDBase.Durchwahl ' 3
+                TelGerät = New Telefoniegerät With {.Name = "Durchwahl",
+                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.Durchwahl,
+                                                    .TelTyp = DfltWerteTelefonie.TelTypen.CallThrough}
+
+            Case DfltWerteTelefonie.AnrMonTelIDBase.S0 ' 4
+                ' ISDN S0 Geräte können nicht anhand der Nebenstellennummer ermittelt werden, da hier immer die 4 übermittelt wird.
+                TelGerät = New Telefoniegerät With {.Name = "ISDN/S0",
+                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.S0,
+                                                    .TelTyp = DfltWerteTelefonie.TelTypen.ISDN}
+
+            Case DfltWerteTelefonie.AnrMonTelIDBase.OldTAM ' 6
+                ' Aus der Dokumentation der Anrufliste:
+                ' If port equals 6 or port in in the rage of 40 to 49 it is a TAM call.
+                TelGerät = New Telefoniegerät With {.Name = "Anrufbeantworter",
+                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.OldTAM,
+                                                    .TelTyp = DfltWerteTelefonie.TelTypen.TAM}
+
+            Case DfltWerteTelefonie.AnrMonTelIDBase.DataS0 ' 36
+                TelGerät = New Telefoniegerät With {.Name = "Data S0",
+                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.DataS0,
+                                                    .TelTyp = DfltWerteTelefonie.TelTypen.DATA}
+
+            Case DfltWerteTelefonie.AnrMonTelIDBase.DataPC ' 37
+                TelGerät = New Telefoniegerät With {.Name = "Data PC",
+                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.DataPC,
+                                                    .TelTyp = DfltWerteTelefonie.TelTypen.DATA}
+
+            Case Else
+                ' FON, DECT, IP, TAM, interner Faxempfang
+                ' Ermittle die Daten des genutzen Telefons aus der Liste aller bekannten Telefone.
+                TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
+        End Select
+
+        ' Fallback: Versuche das Gerät anhand des Namens zu ermitteln (Nur bei Auwertung der Anrufliste möglich)
+        If TelGerät Is Nothing AndAlso AnrListDeviceName.IsNotStringNothingOrEmpty Then
+            TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.Name.IsEqual(AnrListDeviceName))
+        End If
+
+        ' Logeintrag
+        If TelGerät Is Nothing Then
+            NLogger.Warn($"Telefoniegerät nicht ermittelt: NebenstellenNummer: {NebenstellenNummer}; AnrListDeviceName: '{AnrListDeviceName}'")
+        Else
+            NLogger.Debug($"Telefoniegerät ermittelt: {TelGerät.Name} (NebenstellenNummer: {NebenstellenNummer})")
+        End If
+    End Sub
+
 #Region "Anrufmonitor"
     Private Sub AnrMonRING()
         ' prüfe, ob die anrufende Nummer auf der Rufsperre der Fritz!Box steht
         If EigeneTelNr.Überwacht Then Blockiert = IsFBoxBlocked(GegenstelleTelNr)
+
+        'Abweisen()
 
         If IstRelevant Then
             ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
@@ -935,18 +1020,39 @@ Imports Microsoft.Office.Interop
 
     End Sub
 
+    Private Sub Abweisen()
+        NLogger.Debug($"Rufabweisung")
+        Dim PhoneName As String = String.Empty
+        With Globals.ThisAddIn.FBoxTR064
+            If .Ready Then
+                If .X_voip.DialGetConfig(PhoneName) Then
+                    ' Setze auf das Telefon, auf dass das Telefonat umgeleitet werden soll
+                    .X_voip.DialSetConfig("ISDN: TelefonTest")
+
+                    ' Hole das Telefonat ran
+                    .X_voip.DialNumber("**062")
+
+                    ' Setze auf das Telefon, was ursprünglich eingesetzt war.
+                    .X_voip.DialSetConfig(PhoneName)
+                End If
+            End If
+        End With
+    End Sub
+
     Private Sub AnrMonCALL()
 
         If IstRelevant Then
-            ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-            KontaktSuche()
+            ' Anrufername aus Kontakten und Rückwärtssuche ermitteln, sofern es sich nicht um eine interne Weiterleitung handelt.
+            If Not Intern Then KontaktSuche()
+
+            ' 01.05.22 10:18:04;CALL;2;4;987654;62;SIP4;
 
             ' Telefoniegerät ermitteln
-            TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
+            SetTelefoniegerät()
 
             ' Eigene Nummer prüfen. Mittels Wählpräfix (*10X#, *11X#, *12X#) kann die ausgehende Telefonnummer beeinflusst werden. 
             ' Der Anrufmonitor gibt jedoch weiterhin die eigentlich genutzte eigene Nummer für diese Nebenstelle wieder.
-            ' Unterschieden werden kann nur per AnschlussID
+            ' Unterschieden werden kann nur per AnschlussID (letzer Datenwert SIP... etc)
             ' 03.03.21 15:48:18;CALL;1;4;123456;0049987654321#;SIP3; *124# 654321
             ' 03.03.21 16:35:54;CALL;1;4;123456;0049987654321#;SIP1; *122# 123456
 
@@ -973,7 +1079,7 @@ Imports Microsoft.Office.Interop
 
         If IstRelevant Then
             ' Telefoniegerät ermitteln
-            TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
+            SetTelefoniegerät()
 
             ' Setze Flag, dass das Telefonat angenommen wurde.
             If TelGerät Is Nothing Then

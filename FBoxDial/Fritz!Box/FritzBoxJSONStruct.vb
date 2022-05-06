@@ -5,7 +5,10 @@ Friend Class MSNEntry
     <JsonProperty("_Node")> Public Property Node As String
     Public Property AllIncomingCalls As Boolean
     Public Property Name As String
+    'Public Property GroupCall As Boolean
     Public Property Fax As Boolean
+    'Public Property MSN As String
+    'Public Property OutDialing As Boolean
 End Class
 
 Friend Class FBoxFON

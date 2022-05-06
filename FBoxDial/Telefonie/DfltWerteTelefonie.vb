@@ -25,14 +25,60 @@ Public NotInheritable Class DfltWerteTelefonie
 
 #Region "Enumeration"
     Friend Enum AnrMonTelIDBase As Integer
+        ''' <summary>
+        ''' Anrufmonitor: 1, 2, 3
+        ''' </summary>
         FON = 1
+
+        ''' <summary>
+        ''' Durchwahl
+        ''' </summary>
+        Durchwahl = 3
+
+        ''' <summary>
+        ''' S0 ISDN Telefon
+        ''' </summary>
+        S0 = 4
+
+        ''' <summary>
+        ''' PC/Fax, internes Fax
+        ''' </summary>
         Fax = 5
+
+        ''' <summary>
+        ''' Aus der Dokumentation der Anrufliste:<br/>
+        ''' If port equals 6 or port in in the rage of 40 to 49 it is a TAM call.
+        ''' </summary>
+        OldTAM = 6
+
+        ''' <summary>
+        ''' Anrufmonitor: 10, 11, 12, 13, 14, 15
+        ''' </summary>
         DECT = 10
+
+        ''' <summary>
+        ''' Anrufmonitor für IP-Telefone: 20, 21, 22, 23, 24, 25, ...
+        ''' </summary>
         IP = 20
+
+        ''' <summary>
+        ''' Anrufmonitor für integrierten Anrufbeantworter: 40, 41, 42, ..., 49
+        ''' </summary>
         TAM = 40
-        S0 = 50
+
+        ''' <summary>
+        ''' Data S0
+        ''' </summary>
+        DataS0 = 36
+
+        ''' <summary>
+        ''' Data PC
+        ''' </summary>
+        DataPC = 37
+
         Mobil = 99
     End Enum
+
     Friend Enum InternBase As Integer
         FON = 0
         DECT = 610
@@ -42,16 +88,16 @@ Public NotInheritable Class DfltWerteTelefonie
     End Enum
 
     Public Enum TelTypen As Integer
-        FON = 1
-        DECT = 2
-        IP = 4
-        ISDN = 8
-        FAX = 16
-        Mobil = 32
-        POTS = 64
-        MSN = 128
-        TAM = 256
-        SIP = 512
+        FON
+        DECT
+        IP
+        ISDN
+        FAX
+        Mobil
+        POTS
+        TAM
+        DATA
+        CallThrough
     End Enum
 #End Region
 

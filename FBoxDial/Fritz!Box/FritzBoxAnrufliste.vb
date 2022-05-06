@@ -53,14 +53,17 @@ Friend Module FritzBoxAnrufliste
 
         If [Call].Type.IsLessOrEqual(3) Or [Call].Type.AreEqual(10) Then
 
-            Dim tmpTelefonat As New Telefonat With {.Import = True, .ID = [Call].ID, .ZeitBeginn = CDate([Call].[Date].ToString)}
+            Dim tmpTelefonat As New Telefonat With {.Import = True,
+                                                    .ID = [Call].ID,
+                                                    .NebenstellenNummer = [Call].Port,
+                                                    .ZeitBeginn = CDate([Call].[Date].ToString)}
             Dim tmpTelNr As Telefonnummer
 
             With tmpTelefonat
 
                 If [Call].Type.AreEqual(1) Or [Call].Type.AreEqual(3) Then ' incoming, outgoing
                     ' Es wird auch nach dem Namen des Gerätes gesucht, wenn über den Port nichts gefunden wurde.
-                    .TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual([Call].Port) OrElse TG.Name.IsEqual([Call].Device))
+                    .SetTelefoniegerät([Call].Device)
 
                     ' Umwandlung von "hh:mm" in Sekundenwert
                     With CDate([Call].Duration)
