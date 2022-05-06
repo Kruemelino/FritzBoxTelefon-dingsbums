@@ -144,7 +144,7 @@ Public Class AnrMonViewModel
     ''' </summary>
     Public ReadOnly Property ZeigeBlockButton As Boolean
         Get
-            Return AnrMonTelefonat IsNot Nothing AndAlso AnrMonTelefonat.AnruferUnbekannt
+            Return AnrMonTelefonat IsNot Nothing AndAlso (AnrMonTelefonat.AnruferUnbekannt And Not AnrMonTelefonat.NrUnterdrückt)
         End Get
     End Property
 #End Region

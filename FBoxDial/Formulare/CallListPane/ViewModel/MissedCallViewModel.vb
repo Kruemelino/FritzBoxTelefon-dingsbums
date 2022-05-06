@@ -34,7 +34,7 @@ Public Class MissedCallViewModel
     ''' </summary>
     Public ReadOnly Property ZeigeBlockButton As Boolean
         Get
-            Return VerpasstesTelefonat IsNot Nothing AndAlso VerpasstesTelefonat.AnruferUnbekannt
+            Return VerpasstesTelefonat IsNot Nothing AndAlso (VerpasstesTelefonat.AnruferUnbekannt And Not VerpasstesTelefonat.NrUnterdrückt)
         End Get
     End Property
 #End Region
@@ -310,7 +310,7 @@ Public Class MissedCallViewModel
             With VerpasstesTelefonat
                 ' Eine Telefonnummer ist nicht vorhanden 
                 If .GegenstelleTelNr.Unterdrückt Then
-
+                    MainInfo = Localize.LocAnrMon.strNrUnterdrückt
                 Else
                     ' Setze die Telefonnummer
                     TelNr = .GegenstelleTelNr.Formatiert
