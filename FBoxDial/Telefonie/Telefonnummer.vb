@@ -311,19 +311,31 @@ Public Class Telefonnummer
 #End Region
 
 #Region "IEquatable"
-    Public Overloads Function Equals(other As Telefonnummer) As Boolean Implements IEquatable(Of Telefonnummer).Equals
-        Return other IsNot Nothing AndAlso Unformatiert.IsEqual(other.Unformatiert)
+    ''' <summary>
+    ''' Führt einen Vergleich von <see cref="Telefonnummer"/>-Objekten mit dem übergebenen <see cref="Telefonnummer"/> <paramref name="AndereTelefonnummer"/> durch.
+    ''' </summary>
+    ''' <param name="AndereTelefonnummer"><see cref="Telefonnummer"/>-Objekt mit der dieses <see cref="Telefonnummer"/>-Objekt verglichen werden soll.</param>
+    Public Overloads Function Equals(AndereTelefonnummer As Telefonnummer) As Boolean Implements IEquatable(Of Telefonnummer).Equals
+        Return AndereTelefonnummer IsNot Nothing AndAlso Unformatiert.IsEqual(AndereTelefonnummer.Unformatiert)
     End Function
-    Public Overloads Function Equals(other As String) As Boolean
 
-        ' Eine Nummer muss übergeben sein
-        If other.IsStringNothingOrEmpty Then Return False
+    ''' <summary>
+    ''' Führt einen Vergleich von <see cref="Telefonnummer"/>-Objekten mit dem übergebenen <see cref="String"/> <paramref name="AndereTelefonnummer"/> durch.
+    ''' </summary>
+    ''' <param name="AndereTelefonnummer">Zeichenfolge der Telefonnummer mit der dieses <see cref="Telefonnummer"/>-Objekt verglichen werden soll.</param>
+    Public Overloads Function Equals(AndereTelefonnummer As String) As Boolean
+
+        ' Wenn beide Nummern nicht bekannt bzw. unterdrückt sind, dann sind sie gleich.
+        If AndereTelefonnummer.IsStringNothingOrEmpty AndAlso Unterdrückt Then Return True
+
+        ' Wenn eine der beiden Nummern nicht bekannt bzw. unterdrückt ist, dann braucht auch kein weiterer Vergleich durchgeführt werden.
+        If AndereTelefonnummer.IsStringNothingOrEmpty Xor Unterdrückt Then Return False
 
         ' Keine internen Nummenr der Box vergleichen
-        If other.StartsWith("*") Then Return False
+        If AndereTelefonnummer.StartsWith("*") Then Return False
 
         ' Entferne erstmal alle unnötigen Zeichen:
-        Dim AndereNummer As String = NurZiffern(other)
+        Dim AndereNummer As String = NurZiffern(AndereTelefonnummer)
 
         ' Führe einen schnellen Vergleich durch, ob die unformatierte Nummer oder die Einwahl identisch sind.
         Select Case True
@@ -347,7 +359,7 @@ Public Class Telefonnummer
                         Return Equals(New Telefonnummer With {.SetNummer = AndereNummer})
                     End If
                 Else
-                    NLogger.Trace($"Telefonnummernvergleich false ({other}): '{AndereNummer}'; {Unformatiert}")
+                    NLogger.Trace($"Telefonnummernvergleich false ({AndereTelefonnummer}): '{AndereNummer}'; {Unformatiert}")
                     Return False
                 End If
         End Select
