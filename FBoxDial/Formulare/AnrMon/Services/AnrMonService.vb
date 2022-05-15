@@ -21,8 +21,6 @@ Public Class AnrMonService
         Next
     End Sub
 
-
-
     Private Sub BlockNumber(TelNr As Telefonnummer) Implements IAnrMonService.BlockNumber
         AddNrToBlockList(TelNr)
     End Sub

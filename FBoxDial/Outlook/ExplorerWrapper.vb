@@ -95,7 +95,8 @@ Friend Class ExplorerWrapper
                                   ShowCallListPane()
 
                                   ' Füge das Telefonat als verpasstes Element hinzu
-                                  CallListPaneVM.MissedCallList.Add(New MissedCallViewModel(Datenservice, Dialogservice) With {.VerpasstesTelefonat = MissedCall})
+                                  CallListPaneVM.MissedCallList.Add(New MissedCallViewModel(Datenservice, Dialogservice) With {.VerpasstesTelefonat = MissedCall,
+                                                                                                                               .Instance = PaneDispatcher})
 
                                   ' Sortiere die Liste
                                   CallListPaneVM.MissedCallList.SortDescending(Function(T) T.Zeit)

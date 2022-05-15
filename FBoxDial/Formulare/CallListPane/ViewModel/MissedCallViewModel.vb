@@ -1,12 +1,14 @@
 ﻿Imports System.ComponentModel
 Imports System.Windows.Input
 Imports System.Windows.Media
+Imports System.Windows.Threading
 
 Public Class MissedCallViewModel
     Inherits NotifyBase
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property DatenService As IAnrMonService
     Private Property DialogService As IDialogService
+    Friend Property Instance As Dispatcher
 
 #Region "Visibility Eigenschaften"
     Public ReadOnly Property ZeigeBild As Boolean
@@ -193,7 +195,6 @@ Public Class MissedCallViewModel
 
             ' Setze das Kontaktbild
             If Kontaktbild Is Nothing Then
-                'Kontaktbild = Await Instance.Invoke(Function() DatenService.LadeBild(AnrMonTelefonat))
                 Kontaktbild = Await DatenService.LadeBild(VerpasstesTelefonat)
             End If
 
@@ -205,7 +206,8 @@ Public Class MissedCallViewModel
 
     Private Async Sub UpdateData()
         ' Lade das Kontaktbild, wenn a) Option gesetzt ist oder b) ein TellowsErgebnis vorliegt und das Bild noch nicht geladen wurde
-        If Kontaktbild Is Nothing Then Kontaktbild = Await DatenService.LadeBild(VerpasstesTelefonat)
+        ' If Kontaktbild Is Nothing Then Kontaktbild = Await DatenService.LadeBild(VerpasstesTelefonat)
+        If Kontaktbild Is Nothing Then Kontaktbild = Await Instance.Invoke(Function() DatenService.LadeBild(VerpasstesTelefonat))
 
         If VerpasstesTelefonat.TellowsResult IsNot Nothing AndAlso XMLData.POptionen.CBTellowsAnrMonColor Then
             With VerpasstesTelefonat.TellowsResult
