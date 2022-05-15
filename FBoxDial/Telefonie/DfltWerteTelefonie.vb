@@ -26,9 +26,9 @@ Public NotInheritable Class DfltWerteTelefonie
 #Region "Enumeration"
     Friend Enum AnrMonTelIDBase As Integer
         ''' <summary>
-        ''' Anrufmonitor: 1, 2, 3
+        ''' Anrufmonitor: 0, 1, 2 für FON1, FON2, FON3
         ''' </summary>
-        FON = 1
+        FON = 0
 
         ''' <summary>
         ''' Durchwahl

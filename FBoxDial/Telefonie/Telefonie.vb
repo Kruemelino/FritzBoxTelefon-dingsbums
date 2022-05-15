@@ -219,7 +219,7 @@ Imports FBoxDial.FritzBoxDefault
                 ' Dimensioniere ein neues Telefon und setze Daten
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.FON,
                                                         .Name = FONTelefon.Name,
-                                                        .Intern = FONTelefon.Node.RegExRemove("^\D*").ToInt + 1,
+                                                        .Intern = FONTelefon.Node.RegExRemove("^\D*").ToInt,
                                                         .AnrMonID = AnrMonTelIDBase.FON + .Intern,
                                                         .StrEinTelNr = New List(Of String),
                                                         .IsFax = FONTelefon.Fax}

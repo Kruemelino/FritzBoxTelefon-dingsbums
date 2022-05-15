@@ -1349,6 +1349,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Erklärungen zu den einzelnen Spalten sind als ToolTipp in der Spaltenüberschrift zu finden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyInfoToolTipp() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyInfoToolTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Auswahl der Telefonnummern, auf die der Anrufmonitor reagiert ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelephonyNumbersInfo() As String
@@ -1367,11 +1376,29 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die TR-064 Dialport des Telefons ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyPhoneDialportToolTipp() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyPhoneDialportToolTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die ID ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelephonyPhoneID() As String
             Get
                 Return ResourceManager.GetString("strTelephonyPhoneID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ID des Telefons, welche beim Anrufmonitor übermittelt wird ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyPhoneIDToolTipp() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyPhoneIDToolTipp", resourceCulture)
             End Get
         End Property
         
@@ -1385,11 +1412,29 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Intern ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Eigene Telefonnummern, auf die das Telefon reagiert ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyPhoneIncommingToolTipp() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyPhoneIncommingToolTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Interne ID ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelephonyPhoneIntern() As String
             Get
                 Return ResourceManager.GetString("strTelephonyPhoneIntern", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Interne Telefonnummer des Telefons ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyPhoneInternToolTipp() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyPhoneInternToolTipp", resourceCulture)
             End Get
         End Property
         
@@ -1403,11 +1448,58 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Name des Telefons ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyPhoneNameToolTipp() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyPhoneNameToolTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die AB ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyPhoneTAM() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyPhoneTAM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die In der Fritz!Box kann ein externer AB als an einem FON-Port eingerichtet werden, was aktuell noch nicht automatisch erfasst werden kann.
+        '''Aus diesem Grund kann hier festgelegt werden, ob es sich um ein AB handelt. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyPhoneTAMToolTipp() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyPhoneTAMToolTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Typ ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelephonyPhoneType() As String
             Get
                 Return ResourceManager.GetString("strTelephonyPhoneType", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Typ des Telefons ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyPhoneTypeToolTipp() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyPhoneTypeToolTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Telefon, welches in der Wählhilfe stets vorausgeählt wird. 
+        '''Ist kein Telefon ausgewählt, wird das zuletzt genutzte Telefon verwendet. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyStdPhoneToolTipp() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyStdPhoneToolTipp", resourceCulture)
             End Get
         End Property
         

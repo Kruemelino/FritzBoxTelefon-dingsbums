@@ -702,6 +702,10 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Start</value>
     <comment>OptTelephonyView</comment>
   </data>
+  <data name="strTelephonyInfoToolTipp" xml:space="preserve">
+    <value>Erklärungen zu den einzelnen Spalten sind als ToolTipp in der Spaltenüberschrift zu finden.</value>
+    <comment>OptTelephonyView</comment>
+  </data>
   <data name="strTelephonyNumbersInfo" xml:space="preserve">
     <value>Auswahl der Telefonnummern, auf die der Anrufmonitor reagiert</value>
     <comment>OptTelephonyView</comment>
@@ -710,24 +714,62 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Dialport</value>
     <comment>OptTelephonyView</comment>
   </data>
+  <data name="strTelephonyPhoneDialportToolTipp" xml:space="preserve">
+    <value>TR-064 Dialport des Telefons</value>
+    <comment>OptTelephonyView</comment>
+  </data>
   <data name="strTelephonyPhoneID" xml:space="preserve">
     <value>ID</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneIDToolTipp" xml:space="preserve">
+    <value>ID des Telefons, welche beim Anrufmonitor übermittelt wird</value>
     <comment>OptTelephonyView</comment>
   </data>
   <data name="strTelephonyPhoneIncomming" xml:space="preserve">
     <value>Eingehend</value>
     <comment>OptTelephonyView</comment>
   </data>
+  <data name="strTelephonyPhoneIncommingToolTipp" xml:space="preserve">
+    <value>Eigene Telefonnummern, auf die das Telefon reagiert</value>
+    <comment>OptTelephonyView</comment>
+  </data>
   <data name="strTelephonyPhoneIntern" xml:space="preserve">
-    <value>Intern</value>
+    <value>Interne ID</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneInternToolTipp" xml:space="preserve">
+    <value>Interne Telefonnummer des Telefons</value>
     <comment>OptTelephonyView</comment>
   </data>
   <data name="strTelephonyPhoneName" xml:space="preserve">
     <value>Name</value>
     <comment>OptTelephonyView</comment>
   </data>
+  <data name="strTelephonyPhoneNameToolTipp" xml:space="preserve">
+    <value>Name des Telefons</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneTAM" xml:space="preserve">
+    <value>AB</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneTAMToolTipp" xml:space="preserve">
+    <value>In der Fritz!Box kann ein externer AB als an einem FON-Port eingerichtet werden, was aktuell noch nicht automatisch erfasst werden kann.
+Aus diesem Grund kann hier festgelegt werden, ob es sich um ein AB handelt.</value>
+    <comment>OptTelephonyView</comment>
+  </data>
   <data name="strTelephonyPhoneType" xml:space="preserve">
     <value>Typ</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyPhoneTypeToolTipp" xml:space="preserve">
+    <value>Typ des Telefons</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyStdPhoneToolTipp" xml:space="preserve">
+    <value>Telefon, welches in der Wählhilfe stets vorausgeählt wird. 
+Ist kein Telefon ausgewählt, wird das zuletzt genutzte Telefon verwendet.</value>
     <comment>OptTelephonyView</comment>
   </data>
   <data name="strTellows" xml:space="preserve">

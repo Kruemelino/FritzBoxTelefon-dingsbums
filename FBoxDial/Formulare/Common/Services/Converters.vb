@@ -108,3 +108,24 @@ Public Class TelNrToFontWeightConverter
         Throw New NotImplementedException()
     End Function
 End Class
+
+Public Class EnumToVisibilityConverter
+    Implements IValueConverter
+
+    Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
+        If value Is Nothing OrElse parameter Is Nothing OrElse Not (TypeOf value Is [Enum]) Then Return Visibility.Hidden
+
+        Dim EnumState As String = value.ToString()
+        Dim parameterString As String = parameter.ToString()
+
+        For Each state As String In parameterString.Split(","c)
+            If EnumState.Equals(state) Then Return Visibility.Visible
+        Next
+
+        Return Visibility.Hidden
+    End Function
+
+    Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
+        Throw New NotImplementedException()
+    End Function
+End Class

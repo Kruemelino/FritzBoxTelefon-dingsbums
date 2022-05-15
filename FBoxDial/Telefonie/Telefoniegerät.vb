@@ -11,34 +11,112 @@ Public Class Telefoniegerät
     End Sub
 
 #Region "Eigenschaften"
+    ''' <summary>
+    ''' Name des Telefones
+    ''' </summary>
     <XmlElement> Public Property Name As String
+
+    ''' <summary>
+    ''' Liste aller Telefonnummern, auf die das Telefon reagiert.
+    ''' </summary>
     <XmlElement> Public Property StrEinTelNr As List(Of String)
+
+    ''' <summary>
+    ''' Interne ID des Telefones
+    ''' </summary>
     <XmlAttribute> Public Property Intern As Integer
+
+    ''' <summary>
+    ''' Interne ID des Telefones, die durch den Anrufmonitor genutzt wird.
+    ''' </summary>
     <XmlAttribute> Public Property AnrMonID As Integer
+
+    ''' <summary>
+    ''' Dialport für die Wählhilfe via TR-064
+    ''' </summary>
     <XmlAttribute> Public Property TR064Dialport As String
+
+    ''' <summary>
+    ''' Angabe, ob es sich um das Standardtelefon der Wählhilfe handelt
+    ''' </summary>
     <XmlAttribute> Public Property StdTelefon As Boolean
+
+    ''' <summary>
+    ''' Angabe, ob es sich um ein Fax handelt
+    ''' </summary>
     <XmlAttribute> Public Property IsFax As Boolean
+
+    ''' <summary>
+    ''' Angabe, ob dieses Telefon mit dem Softphone Phoner verbunden ist.
+    ''' </summary>
     <XmlAttribute> Public Property IsPhoner As Boolean
+
+    ''' <summary>
+    ''' Angabe, ob dieses Telefon mit dem Softphone MicroSIP verbunden ist.
+    ''' </summary>
     <XmlAttribute> Public Property IsMicroSIP As Boolean
+
+    ''' <summary>
+    ''' Angabe, ob dieses Telefon bei der Wählhilfe zuletzt genutzt wurde.
+    ''' </summary>
     <XmlAttribute> Public Property ZuletztGenutzt As Boolean
+
+    Private _IsExternalTAM As Boolean
+    ''' <summary>
+    ''' Nutzereingabe, ob dieses Telefon ein externer Anrufbeantworter ist. Dies ist nur für FON möglich
+    ''' </summary>
+    <XmlAttribute> Public Property IsExternalTAM As Boolean
+        Set
+            SetProperty(_IsExternalTAM, Value)
+
+            OnPropertyChanged(NameOf(IsDialable))
+        End Set
+        Get
+            Return _IsExternalTAM
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Typ des Telefones
+    ''' </summary>
     <XmlAttribute> Public Property TelTyp As TelTypen
 #End Region
+
+    ''' <summary>
+    ''' Angabe, ob das Telefon den Softphones Phoner bzw. MicroSIP zugeordnet ist.
+    ''' </summary>
     <XmlIgnore> Public ReadOnly Property IsSoftPhone As Boolean
         Get
             Return IsMicroSIP Or IsPhoner
         End Get
     End Property
 
+    ''' <summary>
+    ''' Angabe, ob es sich um ein IP Telefon handelt
+    ''' </summary>
+    ''' <remarks>Wird nur für die Darstellung ein dem Einstellungs-View benötigt.</remarks>
     <XmlIgnore> Public ReadOnly Property IsIPPhone As Boolean
         Get
             Return TelTyp = TelTypen.IP
         End Get
     End Property
 
+    ''' <summary>
+    ''' Angabe, ob das Gerät ein interner oder externer Anrufbeantworter ist
+    ''' </summary>
+    <XmlIgnore> Public ReadOnly Property IsTAM As Boolean
+        Get
+            Return TelTyp = TelTypen.TAM Or IsExternalTAM
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Angabe, ob das Telefon über die Wählhilfe steuerbar ist. FAX und TAM werden nicht berücksichtigt.
+    ''' </summary>
     <XmlIgnore> Public ReadOnly Property IsDialable As Boolean
         Get
-            ' Kein Fax
-            If IsFax Then Return False
+            ' Kein Fax oder externer TAM
+            If IsFax Or IsExternalTAM Then Return False
 
             Select Case TelTyp
 
@@ -54,6 +132,10 @@ Public Class Telefoniegerät
         End Get
     End Property
 
+    ''' <summary>
+    ''' Gibt den Rückfallwert für den TR-064 Dialportes des Telefones zurück.<br/>
+    ''' Der Wert wird anhand Erfahrungswerte zusammengesetzt.
+    ''' </summary>
     Friend ReadOnly Property GetDialPortFallback As String
         Get
             Select Case TelTyp

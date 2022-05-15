@@ -1020,24 +1020,24 @@ Imports Microsoft.Office.Interop
 
     End Sub
 
-    Private Sub Abweisen()
-        NLogger.Debug($"Rufabweisung")
-        Dim PhoneName As String = String.Empty
-        With Globals.ThisAddIn.FBoxTR064
-            If .Ready Then
-                If .X_voip.DialGetConfig(PhoneName) Then
-                    ' Setze auf das Telefon, auf dass das Telefonat umgeleitet werden soll
-                    .X_voip.DialSetConfig("ISDN: TelefonTest")
+    'Private Sub Abweisen()
+    '    NLogger.Debug($"Rufabweisung")
+    '    Dim PhoneName As String = String.Empty
+    '    With Globals.ThisAddIn.FBoxTR064
+    '        If .Ready Then
+    '            If .X_voip.DialGetConfig(PhoneName) Then
+    '                ' Setze auf das Telefon, auf dass das Telefonat umgeleitet werden soll
+    '                .X_voip.DialSetConfig("ISDN: TelefonTest")
 
-                    ' Hole das Telefonat ran
-                    .X_voip.DialNumber("**062")
+    '                ' Hole das Telefonat ran
+    '                .X_voip.DialNumber("**062")
 
-                    ' Setze auf das Telefon, was ursprünglich eingesetzt war.
-                    .X_voip.DialSetConfig(PhoneName)
-                End If
-            End If
-        End With
-    End Sub
+    '                ' Setze auf das Telefon, was ursprünglich eingesetzt war.
+    '                .X_voip.DialSetConfig(PhoneName)
+    '            End If
+    '        End If
+    '    End With
+    'End Sub
 
     Private Sub AnrMonCALL()
 
@@ -1087,7 +1087,8 @@ Imports Microsoft.Office.Interop
                 ' Eine überprüfung, ob es sich um ein TAM handelt, kann nicht durchgeführt werden.
                 Angenommen = True
             Else
-                Angenommen = Not (TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM AndAlso XMLData.POptionen.CBIsTAMMissed)
+                ' Angenommen wird nicht auf True gesetzt, wenn ein TAM rangegangen ist und dies gemäß Einstellungen als verpasst gekennzeichnet werden soll
+                Angenommen = Not (TelGerät.IsTAM AndAlso XMLData.POptionen.CBIsTAMMissed)
             End If
 
             ' Anrufmonitor ausblenden einleiten, falls dies beim CONNECT geschehen soll
