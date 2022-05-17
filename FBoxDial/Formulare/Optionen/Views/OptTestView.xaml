@@ -75,47 +75,6 @@
             </StackPanel>
         </Expander>
 
-        <Expander Header="{x:Static localize:LocOptionen.strTestLoginHead}" IsEnabled="False">
-            <StackPanel>
-                <Label Style="{StaticResource OptHintTextBlock}" 
-                       Content="{x:Static localize:LocOptionen.strTestLoginInfo}"/>
-                
-                <TextBox Style="{StaticResource OptTextBox}" Margin="4"
-                         Tag="{x:Static localize:LocOptionen.strBaseTBFBAdr}"
-                         Text="{Binding TBFBAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                
-                <Button Margin="4"
-                        Content="{x:Static localize:LocOptionen.strTestLoginLoadUserList}"                       
-                        Command="{Binding TestUserListCommand}" />
-
-                <ComboBox Style="{StaticResource OptComboBox}" Margin="4"
-                          Tag="{x:Static localize:LocOptionen.strBaseTBBenutzer}"
-                          ItemsSource="{Binding Path=CBoxBenutzer}"
-                          SelectedValue="{Binding TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          DisplayMemberPath="UserName"
-                          SelectedValuePath="UserName" />
-
-                <Grid Margin="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="150"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="{x:Static localize:LocOptionen.strBaseTBPasswort}" Grid.Column="0" />
-                    <PasswordBox x:Name="PwTest" Grid.Column="1"/>
-                </Grid>
-                
-                <Button Margin="4"
-                        Tag="{DynamicResource Login_16x}"
-                        Content="{x:Static localize:LocOptionen.strTestStartLogin}"                            
-                        Command="{Binding TestLoginCommand}" 
-                        CommandParameter="{Binding ElementName=PwTest}"/>
-
-                <TextBox Style="{StaticResource ResultTextBox}"
-                         Text="{Binding TBTestLoginOutput, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-        </Expander>
-
         <Expander Header="{x:Static localize:LocOptionen.strTestKontaktsucheHead}">
             <StackPanel>
                 <Label Style="{StaticResource OptHintTextBlock}" 
@@ -166,6 +125,13 @@
                           Content="{x:Static localize:LocOptionen.strTestAnrMonCONNECT}" 
                           IsChecked="{Binding TBTestAnrMonCONNECT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+                <ComboBox Style="{StaticResource OptComboBox}"
+                          Tag="{x:Static localize:LocOptionen.strTestAnrMonGeräteID}"
+                          ItemsSource="{Binding Path=OptVM.TelGeräteListe}"
+                          SelectedValue="{Binding CBoxAnrMonGeräteID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="AnrMonID" />
+                
                 <GroupBox Header="{x:Static localize:LocOptionen.strTestRndHead}">
                     <StackPanel>
                         <TextBox Style="{StaticResource OptTextBox}"

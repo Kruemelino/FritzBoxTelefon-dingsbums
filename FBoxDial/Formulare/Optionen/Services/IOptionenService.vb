@@ -45,17 +45,19 @@ Public Interface IOptionenService
     Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Task(Of TellowsResponse)
 #End Region
 
-    '#Region "Test Login"
-    '    Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean))
-    '    Sub StartLoginTest(FbAdr As String, User As String, Password As Security.SecureString)
-    '#End Region
-
 #Region "Test Kontaktsuche"
     Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean))
     Sub StartKontaktsucheTest(TelNr As String)
 #End Region
 
 #Region "Test Anrufmonitor"
-    Sub StartAnrMonTest(TelNr As String, CONNECT As Boolean, rnd As Boolean, rndOutlook As Boolean, rndFBox As Boolean, rndTellows As Boolean, clir As Boolean)
+    Sub StartAnrMonTest(TelNr As String,
+                        CONNECT As Boolean,
+                        rnd As Boolean,
+                        rndOutlook As Boolean,
+                        rndFBox As Boolean,
+                        rndTellows As Boolean,
+                        clir As Boolean,
+                        AnrMonGeräteID As Integer)
 #End Region
 End Interface

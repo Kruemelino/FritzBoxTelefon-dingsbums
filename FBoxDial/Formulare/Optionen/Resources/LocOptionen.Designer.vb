@@ -1802,6 +1802,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Annehmendes Telefon ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestAnrMonGeräteID() As String
+            Get
+                Return ResourceManager.GetString("strTestAnrMonGeräteID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann die Funktionalität des Anrufmonitors und aller nachgelagerter Funktionen (z. B. Kontaktsuche, Journal) getestet werden. 
         '''Hier werden die selben Funktionen verwendet: Im Journal und der Wahlwiederholungsliste werden diese simulierten Telefonate ebenfalls gelistet. ähnelt.
         '''</summary>

@@ -905,6 +905,10 @@ Warnung: Wenn viele Einträge auf die Fritz!Box geladen werden, kann diese träg
     <value>Anruf verbunden (CONNECT)</value>
     <comment>OptTestView</comment>
   </data>
+  <data name="strTestAnrMonGeräteID" xml:space="preserve">
+    <value>Annehmendes Telefon</value>
+    <comment>OptTestView</comment>
+  </data>
   <data name="strTestAnrMonInfo" xml:space="preserve">
     <value>Hier kann die Funktionalität des Anrufmonitors und aller nachgelagerter Funktionen (z. B. Kontaktsuche, Journal) getestet werden. 
 Hier werden die selben Funktionen verwendet: Im Journal und der Wahlwiederholungsliste werden diese simulierten Telefonate ebenfalls gelistet.</value>

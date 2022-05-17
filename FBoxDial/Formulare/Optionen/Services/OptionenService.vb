@@ -222,18 +222,6 @@ Friend Class OptionenService
     End Function
 #End Region
 
-    '#Region "Test Login"
-    '    Private Event BeendetLogin As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetLogin
-
-    '    Private Sub StartLoginTest(IPAdresse As String, User As String, Password As SecureString) Implements IOptionenService.StartLoginTest
-
-    '        Dim SessionID As String = String.Empty
-
-    '        RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(Globals.ThisAddIn.FBoxTR064.Deviceconfig.GetSessionID(SessionID)))
-
-    '    End Sub
-    '#End Region
-
 #Region "Test Kontaktsuche"
     Private Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetKontaktsuche
 
@@ -260,7 +248,15 @@ Friend Class OptionenService
 #End Region
 
 #Region "Test Anrufmonitor"
-    Private Async Sub StartAnrMonTest(TelNr As String, CONNECT As Boolean, rnd As Boolean, rndOutlook As Boolean, rndFBox As Boolean, rndTellows As Boolean, clir As Boolean) Implements IOptionenService.StartAnrMonTest
+    Private Async Sub StartAnrMonTest(TelNr As String,
+                                      CONNECT As Boolean,
+                                      rnd As Boolean,
+                                      rndOutlook As Boolean,
+                                      rndFBox As Boolean,
+                                      rndTellows As Boolean,
+                                      clir As Boolean,
+                                      AnrMonGeräteID As Integer) Implements IOptionenService.StartAnrMonTest
+
         Dim RndGen As New Random()
 
         If TelNr.IsStringNothingOrEmpty Then
@@ -349,8 +345,11 @@ Friend Class OptionenService
         ' Starte ein eingehendes Telefonat
         Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {Now.ToString("G"), "RING", "99", TelNr, XMLData.PTelefonie.Telefonnummern(RndGen.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl, "SIP4"}}
 
+        ' Wenn -1 übergeben wird, dann wähle zufällig ein Gerät aus
+        If AnrMonGeräteID.AreEqual(-1) Then AnrMonGeräteID = XMLData.PTelefonie.Telefoniegeräte(RndGen.Next(0, XMLData.PTelefonie.Telefoniegeräte.Count)).AnrMonID
+
         ' 23.06.18 13:20:44;CONNECT;1;40;0123456789;
-        If CONNECT Then AktivesTelefonat.SetAnrMonCONNECT = {Now.ToString("G"), "CONNECT", "99", $"{XMLData.PTelefonie.Telefoniegeräte(RndGen.Next(0, XMLData.PTelefonie.Telefoniegeräte.Count)).AnrMonID}", TelNr}
+        If CONNECT Then AktivesTelefonat.SetAnrMonCONNECT = {Now.ToString("G"), "CONNECT", "99", $"{AnrMonGeräteID}", TelNr}
 
         ' 23.06.18 13:20:52;DISCONNECT;1;9;
         AktivesTelefonat.SetAnrMonDISCONNECT = {Now.ToString("G"), "DISCONNECT", "99", "60"}

@@ -383,8 +383,24 @@
         End Set
     End Property
 
+    Private _CBoxAnrMonGeräteID As Integer = -1
+    Public Property CBoxAnrMonGeräteID As Integer
+        Get
+            Return _CBoxAnrMonGeräteID
+        End Get
+        Set
+            SetProperty(_CBoxAnrMonGeräteID, Value)
+        End Set
+    End Property
     Private Sub StartAnrMonTest(obj As Object)
-        DatenService.StartAnrMonTest(TBTestAnrMonInput, TBTestAnrMonCONNECT, RBBRnd, RBBRndOutlook, RBBRndFBox, RBBRndTellows, RBBCLIR)
+        DatenService.StartAnrMonTest(TBTestAnrMonInput,
+                                     TBTestAnrMonCONNECT,
+                                     RBBRnd,
+                                     RBBRndOutlook,
+                                     RBBRndFBox,
+                                     RBBRndTellows,
+                                     RBBCLIR,
+                                     CBoxAnrMonGeräteID)
     End Sub
 #End Region
 End Class
