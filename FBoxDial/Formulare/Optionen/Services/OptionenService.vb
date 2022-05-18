@@ -248,6 +248,12 @@ Friend Class OptionenService
 #End Region
 
 #Region "Test Anrufmonitor"
+    Public ReadOnly Property TelefoniedatenEingelesen As Boolean Implements IOptionenService.TelefoniedatenEingelesen
+        Get
+            Return XMLData.PTelefonie.Telefonnummern.Count.IsNotZero 'AndAlso XMLData.PTelefonie.Telefoniegeräte.Count.IsNotZero
+        End Get
+    End Property
+
     Private Async Sub StartAnrMonTest(TelNr As String,
                                       CONNECT As Boolean,
                                       rnd As Boolean,
@@ -342,14 +348,26 @@ Friend Class OptionenService
             End Using
         End If
 
+        Dim tmpStr As String
+
+        If XMLData.PTelefonie.Telefonnummern.Count.IsZero Then
+            tmpStr = RndGen.Next(9999, 99999).ToString
+        Else
+            tmpStr = XMLData.PTelefonie.Telefonnummern(RndGen.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl
+        End If
+
         ' Starte ein eingehendes Telefonat
-        Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {Now.ToString("G"), "RING", "99", TelNr, XMLData.PTelefonie.Telefonnummern(RndGen.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl, "SIP4"}}
+        Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {Now.ToString("G"), "RING", "99", TelNr, tmpStr, "SIP4"}}
 
-        ' Wenn -1 übergeben wird, dann wähle zufällig ein Gerät aus
-        If AnrMonGeräteID.AreEqual(-1) Then AnrMonGeräteID = XMLData.PTelefonie.Telefoniegeräte(RndGen.Next(0, XMLData.PTelefonie.Telefoniegeräte.Count)).AnrMonID
+        If CONNECT Then
+            ' Wenn -1 übergeben wird, dann wähle zufällig ein Gerät aus
+            If AnrMonGeräteID.AreEqual(-1) AndAlso XMLData.PTelefonie.Telefoniegeräte.Count.IsNotZero Then
+                AnrMonGeräteID = XMLData.PTelefonie.Telefoniegeräte(RndGen.Next(0, XMLData.PTelefonie.Telefoniegeräte.Count)).AnrMonID
+            End If
 
-        ' 23.06.18 13:20:44;CONNECT;1;40;0123456789;
-        If CONNECT Then AktivesTelefonat.SetAnrMonCONNECT = {Now.ToString("G"), "CONNECT", "99", $"{AnrMonGeräteID}", TelNr}
+            ' 23.06.18 13:20:44;CONNECT;1;40;0123456789;
+            AktivesTelefonat.SetAnrMonCONNECT = {Now.ToString("G"), "CONNECT", "99", $"{AnrMonGeräteID}", TelNr}
+        End If
 
         ' 23.06.18 13:20:52;DISCONNECT;1;9;
         AktivesTelefonat.SetAnrMonDISCONNECT = {Now.ToString("G"), "DISCONNECT", "99", "60"}

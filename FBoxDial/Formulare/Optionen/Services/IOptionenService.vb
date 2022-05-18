@@ -51,6 +51,8 @@ Public Interface IOptionenService
 #End Region
 
 #Region "Test Anrufmonitor"
+    ReadOnly Property TelefoniedatenEingelesen As Boolean
+
     Sub StartAnrMonTest(TelNr As String,
                         CONNECT As Boolean,
                         rnd As Boolean,

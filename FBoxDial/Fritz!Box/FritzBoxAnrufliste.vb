@@ -74,7 +74,7 @@ Friend Module FritzBoxAnrufliste
                     .Angenommen = .Dauer.IsNotZero
 
                     ' Falls es sich um ein TAM handelt: Setze Flag, dass das Telefonat nicht angenommen wurde.
-                    If .TelGerät IsNot Nothing AndAlso .TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM AndAlso XMLData.POptionen.CBIsTAMMissed Then
+                    If .TelGerät IsNot Nothing AndAlso .TelGerät.IsTAM AndAlso XMLData.POptionen.CBIsTAMMissed Then
                         .Angenommen = True
                     End If
 

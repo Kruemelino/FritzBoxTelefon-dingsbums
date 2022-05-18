@@ -1095,7 +1095,7 @@ Imports Microsoft.Office.Interop
             If XMLData.POptionen.CBAutoClose And XMLData.POptionen.CBAnrMonHideCONNECT Then
                 ' Ausblenden nur Starten, wenn der Anrufbeaantworter nicht rangegangen ist.
                 ' Es kann sein, dass das Gerät nicht ermittelt wurde. Dann starte das Ausblenden trotzdem
-                AnrMonStartHideTimer = TelGerät Is Nothing OrElse Not TelGerät.TelTyp = DfltWerteTelefonie.TelTypen.TAM
+                AnrMonStartHideTimer = TelGerät Is Nothing OrElse Not (TelGerät.IsTAM AndAlso XMLData.POptionen.CBIsTAMMissed)
             End If
 
             ' Stoppuhr einblenden, wenn Bedingungen erfüllt 
