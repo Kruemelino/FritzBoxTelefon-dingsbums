@@ -6,7 +6,9 @@
         xmlns:fbd="clr-namespace:FBoxDial"
         xmlns:localize="clr-namespace:FBoxDial.Localize"
         mc:Ignorable="d" 
-        MinHeight="450" MinWidth="600" Height="520" Width="700" Focusable="False" IsTabStop="False" Name="Optionen"
+        MinHeight="450" MinWidth="600" 
+        Height="520" Width="700" 
+        Focusable="False" IsTabStop="False" Name="Optionen"
         d:DataContext="{d:DesignInstance Type=fbd:OptionenViewModel, IsDesignTimeCreatable=False}"
         fbd:WindowBehavior.Loaded="{Binding LoadedCommand}"
         Title="{x:Static localize:LocOptionen.strConfig}"
@@ -56,11 +58,15 @@
                 BorderThickness="0.5" 
                 Grid.ColumnSpan="2">
             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <ContentControl Content="{Binding CurrentPageViewModel}" IsEnabled="{Binding DatenGeladen, FallbackValue=False}"/>
+                <ContentControl Content="{Binding CurrentPageViewModel}" 
+                                IsEnabled="{Binding DatenGeladen, FallbackValue=False}"/>
             </ScrollViewer>
         </Border>
 
-        <Grid x:Name="ButtonGrid" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" >
+        <Grid x:Name="ButtonGrid" 
+              Grid.Row="1" 
+              Grid.Column="1" 
+              Grid.ColumnSpan="2" >
             <Grid.Resources>
                 <Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
                     <Setter Property="Margin" Value="8"/>

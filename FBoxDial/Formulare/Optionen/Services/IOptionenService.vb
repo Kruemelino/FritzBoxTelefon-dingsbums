@@ -5,7 +5,7 @@ Public Interface IOptionenService
     Sub UpdateTheme()
 
 #Region "Grunddaten"
-    Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User)
+    Function LadeFBoxUser() As ObservableCollectionEx(Of FBoxAPI.User)
     Function GetOutlookStoreRootFolder() As IEnumerable(Of MAPIFolder)
 #End Region
 

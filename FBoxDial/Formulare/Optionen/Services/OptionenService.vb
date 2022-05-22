@@ -36,20 +36,22 @@ Friend Class OptionenService
 #End Region
 
 #Region "Grunddaten"
-    Private Function LadeFBoxUser(IPAdresse As String) As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
+    Private Function LadeFBoxUser() As ObservableCollectionEx(Of FBoxAPI.User) Implements IOptionenService.LadeFBoxUser
 
         Dim UserList As New ObservableCollectionEx(Of FBoxAPI.User)
         Dim XMLString As String = String.Empty
         Dim FritzBoxUsers As New FBoxAPI.UserList
 
-        If Globals.ThisAddIn.FBoxTR064?.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
-            UserList.AddRange(FritzBoxUsers.UserListe)
+        If Globals.ThisAddIn.FBoxTR064?.Ready Then
+            If Globals.ThisAddIn.FBoxTR064.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
+                UserList.AddRange(FritzBoxUsers.UserListe)
 
-            'RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(True))
-            NLogger.Trace($"Userliste ermittelt: {XMLString}")
+                NLogger.Trace($"Userliste ermittelt: {XMLString}")
+            Else
+                NLogger.Trace("Userliste nicht ermittelt")
+            End If
         Else
-            'RaiseEvent BeendetLogin(Me, New NotifyEventArgs(Of Boolean)(False))
-            NLogger.Trace($"Userliste nicht ermittelt")
+            NLogger.Trace("Userliste nicht ermittelt, da TR064 nicht verfügbar.")
         End If
 
         Return UserList

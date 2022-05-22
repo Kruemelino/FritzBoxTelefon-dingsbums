@@ -13,7 +13,6 @@ Public Class OptionenViewModel
 #Region "Addin Eigenschaften"
 #Region "Grunddaten"
 #Region "Grunddaten Fritz!Box"
-
     Private _TBFBAdr As String
     Public Property TBFBAdr As String
         Get
@@ -62,8 +61,6 @@ Public Class OptionenViewModel
 
 #Region "Grunddaten Telefonie"
     Private _TBOrtsKZ As String
-    Private _TBLandesKZ As String
-
     Public Property TBOrtsKZ As String
         Get
             Return _TBOrtsKZ
@@ -73,6 +70,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _TBLandesKZ As String
     Public Property TBLandesKZ As String
         Get
             Return _TBLandesKZ
@@ -85,9 +83,6 @@ Public Class OptionenViewModel
 
 #Region "Formatierung von Telefonnummern"
     Private _TBTelNrMaske As String
-    Private _CBTelNrGruppieren As Boolean
-    Private _CBintl As Boolean
-
     Public Property TBTelNrMaske As String
         Get
             Return _TBTelNrMaske
@@ -97,6 +92,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBTelNrGruppieren As Boolean
     Public Property CBTelNrGruppieren As Boolean
         Get
             Return _CBTelNrGruppieren
@@ -106,6 +102,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBintl As Boolean
     Public Property CBintl As Boolean
         Get
             Return _CBintl
@@ -1114,7 +1111,7 @@ Public Class OptionenViewModel
 
         Await LadeTask
         ' Fritz!Box Benutzer laden
-        CBoxBenutzer = DatenService.LadeFBoxUser(TBFBAdr)
+        CBoxBenutzer = DatenService.LadeFBoxUser()
 
         ' Aktiviere die Eingabemaske, nachdem alle Daten geladen wurden
         DatenGeladen = True
