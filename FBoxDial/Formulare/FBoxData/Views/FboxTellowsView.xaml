@@ -75,7 +75,7 @@
         </GroupBox>
 
         <fdg:FilterDataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                            Style="{DynamicResource DataGridTemplate}"
+                            Style="{DynamicResource FilterDatagridStyle}"
                             ItemsSource="{Binding Path=TellowsList, UpdateSourceTrigger=PropertyChanged}"
                             ShowStatusBar="False" ShowElapsedTime="False"                                 
                             DateFormatString="d"  FilterLanguage="German">
