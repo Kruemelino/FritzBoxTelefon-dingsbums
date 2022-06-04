@@ -82,11 +82,10 @@ Namespace My.Resources
         '''  &lt;contextMenus&gt;
         '''    &lt;contextMenu idMso=&quot;ContextMenuContactCardRecipient&quot;&gt;      
         '''      &lt;menuSeparator id=&quot;Seperator_CMR1&quot;/&gt;
-        '''      &lt;button id=&quot;Dial_CMR2&quot; getLabel=&quot;GetItemLabel&quot; imageMso=&quot;AutoDial&quot; onAction=&quot;BtnOnAction&quot; getEnabled=&quot;DialEnabled&quot;/&gt;
+        '''      &lt;button id=&quot;Dial_CMR2&quot; getLabel=&quot;GetItemLabel&quot; imageMso=&quot;AutoDial&quot; onAction=&quot;BtnOnActionCC&quot; getEnabled=&quot;DialEnabled&quot;/&gt;
         '''    &lt;/contextMenu&gt;
-        '''    &lt;!--&lt;contextMenu idMso=&quot;ContextMenuContactCardOverflowDropdown&quot;&gt;
-        '''      &lt;menuSeparator id=&quot;Seperator_CMR2&quot;/&gt;
-        '''      &lt;button id=&quot;Dial_CMR1&quot; getLabel=&quot;GetItemLabel&quot; i [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''  &lt;/contextMenus&gt;
+        '''&lt;/customUI&gt; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonIMLayerUI() As String
             Get
@@ -175,7 +174,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die CallList ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die CALLListe ähnelt.
         '''</summary>
         Public ReadOnly Property strDfltNameListCALL() As String
             Get
@@ -184,7 +183,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die RingList ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die RINGListe ähnelt.
         '''</summary>
         Public ReadOnly Property strDfltNameListRING() As String
             Get
@@ -193,7 +192,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die VIPList ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die VIPListe ähnelt.
         '''</summary>
         Public ReadOnly Property strDfltNameListVIP() As String
             Get

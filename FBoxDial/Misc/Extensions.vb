@@ -308,7 +308,7 @@ Public Module Extensions
     ' TODO: Auflösen
     Public Function MsgBox(Meldung As String, Style As MsgBoxStyle, Aufruf As String) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then
-            Meldung = String.Format("Die Funktion {0} meldet folgenden Fehler: {1}{2}", Aufruf, vbCrLf & vbCrLf, Meldung)
+            Meldung = $"Die Funktion {Aufruf} meldet folgenden Fehler: {vbCrLf & vbCrLf}{Meldung}"
             NLogger.Warn(Meldung)
         End If
         Return Microsoft.VisualBasic.MsgBox(Meldung, Style, My.Resources.strDefLongName)

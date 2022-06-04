@@ -290,22 +290,7 @@ Namespace RibbonData
         ''' </summary>
         ''' <param name="Parameter">Identifikation der Liste</param>
         Private Sub DynListDel(Parameter As String)
-
-            Dim KeyDelete As String = Parameter.RegExRemove("^.*_")
-
-            NLogger.Info($"Liste {KeyDelete} gelöscht.")
-
-            Select Case KeyDelete
-                Case My.Resources.strDfltNameListCALL
-                    XMLData.PTelListen.CALLListe.Clear()
-
-                Case My.Resources.strDfltNameListRING
-                    XMLData.PTelListen.RINGListe.Clear()
-
-                Case My.Resources.strDfltNameListVIP
-                    XMLData.PTelListen.VIPListe.Clear()
-
-            End Select
+            XMLData.PTelListen.ClearList(Parameter.RegExRemove("^.*_"))
         End Sub
 
         ''' <summary>
@@ -525,7 +510,7 @@ Namespace RibbonData
                         End If
                     End With
 
-                Case TypeOf Context Is Microsoft.Office.Core.IMsoContactCard
+                Case TypeOf Context Is IMsoContactCard
 
                     ' Es gibt zwei Möglichkeiten:
                     ' A: Ein klassischer Kontakt ist hinterlegt
@@ -846,7 +831,7 @@ Namespace RibbonData
             Return XButton
         End Function
 
-        Friend Function CreateDynMenuButton(xDoc As XmlDocument, VIP As VIPEntry, ID As Integer, Tag As String) As Xml.XmlElement
+        Friend Function CreateDynMenuButton(xDoc As XmlDocument, VIP As VIPEntry, ID As Integer, Tag As String) As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
 

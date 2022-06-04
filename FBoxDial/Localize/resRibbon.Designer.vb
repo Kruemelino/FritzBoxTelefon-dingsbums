@@ -74,20 +74,29 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen alle Einträge aus der Wahlwiederholungsliste entfernt werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property CALLListe_Clear() As String
+            Get
+                Return ResourceManager.GetString("CALLListe_Clear", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Wahlwiederholung ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property CallList_Label() As String
+        Public Shared ReadOnly Property CALLListe_Label() As String
             Get
-                Return ResourceManager.GetString("CallList_Label", resourceCulture)
+                Return ResourceManager.GetString("CALLListe_Label", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wähldialog für die Wahlwiederholung... ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property CallList_ScreenTipp() As String
+        Public Shared ReadOnly Property CALLListe_ScreenTipp() As String
             Get
-                Return ResourceManager.GetString("CallList_ScreenTipp", resourceCulture)
+                Return ResourceManager.GetString("CALLListe_ScreenTipp", resourceCulture)
             End Get
         End Property
         
@@ -254,20 +263,29 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen alle Einträge aus der Rückruliste entfernt werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property RINGListe_Clear() As String
+            Get
+                Return ResourceManager.GetString("RINGListe_Clear", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Rückruf ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property RingList_Label() As String
+        Public Shared ReadOnly Property RINGListe_Label() As String
             Get
-                Return ResourceManager.GetString("RingList_Label", resourceCulture)
+                Return ResourceManager.GetString("RINGListe_Label", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wähldialog für den Rückruf... ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property RingList_ScreenTipp() As String
+        Public Shared ReadOnly Property RINGListe_ScreenTipp() As String
             Get
-                Return ResourceManager.GetString("RingList_ScreenTipp", resourceCulture)
+                Return ResourceManager.GetString("RINGListe_ScreenTipp", resourceCulture)
             End Get
         End Property
         
@@ -452,20 +470,29 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen alle Kontakte aus der VIP-Liste entfernt werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property VIPLIste_Clear() As String
+            Get
+                Return ResourceManager.GetString("VIPLIste_Clear", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die VIP-Liste ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property VIPList_Label() As String
+        Public Shared ReadOnly Property VIPListe_Label() As String
             Get
-                Return ResourceManager.GetString("VIPList_Label", resourceCulture)
+                Return ResourceManager.GetString("VIPListe_Label", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wahldialog um einen VIP anzurufen... ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property VIPList_ScreenTipp() As String
+        Public Shared ReadOnly Property VIPListe_ScreenTipp() As String
             Get
-                Return ResourceManager.GetString("VIPList_ScreenTipp", resourceCulture)
+                Return ResourceManager.GetString("VIPListe_ScreenTipp", resourceCulture)
             End Get
         End Property
     End Class

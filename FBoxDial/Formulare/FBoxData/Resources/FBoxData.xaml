@@ -172,9 +172,13 @@
     <Style x:Key="FilterDatagridStyle"
            TargetType="{x:Type fdg:FilterDataGrid}"
            BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly=fdg:FilterDataGrid, ResourceId=FilterDataGridStyle}}">
-
+        <!--Farben müssen überschrieben werden, da ansonsten das FilterDataGrid diese wieder überschreibt.
+            Alternativ würde der Button für das Löschen aller gefilterter Spalten nicht dargestellt.-->
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{StaticResource ControlDefaultForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlDefaultBorderBrush}" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ControlDefaultBorderBrush}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource ControlDefaultBorderBrush}" />
         <Setter Property="AutoGenerateColumns" Value="False" />
         <Setter Property="HeadersVisibility" Value="Column" />
         <Setter Property="CanUserDeleteRows" Value="False" />

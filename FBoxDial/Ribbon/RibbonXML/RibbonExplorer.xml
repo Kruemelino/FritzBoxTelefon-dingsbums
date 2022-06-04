@@ -11,9 +11,9 @@
 						</menu>
 					</splitButton>
 					<separator id="Seperator_K1"/>
-					<dynamicMenu id="CallList_K" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-					<dynamicMenu id="RingList_K" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-					<dynamicMenu id="VIPList_K" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="CALLListe_K" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="RINGListe_K" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="VIPListe_K" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
 					<splitButton id="spb2_K">
 						<toggleButton id="CallMonitor_K" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
 						<menu id="mnu_K2">
@@ -37,9 +37,9 @@
 						</menu>
 					</splitButton>
 					<separator id="Seperator_C1"/>
-					<dynamicMenu id="CallList_C" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-					<dynamicMenu id="RingList_C" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-					<dynamicMenu id="VIPList_C" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="CALLListe_C" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="RINGListe_C" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="VIPListe_C" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
 					<separator id="Seperator_C2"/>
 					<splitButton id="spb2_C">
 						<toggleButton id="CallMonitor_C" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
@@ -64,9 +64,9 @@
 						</menu>
 					</splitButton>
 					<separator id="Seperator_J1"/>
-					<dynamicMenu id="CallList_J" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-					<dynamicMenu id="RingList_J" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-					<dynamicMenu id="VIPList_J" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="CALLListe_J" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="RINGListe_J" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="VIPListe_J" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
 					<separator id="Seperator_J2"/>
 					<splitButton id="spb2_J">
 						<toggleButton id="CallMonitor_J" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
@@ -91,9 +91,9 @@
 						</menu>
 					</splitButton>
 					<separator id="Seperator_M1"/>
-					<dynamicMenu id="CallList_M" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-					<dynamicMenu id="RingList_M" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-					<dynamicMenu id="VIPList_M" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="CALLListe_M" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="RINGListe_M" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+					<dynamicMenu id="VIPListe_M" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
 					<separator id="Seperator_M2"/>
 					<splitButton id="spb2_M">
 						<toggleButton id="CallMonitor_M" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
@@ -121,9 +121,9 @@
 							</menu>
 						</splitButton>
 						<separator id="Seperator_NM1"/>
-						<dynamicMenu id="CallList_NM" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-						<dynamicMenu id="RingList_NM" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
-						<dynamicMenu id="VIPList_NM" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+						<dynamicMenu id="CALLListe_NM" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+						<dynamicMenu id="RINGListe_NM" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+						<dynamicMenu id="VIPListe_NM" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
 						<separator id="Seperator_NM2"/>
 						<splitButton id="spb2_NM">
 							<toggleButton id="CallMonitor_NM" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>

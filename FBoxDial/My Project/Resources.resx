@@ -143,13 +143,13 @@
     <value>ZugangV5</value>
   </data>
   <data name="strDfltNameListCALL" xml:space="preserve">
-    <value>CallList</value>
+    <value>CALLListe</value>
   </data>
   <data name="strDfltNameListRING" xml:space="preserve">
-    <value>RingList</value>
+    <value>RINGListe</value>
   </data>
   <data name="strDfltNameListVIP" xml:space="preserve">
-    <value>VIPList</value>
+    <value>VIPListe</value>
   </data>
   <data name="strDfltOptions" xml:space="preserve">
     <value>Optionen</value>

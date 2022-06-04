@@ -120,10 +120,13 @@
   <data name="AddVIP_ScreenTipp" xml:space="preserve">
     <value>Fügt diesen Kontakt zur VIP-Liste hinzu...</value>
   </data>
-  <data name="CallList_Label" xml:space="preserve">
+  <data name="CALLListe_Clear" xml:space="preserve">
+    <value>Sollen alle Einträge aus der Wahlwiederholungsliste entfernt werden?</value>
+  </data>
+  <data name="CALLListe_Label" xml:space="preserve">
     <value>Wahlwiederholung</value>
   </data>
-  <data name="CallList_ScreenTipp" xml:space="preserve">
+  <data name="CALLListe_ScreenTipp" xml:space="preserve">
     <value>Öffnet den Wähldialog für die Wahlwiederholung...</value>
   </data>
   <data name="CallMonitor_Label" xml:space="preserve">
@@ -180,10 +183,13 @@
   <data name="RemoveVIP_ScreenTipp" xml:space="preserve">
     <value>Entfernt diesen Kontakt von der VIP-Liste...</value>
   </data>
-  <data name="RingList_Label" xml:space="preserve">
+  <data name="RINGListe_Clear" xml:space="preserve">
+    <value>Sollen alle Einträge aus der Rückruliste entfernt werden?</value>
+  </data>
+  <data name="RINGListe_Label" xml:space="preserve">
     <value>Rückruf</value>
   </data>
-  <data name="RingList_ScreenTipp" xml:space="preserve">
+  <data name="RINGListe_ScreenTipp" xml:space="preserve">
     <value>Öffnet den Wähldialog für den Rückruf...</value>
   </data>
   <data name="RWS_Label" xml:space="preserve">
@@ -243,10 +249,13 @@
   <data name="Upload_ScreenTipp" xml:space="preserve">
     <value>Lädt diesen Kontakt auf die Fritz!Box hoch....</value>
   </data>
-  <data name="VIPList_Label" xml:space="preserve">
+  <data name="VIPLIste_Clear" xml:space="preserve">
+    <value>Sollen alle Kontakte aus der VIP-Liste entfernt werden?</value>
+  </data>
+  <data name="VIPListe_Label" xml:space="preserve">
     <value>VIP-Liste</value>
   </data>
-  <data name="VIPList_ScreenTipp" xml:space="preserve">
+  <data name="VIPListe_ScreenTipp" xml:space="preserve">
     <value>Öffnet den Wahldialog um einen VIP anzurufen...</value>
   </data>
   <data name="VIP_Label" xml:space="preserve">
