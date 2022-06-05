@@ -135,11 +135,32 @@ Public Class StoppUhrViewModel
             SetProperty(_ForeColor, Value)
         End Set
     End Property
+
+    Private _PosTop As Integer
+    Public Property PosTop As Integer
+        Get
+            Return _PosTop
+        End Get
+        Set
+            SetProperty(_PosTop, Value)
+        End Set
+    End Property
+
+    Private _PosLeft As Integer
+    Public Property PosLeft As Integer
+        Get
+            Return _PosLeft
+        End Get
+        Set
+            SetProperty(_PosLeft, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "ICommand"
     Public Property ShowContactCommand As RelayCommand
     Public Property ClosingCommand As RelayCommand
+    Public Property LocationChangedCommand As RelayCommand
 #End Region
 
     Public Sub New()
@@ -148,7 +169,7 @@ Public Class StoppUhrViewModel
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)
         ' Window Command
         ClosingCommand = New RelayCommand(AddressOf Closing)
-
+        LocationChangedCommand = New RelayCommand(AddressOf LocationChanged)
     End Sub
 
     Private Sub LadeDaten()
@@ -169,6 +190,7 @@ Public Class StoppUhrViewModel
         ' Anrufrichtung festlegen
         Eingehend = StoppUhrTelefonat.AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
 
+        ' Hintergrundfarbe festlegen
         If XMLData.POptionen.CBSetStoppUhrBColor Then
             BackgroundColor = XMLData.POptionen.TBStoppUhrBColorHex
             ForeColor = XMLData.POptionen.TBStoppUhrFColorHex
@@ -176,6 +198,10 @@ Public Class StoppUhrViewModel
             BackgroundColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColor"), SolidColorBrush).Color.ToString()
             ForeColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("ControlDefaultForeground"), SolidColorBrush).Color.ToString()
         End If
+
+        ' Position festlegen
+        PosTop = XMLData.POptionen.StoppUhrPosTop
+        PosLeft = XMLData.POptionen.StoppUhrPosLeft
 
         ' Starte die Stoppuhr
         If StoppUhr Is Nothing Then
@@ -218,6 +244,12 @@ Public Class StoppUhrViewModel
 
         ' Ereignishandler entfernen
         RemoveHandler StoppUhrTelefonat.PropertyChanged, AddressOf TelefonatChanged
+    End Sub
+
+    Private Sub LocationChanged(obj As Object)
+        ' Position speichern
+        XMLData.POptionen.StoppUhrPosTop = PosTop
+        XMLData.POptionen.StoppUhrPosLeft = PosLeft
     End Sub
 #End Region
 

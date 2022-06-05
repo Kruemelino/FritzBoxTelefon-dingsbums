@@ -7,10 +7,13 @@
         mc:Ignorable="d" Style="{DynamicResource CustomToolWindowStyle}"
         Focusable="False" IsTabStop="False" ResizeMode="NoResize"
         Height="140" Width="200"
-        d:DataContext="{d:DesignInstance Type=fbd:StoppUhrViewModel, IsDesignTimeCreatable=True}"         
-        fbd:WindowBehavior.Closing="{Binding ClosingCommand}"
+        fbd:WindowBehavior.Closing="{Binding ClosingCommand}"        
+        fbd:WindowBehavior.LocationChanged="{Binding LocationChangedCommand}"        
+        d:DataContext="{d:DesignInstance Type=fbd:StoppUhrViewModel, IsDesignTimeCreatable=True}"  
         Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-        Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+        Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+        Left="{Binding PosLeft, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+        Top="{Binding PosTop, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" >
 
     <Window.Resources>
         <ResourceDictionary>

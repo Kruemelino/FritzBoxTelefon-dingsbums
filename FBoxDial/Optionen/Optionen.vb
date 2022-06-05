@@ -187,6 +187,9 @@
     ''' Schriftfarbe als HEX-String #00000000
     ''' </summary>
     <XmlElement("TBStoppUhrFColorHex")> Public Property TBStoppUhrFColorHex As String
+
+    <XmlElement("StoppUhrPosTop")> Public Property StoppUhrPosTop As Integer = 100
+    <XmlElement("StoppUhrPosLeft")> Public Property StoppUhrPosLeft As Integer = 100
 #End Region
 #End Region
 

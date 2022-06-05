@@ -120,4 +120,35 @@ Public Class WindowBehavior
     End Sub
 #End Region
 
+#Region "LocationChanged"
+    Public Shared Function GetLocationChanged(obj As DependencyObject) As ICommand
+        Return CType(obj.GetValue(LocationChangedProperty), ICommand)
+    End Function
+
+    Public Shared Sub SetLocationChanged(obj As DependencyObject, value As ICommand)
+        obj.SetValue(LocationChangedProperty, value)
+    End Sub
+
+    Public Shared ReadOnly LocationChangedProperty As DependencyProperty = DependencyProperty.RegisterAttached("LocationChanged", GetType(ICommand), GetType(WindowBehavior), New UIPropertyMetadata(New PropertyChangedCallback(AddressOf LocationChangedPropertyChanged)))
+
+    Private Shared Sub LocationChangedPropertyChanged(target As DependencyObject, ByVal e As DependencyPropertyChangedEventArgs)
+        Dim window As Window = TryCast(target, Window)
+
+        If window IsNot Nothing Then
+
+            If e.NewValue IsNot Nothing Then
+                AddHandler window.LocationChanged, AddressOf Window_LocationChanged
+            Else
+                RemoveHandler window.LocationChanged, AddressOf Window_LocationChanged
+            End If
+        End If
+    End Sub
+
+    Private Shared Sub Window_LocationChanged(sender As Object, e As EventArgs)
+        Dim locationchanged As ICommand = GetLocationChanged(TryCast(sender, Window))
+
+        If locationchanged IsNot Nothing Then locationchanged.Execute(Nothing)
+    End Sub
+#End Region
+
 End Class
