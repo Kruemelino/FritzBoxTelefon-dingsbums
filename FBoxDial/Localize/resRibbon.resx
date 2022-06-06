@@ -249,7 +249,7 @@
   <data name="Upload_ScreenTipp" xml:space="preserve">
     <value>Lädt diesen Kontakt auf die Fritz!Box hoch....</value>
   </data>
-  <data name="VIPLIste_Clear" xml:space="preserve">
+  <data name="VIPListe_Clear" xml:space="preserve">
     <value>Sollen alle Kontakte aus der VIP-Liste entfernt werden?</value>
   </data>
   <data name="VIPListe_Label" xml:space="preserve">

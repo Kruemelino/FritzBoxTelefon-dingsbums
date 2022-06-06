@@ -472,9 +472,9 @@ Namespace Localize
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Sollen alle Kontakte aus der VIP-Liste entfernt werden? ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property VIPLIste_Clear() As String
+        Public Shared ReadOnly Property VIPListe_Clear() As String
             Get
-                Return ResourceManager.GetString("VIPLIste_Clear", resourceCulture)
+                Return ResourceManager.GetString("VIPListe_Clear", resourceCulture)
             End Get
         End Property
         
