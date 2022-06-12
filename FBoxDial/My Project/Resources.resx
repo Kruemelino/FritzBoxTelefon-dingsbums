@@ -142,6 +142,9 @@
   <data name="strDfltDeCryptKey" xml:space="preserve">
     <value>ZugangV5</value>
   </data>
+  <data name="strDfltIPPhoneDeCryptKey" xml:space="preserve">
+    <value>ZugangIPPhone</value>
+  </data>
   <data name="strDfltNameListCALL" xml:space="preserve">
     <value>CALLListe</value>
   </data>

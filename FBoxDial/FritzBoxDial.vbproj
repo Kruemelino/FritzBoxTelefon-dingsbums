@@ -350,23 +350,27 @@
       <DependentUpon>ContactItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Services\BindingProxy.vb" />
+    <Compile Include="Formulare\Optionen\Services\IConnectorVM.vb" />
     <Compile Include="Formulare\Optionen\Services\PassthroughMouseWheelBehavior.vb" />
     <Compile Include="Formulare\Optionen\Services\IOlFolderViewModel.vb" />
     <Compile Include="Formulare\Optionen\Services\IPageViewModel.vb" />
     <Compile Include="Formulare\Optionen\Services\OptionenService.vb" />
     <Compile Include="Formulare\Optionen\Services\IOptionenService.vb" />
     <Compile Include="Formulare\Optionen\Services\VirtualToggleButton.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptConnMicroSIPViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptConnURIViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptConnPhonerViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OlFolderViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptAnrMonViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptDialerViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptJournalViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptIPPhonesViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptNumberViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptTellowsViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptSearchContactViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptCreateContactViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptTelephonyViewModel.vb" />
-    <Compile Include="Formulare\Optionen\ViewModel\OptPhonerViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptInfoViewModel.vb" />
-    <Compile Include="Formulare\Optionen\ViewModel\OptMicroSIPViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptBaseViewModel.vb" />
     <Compile Include="Formulare\Optionen\Controls\OptCtrlTV.xaml.vb">
       <DependentUpon>OptCtrlTV.xaml</DependentUpon>
@@ -383,6 +387,19 @@
     </Compile>
     <Compile Include="Formulare\FBoxData\Views\Anrufbeantworter\TAMView.xaml.vb">
       <DependentUpon>TAMView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptIPPhoneViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptConnURIView.xaml.vb">
+      <DependentUpon>OptConnURIView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptNumberView.xaml.vb">
+      <DependentUpon>OptNumberView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptIPPhoneView.xaml.vb">
+      <DependentUpon>OptIPPhoneView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptIPPhonesView.xaml.vb">
+      <DependentUpon>OptIPPhonesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptTellowsView.xaml.vb">
       <DependentUpon>OptTellowsView.xaml</DependentUpon>
@@ -425,11 +442,11 @@
     <Compile Include="Formulare\Optionen\Controls\OptionsLink.xaml.vb">
       <DependentUpon>OptionsLink.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\OptMicroSIPView.xaml.vb">
-      <DependentUpon>OptMicroSIPView.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptConnMicroSIPView.xaml.vb">
+      <DependentUpon>OptConnMicroSIPView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\OptPhonerView.xaml.vb">
-      <DependentUpon>OptPhonerView.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptConnPhonerView.xaml.vb">
+      <DependentUpon>OptConnPhonerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptTelephonyView.xaml.vb">
       <DependentUpon>OptTelephonyView.xaml</DependentUpon>
@@ -518,7 +535,9 @@
     <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="Kontakte\NummernTypen.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />
-    <Compile Include="SoftPhone\IIPPhone.vb" />
+    <Compile Include="SoftPhone\IIPPhoneConnector.vb" />
+    <Compile Include="SoftPhone\IPPhoneConnector.vb" />
+    <Compile Include="SoftPhone\IPPhoneURI.vb" />
     <Compile Include="SoftPhone\MicroSIP.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
@@ -547,6 +566,7 @@
     <Compile Include="Formulare\Common\Services\IDialogService.vb" />
     <Compile Include="Formulare\Common\Services\DialogService.vb" />
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
+    <Compile Include="Telefonie\IPTelefonDaten.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
     <Compile Include="Telefonie\Telefonat.vb" />
     <Compile Include="Telefonie\Telefonie.vb" />
@@ -680,6 +700,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Formulare\Optionen\Views\IPPhoneViews\OptConnURIView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\IPPhoneViews\OptNumberView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\IPPhoneViews\OptIPPhoneView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptIPPhonesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="My Project\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -797,11 +833,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\OptMicroSIPView.xaml">
+    <Page Include="Formulare\Optionen\Views\IPPhoneViews\OptConnMicroSIPView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\OptPhonerView.xaml">
+    <Page Include="Formulare\Optionen\Views\IPPhoneViews\OptConnPhonerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

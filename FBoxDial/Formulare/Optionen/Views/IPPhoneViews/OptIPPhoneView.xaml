@@ -1,0 +1,171 @@
+﻿<UserControl x:Class="OptIPPhoneView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=fbd:OptIPPhoneViewModel, IsDesignTimeCreatable=false}"
+             d:DesignHeight="250" d:DesignWidth="400" >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Expander Style="{StaticResource OptExpander}" 
+              Header="{Binding IPPhoneItem.PhoneName, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        
+        <Border BorderBrush="{DynamicResource ControlDefaultBorderBrush}" BorderThickness="0.5,0,0.5,0.5">
+            <StackPanel>
+                <Grid Margin="0,0,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="125"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{Binding IPPhoneItem.ClientIndex, FallbackValue=-1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />             
+        
+                    <!--#region ClientUsername-->
+                    <TextBlock Grid.Column="1" Grid.Row="0"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{x:Static localize:LocOptionen.strIPPhoneClientUserName}" />
+
+                    <TextBlock Grid.Column="2" Grid.Row="0"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{Binding IPPhoneItem.ClientUsername, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--#endregion-->
+
+                    <!--#region ClientRegistrar-->
+                    <TextBlock Grid.Column="1" Grid.Row="1"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{x:Static localize:LocOptionen.strIPPhoneClientRegistrar}" />
+
+                    <TextBlock Grid.Column="2" Grid.Row="1"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{Binding IPPhoneItem.ClientRegistrar, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--#endregion-->
+
+                    <!--#region ClientRegistrarPort-->
+                    <TextBlock Grid.Column="1" Grid.Row="2"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{x:Static localize:LocOptionen.strIPPhoneClientRegistrarPort}" />
+
+                    <TextBlock Grid.Column="2" Grid.Row="2"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{Binding IPPhoneItem.ClientRegistrarPort, FallbackValue=-1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--#endregion-->
+
+                    <!--#region ClientId-->
+                    <TextBlock Grid.Column="1" Grid.Row="3"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{x:Static localize:LocOptionen.strIPPhoneClientId}" />
+
+                    <TextBlock Grid.Column="2" Grid.Row="3"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{Binding IPPhoneItem.ClientId, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--#endregion-->
+
+                    <!--#region OutGoingNumber-->
+                    <TextBlock Grid.Column="1" Grid.Row="4"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{x:Static localize:LocOptionen.strIPPhoneOutGoingNumber}" />
+
+                    <TextBlock Grid.Column="2" Grid.Row="4"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{Binding IPPhoneItem.OutGoingNumber, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--#endregion-->
+
+                    <!--#region InComingNumbers-->
+                    <TextBlock Grid.Column="1" Grid.Row="5"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{x:Static localize:LocOptionen.strIPPhoneInComingNumbers}" />
+
+                    <ItemsControl Grid.Column="2" Grid.Row="5" BorderThickness="0" 
+                                  ItemsSource="{Binding Numbers, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <fbd:OptNumberView DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!--#endregion-->
+
+                    <!--#region ExternalRegistration-->
+                    <TextBlock Grid.Column="1" Grid.Row="6"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{x:Static localize:LocOptionen.strIPPhoneExternalRegistration}" />
+
+                    <TextBlock Grid.Column="2" Grid.Row="6"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{Binding IPPhoneItem.ExternalRegistration, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--#endregion-->
+
+                    <!--#region InternalNumber-->
+                    <TextBlock Grid.Column="1" Grid.Row="7"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{x:Static localize:LocOptionen.strIPPhoneInternalNumber}" />
+
+                    <TextBlock Grid.Column="2" Grid.Row="7"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{Binding IPPhoneItem.InternalNumber, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--#endregion-->
+
+                    <!--#region DelayedCallNotification-->
+                    <TextBlock Grid.Column="1" Grid.Row="8"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{x:Static localize:LocOptionen.strIPPhoneDelayedCallNotification}" />
+
+                    <TextBlock Grid.Column="2" Grid.Row="8"
+                               Style="{StaticResource OptIPPhoneText}"
+                               Text="{Binding IPPhoneItem.DelayedCallNotification, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--#endregion-->
+                </Grid>
+
+                <ComboBox Style="{StaticResource OptComboBox}" Margin="4,0"
+                          Tag="{x:Static localize:LocOptionen.strIPPhoneConnectionMode}"                          
+                          DisplayMemberPath="Name">
+                    
+                    <ComboBox.Resources>
+                        <CollectionViewSource x:Key="Items" Source="{Binding ConnectorViewModels}" />
+                    </ComboBox.Resources>
+                    
+                    <ComboBox.ItemsSource>                        
+                        <CompositeCollection>                            
+                            <TextBlock />
+                            <CollectionContainer Collection="{Binding Source={StaticResource Items}}" />
+                        </CompositeCollection>
+                    </ComboBox.ItemsSource>
+                    
+                    <ComboBox.SelectedItem>
+                        <Binding Path="ConnectorVM" Mode="TwoWay" Converter="{StaticResource EmptyComboConverter}"/>
+                    </ComboBox.SelectedItem>
+                </ComboBox>
+                               
+                <ContentControl Content="{Binding ConnectorVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Border>
+    </Expander>        
+
+
+</UserControl>

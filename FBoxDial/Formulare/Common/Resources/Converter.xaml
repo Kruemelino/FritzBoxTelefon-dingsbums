@@ -8,4 +8,5 @@
     <fbd:TelNrToFontWeightConverter x:Key="TelNrToFontWeightConverter"/>
     <fbd:IntegerToBoolConverter x:Key="FavoriteContactConverter"/>
     <fbd:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
+    <fbd:EmptyComboConverter x:Key="EmptyComboConverter"/>
 </ResourceDictionary>

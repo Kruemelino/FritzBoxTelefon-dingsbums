@@ -409,4 +409,11 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="OptIPPhoneText" TargetType="{x:Type TextBlock}">
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="5,0"/>
+        <Setter Property="FontSize" Value="10"/>
+    </Style>
+
 </ResourceDictionary>

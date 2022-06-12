@@ -5,7 +5,8 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
+    
+    <!--#region DataTemplate für Clients-->
     <DataTemplate DataType="{x:Type fbd:OptBaseViewModel}">
         <fbd:OptBaseView />
     </DataTemplate>
@@ -34,12 +35,8 @@
         <fbd:OptTelephonyView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type fbd:OptPhonerViewModel}">
-        <fbd:OptPhonerView />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type fbd:OptMicroSIPViewModel}">
-        <fbd:OptMicroSIPView />
+    <DataTemplate DataType="{x:Type fbd:OptIPPhonesViewModel}">
+        <fbd:OptIPPhonesView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type fbd:OptTellowsViewModel}">
@@ -53,5 +50,20 @@
     <DataTemplate DataType="{x:Type fbd:OptTestViewModel}">
         <fbd:OptTestView />
     </DataTemplate>
+    <!--#endregion-->
 
+    <!--#region DataTemplate für IP Phone Conmnectoren-->
+    <DataTemplate DataType="{x:Type fbd:OptConnPhonerViewModel}">
+        <fbd:OptConnPhonerView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type fbd:OptConnMicroSIPViewModel}">
+        <fbd:OptConnMicroSIPView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type fbd:OptConnURIViewModel}">
+        <fbd:OptConnURIView />
+    </DataTemplate>
+
+    <!--#endregion-->
 </ResourceDictionary>

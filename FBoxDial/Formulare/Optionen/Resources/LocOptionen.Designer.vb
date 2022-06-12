@@ -328,6 +328,16 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Authentifizierungsdaten (falls erforderlich)
+        '''Ein Authentifizierungsverfahren wird noch nicht unterstützt! ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAuthInfo() As String
+            Get
+                Return ResourceManager.GetString("strAuthInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Internationale Vorwahl ergänzen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strBaseCBintl() As String
@@ -614,6 +624,41 @@ Namespace Localize
         Public Shared ReadOnly Property strConfig() As String
             Get
                 Return ResourceManager.GetString("strConfig", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Einige IP-Telefone bieten die Möglichkeit der Fernsteuerung. Hierbei wird die zu wählende Nummer direkt an das Telefon übermittelt.
+        '''Die Fernsteuerung wird nicht von jedem Hersteller unterstützt. Bitte vorab informieren.
+        '''
+        '''Die eingegebenen URL müssen komplett sein, z. B.:
+        '''http://192.168.178.90/command.htm?number={TelNr}
+        '''http://192.168.178.90/servlet?key=number={TelNr}
+        '''http://192.168.178.90/cgi-bin/api-make_call?phonenumber={TelNr}
+        '''
+        '''Der Schlüssel {TelNr} wird mit der zu wählenden Telefonnummer ersetzt. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strConnURIInfo() As String
+            Get
+                Return ResourceManager.GetString("strConnURIInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die URL für Verbindungsaufbau ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strConnURITBCall() As String
+            Get
+                Return ResourceManager.GetString("strConnURITBCall", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die URL für Verbindungsabbruch ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strConnURITBCancel() As String
+            Get
+                Return ResourceManager.GetString("strConnURITBCancel", resourceCulture)
             End Get
         End Property
         
@@ -905,6 +950,150 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Name: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPNumberName() As String
+            Get
+                Return ResourceManager.GetString("strIPNumberName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nummer: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPNumberNumber() As String
+            Get
+                Return ResourceManager.GetString("strIPNumberNumber", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Typ: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPNumberType() As String
+            Get
+                Return ResourceManager.GetString("strIPNumberType", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die IP Telefone ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhone() As String
+            Get
+                Return ResourceManager.GetString("strIPPhone", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ClientId: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneClientId() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneClientId", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ClientRegistrar: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneClientRegistrar() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneClientRegistrar", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ClientRegistrarPort: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneClientRegistrarPort() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneClientRegistrarPort", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ClientUserName: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneClientUserName() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneClientUserName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Art der Anbindung ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneConnectionMode() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneConnectionMode", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die DelayedCallNotification: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneDelayedCallNotification() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneDelayedCallNotification", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Externe Registrierung: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneExternalRegistration() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneExternalRegistration", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Eingehende Nummern: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneInComingNumbers() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneInComingNumbers", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Interne Nummer: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneInternalNumber() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneInternalNumber", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Name des Telefones: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneName() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Ausgehende Nummer: ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneOutGoingNumber() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneOutGoingNumber", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Passwort ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneTBPasswort() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneTBPasswort", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Journal ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strJournal() As String
@@ -979,15 +1168,6 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP verwenden ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strMicroSIPCBMicroSIP() As String
-            Get
-                Return ResourceManager.GetString("strMicroSIPCBMicroSIP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP - Konfiguration ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strMicroSIPHeadConfig() As String
@@ -997,31 +1177,12 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP - Open Source SIP-Softphone ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strMicroSIPHeadInfo() As String
-            Get
-                Return ResourceManager.GetString("strMicroSIPHeadInfo", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur korrekten Konfiguration:
-        '''Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
-        '''Wähle Telefoniegerät aus, was mit MicroSIP registriert ist. ähnelt.
+        '''Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strMicroSIPInfo() As String
             Get
                 Return ResourceManager.GetString("strMicroSIPInfo", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Registriertes Telefon für MicroSIP ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strMicroSIPPhoneInfo() As String
-            Get
-                Return ResourceManager.GetString("strMicroSIPPhoneInfo", resourceCulture)
             End Get
         End Property
         
@@ -1119,8 +1280,7 @@ Namespace Localize
         '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur korrekten Konfiguration:
         '''Stelle sicher, dass Phoner sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
         '''Lege ein Passwort für die Authentifizierung bei Phoner fest. Das gleiche Passwort muss bei Phoner unter &quot;Optionen / Web&quot; im Feld Passwort eingegeben werden.
-        '''Prüfe, ob die Authentifizierung erfolgreich ist.
-        '''Wähle Telefoniegerät aus, was mit Phoner registriert ist. ähnelt.
+        '''Prüfe, ob die Authentifizierung erfolgreich ist. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strPhonerInfoConfig() As String
             Get
@@ -1134,33 +1294,6 @@ Namespace Localize
         Public Shared ReadOnly Property strPhonerInfoLight() As String
             Get
                 Return ResourceManager.GetString("strPhonerInfoLight", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner verwenden ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhonerOptCheckBox() As String
-            Get
-                Return ResourceManager.GetString("strPhonerOptCheckBox", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Registriertes Telefon für Phoner ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhonerstrPhonerPhoneInfo() As String
-            Get
-                Return ResourceManager.GetString("strPhonerstrPhonerPhoneInfo", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner Passwort ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhonerTBPhonerPasswort() As String
-            Get
-                Return ResourceManager.GetString("strPhonerTBPhonerPasswort", resourceCulture)
             End Get
         End Property
         
@@ -1421,20 +1554,20 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Interne ID ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kurzwahl ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strTelephonyPhoneIntern() As String
+        Public Shared ReadOnly Property strTelephonyPhoneKurzwahl() As String
             Get
-                Return ResourceManager.GetString("strTelephonyPhoneIntern", resourceCulture)
+                Return ResourceManager.GetString("strTelephonyPhoneKurzwahl", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Interne Telefonnummer des Telefons ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kurzwahl des Telefons ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strTelephonyPhoneInternToolTipp() As String
+        Public Shared ReadOnly Property strTelephonyPhoneKurzwahlToolTipp() As String
             Get
-                Return ResourceManager.GetString("strTelephonyPhoneInternToolTipp", resourceCulture)
+                Return ResourceManager.GetString("strTelephonyPhoneKurzwahlToolTipp", resourceCulture)
             End Get
         End Property
         
@@ -2125,6 +2258,15 @@ Namespace Localize
         Public Shared ReadOnly Property strUndo() As String
             Get
                 Return ResourceManager.GetString("strUndo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Benutzername ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strUserName() As String
+            Get
+                Return ResourceManager.GetString("strUserName", resourceCulture)
             End Get
         End Property
     End Class

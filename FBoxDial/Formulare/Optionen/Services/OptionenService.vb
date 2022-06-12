@@ -166,14 +166,6 @@ Friend Class OptionenService
 
 #End Region
 
-#Region "MicroSIP"
-    Private Function GetMicroSIPExecutablePath() As String Implements IOptionenService.GetMicroSIPExecutablePath
-        Using MicroSIP As New MicroSIP
-            Return MicroSIP.MicroSIPPath
-        End Using
-    End Function
-#End Region
-
 #Region "Test Rückwärtssuche"
     Private Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean)) Implements IOptionenService.BeendetRWS
 
@@ -221,6 +213,21 @@ Friend Class OptionenService
         Else
             Return Nothing
         End If
+    End Function
+#End Region
+
+#Region "IP Telefone"
+    Private Function GetSIPClients() As FBoxAPI.SIPClientList Implements IOptionenService.GetSIPClients
+
+        If Globals.ThisAddIn.FBoxTR064?.Ready Then
+            Dim SIPList As FBoxAPI.SIPClientList = Nothing
+            If Globals.ThisAddIn.FBoxTR064.X_voip.GetClients(SIPList) Then
+                Return SIPList
+
+            End If
+        End If
+        ' Gib eine leere Liste zurück
+        Return New FBoxAPI.SIPClientList
     End Function
 #End Region
 

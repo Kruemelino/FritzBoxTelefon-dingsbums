@@ -3,6 +3,7 @@ Imports System.Globalization
 Imports System.Reflection
 Imports System.Windows
 Imports System.Windows.Data
+
 ''' <summary>
 ''' Das Telefonbuch ist von Tosker erstellt worden und auf Youtube und Github bereitgestellt:
 ''' https://github.com/Tosker/ContactBook-Tutorial
@@ -127,5 +128,22 @@ Public Class EnumToVisibilityConverter
 
     Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
         Throw New NotImplementedException()
+    End Function
+End Class
+
+Public Class EmptyComboConverter
+    Implements IValueConverter
+
+    Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
+        If value Is Nothing Then Return String.Empty
+        Return value
+    End Function
+
+    Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
+
+        If TypeOf value Is Controls.ComboBoxItem Then Return Nothing
+
+        Return value
+
     End Function
 End Class

@@ -14,7 +14,6 @@ Public Interface IOptionenService
     Sub ToogleDesign()
 #End Region
 
-
 #Region "Import Telefoniedaten"
     Event Status As EventHandler(Of String)
     Event Beendet As EventHandler(Of NotifyEventArgs(Of Telefonie))
@@ -31,10 +30,6 @@ Public Interface IOptionenService
     Function ZähleOutlookKontakte(olFolders As List(Of MAPIFolder)) As Integer
 #End Region
 
-#Region "MicroSIP"
-    Function GetMicroSIPExecutablePath() As String
-#End Region
-
 #Region "Test Rückwärtssuche"
     Event BeendetRWS As EventHandler(Of NotifyEventArgs(Of Boolean))
     Sub StartRWSTest(TelNr As String)
@@ -43,6 +38,10 @@ Public Interface IOptionenService
 #Region "Tellows"
     Function GetTellowsAccountData(XAuthToken As String) As Task(Of TellowsPartnerInfo)
     Function GetTellowsLiveAPIData(TelNr As String, XAuthToken As String) As Task(Of TellowsResponse)
+#End Region
+
+#Region "IP Telefone"
+    Function GetSIPClients() As FBoxAPI.SIPClientList
 #End Region
 
 #Region "Test Kontaktsuche"

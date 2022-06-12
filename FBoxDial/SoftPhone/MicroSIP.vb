@@ -1,25 +1,19 @@
-﻿Friend Class MicroSIP
-    Implements IDisposable
-    Implements IIPPhone
+﻿Friend Module MicroSIP
 
     Private Const MicroSIPProgressName As String = "MicroSIP"
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Public Property AppendSuffix As Boolean = True Implements IIPPhone.AppendSuffix
-
-    Friend ReadOnly Property MicroSIPReady As Boolean Implements IIPPhone.IPPhoneReady
+    Friend ReadOnly Property MicroSIPReady As Boolean
         Get
             Return Process.GetProcessesByName(MicroSIPProgressName).Length.IsNotZero
         End Get
     End Property
-    Friend ReadOnly Property MicroSIPPath As String
 
 #Region "MicroSIP Commandline"
     ''' <summary>
     ''' Hang up all calls: microsip.exe /hangupall
     ''' </summary>
     Private Const CommandHangUpAll As String = "/hangupall"
-    Private disposedValue As Boolean
 
     '    ''' <summary>
     '    ''' Answer a Call: microsip.exe /answer
@@ -37,13 +31,7 @@
     '    Private Const CommandExit As String = "/exit"
 #End Region
 
-    Public Sub New()
-        If Not MicroSIPReady Then StartMicroSIP()
-
-        MicroSIPPath = GetExecutablePath()
-    End Sub
-
-    Private Function GetExecutablePath() As String
+    Friend Function MicroSIPGetExecutablePath() As String
         Dim ProcressMicroSIP As Process() = Process.GetProcessesByName(MicroSIPProgressName)
 
         If ProcressMicroSIP.Length.IsNotZero Then
@@ -52,21 +40,18 @@
 
             ' Ermittle Pfad zur ausgeführten MicroSIP.exe
             Return ProcressMicroSIP.First.MainModule.FileName
-
-            NLogger.Debug(String.Format(Localize.LocWählclient.strMicroSIPgestartetPfad, MicroSIPPath))
-
         Else
             Return String.Empty
         End If
     End Function
 
-    Private Sub StartMicroSIP()
+    Private Sub MicroSIPStart(Connector As IIPPhoneConnector)
         NLogger.Debug(Localize.LocWählclient.strMicroSIPNichtBereit)
 
-        If XMLData.POptionen.TBMicroSIPPath.IsNotStringNothingOrEmpty Then
+        If Connector.ConnectionUriCall.IsNotStringNothingOrEmpty Then
             ' Starte MicroSIP
             Try
-                Process.Start(XMLData.POptionen.TBMicroSIPPath)
+                Process.Start(Connector.ConnectionUriCall)
 
                 NLogger.Info(Localize.LocWählclient.strMicroSIPgestartet)
             Catch ex As ComponentModel.Win32Exception
@@ -80,49 +65,37 @@
         End If
     End Sub
 
-    Friend Function Dial(DialCode As String, Hangup As Boolean) As Boolean Implements IIPPhone.Dial
-        If MicroSIPReady Then
-            ' Wählkommando senden
-            If Hangup Then
-                ' Abbruch des Rufaufbaues mittels Parameter
-                Process.Start(MicroSIPPath, CommandHangUpAll)
+    Friend Function Dial(Connector As IIPPhoneConnector, DialCode As String, Hangup As Boolean) As Boolean
+        Dial = False
 
-                NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
+        If Connector.Type = IPPhoneConnectorType.MicroSIP Then
+            If Not MicroSIPReady Then MicroSIPStart(Connector)
+
+            If MicroSIPReady Then
+                ' Wählkommando senden
+                If Hangup Then
+                    ' Abbruch des Rufaufbaues mittels Parameter
+                    Process.Start(Connector.ConnectionUriCancel, CommandHangUpAll)
+
+                    NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
+                Else
+                    If Connector.AppendSuffix Then DialCode += "#"
+
+                    ' Aufbau des Telefonates mittels Parameter 
+                    Process.Start(Connector.ConnectionUriCall, DialCode)
+
+                    NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneErfolgreich, DialCode, MicroSIPProgressName))
+                End If
+                ' Gib Rückmeldung, damit Wählclient kein Fehler ausgibt
+                Return True
             Else
-                If AppendSuffix Then DialCode += "#"
-
-                ' Aufbau des Telefonates mittels Parameter 
-                Process.Start(MicroSIPPath, DialCode)
-
-                NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneErfolgreich, DialCode, MicroSIPProgressName))
+                ' MicroSIP nicht verfügbar
+                NLogger.Warn(Localize.LocWählclient.strMicroSIPNichtBereit)
+                ' Gib Rückmeldung, damit Wählclient einen Fehler ausgibt
+                Return False
             End If
-            ' Gib Rückmeldung, damit Wählclient kein Fehler ausgibt
-            Return True
-        Else
-            ' MicroSIP nicht verfügbar
-            NLogger.Warn(Localize.LocWählclient.strMicroSIPNichtBereit)
-            ' Gib Rückmeldung, damit Wählclient einen Fehler ausgibt
-            Return False
         End If
+
     End Function
 
-    Protected Overridable Sub Dispose(disposing As Boolean)
-        If Not disposedValue Then
-            If disposing Then
-                ' Verwalteten Zustand (verwaltete Objekte) bereinigen
-            End If
-
-            ' Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalizer überschreiben
-            ' Große Felder auf NULL setzen
-            disposedValue = True
-        End If
-    End Sub
-
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
-        Dispose(disposing:=True)
-        ' Auskommentierung der folgenden Zeile aufheben, wenn Finalize() oben überschrieben wird.
-        ' GC.SuppressFinalize(Me)
-    End Sub
-
-End Class
+End Module

@@ -24,7 +24,12 @@ Public Class Telefoniegerät
     ''' <summary>
     ''' Interne ID des Telefones
     ''' </summary>
-    <XmlAttribute> Public Property Intern As Integer
+    <XmlAttribute> Public Property ID As Integer
+
+    ''' <summary>
+    ''' Interne Kurzwahl des Telefones
+    ''' </summary>
+    <XmlAttribute> Public Property Kurzwahl As Integer
 
     ''' <summary>
     ''' Interne ID des Telefones, die durch den Anrufmonitor genutzt wird.
@@ -45,16 +50,6 @@ Public Class Telefoniegerät
     ''' Angabe, ob es sich um ein Fax handelt
     ''' </summary>
     <XmlAttribute> Public Property IsFax As Boolean
-
-    ''' <summary>
-    ''' Angabe, ob dieses Telefon mit dem Softphone Phoner verbunden ist.
-    ''' </summary>
-    <XmlAttribute> Public Property IsPhoner As Boolean
-
-    ''' <summary>
-    ''' Angabe, ob dieses Telefon mit dem Softphone MicroSIP verbunden ist.
-    ''' </summary>
-    <XmlAttribute> Public Property IsMicroSIP As Boolean
 
     ''' <summary>
     ''' Angabe, ob dieses Telefon bei der Wählhilfe zuletzt genutzt wurde.
@@ -81,15 +76,6 @@ Public Class Telefoniegerät
     ''' </summary>
     <XmlAttribute> Public Property TelTyp As TelTypen
 #End Region
-
-    ''' <summary>
-    ''' Angabe, ob das Telefon den Softphones Phoner bzw. MicroSIP zugeordnet ist.
-    ''' </summary>
-    <XmlIgnore> Public ReadOnly Property IsSoftPhone As Boolean
-        Get
-            Return IsMicroSIP Or IsPhoner
-        End Get
-    End Property
 
     ''' <summary>
     ''' Angabe, ob es sich um ein IP Telefon handelt
@@ -124,7 +110,8 @@ Public Class Telefoniegerät
                     Return True
 
                 Case TelTypen.IP
-                    Return IsPhoner Or IsMicroSIP
+                    ' Gibt es einen Connector
+                    Return XMLData.PTelefonie.IPTelefone.Exists(Function(C) C.ConnectedPhoneID.AreEqual(ID))
 
                 Case Else
                     Return False
@@ -140,7 +127,7 @@ Public Class Telefoniegerät
         Get
             Select Case TelTyp
                 Case TelTypen.FON
-                    Return $"{TelTypen.FON}{Intern}: {Name}"
+                    Return $"{TelTypen.FON}{ID}: {Name}"
                 Case TelTypen.DECT
                     Return $"{TelTypen.DECT}: {Name}"
                 Case TelTypen.ISDN

@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="OptNumberView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=fbd:OptNumberViewModel, IsDesignTimeCreatable=false}"
+             d:DesignHeight="40" d:DesignWidth="200" >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+        
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" 
+                    Style="{StaticResource OptIPPhoneText}"
+                    Text="{Binding SIPTelNr.Index, FallbackValue=-1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <!--#region Name-->
+        <TextBlock Grid.Column="1" Grid.Row="0"
+                    Style="{StaticResource OptIPPhoneText}"
+                    Text="{x:Static localize:LocOptionen.strIPNumberName}" />
+
+        <TextBlock Grid.Column="2" Grid.Row="0"
+                    Style="{StaticResource OptIPPhoneText}"
+                    Text="{Binding SIPTelNr.Name, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        <!--#endregion-->
+
+        <!--#region Number-->
+        <TextBlock Grid.Column="1" Grid.Row="1"
+                    Style="{StaticResource OptIPPhoneText}"
+                    Text="{x:Static localize:LocOptionen.strIPNumberNumber}" />
+
+        <TextBlock Grid.Column="2" Grid.Row="1"
+                    Style="{StaticResource OptIPPhoneText}"
+                    Text="{Binding SIPTelNr.Number, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        <!--#endregion-->
+
+        <!--#region Type-->
+        <TextBlock Grid.Column="1" Grid.Row="2"
+                    Style="{StaticResource OptIPPhoneText}"
+                    Text="{x:Static localize:LocOptionen.strIPNumberType}" />
+
+        <TextBlock Grid.Column="2" Grid.Row="2"
+                    Style="{StaticResource OptIPPhoneText}"
+                    Text="{Binding Type, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumDescriptionConverter}}" />
+
+        <!--#endregion-->
+
+    </Grid>
+ 
+
+</UserControl>

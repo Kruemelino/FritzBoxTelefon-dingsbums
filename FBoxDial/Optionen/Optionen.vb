@@ -258,21 +258,6 @@
 #End If
 #End Region
 
-#Region "SoftPhones"
-#Region "Phoner"
-    <XmlElement("TBPhonerPasswort")> Public Property TBPhonerPasswort As String = String.Empty
-    <XmlElement("CBPhoner")> Public Property CBPhoner As Boolean = False
-    <XmlElement("CBPhonerSuffix")> Public Property CBPhonerSuffix As Boolean = True
-#End Region
-
-#Region "MicroSIP"
-    <XmlElement("TBMicroSIPPath")> Public Property TBMicroSIPPath As String = String.Empty
-    <XmlElement("CBMicroSIP")> Public Property CBMicroSIP As Boolean = False
-    <XmlElement("CBMicroSIPSuffix")> Public Property CBMicroSIPSuffix As Boolean = True
-
-#End Region
-#End Region
-
     Public Sub New()
         OutlookOrdner = New OutlookOrdnerListe
     End Sub

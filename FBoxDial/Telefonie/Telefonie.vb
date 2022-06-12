@@ -9,6 +9,7 @@ Imports FBoxDial.FritzBoxDefault
 #Region "Eigenschaften"
     <XmlElement("Telefonnummer")> Public Property Telefonnummern As List(Of Telefonnummer)
     <XmlElement("Telefoniegerät")> Public Property Telefoniegeräte As List(Of Telefoniegerät)
+    <XmlElement("IPPhoneConnector")> Public Property IPTelefone As List(Of IPPhoneConnector)
 
     ''' <summary>
     ''' Ortskennzahl des Telefonanschlusses. Wird automatisch ermittelt. Kann in den Einstellungen überschrieben werden.
@@ -61,18 +62,19 @@ Imports FBoxDial.FritzBoxDefault
                     ' Füge die Nummer zu den eigenen Nummern hinzu
                     If .X_voip.GetNumbers(NummernListe) Then NummernListe.TelNrList.ForEach(Sub(S) AddEigeneTelNr(S.Number, S.Index))
 
-                    ' Lade SIP Clients via TR-064 
+                    ' Lade SIP Clients via TR-064 (IP-Telefone)
                     Dim SIPList As FBoxAPI.SIPClientList = Nothing
                     If .X_voip.GetClients(SIPList) Then
 
                         ' Werte alle SIP Clients aus
                         For Each SIPClient In SIPList.SIPClients
 
-                            Dim Telefon As New Telefoniegerät With {.Name = SIPClient.PhoneName,
-                                                                            .TelTyp = TelTypen.IP,
-                                                                            .AnrMonID = AnrMonTelIDBase.IP + SIPClient.ClientIndex,
-                                                                            .StrEinTelNr = New List(Of String),
-                                                                            .Intern = SIPClient.InternalNumber}
+                            Dim Telefon As New Telefoniegerät With {.ID = SIPClient.ClientIndex,
+                                                                    .Name = SIPClient.PhoneName,
+                                                                    .TelTyp = TelTypen.IP,
+                                                                    .AnrMonID = AnrMonTelIDBase.IP + SIPClient.ClientIndex,
+                                                                    .StrEinTelNr = New List(Of String),
+                                                                    .Kurzwahl = SIPClient.InternalNumber}
                             With Telefon
 
                                 If SIPClient.InComingNumbers.First.Type = FBoxAPI.SIPTypeEnum.eAllCalls Then
@@ -83,7 +85,7 @@ Imports FBoxDial.FritzBoxDefault
                                     SIPClient.InComingNumbers.ForEach(Sub(T) .StrEinTelNr.Add(AddEigeneTelNr(T.Number, T.Index).Einwahl))
                                 End If
 
-                                PushStatus(LogLevel.Debug, $"Telefon { .TelTyp}: { .AnrMonID}; { .Name}; { .Intern}")
+                                PushStatus(LogLevel.Debug, $"Telefon { .TelTyp}: { .AnrMonID}; { .Name}; { .ID}")
                             End With
 
                             ' Telefon der Liste von Geräten hinzufügen
@@ -96,11 +98,12 @@ Imports FBoxDial.FritzBoxDefault
                     ' Werte alle TAMs aus, welche in der Fritz!Box sichtbar sind.
                     For Each AB In ABListe.Items.Where(Function(T) T.Display)
 
-                        Dim Telefon As New Telefoniegerät With {.Name = AB.Name,
-                                                                        .TelTyp = TelTypen.TAM,
-                                                                        .StrEinTelNr = New List(Of String),
-                                                                        .Intern = InternBase.TAM + AB.Index,
-                                                                        .AnrMonID = AnrMonTelIDBase.TAM + AB.Index}
+                        Dim Telefon As New Telefoniegerät With {.ID = AB.Index,
+                                                                .Name = AB.Name,
+                                                                .TelTyp = TelTypen.TAM,
+                                                                .StrEinTelNr = New List(Of String),
+                                                                .Kurzwahl = InternBase.TAM + AB.Index,
+                                                                .AnrMonID = AnrMonTelIDBase.TAM + AB.Index}
 
                         ' Ermittle die Nummer, auf den der AB reagiert.
                         Dim TAMInfo As New FBoxAPI.TAMInfo
@@ -117,7 +120,7 @@ Imports FBoxDial.FritzBoxDefault
 
                             End If
                         End If
-                        PushStatus(LogLevel.Debug, $"Telefon { Telefon.TelTyp}: { Telefon.AnrMonID}; { Telefon.Name}; { Telefon.Intern}")
+                        PushStatus(LogLevel.Debug, $"Telefon { Telefon.TelTyp}: { Telefon.AnrMonID}; { Telefon.Name}; { Telefon.ID}")
                         ' Telefon der Liste von Geräten hinzufügen
                         Telefoniegeräte.Add(Telefon)
                     Next
@@ -219,8 +222,9 @@ Imports FBoxDial.FritzBoxDefault
                 ' Dimensioniere ein neues Telefon und setze Daten
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.FON,
                                                         .Name = FONTelefon.Name,
-                                                        .Intern = FONTelefon.Node.RegExRemove("^\D*").ToInt,
-                                                        .AnrMonID = AnrMonTelIDBase.FON + .Intern,
+                                                        .ID = FONTelefon.Node.RegExRemove("^\D*").ToInt,
+                                                        .Kurzwahl = .ID,
+                                                        .AnrMonID = AnrMonTelIDBase.FON + .ID,
                                                         .StrEinTelNr = New List(Of String),
                                                         .IsFax = FONTelefon.Fax}
 
@@ -248,7 +252,7 @@ Imports FBoxDial.FritzBoxDefault
                         Next
                     End If
 
-                    PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
+                    PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.ID}")
                     FONList.Add(Telefon)
 
                 End If
@@ -282,9 +286,10 @@ Imports FBoxDial.FritzBoxDefault
                 ' Dimensioniere ein neues Telefon und setze Daten
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.DECT,
                                                         .Name = DECTTelefon.Name,
-                                                        .Intern = DECTTelefon.Intern.ToInt,
+                                                        .ID = DECTTelefon.Intern.ToInt,
+                                                        .Kurzwahl = .ID,
                                                         .IsFax = False,
-                                                        .AnrMonID = .Intern - InternBase.DECT + AnrMonTelIDBase.DECT,
+                                                        .AnrMonID = .ID - InternBase.DECT + AnrMonTelIDBase.DECT,
                                                         .StrEinTelNr = New List(Of String)}
                 ' Abfrageliste leeren
                 TelQuery.Clear()
@@ -310,7 +315,7 @@ Imports FBoxDial.FritzBoxDefault
                         Next
                     End If
 
-                    PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
+                    PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.ID}")
                     DECTList.Add(Telefon)
                 End If
             Next
@@ -355,15 +360,16 @@ Imports FBoxDial.FritzBoxDefault
                     ' Dimensioniere ein neues Telefon und setze Daten
                     Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.ISDN,
                                                             .AnrMonID = AnrMonTelIDBase.S0,
-                                                            .Intern = InternBase.S0 + idx,
+                                                            .ID = InternBase.S0 + idx,
+                                                            .Kurzwahl = .ID,
                                                             .StrEinTelNr = New List(Of String)}
 
                     Telefon.Name = S0Tel.S0Name
-                    If Telefon.Intern.AreDifferentTo(S0Tel.S0Number.ToInt) Then
+                    If Telefon.ID.AreDifferentTo(S0Tel.S0Number.ToInt) Then
                         Telefon.StrEinTelNr.Add(GetEigeneTelNr(S0Tel.S0Number)?.Einwahl)
                     End If
 
-                    PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
+                    PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.ID}")
                     S0List.Add(Telefon)
 
                 End If
@@ -403,7 +409,7 @@ Imports FBoxDial.FritzBoxDefault
                                                         .StrEinTelNr = New List(Of String)}
 
                 Telefon.StrEinTelNr.Add(GetEigeneTelNr(MailMobilTel.Mobile)?.Einwahl)
-                PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
+                PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.ID}")
                 TelList.Add(Telefon)
 
             End If
@@ -435,7 +441,7 @@ Imports FBoxDial.FritzBoxDefault
                     Next
                 End If
 
-                PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
+                PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.ID}")
                 TelList.Add(Telefon)
 
             End If

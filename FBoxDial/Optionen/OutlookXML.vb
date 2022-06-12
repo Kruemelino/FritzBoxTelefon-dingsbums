@@ -13,6 +13,7 @@
         With PTelefonie
             .Telefonnummern = New List(Of Telefonnummer)
             .Telefoniegeräte = New List(Of Telefoniegerät)
+            .IPTelefone = New List(Of IPPhoneConnector)
         End With
     End Sub
 

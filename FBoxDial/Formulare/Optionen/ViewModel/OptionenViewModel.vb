@@ -55,6 +55,7 @@ Public Class OptionenViewModel
 
     Public ReadOnly Property AddinVersion As String = $"Info V{Assembly.GetExecutingAssembly.GetName.Version}"
     Public ReadOnly Property DfltDeCryptKey As String = My.Resources.strDfltDeCryptKey
+    Public ReadOnly Property DfltIPPhoneDeCryptKey As String = My.Resources.strDfltIPPhoneDeCryptKey
     Public ReadOnly Property DfltPhonerDeCryptKey As String = My.Resources.strDfltPhonerDeCryptKey
     Public ReadOnly Property DfltTellowsDeCryptKey As String = My.Resources.strDfltTellowsDeCryptKey
 #End Region
@@ -806,74 +807,15 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-#End Region
-
-#Region "SoftPhones"
-
-#Region "Phoner"
-    Private _TBPhonerPasswort As String
-    Private _CBPhoner As Boolean
-
-    Public Property TBPhonerPasswort As String
+    Private _IPPhoneConnectorList As ObservableCollectionEx(Of IPPhoneConnector)
+    Public Property IPPhoneConnectorList As ObservableCollectionEx(Of IPPhoneConnector)
         Get
-            Return _TBPhonerPasswort
+            Return _IPPhoneConnectorList
         End Get
         Set
-            SetProperty(_TBPhonerPasswort, Value)
+            SetProperty(_IPPhoneConnectorList, Value)
         End Set
     End Property
-
-    Public Property CBPhoner As Boolean
-        Get
-            Return _CBPhoner
-        End Get
-        Set
-            SetProperty(_CBPhoner, Value)
-        End Set
-    End Property
-
-    Private _CBPhonerSuffix As Boolean
-    Public Property CBPhonerSuffix As Boolean
-        Get
-            Return _CBPhonerSuffix
-        End Get
-        Set
-            SetProperty(_CBPhonerSuffix, Value)
-        End Set
-    End Property
-#End Region
-#Region "MicroSIP"
-    Private _TBMicroSIPPath As String
-    Private _CBMicroSIP As Boolean
-
-    Public Property TBMicroSIPPath As String
-        Get
-            Return _TBMicroSIPPath
-        End Get
-        Set
-            SetProperty(_TBMicroSIPPath, Value)
-        End Set
-    End Property
-    Public Property CBMicroSIP As Boolean
-        Get
-            Return _CBMicroSIP
-        End Get
-        Set
-            SetProperty(_CBMicroSIP, Value)
-        End Set
-    End Property
-
-    Private _CBMicroSIPSuffix As Boolean
-    Public Property CBMicroSIPSuffix As Boolean
-        Get
-            Return _CBMicroSIPSuffix
-        End Get
-        Set
-            SetProperty(_CBMicroSIPSuffix, Value)
-        End Set
-    End Property
-#End Region
-
 #End Region
 
 #Region "Logging"
@@ -1023,8 +965,7 @@ Public Class OptionenViewModel
             .Add(New OptSearchContactViewModel(DatenService))
             .Add(New OptCreateContactViewModel(DatenService))
             .Add(New OptTelephonyViewModel(DatenService))
-            .Add(New OptPhonerViewModel())
-            .Add(New OptMicroSIPViewModel(DatenService))
+            .Add(New OptIPPhonesViewModel(DatenService))
             .Add(New OptTellowsViewModel(DatenService))
             .Add(New OptInfoViewModel())
             .Add(New OptTestViewModel(DatenService))
@@ -1105,11 +1046,16 @@ Public Class OptionenViewModel
         TelGeräteListe = New ObservableCollectionEx(Of Telefoniegerät)
         TelGeräteListe.AddRange(XMLData.PTelefonie.Telefoniegeräte)
 
+        ' IPPhoneConnectoren
+        IPPhoneConnectorList = New ObservableCollectionEx(Of IPPhoneConnector)
+        IPPhoneConnectorList.AddRange(XMLData.PTelefonie.IPTelefone)
+
         ' Ornderliste überwachter Ordner
         OutlookOrdnerListe = New OutlookOrdnerListe
         OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
 
         Await LadeTask
+
         ' Fritz!Box Benutzer laden
         CBoxBenutzer = DatenService.LadeFBoxUser()
 
@@ -1162,6 +1108,14 @@ Public Class OptionenViewModel
             .Clear()
             ' Die Telefoniegeräte aus den Viewmodel setzen
             .AddRange(TelGeräteListe)
+        End With
+
+        ' IPPhoneConnectoren
+        With XMLData.PTelefonie.IPTelefone
+            ' Die Telefoniegeräte in den Optionen löschen
+            .Clear()
+            ' Die Telefoniegeräte aus den Viewmodel setzen
+            .AddRange(IPPhoneConnectorList)
         End With
 
         ' Ordnerliste überwachter Ordner

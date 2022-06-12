@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="OptConnURIView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=fbd:OptConnURIViewModel, IsDesignTimeCreatable=False}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <GroupBox BorderBrush="{DynamicResource ValidationBrush}" Header="Experimentell!">
+        <StackPanel x:Name="MainStackPanel" >
+
+            <Label Style="{StaticResource OptHintTextBlock}" 
+                    Content="{x:Static localize:LocOptionen.strConnURIInfo}"/>
+
+            <TextBox Style="{StaticResource OptTextBox}"
+                        Tag="{x:Static localize:LocOptionen.strConnURITBCall}"
+                        Text="{Binding Connector.ConnectionUriCall, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox Style="{StaticResource OptTextBox}"
+                        Tag="{x:Static localize:LocOptionen.strConnURITBCancel}"
+                        Text="{Binding Connector.ConnectionUriCancel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <CheckBox Style="{StaticResource OptCheckBox}" 
+                        Content="{x:Static localize:LocOptionen.strCBSoftPhoneSuffix}" 
+                        IsChecked="{Binding Connector.AppendSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Style="{StaticResource OptHintTextBlock}" 
+                    Content="{x:Static localize:LocOptionen.strAuthInfo}"/>
+
+            <TextBox Style="{StaticResource OptTextBox}"
+                        Tag="{x:Static localize:LocOptionen.strUserName}"
+                        Text="{Binding Connector.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strIPPhoneTBPasswort}"
+                                    Value="{Binding Path=Connector.Passwort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                    DeCryptKey="{Binding Path=OptVM.DfltIPPhoneDeCryptKey, Mode=OneWay}"/>
+
+        </StackPanel>
+
+    </GroupBox>
+
+</UserControl>

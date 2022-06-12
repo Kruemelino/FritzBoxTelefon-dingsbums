@@ -1,11 +1,11 @@
-﻿Public Class OptMicroSIPViewModel
+﻿<Obsolete> Public Class OptMicroSIPViewModel
     Inherits NotifyBase
     Implements IPageViewModel
 
-    Private _OptVM As OptionenViewModel
     Private Property DialogService As IDialogService
     Private Property DatenService As IOptionenService
 
+    Private _OptVM As OptionenViewModel
     Public Property OptVM As OptionenViewModel Implements IPageViewModel.OptVM
         Get
             Return _OptVM

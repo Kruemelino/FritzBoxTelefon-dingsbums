@@ -174,6 +174,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ZugangIPPhone ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDfltIPPhoneDeCryptKey() As String
+            Get
+                Return ResourceManager.GetString("strDfltIPPhoneDeCryptKey", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die CALLListe ähnelt.
         '''</summary>
         Public ReadOnly Property strDfltNameListCALL() As String

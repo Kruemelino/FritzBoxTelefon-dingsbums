@@ -177,6 +177,30 @@
     <value>Direkter Anruf</value>
     <comment>AVM XML Rufumleitung Mode</comment>
   </data>
+  <data name="eAllCalls" xml:space="preserve">
+    <value>Alle</value>
+    <comment>SIPTypeEnum</comment>
+  </data>
+  <data name="eGSM" xml:space="preserve">
+    <value>GSM</value>
+    <comment>SIPTypeEnum</comment>
+  </data>
+  <data name="eISDN" xml:space="preserve">
+    <value>ISDN</value>
+    <comment>SIPTypeEnum</comment>
+  </data>
+  <data name="eNone" xml:space="preserve">
+    <value>Keine</value>
+    <comment>SIPTypeEnum</comment>
+  </data>
+  <data name="ePOTS" xml:space="preserve">
+    <value>POTS</value>
+    <comment>SIPTypeEnum</comment>
+  </data>
+  <data name="eVoIP" xml:space="preserve">
+    <value>VoIP</value>
+    <comment>SIPTypeEnum</comment>
+  </data>
   <data name="fax_work" xml:space="preserve">
     <value>Fax</value>
     <comment>AVM XML Telefonbuch</comment>
@@ -244,6 +268,22 @@
   <data name="intern" xml:space="preserve">
     <value>Intern</value>
     <comment>AVM XML Telefonbuch</comment>
+  </data>
+  <data name="IPConnMicroSIP" xml:space="preserve">
+    <value>Softphone: MicroSIP</value>
+    <comment>TypeIPPhoneConnection</comment>
+  </data>
+  <data name="IPConnNone" xml:space="preserve">
+    <value>Keine</value>
+    <comment>TypeIPPhoneConnection</comment>
+  </data>
+  <data name="IPConnPhoner" xml:space="preserve">
+    <value>Softphone: Phoner</value>
+    <comment>TypeIPPhoneConnection</comment>
+  </data>
+  <data name="IPConnURI" xml:space="preserve">
+    <value>URI</value>
+    <comment>TypeIPPhoneConnection</comment>
   </data>
   <data name="ISDNNumber" xml:space="preserve">
     <value>ISDN</value>

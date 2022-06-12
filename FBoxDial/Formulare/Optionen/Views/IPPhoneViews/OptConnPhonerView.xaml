@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="OptConnPhonerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=fbd:OptConnPhonerViewModel, IsDesignTimeCreatable=False}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strPhonerInfo}"/>
+
+        <Label Content="{x:Static localize:LocOptionen.strPhonerCopyRight}"/>
+        
+        <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strSoftPhoneHomepage}" 
+                         URL="http://phoner.de" LinkLabel="www.phoner.de"/>
+
+        <TextBlock Style="{StaticResource OptHeader}" Text="{x:Static localize:LocOptionen.strPhonerHeadConfig}"/>
+
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strPhonerInfoConfig}"/>
+
+        <Label Content="{x:Static localize:LocOptionen.strPhonerInfoLight}"/>
+
+        <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strIPPhoneTBPasswort}"
+                                Value="{Binding Path=Connector.Passwort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                DeCryptKey="{Binding Path=OptVM.DfltPhonerDeCryptKey, Mode=OneWay}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strCBSoftPhoneSuffix}" 
+                  IsChecked="{Binding Connector.AppendSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+    </StackPanel>
+</UserControl>

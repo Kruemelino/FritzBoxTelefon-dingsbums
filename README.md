@@ -35,8 +35,8 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
 * [x] VIP-Liste für häufig anzurufende Kontakte
 * [x] Anzeige verpasster Anrufe in einem Outlook Seitenfenster ([CustomTaskPane](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.tools.customtaskpane?view=vsto-2017))
 #### Ausschlüsse (was nicht geht)
-* [ ] Nutzung von angeschlossenen IP-Telefonen. Hier fehlt einfach die Unterstützung der Fritz!Box. Einzige Ausnahmen sind die Programme [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/), 
-  da diese eine eigene Schnittstelle haben. 
+* [ ] Nutzung von angeschlossenen IP-Telefonen. Hier fehlt die direkte Unterstützung der Fritz!Box. Einzige Ausnahmen sind die Programme [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/), 
+  da diese eine eigene Schnittstelle haben. (Eine Lösung für Telefone, die eine Fernsteuerungsfunktion haben, ist in Arbeit.)
 
 ### Voraussetzungen
 Für die Nutzung des Addins wird benötigt: 

@@ -340,3 +340,39 @@ Public Enum TypeEnum
     <LocalizedDescription("Unknown", GetType(resEnum))>
     <XmlEnum> unknown
 End Enum
+
+<TypeConverter(GetType(EnumDescriptionTypeConverter))>
+Public Enum TypeEnumSIP
+    <LocalizedDescription("eAllCalls", GetType(resEnum))>
+    <XmlEnum> eAllCalls
+
+    <LocalizedDescription("eGSM", GetType(resEnum))>
+    <XmlEnum> eGSM
+
+    <LocalizedDescription("eISDN", GetType(resEnum))>
+    <XmlEnum> eISDN
+
+    <LocalizedDescription("eNone", GetType(resEnum))>
+    <XmlEnum> eNone
+
+    <LocalizedDescription("ePOTS", GetType(resEnum))>
+    <XmlEnum> ePOTS
+
+    <LocalizedDescription("eVoIP", GetType(resEnum))>
+    <XmlEnum> eVoIP
+End Enum
+
+<TypeConverter(GetType(EnumDescriptionTypeConverter))>
+Public Enum IPPhoneConnectorType
+    <LocalizedDescription("IPConnNone", GetType(resEnum))>
+    <XmlEnum> None
+
+    <LocalizedDescription("IPConnPhoner", GetType(resEnum))>
+    <XmlEnum> Phoner
+
+    <LocalizedDescription("IPConnMicroSIP", GetType(resEnum))>
+    <XmlEnum> MicroSIP
+
+    <LocalizedDescription("IPConnURI", GetType(resEnum))>
+    <XmlEnum> URI
+End Enum

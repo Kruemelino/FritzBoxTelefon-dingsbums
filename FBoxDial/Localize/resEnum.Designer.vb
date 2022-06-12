@@ -208,6 +208,60 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Alle ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property eAllCalls() As String
+        Get
+            Return ResourceManager.GetString("eAllCalls", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die GSM ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property eGSM() As String
+        Get
+            Return ResourceManager.GetString("eGSM", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die ISDN ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property eISDN() As String
+        Get
+            Return ResourceManager.GetString("eISDN", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Keine ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property eNone() As String
+        Get
+            Return ResourceManager.GetString("eNone", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die POTS ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property ePOTS() As String
+        Get
+            Return ResourceManager.GetString("ePOTS", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die VoIP ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property eVoIP() As String
+        Get
+            Return ResourceManager.GetString("eVoIP", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die Fax ähnelt.
     '''</summary>
     Public Shared ReadOnly Property fax_work() As String
@@ -357,6 +411,42 @@ Public Class resEnum
     Public Shared ReadOnly Property intern() As String
         Get
             Return ResourceManager.GetString("intern", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Softphone: MicroSIP ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property IPConnMicroSIP() As String
+        Get
+            Return ResourceManager.GetString("IPConnMicroSIP", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Keine ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property IPConnNone() As String
+        Get
+            Return ResourceManager.GetString("IPConnNone", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Softphone: Phoner ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property IPConnPhoner() As String
+        Get
+            Return ResourceManager.GetString("IPConnPhoner", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die URI ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property IPConnURI() As String
+        Get
+            Return ResourceManager.GetString("IPConnURI", resourceCulture)
         End Get
     End Property
     

@@ -133,45 +133,14 @@ Public Class FritzBoxWählClient
 
         End If
 
-        If Telefon.IsSoftPhone Then
 
-            If Telefon.IsPhoner Then
-                ' Initiere Phoner, wenn erforderlich
-                If XMLData.POptionen.CBPhoner Then
+        If Telefon.IsIPPhone Then
 
-                    Using PhonerApp = New Phoner With {.AppendSuffix = XMLData.POptionen.CBPhonerSuffix}
+            ' Finde einen Connector
+            Dim Connector As IPPhoneConnector = XMLData.PTelefonie.IPTelefone.FindLast(Function(C) C.ConnectedPhoneID.AreEqual(Telefon.ID))
 
-                        If PhonerApp.PhonerReady Then
-                            ' Telefonat an Phoner übergeben
-                            NLogger.Info($"Wählclient an Phoner: {DialCode} über {Telefon.Name}")
-                            Erfolreich = PhonerApp.Dial(DialCode, Abbruch)
-                        Else
-                            NLogger.Debug(String.Format(Localize.LocWählclient.strErrorSoftphoneNotReady, "Phoner"))
-                            Erfolreich = False
-                        End If
-
-                    End Using
-                End If
-            End If
-
-            If Telefon.IsMicroSIP Then
-                ' Initiere MicroSIP, wenn erforderlich
-                If XMLData.POptionen.CBMicroSIP Then
-
-                    Using MicroSIPApp = New MicroSIP With {.AppendSuffix = XMLData.POptionen.CBMicroSIPSuffix}
-
-                        If MicroSIPApp.MicroSIPReady Then
-                            ' Telefonat an Phoner übergeben
-                            NLogger.Info($"Wählclient an MicroSIP: {DialCode} über {Telefon.Name}")
-                            Erfolreich = MicroSIPApp.Dial(DialCode, Abbruch)
-                        Else
-                            NLogger.Debug(String.Format(Localize.LocWählclient.strErrorSoftphoneNotReady, "MicroSIP"))
-                            Erfolreich = False
-                        End If
-
-                    End Using
-                End If
-            End If
+            ' Über IPPhone Wählcommando absetzen
+            If Connector IsNot Nothing Then Erfolreich = Await Connector.Dial(DialCode, Abbruch)
 
         Else
             ' Hänge die # an, um der Fritz!Box das Ende der Nummer zu signalisieren.

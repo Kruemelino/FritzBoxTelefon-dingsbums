@@ -235,6 +235,11 @@ Das Seitenfenster wird beim manuellen Importieren der Anrufliste (Journalimport)
     <value>Ausblendverzögerung in Sekunden</value>
     <comment>OptAnrMonView</comment>
   </data>
+  <data name="strAuthInfo" xml:space="preserve">
+    <value>Authentifizierungsdaten (falls erforderlich)
+Ein Authentifizierungsverfahren wird noch nicht unterstützt!</value>
+    <comment>OptConnURIView</comment>
+  </data>
   <data name="strBaseCBintl" xml:space="preserve">
     <value>Internationale Vorwahl ergänzen</value>
     <comment>OptBaseView</comment>
@@ -364,6 +369,26 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
   <data name="strConfig" xml:space="preserve">
     <value>Einstellungen</value>
     <comment>MainView</comment>
+  </data>
+  <data name="strConnURIInfo" xml:space="preserve">
+    <value>Einige IP-Telefone bieten die Möglichkeit der Fernsteuerung. Hierbei wird die zu wählende Nummer direkt an das Telefon übermittelt.
+Die Fernsteuerung wird nicht von jedem Hersteller unterstützt. Bitte vorab informieren.
+
+Die eingegebenen URL müssen komplett sein, z. B.:
+http://192.168.178.90/command.htm?number={TelNr}
+http://192.168.178.90/servlet?key=number={TelNr}
+http://192.168.178.90/cgi-bin/api-make_call?phonenumber={TelNr}
+
+Der Schlüssel {TelNr} wird mit der zu wählenden Telefonnummer ersetzt.</value>
+    <comment>OptConnURIView</comment>
+  </data>
+  <data name="strConnURITBCall" xml:space="preserve">
+    <value>URL für Verbindungsaufbau</value>
+    <comment>OptConnURIView</comment>
+  </data>
+  <data name="strConnURITBCancel" xml:space="preserve">
+    <value>URL für Verbindungsabbruch</value>
+    <comment>OptConnURIView</comment>
   </data>
   <data name="strCreateContact" xml:space="preserve">
     <value>Kontakterstellung</value>
@@ -498,6 +523,70 @@ Wer spenden will, der spendet und wer nicht will, der macht es halt nicht.</valu
     <value>PayPal</value>
     <comment>OptInfo</comment>
   </data>
+  <data name="strIPNumberName" xml:space="preserve">
+    <value>Name:</value>
+    <comment>OptIPPhoneView</comment>
+  </data>
+  <data name="strIPNumberNumber" xml:space="preserve">
+    <value>Nummer:</value>
+    <comment>OptIPPhoneView</comment>
+  </data>
+  <data name="strIPNumberType" xml:space="preserve">
+    <value>Typ:</value>
+    <comment>OptIPPhoneView</comment>
+  </data>
+  <data name="strIPPhone" xml:space="preserve">
+    <value>IP Telefone</value>
+    <comment>OptIPPhoneView</comment>
+  </data>
+  <data name="strIPPhoneClientId" xml:space="preserve">
+    <value>ClientId:</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strIPPhoneClientRegistrar" xml:space="preserve">
+    <value>ClientRegistrar:</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strIPPhoneClientRegistrarPort" xml:space="preserve">
+    <value>ClientRegistrarPort:</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strIPPhoneClientUserName" xml:space="preserve">
+    <value>ClientUserName:</value>
+    <comment>OptIPPhoneView</comment>
+  </data>
+  <data name="strIPPhoneConnectionMode" xml:space="preserve">
+    <value>Art der Anbindung</value>
+    <comment>OptIPPhoneView</comment>
+  </data>
+  <data name="strIPPhoneDelayedCallNotification" xml:space="preserve">
+    <value>DelayedCallNotification:</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strIPPhoneExternalRegistration" xml:space="preserve">
+    <value>Externe Registrierung:</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strIPPhoneInComingNumbers" xml:space="preserve">
+    <value>Eingehende Nummern:</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strIPPhoneInternalNumber" xml:space="preserve">
+    <value>Interne Nummer:</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strIPPhoneName" xml:space="preserve">
+    <value>Name des Telefones:</value>
+    <comment>OptIPPhoneView</comment>
+  </data>
+  <data name="strIPPhoneOutGoingNumber" xml:space="preserve">
+    <value>Ausgehende Nummer:</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strIPPhoneTBPasswort" xml:space="preserve">
+    <value>Passwort</value>
+    <comment>OptPhonerView</comment>
+  </data>
   <data name="strJournal" xml:space="preserve">
     <value>Journal</value>
     <comment>MainView</comment>
@@ -532,26 +621,13 @@ Wird kein Ordner gewählt, wird der Outlook-Standard verwendet.</value>
     <value>MicroSIP</value>
     <comment>MainView</comment>
   </data>
-  <data name="strMicroSIPCBMicroSIP" xml:space="preserve">
-    <value>MicroSIP verwenden</value>
-    <comment>OptMicroSIPView</comment>
-  </data>
   <data name="strMicroSIPHeadConfig" xml:space="preserve">
     <value>MicroSIP - Konfiguration</value>
     <comment>OptMicroSIPView</comment>
   </data>
-  <data name="strMicroSIPHeadInfo" xml:space="preserve">
-    <value>MicroSIP - Open Source SIP-Softphone</value>
-    <comment>OptMicroSIPView</comment>
-  </data>
   <data name="strMicroSIPInfo" xml:space="preserve">
     <value>Hinweise zur korrekten Konfiguration:
-Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
-Wähle Telefoniegerät aus, was mit MicroSIP registriert ist.</value>
-    <comment>OptMicroSIPView</comment>
-  </data>
-  <data name="strMicroSIPPhoneInfo" xml:space="preserve">
-    <value>Registriertes Telefon für MicroSIP</value>
+Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.</value>
     <comment>OptMicroSIPView</comment>
   </data>
   <data name="strMicroSIPTBMicroSIPPath" xml:space="preserve">
@@ -598,24 +674,11 @@ Wähle Telefoniegerät aus, was mit MicroSIP registriert ist.</value>
     <value>Hinweise zur korrekten Konfiguration:
 Stelle sicher, dass Phoner sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
 Lege ein Passwort für die Authentifizierung bei Phoner fest. Das gleiche Passwort muss bei Phoner unter "Optionen / Web" im Feld Passwort eingegeben werden.
-Prüfe, ob die Authentifizierung erfolgreich ist.
-Wähle Telefoniegerät aus, was mit Phoner registriert ist.</value>
+Prüfe, ob die Authentifizierung erfolgreich ist.</value>
     <comment>OptPhonerView</comment>
   </data>
   <data name="strPhonerInfoLight" xml:space="preserve">
     <value>PhonerLight wird nicht unterstützt!</value>
-    <comment>OptPhonerView</comment>
-  </data>
-  <data name="strPhonerOptCheckBox" xml:space="preserve">
-    <value>Phoner verwenden</value>
-    <comment>OptPhonerView</comment>
-  </data>
-  <data name="strPhonerstrPhonerPhoneInfo" xml:space="preserve">
-    <value>Registriertes Telefon für Phoner</value>
-    <comment>OptPhonerView</comment>
-  </data>
-  <data name="strPhonerTBPhonerPasswort" xml:space="preserve">
-    <value>Phoner Passwort</value>
     <comment>OptPhonerView</comment>
   </data>
   <data name="strSave" xml:space="preserve">
@@ -734,12 +797,12 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Eigene Telefonnummern, auf die das Telefon reagiert</value>
     <comment>OptTelephonyView</comment>
   </data>
-  <data name="strTelephonyPhoneIntern" xml:space="preserve">
-    <value>Interne ID</value>
+  <data name="strTelephonyPhoneKurzwahl" xml:space="preserve">
+    <value>Kurzwahl</value>
     <comment>OptTelephonyView</comment>
   </data>
-  <data name="strTelephonyPhoneInternToolTipp" xml:space="preserve">
-    <value>Interne Telefonnummer des Telefons</value>
+  <data name="strTelephonyPhoneKurzwahlToolTipp" xml:space="preserve">
+    <value>Kurzwahl des Telefons</value>
     <comment>OptTelephonyView</comment>
   </data>
   <data name="strTelephonyPhoneName" xml:space="preserve">
@@ -1051,5 +1114,9 @@ Seit FRITZ!OS 7.24 ist eine Anmeldung auf der Fritz!Box nur noch mit Benutzernam
   <data name="strUndo" xml:space="preserve">
     <value>Zurücksetzen</value>
     <comment>MainView</comment>
+  </data>
+  <data name="strUserName" xml:space="preserve">
+    <value>Benutzername</value>
+    <comment>OptConnURIView</comment>
   </data>
 </root>
