@@ -163,10 +163,10 @@
             
             <fdg:FilterDataGrid.Columns>
 
-                <fdg:DataGridTemplateColumn FieldName="Export" Header="*" IsColumnFiltered="False">
+                <fdg:DataGridTemplateColumn FieldName="Export" IsColumnFiltered="True">
                     <fdg:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Export, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            <CheckBox IsChecked="{Binding Export, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"/>
                         </DataTemplate>
                     </fdg:DataGridTemplateColumn.CellTemplate>
                 </fdg:DataGridTemplateColumn>
