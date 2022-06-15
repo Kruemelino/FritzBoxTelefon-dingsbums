@@ -90,17 +90,29 @@ Friend Class ExplorerWrapper
     End Sub
 
     Friend Sub AddMissedCall(MissedCall As Telefonat)
-        PaneDispatcher.Invoke(Sub()
-                                  ' Blende das Pane ein
-                                  ShowCallListPane()
+        PaneDispatcher?.Invoke(Sub()
+                                   ' Blende das Pane ein
+                                   ShowCallListPane()
 
-                                  ' Füge das Telefonat als verpasstes Element hinzu
-                                  CallListPaneVM.MissedCallList.Add(New MissedCallViewModel(Datenservice, Dialogservice) With {.VerpasstesTelefonat = MissedCall,
-                                                                                                                               .Instance = PaneDispatcher})
+                                   Dim AnrMonList = CallListPaneVM.MissedCallList.Where(Function(T) T.VerpasstesTelefonat.GegenstelleTelNr.Equals(MissedCall.GegenstelleTelNr) And
+                                                                                                    T.VerpasstesTelefonat.EigeneTelNr.Equals(MissedCall.EigeneTelNr))
 
-                                  ' Sortiere die Liste
-                                  CallListPaneVM.MissedCallList.SortDescending(Function(T) T.Zeit)
-                              End Sub)
+                                   If XMLData.POptionen.CBAnrMonHideMultipleCall AndAlso AnrMonList.Any Then
+                                       With AnrMonList.First
+                                           ' Setze den Zähler hoch
+                                           .AnzahlAnrufe += 1
+                                           ' Aktualisiere die Zeit
+                                           .VerpasstesTelefonat.ZeitBeginn = MissedCall.ZeitBeginn
+                                       End With
+                                   Else
+                                       ' Füge das Telefonat als verpasstes Element hinzu
+                                       CallListPaneVM.MissedCallList.Add(New MissedCallViewModel(Datenservice, Dialogservice) With {.VerpasstesTelefonat = MissedCall,
+                                                                                                                                    .Instance = PaneDispatcher})
+                                   End If
+
+                                   ' Sortiere die Liste
+                                   CallListPaneVM.MissedCallList.SortDescending(Function(T) T.Zeit)
+                               End Sub)
     End Sub
 
 #End Region

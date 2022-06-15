@@ -610,6 +610,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Vermeide mehrfache Signalisierung ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCBAnrMonHideMultipleCall() As String
+            Get
+                Return ResourceManager.GetString("strCBAnrMonHideMultipleCall", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Wenn der Anrufmonitor nicht ausgeblendet wird und Anrufer mehrfach anrufen, werden auch mehrer Fenster eingeblendet. Dies kann mit folgender Optionen vermieden werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCBAnrMonHideMultipleCallInfo() As String
+            Get
+                Return ResourceManager.GetString("strCBAnrMonHideMultipleCallInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Raute (#) an die zu wählende Nummer anhängen. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCBSoftPhoneSuffix() As String

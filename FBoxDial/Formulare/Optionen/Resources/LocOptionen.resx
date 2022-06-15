@@ -362,6 +362,14 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
     <value>Abbrechen</value>
     <comment>MainView</comment>
   </data>
+  <data name="strCBAnrMonHideMultipleCall" xml:space="preserve">
+    <value>Vermeide mehrfache Signalisierung</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strCBAnrMonHideMultipleCallInfo" xml:space="preserve">
+    <value>Wenn der Anrufmonitor nicht ausgeblendet wird und Anrufer mehrfach anrufen, werden auch mehrer Fenster eingeblendet. Dies kann mit folgender Optionen vermieden werden.</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strCBSoftPhoneSuffix" xml:space="preserve">
     <value>Raute (#) an die zu wählende Nummer anhängen.</value>
     <comment>OptMicroSIPView, OptPhonerView</comment>

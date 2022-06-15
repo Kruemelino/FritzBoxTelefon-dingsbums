@@ -186,9 +186,6 @@ Public Class AnrMonViewModel
         ' Setze Anzuzeigende Werte
         With AnrMonTelefonat
 
-            ' Anruferzeit festlegen: Beginn des Telefonates
-            Zeit = .ZeitBeginn
-
             ' Setze die anzuzeigenden Daten des Telefonates
             AnzuzeigendeDaten()
 
@@ -233,7 +230,7 @@ Public Class AnrMonViewModel
         NLogger.Trace($"AnrMonVM: Eigenschaft {e.PropertyName} verändert.")
         With AnrMonTelefonat
             Select Case e.PropertyName
-                Case NameOf(Telefonat.AnruferName), NameOf(Telefonat.Firma)
+                Case NameOf(Telefonat.AnruferName), NameOf(Telefonat.Firma), NameOf(Telefonat.AnzahlAnrufe), NameOf(Telefonat.ZeitBeginn)
                     AnzuzeigendeDaten()
                 Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsResult)
                     Instance.Invoke(Sub() UpdateData())
@@ -248,6 +245,9 @@ Public Class AnrMonViewModel
         If AnrMonTelefonat IsNot Nothing Then
             ' Unterscheidung der anzuzeigenden Daten
             With AnrMonTelefonat
+                ' Anruferzeit festlegen: Beginn des Telefonates
+                Zeit = .ZeitBeginn
+
                 ' Eine Telefonnummer ist nicht vorhanden 
                 If .GegenstelleTelNr.Unterdrückt Then
                     AnrMonMainInfo = Localize.LocAnrMon.strNrUnterdrückt
@@ -281,6 +281,11 @@ Public Class AnrMonViewModel
                         ' Setze die Telefonnummer als Hauptinformation
                         AnrMonMainInfo = .GegenstelleTelNr.Formatiert
                     End If
+                End If
+
+                ' Anzahl Anrufe aktualisieren
+                If .AnzahlAnrufe.AreDifferentTo(1) Then
+                    AnrMonMainInfo = $"({ .AnzahlAnrufe}x) {AnrMonMainInfo}"
                 End If
             End With
         End If

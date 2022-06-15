@@ -53,6 +53,16 @@ Imports Microsoft.Office.Interop
             SetProperty(_AnrufRichtung, Value)
         End Set
     End Property
+
+    Private _AnzahlAnrufe As Integer = 1
+    <XmlIgnore> Public Property AnzahlAnrufe As Integer
+        Get
+            Return _AnzahlAnrufe
+        End Get
+        Set
+            SetProperty(_AnzahlAnrufe, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "String"
@@ -1177,21 +1187,53 @@ Imports Microsoft.Office.Interop
 
     Private Async Sub ShowAnrMon()
 
-        Await StartSTATask(Function() As Boolean
-                               If PopUpAnrMonWPF Is Nothing Then
-                                   NLogger.Debug("Blende einen neuen Anrufmonitor ein")
-                                   ' Blende einen neuen Anrufmonitor ein
-                                   AnrMonEinblenden()
+        ' Erstelle die Liste der aktuell eingeblendeten Anrufmonitorfenster, falls noch nicht geschehen
+        If Globals.ThisAddIn.OffeneAnrMonWPF Is Nothing Then Globals.ThisAddIn.OffeneAnrMonWPF = New List(Of AnrMonWPF)
 
-                                   While AnrMonEingeblendet
-                                       AnrMonControl()
+        ' Prüfe, ob bereits ein Anrufmonitor für diese eingehende Telefonnummer eingeblendet ist
+        ' Etwas kompliziert, da die Formulare in jeweils eigenen Threads vorgehalten werden
+        ' Die Gegenstellennummer und die Eigene Nummer müssen identisch sein.
+        Dim AnrMonList = Globals.ThisAddIn.OffeneAnrMonWPF.Select(Function(AM) AM.Dispatcher.Invoke(
+                                                                  Function() CType(AM.DataContext, AnrMonViewModel).AnrMonTelefonat)).Where(
+                                                                  Function(T) T.GegenstelleTelNr.Equals(GegenstelleTelNr) And T.EigeneTelNr.Equals(EigeneTelNr))
 
-                                       Forms.Application.DoEvents()
-                                       Thread.Sleep(100)
-                                   End While
-                               End If
-                               Return False
-                           End Function)
+        If XMLData.POptionen.CBAnrMonHideMultipleCall AndAlso (Not XMLData.POptionen.CBAutoClose Or XMLData.POptionen.CBAnrMonHideCONNECT) AndAlso AnrMonList.Any Then
+
+            Try
+                ' Aktualisiere den bestehenden Anrufmonitor 
+                NLogger.Debug($"Es ist bereits {AnrMonList.Count} Anrufmonitor für die Nummer {GegenstelleTelNr.Unformatiert} vorhanden.")
+
+                With AnrMonList.First
+                    ' Setze den Zähler hoch
+                    .AnzahlAnrufe += 1
+                    ' Aktualisiere die Zeit
+                    .ZeitBeginn = ZeitBeginn
+
+                End With
+            Catch ex As Exception
+                NLogger.Warn(ex, "Bestehender Anrufmonitor wird erneut eingeblendet")
+                ShowAnrMon()
+            End Try
+
+        Else
+            Await StartSTATask(Function() As Boolean
+                                   If PopUpAnrMonWPF Is Nothing Then
+                                       NLogger.Debug("Blende einen neuen Anrufmonitor ein")
+                                       ' Blende einen neuen Anrufmonitor ein
+                                       AnrMonEinblenden()
+
+                                       While AnrMonEingeblendet
+                                           AnrMonControl()
+
+                                           Forms.Application.DoEvents()
+                                           Thread.Sleep(100)
+                                       End While
+                                   End If
+                                   Return False
+                               End Function)
+        End If
+
+        AnrMonList = Nothing
     End Sub
 
     Private Sub AnrMonControl()

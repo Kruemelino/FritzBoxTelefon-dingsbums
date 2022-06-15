@@ -44,6 +44,13 @@
                           IsChecked="{Binding OptVM.CBAnrMonHideCONNECT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strCBAnrMonHideMultipleCallInfo}" />
+
+                <CheckBox Style="{StaticResource OptCheckBox}"
+                          Content="{x:Static localize:LocOptionen.strCBAnrMonHideMultipleCall}" 
+                          IsChecked="{Binding OptVM.CBAnrMonHideMultipleCall, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                 <CheckBox Style="{StaticResource OptCheckBox}"
                           Content="{x:Static localize:LocOptionen.strJournalCBJournalBlockNr}" 
                           IsChecked="{Binding OptVM.CBAnrMonBlockNr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

@@ -191,6 +191,32 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBAnrMonHideMultipleCall As Boolean
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor bei mehrfach wiederholten Anrufen in einem Zeitfenster nicht angezeigt werden soll
+    ''' </summary>
+    Public Property CBAnrMonHideMultipleCall As Boolean
+        Get
+            Return _CBAnrMonHideMultipleCall
+        End Get
+        Set
+            SetProperty(_CBAnrMonHideMultipleCall, Value)
+        End Set
+    End Property
+
+    'Private _TBAnrMonHideMultibleCallTime As Integer
+    '''' <summary>
+    '''' Zeitfenster in dem wiederholte Anrufe nicht angezeigt werden (Minuten)
+    '''' </summary>
+    'Public Property TBAnrMonHideMultibleCallTime As Integer
+    '    Get
+    '        Return _TBAnrMonHideMultibleCallTime
+    '    End Get
+    '    Set
+    '        SetProperty(_TBAnrMonHideMultibleCallTime, Value)
+    '    End Set
+    'End Property
+
     Private _CBIsTAMMissed As Boolean = True
     ''' <summary>
     ''' Angabe, ob Anrufe, die an einen Anrufbeantworter gegangen sind, als verpasst behandelt werden sollen.

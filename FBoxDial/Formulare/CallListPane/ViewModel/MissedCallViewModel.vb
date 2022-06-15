@@ -119,6 +119,17 @@ Public Class MissedCallViewModel
         End Set
     End Property
 
+    Private _AnzahlAnrufe As Integer = 1
+    Public Property AnzahlAnrufe As Integer
+        Get
+            Return _AnzahlAnrufe
+        End Get
+        Set
+            SetProperty(_AnzahlAnrufe, Value)
+            AnzuzeigendeDaten()
+        End Set
+    End Property
+
     Private _Kontaktbild As Imaging.BitmapImage
     Public Property Kontaktbild As Imaging.BitmapImage
         Get
@@ -181,9 +192,6 @@ Public Class MissedCallViewModel
         ' Setze Anzuzeigende Werte
         With VerpasstesTelefonat
 
-            ' Anruferzeit festlegen: Beginn des Telefonates
-            Zeit = .ZeitBeginn
-
             ' Setze die anzuzeigenden Daten des Telefonates
             AnzuzeigendeDaten()
 
@@ -227,7 +235,7 @@ Public Class MissedCallViewModel
         NLogger.Trace($"MissedCallViewModel: Eigenschaft {e.PropertyName} verändert.")
         With VerpasstesTelefonat
             Select Case e.PropertyName
-                Case NameOf(Telefonat.AnruferName), NameOf(Telefonat.Firma)
+                Case NameOf(Telefonat.AnruferName), NameOf(Telefonat.Firma), NameOf(Telefonat.ZeitBeginn)
                     AnzuzeigendeDaten()
                 Case NameOf(Telefonat.OlKontakt), NameOf(Telefonat.FBTelBookKontakt), NameOf(Telefonat.TellowsResult)
                     UpdateData()
@@ -310,6 +318,10 @@ Public Class MissedCallViewModel
         If VerpasstesTelefonat IsNot Nothing Then
             ' Unterscheidung der anzuzeigenden Daten
             With VerpasstesTelefonat
+
+                ' Anruferzeit festlegen: Beginn des Telefonates
+                Zeit = .ZeitBeginn
+
                 ' Eine Telefonnummer ist nicht vorhanden 
                 If .GegenstelleTelNr.Unterdrückt Then
                     MainInfo = Localize.LocAnrMon.strNrUnterdrückt
@@ -343,6 +355,11 @@ Public Class MissedCallViewModel
                         ' Setze die Telefonnummer als Hauptinformation
                         MainInfo = .GegenstelleTelNr.Formatiert
                     End If
+                End If
+
+                ' Anzahl Anrufe aktualisieren
+                If AnzahlAnrufe.AreDifferentTo(1) Then
+                    MainInfo = $"({ AnzahlAnrufe}x) {MainInfo}"
                 End If
             End With
         End If
