@@ -21,28 +21,28 @@
         <StackPanel x:Name="MainStackPanel" >
 
             <Label Style="{StaticResource OptHintTextBlock}" 
-                    Content="{x:Static localize:LocOptionen.strConnURIInfo}"/>
+                   Content="{x:Static localize:LocOptionen.strConnURIInfo}"/>
 
             <TextBox Style="{StaticResource OptTextBox}"
-                        Tag="{x:Static localize:LocOptionen.strConnURITBCall}"
-                        Text="{Binding Connector.ConnectionUriCall, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Tag="{x:Static localize:LocOptionen.strConnURITBCall}"
+                     Text="{Binding Connector.ConnectionUriCall, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox Style="{StaticResource OptTextBox}"
-                        Tag="{x:Static localize:LocOptionen.strConnURITBCancel}"
-                        Text="{Binding Connector.ConnectionUriCancel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Tag="{x:Static localize:LocOptionen.strConnURITBCancel}"
+                     Text="{Binding Connector.ConnectionUriCancel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <CheckBox Style="{StaticResource OptCheckBox}" 
-                        Content="{x:Static localize:LocOptionen.strCBSoftPhoneSuffix}" 
-                        IsChecked="{Binding Connector.AppendSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                      Content="{x:Static localize:LocOptionen.strCBSoftPhoneSuffix}" 
+                      IsChecked="{Binding Connector.AppendSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Style="{StaticResource OptHintTextBlock}" 
-                    Content="{x:Static localize:LocOptionen.strAuthInfo}"/>
+                   Content="{x:Static localize:LocOptionen.strAuthInfo}"/>
 
-            <TextBox Style="{StaticResource OptTextBox}"
-                        Tag="{x:Static localize:LocOptionen.strUserName}"
-                        Text="{Binding Connector.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                     Tag="{x:Static localize:LocOptionen.strUserName}"
+                     Text="{Binding Connector.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strIPPhoneTBPasswort}"
+            <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strIPPhoneTBPasswort}" IsEnabled="False"
                                     Value="{Binding Path=Connector.Passwort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                     DeCryptKey="{Binding Path=OptVM.DfltIPPhoneDeCryptKey, Mode=OneWay}"/>
 
