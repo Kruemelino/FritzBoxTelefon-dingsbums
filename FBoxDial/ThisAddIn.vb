@@ -32,12 +32,13 @@ Public NotInheritable Class ThisAddIn
         ' Logging konfigurieren
         LogManager.Configuration = DefaultNLogConfig()
 
-        ' Application laden https://github.com/didzispetkus/vsto-external-resource-library
-        If Windows.Application.Current Is Nothing Then WPFApplication = New App
-        Windows.Application.Current.ShutdownMode = Windows.ShutdownMode.OnExplicitShutdown
-
         ' Outlook.Application initialisieren
         If Application.ActiveExplorer IsNot Nothing Then
+
+            ' Application laden https://github.com/didzispetkus/vsto-external-resource-library
+            If Windows.Application.Current Is Nothing Then WPFApplication = New App
+            Windows.Application.Current.ShutdownMode = Windows.ShutdownMode.OnExplicitShutdown
+
             ' Ereignishandler für StandBy / Resume
             NLogger.Debug("Füge Ereignishandler für PowerModeChanged hinzu.")
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf PowerModeChanged

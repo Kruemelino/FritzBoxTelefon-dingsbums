@@ -149,19 +149,16 @@ Imports FBoxDial.FritzBoxDefault
                     ' Füge die ermittelten Mobil-Geräte sowie integrieten Faxempfang hinzu
                     Telefoniegeräte.AddRange(Await TaskMobilFax)
 
-                    ' ISDN/DECT Rundruf, falls S0 oder DECT Geräte verfügbar 
-                    'Telefoniegeräte.AddRange(GetRundruf)
-
                     ' Ermittle TR-064 Phoneports
                     ' Für die Fritz!Box Wählhilfe nutzbare Telefone ermitteln
-                    Dim WählhilfeTelefone As List(Of Telefoniegerät) = Telefoniegeräte.FindAll(Function(Telefon) Telefon.TelTyp = TelTypen.FON Or Telefon.TelTyp = TelTypen.DECT Or Telefon.TelTyp = TelTypen.ISDN)
+                    Dim WählhilfeTelefone As List(Of Telefoniegerät) = Telefoniegeräte.FindAll(Function(Telefon) Telefon.IsFBoxDialable)
                     If WählhilfeTelefone.Any Then
                         ' Ermittle alle Phoneports via X_AVM-DE_GetPhonePort
                         ' X_AVM-DE_PhoneName Empty string to disable feature to dial a number.
                         ' Examples:
                         ' FON1: Telefon
                         ' FON2: Telefon
-                        ' ISDN: ISDN/ DECT Rundruf
+                        ' ISDN: ISDN/DECT Rundruf
                         ' DECT: Mobilteil 1 
 
                         ' Schleife durch alle wählbaren Telefone
@@ -362,9 +359,9 @@ Imports FBoxDial.FritzBoxDefault
                                                             .AnrMonID = AnrMonTelIDBase.S0,
                                                             .ID = InternBase.S0 + idx,
                                                             .Kurzwahl = .ID,
-                                                            .StrEinTelNr = New List(Of String)}
+                                                            .StrEinTelNr = New List(Of String),
+                                                            .Name = S0Tel.S0Name}
 
-                    Telefon.Name = S0Tel.S0Name
                     If Telefon.ID.AreDifferentTo(S0Tel.S0Number.ToInt) Then
                         Telefon.StrEinTelNr.Add(GetEigeneTelNr(S0Tel.S0Number)?.Einwahl)
                     End If
@@ -452,26 +449,26 @@ Imports FBoxDial.FritzBoxDefault
         Return TelList
     End Function
 
-    '''' <summary>
-    '''' Erstellt den ISDN/DECT Rundruf, sofern DECT oder S0 Geräte vorhanden sind.
-    '''' </summary>
-    '''' <returns></returns>
-    'Private Function GetRundruf() As List(Of Telefoniegerät)
-    '    Dim TelList As New List(Of Telefoniegerät)
-    '    ' Verarbeitung des Telefons: ISDN/DECT Rundruf
-    '    If Telefoniegeräte.Find(Function(T) T.TelTyp = TelTypen.ISDN Or T.TelTyp = TelTypen.DECT) IsNot Nothing Then
+#End Region
 
-    '        TelList.Add(New Telefoniegerät With {.TelTyp = TelTypen.ISDN,
-    '                                             .AnrMonID = AnrMonTelIDBase.S0,
-    '                                             .Name = "ISDN/DECT Rundruf",
-    '                                             .Intern = InternBase.S0})
+#Region "Eigenschaften zur Datenausgabe"
+    <XmlIgnore> Friend ReadOnly Property GetTelNrByID(ID As Integer) As Telefonnummer
+        Get
+            Return Telefonnummern.Find(Function(T) T.SIP.AreEqual(ID))
+        End Get
+    End Property
 
-    '        PushStatus(LogLevel.Debug, $"Telefon {TelList.First.TelTyp}: {TelList.First.AnrMonID}; {TelList.First.Name}; {TelList.First.Intern}")
+    <XmlIgnore> Friend ReadOnly Property GetTelefonByID(ID As Integer) As Telefoniegerät
+        Get
+            Return Telefoniegeräte.Find(Function(T) T.ID.AreEqual(ID))
+        End Get
+    End Property
 
-    '    End If
-    '    Return TelList
-    'End Function
-
+    <XmlIgnore> Friend ReadOnly Property GetIPTelefonByID(ID As Integer) As IPPhoneConnector
+        Get
+            Return IPTelefone.Find(Function(T) T.ConnectedPhoneID.AreEqual(ID))
+        End Get
+    End Property
 #End Region
 
 #Region "Helferfunktionen"
@@ -483,13 +480,12 @@ Imports FBoxDial.FritzBoxDefault
     ''' <returns>Telefonnummer</returns>
     Friend Function GetEigeneTelNr(TelNr As String) As Telefonnummer
         If TelNr.IsRegExMatch("^SIP\d") Then
-            Return Telefonnummern.Find(Function(T) T.SIP.AreEqual(TelNr.RegExRemove("^SIP").ToInt))
+            Return GetTelNrByID(TelNr.RegExRemove("^SIP").ToInt)
         Else
-            'Dim TelO As New Telefonnummer With {.EigeneNummer = True, .Ortskennzahl = OKZ, .Landeskennzahl = LKZ, .SetNummer = TelNr}
+            ' Standardvergleich
             Return Telefonnummern.Find(Function(Tel) Tel.Equals(TelNr))
         End If
     End Function
-
 
     ''' <summary>
     ''' Fügt eine neue eigene Telefonnummer hinzu, falls sie noch nicht exisiert, und gib sie zurück.
@@ -502,9 +498,13 @@ Imports FBoxDial.FritzBoxDefault
         AddEigeneTelNr = GetEigeneTelNr(TelNr)
 
         If AddEigeneTelNr Is Nothing Then
-            ' Es ist wichtig, dass die LKZ und die OKZ in jedem Fall übergeben werden. Führe daher das SetNummer separat aus.
-            AddEigeneTelNr = New Telefonnummer With {.EigeneNummer = True, .Überwacht = True, .Ortskennzahl = OKZ, .Landeskennzahl = LKZ, .SIP = ID.ToInt}
-            AddEigeneTelNr.SetNummer = TelNr
+            ' Es ist wichtig, dass die LKZ und die OKZ in jedem Fall übergeben werden. Führe daher das SetNummer zuletzt aus.
+            AddEigeneTelNr = New Telefonnummer With {.EigeneNummer = True,
+                                                     .Überwacht = True,
+                                                     .Ortskennzahl = OKZ,
+                                                     .Landeskennzahl = LKZ,
+                                                     .SIP = ID.ToInt,
+                                                     .SetNummer = TelNr}
 
             Telefonnummern.Add(AddEigeneTelNr)
             PushStatus(LogLevel.Debug, $"Telefonnummern: '{TelNr}' ({ID}); F: '{AddEigeneTelNr.Formatiert}'; U: '{AddEigeneTelNr.Unformatiert}'")

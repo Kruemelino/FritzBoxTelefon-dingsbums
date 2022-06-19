@@ -51,11 +51,6 @@ Public Class Telefoniegerät
     ''' </summary>
     <XmlAttribute> Public Property IsFax As Boolean
 
-    ''' <summary>
-    ''' Angabe, ob dieses Telefon bei der Wählhilfe zuletzt genutzt wurde.
-    ''' </summary>
-    <XmlAttribute> Public Property ZuletztGenutzt As Boolean
-
     Private _IsExternalTAM As Boolean
     ''' <summary>
     ''' Nutzereingabe, ob dieses Telefon ein externer Anrufbeantworter ist. Dies ist nur für FON möglich
@@ -104,14 +99,26 @@ Public Class Telefoniegerät
             ' Kein Fax oder externer TAM
             If IsFax Or IsExternalTAM Then Return False
 
+            If TelTyp = TelTypen.IP Then
+                ' Gibt es einen Connector
+                Return XMLData.PTelefonie.IPTelefone.Exists(Function(C) C.ConnectedPhoneID.AreEqual(ID))
+            End If
+
+            Return IsFBoxDialable
+
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Angabe, ob das Telefon über die Fritz!Box Wählhilfe nutzbar ist.
+    ''' </summary>
+    ''' <returns></returns>
+    <XmlIgnore> Friend ReadOnly Property IsFBoxDialable As Boolean
+        Get
             Select Case TelTyp
 
                 Case TelTypen.DECT, TelTypen.FON, TelTypen.ISDN
                     Return True
-
-                Case TelTypen.IP
-                    ' Gibt es einen Connector
-                    Return XMLData.PTelefonie.IPTelefone.Exists(Function(C) C.ConnectedPhoneID.AreEqual(ID))
 
                 Case Else
                     Return False
@@ -127,7 +134,7 @@ Public Class Telefoniegerät
         Get
             Select Case TelTyp
                 Case TelTypen.FON
-                    Return $"{TelTypen.FON}{ID}: {Name}"
+                    Return $"{TelTypen.FON}{ID + 1}: {Name}"
                 Case TelTypen.DECT
                     Return $"{TelTypen.DECT}: {Name}"
                 Case TelTypen.ISDN

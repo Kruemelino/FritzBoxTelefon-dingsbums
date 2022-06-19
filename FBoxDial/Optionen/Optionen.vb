@@ -50,13 +50,30 @@
     ''' </summary>
     <XmlElement("TBPräfix")> Public Property TBPräfix As String = String.Empty
 
+    ''' <summary>
+    ''' Abfrage nach Mobilnummern
+    ''' </summary>
     <XmlElement("CBCheckMobil")> Public Property CBCheckMobil As Boolean = True
 
+    ''' <summary>
+    ''' Rufnummernunterdrückung
+    ''' </summary>
     <XmlElement("CBCLIR")> Public Property CBCLIR As Boolean = False
 
+    ''' <summary>
+    ''' Automatisches Schließen des Wählclient
+    ''' </summary>
     <XmlElement("CBCloseWClient")> Public Property CBCloseWClient As Boolean = True
 
+    ''' <summary>
+    ''' Dauer in Sekunden, die der Wählclient noch offen bleiben soll.
+    ''' </summary>
     <XmlElement("TBWClientEnblDauer")> Public Property TBWClientEnblDauer As Integer = 10
+
+    ''' <summary>
+    ''' Zuletzt genutzte TelefonID der Wählhilfe
+    ''' </summary>
+    <XmlElement("UsedTelefonID")> Public Property UsedTelefonID As Integer
 #End Region
 
 #Region "Grundeinstlleungen - Tweaks"

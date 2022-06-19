@@ -11,7 +11,6 @@ Public Class Telefonnummer
     <XmlElement> Public Property Nummer As String
     <XmlAttribute> Public Property EigeneNummer As Boolean
     <XmlAttribute> Public Property Überwacht As Boolean
-    <XmlAttribute> Public Property IstGültig As Boolean = True
     <XmlElement> Public Property Landeskennzahl As String
     <XmlElement> Public Property Ortskennzahl As String
     <XmlElement> Public Property Einwahl As String
@@ -37,13 +36,19 @@ Public Class Telefonnummer
                 Unformatiert = NurZiffern(Nummer)
 
                 ' Ermittle die Kennzahlen LKZ und ONKZ aus der Datei
-                SetTelNrTeile()
+                ' Gibt True zurück, wenn die LKZ und ONKZ ermittelt werden konnten.
+                If SetTelNrTeile() Then
+                    ' Formatiere die Telefonnummer
+                    Formatiert = FormatTelNr()
 
-                ' Formatiere die Telefonnummer
-                Formatiert = FormatTelNr()
+                    ' Ermittle die unformatierte Telefonnummer
+                    Unformatiert = NurZiffern(Formatiert)
+                Else
+                    ' Die Nummer ist ungültig
+                    NLogger.Info($"Formatierung der ungültigen Telefonnummer '{Nummer}' nicht durchgeführt.")
+                    Formatiert = Unformatiert
+                End If
 
-                ' Ermittle die unformatierte Telefonnummer
-                Unformatiert = NurZiffern(Formatiert)
             End If
             NLogger.Trace($"Nummer erfasst: '{Value}'; '{EigeneNummer}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
         End Set
@@ -139,14 +144,13 @@ Public Class Telefonnummer
     ''' <summary>
     ''' Zerlegt die Telefonnummer in ihre Bestandteile.
     ''' </summary>
-    Private Sub SetTelNrTeile()
+    Private Function SetTelNrTeile() As Boolean
         Dim _LKZ As Landeskennzahl = Nothing
         Dim _ONKZ As Ortsnetzkennzahlen = Nothing
-        Dim TelNr As String
+
+        SetTelNrTeile = True
 
         If Unformatiert.IsNotStringNothingOrEmpty AndAlso Unformatiert.Length.IsLarger(2) Then
-            ' Beginne mit der unformatierten Nummer
-            TelNr = Unformatiert
 
             ' Ermittle die Vorwahlen
             Globals.ThisAddIn.PVorwahlen.TelNrKennzahlen(Me, _LKZ, _ONKZ)
@@ -160,7 +164,7 @@ Public Class Telefonnummer
                     AreaCode = .Code
                 End With
             Else
-                IstGültig = False
+                SetTelNrTeile = False
                 NLogger.Warn($"Landeskennzahl für {Unformatiert} konnte nicht ermittelt werden.")
             End If
 
@@ -173,12 +177,12 @@ Public Class Telefonnummer
                     Location = .Name
                 End With
             Else
-                IstGültig = False
+                SetTelNrTeile = False
                 NLogger.Warn($"Ortsnetzkennzahl für {Unformatiert} konnte nicht ermittelt werden.")
             End If
 
             ' Einwahl: Landesvorwahl am Anfang entfernen, Ortsvorwahl am Ende Entfernen
-            Einwahl = TelNr.RegExRemove($"^{PDfltVAZ}{Landeskennzahl}?").RegExRemove($"^0?{Ortskennzahl}")
+            Einwahl = Unformatiert.RegExRemove($"^{PDfltVAZ}{Landeskennzahl}?").RegExRemove($"^0?{Ortskennzahl}")
 
             ' Suche eine Durchwahl
             If Nummer.Contains("-") Then
@@ -190,7 +194,7 @@ Public Class Telefonnummer
             End If
 
         End If
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Gruppiert den Telefonnummernteil in Blöcke von 2 Ziffern
@@ -221,92 +225,84 @@ Public Class Telefonnummer
         Dim tmpLandesvorwahl As String
         Dim tmpGruppieren As Boolean = XMLData.POptionen.CBTelNrGruppieren
 
-        If Unterdrückt Then ' Rückgabe Leerstring, falls die Nummer unterdrückt ist.
-            Return String.Empty
+        FormatTelNr = XMLData.POptionen.TBTelNrMaske
 
-        ElseIf IstGültig Then ' Führe eine Rufnummernformatierung durch, wenn die Nummer gültig ist.
-            FormatTelNr = XMLData.POptionen.TBTelNrMaske
+        ' Wenn die Maske keine Durchwahl vorgesehen hat, dann darf die  Druchwahl nicht vergessen werden. Sie muss an die Einwahl angehangen werden.
+        If Not FormatTelNr.Contains("%D") Then FormatTelNr = Replace(FormatTelNr, "%N", "%N%D")
 
-            ' Wenn die Maske keine Durchwahl vorgesehen hat, dann darf die  Druchwahl nicht vergessen werden. Sie muss an die Einwahl angehangen werden.
-            If Not FormatTelNr.Contains("%D") Then FormatTelNr = Replace(FormatTelNr, "%N", "%N%D")
+        ' Wenn Keine Durchwahl der Telefonnummer vorhanden ist dann entferne in der Maske alles, was hinter der Einwahl befindet
+        If Durchwahl.IsStringNothingOrEmpty Then FormatTelNr = FormatTelNr.RegExReplace("%N.*", "%N")
 
-            ' Wenn Keine Durchwahl der Telefonnummer vorhanden ist dann entferne in der Maske alles, was hinter der Einwahl befindet
-            If Durchwahl.IsStringNothingOrEmpty Then FormatTelNr = FormatTelNr.RegExReplace("%N.*", "%N")
+        ' Setze die Ortsvorwahl, wenn immer eine internale Nummer erzeugt werden soll UND
+        '                        wenn die Landesvorwahl der Nummer leer ist ODER gleich der eigestellten Landesvorwahl ist UND
+        '                        die Ortsvorwahl nicht vorhanden ist
 
-            ' Setze die Ortsvorwahl, wenn immer eine internale Nummer erzeugt werden soll UND
-            '                        wenn die Landesvorwahl der Nummer leer ist ODER gleich der eigestellten Landesvorwahl ist UND
-            '                        die Ortsvorwahl nicht vorhanden ist
-
-            If XMLData.POptionen.CBintl And IstInland And Ortskennzahl.IsStringNothingOrEmpty Then
-                Ortskennzahl = XMLData.PTelefonie.OKZ
-            End If
-
-            If Landeskennzahl.IsEqual(XMLData.PTelefonie.LKZ) Then
-                tmpOrtsvorwahl = Ortskennzahl
-                ' Wenn die Landeskennzahl gleich der hinterlegten Kennzahl entspricht: Inland
-                If XMLData.POptionen.CBintl Then
-                    ' Eine Ortsvorwahl muss vorhanden sein
-                    If Ortskennzahl.IsStringNothingOrEmpty Then tmpOrtsvorwahl = XMLData.PTelefonie.OKZ
-                    ' Entferne die führende Null OKZ Prefix
-                    tmpOrtsvorwahl = tmpOrtsvorwahl.RegExRemove("^(0)+")
-                    ' Die Landesvorwahl muss gesetzt sein
-                    tmpLandesvorwahl = Landeskennzahl
-                Else
-                    ' Keine Landesvorwahl ausgeben
-                    tmpLandesvorwahl = String.Empty
-                    ' Ortsvorwahl mit führender Null ausgeben
-                    tmpOrtsvorwahl = $"0{tmpOrtsvorwahl}"
-                End If
-            Else
-                ' Wenn die Landeskennzahl nicht der hinterlegten Kennzahl entspricht: Ausland
-                tmpLandesvorwahl = Landeskennzahl
-                tmpOrtsvorwahl = Ortskennzahl
-
-                ' Sonderbehandlungen für internationale Nummern
-                Select Case Landeskennzahl
-                    Case "1" ' Nordamerikanischer Nummerierungsplan NANP
-                        FormatTelNr = PDfltMaskeNANP
-                        ' NANP - Nummern werden nicht gruppiert
-                        tmpGruppieren = False
-
-                        ' Wenn keine Ortskennzahl gefunden wurde, dann gehe nach dem Schema vor 
-                        If Ortskennzahl.IsStringNothingOrEmpty Then
-                            ' In der Regel sind die NPA immer 3 Ziffern lang
-                            Ortskennzahl = Left(Einwahl, 3)
-                            tmpOrtsvorwahl = Ortskennzahl
-                            Einwahl = Mid(Einwahl, 4)
-                        End If
-
-                        ' Wenn es keine Durchwahl gibt, dann teile die Einwahl nach der dritten Ziffer
-                        If Durchwahl.IsStringNothingOrEmpty Then
-                            Durchwahl = Mid(Einwahl, 4)
-                            Einwahl = Left(Einwahl, 3)
-                        End If
-
-                    Case "39" ' Italen: Ortsvorwahl ist immer mitzuwählen
-                        tmpOrtsvorwahl = If(Ortskennzahl.StartsWith("0"), Ortskennzahl, $"0{Ortskennzahl}")
-                    Case Else
-                End Select
-            End If
-
-            If Ortskennzahl.IsStringNothingOrEmpty Then
-                ' Maske %L (%O) %N - %D
-                ' Wenn keine Ortskennzahl vorhanden ist, dann muss diese bei der Formatierung nicht berücksichtigt werden.
-                ' Die Ortskennzahl ist dann in der Einwahl enthalten.
-                ' Keine Ortskennzahl: Alles zwischen %L und %N entfernen
-                FormatTelNr = FormatTelNr.RegExReplace("[^%L]*%O[^%N]*", If(FormatTelNr.Contains("%L "), Chr(32), String.Empty))
-            End If
-
-            ' Füge das + bei Landvoran
-            If tmpLandesvorwahl.IsNotStringNothingOrEmpty Then tmpLandesvorwahl = $"+{tmpLandesvorwahl}"
-
-            'Finales Zusammenstellen
-            Return FormatTelNr.Replace("%L", tmpLandesvorwahl).Replace("%O", Gruppiere(tmpOrtsvorwahl, tmpGruppieren)).Replace("%N", Gruppiere(Einwahl, tmpGruppieren)).Replace("%D", Gruppiere(Durchwahl, tmpGruppieren)).Trim
-        Else
-            ' Die Nummer ist ungültig: Gib die unformatierte Nummer zurück
-            NLogger.Info($"Formatierung der ungültigen Telefonnummer '{Nummer}' nicht durchgeführt.")
-            Return Unformatiert
+        If XMLData.POptionen.CBintl And IstInland And Ortskennzahl.IsStringNothingOrEmpty Then
+            Ortskennzahl = XMLData.PTelefonie.OKZ
         End If
+
+        If Landeskennzahl.IsEqual(XMLData.PTelefonie.LKZ) Then
+            tmpOrtsvorwahl = Ortskennzahl
+            ' Wenn die Landeskennzahl gleich der hinterlegten Kennzahl entspricht: Inland
+            If XMLData.POptionen.CBintl Then
+                ' Eine Ortsvorwahl muss vorhanden sein
+                If Ortskennzahl.IsStringNothingOrEmpty Then tmpOrtsvorwahl = XMLData.PTelefonie.OKZ
+                ' Entferne die führende Null OKZ Prefix
+                tmpOrtsvorwahl = tmpOrtsvorwahl.RegExRemove("^(0)+")
+                ' Die Landesvorwahl muss gesetzt sein
+                tmpLandesvorwahl = Landeskennzahl
+            Else
+                ' Keine Landesvorwahl ausgeben
+                tmpLandesvorwahl = String.Empty
+                ' Ortsvorwahl mit führender Null ausgeben
+                tmpOrtsvorwahl = $"0{tmpOrtsvorwahl}"
+            End If
+        Else
+            ' Wenn die Landeskennzahl nicht der hinterlegten Kennzahl entspricht: Ausland
+            tmpLandesvorwahl = Landeskennzahl
+            tmpOrtsvorwahl = Ortskennzahl
+
+            ' Sonderbehandlungen für internationale Nummern
+            Select Case Landeskennzahl
+                Case "1" ' Nordamerikanischer Nummerierungsplan NANP
+                    FormatTelNr = PDfltMaskeNANP
+                    ' NANP - Nummern werden nicht gruppiert
+                    tmpGruppieren = False
+
+                    ' Wenn keine Ortskennzahl gefunden wurde, dann gehe nach dem Schema vor 
+                    If Ortskennzahl.IsStringNothingOrEmpty Then
+                        ' In der Regel sind die NPA immer 3 Ziffern lang
+                        Ortskennzahl = Left(Einwahl, 3)
+                        tmpOrtsvorwahl = Ortskennzahl
+                        Einwahl = Mid(Einwahl, 4)
+                    End If
+
+                    ' Wenn es keine Durchwahl gibt, dann teile die Einwahl nach der dritten Ziffer
+                    If Durchwahl.IsStringNothingOrEmpty Then
+                        Durchwahl = Mid(Einwahl, 4)
+                        Einwahl = Left(Einwahl, 3)
+                    End If
+
+                Case "39" ' Italen: Ortsvorwahl ist immer mitzuwählen
+                    tmpOrtsvorwahl = If(Ortskennzahl.StartsWith("0"), Ortskennzahl, $"0{Ortskennzahl}")
+                Case Else
+            End Select
+        End If
+
+        If Ortskennzahl.IsStringNothingOrEmpty Then
+            ' Maske %L (%O) %N - %D
+            ' Wenn keine Ortskennzahl vorhanden ist, dann muss diese bei der Formatierung nicht berücksichtigt werden.
+            ' Die Ortskennzahl ist dann in der Einwahl enthalten.
+            ' Keine Ortskennzahl: Alles zwischen %L und %N entfernen
+            FormatTelNr = FormatTelNr.RegExReplace("[^%L]*%O[^%N]*", If(FormatTelNr.Contains("%L "), Chr(32), String.Empty))
+        End If
+
+        ' Füge das + bei Landvoran
+        If tmpLandesvorwahl.IsNotStringNothingOrEmpty Then tmpLandesvorwahl = $"+{tmpLandesvorwahl}"
+
+        'Finales Zusammenstellen
+        Return FormatTelNr.Replace("%L", tmpLandesvorwahl).Replace("%O", Gruppiere(tmpOrtsvorwahl, tmpGruppieren)).Replace("%N", Gruppiere(Einwahl, tmpGruppieren)).Replace("%D", Gruppiere(Durchwahl, tmpGruppieren)).Trim
+
     End Function
 #End Region
 

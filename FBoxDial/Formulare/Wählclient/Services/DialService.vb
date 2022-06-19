@@ -28,10 +28,8 @@ Public Class DialService
     Private Function GetDialabePhones() As IEnumerable(Of Telefoniegerät) Implements IDialService.GetDialabePhones
         If XMLData.PTelefonie.Telefoniegeräte IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte.Any Then
             Return XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) TG.IsDialable)
-
         Else
             Return Nothing
-
         End If
 
     End Function
@@ -39,17 +37,15 @@ Public Class DialService
     Private Function GetSelectedPhone() As Telefoniegerät Implements IDialService.GetSelectedPhone
         If XMLData.PTelefonie.Telefoniegeräte IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte.Any Then
 
-            If XMLData.PTelefonie.Telefoniegeräte.Exists(Function(TG) TG.StdTelefon) Then
-                ' Ausgewähltes Standardgerät
-                GetSelectedPhone = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.StdTelefon)
+            ' Ausgewähltes Standardgerät
+            GetSelectedPhone = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.StdTelefon)
 
-            Else
+            If GetSelectedPhone Is Nothing Then
                 ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das zuletzt genutzte Telefon
-                GetSelectedPhone = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.ZuletztGenutzt)
-
+                GetSelectedPhone = XMLData.PTelefonie.GetTelefonByID(XMLData.POptionen.UsedTelefonID)
             End If
-        Else
 
+        Else
             Return Nothing
         End If
     End Function

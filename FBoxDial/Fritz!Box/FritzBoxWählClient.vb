@@ -137,7 +137,7 @@ Public Class FritzBoxWählClient
         If Telefon.IsIPPhone Then
 
             ' Finde einen Connector
-            Dim Connector As IPPhoneConnector = XMLData.PTelefonie.IPTelefone.FindLast(Function(C) C.ConnectedPhoneID.AreEqual(Telefon.ID))
+            Dim Connector As IPPhoneConnector = XMLData.PTelefonie.GetIPTelefonByID(Telefon.ID)
 
             ' Über IPPhone Wählcommando absetzen
             If Connector IsNot Nothing Then Erfolreich = Await Connector.Dial(DialCode, Abbruch)
@@ -159,14 +159,7 @@ Public Class FritzBoxWählClient
             ' Einstellungen (Welcher Anschluss, CLIR...) speichern
             XMLData.POptionen.CBCLIR = CLIR
             ' Standard-Gerät speichern
-
-            If Not Telefon.ZuletztGenutzt Then
-                ' Entferne das Flag bei allen anderen Geräten
-                ' (eigentlich reicht es, das Flag bei dem einen Gerät zu entfernen. Sicher ist sicher.
-                XMLData.PTelefonie.Telefoniegeräte.ForEach(Sub(TE) TE.ZuletztGenutzt = False)
-                ' Flag setzen
-                Telefon.ZuletztGenutzt = True
-            End If
+            XMLData.POptionen.UsedTelefonID = Telefon.ID
 
             ' Timer zum automatischen Schließen des Fensters starten
             If Not Abbruch And XMLData.POptionen.CBCloseWClient Then WPFWindow.StarteAusblendTimer(TimeSpan.FromSeconds(XMLData.POptionen.TBWClientEnblDauer))

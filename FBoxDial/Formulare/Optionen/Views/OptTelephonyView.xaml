@@ -72,9 +72,9 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <RadioButton GroupName="Telefone" HorizontalAlignment="Center" 
-                                             IsChecked="{Binding Path=StdTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                             Style="{StaticResource CheckBoxRadioButton}"
-                                             Visibility="{Binding Path=IsDialable, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                 Style="{StaticResource CheckBoxRadioButton}"
+                                                 IsChecked="{Binding Path=StdTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                                  
+                                                 Visibility="{Binding Path=IsDialable, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

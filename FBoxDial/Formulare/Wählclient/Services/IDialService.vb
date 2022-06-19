@@ -8,7 +8,7 @@
     ''' <item>FON</item>
     ''' <item>DECT</item>
     ''' <item>ISDN/S0</item>
-    ''' <item>Phoner/MicroSIP</item>
+    ''' <item>IP-Telefone, die einen Connector haben</item>
     ''' </list>
     ''' </summary>
     ''' <returns>Auflistung von Telefoniegeräten</returns>
