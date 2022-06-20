@@ -986,7 +986,7 @@ Hier werden die selben Funktionen verwendet: Im Journal und der Wahlwiederholung
     <comment>OptTestView</comment>
   </data>
   <data name="strTestAnrufmonitorHead" xml:space="preserve">
-    <value>Test des Anrufmonitors</value>
+    <value>Test: Anrufmonitor</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestInfo" xml:space="preserve">
@@ -998,7 +998,7 @@ Hier werden die selben Funktionen verwendet: Im Journal und der Wahlwiederholung
     <comment>OptTestView</comment>
   </data>
   <data name="strTestKontaktsucheInfo" xml:space="preserve">
-    <value>Im Folgenden kann die korrekte Umsetzung der Kontaktsuche in den gewälten Outlook Kontoaktordnern getestet werden.
+    <value>Im Folgenden kann die korrekte Umsetzung der Kontaktsuche in den gewälten Outlook Kontaktordnern getestet werden.
 Bei erfolgreicher Suche wird der gefundene Kontakt eingeblendet.</value>
     <comment>OptTestView</comment>
   </data>
@@ -1016,19 +1016,6 @@ Bei erfolgreicher Suche wird der gefundene Kontakt eingeblendet.</value>
   </data>
   <data name="strTestLKZName" xml:space="preserve">
     <value>Name des Landes</value>
-    <comment>OptTestView</comment>
-  </data>
-  <data name="strTestLoginHead" xml:space="preserve">
-    <value>Test: Login Fritz!Box</value>
-    <comment>OptTestView</comment>
-  </data>
-  <data name="strTestLoginInfo" xml:space="preserve">
-    <value>Im Folgenden kann das Login-Verfahren getestet werden.
-Seit FRITZ!OS 7.24 ist eine Anmeldung auf der Fritz!Box nur noch mit Benutzername und Kennwort möglich. Wenn bisher nur eine Anmeldung allein mit Passwort erfolgte, wurde automatisch ein Benutzer erstellt.</value>
-    <comment>OptTestView</comment>
-  </data>
-  <data name="strTestLoginLoadUserList" xml:space="preserve">
-    <value>Lade eingerichtete Benutzer der Fritz!Box</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestNrUnterdrückt" xml:space="preserve">

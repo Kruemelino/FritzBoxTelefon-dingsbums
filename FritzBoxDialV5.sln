@@ -23,9 +23,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilterDataGrid", "..\..\DataGridFilter\FilterDataGrid\FilterDataGrid.csproj", "{1284F448-055D-49B6-9A1B-81E9BBF447C8}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\..\DataGridFilter\Shared\Shared.projitems*{1284f448-055d-49b6-9a1b-81e9bbf447c8}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +31,9 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.All|Any CPU.ActiveCfg = Release|Any CPU
 		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.All|Any CPU.Build.0 = Release|Any CPU
-		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.All|Any CPU.ActiveCfg = Release|Any CPU
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.All|Any CPU.Build.0 = Release|Any CPU
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -46,27 +42,27 @@ Global
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.All|Any CPU.ActiveCfg = Debug|Any CPU
 		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.All|Any CPU.Build.0 = Debug|Any CPU
-		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.All|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.All|Any CPU.Build.0 = Debug|Any CPU
-		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.All|Any CPU.ActiveCfg = Debug|Any CPU
 		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.All|Any CPU.Build.0 = Debug|Any CPU
-		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7AA8846E-6F14-4C7F-8E6D-0398DF916635}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\DataGridFilter\Shared\Shared.projitems*{1284f448-055d-49b6-9a1b-81e9bbf447c8}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

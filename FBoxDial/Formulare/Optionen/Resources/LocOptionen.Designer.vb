@@ -1972,7 +1972,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Test des Anrufmonitors ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Test: Anrufmonitor ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestAnrufmonitorHead() As String
             Get
@@ -1999,7 +1999,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Im Folgenden kann die korrekte Umsetzung der Kontaktsuche in den gewälten Outlook Kontoaktordnern getestet werden.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Im Folgenden kann die korrekte Umsetzung der Kontaktsuche in den gewälten Outlook Kontaktordnern getestet werden.
         '''Bei erfolgreicher Suche wird der gefundene Kontakt eingeblendet. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTestKontaktsucheInfo() As String
@@ -2041,34 +2041,6 @@ Namespace Localize
         Public Shared ReadOnly Property strTestLKZName() As String
             Get
                 Return ResourceManager.GetString("strTestLKZName", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Test: Login Fritz!Box ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTestLoginHead() As String
-            Get
-                Return ResourceManager.GetString("strTestLoginHead", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Im Folgenden kann das Login-Verfahren getestet werden.
-        '''Seit FRITZ!OS 7.24 ist eine Anmeldung auf der Fritz!Box nur noch mit Benutzername und Kennwort möglich. Wenn bisher nur eine Anmeldung allein mit Passwort erfolgte, wurde automatisch ein Benutzer erstellt. ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTestLoginInfo() As String
-            Get
-                Return ResourceManager.GetString("strTestLoginInfo", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Lade eingerichtete Benutzer der Fritz!Box ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTestLoginLoadUserList() As String
-            Get
-                Return ResourceManager.GetString("strTestLoginLoadUserList", resourceCulture)
             End Get
         End Property
         
