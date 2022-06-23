@@ -18,6 +18,8 @@ Public Interface IIPPhoneConnector
     Property ConnectionUriCall As String
     Property ConnectionUriCancel As String
 
+    Property AuthenticationRequired As Boolean
+    'Property AuthenticationType As IPPhoneAuthType
     Property UserName As String
     Property Passwort As String
 

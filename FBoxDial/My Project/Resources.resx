@@ -139,6 +139,9 @@
   <data name="strDefShortName" xml:space="preserve">
     <value>FritzOutlookV5</value>
   </data>
+  <data name="strDfltAuthTestDeCryptKey" xml:space="preserve">
+    <value>ZugangAuthTest</value>
+  </data>
   <data name="strDfltDeCryptKey" xml:space="preserve">
     <value>ZugangV5</value>
   </data>

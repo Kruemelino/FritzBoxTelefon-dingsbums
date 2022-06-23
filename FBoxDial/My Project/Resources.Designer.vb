@@ -165,6 +165,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die ZugangAuthTest ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDfltAuthTestDeCryptKey() As String
+            Get
+                Return ResourceManager.GetString("strDfltAuthTestDeCryptKey", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die ZugangV5 ähnelt.
         '''</summary>
         Public ReadOnly Property strDfltDeCryptKey() As String

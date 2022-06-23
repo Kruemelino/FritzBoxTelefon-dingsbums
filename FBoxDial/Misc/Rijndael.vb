@@ -163,9 +163,45 @@ Friend Class Rijndael
     ''' </summary>
     ''' <param name="secureString">Verschlüsselte Zeichenfolge</param>
     ''' <param name="Zeichencodierung">Zeichencodierung</param>
+    ''' <param name="AlgorithmName">Name des Hash-Algorithmus</param>
     ''' <param name="Präfix">Optionaler Präfix, welcher vor dem erstellen des Hashes dem <see cref="SecureString"/> vorangestellt wird.</param>
-    ''' <returns></returns>
-    Friend Function SecureStringToMD5(secureString As SecureString, Zeichencodierung As Encoding, Optional Präfix As String = "") As String
+    ''' <returns>MD5 String</returns>
+    Friend Function SecureStringToHash(secureString As SecureString, Zeichencodierung As Encoding, AlgorithmName As String, Optional Präfix As String = "") As String
+
+        If secureString IsNot Nothing Then
+            Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
+            Dim BufferPräfix As Byte() = Zeichencodierung.GetBytes(Präfix)
+            Dim Buffer(BufferSecuredString.Length + BufferPräfix.Length - 1) As Byte
+
+            Try
+
+                BufferPräfix.CopyTo(Buffer, 0)
+                BufferSecuredString.CopyTo(Buffer, BufferPräfix.Length)
+
+                Return HashByteArray(AlgorithmName, Buffer)
+
+            Finally
+                If BufferSecuredString IsNot Nothing Then Array.Clear(BufferSecuredString, 0, BufferSecuredString.Length)
+                If Buffer IsNot Nothing Then Array.Clear(Buffer, 0, Buffer.Length)
+            End Try
+
+        Else
+            Return String.Empty
+        End If
+
+    End Function
+
+    Private Function HashByteArray(AlgorithmName As String, Buffer As Byte()) As String
+        Using Algorithm As HashAlgorithm = HashAlgorithm.Create(AlgorithmName)
+            Return String.Concat(Algorithm.ComputeHash(Buffer).Select(Function(x) x.ToString("x2")))
+        End Using
+    End Function
+
+    Friend Function StringToHash(input As String, AlgorithmName As String, Zeichencodierung As Encoding) As String
+        Return HashByteArray(AlgorithmName, Zeichencodierung.GetBytes(input))
+    End Function
+
+    Friend Function SecureStringToBase64String(secureString As SecureString, Zeichencodierung As Encoding, Optional Präfix As String = "") As String
 
         If secureString IsNot Nothing Then
             Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
@@ -176,13 +212,7 @@ Friend Class Rijndael
                 BufferPräfix.CopyTo(Buffer, 0)
                 BufferSecuredString.CopyTo(Buffer, BufferPräfix.Length)
 
-                Using md5 As MD5 = New MD5CryptoServiceProvider
-                    Dim sBuilder As New StringBuilder()
-                    For Each b As Byte In md5.ComputeHash(Buffer)
-                        sBuilder.Append(b.ToString("x2"))
-                    Next
-                    Return sBuilder.ToString()
-                End Using
+                Return Convert.ToBase64String(Buffer)
 
             Finally
                 If BufferSecuredString IsNot Nothing Then Array.Clear(BufferSecuredString, 0, BufferSecuredString.Length)

@@ -376,3 +376,10 @@ Public Enum IPPhoneConnectorType
     <LocalizedDescription("IPConnURI", GetType(resEnum))>
     <XmlEnum> URI
 End Enum
+
+'<TypeConverter(GetType(EnumDescriptionTypeConverter))>
+'Public Enum IPPhoneAuthType
+'    <LocalizedDescription("IPPhoneAuthSnom", GetType(resEnum))>
+'    <XmlEnum> Snom
+
+'End Enum

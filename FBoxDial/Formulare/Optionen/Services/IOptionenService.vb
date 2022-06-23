@@ -61,4 +61,8 @@ Public Interface IOptionenService
                         clir As Boolean,
                         AnrMonGeräteID As Integer)
 #End Region
+
+#Region "Test http Authentifikation"
+    Function StartAuthTest(Uri As String, UserName As String, Passwort As String) As Task(Of String)
+#End Region
 End Interface

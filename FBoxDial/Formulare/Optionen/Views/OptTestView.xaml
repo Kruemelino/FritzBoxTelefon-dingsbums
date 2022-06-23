@@ -171,5 +171,30 @@
             </StackPanel>
         </Expander>
 
+        <Expander Header="{x:Static localize:LocOptionen.strTestAuthHead}">
+            <StackPanel>
+
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTestAuthURI}"
+                         Text="{Binding TBAuthUri, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTestAuthUserName}"
+                         Text="{Binding TBAuthUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strTestAuthPassword}"
+                                        Value="{Binding Path=TBAuthPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        DeCryptKey="{Binding Path=DfltAuthDeCryptKey, Mode=OneWay}"/>
+
+                <Button Height="25"
+                        Content="{x:Static localize:LocOptionen.strTestAuthStart}" 
+                        Margin="4"
+                        Command="{Binding TestAuthCommand}" />
+
+                <TextBox Style="{StaticResource ResultTextBox}"
+                         Text="{Binding TBAuthResponse, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+        </Expander>
     </StackPanel>
 </UserControl>

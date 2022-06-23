@@ -63,7 +63,10 @@ Friend Module Phoner
                                         Dim Response As String
                                         Using Crypter As New Rijndael
                                             With Crypter
-                                                Response = .SecureStringToMD5(.DecryptString(Connector.Passwort, My.Resources.strDfltPhonerDeCryptKey), Encoding.ASCII, Challange).ToUpper
+                                                Response = .SecureStringToHash(.DecryptString(Connector.Passwort, My.Resources.strDfltPhonerDeCryptKey),
+                                                                               Encoding.ASCII,
+                                                                               System.Security.Cryptography.HashAlgorithmName.MD5.Name,
+                                                                               Challange).ToUpper
                                             End With
                                         End Using
                                         NLogger.Debug($"Phoner-Challange: {Challange}, Phoner-Response: {Response}")

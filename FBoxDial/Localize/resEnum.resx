@@ -285,6 +285,10 @@
     <value>URI</value>
     <comment>TypeIPPhoneConnection</comment>
   </data>
+  <data name="IPPhoneAuthSnom" xml:space="preserve">
+    <value>Snom (Digest)</value>
+    <comment>TypeIPPhoneAuth</comment>
+  </data>
   <data name="ISDNNumber" xml:space="preserve">
     <value>ISDN</value>
     <comment>Outlook</comment>

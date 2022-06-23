@@ -86,7 +86,9 @@ Public Class OptTellowsViewModel
     Private Async Sub LadeAccountDaten(o As Object)
         Using Crypter As New Rijndael
             With Crypter
-                TellowsPartnerInfo = Await DatenService.GetTellowsAccountData(.SecureStringToMD5(.DecryptString(OptVM.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey), Encoding.Default))
+                TellowsPartnerInfo = Await DatenService.GetTellowsAccountData(.SecureStringToHash(.DecryptString(OptVM.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey),
+                                                                                                  Encoding.Default,
+                                                                                                  Security.Cryptography.HashAlgorithmName.MD5.Name))
             End With
             If TellowsPartnerInfo Is Nothing Then
                 TellowsPartnerInfo = New TellowsPartnerInfo With {.Info = Localize.LocOptionen.strTellowsFehlerPartnerDaten}
@@ -101,7 +103,9 @@ Public Class OptTellowsViewModel
         Using Crypter As New Rijndael
             With Crypter
                 ' Setze Ergebnis
-                TellowsResponse = Await DatenService.GetTellowsLiveAPIData(TBTestTellowsInput, .SecureStringToMD5(.DecryptString(OptVM.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey), Encoding.Default))
+                TellowsResponse = Await DatenService.GetTellowsLiveAPIData(TBTestTellowsInput, .SecureStringToHash(.DecryptString(OptVM.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey),
+                                                                                                                   Encoding.Default,
+                                                                                                                   Security.Cryptography.HashAlgorithmName.MD5.Name))
             End With
         End Using
 

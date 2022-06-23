@@ -13,7 +13,6 @@ Friend Module IPPhoneURI
 
             ' Wählkommando vorbereiten
             If Hangup Then
-
                 RequestMessage.RequestUri = New Uri(Connector.ConnectionUriCancel)
 
                 NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
@@ -26,7 +25,22 @@ Friend Module IPPhoneURI
                 NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneErfolgreich, DialCode, RequestMessage.RequestUri.AbsoluteUri))
             End If
 
-            NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetString(RequestMessage, Encoding.UTF8))
+
+            If Connector.AuthenticationRequired Then
+                'Select Case Connector.AuthenticationType
+                '    Case IPPhoneAuthType.Snom
+                NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetStringWithAuth(RequestMessage, Encoding.UTF8, Connector.UserName, Connector.Passwort, My.Resources.strDfltAuthTestDeCryptKey))
+
+                '        'Case IPPhoneAuthType.Grandstream
+
+
+                'End Select
+
+            Else
+                ' Eine Authentifizierung ist nicht nötig
+                NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetString(RequestMessage, Encoding.UTF8))
+
+            End If
 
             ' Gib Rückmeldung, damit Wählclient kein Fehler ausgibt
             Return True

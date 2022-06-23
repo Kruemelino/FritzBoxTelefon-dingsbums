@@ -30,6 +30,27 @@ Public Class IPPhoneConnector
         End Set
     End Property
 
+#Region "Authentication"
+    Private _AuthenticationRequired As Boolean = True
+    Public Property AuthenticationRequired As Boolean Implements IIPPhoneConnector.AuthenticationRequired
+        Get
+            Return _AuthenticationRequired
+        End Get
+        Set
+            SetProperty(_AuthenticationRequired, Value)
+        End Set
+    End Property
+
+    'Private _AuthenticationType As IPPhoneAuthType
+    'Public Property AuthenticationType As IPPhoneAuthType Implements IIPPhoneConnector.AuthenticationType
+    '    Get
+    '        Return _AuthenticationType
+    '    End Get
+    '    Set
+    '        SetProperty(_AuthenticationType, Value)
+    '    End Set
+    'End Property
+
     Private _UserName As String
     Public Property UserName As String Implements IIPPhoneConnector.UserName
         Get
@@ -49,7 +70,7 @@ Public Class IPPhoneConnector
             SetProperty(_Passwort, Value)
         End Set
     End Property
-
+#End Region
 
     Private _AppendSuffix As Boolean
     Public Property AppendSuffix As Boolean Implements IIPPhoneConnector.AppendSuffix
@@ -61,6 +82,7 @@ Public Class IPPhoneConnector
         End Set
     End Property
     Public ReadOnly Property IPPhoneReady As Boolean Implements IIPPhoneConnector.IPPhoneReady
+
 #End Region
 
     Friend Async Function Dial(DialCode As String, Hangup As Boolean) As Threading.Tasks.Task(Of Boolean) Implements IIPPhoneConnector.Dial

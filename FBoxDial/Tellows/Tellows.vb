@@ -28,7 +28,8 @@ Friend Class Tellows
     Public Sub New()
         Using Crypter As New Rijndael
             With Crypter
-                XAuthToken = .SecureStringToMD5(.DecryptString(XMLData.POptionen.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey), Encoding.Default)
+                XAuthToken = .SecureStringToHash(.DecryptString(XMLData.POptionen.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey),
+                                                 Encoding.Default, System.Security.Cryptography.HashAlgorithmName.MD5.Name)
             End With
         End Using
 

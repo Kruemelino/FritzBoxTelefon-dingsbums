@@ -235,11 +235,6 @@ Das Seitenfenster wird beim manuellen Importieren der Anrufliste (Journalimport)
     <value>Ausblendverzögerung in Sekunden</value>
     <comment>OptAnrMonView</comment>
   </data>
-  <data name="strAuthInfo" xml:space="preserve">
-    <value>Authentifizierungsdaten (falls erforderlich)
-Ein Authentifizierungsverfahren wird noch nicht unterstützt!</value>
-    <comment>OptConnURIView</comment>
-  </data>
   <data name="strBaseCBintl" xml:space="preserve">
     <value>Internationale Vorwahl ergänzen</value>
     <comment>OptBaseView</comment>
@@ -377,6 +372,14 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
   <data name="strConfig" xml:space="preserve">
     <value>Einstellungen</value>
     <comment>MainView</comment>
+  </data>
+  <data name="strConnURIAuthInfo" xml:space="preserve">
+    <value>Authentifizierungsdaten (falls erforderlich)</value>
+    <comment>OptConnURIView</comment>
+  </data>
+  <data name="strConnURIAuthType" xml:space="preserve">
+    <value>Art der Authentifizierung</value>
+    <comment>OptConnURIView</comment>
   </data>
   <data name="strConnURIInfo" xml:space="preserve">
     <value>Einige IP-Telefone bieten die Möglichkeit der Fernsteuerung. Hierbei wird die zu wählende Nummer direkt an das Telefon übermittelt.
@@ -547,6 +550,10 @@ Wer spenden will, der spendet und wer nicht will, der macht es halt nicht.</valu
     <value>IP Telefone</value>
     <comment>OptIPPhoneView</comment>
   </data>
+  <data name="strIPPhoneAuthRequired" xml:space="preserve">
+    <value>Anmeldung erforderlich</value>
+    <comment>OptIPPhoneView</comment>
+  </data>
   <data name="strIPPhoneClientId" xml:space="preserve">
     <value>ClientId:</value>
     <comment>OptTestView</comment>
@@ -663,7 +670,7 @@ Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Bo
     <comment>MainView</comment>
   </data>
   <data name="strPhonerCopyRight" xml:space="preserve">
-    <value>Phoner Copyright 2021 Heiko Sommerfeldt. Alle Rechte vorbehalten.</value>
+    <value>Phoner Copyright 2022 Heiko Sommerfeldt. Alle Rechte vorbehalten.</value>
     <comment>OptPhonerView</comment>
   </data>
   <data name="strPhonerHeadConfig" xml:space="preserve">
@@ -987,6 +994,26 @@ Hier werden die selben Funktionen verwendet: Im Journal und der Wahlwiederholung
   </data>
   <data name="strTestAnrufmonitorHead" xml:space="preserve">
     <value>Test: Anrufmonitor</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestAuthHead" xml:space="preserve">
+    <value>Test http Authentifizierung</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestAuthPassword" xml:space="preserve">
+    <value>Passwort</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestAuthStart" xml:space="preserve">
+    <value>Start</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestAuthURI" xml:space="preserve">
+    <value>Uri</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestAuthUserName" xml:space="preserve">
+    <value>Benutzername</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestInfo" xml:space="preserve">

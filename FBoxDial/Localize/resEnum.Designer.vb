@@ -451,6 +451,15 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Snom (Digest) ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property IPPhoneAuthSnom() As String
+        Get
+            Return ResourceManager.GetString("IPPhoneAuthSnom", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die ISDN ähnelt.
     '''</summary>
     Public Shared ReadOnly Property ISDNNumber() As String

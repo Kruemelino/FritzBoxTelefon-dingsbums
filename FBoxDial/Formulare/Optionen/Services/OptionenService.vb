@@ -1,4 +1,5 @@
-﻿Imports System.Security
+﻿Imports System.Net
+Imports System.Security
 Imports System.Threading
 Imports System.Threading.Tasks
 Imports System.Windows.Threading
@@ -384,5 +385,18 @@ Friend Class OptionenService
         RndGen = Nothing
     End Sub
 
+
+#End Region
+
+#Region "Test http Authentifikation"
+
+    Public Async Function StartAuthTest(Uri As String, UserName As String, Passwort As String) As Task(Of String) Implements IOptionenService.StartAuthTest
+
+        Dim RequestMessage As New Http.HttpRequestMessage With {.Method = Http.HttpMethod.Get,
+                                                            .RequestUri = New Uri(Uri)}
+
+        Return Await Globals.ThisAddIn.FBoxhttpClient.GetStringWithAuth(RequestMessage, Encoding.UTF8, UserName, Passwort, My.Resources.strDfltAuthTestDeCryptKey)
+
+    End Function
 #End Region
 End Class

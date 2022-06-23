@@ -1,4 +1,6 @@
-﻿Public Class OptTestViewModel
+﻿Imports System.Net
+
+Public Class OptTestViewModel
     Inherits NotifyBase
     Implements IPageViewModel
     Private Property DatenService As IOptionenService
@@ -25,7 +27,7 @@
     Public Property TestTelNrCommand As RelayCommand
     Public Property TestRWSCommand As RelayCommand
     Public Property TestUserListCommand As RelayCommand
-    Public Property TestLoginCommand As RelayCommand
+    Public Property TestAuthCommand As RelayCommand
     Public Property TestKontaktsucheCommand As RelayCommand
     Public Property TestAnrMonCommand As RelayCommand
 #End Region
@@ -35,7 +37,7 @@
         TestRWSCommand = New RelayCommand(AddressOf StartRWSTest, AddressOf CanRunTestRWS)
         TestKontaktsucheCommand = New RelayCommand(AddressOf StartKontaktsucheTest, AddressOf CanRunTestKontaktsuche)
         TestAnrMonCommand = New RelayCommand(AddressOf StartAnrMonTest, AddressOf CanRunAnrMonTest)
-
+        TestAuthCommand = New RelayCommand(AddressOf StartAuthTest, AddressOf CanRunAuthTest)
         ' Interface
         _DatenService = ds
     End Sub
@@ -124,53 +126,6 @@
         OnPropertyChanged(NameOf(TBTestTelNrDurchwahl))
         OnPropertyChanged(NameOf(TBTestTelNrFormatiert))
     End Sub
-#End Region
-
-#Region "Test Login"
-    Private _CBoxBenutzer As ObservableCollectionEx(Of FBoxAPI.User)
-    Public Property CBoxBenutzer As ObservableCollectionEx(Of FBoxAPI.User)
-        Get
-            Return _CBoxBenutzer
-        End Get
-        Set
-            SetProperty(_CBoxBenutzer, Value)
-        End Set
-    End Property
-
-    Private _TBFBAdr As String
-    Public Property TBFBAdr As String
-        Get
-            Return _TBFBAdr
-        End Get
-        Set
-            SetProperty(_TBFBAdr, Value)
-        End Set
-    End Property
-
-    Private _TBBenutzer As String
-    Public Property TBBenutzer As String
-        Get
-            Return _TBBenutzer
-        End Get
-        Set
-            SetProperty(_TBBenutzer, Value)
-        End Set
-    End Property
-
-    Private _TBTestLoginOutput As String
-    Public Property TBTestLoginOutput As String
-        Get
-            Return _TBTestLoginOutput
-        End Get
-        Set
-            SetProperty(_TBTestLoginOutput, Value)
-        End Set
-    End Property
-
-    Private Function CanLoadUserList(o As Object) As Boolean
-        Return TBFBAdr.IsNotStringNothingOrEmpty
-    End Function
-
 #End Region
 
 #Region "Test der Kontaktsuche"
@@ -371,6 +326,58 @@
                                      RBBRndTellows,
                                      RBBCLIR,
                                      CBoxAnrMonGeräteID)
+    End Sub
+#End Region
+
+#Region "Test http Authentifikation"
+    Private _TBAuthUser As String
+    Public Property TBAuthUser As String
+        Get
+            Return _TBAuthUser
+        End Get
+        Set
+            SetProperty(_TBAuthUser, Value)
+        End Set
+    End Property
+
+    Private _TBAuthPasswort As String
+    Public Property TBAuthPasswort As String
+        Get
+            Return _TBAuthPasswort
+        End Get
+        Set
+            SetProperty(_TBAuthPasswort, Value)
+        End Set
+    End Property
+
+    Private _TBAuthUri As String
+    Public Property TBAuthUri As String
+        Get
+            Return _TBAuthUri
+        End Get
+        Set
+            SetProperty(_TBAuthUri, Value)
+        End Set
+    End Property
+
+    Private _TBAuthResponse As String
+    Public Property TBAuthResponse As String
+        Get
+            Return _TBAuthResponse
+        End Get
+        Set
+            SetProperty(_TBAuthResponse, Value)
+        End Set
+    End Property
+
+    Public ReadOnly Property DfltAuthDeCryptKey As String = My.Resources.strDfltAuthTestDeCryptKey
+
+    Private Function CanRunAuthTest(obj As Object) As Boolean
+        Return TBAuthUri.IsNotStringNothingOrEmpty And TBAuthUser.IsNotStringNothingOrEmpty And TBAuthPasswort.IsNotStringNothingOrEmpty
+    End Function
+
+    Private Async Sub StartAuthTest(o As Object)
+        TBAuthResponse = Await DatenService.StartAuthTest(TBAuthUri, TBAuthUser, TBAuthPasswort)
     End Sub
 #End Region
 End Class

@@ -521,6 +521,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Misc\WWWAuthenticatorHeader.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -533,12 +534,12 @@
     <Compile Include="Outlook\OfficeColors.vb" />
     <Compile Include="Outlook\OutlookContactFields.vb" />
     <Compile Include="Outlook\OutlookFolder.vb" />
-    <Compile Include="Kontakte\NummernTypen.vb" />
+    <Compile Include="Telefonie\TelEnum.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />
-    <Compile Include="SoftPhone\IIPPhoneConnector.vb" />
-    <Compile Include="SoftPhone\IPPhoneConnector.vb" />
-    <Compile Include="SoftPhone\IPPhoneURI.vb" />
-    <Compile Include="SoftPhone\MicroSIP.vb" />
+    <Compile Include="IPPhone\IIPPhoneConnector.vb" />
+    <Compile Include="IPPhone\IPPhoneConnector.vb" />
+    <Compile Include="IPPhone\IPPhoneURI.vb" />
+    <Compile Include="IPPhone\MicroSIP.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
     <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
@@ -559,14 +560,13 @@
     <Compile Include="Optionen\Optionen.vb" />
     <Compile Include="Optionen\OutlookXML.vb" />
     <Compile Include="Outlook\Fenster.vb" />
-    <Compile Include="SoftPhone\Phoner.vb" />
+    <Compile Include="IPPhone\Phoner.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Misc\Rijndael.vb" />
     <Compile Include="Formulare\Common\Services\Converters.vb" />
     <Compile Include="Formulare\Common\Services\IDialogService.vb" />
     <Compile Include="Formulare\Common\Services\DialogService.vb" />
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
-    <Compile Include="Telefonie\IPTelefonDaten.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
     <Compile Include="Telefonie\Telefonat.vb" />
     <Compile Include="Telefonie\Telefonie.vb" />

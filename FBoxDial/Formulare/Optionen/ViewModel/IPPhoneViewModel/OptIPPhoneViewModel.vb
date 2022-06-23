@@ -31,9 +31,6 @@
 
 #Region "Models"
     Public Property IPPhoneItem As FBoxAPI.SIPClient
-
-    ' Zugehöriger Connector
-    'Private Property IPPhoneConnector As IPPhoneConnector
 #End Region
 
 #Region "Properties"
@@ -68,7 +65,7 @@
 
         ' Connectoren hinzufügen
         With ConnectorViewModels
-            .Add(New OptConnURIViewModel(DatenService, DialogService))
+            .Add(New OptConnURIViewModel) '(DatenService, DialogService))
             .Add(New OptConnPhonerViewModel(DatenService, DialogService))
             .Add(New OptConnMicroSIPViewModel(DatenService, DialogService))
         End With

@@ -2,13 +2,13 @@
     Inherits NotifyBase
     Implements IConnectorVM
 
-    Private Property DatenService As IOptionenService
-    Private Property DialogService As IDialogService
+    ' Private Property DatenService As IOptionenService
+    ' Private Property DialogService As IDialogService
 
-    Public Sub New(dataService As IOptionenService, dialogService As IDialogService)
+    Public Sub New() '(dataService As IOptionenService, dialogService As IDialogService)
         ' Interface
-        _DatenService = dataService
-        _DialogService = dialogService
+        ' _DatenService = dataService
+        ' _DialogService = DialogService
         ' Commands
 
         ' Model

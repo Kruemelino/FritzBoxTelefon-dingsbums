@@ -328,16 +328,6 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Authentifizierungsdaten (falls erforderlich)
-        '''Ein Authentifizierungsverfahren wird noch nicht unterstützt! ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strAuthInfo() As String
-            Get
-                Return ResourceManager.GetString("strAuthInfo", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Internationale Vorwahl ergänzen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strBaseCBintl() As String
@@ -642,6 +632,24 @@ Namespace Localize
         Public Shared ReadOnly Property strConfig() As String
             Get
                 Return ResourceManager.GetString("strConfig", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Authentifizierungsdaten (falls erforderlich) ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strConnURIAuthInfo() As String
+            Get
+                Return ResourceManager.GetString("strConnURIAuthInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Art der Authentifizierung ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strConnURIAuthType() As String
+            Get
+                Return ResourceManager.GetString("strConnURIAuthType", resourceCulture)
             End Get
         End Property
         
@@ -1004,6 +1012,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anmeldung erforderlich ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneAuthRequired() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneAuthRequired", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die ClientId: ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strIPPhoneClientId() As String
@@ -1259,7 +1276,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner Copyright 2021 Heiko Sommerfeldt. Alle Rechte vorbehalten. ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner Copyright 2022 Heiko Sommerfeldt. Alle Rechte vorbehalten. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strPhonerCopyRight() As String
             Get
@@ -1977,6 +1994,51 @@ Namespace Localize
         Public Shared ReadOnly Property strTestAnrufmonitorHead() As String
             Get
                 Return ResourceManager.GetString("strTestAnrufmonitorHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Test http Authentifizierung ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestAuthHead() As String
+            Get
+                Return ResourceManager.GetString("strTestAuthHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Passwort ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestAuthPassword() As String
+            Get
+                Return ResourceManager.GetString("strTestAuthPassword", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Start ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestAuthStart() As String
+            Get
+                Return ResourceManager.GetString("strTestAuthStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Uri ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestAuthURI() As String
+            Get
+                Return ResourceManager.GetString("strTestAuthURI", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Benutzername ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestAuthUserName() As String
+            Get
+                Return ResourceManager.GetString("strTestAuthUserName", resourceCulture)
             End Get
         End Property
         

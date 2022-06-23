@@ -36,13 +36,24 @@
                       IsChecked="{Binding Connector.AppendSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Style="{StaticResource OptHintTextBlock}" 
-                   Content="{x:Static localize:LocOptionen.strAuthInfo}"/>
+                   Content="{x:Static localize:LocOptionen.strConnURIAuthInfo}"/>
 
-            <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
-                     Tag="{x:Static localize:LocOptionen.strUserName}"
-                     Text="{Binding Connector.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <CheckBox Style="{StaticResource OptCheckBox}" 
+                      Content="{x:Static localize:LocOptionen.strIPPhoneAuthRequired}" 
+                      IsChecked="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strIPPhoneTBPasswort}" IsEnabled="False"
+            <!--<ComboBox Style="{StaticResource OptComboBox}" 
+                      Tag="{x:Static localize:LocOptionen.strConnURIAuthType}"
+                      ItemsSource="{Binding Source={fbd:EnumBindingSource {x:Type fbd:IPPhoneAuthType}}}"
+                      SelectedValue="{Binding Connector.AuthenticationType, FallbackValue=None}"/>-->
+
+            <TextBox Style="{StaticResource OptTextBox}" 
+                    IsEnabled="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Tag="{x:Static localize:LocOptionen.strUserName}"
+                    Text="{Binding Connector.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strIPPhoneTBPasswort}" 
+                                    IsEnabled="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Value="{Binding Path=Connector.Passwort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                     DeCryptKey="{Binding Path=OptVM.DfltIPPhoneDeCryptKey, Mode=OneWay}"/>
 
