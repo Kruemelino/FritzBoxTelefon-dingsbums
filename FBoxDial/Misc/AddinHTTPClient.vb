@@ -20,12 +20,13 @@ Friend Class AddinHTTPClient
 
     End Sub
 
-    Friend Sub RegisterClient(Key As String, ClientHandler As HttpClientHandler)
+    Friend Sub RegisterClient(Key As String, ClientHandler As HttpClientHandler, Optional ReUseLifeTime As Integer = 120)
         ' Proxy generell ausschalten
         ClientHandler.UseProxy = False
 
         ' Ist bereits ein Eintrag mit diesem Key enthalten?
         If RegisteredClientHandler.Keys.Contains(Key) Then
+            NLogger.Debug($"Bereits registrierter Client mit Key '{Key}' aktualisiert ({RegisteredClientHandler.Count})")
 
             ' Überscheibe den vorhandenen ClientHandler
             RegisteredClientHandler(Key) = ClientHandler
@@ -35,7 +36,10 @@ Friend Class AddinHTTPClient
             RegisteredClientHandler.Add(Key, ClientHandler)
 
             ' Registriere den ClientHandler
-            ClientFactory.Register(Key, Function(O) O.ConfigurePrimaryHttpMessageHandler(Function() RegisteredClientHandler(Key)))
+            ClientFactory.Register(Key, Function(O) O.SetHandlerLifetime(TimeSpan.FromSeconds(ReUseLifeTime)).
+                                                      ConfigurePrimaryHttpMessageHandler(Function() RegisteredClientHandler(Key)))
+
+            NLogger.Debug($"Client mit Key '{Key}' registriert ({RegisteredClientHandler.Count})")
         End If
 
     End Sub
