@@ -25,20 +25,26 @@ Friend Module IPPhoneURI
                 NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneErfolgreich, DialCode, RequestMessage.RequestUri.AbsoluteUri))
             End If
 
+            Dim httpClientKey As String = $"{Connector.Type}{Connector.ConnectedPhoneID:00}"
 
             If Connector.AuthenticationRequired Then
-                'Select Case Connector.AuthenticationType
-                '    Case IPPhoneAuthType.Snom
-                NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetStringWithAuth(RequestMessage, Encoding.UTF8, Connector.UserName, Connector.Passwort, My.Resources.strDfltAuthTestDeCryptKey))
 
-                '        'Case IPPhoneAuthType.Grandstream
+                Using Crypter As New Rijndael
+                    With Globals.ThisAddIn.FBoxhttpClient
+                        .RegisterClient(httpClientKey,
+                                    New Http.HttpClientHandler With {.Credentials = New NetworkCredential(Connector.UserName, Crypter.DecryptString(Connector.Passwort, My.Resources.strDfltAuthTestDeCryptKey))})
+                    End With
+                End Using
 
+                NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetString(httpClientKey, RequestMessage, Encoding.UTF8))
 
-                'End Select
+                'NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetStringWithAuth(RequestMessage, Encoding.UTF8, Connector.UserName, Connector.Passwort, My.Resources.strDfltAuthTestDeCryptKey))
 
             Else
                 ' Eine Authentifizierung ist nicht nötig
-                NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetString(RequestMessage, Encoding.UTF8))
+                Globals.ThisAddIn.FBoxhttpClient.RegisterClient(httpClientKey, New Http.HttpClientHandler)
+
+                NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetString(httpClientKey, RequestMessage, Encoding.UTF8))
 
             End If
 

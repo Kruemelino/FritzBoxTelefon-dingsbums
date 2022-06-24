@@ -41,16 +41,6 @@ Public Class IPPhoneConnector
         End Set
     End Property
 
-    'Private _AuthenticationType As IPPhoneAuthType
-    'Public Property AuthenticationType As IPPhoneAuthType Implements IIPPhoneConnector.AuthenticationType
-    '    Get
-    '        Return _AuthenticationType
-    '    End Get
-    '    Set
-    '        SetProperty(_AuthenticationType, Value)
-    '    End Set
-    'End Property
-
     Private _UserName As String
     Public Property UserName As String Implements IIPPhoneConnector.UserName
         Get

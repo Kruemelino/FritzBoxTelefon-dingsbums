@@ -392,10 +392,24 @@ Friend Class OptionenService
 
     Public Async Function StartAuthTest(Uri As String, UserName As String, Passwort As String) As Task(Of String) Implements IOptionenService.StartAuthTest
 
-        Dim RequestMessage As New Http.HttpRequestMessage With {.Method = Http.HttpMethod.Get,
-                                                            .RequestUri = New Uri(Uri)}
 
-        Return Await Globals.ThisAddIn.FBoxhttpClient.GetStringWithAuth(RequestMessage, Encoding.UTF8, UserName, Passwort, My.Resources.strDfltAuthTestDeCryptKey)
+        Dim RequestMessage As New Http.HttpRequestMessage With {.Method = Http.HttpMethod.Get,
+                                                                .RequestUri = New Uri(Uri)}
+
+        ' Key zufällig generieren, da die HttpClientHandler 2 Minuten lang wiederverwendet werden. 
+        ' Ansonsten werden Änderungen nicht übernommen 
+        Dim ClientKey As String = $"AuthTest{New Random().[Next](123400, 9999999)}"
+
+        Using Crypter As New Rijndael
+
+            With Globals.ThisAddIn.FBoxhttpClient
+                .RegisterClient(ClientKey,
+                                New Http.HttpClientHandler With {.Credentials = New NetworkCredential(UserName, Crypter.DecryptString(Passwort, My.Resources.strDfltAuthTestDeCryptKey))})
+            End With
+
+        End Using
+
+        Return Await Globals.ThisAddIn.FBoxhttpClient.GetString(ClientKey, RequestMessage, Encoding.UTF8)
 
     End Function
 #End Region

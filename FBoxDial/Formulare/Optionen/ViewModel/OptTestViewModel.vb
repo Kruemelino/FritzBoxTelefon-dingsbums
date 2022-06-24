@@ -330,7 +330,7 @@ Public Class OptTestViewModel
 #End Region
 
 #Region "Test http Authentifikation"
-    Private _TBAuthUser As String
+    Private _TBAuthUser As String = "john"
     Public Property TBAuthUser As String
         Get
             Return _TBAuthUser
@@ -350,7 +350,7 @@ Public Class OptTestViewModel
         End Set
     End Property
 
-    Private _TBAuthUri As String
+    Private _TBAuthUri As String = "https://httpbin.org/digest-auth/auth/john/doe"
     Public Property TBAuthUri As String
         Get
             Return _TBAuthUri

@@ -1,5 +1,5 @@
 ﻿Imports System.IO
-Imports System.Net
+Imports System.Net.Http
 Imports System.Threading.Tasks
 
 Friend Class Tellows
@@ -9,7 +9,6 @@ Friend Class Tellows
     ''' MD5 Hash vom tellows APIKey
     ''' </summary>
     Private ReadOnly Property XAuthToken As String
-    Private ReadOnly Property Headers As WebHeaderCollection
     Private ReadOnly Property Pfad As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.json")
     Private ReadOnly Property Ready As Boolean
         Get
@@ -17,24 +16,22 @@ Friend Class Tellows
         End Get
     End Property
 
-    Private Const NotAuthorized As String = "NOT AUTHORIZED REQUEST - API Key not valid"
+    Private Const httpClientKey As String = "tellows"
 
-    Public Sub New(Token As String)
-        XAuthToken = Token
-        ' Header für WebClient setzen
-        Headers = New WebHeaderCollection From {{"X-Auth-Token", XAuthToken}}
-    End Sub
+    Public Sub New(Optional Token As String = "")
+        If Token.IsStringNothingOrEmpty Then
+            Using Crypter As New Rijndael
+                With Crypter
+                    XAuthToken = .SecureStringToHash(.DecryptString(XMLData.POptionen.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey),
+                                                     Encoding.Default, Security.Cryptography.HashAlgorithmName.MD5.Name)
+                End With
+            End Using
+        Else
+            XAuthToken = Token
+        End If
 
-    Public Sub New()
-        Using Crypter As New Rijndael
-            With Crypter
-                XAuthToken = .SecureStringToHash(.DecryptString(XMLData.POptionen.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey),
-                                                 Encoding.Default, System.Security.Cryptography.HashAlgorithmName.MD5.Name)
-            End With
-        End Using
-
-        ' Header für WebClient setzen
-        Headers = New WebHeaderCollection From {{"X-Auth-Token", XAuthToken}}
+        ' httpClient für tellows registrieren
+        Globals.ThisAddIn.FBoxhttpClient.RegisterClient(httpClientKey, New HttpClientHandler)
     End Sub
 
 #Region "Basisfunktionen"
@@ -42,13 +39,13 @@ Friend Class Tellows
     Private Async Function GetTellowsResponseXML(UniformResourceIdentifier As Uri) As Task(Of TellowsResponse)
         Dim Response As New TellowsResponse
 
-        Dim RequestMessage As New Http.HttpRequestMessage With {.Method = Http.HttpMethod.Get,
-                                                                .RequestUri = UniformResourceIdentifier}
+        Dim RequestMessage As New HttpRequestMessage With {.Method = HttpMethod.Get,
+                                                           .RequestUri = UniformResourceIdentifier}
 
         RequestMessage.Headers.Add("X-Auth-Token", XAuthToken)
 
         ' Deserialisieren
-        If Not DeserializeXML(Await Globals.ThisAddIn.FBoxhttpClient.GetString(RequestMessage, Encoding.UTF8), False, Response) Then
+        If Not DeserializeXML(Await Globals.ThisAddIn.FBoxhttpClient.GetString(httpClientKey, RequestMessage, Encoding.UTF8), False, Response) Then
             NLogger.Error($"Die Tellows Abfrage zu '{UniformResourceIdentifier}' war nicht erfolgreich.")
             Return New TellowsResponse
         End If
@@ -121,7 +118,7 @@ Friend Class Tellows
                                                                           $"mincomments={XMLData.POptionen.CBTellowsAnrMonMinComments}",
                                                                            "showcallername=1"})}
 
-                Dim TellowsList As List(Of TellowsScoreListEntry) = Await JSONDeserializeFromStreamAsync(Of List(Of TellowsScoreListEntry))(Await Globals.ThisAddIn.FBoxhttpClient.GetStream(ub.Uri), True)
+                Dim TellowsList As List(Of TellowsScoreListEntry) = Await JSONDeserializeFromStreamAsync(Of List(Of TellowsScoreListEntry))(Await Globals.ThisAddIn.FBoxhttpClient.GetStream(httpClientKey, ub.Uri), True)
 
                 If TellowsList IsNot Nothing Then
                     ' Speichere die TellowsDatei

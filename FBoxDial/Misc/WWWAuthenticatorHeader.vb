@@ -24,13 +24,13 @@ Friend Class WWWAuthenticatorHeader
 
     Public Property Opaque As String
 
-    Public Property Stale As Boolean
+    Public Property Stale As Boolean = False
 
     Public Property Algorithm As String = "MD5"
 
     Public Property QoP As String = "auth"
 
-    Friend Property Userhash As Boolean
+    Friend Property Userhash As Boolean = False
 
     Friend ReadOnly Property IsSessionAuth As Boolean
         Get
@@ -45,6 +45,22 @@ Friend Class WWWAuthenticatorHeader
     End Property
 
     Public ReadOnly Property AlgorithmName As String = Algorithm.Replace("-sess", String.Empty)
+
+    Friend ReadOnly Property GetClientResponseHeader(UserName As String, Response As String, ClientNonce As String, NonceCount As Integer, Uri As String) As String
+        Get
+            Return String.Join(", ", New List(Of String) From {$"username=""{UserName}""",
+                                                               $"realm=""{Realm}""",
+                                                               $"nonce=""{Nonce}""",
+                                                               $"uri=""{Uri}""",
+                                                               $"algorithm={Algorithm}",
+                                                               $"qop={QoP}",
+                                                               $"nc={NonceCount:00000000}",
+                                                               $"cnonce=""{ClientNonce}""",
+                                                               $"response=""{Response}""",
+                                                               $"opaque=""{Opaque}""",
+                                                               $"userhash={Userhash.ToString.ToLower}"})
+        End Get
+    End Property
 
     Sub New(Header As Headers.AuthenticationHeaderValue)
         With Header
@@ -75,7 +91,6 @@ Friend Class WWWAuthenticatorHeader
             Next
         End With
     End Sub
-
 
     Private Function GetChallengeValueFromHeader(challengeName As String, AuthenticateHeaderParameter As String) As String
 

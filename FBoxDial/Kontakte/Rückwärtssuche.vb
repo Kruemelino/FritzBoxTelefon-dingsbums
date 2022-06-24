@@ -1,9 +1,12 @@
-﻿Imports System.Threading.Tasks
+﻿Imports System.Net.Http
+Imports System.Threading.Tasks
 
 Public Module Rückwärtssuche
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend Event Status As EventHandler(Of String)
     Friend Event Beendet As EventHandler(Of NotifyEventArgs(Of Boolean))
+
+    Private Const httpClientKey As String = "rws"
 
     Friend Async Function StartRWS(TelNr As Telefonnummer, RWSIndex As Boolean) As Task(Of String)
         Dim vCard As String = String.Empty
@@ -65,13 +68,20 @@ Public Module Rückwärtssuche
 
         baseurl = "https://www.dasoertliche.de/?form_name="
 
-        tmpTelNr = TelNr.Unformatiert
-        Do
+        Globals.ThisAddIn.FBoxhttpClient.RegisterClient(httpClientKey, New HttpClientHandler)
 
+        tmpTelNr = TelNr.Unformatiert
+
+        Dim RequestMessage As HttpRequestMessage
+
+        Do
             PushStatus(LogLevel.Debug, $"Start RWS{i}: {baseurl}search_inv&ph={tmpTelNr}")
 
             ' Fange Fehlermeldungen der Rückwärtssuche ab: Wenn die Nummer nicht gefunden wurde, dann wird ein Fehler zurückgeben.
-            htmlRWS = Await Globals.ThisAddIn.FBoxhttpClient.GetString(New Uri($"{baseurl}search_inv&ph={tmpTelNr}"), Encoding.UTF8)
+            RequestMessage = New HttpRequestMessage With {.Method = HttpMethod.Get,
+                                                          .RequestUri = New Uri($"{baseurl}search_inv&ph={tmpTelNr}")}
+
+            htmlRWS = Await Globals.ThisAddIn.FBoxhttpClient.GetString(httpClientKey, RequestMessage, Encoding.UTF8)
 
             If htmlRWS.IsNotStringNothingOrEmpty Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
@@ -82,7 +92,10 @@ Public Module Rückwärtssuche
                     ' Link zum Herunterladen der vCard suchen
                     PushStatus(LogLevel.Debug, $"Link vCard: {baseurl}vcard&id={EintragsID}")
 
-                    VCard = Await Globals.ThisAddIn.FBoxhttpClient.GetString(New Uri($"{baseurl}vcard&id={EintragsID}"), Encoding.Default)
+                    RequestMessage = New HttpRequestMessage With {.Method = HttpMethod.Get,
+                                                                  .RequestUri = New Uri($"{baseurl}vcard&id={EintragsID}")}
+
+                    VCard = Await Globals.ThisAddIn.FBoxhttpClient.GetString(httpClientKey, RequestMessage, Encoding.Default)
                 Else
                     PushStatus(LogLevel.Warn, $"ID des Eintrages für {tmpTelNr} kann nicht ermittelt werden.")
                 End If

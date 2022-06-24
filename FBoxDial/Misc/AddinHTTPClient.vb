@@ -2,23 +2,41 @@
 Imports System.Net.Http
 Imports System.Security
 Imports HttpClientFactoryLite
-Imports System.Text.RegularExpressions
 
 ''' <summary>
 ''' Klasse für einen httpClient. Wird aktuell verwendet für Tellows, Rückwärtssuche
 ''' </summary>
 Friend Class AddinHTTPClient
     Implements IDisposable
-
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property RegisteredClientHandler As Dictionary(Of String, HttpClientHandler)
     Private ReadOnly Property ClientFactory As IHttpClientFactory
 
     Friend Sub New()
 
         ClientFactory = New HttpClientFactory
 
-        ClientFactory.Register("FritzBoxDial",
-                               Function(C) C.ConfigurePrimaryHttpMessageHandler(Function() New HttpClientHandler With {.UseProxy = False}))
+        RegisteredClientHandler = New Dictionary(Of String, HttpClientHandler)
+
+    End Sub
+
+    Friend Sub RegisterClient(Key As String, ClientHandler As HttpClientHandler)
+        ' Proxy generell ausschalten
+        ClientHandler.UseProxy = False
+
+        ' Ist bereits ein Eintrag mit diesem Key enthalten?
+        If RegisteredClientHandler.Keys.Contains(Key) Then
+
+            ' Überscheibe den vorhandenen ClientHandler
+            RegisteredClientHandler(Key) = ClientHandler
+
+        Else
+            ' Füge den neuen Clienthandler in das Dictionary 
+            RegisteredClientHandler.Add(Key, ClientHandler)
+
+            ' Registriere den ClientHandler
+            ClientFactory.Register(Key, Function(O) O.ConfigurePrimaryHttpMessageHandler(Function() RegisteredClientHandler(Key)))
+        End If
 
     End Sub
 
@@ -27,7 +45,7 @@ Friend Class AddinHTTPClient
     ''' Lädt die angeforderte Ressource als <see cref="String"/> synchron herunter. Die herunterzuladende Ressource ist als <see cref="Uri"/> angegeben.
     ''' </summary>
     ''' <param name="UniformResourceIdentifier">Ein <see cref="Uri"/>-Objekt, das den herunterzuladenden URI enthält.</param>
-    Friend Async Function GetString(UniformResourceIdentifier As Uri, ZeichenCodierung As Encoding) As Task(Of String)
+    <Obsolete> Friend Async Function GetString(UniformResourceIdentifier As Uri, ZeichenCodierung As Encoding) As Task(Of String)
 
         Dim RequestMessage As New HttpRequestMessage With {.Method = HttpMethod.Get,
                                                            .RequestUri = UniformResourceIdentifier}
@@ -35,10 +53,10 @@ Friend Class AddinHTTPClient
         Return Await GetString(RequestMessage, ZeichenCodierung)
     End Function
 
-    Friend Async Function GetString(RequestMessage As HttpRequestMessage, ZeichenCodierung As Encoding) As Task(Of String)
+    <Obsolete> Friend Async Function GetString(RequestMessage As HttpRequestMessage, ZeichenCodierung As Encoding) As Task(Of String)
         Dim Response As String = String.Empty
 
-        Dim ResponseMessage As HttpResponseMessage = Await ClientGetCore(RequestMessage)
+        Dim ResponseMessage As HttpResponseMessage = Await ClientGetCore("Obsolete", RequestMessage)
 
         If ResponseMessage?.IsSuccessStatusCode Then
             Try
@@ -55,14 +73,13 @@ Friend Class AddinHTTPClient
         Return Response
     End Function
 
-
     ''' <summary>
     ''' Adaptiert von: 
     ''' Implementing Digest Authentication in .NET von Callum Houghton<br/>
     ''' <see href="link">https://github.com/CallumHoughton18/csharp-dotnet-digest-authentication</see><br/>
     ''' <see href="link">https://callumhoughton18.github.io/Personal-Site/blog/digest-auth-in-dotnet/</see>
     ''' </summary>
-    Friend Async Function GetStringWithAuth(RequestMessage As HttpRequestMessage,
+    <Obsolete> Friend Async Function GetStringWithAuth(RequestMessage As HttpRequestMessage,
                                             ZeichenCodierung As Encoding,
                                             Username As String,
                                             Password As String,
@@ -71,7 +88,7 @@ Friend Class AddinHTTPClient
         ' Erstelle eine Kopie der RequestMessage
         Dim RequestMessageClone As HttpRequestMessage = CloneBeforeContentSet(RequestMessage)
         ' Führe die Abfrage aus, um ggf. den Header auszuwerten 
-        Dim ResponseMessage As HttpResponseMessage = Await ClientGetCore(RequestMessage)
+        Dim ResponseMessage As HttpResponseMessage = Await ClientGetCore("Obsolete", RequestMessage)
 
         If ResponseMessage.StatusCode = Net.HttpStatusCode.Unauthorized AndAlso ResponseMessage.Headers.WwwAuthenticate.Any Then
 
@@ -102,7 +119,7 @@ Friend Class AddinHTTPClient
                     End Select
 
                     ' Führe die Abfrage erneut mit Zugangsdaten aus.
-                    ResponseMessage = Await ClientGetCore(RequestMessageClone)
+                    ResponseMessage = Await ClientGetCore("Obsolete", RequestMessageClone)
 
                 End If
             End With
@@ -127,42 +144,65 @@ Friend Class AddinHTTPClient
         Return Response
 
     End Function
-    Private Async Function ClientGetCore(RequestMessage As HttpRequestMessage) As Task(Of HttpResponseMessage)
 
-        Dim Client As HttpClient = ClientFactory.CreateClient("FritzBoxDial")
+    Friend Async Function GetString(ClientKey As String, RequestMessage As HttpRequestMessage, ZeichenCodierung As Encoding) As Task(Of String)
+        Dim Response As String = String.Empty
 
-        Try
-            Return Await Client.SendAsync(RequestMessage)
-        Catch ex As ArgumentNullException
-            ' RequestMessage is Nothing
-            NLogger.Error(ex, RequestMessage.RequestUri.AbsoluteUri)
-        Catch ex As InvalidOperationException
-            ' Der requestUri muss ein absoluter URI sein, oder BaseAddress muss festgelegt werden.
-            NLogger.Error(ex, RequestMessage.RequestUri.AbsoluteUri)
-        Catch ex As HttpRequestException
-            ' Die Anforderung konnte wg. eines zugrunde liegenden Problems wie Netzwerkkonnektivität, DNS-Fehler, Überprüfung des Serverzertifikats (oder Timeout – nur .NET Framework) nicht durchgeführt werden.
-            NLogger.Error(ex, RequestMessage.RequestUri.AbsoluteUri)
-        Catch ex As TaskCanceledException
-            ' Nur .NET Core und .NET 5 und höher: Die Anforderung ist aufgrund eines Timeouts fehlgeschlagen.
-            NLogger.Error(ex, RequestMessage.RequestUri.AbsoluteUri)
-        End Try
+        With Await ClientGetCore(ClientKey, RequestMessage)
+            If .IsSuccessStatusCode Then
+                Try
+                    Dim buffer = Await .Content.ReadAsByteArrayAsync()
+                    Response = ZeichenCodierung.GetString(buffer, 0, buffer.Length)
 
-        Return Nothing
+                    NLogger.Trace($"Get: '{RequestMessage.RequestUri.AbsoluteUri}'; Resonse: {Response}")
+                Catch ex As Exception
+                    NLogger.Error(ex, $"HttpClient Response nicht lesbar: {RequestMessage.RequestUri.AbsoluteUri}")
+                End Try
+            Else
+                NLogger.Warn($"HttpClient nicht erfolgreich: StatusCode: { .StatusCode}, ReasonPhrase: '{ .ReasonPhrase}' bei {RequestMessage.RequestUri.AbsoluteUri}")
+            End If
+        End With
+
+        Return Response
     End Function
 
-    Friend Async Function GetStream(RequestUri As Uri) As Task(Of IO.Stream)
+    Private Async Function ClientGetCore(ClientKey As String, RequestMessage As HttpRequestMessage) As Task(Of HttpResponseMessage)
 
-        Dim Client As HttpClient = ClientFactory.CreateClient("FritzBoxDial")
+        With ClientFactory.CreateClient(ClientKey)
+            Try
+                Return Await .SendAsync(RequestMessage)
+            Catch ex As ArgumentNullException
+                ' RequestMessage is Nothing
+                NLogger.Error(ex, RequestMessage.RequestUri.AbsoluteUri)
+            Catch ex As InvalidOperationException
+                ' Der requestUri muss ein absoluter URI sein, oder BaseAddress muss festgelegt werden.
+                NLogger.Error(ex, RequestMessage.RequestUri.AbsoluteUri)
+            Catch ex As HttpRequestException
+                ' Die Anforderung konnte wg. eines zugrunde liegenden Problems wie Netzwerkkonnektivität, DNS-Fehler, Überprüfung des Serverzertifikats (oder Timeout – nur .NET Framework) nicht durchgeführt werden.
+                NLogger.Error(ex, RequestMessage.RequestUri.AbsoluteUri)
+            Catch ex As TaskCanceledException
+                ' Nur .NET Core und .NET 5 und höher: Die Anforderung ist aufgrund eines Timeouts fehlgeschlagen.
+                NLogger.Error(ex, RequestMessage.RequestUri.AbsoluteUri)
+            End Try
+        End With
 
-        Try
-            Return Await Client.GetStreamAsync(RequestUri)
-        Catch ex As ArgumentNullException
-            ' RequestMessage is Nothing
-            NLogger.Error(ex, RequestUri.AbsoluteUri)
-        Catch ex As HttpRequestException
-            ' Die Anforderung konnte wg. eines zugrunde liegenden Problems wie Netzwerkkonnektivität, DNS-Fehler, Überprüfung des Serverzertifikats (oder Timeout – nur .NET Framework) nicht durchgeführt werden.
-            NLogger.Error(ex, RequestUri.AbsoluteUri)
-        End Try
+        ' Standard-Fehler
+        Return New HttpResponseMessage(Net.HttpStatusCode.BadRequest) 
+    End Function
+
+    Friend Async Function GetStream(ClientKey As String, RequestUri As Uri) As Task(Of IO.Stream)
+
+        With ClientFactory.CreateClient(ClientKey)
+            Try
+                Return Await .GetStreamAsync(RequestUri)
+            Catch ex As ArgumentNullException
+                ' RequestMessage is Nothing
+                NLogger.Error(ex, RequestUri.AbsoluteUri)
+            Catch ex As HttpRequestException
+                ' Die Anforderung konnte wg. eines zugrunde liegenden Problems wie Netzwerkkonnektivität, DNS-Fehler, Überprüfung des Serverzertifikats (oder Timeout – nur .NET Framework) nicht durchgeführt werden.
+                NLogger.Error(ex, RequestUri.AbsoluteUri)
+            End Try
+        End With
 
         Return Nothing
     End Function
@@ -194,8 +234,6 @@ Friend Class AddinHTTPClient
         Using Crypter As New Rijndael
             With Crypter
 
-                ' GenerateHash($"{digest.Username}:{digest.Realm}:{digest.Password}")
-
                 ' Der Präfix wird vorangestellt.
                 Dim HA1 As String = .SecureStringToHash(.DecryptString(Password, EncryptionKey),
                                                         Encoding.UTF8,
@@ -210,16 +248,12 @@ Friend Class AddinHTTPClient
 
                 NLogger.Debug($"HA1: {HA1} (für {Uri.AbsoluteUri} )")
 
-                ' GenerateHash($"{method}:{digestUri}")
                 Dim A2 As String = $"{Method}:{Uri.AbsolutePath}"
                 If AuthenticateHeader.IsIntegrityProtection Then A2 += $":{ .StringToHash(EntityBody, AuthenticateHeader.AlgorithmName, Encoding.UTF8)}"
 
                 Dim HA2 As String = .StringToHash(A2, AuthenticateHeader.AlgorithmName, Encoding.UTF8)
-
                 NLogger.Debug($"HA2: {HA2} (für {Uri.AbsoluteUri} )")
 
-
-                ' GenerateHash($"{ha1}:{digest.Nonce}:{digest.NonceCount}:{digest.ClientNonce}:{digest.QualityOfProtection}:{ha2}")
                 Dim Response As String = .StringToHash($"{HA1}:{AuthenticateHeader.Nonce}:{NonceCount:00000000}:{ClientNonce}:{AuthenticateHeader.QoP}:{HA2}",
                                                       AuthenticateHeader.AlgorithmName,
                                                       Encoding.UTF8)
@@ -230,12 +264,7 @@ Friend Class AddinHTTPClient
                     UserName = .StringToHash($"{UserName}:{AuthenticateHeader.Realm}", AuthenticateHeader.AlgorithmName, Encoding.UTF8)
                 End If
 
-                Dim Parameter As String = $"username=""{UserName}"", realm=""{AuthenticateHeader.Realm}"", nonce=""{AuthenticateHeader.Nonce}"", uri=""{Uri}"", " &
-                                          $"algorithm={AuthenticateHeader.Algorithm}, qop={AuthenticateHeader.QoP}, nc={NonceCount:00000000}, cnonce=""{ClientNonce}"", " &
-                                          $"response=""{Response}"", opaque=""{AuthenticateHeader.Opaque}"", userhash={AuthenticateHeader.Userhash.ToString.ToLower}"
-
-                NLogger.Debug($"Parameter: {Parameter} (für {Uri.AbsoluteUri} )")
-                Return Parameter
+                Return AuthenticateHeader.GetClientResponseHeader(UserName, Response, ClientNonce, NonceCount, Uri.OriginalString)
             End With
         End Using
 
@@ -273,7 +302,11 @@ Friend Class AddinHTTPClient
     Private disposedValue As Boolean
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
-            If disposing Then : End If
+            If disposing Then
+                RegisteredClientHandler.Values.ToList.ForEach(Sub(H) H.Dispose())
+                RegisteredClientHandler.Clear()
+
+            End If
             disposedValue = True
             disposedValue = True
         End If
@@ -286,5 +319,3 @@ Friend Class AddinHTTPClient
 #End Region
 
 End Class
-
-
