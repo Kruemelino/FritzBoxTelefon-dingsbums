@@ -314,7 +314,7 @@
     <comment>AVM XML Rufumleitung Mode</comment>
   </data>
   <data name="notset" xml:space="preserve">
-    <value>Sonstige</value>
+    <value>(nicht gesetzt)</value>
     <comment>AVM XML Telefonbuch</comment>
   </data>
   <data name="Off" xml:space="preserve">
@@ -356,10 +356,6 @@
   <data name="ShortDelayed" xml:space="preserve">
     <value>Verzögert kurz</value>
     <comment>AVM XML Rufumleitung Mode</comment>
-  </data>
-  <data name="Sonstige" xml:space="preserve">
-    <value>Sonstige</value>
-    <comment>AVM XML Telefonbuch</comment>
   </data>
   <data name="TelexNumber" xml:space="preserve">
     <value>Telex</value>

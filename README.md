@@ -5,7 +5,7 @@ Das Projekt ist in den ersten Versionen bereits 2006 entstanden und wurde über 
 
 Dieses Addin ist in meiner Freizeit entstanden. Ich erwarte keine Gegenleistung. Ein Danke ist ausreichend. Wer mir dennoch etwas Gutes zukommen lassen möchte kann dies gerne tun:
 
-[![Donate](https://img.shields.io/badge/Spenden-PayPal-green.svg)](https://www.paypal.com/paypalme/gertmichael)
+[![Donate](https://img.shields.io/badge/Spenden-green.svg?logo=paypal)](https://www.paypal.com/paypalme/gertmichael)
 
 ![Anrufmonitor](./doc/Übersicht.png)
 

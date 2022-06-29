@@ -32,13 +32,11 @@ Friend Module IPPhoneURI
                 Using Crypter As New Rijndael
                     With Globals.ThisAddIn.FBoxhttpClient
                         .RegisterClient(httpClientKey,
-                                    New Http.HttpClientHandler With {.Credentials = New NetworkCredential(Connector.UserName, Crypter.DecryptString(Connector.Passwort, My.Resources.strDfltAuthTestDeCryptKey))})
+                                        New Http.HttpClientHandler With {.Credentials = New NetworkCredential(Connector.UserName, Crypter.DecryptString(Connector.Passwort, My.Resources.strDfltIPPhoneDeCryptKey))})
                     End With
                 End Using
 
                 NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetString(httpClientKey, RequestMessage, Encoding.UTF8))
-
-                'NLogger.Debug(Await Globals.ThisAddIn.FBoxhttpClient.GetStringWithAuth(RequestMessage, Encoding.UTF8, Connector.UserName, Connector.Passwort, My.Resources.strDfltAuthTestDeCryptKey))
 
             Else
                 ' Eine Authentifizierung ist nicht nötig

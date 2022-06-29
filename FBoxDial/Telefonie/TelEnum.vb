@@ -144,7 +144,7 @@ End Enum
 <TypeConverter(GetType(EnumDescriptionTypeConverter))>
 Public Enum XMLEMailTyp
 
-    <LocalizedDescription("Sonstige", GetType(resEnum))>
+    <LocalizedDescription("notset", GetType(resEnum))>
     <XmlEnum("")> notset
 
     <LocalizedDescription("private", GetType(resEnum))>
@@ -376,10 +376,3 @@ Public Enum IPPhoneConnectorType
     <LocalizedDescription("IPConnURI", GetType(resEnum))>
     <XmlEnum> URI
 End Enum
-
-'<TypeConverter(GetType(EnumDescriptionTypeConverter))>
-'Public Enum IPPhoneAuthType
-'    <LocalizedDescription("IPPhoneAuthSnom", GetType(resEnum))>
-'    <XmlEnum> Snom
-
-'End Enum

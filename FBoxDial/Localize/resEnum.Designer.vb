@@ -514,7 +514,7 @@ Public Class resEnum
     End Property
     
     '''<summary>
-    '''  Sucht eine lokalisierte Zeichenfolge, die Sonstige ähnelt.
+    '''  Sucht eine lokalisierte Zeichenfolge, die (nicht gesetzt) ähnelt.
     '''</summary>
     Public Shared ReadOnly Property notset() As String
         Get
@@ -600,15 +600,6 @@ Public Class resEnum
     Public Shared ReadOnly Property ShortDelayed() As String
         Get
             Return ResourceManager.GetString("ShortDelayed", resourceCulture)
-        End Get
-    End Property
-    
-    '''<summary>
-    '''  Sucht eine lokalisierte Zeichenfolge, die Sonstige ähnelt.
-    '''</summary>
-    Public Shared ReadOnly Property Sonstige() As String
-        Get
-            Return ResourceManager.GetString("Sonstige", resourceCulture)
         End Get
     End Property
     
