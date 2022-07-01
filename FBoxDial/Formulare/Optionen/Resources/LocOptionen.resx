@@ -374,7 +374,11 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
     <comment>MainView</comment>
   </data>
   <data name="strConnURIAuthInfo" xml:space="preserve">
-    <value>Authentifizierungsdaten (falls erforderlich)</value>
+    <value>Momentan werden nur Standardverfahren (Basic, Digest) zur Authentifizierung unterstützt. Andere herstellerspezifische Verfahren (z. B. bei Grandstream) werden mangels Testgeräten noch nicht unterstützt. </value>
+    <comment>OptConnURIView</comment>
+  </data>
+  <data name="strConnURIAuthLinkInfo" xml:space="preserve">
+    <value>Weitere Informationen</value>
     <comment>OptConnURIView</comment>
   </data>
   <data name="strConnURIAuthType" xml:space="preserve">

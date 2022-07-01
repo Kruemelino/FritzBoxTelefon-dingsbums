@@ -636,11 +636,20 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Authentifizierungsdaten (falls erforderlich) ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Momentan werden nur Standardverfahren (Basic, Digest) zur Authentifizierung unterstützt. Andere herstellerspezifische Verfahren (z. B. bei Grandstream) werden mangels Testgeräten noch nicht unterstützt.  ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strConnURIAuthInfo() As String
             Get
                 Return ResourceManager.GetString("strConnURIAuthInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Weitere Informationen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strConnURIAuthLinkInfo() As String
+            Get
+                Return ResourceManager.GetString("strConnURIAuthLinkInfo", resourceCulture)
             End Get
         End Property
         

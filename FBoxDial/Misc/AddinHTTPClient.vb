@@ -20,7 +20,7 @@ Friend Class AddinHTTPClient
 
     End Sub
 
-    Friend Sub RegisterClient(Key As String, ClientHandler As HttpClientHandler) ', Optional ReUseLifeTime As Integer = 120)
+    Friend Sub RegisterClient(Key As String, ClientHandler As HttpClientHandler, Optional ReUseLifeTime As Integer = 120)
         ' Proxy generell ausschalten
         ClientHandler.UseProxy = False
 
@@ -35,11 +35,11 @@ Friend Class AddinHTTPClient
             ' Füge den neuen Clienthandler in das Dictionary 
             RegisteredClientHandler.Add(Key, ClientHandler)
 
-            ' Registriere den ClientHandler
-            'ClientFactory.Register(Key, Function(O) O.SetHandlerLifetime(TimeSpan.FromSeconds(ReUseLifeTime)).
-            '                                          ConfigurePrimaryHttpMessageHandler(Function() RegisteredClientHandler(Key)))
+            ',Registriere den ClientHandler
+            ClientFactory.Register(Key, Function(O) O.SetHandlerLifetime(TimeSpan.FromSeconds(ReUseLifeTime)).
+                                                      ConfigurePrimaryHttpMessageHandler(Function() RegisteredClientHandler(Key)))
 
-            ClientFactory.Register(Key, Function(O) O.ConfigurePrimaryHttpMessageHandler(Function() RegisteredClientHandler(Key)))
+            'ClientFactory.Register(Key, Function(O) O.ConfigurePrimaryHttpMessageHandler(Function() RegisteredClientHandler(Key)))
 
 
             NLogger.Debug($"Client mit Key '{Key}' registriert ({RegisteredClientHandler.Count})")

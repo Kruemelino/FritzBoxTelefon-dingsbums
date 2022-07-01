@@ -17,8 +17,8 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <GroupBox BorderBrush="{DynamicResource ValidationBrush}" Header="Experimentell!">
-        <StackPanel x:Name="MainStackPanel" >
+    <!--<GroupBox BorderBrush="{DynamicResource ValidationBrush}" Header="Experimentell!">-->
+        <StackPanel x:Name="MainStackPanel" Margin="4">
 
             <Label Style="{StaticResource OptHintTextBlock}" 
                    Content="{x:Static localize:LocOptionen.strConnURIInfo}"/>
@@ -38,6 +38,10 @@
             <Label Style="{StaticResource OptHintTextBlock}" 
                    Content="{x:Static localize:LocOptionen.strConnURIAuthInfo}"/>
 
+            <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strConnURIAuthLinkInfo}"
+                             URL="https://www.ip-phone-forum.de/threads/fernsteuerm%C3%B6glichkeit-diverser-sip-telefone.313272/"
+                             LinkLabel="www.ip-phone-forum.de"/>
+            
             <CheckBox Style="{StaticResource OptCheckBox}" 
                       Content="{x:Static localize:LocOptionen.strIPPhoneAuthRequired}" 
                       IsChecked="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -57,8 +61,9 @@
                                     Value="{Binding Path=Connector.Passwort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                     DeCryptKey="{Binding Path=OptVM.DfltIPPhoneDeCryptKey, Mode=OneWay}"/>
 
+           
         </StackPanel>
 
-    </GroupBox>
+    <!--</GroupBox>-->
 
 </UserControl>
