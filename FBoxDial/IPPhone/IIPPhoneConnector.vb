@@ -19,7 +19,6 @@ Public Interface IIPPhoneConnector
     Property ConnectionUriCancel As String
 
     Property AuthenticationRequired As Boolean
-    'Property AuthenticationType As IPPhoneAuthType
     Property UserName As String
     Property Passwort As String
 
@@ -28,7 +27,11 @@ Public Interface IIPPhoneConnector
     ''' </summary>
     Property AppendSuffix As Boolean
 
-    ReadOnly Property IPPhoneReady As Boolean
+    ''' <summary>
+    ''' Funktion zum absetzen des Wählkomandos
+    ''' </summary>
+    ''' <param name="DialCode">Zu wählende Nummer</param>
+    ''' <param name="Hangup">Angabe, ob das Wählen abgebrochen werden soll</param>
     Function Dial(DialCode As String, Hangup As Boolean) As Task(Of Boolean)
 
 End Interface

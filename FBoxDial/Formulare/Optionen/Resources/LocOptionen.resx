@@ -374,7 +374,7 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
     <comment>MainView</comment>
   </data>
   <data name="strConnURIAuthInfo" xml:space="preserve">
-    <value>Momentan werden nur Standardverfahren (Basic, Digest) zur Authentifizierung unterstützt. Andere herstellerspezifische Verfahren (z. B. bei Grandstream) werden mangels Testgeräten noch nicht unterstützt. </value>
+    <value>Momentan werden nur Standardverfahren zur Authentifizierung unterstützt. Andere herstellerspezifische Verfahren (z. B. bei Grandstream) werden mangels Testgeräten noch nicht unterstützt. </value>
     <comment>OptConnURIView</comment>
   </data>
   <data name="strConnURIAuthLinkInfo" xml:space="preserve">
@@ -998,26 +998,6 @@ Hier werden die selben Funktionen verwendet: Im Journal und der Wahlwiederholung
   </data>
   <data name="strTestAnrufmonitorHead" xml:space="preserve">
     <value>Test: Anrufmonitor</value>
-    <comment>OptTestView</comment>
-  </data>
-  <data name="strTestAuthHead" xml:space="preserve">
-    <value>Test http Authentifizierung</value>
-    <comment>OptTestView</comment>
-  </data>
-  <data name="strTestAuthPassword" xml:space="preserve">
-    <value>Passwort</value>
-    <comment>OptTestView</comment>
-  </data>
-  <data name="strTestAuthStart" xml:space="preserve">
-    <value>Start</value>
-    <comment>OptTestView</comment>
-  </data>
-  <data name="strTestAuthURI" xml:space="preserve">
-    <value>Uri</value>
-    <comment>OptTestView</comment>
-  </data>
-  <data name="strTestAuthUserName" xml:space="preserve">
-    <value>Benutzername</value>
     <comment>OptTestView</comment>
   </data>
   <data name="strTestInfo" xml:space="preserve">

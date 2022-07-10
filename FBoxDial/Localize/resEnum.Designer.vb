@@ -442,7 +442,7 @@ Public Class resEnum
     End Property
     
     '''<summary>
-    '''  Sucht eine lokalisierte Zeichenfolge, die URI ähnelt.
+    '''  Sucht eine lokalisierte Zeichenfolge, die http Anfrage ähnelt.
     '''</summary>
     Public Shared ReadOnly Property IPConnURI() As String
         Get

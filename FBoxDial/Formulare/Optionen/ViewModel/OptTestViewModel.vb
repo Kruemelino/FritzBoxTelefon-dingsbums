@@ -37,7 +37,7 @@ Public Class OptTestViewModel
         TestRWSCommand = New RelayCommand(AddressOf StartRWSTest, AddressOf CanRunTestRWS)
         TestKontaktsucheCommand = New RelayCommand(AddressOf StartKontaktsucheTest, AddressOf CanRunTestKontaktsuche)
         TestAnrMonCommand = New RelayCommand(AddressOf StartAnrMonTest, AddressOf CanRunAnrMonTest)
-        TestAuthCommand = New RelayCommand(AddressOf StartAuthTest, AddressOf CanRunAuthTest)
+
         ' Interface
         _DatenService = ds
     End Sub
@@ -329,55 +329,4 @@ Public Class OptTestViewModel
     End Sub
 #End Region
 
-#Region "Test http Authentifikation"
-    Private _TBAuthUser As String = "john"
-    Public Property TBAuthUser As String
-        Get
-            Return _TBAuthUser
-        End Get
-        Set
-            SetProperty(_TBAuthUser, Value)
-        End Set
-    End Property
-
-    Private _TBAuthPasswort As String
-    Public Property TBAuthPasswort As String
-        Get
-            Return _TBAuthPasswort
-        End Get
-        Set
-            SetProperty(_TBAuthPasswort, Value)
-        End Set
-    End Property
-
-    Private _TBAuthUri As String = "https://httpbin.org/digest-auth/auth/john/doe"
-    Public Property TBAuthUri As String
-        Get
-            Return _TBAuthUri
-        End Get
-        Set
-            SetProperty(_TBAuthUri, Value)
-        End Set
-    End Property
-
-    Private _TBAuthResponse As String
-    Public Property TBAuthResponse As String
-        Get
-            Return _TBAuthResponse
-        End Get
-        Set
-            SetProperty(_TBAuthResponse, Value)
-        End Set
-    End Property
-
-    Public ReadOnly Property DfltAuthDeCryptKey As String = My.Resources.strDfltAuthTestDeCryptKey
-
-    Private Function CanRunAuthTest(obj As Object) As Boolean
-        Return TBAuthUri.IsNotStringNothingOrEmpty And TBAuthUser.IsNotStringNothingOrEmpty And TBAuthPasswort.IsNotStringNothingOrEmpty
-    End Function
-
-    Private Async Sub StartAuthTest(o As Object)
-        TBAuthResponse = Await DatenService.StartAuthTest(TBAuthUri, TBAuthUser, TBAuthPasswort)
-    End Sub
-#End Region
 End Class

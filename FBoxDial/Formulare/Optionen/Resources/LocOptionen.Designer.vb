@@ -636,7 +636,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Momentan werden nur Standardverfahren (Basic, Digest) zur Authentifizierung unterstützt. Andere herstellerspezifische Verfahren (z. B. bei Grandstream) werden mangels Testgeräten noch nicht unterstützt.  ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Momentan werden nur Standardverfahren zur Authentifizierung unterstützt. Andere herstellerspezifische Verfahren (z. B. bei Grandstream) werden mangels Testgeräten noch nicht unterstützt.  ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strConnURIAuthInfo() As String
             Get
@@ -2003,51 +2003,6 @@ Namespace Localize
         Public Shared ReadOnly Property strTestAnrufmonitorHead() As String
             Get
                 Return ResourceManager.GetString("strTestAnrufmonitorHead", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Test http Authentifizierung ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTestAuthHead() As String
-            Get
-                Return ResourceManager.GetString("strTestAuthHead", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Passwort ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTestAuthPassword() As String
-            Get
-                Return ResourceManager.GetString("strTestAuthPassword", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Start ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTestAuthStart() As String
-            Get
-                Return ResourceManager.GetString("strTestAuthStart", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Uri ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTestAuthURI() As String
-            Get
-                Return ResourceManager.GetString("strTestAuthURI", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Benutzername ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTestAuthUserName() As String
-            Get
-                Return ResourceManager.GetString("strTestAuthUserName", resourceCulture)
             End Get
         End Property
         

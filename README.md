@@ -30,13 +30,16 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
 * [x] Bearbeiten von Kontakten in den Fritz!Box Telefonbüchern
 * [x] Hochladen von Outlook Kontakten zu den Fritz!Box Telefonbüchern
 * [x] Bearbeiten der Fritz!Box Sperrliste
-* [x] Nutzung der Softwaretelefonen ([Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org)) (PhonerLite wird nicht unterstützt)
 * [x] Rückruf- und Wahlwiederholungsliste
 * [x] VIP-Liste für häufig anzurufende Kontakte
 * [x] Anzeige verpasster Anrufe in einem Outlook Seitenfenster ([CustomTaskPane](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.tools.customtaskpane?view=vsto-2017))
-#### Ausschlüsse (was nicht geht)
-* [ ] Nutzung von angeschlossenen IP-Telefonen. Hier fehlt die direkte Unterstützung der Fritz!Box. Einzige Ausnahmen sind die Programme [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/), 
-  da diese eine eigene Schnittstelle haben. (Eine Lösung für Telefone, die eine Fernsteuerungsfunktion haben, ist in Arbeit.)
+* [x] Direktes Übermitteln einer anzurufenden Telefonnummer an eigige IP-Telefone via http Request (vgl. [Fernsteuermöglichkeit diverser SIP-Telefone](https://www.ip-phone-forum.de/threads/fernsteuerm%C3%B6glichkeit-diverser-sip-telefone.313272/))
+  * [x] Softphone: [Phoner](https://phoner.de) (PhonerLight wird nicht unterstützt)
+  * [x] SoftPhone: [MicroSIP](https://www.microsip.org/)
+  * [x] Getestet: Snom
+  * [x] Ungetestet (sollte funktionieren): Fanvil, Gigaset, Yealink
+  * [ ] Noch nicht implementiert: Grandstream (Authentifizierungsverfahren)
+  * [ ] Nicht unterstützt: Unify (Openstage) 
 
 ### Voraussetzungen
 Für die Nutzung des Addins wird benötigt: 
@@ -91,7 +94,7 @@ Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch 
 Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmen:
 * Bei der Rückwärtssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
 * Bei der Nutzung von [tellows](https://tellows.de) wird die eingehende Nummer an den Anbieter übermittelt. Die Datenschutzhinweise von tellows sind zu beachten!
-* Bei der Nutzung der Software-Telefone [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/) werden die zu wählenden Nummern an diese Programme übergeben. Die Datenschutzhinweise der Software-Telefone sind zu beachten!
+* Bei der Nutzung von IP-Telefonen (einschl. [Phoner](https://phoner.de) und [MicroSIP](https://www.microsip.org/)) werden die zu wählenden Nummern an die Telefone übergeben. Die Datenschutzhinweise der Telefone bzw. der Softphones sind zu beachten!
 
 ### Markenrecht
 Dieses Outlook-Addin wird vom Autor privat in der Freizeit als Hobby gepflegt. Mit der Bereitstellung des Outlook-Addins werden keine gewerblichen Interessen verfolgt. Es wird aus rein ideellen Gründen zum Gemeinwohl aller Nutzer einer Fritz!Box betrieben. 

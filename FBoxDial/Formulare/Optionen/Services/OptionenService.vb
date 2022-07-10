@@ -1,6 +1,4 @@
-﻿Imports System.Net
-Imports System.Net.Http
-Imports System.Threading
+﻿Imports System.Threading
 Imports System.Threading.Tasks
 Imports System.Windows.Threading
 Imports Microsoft.Office.Interop.Outlook
@@ -388,34 +386,4 @@ Friend Class OptionenService
 
 #End Region
 
-#Region "Test http Authentifikation"
-
-    Public Async Function StartAuthTest(Uri As String, UserName As String, Passwort As String) As Task(Of String) Implements IOptionenService.StartAuthTest
-
-
-        Dim RequestMessage As New HttpRequestMessage With {.Method = HttpMethod.Get,
-                                                                .RequestUri = New Uri(Uri)}
-
-        ' Key zufällig generieren, da die HttpClientHandler 2 Minuten lang wiederverwendet werden. 
-        ' Ansonsten werden Änderungen nicht übernommen 
-        Dim ClientKey As String = "AuthTest" '$"AuthTest{New Random().[Next](123400, 9999999)}"
-
-        Using Crypter As New Rijndael
-
-            With Globals.ThisAddIn.FBoxhttpClient
-
-                ' Reuse LifeTime des HttpClientHandler auf 2 Sekunden reduziert. Ist ja nur zum Testen!
-                .RegisterClient(ClientKey,
-                                New HttpClientHandler With {.Credentials = New NetworkCredential(UserName,
-                                                                                                 Crypter.DecryptString(Passwort,
-                                                                                                                       My.Resources.strDfltAuthTestDeCryptKey))},
-                                2)
-            End With
-
-        End Using
-
-        Return Await Globals.ThisAddIn.FBoxhttpClient.GetString(ClientKey, RequestMessage, Encoding.UTF8)
-
-    End Function
-#End Region
 End Class

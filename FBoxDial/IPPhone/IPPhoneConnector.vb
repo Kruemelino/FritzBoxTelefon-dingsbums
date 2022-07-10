@@ -71,7 +71,6 @@ Public Class IPPhoneConnector
             SetProperty(_AppendSuffix, Value)
         End Set
     End Property
-    Public ReadOnly Property IPPhoneReady As Boolean Implements IIPPhoneConnector.IPPhoneReady
 
 #End Region
 
