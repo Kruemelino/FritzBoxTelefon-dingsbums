@@ -86,7 +86,7 @@ Es liegt mir fern, fremden Code als meinen zu verkaufen. (Falls ich was vergesse
 * WPF in VSTO Addins [Using WPF resource dictionary from separate assembly in Excel VSTO](https://github.com/didzispetkus/vsto-external-resource-library)
 * WPF Dark Theme: AngryCarrot789 [WPFDarkTheme](https://github.com/AngryCarrot789/WPFDarkTheme)
 * WPF Dark DataGrid: Chris Davis [Data Grid XAML Styling](https://gist.github.com/chrdavis/288d743362b963b875832cc493d2cc94)
-* Digest Authentication: Callum Houghton [Implementing Digest Authentication in .NET](https://dev.to/callumhoughton18/implementing-digest-authentication-in-net-396j)
+* FileSystemSafeWatcher: melenaos [FileSystemSafeWatcher](https://github.com/melenaos/FileSystemSafeWatcher)
 
 ### Datenschutz
 Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
