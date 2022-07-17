@@ -25,17 +25,18 @@ Friend Class Vorwahlen
 
     Private ReadOnly Property GetDefaultLKZ() As Landeskennzahl
         Get
-            Return GetDefaultLKZ(XMLData.PTelefonie.LKZ)
+            Return GetDefaultLKZ(XMLData.PTelefonie.LKZ).First
         End Get
     End Property
-    Private ReadOnly Property GetDefaultLKZ(LKZString As String) As Landeskennzahl
+
+    Private ReadOnly Property GetDefaultLKZ(LKZString As String) As List(Of Landeskennzahl)
         Get
             If LKZString.IsStringNothingOrEmpty Then
                 NLogger.Warn("Übergebener String ist Null oder Nothing.")
-                Return New Landeskennzahl With {.Landeskennzahl = String.Empty, .Ortsnetzkennzahlen = New List(Of Ortsnetzkennzahlen)}
+                Return New List(Of Landeskennzahl) From {New Landeskennzahl With {.Landeskennzahl = String.Empty, .Ortsnetzkennzahlen = New List(Of Ortsnetzkennzahlen)}}
             Else
                 ' TODO: Absturz, wenn Telefonat eingeht, und Vorwahlen noch nicht geladen.
-                Return Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = LKZString)
+                Return Kennzahlen.Landeskennzahlen.FindAll(Function(laKZ) laKZ.Landeskennzahl = LKZString)
             End If
         End Get
     End Property
@@ -74,35 +75,39 @@ Friend Class Vorwahlen
         With TelNr
             ' Prüfe, ob die Telefonnummer eine Landeskennzahl enthält
             If .Landeskennzahl.IsNotStringNothingOrEmpty Then
-                LKZListe.Add(GetDefaultLKZ(.Landeskennzahl))
+                LKZListe.AddRange(GetDefaultLKZ(.Landeskennzahl))
             Else
-                ' Beginnt die Nummer mit der Verkehrsausscheidungsziffer (VAZ)
-                If .Unformatiert.StartsWith(PDfltVAZ) Then
-                    ' Die maximale Länge einer LKZ ist 3
-                    i = 3
+                If .IstNANP Then
+                    LKZListe = Kennzahlen.Landeskennzahlen.FindAll(Function(laKZ) laKZ.Landeskennzahl = "1")
+                Else
+                    ' Beginnt die Nummer mit der Verkehrsausscheidungsziffer (VAZ)
+                    If .Unformatiert.StartsWith(PDfltVAZ) Then
+                        ' Die maximale Länge einer LKZ ist 3
+                        i = 3
 
-                    ' Stelle sicher, dass die Telefonnummer ausreichend lang ist.
-                    If .Unformatiert.Length.IsLargerOrEqual(2 + i) Then
-                        ' Es kann mehrere Treffer geben
-                        Do
-                            LKZListe = Kennzahlen.Landeskennzahlen.FindAll(Function(laKZ) laKZ.Landeskennzahl = .Unformatiert.Substring(2, i))
-                            i -= 1
-                        Loop Until LKZListe.Any Or i.IsZero
-                    End If
-
-                    If LKZListe.Any Then
-                        ' Es wurden Einträge gefunden
-                        If LKZListe.Count.AreEqual(1) Then
-                            NLogger.Trace($"Eine Landeskennzahl der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}' ({LKZListe.First.Code})")
-                        Else
-                            NLogger.Trace($"{LKZListe.Count} Landeskennzahlen der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}'")
+                        ' Stelle sicher, dass die Telefonnummer ausreichend lang ist.
+                        If .Unformatiert.Length.IsLargerOrEqual(2 + i) Then
+                            ' Es kann mehrere Treffer geben
+                            Do
+                                LKZListe = Kennzahlen.Landeskennzahlen.FindAll(Function(laKZ) laKZ.Landeskennzahl = .Unformatiert.Substring(2, i))
+                                i -= 1
+                            Loop Until LKZListe.Any Or i.IsZero
                         End If
-
-                    Else
-                        ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt, oder die LKZ ist nicht in der Liste 
-                        NLogger.Warn($"Landeskennzahl der Telefonnummer '{ .Unformatiert}' kann nicht ermittelt werden.")
-                        'If Not TelNr.EigeneNummer Then TelNr.Landeskennzahl = XMLData.PTelefonie.LKZ
                     End If
+                End If
+
+                If LKZListe.Any Then
+                    ' Es wurden Einträge gefunden
+                    If LKZListe.Count.AreEqual(1) Then
+                        NLogger.Trace($"Eine Landeskennzahl der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}' ({LKZListe.First.Code})")
+                    Else
+                        NLogger.Trace($"{LKZListe.Count} Landeskennzahlen der Telefonnummer { .Unformatiert} wurde ermittelt: '{LKZListe.First.Landeskennzahl}'")
+                    End If
+
+                Else
+                    ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt, oder die LKZ ist nicht in der Liste 
+                    NLogger.Warn($"Landeskennzahl der Telefonnummer '{ .Unformatiert}' kann nicht ermittelt werden.")
+                    'If Not TelNr.EigeneNummer Then TelNr.Landeskennzahl = XMLData.PTelefonie.LKZ
                 End If
             End If
 
@@ -121,7 +126,7 @@ Friend Class Vorwahlen
 
         With TelNr.Unformatiert
 
-            If .StartsWith(PDfltVAZ) Or .StartsWith(PDfltAmt) Then
+            If .StartsWith(PDfltVAZ) Or .StartsWith(PDfltAmt) Or TelNr.IstNANP Then
                 ' Es können mehrere Landeskennzahlen passen: z.B. 1, 7, 44
                 ' Schleife durch alle Landeskennzahlen
                 For Each LKZ In _LKZ
@@ -130,6 +135,7 @@ Friend Class Vorwahlen
                     If .StartsWith(PDfltAmt) Then i = 1
                     If .StartsWith($"{PDfltVAZ}{LKZ.Landeskennzahl}") Then i = $"{PDfltVAZ}{LKZ.Landeskennzahl}".Length
                     If .StartsWith($"{PDfltVAZ}{LKZ.Landeskennzahl}{PDfltAmt}") Then i = $"{PDfltVAZ}{LKZ.Landeskennzahl}{PDfltAmt}".Length
+                    If TelNr.IstNANP And .StartsWith("1") Then i = 1
 
                     j = .Length - i
                     Do
@@ -166,7 +172,6 @@ Friend Class Vorwahlen
 
         Return _ONKZ
     End Function
-
 
 End Class
 

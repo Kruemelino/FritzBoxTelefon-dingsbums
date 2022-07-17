@@ -99,6 +99,13 @@ Public Class Telefonnummer
         End Get
     End Property
 
+    <XmlIgnore> ReadOnly Property IstNANP As Boolean
+        Get
+            Return Unformatiert.IsRegExMatch("^(001){1}[2-9]\d{2}[2-9]\d{6}$")
+        End Get
+    End Property
+
+
 #End Region
     Public Sub New()
 
@@ -181,16 +188,24 @@ Public Class Telefonnummer
                 NLogger.Warn($"Ortsnetzkennzahl für {Unformatiert} konnte nicht ermittelt werden.")
             End If
 
-            ' Einwahl: Landesvorwahl am Anfang entfernen, Ortsvorwahl am Ende Entfernen
-            Einwahl = Unformatiert.RegExRemove($"^{PDfltVAZ}{Landeskennzahl}?").RegExRemove($"^0?{Ortskennzahl}")
+            If IstNANP Then
+                ' NANP Central Office (CO) 3 STellig
+                Einwahl = Right(Unformatiert, 7).Left(3)
 
-            ' Suche eine Durchwahl
-            If Nummer.Contains("-") Then
-                Durchwahl = Nummer.RegExRemove("^.+\-+ *").Trim()
-                ' Einwahl: Druchwahl am Ende entfernen
-                Einwahl = Einwahl.RegExRemove($"{Durchwahl}$")
+                ' NANP Suffix 4 Stellig
+                Durchwahl = Right(Unformatiert, 4)
             Else
-                Durchwahl = String.Empty
+                ' Einwahl: Landesvorwahl am Anfang entfernen, Ortsvorwahl am Anfang Entfernen
+                Einwahl = Unformatiert.RegExRemove($"^{PDfltVAZ}{Landeskennzahl}?").RegExRemove($"^0?{Ortskennzahl}")
+
+                ' Suche eine Durchwahl
+                If Nummer.Contains("-") Then
+                    Durchwahl = Nummer.RegExRemove("^.+\-+ *").Trim()
+                    ' Einwahl: Druchwahl am Ende entfernen
+                    Einwahl = Einwahl.RegExRemove($"{Durchwahl}$")
+                Else
+                    Durchwahl = String.Empty
+                End If
             End If
 
         End If
@@ -265,7 +280,7 @@ Public Class Telefonnummer
             ' Sonderbehandlungen für internationale Nummern
             Select Case Landeskennzahl
                 Case "1" ' Nordamerikanischer Nummerierungsplan NANP
-                    FormatTelNr = PDfltMaskeNANP
+                    FormatTelNr = "%L-%O-%N-%D"
                     ' NANP - Nummern werden nicht gruppiert
                     tmpGruppieren = False
 
@@ -304,6 +319,7 @@ Public Class Telefonnummer
         Return FormatTelNr.Replace("%L", tmpLandesvorwahl).Replace("%O", Gruppiere(tmpOrtsvorwahl, tmpGruppieren)).Replace("%N", Gruppiere(Einwahl, tmpGruppieren)).Replace("%D", Gruppiere(Durchwahl, tmpGruppieren)).Trim
 
     End Function
+
 #End Region
 
 #Region "IEquatable"
