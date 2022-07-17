@@ -105,6 +105,7 @@ Public Class OptSearchContactViewModel
     Public Property CancelCommand As RelayCommand
     Public Property IndexCommand As RelayCommand
 #End Region
+
 #Region "Cancel"
     Private Property CTS As CancellationTokenSource
 #End Region

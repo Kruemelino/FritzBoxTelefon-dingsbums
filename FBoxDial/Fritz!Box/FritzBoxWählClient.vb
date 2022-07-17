@@ -1,4 +1,6 @@
-﻿Imports System.Threading.Tasks
+﻿Imports System.Threading
+Imports System.Threading.Tasks
+Imports System.Windows
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 
@@ -405,6 +407,27 @@ Public Class FritzBoxWählClient
 
             .Show()
         End With
+    End Sub
+
+    ''' <summary>
+    ''' Wählen aus tel:// bzw. callto:// Links
+    ''' </summary>
+    ''' <param name="TelNr"></param>
+    Friend Overloads Async Sub WählboxStart(TelNr As Telefonnummer)
+        Await StartSTATask(Function() As Boolean
+                               If WPFWindow Is Nothing Then
+                                   NLogger.Debug("Blende einen neuen Wählclient als STA Task ein")
+                                   ' Blende einen neuen Anrufmonitor ein
+                                   Wählbox(TelNr)
+
+                                   While WPFWindow.IsVisible
+
+                                       Forms.Application.DoEvents()
+                                       Thread.Sleep(100)
+                                   End While
+                               End If
+                               Return False
+                           End Function)
     End Sub
 
     ''' <summary>

@@ -16,6 +16,7 @@ Public NotInheritable Class ThisAddIn
     Friend Property WPFApplication As App
     Friend Property FBoxTR064 As FBoxAPI.FritzBoxTR64
     Friend Property FBoxhttpClient As AddinHTTPClient
+    Private Property LinkProtokoll As DateiÜberwacher
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Timer für Raktivierung nach StandBy"
@@ -156,6 +157,11 @@ Public NotInheritable Class ThisAddIn
             AutoBlockListe()
         End If
 
+        ' Dateisystemüberwachung für tel:// und callto:// Links
+        If XMLData.POptionen.CBLinkProtokoll Then
+            LinkProtokoll = New DateiÜberwacher(IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName), My.Resources.strLinkProtFileName)
+        End If
+
     End Sub
 
     Private Sub BeendeAddinFunktionen()
@@ -174,6 +180,9 @@ Public NotInheritable Class ThisAddIn
 
         ' Anrufmonitor beenden
         If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
+
+        ' Dateisystemüberwachung für tel:// und callto:// Links
+        LinkProtokoll?.Dispose()
 
         ' TR-064-Schnittstelle auflösen
         FBoxTR064?.Dispose()
@@ -352,7 +361,5 @@ Public NotInheritable Class ThisAddIn
             KeyboardHooking.ReleaseHook()
         End If
     End Sub
-
-
 #End Region
 End Class

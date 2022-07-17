@@ -44,6 +44,10 @@ Public Interface IOptionenService
     Function GetSIPClients() As FBoxAPI.SIPClientList
 #End Region
 
+#Region "Wählclient"
+    Function RegisterApp() As Boolean
+#End Region
+
 #Region "Test Kontaktsuche"
     Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean))
     Sub StartKontaktsucheTest(TelNr As String)

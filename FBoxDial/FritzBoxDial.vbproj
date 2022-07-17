@@ -270,6 +270,7 @@
       <DependentUpon>WatermarkTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Common\Services\IViewModelBase.vb" />
+    <Compile Include="Formulare\Common\Services\STATask.vb" />
     <Compile Include="Formulare\Common\Services\WindowHelper.vb" />
     <Compile Include="Formulare\Common\Services\WindowBehavior.vb" />
     <Compile Include="Formulare\Common\Services\EnumBindingSourceExtension.vb" />
@@ -415,6 +416,8 @@
     <Compile Include="JSON\JSONSerialize.vb" />
     <Compile Include="JSON\JSONTraceWriter.vb" />
     <Compile Include="Misc\AddinHTTPClient.vb" />
+    <Compile Include="Misc\FileSystemSafeWatcher.vb" />
+    <Compile Include="Misc\DateiÜberwacher.vb" />
     <Compile Include="Misc\KeyboardHooking.vb" />
     <Compile Include="Misc\SoundPlayerEx.vb">
       <SubType>Component</SubType>
@@ -588,9 +591,6 @@
     </Compile>
     <Compile Include="Misc\UnSaveNativeMethods.vb" />
     <None Include="packages.config" />
-    <None Include="Telefonie\Listen\Vorwahlen.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Zertifikat\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>

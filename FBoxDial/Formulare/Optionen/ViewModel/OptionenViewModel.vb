@@ -529,12 +529,6 @@ Public Class OptionenViewModel
 
 #Region "Einstellung für die Wählhilfe"
     Private _CBForceDialLKZ As Boolean
-    Private _TBPräfix As String
-    Private _CBCheckMobil As Boolean
-    Private _CBCLIR As Boolean
-    Private _CBCloseWClient As Boolean
-    Private _TBWClientEnblDauer As Integer
-
     Public Property CBForceDialLKZ As Boolean
         Get
             Return _CBForceDialLKZ
@@ -544,6 +538,8 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+
+    Private _TBPräfix As String
     ''' <summary>
     ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
     ''' </summary>
@@ -556,6 +552,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBCheckMobil As Boolean
     Public Property CBCheckMobil As Boolean
         Get
             Return _CBCheckMobil
@@ -565,6 +562,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBCLIR As Boolean
     Public Property CBCLIR As Boolean
         Get
             Return _CBCLIR
@@ -574,6 +572,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _CBCloseWClient As Boolean
     Public Property CBCloseWClient As Boolean
         Get
             Return _CBCloseWClient
@@ -583,12 +582,23 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _TBWClientEnblDauer As Integer
     Public Property TBWClientEnblDauer As Integer
         Get
             Return _TBWClientEnblDauer
         End Get
         Set
             SetProperty(_TBWClientEnblDauer, Value)
+        End Set
+    End Property
+
+    Private _CBLinkProtokoll As Boolean
+    Public Property CBLinkProtokoll As Boolean
+        Get
+            Return _CBLinkProtokoll
+        End Get
+        Set
+            SetProperty(_CBLinkProtokoll, Value)
         End Set
     End Property
 #End Region
@@ -986,7 +996,7 @@ Public Class OptionenViewModel
         With PageViewModels
             .Add(New OptBaseViewModel(DatenService))
             .Add(New OptAnrMonViewModel())
-            .Add(New OptDialerViewModel())
+            .Add(New OptDialerViewModel(DatenService))
             .Add(New OptJournalViewModel(DatenService))
             .Add(New OptSearchContactViewModel(DatenService))
             .Add(New OptCreateContactViewModel(DatenService))

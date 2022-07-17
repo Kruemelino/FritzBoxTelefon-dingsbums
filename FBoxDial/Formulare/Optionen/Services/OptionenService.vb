@@ -2,7 +2,7 @@
 Imports System.Threading.Tasks
 Imports System.Windows.Threading
 Imports Microsoft.Office.Interop.Outlook
-
+Imports Microsoft.Win32
 Friend Class OptionenService
     Implements IOptionenService
 
@@ -227,6 +227,82 @@ Friend Class OptionenService
         End If
         ' Gib eine leere Liste zurück
         Return New FBoxAPI.SIPClientList
+    End Function
+#End Region
+
+#Region "Wählclient"
+
+    ''' <summary>
+    ''' Registriert ein cmd-Command für die Verknüpfung mit tel:// und callto:// Links<br/>
+    ''' <see href="link">https://stackoverflow.com/a/69163202</see>
+    ''' </summary>
+    Private Function RegisterApp() As Boolean Implements IOptionenService.RegisterApp
+        Using key As RegistryKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\Classes\callto")
+            ' [HKEY_CURRENT_USER\SOFTWARE\Classes\callto]
+            ' @="URL:callto"
+            ' "URL Protocol"=""
+            ' "Owner Name"="FritzOutlookV5"
+
+            key.SetValue("", "URL:callto", RegistryValueKind.String)
+            key.SetValue("URL Protocol", String.Empty, RegistryValueKind.String)
+            key.SetValue("Owner Name", My.Resources.strDefShortName, RegistryValueKind.String)
+        End Using
+
+        Using key As RegistryKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\Classes\tel")
+            ' [HKEY_CURRENT_USER\SOFTWARE\Classes\tel]
+            ' @="URL:tel"
+            ' "URL Protocol"=""
+            ' "Owner Name"="FritzOutlookV5"
+
+            key.SetValue("", "URL:tel", RegistryValueKind.String)
+            key.SetValue("URL Protocol", String.Empty, RegistryValueKind.String)
+            key.SetValue("Owner Name", My.Resources.strDefShortName, RegistryValueKind.String)
+        End Using
+
+        Using key As RegistryKey = Registry.CurrentUser.CreateSubKey($"SOFTWARE\Classes\{My.Resources.strDefShortName}.callto\Shell\Open\Command")
+
+            ' [HKEY_CURRENT_USER\SOFTWARE\Classes\FritzOutlookV5.callto]
+
+            ' [HKEY_CURRENT_USER\SOFTWARE\Classes\FritzOutlookV5.callto\Shell]
+
+            ' [HKEY_CURRENT_USER\SOFTWARE\Classes\FritzOutlookV5.callto\Shell\Open]
+
+            ' [HKEY_CURRENT_USER\SOFTWARE\Classes\FritzOutlookV5.callto\Shell\Open\Command]
+            ' @="cmd.exe /C echo %1 > "%%AppData%%\Fritz!Box Telefon-Dingsbums\TelProt.txt""
+
+            ' Das muss am Ende im (Standard) stehen: cmd.exe /C echo %1 > "%%AppData%%\Fritz!Box Telefon-Dingsbums\TelProt.txt"
+            key.SetValue("", $"cmd.exe /C echo %1 > ""%%AppData%%\{My.Resources.strDefLongName}\{My.Resources.strLinkProtFileName}""", RegistryValueKind.String)
+        End Using
+
+        Using key As RegistryKey = Registry.CurrentUser.CreateSubKey($"SOFTWARE\{My.Resources.strDefShortName}\Capabilities")
+            ' [HKEY_CURRENT_USER\SOFTWARE\FritzOutlookV5]
+
+            ' [HKEY_CURRENT_USER\SOFTWARE\FritzOutlookV5\Capabilities]
+            ' "ApplicationDescription"="Fritz!Box Telefon-dingsbums"
+            ' "ApplicationName"="FritzOutlookV5"
+
+            key.SetValue("ApplicationDescription", My.Resources.strDefLongName, RegistryValueKind.String)
+            key.SetValue("ApplicationName", My.Resources.strDefShortName, RegistryValueKind.String)
+
+            Using key.CreateSubKey("URLAssociations")
+                ' [HKEY_CURRENT_USER\SOFTWARE\FritzOutlookV5\Capabilities\URLAssociations]
+                ' "callto"="FritzOutlookV5.callto"
+                ' "tel"="FritzOutlookV5.callto"
+
+                key.SetValue("callto", $"{My.Resources.strDefShortName}.callto", RegistryValueKind.String)
+                key.SetValue("tel", $"{My.Resources.strDefShortName}.callto", RegistryValueKind.String)
+            End Using
+
+        End Using
+
+        Using key As RegistryKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\RegisteredApplications")
+            ' [HKEY_CURRENT_USER\SOFTWARE\RegisteredApplications]
+            ' "FritzOutlookV5"="Software\\FritzOutlookV5\\Capabilities"
+
+            key.SetValue("FritzOutlookV5", $"Software\\{My.Resources.strDefShortName}\\Capabilities", RegistryValueKind.String)
+        End Using
+
+        Return True
     End Function
 #End Region
 

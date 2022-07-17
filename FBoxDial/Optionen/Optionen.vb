@@ -74,6 +74,11 @@
     ''' Zuletzt genutzte TelefonID der Wählhilfe
     ''' </summary>
     <XmlElement("UsedTelefonID")> Public Property UsedTelefonID As Integer
+
+    ''' <summary>
+    ''' Angabe, ob auf das tel:// und callto:// Protokoll reagiert werden soll
+    ''' </summary>
+    <XmlElement("CBLinkProtokoll")> Public Property CBLinkProtokoll As Boolean = False
 #End Region
 
 #Region "Grundeinstlleungen - Tweaks"

@@ -168,7 +168,6 @@ Friend Class ExplorerWrapper
         CallListPane = Nothing
     End Sub
 
-
 #End Region
 
 End Class

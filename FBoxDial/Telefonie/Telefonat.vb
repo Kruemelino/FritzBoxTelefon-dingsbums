@@ -919,9 +919,10 @@ Imports Microsoft.Office.Interop
     Private Async Sub GetTAMMessage()
         ' Wenn der Fritz!Box Anrufbeantworter rangegangen ist, liegt eine Nachricht ggf. vor. Anhand der Gegenstellennummer, der eigenen Nummer und der Anrufzeit wird der Eintrag ermittelt.
 
-        ' Überrpüfung, ob ein Anrufbeantworter rangegangen ist
-        If TelGerät?.TelTyp = DfltWerteTelefonie.TelTypen.TAM Then
+        ' Überrpüfung, ob ein Anrufbeantworter rangegangen ist und dessen AnrMonID größer oder gleich 40 ist
+        If TelGerät?.TelTyp = DfltWerteTelefonie.TelTypen.TAM AndAlso TelGerät?.AnrMonID.IsLargerOrEqual(DfltWerteTelefonie.AnrMonTelIDBase.TAM) Then
             ' lade die MessageList herunter, Ermittle anhand der ID den relevanten Anrufbeantworter
+
             Dim TAM_ID As Integer = TelGerät.AnrMonID - DfltWerteTelefonie.AnrMonTelIDBase.TAM
             With Await GetTAMMessages(TAM_ID)
                 ' Im Fehlerfall ist die Liste leer.
@@ -1313,19 +1314,6 @@ Imports Microsoft.Office.Interop
     End Sub
 
 #End Region
-    Public Function StartSTATask(Of T)(func As Func(Of T)) As Task(Of T)
-        Dim tcs = New TaskCompletionSource(Of T)()
-        Dim thread As New Thread(Sub()
-                                     Try
-                                         tcs.SetResult(func())
-                                     Catch e As Exception
-                                         tcs.SetException(e)
-                                     End Try
-                                 End Sub)
-        thread.SetApartmentState(ApartmentState.STA)
-        thread.Start()
-        Return tcs.Task
-    End Function
 
 #End Region
 

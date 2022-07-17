@@ -41,7 +41,27 @@
         <TextBox Style="{StaticResource OptTextBox}"
                  Tag="{x:Static localize:LocOptionen.strDialerTBWClientEnblDauer}"
                  Text="{Binding OptVM.TBWClientEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-    
+
+        <TextBlock Style="{StaticResource OptHeader}" 
+                   Text="{x:Static localize:LocOptionen.strProtokolHead}"/>
+        
+        <Label Style="{StaticResource OptHintTextBlock}"                
+               Content="{x:Static localize:LocOptionen.strProtokolInfo}"/>
+        
+        <CheckBox Style="{StaticResource OptCheckBox}"                     
+                  Content="{x:Static localize:LocOptionen.strCBLinkProtokoll}" 
+                  IsChecked="{Binding OptVM.CBLinkProtokoll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label Style="{StaticResource OptHintTextBlock}"                
+               Content="{x:Static localize:LocOptionen.strProtokolRegisterInfo}"
+               IsEnabled="{Binding OptVM.CBLinkProtokoll, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+
+        <Button Content="{x:Static localize:LocOptionen.strProtokolRegisterApp}" 
+                Margin="4" Height="25"
+                Command="{Binding RegisterCommand}"
+                IsEnabled="{Binding OptVM.CBLinkProtokoll, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                Cursor="Hand" />
+
     </StackPanel>
 
 

@@ -618,6 +618,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Reagiere auf tel:// und callto:// Links ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCBLinkProtokoll() As String
+            Get
+                Return ResourceManager.GetString("strCBLinkProtokoll", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Raute (#) an die zu wählende Nummer anhängen. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCBSoftPhoneSuffix() As String
@@ -1338,6 +1347,43 @@ Namespace Localize
         Public Shared ReadOnly Property strPhonerInfoLight() As String
             Get
                 Return ResourceManager.GetString("strPhonerInfoLight", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Einstellungen zu tel:// und callto:// Protokollen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strProtokolHead() As String
+            Get
+                Return ResourceManager.GetString("strProtokolHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Das Addin kann auf das tel:// und callto:// Protokoll reagieren. Hierzu ist eine kleine separate Hilfsanwendung nötig, da aus Sicherheitsgründen nicht direkt von außen auf das Outlook Addin zugegriffen werden kann. Diese Hilfsanwendung wird im Windows mit den beiden Protokollen registriert. Bei einem Klick auf einen tel:// und callto:// Link kann dann das Addin festgelegt werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strProtokolInfo() As String
+            Get
+                Return ResourceManager.GetString("strProtokolInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Registriere Hilfsanwendung ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strProtokolRegisterApp() As String
+            Get
+                Return ResourceManager.GetString("strProtokolRegisterApp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Die Hilfsanwendung muss im Windows zunächst registriert werden. Dies muss nur einmalig durchgeführt werden.
+        '''HInweis: Es wird bei Auswahl der Anwendung eine &quot;Windows-Befehlsprozessor&quot; (cmd) hinzugefügt.  ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strProtokolRegisterInfo() As String
+            Get
+                Return ResourceManager.GetString("strProtokolRegisterInfo", resourceCulture)
             End Get
         End Property
         

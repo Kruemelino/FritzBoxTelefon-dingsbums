@@ -365,6 +365,10 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
     <value>Wenn der Anrufmonitor nicht ausgeblendet wird und Anrufer mehrfach anrufen, werden auch mehrer Fenster eingeblendet. Dies kann mit folgender Optionen vermieden werden.</value>
     <comment>OptAnrMonView</comment>
   </data>
+  <data name="strCBLinkProtokoll" xml:space="preserve">
+    <value>Reagiere auf tel:// und callto:// Links</value>
+    <comment>OptDialerView</comment>
+  </data>
   <data name="strCBSoftPhoneSuffix" xml:space="preserve">
     <value>Raute (#) an die zu wählende Nummer anhängen.</value>
     <comment>OptMicroSIPView, OptPhonerView</comment>
@@ -699,6 +703,23 @@ Prüfe, ob die Authentifizierung erfolgreich ist.</value>
   <data name="strPhonerInfoLight" xml:space="preserve">
     <value>PhonerLight wird nicht unterstützt!</value>
     <comment>OptPhonerView</comment>
+  </data>
+  <data name="strProtokolHead" xml:space="preserve">
+    <value>Einstellungen zu tel:// und callto:// Protokollen</value>
+    <comment>OptDialerView</comment>
+  </data>
+  <data name="strProtokolInfo" xml:space="preserve">
+    <value>Das Addin kann auf das tel:// und callto:// Protokoll reagieren. Hierzu ist eine kleine separate Hilfsanwendung nötig, da aus Sicherheitsgründen nicht direkt von außen auf das Outlook Addin zugegriffen werden kann. Diese Hilfsanwendung wird im Windows mit den beiden Protokollen registriert. Bei einem Klick auf einen tel:// und callto:// Link kann dann das Addin festgelegt werden.</value>
+    <comment>OptDialerView</comment>
+  </data>
+  <data name="strProtokolRegisterApp" xml:space="preserve">
+    <value>Registriere Hilfsanwendung</value>
+    <comment>OptDialerView</comment>
+  </data>
+  <data name="strProtokolRegisterInfo" xml:space="preserve">
+    <value>Die Hilfsanwendung muss im Windows zunächst registriert werden. Dies muss nur einmalig durchgeführt werden.
+HInweis: Es wird bei Auswahl der Anwendung eine "Windows-Befehlsprozessor" (cmd) hinzugefügt. </value>
+    <comment>OptDialerView</comment>
   </data>
   <data name="strSave" xml:space="preserve">
     <value>Speichern</value>

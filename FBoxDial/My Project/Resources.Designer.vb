@@ -246,6 +246,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die TelProt.txt ähnelt.
+        '''</summary>
+        Public ReadOnly Property strLinkProtFileName() As String
+            Get
+                Return ResourceManager.GetString("strLinkProtFileName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
         '''&lt;KZ&gt;
         '''	&lt;LKZ n=&quot;376&quot; Code=&quot;AD&quot;&gt;

@@ -6,7 +6,7 @@ Friend Module FritzBoxAnrufliste
     Friend Async Function LadeFritzBoxAnrufliste(Optional ID As Integer = 0, Optional TimeStamp As Integer = 0) As Task(Of FBoxAPI.CallList)
         ' Ermittle Pfad zur Anrufliste
         If Globals.ThisAddIn.FBoxTR064?.Ready Then
-            Dim Anrufliste = If(Await Globals.ThisAddIn.FBoxTR064.X_contact.GetCallList(id:=ID, timestamp:=TimeStamp), New FBoxAPI.CallList)
+            Dim Anrufliste = Await Globals.ThisAddIn.FBoxTR064.X_contact.GetCallList(id:=ID, timestamp:=TimeStamp)
 
             ' CallList TimeStamp merken (0 ist ungültig)
             If Anrufliste.TimeStamp.IsNotZero Then XMLData.POptionen.FBoxCallListTimeStamp = Anrufliste.TimeStamp

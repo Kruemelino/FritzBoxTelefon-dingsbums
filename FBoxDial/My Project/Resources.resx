@@ -166,6 +166,9 @@
   <data name="strDfltTellowsDeCryptKey" xml:space="preserve">
     <value>ZugangTellows</value>
   </data>
+  <data name="strLinkProtFileName" xml:space="preserve">
+    <value>TelProt.txt</value>
+  </data>
   <data name="Vorwahlen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\telefonie\listen\vorwahlen.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
