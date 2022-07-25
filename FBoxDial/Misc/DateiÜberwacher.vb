@@ -21,7 +21,7 @@ Friend Class DateiÜberwacher
     Private Sub OnChanged(source As Object, e As FileSystemEventArgs)
 
         Dim TelNr As New Telefonnummer With {.SetNummer = File.ReadLines(e.FullPath).First}
-        NLogger.Debug($"Telefonnummer aus tel:// bzw. callto:// erfasst: {TelNr.Unformatiert}")
+        NLogger.Info($"Telefonnummer aus tel:// bzw. callto:// erfasst: {TelNr.Unformatiert}")
 
         Dim WählClient As New FritzBoxWählClient
         WählClient.WählboxStart(TelNr)

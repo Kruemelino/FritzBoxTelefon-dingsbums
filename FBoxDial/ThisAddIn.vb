@@ -159,6 +159,7 @@ Public NotInheritable Class ThisAddIn
 
         ' Dateisystemüberwachung für tel:// und callto:// Links
         If XMLData.POptionen.CBLinkProtokoll Then
+            NLogger.Debug("Dateiüberwachung für tel:// und callto:// Links gestartet...")
             LinkProtokoll = New DateiÜberwacher(IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName), My.Resources.strLinkProtFileName)
         End If
 

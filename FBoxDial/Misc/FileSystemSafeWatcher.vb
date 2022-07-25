@@ -324,4 +324,3 @@ Friend Class FileSystemSafeWatcher
         GC.SuppressFinalize(Me)
     End Sub
 End Class
-
