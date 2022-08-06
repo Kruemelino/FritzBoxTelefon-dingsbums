@@ -244,7 +244,7 @@ Imports Microsoft.Office.Interop
     ''' </summary>
     <XmlIgnore> Friend ReadOnly Property IstRelevant As Boolean
         Get
-            Return EigeneTelNr.Überwacht AndAlso (Not Blockiert OrElse (XMLData.POptionen.CBJournalBlockNr Or XMLData.POptionen.CBAnrMonBlockNr))
+            Return EigeneTelNr.EigeneNummerInfo.Überwacht AndAlso (Not Blockiert OrElse (XMLData.POptionen.CBJournalBlockNr Or XMLData.POptionen.CBAnrMonBlockNr))
         End Get
     End Property
 
@@ -400,7 +400,8 @@ Imports Microsoft.Office.Interop
                         ' Wert für Serialisierung in separater Eigenschaft ablegen
                         If EigeneTelNr Is Nothing Then
                             NLogger.Warn($"Eigene Telefonnummer für {FBStatus(i)} konnte nicht ermittelt werden.")
-                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(i), .EigeneNummer = True}
+                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(i),
+                                                                  .EigeneNummerInfo = New EigeneNrInfo With {.Überwacht = True}}
                         End If
 
                         OutEigeneTelNr = EigeneTelNr.Unformatiert
@@ -438,7 +439,8 @@ Imports Microsoft.Office.Interop
                         ' Wert für Serialisierung in separater Eigenschaft ablegen
                         If EigeneTelNr Is Nothing Then
                             NLogger.Warn($"Eigene Telefonnummer für {FBStatus(i)} konnte nicht ermittelt werden.")
-                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(i), .EigeneNummer = True}
+                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(i),
+                                                                  .EigeneNummerInfo = New EigeneNrInfo With {.Überwacht = True}}
                         End If
 
                         OutEigeneTelNr = EigeneTelNr.Unformatiert
@@ -1012,7 +1014,7 @@ Imports Microsoft.Office.Interop
 #Region "Anrufmonitor"
     Private Sub AnrMonRING()
         ' prüfe, ob die anrufende Nummer auf der Rufsperre der Fritz!Box steht
-        If EigeneTelNr.Überwacht Then Blockiert = IsFBoxBlocked(GegenstelleTelNr)
+        If EigeneTelNr.EigeneNummerInfo.Überwacht Then Blockiert = IsFBoxBlocked(GegenstelleTelNr)
 
         'Abweisen()
 

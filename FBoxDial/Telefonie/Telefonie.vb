@@ -454,7 +454,7 @@ Imports FBoxDial.FritzBoxDefault
 #Region "Eigenschaften zur Datenausgabe"
     <XmlIgnore> Friend ReadOnly Property GetTelNrByID(ID As Integer) As Telefonnummer
         Get
-            Return Telefonnummern.Find(Function(T) T.SIP.AreEqual(ID))
+            Return Telefonnummern.Find(Function(T) T.EigeneNummerInfo.SIP.AreEqual(ID))
         End Get
     End Property
 
@@ -499,11 +499,10 @@ Imports FBoxDial.FritzBoxDefault
 
         If AddEigeneTelNr Is Nothing Then
             ' Es ist wichtig, dass die LKZ und die OKZ in jedem Fall übergeben werden. Führe daher das SetNummer zuletzt aus.
-            AddEigeneTelNr = New Telefonnummer With {.EigeneNummer = True,
-                                                     .Überwacht = True,
-                                                     .Ortskennzahl = OKZ,
+            AddEigeneTelNr = New Telefonnummer With {.Ortskennzahl = OKZ,
                                                      .Landeskennzahl = LKZ,
-                                                     .SIP = ID.ToInt,
+                                                     .EigeneNummerInfo = New EigeneNrInfo With {.Überwacht = True,
+                                                                                                .SIP = ID.ToInt},
                                                      .SetNummer = TelNr}
 
             Telefonnummern.Add(AddEigeneTelNr)

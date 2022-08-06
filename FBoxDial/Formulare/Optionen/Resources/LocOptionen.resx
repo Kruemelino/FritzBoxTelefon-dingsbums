@@ -436,7 +436,7 @@ Wird kein Ordner gewählt, wird der Outlook-Standard verwendet.</value>
     <comment>OptBaseView</comment>
   </data>
   <data name="strDesignInfo" xml:space="preserve">
-    <value>Schlauer Text</value>
+    <value>Hier kann das Farbschema für alle Fenster des Addins festgelegt werden.</value>
     <comment>OptBaseView</comment>
   </data>
   <data name="strDesignMode" xml:space="preserve">
@@ -809,8 +809,29 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Erklärungen zu den einzelnen Spalten sind als ToolTipp in der Spaltenüberschrift zu finden.</value>
     <comment>OptTelephonyView</comment>
   </data>
+  <data name="strTelephonyNumber" xml:space="preserve">
+    <value>Nummer</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyNumberAnrMon" xml:space="preserve">
+    <value>Überwacht</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyNumberBackgroundColor" xml:space="preserve">
+    <value>Hintergrund</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyNumberColor" xml:space="preserve">
+    <value>Farbauswahl</value>
+    <comment>OptTelephonyView</comment>
+  </data>
+  <data name="strTelephonyNumberForeGroundColor" xml:space="preserve">
+    <value>Schriftfarbe</value>
+    <comment>OptTelephonyView</comment>
+  </data>
   <data name="strTelephonyNumbersInfo" xml:space="preserve">
-    <value>Auswahl der Telefonnummern, auf die der Anrufmonitor reagiert</value>
+    <value>Hier kann ausgewählt werden, auf welche Nummer der Anrufmonitor reagieren soll. Des Weiteren kann die Hintergrund- und Schriftfarbe je Nummer festgelegt werden (Wirksam im Anrufmonitor, Stoppuhr und Seitenfenster für verpasste Anrufe).
+Aktuell gibt es einen Bug, der bewirkt, dass nicht auf die Sekundärfarbe umgeschaltet werden kann. </value>
     <comment>OptTelephonyView</comment>
   </data>
   <data name="strTelephonyPhoneDialport" xml:space="preserve">

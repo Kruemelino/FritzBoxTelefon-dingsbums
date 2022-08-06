@@ -537,6 +537,7 @@
     <Compile Include="Outlook\OfficeColors.vb" />
     <Compile Include="Outlook\OutlookContactFields.vb" />
     <Compile Include="Outlook\OutlookFolder.vb" />
+    <Compile Include="Telefonie\EigeneNrInfo.vb" />
     <Compile Include="Telefonie\TelEnum.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />
     <Compile Include="IPPhone\IIPPhoneConnector.vb" />

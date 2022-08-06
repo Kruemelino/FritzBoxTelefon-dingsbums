@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
-             xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+             xmlns:cp="clr-namespace:ColorPicker;assembly=ColorPicker"
              mc:Ignorable="d" 
              d:DesignHeight="780" d:DesignWidth="420"
              d:DataContext="{d:DesignInstance Type=fbd:OptAnrMonViewModel, IsDesignTimeCreatable=False}">
@@ -80,10 +80,11 @@
 
                     <TextBlock Text="{x:Static localize:LocOptionen.strAnrMonBColorInfo}"/>
 
-                    <colorpicker:PortableColorPicker Grid.Column="1" ShowAlpha="True"
-                                                     Style="{DynamicResource DefaultColorPickerStyle}"
-                                                     SelectedColor="{Binding OptVM.TBAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                     SecondaryColor="{Binding OptVM.TBAnrMonFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <cp:PortableColorPicker Grid.Column="1" 
+                                            ShowAlpha="True"
+                                            Style="{DynamicResource DefaultColorPickerStyle}"
+                                            SelectedColor="{Binding OptVM.TBAnrMonBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            SecondaryColor="{Binding OptVM.TBAnrMonFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 </Grid>
 
@@ -136,10 +137,11 @@
 
                     <TextBlock Text="{x:Static localize:LocOptionen.strAnrMonBColorInfo}"/>
 
-                    <colorpicker:PortableColorPicker Grid.Column="1" ShowAlpha="True"
-                                                     Style="{DynamicResource DefaultColorPickerStyle}"
-                                                     SelectedColor="{Binding OptVM.TBStoppUhrBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                     SecondaryColor="{Binding OptVM.TBStoppUhrFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <cp:PortableColorPicker Grid.Column="1" 
+                                            ShowAlpha="True"
+                                            Style="{DynamicResource DefaultColorPickerStyle}"
+                                            SelectedColor="{Binding OptVM.TBStoppUhrBColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            SecondaryColor="{Binding OptVM.TBStoppUhrFColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 </Grid>
             </StackPanel>

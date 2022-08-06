@@ -763,7 +763,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Schlauer Text ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann das Farbschema für alle Fenster des Addins festgelegt werden. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strDesignInfo() As String
             Get
@@ -1581,7 +1581,53 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Auswahl der Telefonnummern, auf die der Anrufmonitor reagiert ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nummer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyNumber() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyNumber", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Überwacht ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyNumberAnrMon() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyNumberAnrMon", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hintergrund ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyNumberBackgroundColor() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyNumberBackgroundColor", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Farbauswahl ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyNumberColor() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyNumberColor", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Schriftfarbe ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTelephonyNumberForeGroundColor() As String
+            Get
+                Return ResourceManager.GetString("strTelephonyNumberForeGroundColor", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann ausgewählt werden, auf welche Nummer der Anrufmonitor reagieren soll. Des Weiteren kann die Hintergrund- und Schriftfarbe je Nummer festgelegt werden (Wirksam im Anrufmonitor, Stoppuhr und Seitenfenster für verpasste Anrufe).
+        '''Aktuell gibt es einen Bug, der bewirkt, dass nicht auf die Sekundärfarbe umgeschaltet werden kann.  ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelephonyNumbersInfo() As String
             Get

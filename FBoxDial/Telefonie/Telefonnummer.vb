@@ -8,9 +8,9 @@ Public Class Telefonnummer
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
+    <XmlElement> Public Property EigeneNummerInfo As EigeneNrInfo = Nothing
     <XmlElement> Public Property Nummer As String
-    <XmlAttribute> Public Property EigeneNummer As Boolean
-    <XmlAttribute> Public Property Überwacht As Boolean
+    '<XmlAttribute> Public Property EigeneNummer As Boolean
     <XmlElement> Public Property Landeskennzahl As String
     <XmlElement> Public Property Ortskennzahl As String
     <XmlElement> Public Property Einwahl As String
@@ -18,13 +18,15 @@ Public Class Telefonnummer
     <XmlElement> Public Property Formatiert As String
     <XmlElement> Public Property Unformatiert As String
     <XmlElement> Public Property Unterdrückt As Boolean
+    ''' <summary>
+    ''' Intern: Telefonnummerntyp im Outlook bzw. Fritz!Box Telefonbuch
+    ''' </summary>
     <XmlIgnore> Public Property Typ As TelNrType
-    <XmlElement> Public Property SIP As Integer
     <XmlElement> Public Property Location As String
     <XmlElement> Public Property AreaCode As String
     <XmlIgnore> Public WriteOnly Property SetNummer As String
         Set
-            NLogger.Trace($"SetNummer Start: '{Value}'; '{EigeneNummer}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
+            NLogger.Trace($"SetNummer Start: '{Value}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
             ' Prüfe, ob eine leere Zeichenfolge übergeben wurde
             If Value.IsStringNothingOrEmpty Then
                 Unterdrückt = True
@@ -50,7 +52,7 @@ Public Class Telefonnummer
                 End If
 
             End If
-            NLogger.Trace($"Nummer erfasst: '{Value}'; '{EigeneNummer}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
+            NLogger.Trace($"Nummer erfasst: '{Value}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
         End Set
     End Property
     <XmlIgnore> Public ReadOnly Property TellowsNummer As String
@@ -104,7 +106,6 @@ Public Class Telefonnummer
             Return Unformatiert.IsRegExMatch("^(001){1}[2-9]\d{2}[2-9]\d{6}$")
         End Get
     End Property
-
 
 #End Region
     Public Sub New()
@@ -365,8 +366,10 @@ Public Class Telefonnummer
                     (Unformatiert.Contains(AndereNummer) Or AndereNummer.Contains(Unformatiert)) Then
                     ' Führe den direkten Vergleich durch, in dem eine neue Telefonnummer angelegt wird
                     ' Bei Vergleich eigener Nummern, übergib die OKZ und LKZ
-                    If EigeneNummer Then
-                        Return Equals(New Telefonnummer With {.EigeneNummer = EigeneNummer, .Landeskennzahl = Landeskennzahl, .Ortskennzahl = Ortskennzahl, .SetNummer = AndereNummer})
+                    If EigeneNummerInfo IsNot Nothing Then
+                        Return Equals(New Telefonnummer With {.Landeskennzahl = Landeskennzahl,
+                                                              .Ortskennzahl = Ortskennzahl,
+                                                              .SetNummer = AndereNummer})
                     Else
                         Return Equals(New Telefonnummer With {.SetNummer = AndereNummer})
                     End If

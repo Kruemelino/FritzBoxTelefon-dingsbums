@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:cp="clr-namespace:ColorPicker;assembly=ColorPicker"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400"
@@ -114,8 +115,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <CheckBox IsChecked="{Binding Path=IsExternalTAM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Visibility="{Binding Path=TelTyp, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=FON}">                   
-                                    </CheckBox>
+                                              Visibility="{Binding Path=TelTyp, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=FON}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -177,26 +177,63 @@
             </StackPanel>
         </Expander>
 
-        <Expander Header="{x:Static localize:LocOptionen.strTelephonyHeadNumbers}">
+        <Expander Header="{x:Static localize:LocOptionen.strTelephonyHeadNumbers}" IsExpanded="True">
 
             <StackPanel>
-                <TextBlock Text="{x:Static localize:LocOptionen.strTelephonyNumbersInfo}"/>
-
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTelephonyNumbersInfo}" />
+                
                 <DataGrid ItemsSource="{Binding OptVM.TelNrListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           Style="{DynamicResource DataGridTemplate}" 
-                          HeadersVisibility="None"
-                          MaxHeight="150" Margin="0,4" BorderThickness="0" >
+                          Margin="0,4" 
+                          BorderThickness="0" >
                 
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn>
+                        <!--Einwahl der Nummer-->
+                        <DataGridTextColumn Binding="{Binding Path=Einwahl}" 
+                                            Header="{x:Static localize:LocOptionen.strTelephonyNumber}">
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyNumberAnrMon}">
                             <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>                                
-                                    <CheckBox Content="{Binding Path=Einwahl}" IsChecked="{Binding Path=Überwacht, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                </DataTemplate>                        
-                            </DataGridTemplateColumn.CellTemplate>                        
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center" 
+                                              IsChecked="{Binding Path=EigeneNummerInfo.Überwacht, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyNumberBackgroundColor}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center" 
+                                              IsChecked="{Binding Path=EigeneNummerInfo.CBSetBackgroundColorByNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyNumberForeGroundColor}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center" 
+                                              IsChecked="{Binding Path=EigeneNummerInfo.CBSetForegroundColorByNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyNumberColor}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <cp:PortableColorPicker ShowAlpha="True"                                                               
+                                                            Style="{DynamicResource DefaultColorPickerStyle}" 
+                                                            SelectedColor="{Binding EigeneNummerInfo.TBBackgoundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                            SecondaryColor="{Binding EigeneNummerInfo.TBForegoundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+
             </StackPanel>
         </Expander>
    

@@ -152,6 +152,16 @@ Public Class MissedCallViewModel
         End Set
     End Property
 
+    Private _ForeColor As String = CType(Globals.ThisAddIn.WPFApplication.FindResource("ControlDefaultForeground"), SolidColorBrush).Color.ToString()
+    Public Property ForeColor As String
+        Get
+            Return _ForeColor
+        End Get
+        Set
+            SetProperty(_ForeColor, Value)
+        End Set
+    End Property
+
     Private _IsPlaying As Boolean
     Public Property IsPlaying As Boolean
         Get
@@ -199,6 +209,10 @@ Public Class MissedCallViewModel
             If .EigeneTelNr Is Nothing AndAlso .OutEigeneTelNr.IsNotStringNothingOrEmpty Then
                 .EigeneTelNr = New Telefonnummer With {.SetNummer = VerpasstesTelefonat.OutEigeneTelNr}
             End If
+
+            ' Hintergrundfarbe festlegen
+            SetColors()
+
             EigeneTelNr = .EigeneTelNr?.Einwahl
 
             ' Setze das Kontaktbild
@@ -229,6 +243,38 @@ Public Class MissedCallViewModel
         OnPropertyChanged(NameOf(ZeigeBlockButton))
 
     End Sub
+
+#Region "Styling"
+    ''' <summary>
+    ''' Setzt die Farben des Anrufmonitors
+    ''' </summary>
+    Private Sub SetColors()
+
+        If XMLData.POptionen.CBSetAnrMonBColor Then
+            BackgroundColor = XMLData.POptionen.TBAnrMonBColorHex
+            ForeColor = XMLData.POptionen.TBAnrMonFColorHex
+        End If
+
+        If VerpasstesTelefonat IsNot Nothing Then
+            With VerpasstesTelefonat
+                If .EigeneTelNr IsNot Nothing AndAlso .EigeneTelNr.EigeneNummerInfo IsNot Nothing Then
+
+                    ' Hintergrundfarbe
+                    If .EigeneTelNr.EigeneNummerInfo.CBSetBackgroundColorByNumber Then
+                        BackgroundColor = .EigeneTelNr.EigeneNummerInfo.TBBackgoundColorHex
+                    End If
+
+                    ' Schriftfarbe
+                    If .EigeneTelNr.EigeneNummerInfo.CBSetForegroundColorByNumber Then
+                        ForeColor = .EigeneTelNr.EigeneNummerInfo.TBForegoundColorHex
+                    End If
+                End If
+            End With
+        End If
+
+    End Sub
+
+#End Region
 
 #Region "Event Callback"
     Private Sub TelefonatChanged(sender As Object, e As PropertyChangedEventArgs)

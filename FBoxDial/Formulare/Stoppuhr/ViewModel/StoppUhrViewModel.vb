@@ -116,7 +116,7 @@ Public Class StoppUhrViewModel
         End Set
     End Property
 
-    Private _BackgroundColor As String
+    Private _BackgroundColor As String = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColor"), SolidColorBrush).Color.ToString()
     Public Property BackgroundColor As String
         Get
             Return _BackgroundColor
@@ -126,7 +126,7 @@ Public Class StoppUhrViewModel
         End Set
     End Property
 
-    Private _ForeColor As String
+    Private _ForeColor As String = CType(Globals.ThisAddIn.WPFApplication.FindResource("ControlDefaultForeground"), SolidColorBrush).Color.ToString()
     Public Property ForeColor As String
         Get
             Return _ForeColor
@@ -191,13 +191,7 @@ Public Class StoppUhrViewModel
         Eingehend = StoppUhrTelefonat.AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
 
         ' Hintergrundfarbe festlegen
-        If XMLData.POptionen.CBSetStoppUhrBColor Then
-            BackgroundColor = XMLData.POptionen.TBStoppUhrBColorHex
-            ForeColor = XMLData.POptionen.TBStoppUhrFColorHex
-        Else
-            BackgroundColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColor"), SolidColorBrush).Color.ToString()
-            ForeColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("ControlDefaultForeground"), SolidColorBrush).Color.ToString()
-        End If
+        SetColors()
 
         ' Position festlegen
         PosTop = XMLData.POptionen.StoppUhrPosTop
@@ -225,6 +219,41 @@ Public Class StoppUhrViewModel
         CommandManager.InvalidateRequerySuggested()
 
     End Sub
+
+#Region "Styling"
+    ''' <summary>
+    ''' Setzt die Farben der Stoppuhr
+    ''' </summary>
+    Private Sub SetColors()
+
+        If XMLData.POptionen.CBSetStoppUhrBColor Then
+            BackgroundColor = XMLData.POptionen.TBStoppUhrBColorHex
+            ForeColor = XMLData.POptionen.TBStoppUhrFColorHex
+            'Else
+            '    BackgroundColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColor"), SolidColorBrush).Color.ToString()
+            '    ForeColor = CType(Globals.ThisAddIn.WPFApplication.FindResource("ControlDefaultForeground"), SolidColorBrush).Color.ToString()
+        End If
+
+        If StoppUhrTelefonat IsNot Nothing Then
+            With StoppUhrTelefonat
+                If .EigeneTelNr IsNot Nothing AndAlso .EigeneTelNr.EigeneNummerInfo IsNot Nothing Then
+
+                    ' Hintergrundfarbe
+                    If .EigeneTelNr.EigeneNummerInfo.CBSetBackgroundColorByNumber Then
+                        BackgroundColor = .EigeneTelNr.EigeneNummerInfo.TBBackgoundColorHex
+                    End If
+
+                    ' Schriftfarbe
+                    If .EigeneTelNr.EigeneNummerInfo.CBSetForegroundColorByNumber Then
+                        ForeColor = .EigeneTelNr.EigeneNummerInfo.TBForegoundColorHex
+                    End If
+                End If
+            End With
+        End If
+
+    End Sub
+
+#End Region
 
 #Region "Event Callback"
     Private Sub TelefonatChanged(sender As Object, e As PropertyChangedEventArgs)
@@ -305,6 +334,7 @@ Public Class StoppUhrViewModel
         If StoppUhr.IsRunning Then Dauer = StoppUhr.Elapsed
     End Sub
 #End Region
+
 #Region "ICommand Callback"
     Private Sub ShowContact(o As Object)
         StoppUhrTelefonat?.ZeigeKontakt()
