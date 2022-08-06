@@ -14,7 +14,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/AnrMon.xaml"/>
-                <ResourceDictionary>                    
+                <ResourceDictionary>
                     <SolidColorBrush x:Key="Foreground" 
                                      Color="{Binding ForeColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                 </ResourceDictionary>
@@ -47,10 +47,12 @@
 
             <TextBlock Grid.Column="0"
                        Style="{StaticResource DefaultZeit}"
+                       Foreground="{StaticResource Foreground}"
                        Text="{Binding Path=Zeit, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=\{0:F\}}"/>
 
             <TextBlock Grid.Column="1"
                        Style="{StaticResource DefaultEigeneNummer}"
+                       Foreground="{StaticResource Foreground}"
                        Text="{Binding Path=EigeneTelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
         </Grid>
 
@@ -62,15 +64,18 @@
 
         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"                             
                    Style="{StaticResource DefaultNummer}"
+                   Foreground="{StaticResource Foreground}"
                    Text="{Binding Path=TelNr, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
                    Style="{StaticResource DefaultMainInfo}"
+                   Foreground="{StaticResource Foreground}"
                    Text="{Binding Path=AnrMonMainInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--Erweiterte Informationen-->
         <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"                          
                    Style="{StaticResource DefaultExtInfo}"
+                   Foreground="{StaticResource Foreground}"
                    Text="{Binding Path=AnrMonExInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <StackPanel VerticalAlignment="Stretch" DockPanel.Dock="Right" Orientation="Vertical"
