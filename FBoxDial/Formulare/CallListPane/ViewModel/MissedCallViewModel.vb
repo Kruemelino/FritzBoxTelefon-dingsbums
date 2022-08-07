@@ -207,11 +207,13 @@ Public Class MissedCallViewModel
 
             ' Eigene Telefonnummer setzen
             If .EigeneTelNr Is Nothing AndAlso .OutEigeneTelNr.IsNotStringNothingOrEmpty Then
+                ' Wenn die Daten aus der Einstellungsdatei bezogen wurden
+                ' Kann das hier überhaupt passieren?
                 .EigeneTelNr = New Telefonnummer With {.SetNummer = VerpasstesTelefonat.OutEigeneTelNr}
             End If
 
             ' Hintergrundfarbe festlegen
-            SetColors()
+            DatenService.GetColors(BackgroundColor, ForeColor, .EigeneTelNr, False)
 
             EigeneTelNr = .EigeneTelNr?.Einwahl
 
@@ -243,38 +245,6 @@ Public Class MissedCallViewModel
         OnPropertyChanged(NameOf(ZeigeBlockButton))
 
     End Sub
-
-#Region "Styling"
-    ''' <summary>
-    ''' Setzt die Farben des Anrufmonitors
-    ''' </summary>
-    Private Sub SetColors()
-
-        If XMLData.POptionen.CBSetAnrMonBColor Then
-            BackgroundColor = XMLData.POptionen.TBAnrMonBColorHex
-            ForeColor = XMLData.POptionen.TBAnrMonFColorHex
-        End If
-
-        If VerpasstesTelefonat IsNot Nothing Then
-            With VerpasstesTelefonat
-                If .EigeneTelNr IsNot Nothing AndAlso .EigeneTelNr.EigeneNummerInfo IsNot Nothing Then
-
-                    ' Hintergrundfarbe
-                    If .EigeneTelNr.EigeneNummerInfo.CBSetBackgroundColorByNumber Then
-                        BackgroundColor = .EigeneTelNr.EigeneNummerInfo.TBBackgoundColorHex
-                    End If
-
-                    ' Schriftfarbe
-                    If .EigeneTelNr.EigeneNummerInfo.CBSetForegroundColorByNumber Then
-                        ForeColor = .EigeneTelNr.EigeneNummerInfo.TBForegoundColorHex
-                    End If
-                End If
-            End With
-        End If
-
-    End Sub
-
-#End Region
 
 #Region "Event Callback"
     Private Sub TelefonatChanged(sender As Object, e As PropertyChangedEventArgs)

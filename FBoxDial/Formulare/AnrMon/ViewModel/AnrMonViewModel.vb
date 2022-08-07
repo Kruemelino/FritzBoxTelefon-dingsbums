@@ -184,12 +184,14 @@ Public Class AnrMonViewModel
 
             ' Eigene Telefonnummer setzen
             If .EigeneTelNr Is Nothing AndAlso .OutEigeneTelNr.IsNotStringNothingOrEmpty Then
-                .EigeneTelNr = New Telefonnummer With {.SetNummer = AnrMonTelefonat.OutEigeneTelNr}
+                ' Wenn die Daten aus der Einstellungsdatei bezogen wurden
+                .EigeneTelNr = DatenService.GetEigeneTelNr(.OutEigeneTelNr)
             End If
 
             ' Hintergrundfarbe festlegen
-            SetColors()
+            DatenService.GetColors(BackgroundColor, ForeColor, .EigeneTelNr, False)
 
+            ' Anzuzeigender Text
             EigeneTelNr = .EigeneTelNr?.Einwahl
 
             ' Setze das Kontaktbild
@@ -221,39 +223,6 @@ Public Class AnrMonViewModel
         ' Einblenden des Blockierbuttons aktualisieren
         OnPropertyChanged(NameOf(ZeigeBlockButton))
     End Sub
-
-#Region "Styling"
-    ''' <summary>
-    ''' Setzt die Farben des Anrufmonitors
-    ''' </summary>
-    Private Sub SetColors()
-
-        If XMLData.POptionen.CBSetAnrMonBColor Then
-            BackgroundColor = XMLData.POptionen.TBAnrMonBColorHex
-            ForeColor = XMLData.POptionen.TBAnrMonFColorHex
-        End If
-
-        If AnrMonTelefonat IsNot Nothing Then
-            With AnrMonTelefonat
-                If .EigeneTelNr IsNot Nothing AndAlso .EigeneTelNr.EigeneNummerInfo IsNot Nothing Then
-
-                    ' Hintergrundfarbe
-                    If .EigeneTelNr.EigeneNummerInfo.CBSetBackgroundColorByNumber Then
-                        BackgroundColor = .EigeneTelNr.EigeneNummerInfo.TBBackgoundColorHex
-                    End If
-
-                    ' Schriftfarbe
-                    If .EigeneTelNr.EigeneNummerInfo.CBSetForegroundColorByNumber Then
-                        ForeColor = .EigeneTelNr.EigeneNummerInfo.TBForegoundColorHex
-                    End If
-                End If
-            End With
-        End If
-
-    End Sub
-
-#End Region
-
 
 #Region "Event Callback"
     Private Sub TelefonatChanged(sender As Object, e As PropertyChangedEventArgs)

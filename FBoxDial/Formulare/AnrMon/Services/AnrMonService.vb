@@ -8,6 +8,36 @@ Public Class AnrMonService
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Public Event SoundFinished As EventHandler(Of NotifyEventArgs(Of String)) Implements IAnrMonService.SoundFinished
 
+#Region "Styling"
+    Public Sub GetColors(ByRef BackgroundColor As String, ByRef ForeColor As String, TelNr As Telefonnummer, IsStoppUhr As Boolean) Implements IAnrMonService.GetColors
+
+        ' 1. Allgemeine Farben, die der Nutzer für alle Fenster festgelegt hat.
+        If XMLData.POptionen.CBSetAnrMonBColor Then
+            ' Unterscheidung zwischen Stoppuhr und Anrufmonitor/CallPane
+            BackgroundColor = If(IsStoppUhr, XMLData.POptionen.TBStoppUhrBColorHex, XMLData.POptionen.TBAnrMonBColorHex)
+            ForeColor = If(IsStoppUhr, XMLData.POptionen.TBStoppUhrFColorHex, XMLData.POptionen.TBAnrMonFColorHex)
+        End If
+
+        ' 2. Überschreibe die Farbdefinition je eigener Nummer
+        If TelNr IsNot Nothing AndAlso TelNr.EigeneNummerInfo IsNot Nothing Then
+
+            ' Hintergrundfarbe
+            If TelNr.EigeneNummerInfo.CBSetBackgroundColorByNumber Then
+                BackgroundColor = TelNr.EigeneNummerInfo.TBBackgoundColorHex
+            End If
+
+            ' Schriftfarbe
+            If TelNr.EigeneNummerInfo.CBSetForegroundColorByNumber Then
+                ForeColor = TelNr.EigeneNummerInfo.TBForegoundColorHex
+            End If
+        End If
+
+        ' TODO 3. Farbdefinition nach VIP
+
+    End Sub
+#End Region
+
+#Region "MissedCallPane"
     Public Sub RemoveMissedCall(MissedCall As MissedCallViewModel) Implements IAnrMonService.RemoveMissedCall
         For Each Explorer In Globals.ThisAddIn.ExplorerWrappers.Values
             With Explorer.CallListPaneVM.MissedCallList
@@ -20,6 +50,7 @@ Public Class AnrMonService
             End With
         Next
     End Sub
+#End Region
 
     Private Sub BlockNumber(TelNr As Telefonnummer) Implements IAnrMonService.BlockNumber
         AddNrToBlockList(TelNr)
@@ -54,6 +85,18 @@ Public Class AnrMonService
         Return Nothing
     End Function
 
+    Public Function GetEigeneTelNr(TelNr As String) As Telefonnummer Implements IAnrMonService.GetEigeneTelNr
+        GetEigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(T) T.Equals(TelNr))
+
+        If GetEigeneTelNr Is Nothing Then
+            ' Fehlerfall, wenn Nummer nicht in den eingelesenen Daten gefunden wurde
+            NLogger.Warn($"Die eigene Telefonnummer {TelNr} wurde in den eingelesenen Daten nicht gefunden.")
+            ' Setze neues Datenobjekt
+            GetEigeneTelNr = New Telefonnummer With {.SetNummer = TelNr}
+        End If
+    End Function
+
+#Region "TAM Messages"
     Public Sub PlayMessage(MessageURL As String) Implements IAnrMonService.PlayMessage
         NLogger.Debug($"Anrufbeantworternachricht via TAM für Eintrag: {MessageURL}")
 
@@ -105,6 +148,6 @@ Public Class AnrMonService
 
         SoundPlayer.LocationURL = String.Empty
     End Sub
-
+#End Region
 #End Region
 End Class
