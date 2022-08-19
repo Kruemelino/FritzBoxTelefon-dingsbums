@@ -125,11 +125,6 @@
     <value>Anrufmonitor</value>
     <comment>MainView</comment>
   </data>
-  <data name="strAnrMonBColorInfo" xml:space="preserve">
-    <value>Primärfarbe: Hintergrund
-Sekundarfarbe: Schrift</value>
-    <comment>OptAnrMonView</comment>
-  </data>
   <data name="strAnrMonCBAnrMonAuto" xml:space="preserve">
     <value>Anrufmonitor mit Outlook starten</value>
     <comment>OptAnrMonView</comment>
@@ -199,7 +194,7 @@ Sekundarfarbe: Schrift</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonSetBColor" xml:space="preserve">
-    <value>Setze Hintergrundfarbe des Anrufmonitors</value>
+    <value>Setze Farben des Anrufmonitors</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonSidePaneInfo" xml:space="preserve">
@@ -208,7 +203,7 @@ Das Seitenfenster wird beim manuellen Importieren der Anrufliste (Journalimport)
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonStoppUhrSetBColor" xml:space="preserve">
-    <value>Setze Hintergrundfarbe der Stoppuhr</value>
+    <value>Setze Farben der Stoppuhr</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strAnrMonTBAnrMonAbstand" xml:space="preserve">
@@ -372,6 +367,12 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
   <data name="strCBSoftPhoneSuffix" xml:space="preserve">
     <value>Raute (#) an die zu wählende Nummer anhängen.</value>
     <comment>OptMicroSIPView, OptPhonerView</comment>
+  </data>
+  <data name="strColorBackground" xml:space="preserve">
+    <value>Hintergrundfarbe</value>
+  </data>
+  <data name="strColorForeground" xml:space="preserve">
+    <value>Schriftfarbe</value>
   </data>
   <data name="strConfig" xml:space="preserve">
     <value>Einstellungen</value>
@@ -785,6 +786,10 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Homepage</value>
     <comment>OptMicroSIPView, OptPhonerView</comment>
   </data>
+  <data name="strStoppuhr" xml:space="preserve">
+    <value>Stoppuhr</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strTelephonyHeadImport" xml:space="preserve">
     <value>Einlesen der Telefoniedaten von der Fritz!Box</value>
     <comment>OptTelephonyView</comment>
@@ -830,8 +835,7 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <comment>OptTelephonyView</comment>
   </data>
   <data name="strTelephonyNumbersInfo" xml:space="preserve">
-    <value>Hier kann ausgewählt werden, auf welche Nummer der Anrufmonitor reagieren soll. Des Weiteren kann die Hintergrund- und Schriftfarbe je Nummer festgelegt werden (Wirksam im Anrufmonitor, Stoppuhr und Seitenfenster für verpasste Anrufe).
-Aktuell gibt es einen Bug, der bewirkt, dass nicht auf die Sekundärfarbe umgeschaltet werden kann. </value>
+    <value>Hier kann ausgewählt werden, auf welche Nummer der Anrufmonitor reagieren soll. </value>
     <comment>OptTelephonyView</comment>
   </data>
   <data name="strTelephonyPhoneDialport" xml:space="preserve">
@@ -1163,8 +1167,20 @@ Bei erfolgreicher Suche wird der gefundene Kontakt eingeblendet.</value>
     <value>Zurücksetzen</value>
     <comment>MainView</comment>
   </data>
+  <data name="strUserColorHead" xml:space="preserve">
+    <value>Farbanpassungen</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strUserColorInfo" xml:space="preserve">
+    <value>Die Hintergrund- und Schriftfarbe kann hier nach Belieben angepasst werden. Die Farben können zum einen global für alle Anrufe, als auch für jede der eigenen Nummern gesetzt werden. Als Dritte Möglichkeit können VIP gesondert dargestellt werden.</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strUserName" xml:space="preserve">
     <value>Benutzername</value>
     <comment>OptConnURIView</comment>
+  </data>
+  <data name="strVIP" xml:space="preserve">
+    <value>VIP</value>
+    <comment>OptAnrMonView</comment>
   </data>
 </root>

@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fbd="clr-namespace:FBoxDial"
-             xmlns:cp="clr-namespace:ColorPicker;assembly=ColorPicker"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400"
@@ -19,24 +18,24 @@
     </UserControl.Resources>
 
     <StackPanel x:Name="MainStackPanel" Margin="8">
-        <StackPanel.Resources>            
+        <StackPanel.Resources>
             <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" 
                    TargetType="{x:Type DataGridColumnHeader}" >
-                
+
                 <Setter Property="Padding" 
                         Value="4,0,0,0" />
-            </Style>            
+            </Style>
         </StackPanel.Resources>
-        
+
         <Expander Header="{x:Static localize:LocOptionen.strTelephonyHeadImport}">
-            
+
             <Border BorderThickness="0.5" 
                     Margin="0,0,0,4">
-            
+
                 <Border.BorderBrush>
                     <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
                 </Border.BorderBrush>
-            
+
                 <StackPanel>
                     <Button Content="{x:Static localize:LocOptionen.strTelephonyImportStart}" 
                             Margin="4" Height="25"
@@ -45,7 +44,7 @@
 
                     <TextBox Style="{StaticResource ConsoleTextBox}"
                              Text="{Binding EinlesenStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-                </StackPanel>       
+                </StackPanel>
 
             </Border>
 
@@ -53,8 +52,9 @@
 
         <Expander Header="{x:Static localize:LocOptionen.strTelephonyHeadPhones}" IsExpanded="True">
             <StackPanel>
-                <TextBlock Text="{x:Static localize:LocOptionen.strTelephonyInfoToolTipp}"/>
-
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strTelephonyInfoToolTipp}" />
+                
                 <DataGrid ItemsSource="{Binding OptVM.TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           Style="{DynamicResource DataGridTemplate}"
                           IsReadOnly="True"
@@ -111,11 +111,12 @@
                                             Value="{x:Static localize:LocOptionen.strTelephonyPhoneTAMToolTipp}" />
                                 </Style>
                             </DataGridTemplateColumn.HeaderStyle>
-                            
+
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <CheckBox IsChecked="{Binding Path=IsExternalTAM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Visibility="{Binding Path=TelTyp, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=FON}" />
+                                              Visibility="{Binding Path=TelTyp, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=FON}">
+                                    </CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -185,57 +186,21 @@
                 
                 <DataGrid ItemsSource="{Binding OptVM.TelNrListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           Style="{DynamicResource DataGridTemplate}" 
-                          Margin="0,4" 
-                          BorderThickness="0" >
-                
+                          HeadersVisibility="None"
+                          MaxHeight="150" Margin="0,4" BorderThickness="0" >
+
                     <DataGrid.Columns>
-                        <!--Einwahl der Nummer-->
-                        <DataGridTextColumn Binding="{Binding Path=Einwahl}" 
-                                            Header="{x:Static localize:LocOptionen.strTelephonyNumber}">
-                        </DataGridTextColumn>
-
-                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyNumberAnrMon}">
+                        <DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox HorizontalAlignment="Center" 
-                                              IsChecked="{Binding Path=EigeneNummerInfo.Überwacht, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyNumberBackgroundColor}">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox HorizontalAlignment="Center" 
-                                              IsChecked="{Binding Path=EigeneNummerInfo.CBSetBackgroundColorByNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyNumberForeGroundColor}">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox HorizontalAlignment="Center" 
-                                              IsChecked="{Binding Path=EigeneNummerInfo.CBSetForegroundColorByNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyNumberColor}">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <cp:PortableColorPicker ShowAlpha="True"                                                               
-                                                            Style="{DynamicResource DefaultColorPickerStyle}" 
-                                                            SelectedColor="{Binding EigeneNummerInfo.TBBackgoundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                            SecondaryColor="{Binding EigeneNummerInfo.TBForegoundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox Content="{Binding Path=Einwahl}" IsChecked="{Binding Path=EigeneNummerInfo.Überwacht, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-
             </StackPanel>
         </Expander>
-   
+
     </StackPanel>
 </UserControl>

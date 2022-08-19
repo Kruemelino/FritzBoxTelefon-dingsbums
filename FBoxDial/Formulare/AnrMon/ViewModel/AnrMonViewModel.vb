@@ -189,7 +189,7 @@ Public Class AnrMonViewModel
             End If
 
             ' Hintergrundfarbe festlegen
-            DatenService.GetColors(BackgroundColor, ForeColor, .EigeneTelNr, False)
+            DatenService.GetColors(BackgroundColor, ForeColor, .EigeneTelNr, False, False)
 
             ' Anzuzeigender Text
             EigeneTelNr = .EigeneTelNr?.Einwahl
@@ -210,15 +210,22 @@ Public Class AnrMonViewModel
     Private Async Sub UpdateData()
         ' Lade das Kontaktbild, wenn a) Option gesetzt ist oder b) ein TellowsErgebnis vorliegt und das Bild noch nicht geladen wurde
         If Kontaktbild Is Nothing Then Kontaktbild = Await DatenService.LadeBild(AnrMonTelefonat)
+        With AnrMonTelefonat
+            ' Hintergrundfarbe festlegen, falls VIP
+            If .OlKontakt IsNot Nothing Then
+                DatenService.GetColors(BackgroundColor, ForeColor, .EigeneTelNr, False, .OlKontakt.IsVIP)
+            End If
 
-        If AnrMonTelefonat.TellowsResult IsNot Nothing AndAlso XMLData.POptionen.CBTellowsAnrMonColor Then
-            With AnrMonTelefonat.TellowsResult
-                If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Comments.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
-                    ' Einfärben des Hintergrundes
-                    BackgroundColor = .ScoreColor
-                End If
-            End With
-        End If
+            If .TellowsResult IsNot Nothing AndAlso XMLData.POptionen.CBTellowsAnrMonColor Then
+                With .TellowsResult
+                    If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Comments.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
+                        ' Einfärben des Hintergrundes
+                        BackgroundColor = .ScoreColor
+                    End If
+                End With
+            End If
+
+        End With
 
         ' Einblenden des Blockierbuttons aktualisieren
         OnPropertyChanged(NameOf(ZeigeBlockButton))

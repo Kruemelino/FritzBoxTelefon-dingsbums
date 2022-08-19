@@ -252,16 +252,6 @@ Public Module Extensions
         Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
-    ' TODO: Warum wird das nicht verwendet?
-    '<Extension> Public Sub Insert(ByRef Liste As List(Of VIPEntry), item As VIPEntry)
-
-    '    ' Liste initialisieren, falls erforderlich
-    '    If Liste Is Nothing Then Liste = New List(Of VIPEntry)
-
-    '    Liste.Insert(0, item)
-
-    '    Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
-    'End Sub
 #End Region
 
 #Region "Zahlenkonvertierungen"

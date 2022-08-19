@@ -178,46 +178,48 @@ Public Class StoppUhrViewModel
     Private Sub LadeDaten()
         ' Setze Anzuzeigende Werte
 
-        ' Anruferzeit festlegen: Beginn des Telefonates
-        Beginn = StoppUhrTelefonat.ZeitBeginn
+        With StoppUhrTelefonat
 
-        ' Anrufende Telefonnummer
-        TelNr = StoppUhrTelefonat.GegenstelleTelNr?.Formatiert
+            ' Anruferzeit festlegen: Beginn des Telefonates
+            Beginn = .ZeitBeginn
 
-        ' Eigene Telefonnummer
-        EigeneTelNr = StoppUhrTelefonat.EigeneTelNr?.Einwahl
+            ' Anrufende Telefonnummer
+            TelNr = .GegenstelleTelNr?.Formatiert
 
-        ' Anrufer Name setzen
-        Name = StoppUhrTelefonat.NameGegenstelle
+            ' Eigene Telefonnummer
+            EigeneTelNr = .EigeneTelNr?.Einwahl
 
-        ' Anrufrichtung festlegen
-        Eingehend = StoppUhrTelefonat.AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
+            ' Anrufer Name setzen
+            Name = .NameGegenstelle
 
-        ' Hintergrundfarbe festlegen
-        DatenService.GetColors(BackgroundColor, ForeColor, StoppUhrTelefonat.EigeneTelNr, True)
+            ' Anrufrichtung festlegen
+            Eingehend = .AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
 
-        ' Position festlegen
-        PosTop = XMLData.POptionen.StoppUhrPosTop
-        PosLeft = XMLData.POptionen.StoppUhrPosLeft
+            ' Hintergrundfarbe festlegen
+            DatenService.GetColors(BackgroundColor, ForeColor, .EigeneTelNr, True, If(.OlKontakt?.IsVIP, False))
 
-        ' Starte die Stoppuhr
-        If StoppUhr Is Nothing Then
-            ' Stoppuhr initialisieren
-            StoppUhr = New Stopwatch
-            ' Starten
-            StartStoppuhr = True
-        Else
-            If StoppUhr.IsRunning AndAlso StoppUhrTelefonat.Beendet Then
-                NLogger.Debug($"Stoppuhr nach {StoppUhr.Elapsed.TotalSeconds} angehalten")
+            ' Position festlegen
+            PosTop = XMLData.POptionen.StoppUhrPosTop
+            PosLeft = XMLData.POptionen.StoppUhrPosLeft
 
-                ' Stoppuhr anhalten
-                StartStoppuhr = False
+            ' Starte die Stoppuhr
+            If StoppUhr Is Nothing Then
+                ' Stoppuhr initialisieren
+                StoppUhr = New Stopwatch
+                ' Starten
+                StartStoppuhr = True
+            Else
+                If StoppUhr.IsRunning AndAlso .Beendet Then
+                    NLogger.Debug($"Stoppuhr nach {StoppUhr.Elapsed.TotalSeconds} angehalten")
 
-                ' Anruferzeit festlegen: Ende des Telefonates
-                Ende = StoppUhrTelefonat.ZeitEnde
+                    ' Stoppuhr anhalten
+                    StartStoppuhr = False
+
+                    ' Anruferzeit festlegen: Ende des Telefonates
+                    Ende = .ZeitEnde
+                End If
             End If
-        End If
-
+        End With
         ' Forcing the CommandManager to raise the RequerySuggested event
         CommandManager.InvalidateRequerySuggested()
 

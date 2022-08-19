@@ -258,7 +258,7 @@ Public Class OptionenViewModel
 
     Private _CBSetAnrMonBColor As Boolean
     ''' <summary>
-    ''' Angabe, ob die Farben des Anrufmonitors geändert werden soll
+    ''' Angabe, ob die Hintergrundfarbe des Anrufmonitors geändert werden soll
     ''' </summary>
     Public Property CBSetAnrMonBColor As Boolean
         Get
@@ -269,11 +269,24 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-    Private _TBAnrMonBColor As Media.Color
+    Private _CBSetAnrMonFColor As Boolean
     ''' <summary>
-    ''' Hintergrundfarbe als Farbobjekt
+    ''' Angabe, ob die Schriftfarbe des Anrufmonitors geändert werden soll
     ''' </summary>
-    Public Property TBAnrMonBColor As Media.Color
+    Public Property CBSetAnrMonFColor As Boolean
+        Get
+            Return _CBSetAnrMonFColor
+        End Get
+        Set
+            SetProperty(_CBSetAnrMonFColor, Value)
+        End Set
+    End Property
+
+    Private _TBAnrMonBColor As String
+    ''' <summary>
+    ''' Schriftfarbe als HEX-String #00000000
+    ''' </summary>
+    Public Property TBAnrMonBColor As String
         Get
             Return _TBAnrMonBColor
         End Get
@@ -281,40 +294,17 @@ Public Class OptionenViewModel
             SetProperty(_TBAnrMonBColor, Value)
         End Set
     End Property
+
+    Private _TBAnrMonFColor As String
     ''' <summary>
     ''' Schriftfarbe als HEX-String #00000000
     ''' </summary>
-    Public Property TBAnrMonBColorHex As String
-        Get
-            Return _TBAnrMonBColor.ToString
-        End Get
-        Set
-            SetProperty(_TBAnrMonBColor, CType(Media.ColorConverter.ConvertFromString(Value), Media.Color))
-        End Set
-    End Property
-
-    Private _TBAnrMonFColor As Media.Color
-    ''' <summary>
-    ''' Schriftfarbe als Farbobjekt
-    ''' </summary>
-    Public Property TBAnrMonFColor As Media.Color
+    Public Property TBAnrMonFColor As String
         Get
             Return _TBAnrMonFColor
         End Get
         Set
             SetProperty(_TBAnrMonFColor, Value)
-        End Set
-    End Property
-
-    ''' <summary>
-    ''' Schriftfarbe als HEX-String #00000000
-    ''' </summary>
-    Public Property TBAnrMonFColorHex As String
-        Get
-            Return _TBAnrMonFColor.ToString
-        End Get
-        Set
-            SetProperty(_TBAnrMonFColor, CType(Media.ColorConverter.ConvertFromString(Value), Media.Color))
         End Set
     End Property
 
@@ -421,6 +411,59 @@ Public Class OptionenViewModel
             SetProperty(_CBShowCallPaneAtStart, Value)
         End Set
     End Property
+
+    Private _CBSetVIPBColor As Boolean
+    ''' <summary>
+    ''' Angabe, ob die Hintergundfarbe bei VIP geändert werden soll
+    ''' </summary>
+    Public Property CBSetVIPBColor As Boolean
+        Get
+            Return _CBSetVIPBColor
+        End Get
+        Set
+            SetProperty(_CBSetVIPBColor, Value)
+        End Set
+    End Property
+
+    Private _CBSetVIPFColor As Boolean
+    ''' <summary>
+    ''' Angabe, ob die Schriftfarbe bei VIP geändert werden soll
+    ''' </summary>
+    Public Property CBSetVIPFColor As Boolean
+        Get
+            Return _CBSetVIPFColor
+        End Get
+        Set
+            SetProperty(_CBSetVIPFColor, Value)
+        End Set
+    End Property
+
+    Private _TBVIPBColor As String
+    ''' <summary>
+    ''' Hintergrundfarbe als HEX-String #00000000
+    ''' </summary>
+    Public Property TBVIPBColor As String
+        Get
+            Return _TBVIPBColor
+        End Get
+        Set
+            SetProperty(_TBVIPBColor, Value)
+        End Set
+    End Property
+
+    Private _TBVIPFColor As String
+    ''' <summary>
+    ''' Schriftfarbe als HEX-String #00000000
+    ''' </summary>
+    Public Property TBVIPFColor As String
+        Get
+            Return _TBVIPFColor
+        End Get
+        Set
+            SetProperty(_TBVIPFColor, Value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Stoppuhr"
@@ -465,7 +508,7 @@ Public Class OptionenViewModel
 
     Private _CBSetStoppUhrBColor As Boolean
     ''' <summary>
-    ''' Angabe, ob die Farben der Stoppuhr geändert werden soll
+    ''' Angabe, ob die Hintergrundfarbe der Stoppuhr geändert werden soll
     ''' </summary>
     Public Property CBSetStoppUhrBColor As Boolean
         Get
@@ -476,11 +519,24 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-    Private _TBStoppUhrBColor As Media.Color
+    Private _CBSetStoppUhrFColor As Boolean
     ''' <summary>
-    ''' Hintergrundfarbe als Farbobjekt
+    ''' Angabe, ob die Schriftfarbe der Stoppuhr geändert werden soll
     ''' </summary>
-    Public Property TBStoppUhrBColor As Media.Color
+    Public Property CBSetStoppUhrFColor As Boolean
+        Get
+            Return _CBSetStoppUhrFColor
+        End Get
+        Set
+            SetProperty(_CBSetStoppUhrFColor, Value)
+        End Set
+    End Property
+
+    Private _TBStoppUhrBColor As String
+    ''' <summary>
+    ''' Hintergrundfarbe als HEX-String #00000000
+    ''' </summary>
+    Public Property TBStoppUhrBColor As String
         Get
             Return _TBStoppUhrBColor
         End Get
@@ -489,23 +545,11 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _TBStoppUhrFColor As String
     ''' <summary>
-    ''' Hintergrundfarbe als HEX-String #00000000
+    ''' Schriftfarbe als HEX-String #00000000
     ''' </summary>
-    Public Property TBStoppUhrBColorHex As String
-        Get
-            Return _TBStoppUhrBColor.ToString
-        End Get
-        Set
-            SetProperty(_TBStoppUhrBColor, CType(Media.ColorConverter.ConvertFromString(Value), Media.Color))
-        End Set
-    End Property
-
-    Private _TBStoppUhrFColor As Media.Color
-    ''' <summary>
-    ''' Schriftfarbe als Farbobjekt
-    ''' </summary>
-    Public Property TBStoppUhrFColor As Media.Color
+    Public Property TBStoppUhrFColor As String
         Get
             Return _TBStoppUhrFColor
         End Get
@@ -514,17 +558,6 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-    ''' <summary>
-    ''' Schriftfarbe als HEX-String #00000000
-    ''' </summary>
-    Public Property TBStoppUhrFColorHex As String
-        Get
-            Return _TBStoppUhrFColor.ToString
-        End Get
-        Set
-            SetProperty(_TBStoppUhrFColor, CType(Media.ColorConverter.ConvertFromString(Value), Media.Color))
-        End Set
-    End Property
 #End Region
 
 #Region "Einstellung für die Wählhilfe"

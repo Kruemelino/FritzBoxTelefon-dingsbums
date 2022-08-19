@@ -3,7 +3,7 @@
 
 Public Interface IAnrMonService
 #Region "Styling"
-    Sub GetColors(ByRef BackgroundColor As String, ByRef ForeColor As String, TelNr As Telefonnummer, IsStoppUhr As Boolean)
+    Sub GetColors(ByRef BackgroundColor As String, ByRef ForeColor As String, TelNr As Telefonnummer, IsStoppUhr As Boolean, IsVIP As Boolean)
 #End Region
 
 #Region "MissedCallPane"

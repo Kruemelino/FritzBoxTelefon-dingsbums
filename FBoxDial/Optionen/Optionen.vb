@@ -142,17 +142,21 @@
     ''' </summary>
     <XmlElement("CBAnrMonContactImage")> Public Property CBAnrMonContactImage As Boolean = True
     ''' <summary>
-    ''' Angabe, ob die Farben des Anrufmonitors geändert werden soll
+    ''' Angabe, ob die Hintergrundfarbe des Anrufmonitors geändert werden soll
     ''' </summary>
     <XmlElement("CBSetAnrMonBColor")> Public Property CBSetAnrMonBColor As Boolean = False
     ''' <summary>
+    ''' Angabe, ob die Schriftfarbe des Anrufmonitors geändert werden soll
+    ''' </summary>
+    <XmlElement("CBSetAnrMonFColor")> Public Property CBSetAnrMonFColor As Boolean = False
+    ''' <summary>
     ''' Hintergrundfarbe als HEX-String #00000000
     ''' </summary>
-    <XmlElement("TBAnrMonBColorHex")> Public Property TBAnrMonBColorHex As String
+    <XmlElement("TBAnrMonBColor")> Public Property TBAnrMonBColor As String
     ''' <summary>
     ''' Schriftfarbe als HEX-String #00000000
     ''' </summary>
-    <XmlElement("TBAnrMonFColorHex")> Public Property TBAnrMonFColorHex As String
+    <XmlElement("TBAnrMonFColor")> Public Property TBAnrMonFColor As String
     ''' <summary>
     ''' Positionskorrektur des Anrufmonitors in X-Richtung
     ''' </summary>
@@ -165,6 +169,27 @@
     ''' Grundabstand des Anrufmonitors
     ''' </summary>
     <XmlElement("TBAnrMonAbstand")> Public Property TBAnrMonAbstand As Double = 10.0R
+
+    ''' <summary>
+    ''' Angabe, ob die Hintergundfarbe bei VIP geändert werden soll
+    ''' </summary>
+    <XmlElement("CBSetVIPBColor")> Public Property CBSetVIPBColor As Boolean = False
+
+    ''' <summary>
+    ''' Angabe, ob die Schriftfarbe bei VIP geändert werden soll
+    ''' </summary>
+    <XmlElement("CBSetVIPFColor")> Public Property CBSetVIPFColor As Boolean = False
+
+    ''' <summary>
+    ''' Hintergrundfarbe als HEX-String #00000000
+    ''' </summary>
+    <XmlElement("TBVIPBColor")> Public Property TBVIPBColor As String
+
+    ''' <summary>
+    ''' Schriftfarbe als HEX-String #00000000
+    ''' </summary>
+    <XmlElement("TBVIPFColor")> Public Property TBVIPFColor As String
+
 #Region "CallPane"
     ''' <summary>
     ''' Angabe, ob verpasste Anrufe im CallPane angezeigt werden sollen.
@@ -202,17 +227,21 @@
     ''' </summary>
     <XmlElement("TBStoppUhrAusblendverzögerung")> Public Property TBStoppUhrAusblendverzögerung As Integer = 10
     ''' <summary>
-    ''' Angabe, ob die Farben der Stoppuhr geändert werden soll
+    ''' Angabe, ob die Hintergrundfarbe der Stoppuhr geändert werden soll
     ''' </summary>
     <XmlElement("CBSetStoppUhrBColor")> Public Property CBSetStoppUhrBColor As Boolean = False
     ''' <summary>
+    ''' Angabe, ob die Schriftfarbe der Stoppuhr geändert werden soll
+    ''' </summary>
+    <XmlElement("CBSetStoppUhrFColor")> Public Property CBSetStoppUhrFColor As Boolean = False
+    ''' <summary>
     ''' Hintergrundfarbe als HEX-String #00000000
     ''' </summary>
-    <XmlElement("TBStoppUhrBColorHex")> Public Property TBStoppUhrBColorHex As String
+    <XmlElement("TBStoppUhrBColor")> Public Property TBStoppUhrBColor As String
     ''' <summary>
     ''' Schriftfarbe als HEX-String #00000000
     ''' </summary>
-    <XmlElement("TBStoppUhrFColorHex")> Public Property TBStoppUhrFColorHex As String
+    <XmlElement("TBStoppUhrFColor")> Public Property TBStoppUhrFColor As String
 
     <XmlElement("StoppUhrPosTop")> Public Property StoppUhrPosTop As Integer = 100
     <XmlElement("StoppUhrPosLeft")> Public Property StoppUhrPosLeft As Integer = 100

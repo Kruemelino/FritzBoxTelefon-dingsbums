@@ -350,6 +350,9 @@
     <Compile Include="Formulare\Kontaktsuche\Views\ContactItemView.xaml.vb">
       <DependentUpon>ContactItemView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\Optionen\Controls\OptionsColor.xaml.vb">
+      <DependentUpon>OptionsColor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\Optionen\Services\BindingProxy.vb" />
     <Compile Include="Formulare\Optionen\Services\IConnectorVM.vb" />
     <Compile Include="Formulare\Optionen\Services\PassthroughMouseWheelBehavior.vb" />
@@ -698,6 +701,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Common\Resources\Converter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Controls\OptionsColor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

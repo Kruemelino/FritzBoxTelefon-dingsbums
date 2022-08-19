@@ -28,28 +28,11 @@
     ''' <summary>
     ''' Hintergrundfarbe als HEX-String #00000000
     ''' </summary>
-    <XmlElement()> Public Property TBBackgoundColorHex As String
-        Get
-            Return _TBBackgoundColor.ToString
-        End Get
-        Set
-            _TBBackgoundColor = CType(Windows.Media.ColorConverter.ConvertFromString(Value), Windows.Media.Color)
-        End Set
-    End Property
-
-    <XmlIgnore()> Public Property TBBackgoundColor As Windows.Media.Color
+    <XmlElement()> Public Property TBBackgoundColor As String
 
     ''' <summary>
     ''' Schriftfarbe als HEX-String #00000000
     ''' </summary>
-    <XmlElement()> Public Property TBForegoundColorHex As String
-        Get
-            Return _TBForegoundColor.ToString
-        End Get
-        Set
-            _TBForegoundColor = CType(Windows.Media.ColorConverter.ConvertFromString(Value), Windows.Media.Color)
-        End Set
-    End Property
+    <XmlElement()> Public Property TBForegoundColor As String
 
-    <XmlIgnore()> Public Property TBForegoundColor As Windows.Media.Color
 End Class

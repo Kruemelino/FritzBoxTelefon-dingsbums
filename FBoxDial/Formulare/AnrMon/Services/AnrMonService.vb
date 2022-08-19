@@ -1,4 +1,5 @@
 ﻿Imports System.Threading.Tasks
+Imports System.Windows.Media
 Imports System.Windows.Media.Imaging
 
 Public Class AnrMonService
@@ -9,31 +10,58 @@ Public Class AnrMonService
     Public Event SoundFinished As EventHandler(Of NotifyEventArgs(Of String)) Implements IAnrMonService.SoundFinished
 
 #Region "Styling"
-    Public Sub GetColors(ByRef BackgroundColor As String, ByRef ForeColor As String, TelNr As Telefonnummer, IsStoppUhr As Boolean) Implements IAnrMonService.GetColors
+    Public Sub GetColors(ByRef BackgroundColor As String, ByRef ForeColor As String, TelNr As Telefonnummer, IsStoppUhr As Boolean, IsVIP As Boolean) Implements IAnrMonService.GetColors
+
+        Dim DefaultBackgroundColor As String = CType(Globals.ThisAddIn.WPFApplication.FindResource("BackgroundColor"), SolidColorBrush).Color.ToString()
+        Dim DefaultForeColor As String = CType(Globals.ThisAddIn.WPFApplication.FindResource("ControlDefaultForeground"), SolidColorBrush).Color.ToString()
 
         ' 1. Allgemeine Farben, die der Nutzer für alle Fenster festgelegt hat.
-        If XMLData.POptionen.CBSetAnrMonBColor Then
-            ' Unterscheidung zwischen Stoppuhr und Anrufmonitor/CallPane
-            BackgroundColor = If(IsStoppUhr, XMLData.POptionen.TBStoppUhrBColorHex, XMLData.POptionen.TBAnrMonBColorHex)
-            ForeColor = If(IsStoppUhr, XMLData.POptionen.TBStoppUhrFColorHex, XMLData.POptionen.TBAnrMonFColorHex)
+
+        ' Unterscheidung zwischen Stoppuhr und Anrufmonitor/CallPane
+        If IsStoppUhr Then
+            ' Farbdefinition für Stoppuhr laden
+
+            ' 1.1 Hintergrund
+            If XMLData.POptionen.CBSetStoppUhrBColor Then BackgroundColor = XMLData.POptionen.TBStoppUhrBColor
+
+            ' 1.2 Schriftfarbe
+            If XMLData.POptionen.CBSetStoppUhrFColor Then ForeColor = XMLData.POptionen.TBStoppUhrFColor
+
+        Else
+            ' Farbdefinition für Anrufmonitor laden
+            ' 1.1 Hintergrund
+            If XMLData.POptionen.CBSetAnrMonBColor Then BackgroundColor = XMLData.POptionen.TBAnrMonBColor
+
+            ' 1.2 Schriftfarbe
+            If XMLData.POptionen.CBSetAnrMonFColor Then ForeColor = XMLData.POptionen.TBAnrMonFColor
+
         End If
 
         ' 2. Überschreibe die Farbdefinition je eigener Nummer
         If TelNr IsNot Nothing AndAlso TelNr.EigeneNummerInfo IsNot Nothing Then
 
             ' Hintergrundfarbe
-            If TelNr.EigeneNummerInfo.CBSetBackgroundColorByNumber Then
-                BackgroundColor = TelNr.EigeneNummerInfo.TBBackgoundColorHex
-            End If
+            If TelNr.EigeneNummerInfo.CBSetBackgroundColorByNumber Then BackgroundColor = TelNr.EigeneNummerInfo.TBBackgoundColor
 
             ' Schriftfarbe
-            If TelNr.EigeneNummerInfo.CBSetForegroundColorByNumber Then
-                ForeColor = TelNr.EigeneNummerInfo.TBForegoundColorHex
-            End If
+            If TelNr.EigeneNummerInfo.CBSetForegroundColorByNumber Then ForeColor = TelNr.EigeneNummerInfo.TBForegoundColor
         End If
 
-        ' TODO 3. Farbdefinition nach VIP
+        ' 3. Farbdefinition nach VIP
+        If IsVIP Then
+            ' 3.1 Hintergrund
+            If XMLData.POptionen.CBSetVIPBColor Then BackgroundColor = XMLData.POptionen.TBVIPBColor
 
+            ' 3.2 Schriftfarbe
+            If XMLData.POptionen.CBSetVIPFColor Then ForeColor = XMLData.POptionen.TBVIPFColor
+
+        End If
+
+        ' Falls der Wert nicht gesetzt ist, gehe auf den Default-Farbwert zurück
+        If BackgroundColor.IsStringNothingOrEmpty Then BackgroundColor = DefaultBackgroundColor
+
+        ' Falls der Wert nicht gesetzt ist, gehe auf den Default-Farbwert zurück
+        If ForeColor.IsStringNothingOrEmpty Then ForeColor = DefaultForeColor
     End Sub
 #End Region
 

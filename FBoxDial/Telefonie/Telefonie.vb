@@ -505,6 +505,24 @@ Imports FBoxDial.FritzBoxDefault
                                                                                                 .SIP = ID.ToInt},
                                                      .SetNummer = TelNr}
 
+            ' Ermittle aus den bereits bekannten Nummern, damit die benutzerdefinierten Einstellungen (Überwachung, Farbe) behalten werden.
+            If XMLData.PTelefonie?.Telefonnummern IsNot Nothing Then
+
+                ' Suche die Telefonnummer
+                Dim AlteNummer As Telefonnummer = XMLData.PTelefonie.Telefonnummern.Find(Function(T) T.Equals(AddEigeneTelNr))
+
+                ' Wenn keine Nummer gefunden wurde, dann unternimm nichts
+                If AlteNummer IsNot Nothing Then
+                    ' Überschreibe die Daten der eigenen Nummer
+                    AddEigeneTelNr.EigeneNummerInfo = AlteNummer.EigeneNummerInfo
+
+                    ' Schreibe die SIP-ID zurück
+                    AddEigeneTelNr.EigeneNummerInfo.SIP = ID.ToInt
+
+                End If
+
+            End If
+
             Telefonnummern.Add(AddEigeneTelNr)
             PushStatus(LogLevel.Debug, $"Telefonnummern: '{TelNr}' ({ID}); F: '{AddEigeneTelNr.Formatiert}'; U: '{AddEigeneTelNr.Unformatiert}'")
         End If

@@ -4,11 +4,6 @@ Imports System.Reflection
 Imports System.Windows
 Imports System.Windows.Data
 
-''' <summary>
-''' Das Telefonbuch ist von Tosker erstellt worden und auf Youtube und Github bereitgestellt:
-''' https://github.com/Tosker/ContactBook-Tutorial
-''' Es wurde duch Kruemelino zu Zwecken der Anzeige von Fritz!Box Kontakten angepasst und erweitert.
-''' </summary>
 Public Class BoolToVisibilityConverter
     Implements IValueConverter
 
@@ -20,6 +15,66 @@ Public Class BoolToVisibilityConverter
 
     Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
         Throw New NotImplementedException()
+    End Function
+End Class
+
+Public Class BoolToInvertedBoolConverter
+    Implements IValueConverter
+
+    Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
+        If TypeOf value Is Boolean Then
+            Return Not CBool(value)
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
+        Throw New NotImplementedException("ConvertBack() of BoolToInvertedBoolConverter is not implemented")
+    End Function
+End Class
+
+Public Class ColorToBrushConverter
+    Implements IValueConverter
+
+    Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
+        If TypeOf value Is Media.Color Then
+            Return New Media.SolidColorBrush(CType(value, Media.Color))
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
+        Throw New NotImplementedException("ConvertBack() of ColorToBrushConverter is not implemented")
+    End Function
+End Class
+
+Public Class StringToColorConverter
+    Implements IValueConverter
+
+    Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
+
+        If TypeOf value Is String Then
+            Dim tmpStr As String = CStr(value)
+            If tmpStr.IsNotStringNothingOrEmpty Then
+                Return CType(Media.ColorConverter.ConvertFromString(tmpStr), Media.Color)
+            Else
+                Return Nothing
+            End If
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
+
+        If TypeOf value Is Media.Color Then
+            Return CType(value, Media.Color).ToString
+        Else
+            Return String.Empty
+        End If
+
     End Function
 End Class
 

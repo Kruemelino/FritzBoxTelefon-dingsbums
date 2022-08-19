@@ -83,16 +83,6 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Primärfarbe: Hintergrund
-        '''Sekundarfarbe: Schrift ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strAnrMonBColorInfo() As String
-            Get
-                Return ResourceManager.GetString("strAnrMonBColorInfo", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Anrufmonitor mit Outlook starten ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonCBAnrMonAuto() As String
@@ -246,7 +236,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Setze Hintergrundfarbe des Anrufmonitors ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Setze Farben des Anrufmonitors ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonSetBColor() As String
             Get
@@ -265,7 +255,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Setze Hintergrundfarbe der Stoppuhr ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Setze Farben der Stoppuhr ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strAnrMonStoppUhrSetBColor() As String
             Get
@@ -632,6 +622,24 @@ Namespace Localize
         Public Shared ReadOnly Property strCBSoftPhoneSuffix() As String
             Get
                 Return ResourceManager.GetString("strCBSoftPhoneSuffix", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hintergrundfarbe ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strColorBackground() As String
+            Get
+                Return ResourceManager.GetString("strColorBackground", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Schriftfarbe ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strColorForeground() As String
+            Get
+                Return ResourceManager.GetString("strColorForeground", resourceCulture)
             End Get
         End Property
         
@@ -1527,6 +1535,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Stoppuhr ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strStoppuhr() As String
+            Get
+                Return ResourceManager.GetString("strStoppuhr", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Einlesen der Telefoniedaten von der Fritz!Box ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelephonyHeadImport() As String
@@ -1626,8 +1643,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann ausgewählt werden, auf welche Nummer der Anrufmonitor reagieren soll. Des Weiteren kann die Hintergrund- und Schriftfarbe je Nummer festgelegt werden (Wirksam im Anrufmonitor, Stoppuhr und Seitenfenster für verpasste Anrufe).
-        '''Aktuell gibt es einen Bug, der bewirkt, dass nicht auf die Sekundärfarbe umgeschaltet werden kann.  ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann ausgewählt werden, auf welche Nummer der Anrufmonitor reagieren soll.  ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelephonyNumbersInfo() As String
             Get
@@ -2370,11 +2386,38 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Farbanpassungen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strUserColorHead() As String
+            Get
+                Return ResourceManager.GetString("strUserColorHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Die Hintergrund- und Schriftfarbe kann hier nach Belieben angepasst werden. Die Farben können zum einen global für alle Anrufe, als auch für jede der eigenen Nummern gesetzt werden. Als Dritte Möglichkeit können VIP gesondert dargestellt werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strUserColorInfo() As String
+            Get
+                Return ResourceManager.GetString("strUserColorInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Benutzername ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strUserName() As String
             Get
                 Return ResourceManager.GetString("strUserName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die VIP ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strVIP() As String
+            Get
+                Return ResourceManager.GetString("strVIP", resourceCulture)
             End Get
         End Property
     End Class

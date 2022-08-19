@@ -3,10 +3,13 @@
                     xmlns:fbd="clr-namespace:FBoxDial" >
 
     <fbd:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <fbd:BoolToInvertedBoolConverter x:Key="BoolToInvertedBoolConverter"/>
     <fbd:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     <fbd:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
     <fbd:TelNrToFontWeightConverter x:Key="TelNrToFontWeightConverter"/>
     <fbd:IntegerToBoolConverter x:Key="FavoriteContactConverter"/>
     <fbd:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
     <fbd:EmptyComboConverter x:Key="EmptyComboConverter"/>
+    <fbd:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+    <fbd:StringToColorConverter x:Key="StringToColorConverter"/>
 </ResourceDictionary>

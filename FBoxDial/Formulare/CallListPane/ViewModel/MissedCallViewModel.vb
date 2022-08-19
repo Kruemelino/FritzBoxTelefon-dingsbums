@@ -213,7 +213,7 @@ Public Class MissedCallViewModel
             End If
 
             ' Hintergrundfarbe festlegen
-            DatenService.GetColors(BackgroundColor, ForeColor, .EigeneTelNr, False)
+            DatenService.GetColors(BackgroundColor, ForeColor, .EigeneTelNr, False, False)
 
             EigeneTelNr = .EigeneTelNr?.Einwahl
 
@@ -233,14 +233,22 @@ Public Class MissedCallViewModel
         ' If Kontaktbild Is Nothing Then Kontaktbild = Await DatenService.LadeBild(VerpasstesTelefonat)
         If Kontaktbild Is Nothing Then Kontaktbild = Await Instance.Invoke(Function() DatenService.LadeBild(VerpasstesTelefonat))
 
-        If VerpasstesTelefonat.TellowsResult IsNot Nothing AndAlso XMLData.POptionen.CBTellowsAnrMonColor Then
-            With VerpasstesTelefonat.TellowsResult
-                If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Comments.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
-                    ' Einfärben des Hintergrundes
-                    BackgroundColor = .ScoreColor
-                End If
-            End With
-        End If
+        With VerpasstesTelefonat
+            ' Hintergrundfarbe festlegen, falls VIP
+            If .OlKontakt IsNot Nothing Then
+                DatenService.GetColors(BackgroundColor, ForeColor, .EigeneTelNr, False, .OlKontakt.IsVIP)
+            End If
+
+            If .TellowsResult IsNot Nothing AndAlso XMLData.POptionen.CBTellowsAnrMonColor Then
+                With .TellowsResult
+                    If .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinScore) And .Comments.IsLargerOrEqual(XMLData.POptionen.CBTellowsAnrMonMinComments) Then
+                        ' Einfärben des Hintergrundes
+                        BackgroundColor = .ScoreColor
+                    End If
+                End With
+            End If
+
+        End With
 
         OnPropertyChanged(NameOf(ZeigeBlockButton))
 
