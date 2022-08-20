@@ -160,21 +160,34 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-
-                    <!--Überschrift-->
                     
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localize:LocOptionen.strTelephonyNumber}" />
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static localize:LocOptionen.strColorBackground}" HorizontalAlignment="Center"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static localize:LocOptionen.strColorForeground}" HorizontalAlignment="Center"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Static localize:LocOptionen.strTelephonyNumberColor}" />
+                    <!--#region Überschrift-->
+                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,0,4"
+                               Text="{x:Static localize:LocOptionen.strTelephonyNumber}" />
                     
-                    <!--Anrufmonitor-->
+                    <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                               Text="{x:Static localize:LocOptionen.strColorBackground}" 
+                               HorizontalAlignment="Center"/>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="2" Margin="0,0,0,4"
+                               Text="{x:Static localize:LocOptionen.strColorForeground}" 
+                               HorizontalAlignment="Center"/>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="3" Margin="0,0,0,4"
+                               Text="{x:Static localize:LocOptionen.strTelephonyNumberColor}" />                    
+                    <!--#endregion-->
+                    
+                    <!--#region Anrufmonitor-->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,0,4" 
+                               Text="{x:Static localize:LocOptionen.strAnrMon}" />
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localize:LocOptionen.strAnrMon}"  Margin="0,0,0,4"/>
+                    <CheckBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,4"
+                              IsChecked="{Binding OptVM.CBSetAnrMonBColor}" 
+                              HorizontalAlignment="Center"/>
 
-                    <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="{Binding OptVM.CBSetAnrMonBColor}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
-
-                    <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="{Binding OptVM.CBSetAnrMonFColor}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <CheckBox Grid.Row="1" Grid.Column="2" Margin="0,0,0,4"
+                              IsChecked="{Binding OptVM.CBSetAnrMonFColor}" 
+                              HorizontalAlignment="Center"/>
 
                     <fbd:OptionsColor Grid.Row="1" Grid.Column="3" ShowAlpha="True" Margin="0,0,0,4"
                                       PrimaryColor="{Binding OptVM.TBAnrMonBColor, 
@@ -188,7 +201,9 @@
                                                                UpdateSourceTrigger=PropertyChanged,                                                                          
                                                                Converter={StaticResource StringToColorConverter}, 
                                                                TargetNullValue={StaticResource DefaultForegroundColor}}" />
-                    <!--Stoppuhr-->
+                    <!--#endregion-->
+                    
+                    <!--#region Stoppuhr-->
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localize:LocOptionen.strStoppuhr}" Margin="0,0,0,4"/>
 
                     <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding OptVM.CBSetStoppUhrBColor}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
@@ -207,8 +222,9 @@
                                                                UpdateSourceTrigger=PropertyChanged,                                                                          
                                                                Converter={StaticResource StringToColorConverter}, 
                                                                TargetNullValue={StaticResource DefaultForegroundColor}}"/>
+                    <!--#endregion-->
 
-                    <!--VIP-->
+                    <!--#region VIP-->                    
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localize:LocOptionen.strVIP}" />
 
                     <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding OptVM.CBSetVIPBColor}" HorizontalAlignment="Center"/>
@@ -227,6 +243,7 @@
                                                                UpdateSourceTrigger=PropertyChanged,                                                                          
                                                                Converter={StaticResource StringToColorConverter}, 
                                                                TargetNullValue={StaticResource DefaultForegroundColor}}"/>
+                    <!--#endregion-->
                 </Grid>
 
                 <ItemsControl ItemsSource="{Binding OptVM.TelNrListe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
