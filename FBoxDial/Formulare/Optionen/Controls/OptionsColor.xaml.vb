@@ -53,18 +53,8 @@ Partial Public Class OptionsColor
                                                                                                  New PropertyMetadata(False))
 #End Region
 
-
-
     Public Sub New()
         InitializeComponent()
     End Sub
 
-
-    Private Sub TogglePopupButton_MouseLeave(sender As Object, e As MouseEventArgs) Handles TogglePopupButton.MouseLeave
-        ToggledPopup.StaysOpen = False
-    End Sub
-
-    Private Sub TogglePopupButton_MouseEnter(sender As Object, e As MouseEventArgs) Handles TogglePopupButton.MouseEnter
-        ToggledPopup.StaysOpen = True
-    End Sub
 End Class
