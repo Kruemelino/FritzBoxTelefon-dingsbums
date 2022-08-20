@@ -164,8 +164,8 @@
                     <!--Überschrift-->
                     
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localize:LocOptionen.strTelephonyNumber}" />
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static localize:LocOptionen.strColorBackground}"  HorizontalAlignment="Center"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static localize:LocOptionen.strColorForeground}"  HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static localize:LocOptionen.strColorBackground}" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static localize:LocOptionen.strColorForeground}" HorizontalAlignment="Center"/>
                     <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Static localize:LocOptionen.strTelephonyNumberColor}" />
                     
                     <!--Anrufmonitor-->

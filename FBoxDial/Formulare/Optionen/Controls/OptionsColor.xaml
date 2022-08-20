@@ -11,8 +11,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Common/Resources/Converter.xaml"/>
-                <ResourceDictionary Source="../../Common/Resources/Icons.xaml"/>
+                <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <VisualBrush x:Key="SeparatedColor">
@@ -44,36 +43,38 @@
                 <Setter Property="OverridesDefaultStyle" Value="True"/>
                 <Setter Property="IsTabStop" Value="False"/>
                 <Setter Property="Focusable" Value="False"/>
-                <Setter Property="ClickMode" Value="Press"/>
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ToggleButton}">
                             <Border x:Name="border" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" 
-                            Background="{TemplateBinding Background}" 
-                            SnapsToDevicePixels="True"
-                            HorizontalAlignment="Stretch" 
-                            VerticalAlignment="Stretch"
-                            CornerRadius="0" >                                
-                                <ContentPresenter x:Name="contentPresenter" 
-                                          Focusable="False" 
-                                          Margin="{TemplateBinding Padding}" 
-                                          RecognizesAccessKey="True" 
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"/>
-                            </Border>                            
-                            <ControlTemplate.Triggers>                                
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    Background="{TemplateBinding Background}" 
+                                    SnapsToDevicePixels="True"
+                                    HorizontalAlignment="Stretch" 
+                                    VerticalAlignment="Stretch"
+                                    CornerRadius="0" >
+                                <Grid>
+                                    <ContentPresenter x:Name="contentPresenter" 
+                                                      Focusable="False" 
+                                                      Margin="{TemplateBinding Padding}" 
+                                                      RecognizesAccessKey="True" 
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"/>
+                                    <Rectangle x:Name="DisableRectangle" Fill="{DynamicResource ControlDisabledBackground}" Opacity="0"/>
+                                </Grid>
+
+                            </Border>
+                            <ControlTemplate.Triggers>
                                 <Trigger Property="IsChecked" Value="True">
-                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource SeparatedColor}"/>
                                     <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource ControlPrimarySelectedBorderBrush}"/>
                                     <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{DynamicResource ControlSelectedForeground}"/>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource SeparatedColor}"/>
                                     <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource ControlPrimaryMouseOverBorderBrush}"/>
+                                    <Setter Property="Opacity" TargetName="DisableRectangle" Value="0.2"/>
                                 </Trigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -81,18 +82,16 @@
                                         <Condition Property="IsChecked" Value="True"/>
                                     </MultiTrigger.Conditions>
                                     <MultiTrigger.Setters>
-                                        <Setter Property="Background" TargetName="border" Value="{DynamicResource SeparatedColor}"/>
                                         <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource ControlPrimarySelectedMouseOverBorderBrush}"/>
                                     </MultiTrigger.Setters>
                                 </MultiTrigger>
                                 <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource SeparatedColor}"/>
                                     <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource ControlPrimarySelectedBorderBrush}"/>
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource SeparatedColor}"/>
                                     <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource ControlDisabledBorderBrush}"/>
                                     <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{DynamicResource ControlDisabledForeground}"/>
+                                    <Setter Property="Opacity" TargetName="DisableRectangle" Value="0.5"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -111,14 +110,14 @@
         </Grid.Background>
         
         <ToggleButton Style="{DynamicResource ColorToggleButton}"
-                      x:Name="TogglePopupButton" Cursor="Hand" >
-        </ToggleButton>
-        
+                      x:Name="TogglePopupButton"
+                      IsEnabled="{Binding Path=IsOpen, ElementName=ToggledPopup, Converter={StaticResource BoolToInvertedBoolConverter}}"/>
+
         <Popup Name="ToggledPopup"                
                Height="400" 
                Width="250"               
                StaysOpen="False" 
-               IsOpen="{Binding IsChecked, ElementName=TogglePopupButton, Mode=TwoWay}">
+               IsOpen="{Binding ElementName=TogglePopupButton, Path=IsChecked, Mode=TwoWay}">
 
             <Border BorderThickness="1" 
                     BorderBrush="{DynamicResource ControlDefaultBorderBrush}" >
