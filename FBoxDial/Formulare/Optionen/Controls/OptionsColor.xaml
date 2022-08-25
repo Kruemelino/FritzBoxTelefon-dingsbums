@@ -122,7 +122,7 @@
             <Border BorderThickness="1" 
                     BorderBrush="{DynamicResource ControlDefaultBorderBrush}" >
                 <cp:StandardColorPicker 
-                    Style="{DynamicResource DefaultColorPickerStyle}"
+                    Style="{DynamicResource DefaultPixiColorPickerStyle}"
                     SelectedColor="{Binding Path=PrimaryColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SecondaryColor="{Binding Path=SecondaryColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                     ShowAlpha="{Binding Path=ShowAlpha, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
