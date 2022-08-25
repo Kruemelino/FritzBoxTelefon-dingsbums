@@ -512,7 +512,7 @@ Imports FBoxDial.FritzBoxDefault
                 Dim AlteNummer As Telefonnummer = XMLData.PTelefonie.Telefonnummern.Find(Function(T) T.Equals(AddEigeneTelNr))
 
                 ' Wenn keine Nummer gefunden wurde, dann unternimm nichts
-                If AlteNummer IsNot Nothing Then
+                If AlteNummer IsNot Nothing AndAlso AlteNummer.EigeneNummerInfo IsNot Nothing Then
                     ' Überschreibe die Daten der eigenen Nummer
                     AddEigeneTelNr.EigeneNummerInfo = AlteNummer.EigeneNummerInfo
 

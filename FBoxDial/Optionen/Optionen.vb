@@ -287,6 +287,9 @@
 #Region "Auswertung der Fritz!box Anrufliste"
 #Region "Auswertung der Fritz!box Anrufliste - Outlook Journal"
     <XmlElement("CBJournal")> Public Property CBJournal As Boolean = True
+    ''' <summary>
+    ''' Angabe, ob der Journaleintrag erstellt werden soll, falls sich der Anrufer auf der Sperrliste befindet
+    ''' </summary>
     <XmlElement("CBJournalBlockNr")> Public Property CBJournalBlockNr As Boolean = False
 #End Region
 

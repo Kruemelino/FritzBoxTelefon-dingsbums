@@ -193,6 +193,9 @@ Imports Microsoft.Office.Interop
     End Property
 
     Private _Blockiert As Boolean = False
+    ''' <summary>
+    ''' Angabe, ob dieses Telefonat von der Fritz!Box blockiert wurde.
+    ''' </summary>
     <XmlAttribute> Public Property Blockiert As Boolean
         Get
             Return _Blockiert
@@ -244,7 +247,7 @@ Imports Microsoft.Office.Interop
     ''' </summary>
     <XmlIgnore> Friend ReadOnly Property IstRelevant As Boolean
         Get
-            Return EigeneTelNr.EigeneNummerInfo.Überwacht AndAlso (Not Blockiert OrElse (XMLData.POptionen.CBJournalBlockNr Or XMLData.POptionen.CBAnrMonBlockNr))
+            Return EigeneTelNr.EigeneNummerInfo IsNot Nothing AndAlso EigeneTelNr.EigeneNummerInfo.Überwacht AndAlso (Not Blockiert OrElse (XMLData.POptionen.CBJournalBlockNr Or XMLData.POptionen.CBAnrMonBlockNr))
         End Get
     End Property
 
