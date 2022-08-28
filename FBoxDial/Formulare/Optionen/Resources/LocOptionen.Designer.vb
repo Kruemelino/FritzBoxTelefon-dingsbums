@@ -626,7 +626,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Hintergrundfarbe ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hintergrund ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strColorBackground() As String
             Get
@@ -635,7 +635,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Schriftfarbe ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Schrift ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strColorForeground() As String
             Get
@@ -1616,29 +1616,11 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Hintergrund ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTelephonyNumberBackgroundColor() As String
-            Get
-                Return ResourceManager.GetString("strTelephonyNumberBackgroundColor", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Farbauswahl ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTelephonyNumberColor() As String
             Get
                 Return ResourceManager.GetString("strTelephonyNumberColor", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Schriftfarbe ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strTelephonyNumberForeGroundColor() As String
-            Get
-                Return ResourceManager.GetString("strTelephonyNumberForeGroundColor", resourceCulture)
             End Get
         End Property
         

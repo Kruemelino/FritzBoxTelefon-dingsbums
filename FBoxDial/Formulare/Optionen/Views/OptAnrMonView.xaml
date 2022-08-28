@@ -200,7 +200,10 @@
                                                                Mode=TwoWay,
                                                                UpdateSourceTrigger=PropertyChanged,                                                                          
                                                                Converter={StaticResource StringToColorConverter}, 
-                                                               TargetNullValue={StaticResource DefaultForegroundColor}}" />
+                                                               TargetNullValue={StaticResource DefaultForegroundColor}}" 
+                                                                            
+                                      PrimaryHeader="{x:Static localize:LocOptionen.strColorBackground}"
+                                      SecondaryHeader="{x:Static localize:LocOptionen.strColorForeground}" />
                     <!--#endregion-->
                     
                     <!--#region Stoppuhr-->
@@ -221,7 +224,11 @@
                                                                Mode=TwoWay,
                                                                UpdateSourceTrigger=PropertyChanged,                                                                          
                                                                Converter={StaticResource StringToColorConverter}, 
-                                                               TargetNullValue={StaticResource DefaultForegroundColor}}"/>
+                                                               TargetNullValue={StaticResource DefaultForegroundColor}}"
+                                      
+                                      PrimaryHeader="{x:Static localize:LocOptionen.strColorBackground}"
+                                      SecondaryHeader="{x:Static localize:LocOptionen.strColorForeground}" />
+                                        
                     <!--#endregion-->
 
                     <!--#region VIP-->                    
@@ -242,7 +249,10 @@
                                                                Mode=TwoWay,
                                                                UpdateSourceTrigger=PropertyChanged,                                                                          
                                                                Converter={StaticResource StringToColorConverter}, 
-                                                               TargetNullValue={StaticResource DefaultForegroundColor}}"/>
+                                                               TargetNullValue={StaticResource DefaultForegroundColor}}" 
+                                                                            
+                                      PrimaryHeader="{x:Static localize:LocOptionen.strColorBackground}"
+                                      SecondaryHeader="{x:Static localize:LocOptionen.strColorForeground}" />
                     <!--#endregion-->
                 </Grid>
 
@@ -264,17 +274,22 @@
                                 <CheckBox Grid.Column="2" IsChecked="{Binding EigeneNummerInfo.CBSetForegroundColorByNumber}" HorizontalAlignment="Center"/>
 
                                 <fbd:OptionsColor Grid.Column="3" 
-                                                ShowAlpha="True"
-                                                PrimaryColor="{Binding EigeneNummerInfo.TBBackgoundColor, 
-                                                                       UpdateSourceTrigger=PropertyChanged, 
-                                                                       Mode=TwoWay, 
-                                                                       Converter={StaticResource StringToColorConverter}, 
-                                                                       TargetNullValue={StaticResource MainColor}}" 
-                                                SecondaryColor="{Binding EigeneNummerInfo.TBForegoundColor, 
+                                                  ShowAlpha="True"
+                                                  PrimaryColor="{Binding EigeneNummerInfo.TBBackgoundColor, 
                                                                          UpdateSourceTrigger=PropertyChanged, 
                                                                          Mode=TwoWay, 
                                                                          Converter={StaticResource StringToColorConverter}, 
-                                                                         TargetNullValue={StaticResource DefaultForegroundColor}}"/>
+                                                                         TargetNullValue={StaticResource MainColor}}" 
+                                                    
+                                                  SecondaryColor="{Binding EigeneNummerInfo.TBForegoundColor, 
+                                                                           UpdateSourceTrigger=PropertyChanged, 
+                                                                           Mode=TwoWay, 
+                                                                           Converter={StaticResource StringToColorConverter}, 
+                                                                           TargetNullValue={StaticResource DefaultForegroundColor}}"
+ 
+                                                                            
+                                                  PrimaryHeader="{x:Static localize:LocOptionen.strColorBackground}"
+                                                  SecondaryHeader="{x:Static localize:LocOptionen.strColorForeground}" />
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

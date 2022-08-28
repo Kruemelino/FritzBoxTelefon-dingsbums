@@ -53,6 +53,38 @@ Partial Public Class OptionsColor
                                                                                                  New PropertyMetadata(False))
 #End Region
 
+#Region "PrimaryHeader"
+    Public Property PrimaryHeader As String
+        Get
+            Return CType(GetValue(PrimaryHeaderProperty), String)
+        End Get
+        Set
+            SetValue(PrimaryHeaderProperty, Value)
+        End Set
+    End Property
+
+    Public Shared ReadOnly PrimaryHeaderProperty As DependencyProperty = DependencyProperty.Register(NameOf(PrimaryHeader),
+                                                                                                    GetType(String),
+                                                                                                    GetType(OptionsColor),
+                                                                                                    New PropertyMetadata(String.Empty))
+#End Region
+
+
+#Region "PrimaryHeader"
+    Public Property SecondaryHeader As String
+        Get
+            Return CType(GetValue(SecondaryHeaderProperty), String)
+        End Get
+        Set
+            SetValue(SecondaryHeaderProperty, Value)
+        End Set
+    End Property
+
+    Public Shared ReadOnly SecondaryHeaderProperty As DependencyProperty = DependencyProperty.Register(NameOf(SecondaryHeader),
+                                                                                                    GetType(String),
+                                                                                                    GetType(OptionsColor),
+                                                                                                    New PropertyMetadata(String.Empty))
+#End Region
     Public Sub New()
         InitializeComponent()
     End Sub

@@ -104,20 +104,40 @@
     </UserControl.Resources>
 
     <Grid DataContext="{Binding ElementName=OptionsColor}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
         <Grid.Background>
             <ImageBrush ImageSource="{StaticResource TransparentBackgoundImage}"
                         TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,4,4" />
         </Grid.Background>
-        
+
         <ToggleButton Style="{DynamicResource ColorToggleButton}"
                       x:Name="TogglePopupButton"
-                      IsEnabled="{Binding Path=IsOpen, ElementName=ToggledPopup, Converter={StaticResource BoolToInvertedBoolConverter}}"/>
+                      IsEnabled="{Binding Path=IsOpen, ElementName=ToggledPopup, Converter={StaticResource BoolToInvertedBoolConverter}}"
+                      Grid.ColumnSpan="2"/>
+
+        <Label Grid.Column="0" Margin="2,0,0,0"
+               Content="{Binding Path=PrimaryHeader, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+               IsHitTestVisible="False"
+               FontSize="8"
+               Foreground="{Binding Path=SecondaryColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorToBrushConverter}}" />
+        
+        <Label Grid.Column="1" Margin="0,0,2,0"
+               Content="{Binding Path=SecondaryHeader, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+               HorizontalAlignment="Right" VerticalAlignment="Bottom"
+               IsHitTestVisible="False" 
+               FontSize="8" 
+               Foreground="{Binding Path=PrimaryColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorToBrushConverter}}" />
 
         <Popup Name="ToggledPopup"                
                Height="400" 
                Width="250"               
                StaysOpen="False" 
-               IsOpen="{Binding ElementName=TogglePopupButton, Path=IsChecked, Mode=TwoWay}">
+               IsOpen="{Binding ElementName=TogglePopupButton, Path=IsChecked, Mode=TwoWay}" >
 
             <Border BorderThickness="1" 
                     BorderBrush="{DynamicResource ControlDefaultBorderBrush}" >

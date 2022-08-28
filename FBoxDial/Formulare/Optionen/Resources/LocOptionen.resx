@@ -369,10 +369,12 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
     <comment>OptMicroSIPView, OptPhonerView</comment>
   </data>
   <data name="strColorBackground" xml:space="preserve">
-    <value>Hintergrundfarbe</value>
+    <value>Hintergrund</value>
+    <comment>OptAnrMonView</comment>
   </data>
   <data name="strColorForeground" xml:space="preserve">
-    <value>Schriftfarbe</value>
+    <value>Schrift</value>
+    <comment>OptAnrMonView</comment>
   </data>
   <data name="strConfig" xml:space="preserve">
     <value>Einstellungen</value>
@@ -822,16 +824,8 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
     <value>Überwacht</value>
     <comment>OptTelephonyView</comment>
   </data>
-  <data name="strTelephonyNumberBackgroundColor" xml:space="preserve">
-    <value>Hintergrund</value>
-    <comment>OptTelephonyView</comment>
-  </data>
   <data name="strTelephonyNumberColor" xml:space="preserve">
     <value>Farbauswahl</value>
-    <comment>OptTelephonyView</comment>
-  </data>
-  <data name="strTelephonyNumberForeGroundColor" xml:space="preserve">
-    <value>Schriftfarbe</value>
     <comment>OptTelephonyView</comment>
   </data>
   <data name="strTelephonyNumbersInfo" xml:space="preserve">
