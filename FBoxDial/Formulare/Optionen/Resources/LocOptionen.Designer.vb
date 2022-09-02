@@ -1396,6 +1396,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Farbdefinition zurücksetzen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strResetColor() As String
+            Get
+                Return ResourceManager.GetString("strResetColor", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Speichern ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strSave() As String

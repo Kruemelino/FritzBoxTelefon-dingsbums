@@ -16,6 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+    
     <StackPanel x:Name="MainStackPanel" Margin="8">
         
         <Expander IsExpanded="True" Style="{StaticResource OptExpander}" 
@@ -146,11 +147,12 @@
                 <Label Style="{StaticResource OptHintTextBlock}" 
                        Content="{x:Static localize:LocOptionen.strUserColorInfo}" />
 
-                <Grid Margin="0,5,0,4" >
+                <Grid Margin="0,-3,0,0" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="100" SharedSizeGroup="CBBackground" />
-                        <ColumnDefinition Width="100" SharedSizeGroup="CBForeground" />
+                        <ColumnDefinition Width="80" SharedSizeGroup="CBBackground" />
+                        <ColumnDefinition Width="80" SharedSizeGroup="CBForeground" />
+                        <ColumnDefinition Width="24" SharedSizeGroup="BReset" />                        
                         <ColumnDefinition Width="150" SharedSizeGroup="ColorDefinition" />
                     </Grid.ColumnDefinitions>
 
@@ -173,7 +175,7 @@
                                Text="{x:Static localize:LocOptionen.strColorForeground}" 
                                HorizontalAlignment="Center"/>
                     
-                    <TextBlock Grid.Row="0" Grid.Column="3" Margin="0,0,0,4"
+                    <TextBlock Grid.Row="0" Grid.Column="4" Margin="0,0,0,4"
                                Text="{x:Static localize:LocOptionen.strTelephonyNumberColor}" />                    
                     <!--#endregion-->
                     
@@ -188,8 +190,15 @@
                     <CheckBox Grid.Row="1" Grid.Column="2" Margin="0,0,0,4"
                               IsChecked="{Binding OptVM.CBSetAnrMonFColor}" 
                               HorizontalAlignment="Center"/>
-
-                    <fbd:OptionsColor Grid.Row="1" Grid.Column="3" ShowAlpha="True" Margin="0,0,0,4"
+                    
+                    <Button Grid.Row="1" Grid.Column="3" Height="18" Width="18" Margin="0,0,0,4" HorizontalAlignment="Center"
+                            Style="{StaticResource DataGridIconButton}"
+                            Content="{DynamicResource Undo_16x}"
+                            ToolTip="{x:Static localize:LocOptionen.strResetColor}"
+                            Command="{Binding ResetColorCommand}" 
+                            CommandParameter="{x:Static localize:LocOptionen.strAnrMon}"/>
+                    
+                    <fbd:OptionsColor Grid.Row="1" Grid.Column="4" ShowAlpha="True" Margin="0,0,0,4"
                                       PrimaryColor="{Binding OptVM.TBAnrMonBColor, 
                                                              Mode=TwoWay, 
                                                              UpdateSourceTrigger=PropertyChanged, 
@@ -213,7 +222,14 @@
 
                     <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding OptVM.CBSetStoppUhrFColor}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
 
-                    <fbd:OptionsColor Grid.Row="2" Grid.Column="3" ShowAlpha="True" Margin="0,0,0,4"
+                    <Button Grid.Row="2" Grid.Column="3" Height="18" Width="18" Margin="0,0,0,4" HorizontalAlignment="Center"
+                            Style="{StaticResource DataGridIconButton}"
+                            Content="{DynamicResource Undo_16x}"
+                            ToolTip="{x:Static localize:LocOptionen.strResetColor}"
+                            Command="{Binding ResetColorCommand}" 
+                            CommandParameter="{x:Static localize:LocOptionen.strStoppuhr}"/>
+
+                    <fbd:OptionsColor Grid.Row="2" Grid.Column="4" ShowAlpha="True" Margin="0,0,0,4"
                                       PrimaryColor="{Binding OptVM.TBStoppUhrBColor, 
                                                              Mode=TwoWay, 
                                                              UpdateSourceTrigger=PropertyChanged, 
@@ -231,14 +247,21 @@
                                         
                     <!--#endregion-->
 
-                    <!--#region VIP-->                    
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localize:LocOptionen.strVIP}" />
+                    <!--#region VIP-->
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localize:LocOptionen.strVIP}" Margin="0,0,0,4"/>
 
-                    <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding OptVM.CBSetVIPBColor}" HorizontalAlignment="Center"/>
+                    <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding OptVM.CBSetVIPBColor}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
 
-                    <CheckBox Grid.Row="3" Grid.Column="2" IsChecked="{Binding OptVM.CBSetVIPFColor}" HorizontalAlignment="Center"/>
+                    <CheckBox Grid.Row="3" Grid.Column="2" IsChecked="{Binding OptVM.CBSetVIPFColor}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    
+                    <Button Grid.Row="3" Grid.Column="3" Height="18" Width="18" Margin="0,0,0,4" HorizontalAlignment="Center"
+                            Style="{StaticResource DataGridIconButton}"
+                            Content="{DynamicResource Undo_16x}"
+                            ToolTip="{x:Static localize:LocOptionen.strResetColor}"
+                            Command="{Binding ResetColorCommand}" 
+                            CommandParameter="{x:Static localize:LocOptionen.strVIP}"/>
 
-                    <fbd:OptionsColor Grid.Row="3" Grid.Column="3" ShowAlpha="True"
+                    <fbd:OptionsColor Grid.Row="3" Grid.Column="4" ShowAlpha="True" Margin="0,0,0,4"
                                       PrimaryColor="{Binding OptVM.TBVIPBColor, 
                                                              Mode=TwoWay, 
                                                              UpdateSourceTrigger=PropertyChanged, 
@@ -264,6 +287,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition SharedSizeGroup="CBBackground" />
                                     <ColumnDefinition SharedSizeGroup="CBForeground" />
+                                    <ColumnDefinition SharedSizeGroup="BReset" />
                                     <ColumnDefinition SharedSizeGroup="ColorDefinition" />
                                 </Grid.ColumnDefinitions>
 
@@ -272,8 +296,15 @@
                                 <CheckBox Grid.Column="1" IsChecked="{Binding EigeneNummerInfo.CBSetBackgroundColorByNumber}" HorizontalAlignment="Center"/>
 
                                 <CheckBox Grid.Column="2" IsChecked="{Binding EigeneNummerInfo.CBSetForegroundColorByNumber}" HorizontalAlignment="Center"/>
-
-                                <fbd:OptionsColor Grid.Column="3" 
+                                
+                                <Button Grid.Row="2" Grid.Column="3" Height="18" Width="18" HorizontalAlignment="Center"
+                                        Style="{StaticResource DataGridIconButton}"
+                                        Content="{DynamicResource Undo_16x}"
+                                        ToolTip="{x:Static localize:LocOptionen.strResetColor}"                                        
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ResetColorCommand}" 
+                                        CommandParameter="{Binding Einwahl}"/>
+                                
+                                <fbd:OptionsColor Grid.Column="4" 
                                                   ShowAlpha="True"
                                                   PrimaryColor="{Binding EigeneNummerInfo.TBBackgoundColor, 
                                                                          UpdateSourceTrigger=PropertyChanged, 

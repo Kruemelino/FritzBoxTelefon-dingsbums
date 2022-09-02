@@ -4,7 +4,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../../Common/Resources/Common.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/ColorPicker;component/Styles/DefaultColorPickerStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <!--#region DataTemplate für Clients-->
@@ -66,5 +65,22 @@
         <fbd:OptConnURIView />
     </DataTemplate>
 
+    <!--#endregion-->
+
+    <!--#region Colorpicker-->
+    <!--https://github.com/PixiEditor/ColorPicker-->
+    <Style TargetType="UserControl" x:Key="DefaultPixiColorPickerStyle">
+        <Style.Resources>
+            <ResourceDictionary>
+                <Style TargetType="Grid" >
+                    <Style.Triggers>
+                        <Trigger Property="Name" Value="MainGrid">
+                            <Setter Property="Background" Value="{DynamicResource ContainerBackground}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ResourceDictionary>
+        </Style.Resources>
+    </Style>
     <!--#endregion-->
 </ResourceDictionary>

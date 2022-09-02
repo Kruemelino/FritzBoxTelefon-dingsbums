@@ -724,6 +724,10 @@ Prüfe, ob die Authentifizierung erfolgreich ist.</value>
 HInweis: Es wird bei Auswahl der Anwendung eine "Windows-Befehlsprozessor" (cmd) hinzugefügt. </value>
     <comment>OptDialerView</comment>
   </data>
+  <data name="strResetColor" xml:space="preserve">
+    <value>Farbdefinition zurücksetzen</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strSave" xml:space="preserve">
     <value>Speichern</value>
     <comment>MainView</comment>
