@@ -287,6 +287,7 @@
 #Region "Auswertung der Fritz!box Anrufliste"
 #Region "Auswertung der Fritz!box Anrufliste - Outlook Journal"
     <XmlElement("CBJournal")> Public Property CBJournal As Boolean = True
+
     ''' <summary>
     ''' Angabe, ob der Journaleintrag erstellt werden soll, falls sich der Anrufer auf der Sperrliste befindet
     ''' </summary>
@@ -295,12 +296,30 @@
 
 #Region "Auswertung der Fritz!box Anrufliste - Auswertung der Anrufliste"
 
+    ''' <summary>
+    ''' Zeitangabe, wann die Anrufliste zuletzt ausgewertet wurde.
+    ''' </summary>
     <XmlElement("LetzteAuswertungAnrList")> Public Property LetzteAuswertungAnrList As Date = Now
+
+    ''' <summary>
+    ''' Zeitstempel der Anrufliste. Diese Angabe ist zusammen mit dem <see cref="FBoxCallListTimeStamp"/> erforderlich um nur die neuen Telefonate aus der Fritz!Box auszulesen
+    ''' </summary>
     <XmlElement("FBoxCallListTimeStamp")> Public Property FBoxCallListTimeStamp As Integer = 0
+
+    ''' <summary>
+    ''' ID des zuletzt importierten Anrufes aus der Anrufliste der Fritz!Box
+    ''' </summary>
     <XmlElement("FBoxCallListLastImportedID")> Public Property FBoxCallListLastImportedID As Integer = 0
+
+    ''' <summary>
+    ''' Angabe, ob bei Outlookstart die Anrufliste ausgewertet werden soll.
+    ''' </summary>
     <XmlElement("CBAutoAnrList")> Public Property CBAutoAnrList As Boolean = False
 
-    <XmlElement("CBAnrListeUpdateCallLists")> Public Property CBAnrListeUpdateCallLists As Boolean = False
+    ''' <summary>
+    ''' Angabe, ob die Wahlwiederholungs- und Rückrufliste gefüllt werden sollen.
+    ''' </summary>
+    <XmlElement("CBAnrListeUpdateCallLists")> Public Property CBAnrListeUpdateCallLists As Boolean = True
 
 #End Region
 #Region "Auswertung der Fritz!box Anrufliste - Anruflisten"

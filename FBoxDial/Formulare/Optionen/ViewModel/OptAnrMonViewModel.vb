@@ -52,8 +52,6 @@
                     TelNr.EigeneNummerInfo.TBBackgoundColor = Nothing
                     TelNr.EigeneNummerInfo.TBForegoundColor = Nothing
 
-                    'OnPropertyChanged(TelNr.EigeneNummerInfo.TBBackgoundColor)
-                    'OnPropertyChanged(TelNr.EigeneNummerInfo.TBForegoundColor)
                 Next
 
         End Select
