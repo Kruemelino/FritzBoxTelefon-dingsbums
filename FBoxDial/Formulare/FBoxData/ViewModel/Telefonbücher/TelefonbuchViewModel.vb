@@ -146,22 +146,44 @@ Public Class TelefonbuchViewModel
         With CType(o, PhonebookViewModel)
             Dim Löschen As Boolean = False
 
-            If .ID.IsZero Then
-                Löschen = DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBookDeleteID0, .Name)) = Windows.MessageBoxResult.Yes
-            Else
-                Löschen = DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBookDelete, .Name)) = Windows.MessageBoxResult.Yes
-            End If
+            Select Case .ID
+                Case 0
+                    ' Standard-Telefonbuch kann nicht gelöscht werden. Es werden stattdessen alle Kontakte gelöscht.
+                    Löschen = DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBookDeleteID0, .Name)) = Windows.MessageBoxResult.Yes
+                Case 258
+                    ' Die Einträge der Rufsperre müssen einzeln gelöscht werden
+                    Löschen = DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBookDeleteID258, .Name)) = Windows.MessageBoxResult.Yes
+                Case Else
+                    ' Alle weiteren Telefonbücher können gelöscht werden
+                    Löschen = DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBookDelete, .Name)) = Windows.MessageBoxResult.Yes
+            End Select
 
             If Löschen Then
-                If DatenService.DeleteTelefonbuch(.ID) Then
-                    Telefonbücher.Remove(CType(o, PhonebookViewModel))
+                If .ID.Equals(258) Then
+                    ' Entferne alle Einträge der Rufsperre
+                    If DatenService.DeleteRufsperren(.Telefonbuch.Phonebook.Contacts) Then
+                        ' Leere die angezeigte Kontaktliste der Rufsperre
+                        Telefonbuch.Contacts.Clear()
+                    End If
+                Else
+                    ' Entferne das Telefonbuch bzw. lösche alle Kontakte (bei ID0)
+                    If DatenService.DeleteTelefonbuch(.ID) Then
+                        If .ID.IsNotZero Then
+                            ' Entferne das gesamte Telefonbuch. 
+                            Telefonbücher.Remove(CType(o, PhonebookViewModel))
+                        Else
+                            ' Leere die angezeigte Kontaktliste des Telefonbuches
+                            Telefonbuch.Contacts.Clear()
+                        End If
+                    End If
                 End If
+
             End If
         End With
     End Sub
     Private Function CanRemove(o As Object) As Boolean
         Dim Buch = CType(o, PhonebookViewModel)
-        Return Buch IsNot Nothing AndAlso Not Buch.Telefonbuch.Rufsperren
+        Return Buch IsNot Nothing ' AndAlso Not Buch.Telefonbuch.Rufsperren
     End Function
 #End Region
 

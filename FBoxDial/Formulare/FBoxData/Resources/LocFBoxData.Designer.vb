@@ -443,6 +443,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen alle Einträge der Rufsperren auf der Fritz!Box endgültig gelöscht werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strQuestionBookDeleteID258() As String
+            Get
+                Return ResourceManager.GetString("strQuestionBookDeleteID258", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Soll diese Rufsperre auf der Fritz!Box endgültig gelöscht werden? ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strQuestionDeleteCallBarring() As String
