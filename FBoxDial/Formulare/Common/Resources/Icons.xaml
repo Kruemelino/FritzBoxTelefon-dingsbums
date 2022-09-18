@@ -20,7 +20,8 @@
         </Rectangle>
     </Viewbox>
 
-    <Viewbox x:Key="Undo_16x" x:Shared="false" Width="16" Height="16" >
+    <!--Optionen Reset Color-->
+    <Viewbox x:Key="Undo_12x" x:Shared="false" Width="12" Height="12" >
         <Rectangle Width="16" Height="16">
             <Rectangle.Fill>
                 <DrawingBrush>
@@ -411,34 +412,6 @@
         </Rectangle>
     </Viewbox>
     <!--#endregion-->
-
-    <Viewbox x:Key="Test_4x" x:Shared="false" Width="4" Height="4" >
-        <Rectangle Width="4" Height="4">
-            <Rectangle.Fill>
-                <DrawingBrush>
-                    <DrawingBrush.Drawing>
-                        <DrawingGroup>
-                            <DrawingGroup.Children>
-                                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M0,0 L4,0 4,4 0,4z" />
-                                <GeometryDrawing Brush="#FFE5E5E5" Geometry="F1 M0,0 L2,0 2,4 4,4 4,2 0,2z" />
-                            </DrawingGroup.Children>
-                        </DrawingGroup>
-                    </DrawingBrush.Drawing>
-                </DrawingBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-    </Viewbox>
-
-    <DrawingImage x:Key="TransparentBackgoundImage">
-        <DrawingImage.Drawing>
-            <DrawingGroup>
-                <DrawingGroup.Children>
-                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M0,0 L4,0 4,4 0,4z" />
-                    <GeometryDrawing Brush="#FFE5E5E5" Geometry="F1 M0,0 L2,0 2,4 4,4 4,2 0,2z" />
-                </DrawingGroup.Children>
-            </DrawingGroup>
-        </DrawingImage.Drawing>
-    </DrawingImage>
 
     <!--#region MahApps.Metro.IconPacks-->
     <!--Nachfolgende Icons sind der MahApps.Metro.IconPacks entnommen

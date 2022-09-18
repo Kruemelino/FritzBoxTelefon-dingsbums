@@ -245,7 +245,7 @@
                                         <Setter TargetName="button" Property="Command" Value="{Binding PlayMessageCommand}" />
                                         <Setter TargetName="button" Property="CommandParameter" Value="False" />                                        
                                     </MultiDataTrigger.Setters>
-                                </MultiDataTrigger>
+                                </MultiDataTrigger>                                
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding Path=TAMMessageAvailable, Mode=OneWay}"  Value="True"/>
@@ -257,8 +257,7 @@
                                         <Setter TargetName="button" Property="CommandParameter" Value="True" />
                                     </MultiDataTrigger.Setters>
                                 </MultiDataTrigger>
-                              
-                                
+                                                              
                                 <DataTrigger Binding="{Binding Path=FaxAvailable, Mode=OneWay}" Value="True">
                                     <Setter TargetName="button" Property="Content" Value="{StaticResource Text_12x}" />
                                     <Setter TargetName="button" Property="Command" Value="{Binding DownloadFaxCommand}" />

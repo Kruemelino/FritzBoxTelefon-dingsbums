@@ -69,8 +69,7 @@ Partial Public Class OptionsColor
                                                                                                     New PropertyMetadata(String.Empty))
 #End Region
 
-
-#Region "PrimaryHeader"
+#Region "SecondaryHeader"
     Public Property SecondaryHeader As String
         Get
             Return CType(GetValue(SecondaryHeaderProperty), String)
@@ -85,6 +84,7 @@ Partial Public Class OptionsColor
                                                                                                     GetType(OptionsColor),
                                                                                                     New PropertyMetadata(String.Empty))
 #End Region
+
     Public Sub New()
         InitializeComponent()
     End Sub

@@ -965,6 +965,16 @@ Public Class OptionenViewModel
             SetProperty(_CBoxDesignMode, Value)
         End Set
     End Property
+
+    Private _Farben As ObservableCollectionEx(Of Farbdefinition)
+    Public Property Farben As ObservableCollectionEx(Of Farbdefinition)
+        Get
+            Return _Farben
+        End Get
+        Set
+            SetProperty(_Farben, Value)
+        End Set
+    End Property
 #End Region
 
 #End Region
@@ -1123,6 +1133,18 @@ Public Class OptionenViewModel
         OutlookOrdnerListe = New OutlookOrdnerListe
         OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
 
+        ' Farbdefinitionen
+        Farben = New ObservableCollectionEx(Of Farbdefinition)
+        ' Farben für den Anrufmonitor, die Stoppuhr und VIP
+        SetDefaultColors()
+        Farben.AddRange(XMLData.POptionen.Farbdefinitionen)
+        ' Farben für die einzelnen eigenen Telefonnummern
+        Farben.AddRange(XMLData.PTelefonie.Telefonnummern.Select(Function(TelNr)
+                                                                     If TelNr.EigeneNummerInfo.Farben Is Nothing Then TelNr.EigeneNummerInfo.Farben = New Farbdefinition With {.Kontext = TelNr.Einwahl}
+
+                                                                     Return TelNr.EigeneNummerInfo.Farben
+                                                                 End Function))
+
         Await LadeTask
 
         ' Fritz!Box Benutzer laden
@@ -1227,6 +1249,31 @@ Public Class OptionenViewModel
         XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
 
         Await Task.WhenAll(TaskList)
+    End Sub
+
+    ''' <summary>
+    ''' Erstellt die Farbdefinitionen für den Anrufmonitor, Stoppuhr und VIP
+    ''' </summary>
+    Private Sub SetDefaultColors()
+        If XMLData.POptionen.Farbdefinitionen Is Nothing Then XMLData.POptionen.Farbdefinitionen = New List(Of Farbdefinition)
+
+        With XMLData.POptionen.Farbdefinitionen
+            ' Anrufmonitor
+            If Not .Exists(Function(FD) FD.Kontext.Equals(Localize.LocOptionen.strAnrMon)) Then
+                .Add(New Farbdefinition With {.Kontext = Localize.LocOptionen.strAnrMon})
+            End If
+
+            ' Stoppuhr
+            If Not .Exists(Function(FD) FD.Kontext.Equals(Localize.LocOptionen.strStoppuhr)) Then
+                .Add(New Farbdefinition With {.Kontext = Localize.LocOptionen.strStoppuhr})
+            End If
+
+            ' VIP
+            If Not .Exists(Function(FD) FD.Kontext.Equals(Localize.LocOptionen.strVIP)) Then
+                .Add(New Farbdefinition With {.Kontext = Localize.LocOptionen.strVIP})
+            End If
+        End With
+
     End Sub
 #End Region
 End Class

@@ -533,6 +533,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Optionen\Farbdefinition.vb" />
     <Compile Include="Optionen\Utf8StringWriter.vb" />
     <Compile Include="Optionen\WebFunctions.vb" />
     <Compile Include="Outlook\ExplorerWrapper.vb" />

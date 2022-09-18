@@ -102,7 +102,7 @@
 
 #Region "Grundeinstlleungen - Design"
     <XmlElement("CBoxDesignMode")> Public Property CBoxDesignMode As DesignModes = DesignModes.Light
-
+    <XmlArray("Farben")> Public Property Farbdefinitionen As List(Of Farbdefinition)
 #End Region
 #End Region
 
@@ -142,22 +142,6 @@
     ''' </summary>
     <XmlElement("CBAnrMonContactImage")> Public Property CBAnrMonContactImage As Boolean = True
     ''' <summary>
-    ''' Angabe, ob die Hintergrundfarbe des Anrufmonitors geändert werden soll
-    ''' </summary>
-    <XmlElement("CBSetAnrMonBColor")> Public Property CBSetAnrMonBColor As Boolean = False
-    ''' <summary>
-    ''' Angabe, ob die Schriftfarbe des Anrufmonitors geändert werden soll
-    ''' </summary>
-    <XmlElement("CBSetAnrMonFColor")> Public Property CBSetAnrMonFColor As Boolean = False
-    ''' <summary>
-    ''' Hintergrundfarbe als HEX-String #00000000
-    ''' </summary>
-    <XmlElement("TBAnrMonBColor")> Public Property TBAnrMonBColor As String
-    ''' <summary>
-    ''' Schriftfarbe als HEX-String #00000000
-    ''' </summary>
-    <XmlElement("TBAnrMonFColor")> Public Property TBAnrMonFColor As String
-    ''' <summary>
     ''' Positionskorrektur des Anrufmonitors in X-Richtung
     ''' </summary>
     <XmlElement("TBAnrMonModPosX")> Public Property TBAnrMonModPosX As Double = 0.0R
@@ -169,26 +153,6 @@
     ''' Grundabstand des Anrufmonitors
     ''' </summary>
     <XmlElement("TBAnrMonAbstand")> Public Property TBAnrMonAbstand As Double = 10.0R
-
-    ''' <summary>
-    ''' Angabe, ob die Hintergundfarbe bei VIP geändert werden soll
-    ''' </summary>
-    <XmlElement("CBSetVIPBColor")> Public Property CBSetVIPBColor As Boolean = False
-
-    ''' <summary>
-    ''' Angabe, ob die Schriftfarbe bei VIP geändert werden soll
-    ''' </summary>
-    <XmlElement("CBSetVIPFColor")> Public Property CBSetVIPFColor As Boolean = False
-
-    ''' <summary>
-    ''' Hintergrundfarbe als HEX-String #00000000
-    ''' </summary>
-    <XmlElement("TBVIPBColor")> Public Property TBVIPBColor As String
-
-    ''' <summary>
-    ''' Schriftfarbe als HEX-String #00000000
-    ''' </summary>
-    <XmlElement("TBVIPFColor")> Public Property TBVIPFColor As String
 
 #Region "CallPane"
     ''' <summary>
@@ -226,23 +190,6 @@
     ''' Zeitangabe, nachdem die Stoppuhr ausgeblendet werden soll. (Korresbondiert zu <see cref="CBStoppUhrAusblenden"/>)
     ''' </summary>
     <XmlElement("TBStoppUhrAusblendverzögerung")> Public Property TBStoppUhrAusblendverzögerung As Integer = 10
-    ''' <summary>
-    ''' Angabe, ob die Hintergrundfarbe der Stoppuhr geändert werden soll
-    ''' </summary>
-    <XmlElement("CBSetStoppUhrBColor")> Public Property CBSetStoppUhrBColor As Boolean = False
-    ''' <summary>
-    ''' Angabe, ob die Schriftfarbe der Stoppuhr geändert werden soll
-    ''' </summary>
-    <XmlElement("CBSetStoppUhrFColor")> Public Property CBSetStoppUhrFColor As Boolean = False
-    ''' <summary>
-    ''' Hintergrundfarbe als HEX-String #00000000
-    ''' </summary>
-    <XmlElement("TBStoppUhrBColor")> Public Property TBStoppUhrBColor As String
-    ''' <summary>
-    ''' Schriftfarbe als HEX-String #00000000
-    ''' </summary>
-    <XmlElement("TBStoppUhrFColor")> Public Property TBStoppUhrFColor As String
-
     <XmlElement("StoppUhrPosTop")> Public Property StoppUhrPosTop As Integer = 100
     <XmlElement("StoppUhrPosLeft")> Public Property StoppUhrPosLeft As Integer = 100
 #End Region
@@ -337,5 +284,6 @@
 
     Public Sub New()
         OutlookOrdner = New OutlookOrdnerListe
+        Farbdefinitionen = New List(Of Farbdefinition)
     End Sub
 End Class

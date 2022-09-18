@@ -35,6 +35,17 @@
                 </VisualBrush.Visual>
             </VisualBrush>
 
+            <DrawingImage x:Key="TransparentBackgoundImage">
+                <DrawingImage.Drawing>
+                    <DrawingGroup>
+                        <DrawingGroup.Children>
+                            <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M0,0 L4,0 4,4 0,4z" />
+                            <GeometryDrawing Brush="#FFE5E5E5" Geometry="F1 M0,0 L2,0 2,4 4,4 4,2 0,2z" />
+                        </DrawingGroup.Children>
+                    </DrawingGroup>
+                </DrawingImage.Drawing>
+            </DrawingImage>
+            
             <Style TargetType="{x:Type ToggleButton}" x:Key="ColorToggleButton">
                 <Setter Property="Background" Value="{DynamicResource SeparatedColor}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource ControlDefaultBorderBrush}"/>

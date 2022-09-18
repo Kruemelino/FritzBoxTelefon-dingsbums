@@ -21,7 +21,7 @@ Friend NotInheritable Class NutzerDaten
         DateiInfo.Directory.Create() ' If the directory already exists, this method does nothing.
 
         If File.Exists(Pfad) AndAlso DeserializeXML(Pfad, True, XMLData) Then
-            NLogger.Debug($"Einstellungsdatei eigelesen: {Pfad}")
+            NLogger.Debug($"Einstellungsdatei eingelesen: {Pfad}")
         Else
             NLogger.Debug($"Einstellungsdatei generiert")
             XMLData = New OutlookXML

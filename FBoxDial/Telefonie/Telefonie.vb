@@ -502,6 +502,7 @@ Imports FBoxDial.FritzBoxDefault
             AddEigeneTelNr = New Telefonnummer With {.Ortskennzahl = OKZ,
                                                      .Landeskennzahl = LKZ,
                                                      .EigeneNummerInfo = New EigeneNrInfo With {.Überwacht = True,
+                                                                                                .Farben = New Farbdefinition,
                                                                                                 .SIP = ID.ToInt},
                                                      .SetNummer = TelNr}
 
@@ -514,7 +515,11 @@ Imports FBoxDial.FritzBoxDefault
                 ' Wenn keine Nummer gefunden wurde, dann unternimm nichts
                 If AlteNummer IsNot Nothing AndAlso AlteNummer.EigeneNummerInfo IsNot Nothing Then
                     ' Überschreibe die Daten der eigenen Nummer
-                    AddEigeneTelNr.EigeneNummerInfo = AlteNummer.EigeneNummerInfo
+                    AddEigeneTelNr.EigeneNummerInfo.Überwacht = AlteNummer.EigeneNummerInfo.Überwacht
+
+                    If AlteNummer.EigeneNummerInfo.Farben IsNot Nothing Then
+                        AddEigeneTelNr.EigeneNummerInfo.Farben = AlteNummer.EigeneNummerInfo.Farben
+                    End If
 
                     ' Schreibe die SIP-ID zurück
                     AddEigeneTelNr.EigeneNummerInfo.SIP = ID.ToInt

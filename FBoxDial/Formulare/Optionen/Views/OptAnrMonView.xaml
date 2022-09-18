@@ -146,8 +146,8 @@
             <StackPanel Grid.IsSharedSizeScope="True">
                 <Label Style="{StaticResource OptHintTextBlock}" 
                        Content="{x:Static localize:LocOptionen.strUserColorInfo}" />
-
-                <Grid Margin="0,-3,0,0" >
+   
+                <!--<Grid Margin="0,-3,0,0" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="80" SharedSizeGroup="CBBackground" />
@@ -163,7 +163,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     
-                    <!--#region Überschrift-->
+                    --><!--#region Überschrift--><!--
                     <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,0,4"
                                Text="{x:Static localize:LocOptionen.strTelephonyNumber}" />
                     
@@ -177,9 +177,9 @@
                     
                     <TextBlock Grid.Row="0" Grid.Column="4" Margin="0,0,0,4"
                                Text="{x:Static localize:LocOptionen.strTelephonyNumberColor}" />                    
-                    <!--#endregion-->
+                    --><!--#endregion-->
                     
-                    <!--#region Anrufmonitor-->
+                    <!--#region Anrufmonitor--><!--
                     <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,0,4" 
                                Text="{x:Static localize:LocOptionen.strAnrMon}" />
 
@@ -213,9 +213,9 @@
                                                                             
                                       PrimaryHeader="{x:Static localize:LocOptionen.strColorBackground}"
                                       SecondaryHeader="{x:Static localize:LocOptionen.strColorForeground}" />
-                    <!--#endregion-->
+                    --><!--#endregion-->
                     
-                    <!--#region Stoppuhr-->
+                    <!--#region Stoppuhr--><!--
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localize:LocOptionen.strStoppuhr}" Margin="0,0,0,4"/>
 
                     <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding OptVM.CBSetStoppUhrBColor}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
@@ -245,9 +245,9 @@
                                       PrimaryHeader="{x:Static localize:LocOptionen.strColorBackground}"
                                       SecondaryHeader="{x:Static localize:LocOptionen.strColorForeground}" />
                                         
-                    <!--#endregion-->
+                    --><!--#endregion-->
 
-                    <!--#region VIP-->
+                    <!--#region VIP--><!--
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localize:LocOptionen.strVIP}" Margin="0,0,0,4"/>
 
                     <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding OptVM.CBSetVIPBColor}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
@@ -276,7 +276,7 @@
                                                                             
                                       PrimaryHeader="{x:Static localize:LocOptionen.strColorBackground}"
                                       SecondaryHeader="{x:Static localize:LocOptionen.strColorForeground}" />
-                    <!--#endregion-->
+                    --><!--#endregion--><!--
                 </Grid>
 
                 <ItemsControl ItemsSource="{Binding OptVM.TelNrListe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -324,8 +324,81 @@
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                </ItemsControl>-->
 
+                <DataGrid ItemsSource="{Binding OptVM.Farben, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                          Style="{DynamicResource DataGridTemplate}">
+                    
+                    <DataGrid.Columns>
+                        <!--Kontext-->
+                        <DataGridTextColumn Binding="{Binding Path=Kontext}" Width="*"
+                                            Header="{x:Static localize:LocOptionen.strTelephonyNumber}"/>
+                        
+                        <!--Hintergrund-->
+                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strColorBackground}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center"
+                                              IsChecked="{Binding Path=CBSetBackgroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <!--Schrift-->
+                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strColorForeground}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center"
+                                              IsChecked="{Binding Path=CBSetForegroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!--ResetButton-->
+                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strUndo}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button HorizontalAlignment="Center" 
+                                            Style="{StaticResource DataGridIconButton}"
+                                            Content="{StaticResource Undo_12x}"
+                                            ToolTip="{x:Static localize:LocOptionen.strResetColor}"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ResetColorCommand}" 
+                                            CommandParameter="{Binding}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!--Farbauswahl-->
+                        <DataGridTemplateColumn Header="{x:Static localize:LocOptionen.strTelephonyNumberColor}">
+                            <DataGridTemplateColumn.CellStyle>
+                                <Style TargetType="{x:Type DataGridCell}">
+                                    <Setter Property="Focusable" Value="False"/>
+                                    <Setter Property="Width" Value="150"/>
+                                </Style>
+                            </DataGridTemplateColumn.CellStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <fbd:OptionsColor ShowAlpha="True"
+                                                      PrimaryColor="{Binding TBBackgoundColor, 
+                                                                             UpdateSourceTrigger=PropertyChanged, 
+                                                                             Mode=TwoWay, 
+                                                                             Converter={StaticResource StringToColorConverter}, 
+                                                                             TargetNullValue={StaticResource MainColor}}" 
+                                                    
+                                                      SecondaryColor="{Binding TBForegoundColor, 
+                                                                               UpdateSourceTrigger=PropertyChanged, 
+                                                                               Mode=TwoWay, 
+                                                                               Converter={StaticResource StringToColorConverter}, 
+                                                                               TargetNullValue={StaticResource DefaultForegroundColor}}"
+ 
+                                                      PrimaryHeader="{x:Static localize:LocOptionen.strColorBackground}"
+                                                      SecondaryHeader="{x:Static localize:LocOptionen.strColorForeground}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
         </Expander>
     </StackPanel>
