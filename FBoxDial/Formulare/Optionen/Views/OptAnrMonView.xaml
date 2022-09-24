@@ -27,6 +27,19 @@
                           Content="{x:Static localize:LocOptionen.strAnrMonCBAnrMonAuto}" 
                           IsChecked="{Binding OptVM.CBAnrMonAuto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strSecAdrInfo}"
+                       IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strCBFBSecAdr}" 
+                          IsChecked="{Binding OptVM.CBFBSecAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTBFBSecAdr}"
+                         Text="{Binding OptVM.TBFBSecAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         IsEnabled="{Binding OptVM.CBFBSecAdr, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
                 <CheckBox Style="{StaticResource OptCheckBox}" 
                           Content="{x:Static localize:LocOptionen.strAnrMonCBAutoClose}" 
                           IsChecked="{Binding OptVM.CBAutoClose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

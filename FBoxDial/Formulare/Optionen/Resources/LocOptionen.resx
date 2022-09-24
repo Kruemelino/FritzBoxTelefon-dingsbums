@@ -360,6 +360,10 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
     <value>Wenn der Anrufmonitor nicht ausgeblendet wird und Anrufer mehrfach anrufen, werden auch mehrer Fenster eingeblendet. Dies kann mit folgender Optionen vermieden werden.</value>
     <comment>OptAnrMonView</comment>
   </data>
+  <data name="strCBFBSecAdr" xml:space="preserve">
+    <value>Nutze alternative IP-Adresse für den Anrufmonitor</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strCBLinkProtokoll" xml:space="preserve">
     <value>Reagiere auf tel:// und callto:// Links</value>
     <comment>OptDialerView</comment>
@@ -788,12 +792,20 @@ Die Kontaktindizierung wird nur in den ausgewählten Ordnern automatisch beim Sp
 Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werden die Indizierungseinträge beim Speichern automatisch entfernt.</value>
     <comment>OptSearchContactView</comment>
   </data>
+  <data name="strSecAdrInfo" xml:space="preserve">
+    <value>Hier kann eine alternative IP-Adresse für den Anrufmonitor angegeben werden. Dies kann bei Konfigurationen mit Mesh-Repeatern erforderlich sein. Der Anrufmonitor muss neu gestartet werden.</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strSoftPhoneHomepage" xml:space="preserve">
     <value>Homepage</value>
     <comment>OptMicroSIPView, OptPhonerView</comment>
   </data>
   <data name="strStoppuhr" xml:space="preserve">
     <value>Stoppuhr</value>
+    <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strTBFBSecAdr" xml:space="preserve">
+    <value>Alternative IP-Adresse</value>
     <comment>OptAnrMonView</comment>
   </data>
   <data name="strTelephonyHeadImport" xml:space="preserve">

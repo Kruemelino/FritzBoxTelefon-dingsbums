@@ -2,6 +2,8 @@
 Imports System.Windows
 Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop
+Imports System.Xml.Serialization
+Imports System.Net.Security
 ''' <summary>
 ''' https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/
 ''' </summary>
@@ -129,6 +131,33 @@ Public Class OptionenViewModel
 #End Region
 
 #Region "Einstellungen für den Anrufmonitor"
+
+    ''' <summary>
+    ''' Angabe, ob die Sekundäre IP-Addresse für den Anrufmonitor genutzt werden soll.
+    ''' </summary>
+    Private _CBFBSecAdr As Boolean
+    Public Property CBFBSecAdr As Boolean
+        Get
+            Return _CBFBSecAdr
+        End Get
+        Set
+            SetProperty(_CBFBSecAdr, Value)
+        End Set
+    End Property
+
+    Private _TBFBSecAdr As String
+    ''' <summary>
+    ''' Sekundäre IP-Adresse für den Anrufmonitor z.B. Mesh Master.
+    ''' </summary>
+    Public Property TBFBSecAdr As String
+        Get
+            Return _TBFBSecAdr
+        End Get
+        Set
+            SetProperty(_TBFBSecAdr, Value)
+        End Set
+    End Property
+
     Private _CBAnrMonAuto As Boolean
     Public Property CBAnrMonAuto As Boolean
         Get
@@ -1134,16 +1163,7 @@ Public Class OptionenViewModel
         OutlookOrdnerListe.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
 
         ' Farbdefinitionen
-        Farben = New ObservableCollectionEx(Of Farbdefinition)
-        ' Farben für den Anrufmonitor, die Stoppuhr und VIP
-        SetDefaultColors()
-        Farben.AddRange(XMLData.POptionen.Farbdefinitionen)
-        ' Farben für die einzelnen eigenen Telefonnummern
-        Farben.AddRange(XMLData.PTelefonie.Telefonnummern.Select(Function(TelNr)
-                                                                     If TelNr.EigeneNummerInfo.Farben Is Nothing Then TelNr.EigeneNummerInfo.Farben = New Farbdefinition With {.Kontext = TelNr.Einwahl}
-
-                                                                     Return TelNr.EigeneNummerInfo.Farben
-                                                                 End Function))
+        Farben = GetDefaultColors()
 
         Await LadeTask
 
@@ -1182,8 +1202,11 @@ Public Class OptionenViewModel
         XMLData.PTelefonie.LKZ = TBLandesKZ
         XMLData.PTelefonie.OKZ = TBOrtsKZ
 
-        ' Gültige IP-Adresse für die Fritz!Box ablegen
+        ' Gültige IP-Adressen für die Fritz!Box ablegen
         XMLData.POptionen.ValidFBAdr = ValidIP(XMLData.POptionen.TBFBAdr)
+
+        ' Gültige sekundäre IP-Adressen für die Fritz!Box ablegen
+        If XMLData.POptionen.CBFBSecAdr Then XMLData.POptionen.ValidFBSecAdr = ValidIP(XMLData.POptionen.TBFBSecAdr)
 
         ' Anrufmonitor Liste zu überwachender Telefonnummern
         With XMLData.PTelefonie.Telefonnummern
@@ -1254,7 +1277,7 @@ Public Class OptionenViewModel
     ''' <summary>
     ''' Erstellt die Farbdefinitionen für den Anrufmonitor, Stoppuhr und VIP
     ''' </summary>
-    Private Sub SetDefaultColors()
+    Private Function GetDefaultColors() As ObservableCollectionEx(Of Farbdefinition)
         If XMLData.POptionen.Farbdefinitionen Is Nothing Then XMLData.POptionen.Farbdefinitionen = New List(Of Farbdefinition)
 
         With XMLData.POptionen.Farbdefinitionen
@@ -1274,6 +1297,20 @@ Public Class OptionenViewModel
             End If
         End With
 
-    End Sub
+        Dim Farben As New ObservableCollectionEx(Of Farbdefinition)
+
+        ' Farben für den Anrufmonitor, die Stoppuhr und VIP
+        Farben.AddRange(XMLData.POptionen.Farbdefinitionen)
+        ' Farben für die einzelnen eigenen Telefonnummern
+        Farben.AddRange(XMLData.PTelefonie.Telefonnummern.Select(Function(TelNr)
+                                                                     If TelNr.EigeneNummerInfo.Farben Is Nothing Then TelNr.EigeneNummerInfo.Farben = New Farbdefinition With {.Kontext = TelNr.Einwahl}
+
+                                                                     Return TelNr.EigeneNummerInfo.Farben
+                                                                 End Function))
+
+
+        Return Farben
+
+    End Function
 #End Region
 End Class

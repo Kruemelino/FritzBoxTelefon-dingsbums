@@ -608,6 +608,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nutze alternative IP-Adresse für den Anrufmonitor ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCBFBSecAdr() As String
+            Get
+                Return ResourceManager.GetString("strCBFBSecAdr", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Reagiere auf tel:// und callto:// Links ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCBLinkProtokoll() As String
@@ -1535,6 +1544,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hier kann eine alternative IP-Adresse für den Anrufmonitor angegeben werden. Dies kann bei Konfigurationen mit Mesh-Repeatern erforderlich sein. Der Anrufmonitor muss neu gestartet werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSecAdrInfo() As String
+            Get
+                Return ResourceManager.GetString("strSecAdrInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Homepage ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strSoftPhoneHomepage() As String
@@ -1549,6 +1567,15 @@ Namespace Localize
         Public Shared ReadOnly Property strStoppuhr() As String
             Get
                 Return ResourceManager.GetString("strStoppuhr", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Alternative IP-Adresse ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTBFBSecAdr() As String
+            Get
+                Return ResourceManager.GetString("strTBFBSecAdr", resourceCulture)
             End Get
         End Property
         

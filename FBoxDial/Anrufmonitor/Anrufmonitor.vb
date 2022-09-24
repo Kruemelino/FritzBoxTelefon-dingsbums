@@ -14,6 +14,7 @@ Friend Class Anrufmonitor
         End Get
     End Property
     Friend Property AktiveTelefonate As List(Of Telefonat)
+    Private Property FBoxIP As String
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #End Region
 
@@ -35,8 +36,9 @@ Friend Class Anrufmonitor
     Private Sub BeginnStartAnrMon()
         ' Starte den Anrufmonitor
         Dim IP As IPAddress = IPAddress.Loopback
+        FBoxIP = If(XMLData.POptionen.CBFBSecAdr, XMLData.POptionen.TBFBSecAdr, XMLData.POptionen.ValidFBAdr)
 
-        If IPAddress.TryParse(XMLData.POptionen.ValidFBAdr, IP) Then
+        If IPAddress.TryParse(FBoxIP, IP) Then
             If Ping(IP.ToString) Then
                 Dim TC As New TcpClient With {.ExclusiveAddressUse = False}
 
@@ -146,7 +148,7 @@ Friend Class Anrufmonitor
     End Sub
 
     Private Sub AnrMonTCPClient_ErrorOccured(Sender As AnrMonClient) Handles AnrMonTCPClient.ErrorOccured
-        NLogger.Warn($"Anrufmonitor wurde unerwartet getrennt von {XMLData.POptionen.ValidFBAdr}:{AnrMon_Port}")
+        NLogger.Warn($"Anrufmonitor wurde unerwartet getrennt von {FBoxIP}:{AnrMon_Port}")
         ' Wieververbinden versuchen
         Start()
     End Sub
@@ -154,7 +156,7 @@ Friend Class Anrufmonitor
     Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
         'Aktiv = False
         Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
-        NLogger.Info($"Anrufmonitor getrennt von {XMLData.POptionen.ValidFBAdr}:{AnrMon_Port}")
+        NLogger.Info($"Anrufmonitor getrennt von {FBoxIP}:{AnrMon_Port}")
     End Sub
 #End Region
 

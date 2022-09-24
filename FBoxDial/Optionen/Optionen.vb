@@ -108,6 +108,22 @@
 
 #Region "Anrufmonitor"
 #Region "Anrufmonitor - Einstellungen für den Anrufmonitor"
+
+    ''' <summary>
+    ''' Angabe, ob die Sekundäre IP-Addresse für den Anrufmonitor genutzt werden soll.
+    ''' </summary>
+    <XmlElement("CBFBSecAdr")> Public Property CBFBSecAdr As Boolean = False
+    ''' <summary>
+    ''' Sekundäre IP-Adresse für den Anrufmonitor z.B. Mesh Master.
+    ''' </summary>
+    <XmlElement("TBFBSecAdr")> Public Property TBFBSecAdr As String = FritzBoxDefault.DfltFritzBoxHostName
+    ''' <summary>
+    ''' Gibt eine sekundäre korrekte Fritz!Box IP-Adresse zurück.
+    ''' </summary>
+    <XmlElement("ValidFBSecAdr")> Public Property ValidFBSecAdr As String
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor automatisch mit dem Start von Outlook gestartet werden soll.
+    ''' </summary>
     <XmlElement("CBAnrMonAuto")> Public Property CBAnrMonAuto As Boolean = False
     ''' <summary>
     ''' Angabe, ob der Anrufmonitor automatisch geschlossen werden soll.
