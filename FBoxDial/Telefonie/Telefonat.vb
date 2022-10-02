@@ -767,8 +767,13 @@ Imports Microsoft.Office.Interop
     ''' Ruft die Gegenstellentelefonnummer an
     ''' </summary>
     Friend Sub Rückruf()
+        ' Wenn man aus dem Anrufmonitor auf Rückruf klickt, öffnet sich der Wähldialog.
+        ' Wenn man dann den Anrufmonitor schließt, stürzt Outlook ab. Fix für #60
+        Globals.ThisAddIn.WPFApplication.Dispatcher.Invoke(Sub()
+                                                               ' Wählclient einblenden
         Dim WählClient As New FritzBoxWählClient
         WählClient.WählboxStart(Me)
+                                                           End Sub)
     End Sub
 
     ''' <summary>
