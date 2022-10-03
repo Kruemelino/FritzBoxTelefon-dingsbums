@@ -76,7 +76,7 @@ Friend Class ExplorerWrapper
     ''' <summary>
     ''' Blendet das CallListPane aus
     ''' </summary>
-    Friend Sub HideCallListPane()
+    Private Sub HideCallListPane()
         If CallListPane IsNot Nothing Then
             CallListPane.Visible = False
         Else
@@ -89,6 +89,10 @@ Friend Class ExplorerWrapper
         If XMLData.POptionen.CBClearCallPaneAtClose And Not CallListPane.Visible Then CallListPaneVM.MissedCallList.Clear()
     End Sub
 
+    ''' <summary>
+    ''' Fügt ein Eintrag zu der Liste verpasster Telefonate hinzu.
+    ''' </summary>
+    ''' <param name="MissedCall">Telefonat, welches hinzugefügt werden soll.</param>
     Friend Sub AddMissedCall(MissedCall As Telefonat)
         PaneDispatcher?.Invoke(Sub()
                                    ' Blende das Pane ein
@@ -113,6 +117,22 @@ Friend Class ExplorerWrapper
                                    ' Sortiere die Liste
                                    CallListPaneVM.MissedCallList.SortDescending(Function(T) T.Zeit)
                                End Sub)
+    End Sub
+
+    ''' <summary>
+    ''' Entfernt ein Eintrag aus der Liste verpasster Telefonate.
+    ''' </summary>
+    ''' <param name="MissedCall">Telefonat, welches entfernt werden soll.</param>
+    Friend Sub RemoveMissedCall(MissedCall As Telefonat)
+        With CallListPaneVM.MissedCallList
+            ' Finde alle passenden Einträge und entferne diese
+            NLogger.Debug($"Verpasster Anruf {MissedCall.NameGegenstelle} ({MissedCall.ZeitBeginn}) wird aus dem CallPane des entfernt.")
+
+            PaneDispatcher?.Invoke(Sub() .RemoveRange(.Where(Function(C) C.VerpasstesTelefonat.Equals(MissedCall))))
+
+            ' Schließe das Pane, wenn gewünscht
+            If Not .Any And XMLData.POptionen.CBCloseEmptyCallPane Then HideCallListPane()
+        End With
     End Sub
 
 #End Region

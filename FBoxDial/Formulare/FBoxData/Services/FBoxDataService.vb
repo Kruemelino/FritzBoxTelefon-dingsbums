@@ -1,4 +1,5 @@
 ﻿Imports System.Threading.Tasks
+Imports Microsoft.Office.Core
 
 Public Class FBoxDataService
     Implements IFBoxDataService
@@ -52,15 +53,13 @@ Public Class FBoxDataService
     End Sub
 
     Private Async Sub CallXMLContact(Anruf As FBoxAPI.Call) Implements IFBoxDataService.CallXMLContact
-        Using t = Await ErstelleTelefonat(Anruf)
-            t.Rückruf()
-        End Using
+        Dim T As Telefonat = Await ErstelleTelefonat(Anruf)
+        T.Rückruf()
     End Sub
 
     Private Async Sub ShowXMLContact(Anruf As FBoxAPI.Call) Implements IFBoxDataService.ShowXMLContact
-        Using t = Await ErstelleTelefonat(Anruf)
-            t.ZeigeKontakt()
-        End Using
+        Dim T As Telefonat = Await ErstelleTelefonat(Anruf)
+        T.ZeigeKontakt()
     End Sub
 
     Private Sub PlayMessage(CallItem As FBoxAPI.Call) Implements IFBoxDataService.PlayMessage
@@ -244,8 +243,11 @@ Public Class FBoxDataService
 
 #Region "Kontakt anrufen"
     Private Sub Dial(XMLDaten As FBoxAPI.Contact) Implements IFBoxDataService.Dial
-        Dim WählClient As New FritzBoxWählClient
-        WählClient.WählboxStart(XMLDaten)
+        ' Neuen Wählclient generieren
+        ' Finde das existierende Fenster, oder generiere ein neues
+        With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+            .WählboxStart(XMLDaten)
+        End With
     End Sub
 #End Region
 #End Region

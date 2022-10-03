@@ -199,11 +199,13 @@ Public Class WählClientViewModel
     Private Sub SetData()
         ' Setze ViewModel
         If IsContactDial Then
+
             ContactDialVM = New ContactDialViewModel(Me, DatenService, Instance)
             ' CurrentView zuweisen
             CurrentView = ContactDialVM
 
         Else
+
             DirectDialVM = New DirectDialViewModel(Me, DatenService)
             ' CurrentView zuweisen
             CurrentView = DirectDialVM

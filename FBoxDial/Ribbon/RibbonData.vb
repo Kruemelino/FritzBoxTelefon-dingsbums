@@ -1,7 +1,10 @@
 ﻿Imports System.Reflection
 Imports System.Xml
+Imports System.Windows
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
+Imports System.Windows.Documents
+Imports System.Collections
 
 Namespace RibbonData
     ''' <summary>
@@ -169,100 +172,71 @@ Namespace RibbonData
         ''' Einblenden der Direktwahl. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         Private Sub DirectCall()
-            Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
-
-            If AddinFenster Is Nothing Then
-                ' Neuen Wählclient generieren
-                Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart()
-                ' Fenster zuweisen
-                AddinFenster = WählClient.WPFWindow
-                ' Ereignishandler hinzufügen
-                AddHandler AddinFenster.Closed, AddressOf Window_Closed
-                ' Window in die Liste aufnehmen
-                Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
-            Else
-                AddinFenster.Activate()
-            End If
+            ' Neuen Wählclient generieren
+            ' Finde das existierende Fenster, oder generiere ein neues
+            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+                .WählboxStart()
+            End With
         End Sub
 
         ''' <summary>
         ''' Einblenden der Kontaktwahl. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         Private Sub Dial()
-            Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
-
-            If AddinFenster Is Nothing Then
-                ' Neuen Wählclient generieren
-                Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(Globals.ThisAddIn.Application.ActiveExplorer.Selection)
-                ' Fenster zuweisen
-                AddinFenster = WählClient.WPFWindow
-
-                If AddinFenster IsNot Nothing Then
-                    ' Ereignishandler hinzufügen
-                    AddHandler AddinFenster.Closed, AddressOf Window_Closed
-                    ' Window in die Liste aufnehmen
-                    Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
-                End If
-            Else
-                AddinFenster.Activate()
-            End If
+            ' Neuen Wählclient generieren
+            ' Finde das existierende Fenster, oder generiere ein neues
+            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+                .WählboxStart(Globals.ThisAddIn.Application.ActiveExplorer.Selection)
+            End With
         End Sub
 
         ''' <summary>
         ''' Einblenden der Kontaktwahl aus Inspektorfenster. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         Private Sub Dial(OutlookInspector As Outlook.Inspector)
-            Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
-
-            If AddinFenster Is Nothing Then
-                ' Neuen Wählclient generieren
-                Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(OutlookInspector)
-                ' Fenster zuweisen
-                AddinFenster = WählClient.WPFWindow
-
-                If AddinFenster IsNot Nothing Then
-                    ' Ereignishandler hinzufügen
-                    AddHandler AddinFenster.Closed, AddressOf Window_Closed
-                    ' Window in die Liste aufnehmen
-                    Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
-                End If
-            Else
-                AddinFenster.Activate()
-            End If
+            ' Neuen Wählclient generieren
+            ' Finde das existierende Fenster, oder generiere ein neues
+            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+                .WählboxStart(OutlookInspector)
+            End With
         End Sub
 
         ''' <summary>
         ''' Einblenden der Kontaktwahl aus dem Inspektorfenster einer ContactCard. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         Private Sub Dial(ContactCard As IMsoContactCard)
-            Dim AddinFenster As WählclientWPF = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
+            ' Neuen Wählclient generieren
+            ' Finde das existierende Fenster, oder generiere ein neues
+            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+                .WählboxStart(ContactCard)
+            End With
+        End Sub
 
-            If AddinFenster Is Nothing Then
-                ' Neuen Wählclient generieren
-                Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(ContactCard)
-                ' Fenster zuweisen
-                AddinFenster = WählClient.WPFWindow
+        ''' <summary>
+        ''' Bahandelt das Klicken auf reguläre Einträge der Call, Ring und VIP Liste
+        ''' </summary>
+        ''' <param name="Tag">Identifikation des Listeneintrages: RingList_0</param>
+        Private Sub ListCRV(Tag As String)
 
-                If AddinFenster IsNot Nothing Then
-                    ' Ereignishandler hinzufügen
-                    AddHandler AddinFenster.Closed, AddressOf Window_Closed
-                    ' Window in die Liste aufnehmen
-                    Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
+            Dim ID As String() = Tag.Split("_")
+
+            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+
+                If ID.First.Equals(My.Resources.strDfltNameListVIP) Then
+                    .WählboxStart(XMLData.PTelListen.VIPListe.Item(ID.Last.ToInt))
+                Else
+                    ' Ermittle die Wahlwiederholungs- bzw. Rückrufliste mittels Reflection aus dem übergebenen Namen
+                    .WählboxStart(CType(XMLData.PTelListen.GetType().GetProperty(ID.First).GetValue(XMLData.PTelListen), List(Of Telefonat)).Item(ID.Last.ToInt))
                 End If
-            Else
-                AddinFenster.Activate()
-            End If
+            End With
+
         End Sub
 
         ''' <summary>
         ''' Einblenden der Fritz!Box Daten
         ''' </summary>
         Private Sub FritzBoxData()
-            AddWindow(Of FBoxDataWPF)().Show
+            AddWindow(Of FBoxDataWPF)().Show()
         End Sub
 
         Private Sub Search()
@@ -291,38 +265,6 @@ Namespace RibbonData
         ''' <param name="Parameter">Identifikation der Liste</param>
         Private Sub DynListDel(Parameter As String)
             XMLData.PTelListen.ClearList(Parameter.RegExRemove("^.*_"))
-        End Sub
-
-        ''' <summary>
-        ''' Bahandelt das Klicken auf reguläre Einträge der Call, Ring und VIP Liste
-        ''' </summary>
-        ''' <param name="Tag">Identifikation des Listeneintrages</param>
-        Private Sub ListCRV(Tag As String)
-            ' RingList_0
-            Dim ID As String() = Tag.Split("_")
-            Dim WählClient As New FritzBoxWählClient
-
-            ' Ermittle die zugehörige Liste
-            Select Case ID(0)
-                Case My.Resources.strDfltNameListCALL
-                    Dim Liste As List(Of Telefonat) = XMLData.PTelListen.CALLListe
-
-                    WählClient.WählboxStart(Liste(ID(1).ToInt))
-
-                Case My.Resources.strDfltNameListRING
-                    Dim Liste As List(Of Telefonat) = XMLData.PTelListen.RINGListe
-
-                    WählClient.WählboxStart(Liste(ID(1).ToInt))
-
-                Case My.Resources.strDfltNameListVIP
-                    Dim Liste As List(Of VIPEntry) = XMLData.PTelListen.VIPListe
-
-                    WählClient.WählboxStart(Liste(ID(1).ToInt))
-
-                Case Else
-
-            End Select
-
         End Sub
 
         Private Sub Contact(OutlookInspector As Outlook.Inspector)

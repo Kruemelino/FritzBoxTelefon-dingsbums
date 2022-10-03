@@ -150,6 +150,10 @@
     ''' </summary>
     <XmlElement("CBAnrMonHideMultipleCall")> Public Property CBAnrMonHideMultipleCall As Boolean = False
     ''' <summary>
+    ''' Angabe, ob der Anrufmonitor bei Rückruf geschlossen werden soll
+    ''' </summary>
+    <XmlElement("CBAnrMonCloseReDial")> Public Property CBAnrMonCloseReDial As Boolean = False
+    ''' <summary>
     ''' Angabe, ob Anrufe, die an einen Anrufbeantworter gegangen sind, als verpasst behandelt werden sollen.
     ''' </summary>
     <XmlElement("CBIsTAMMissed")> Public Property CBIsTAMMissed As Boolean = True

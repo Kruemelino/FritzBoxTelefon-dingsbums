@@ -70,16 +70,7 @@ Public Class AnrMonService
 
 #Region "MissedCallPane"
     Public Sub RemoveMissedCall(MissedCall As MissedCallViewModel) Implements IAnrMonService.RemoveMissedCall
-        For Each Explorer In Globals.ThisAddIn.ExplorerWrappers.Values
-            With Explorer.CallListPaneVM.MissedCallList
-                ' Finde alle passenden Einträge und entferne diese
-                NLogger.Debug($"Verpasster Anruf {MissedCall.VerpasstesTelefonat.NameGegenstelle} ({MissedCall.Zeit}) wird aus dem CallPane des entfernt.")
-
-                .RemoveRange(Explorer.CallListPaneVM.MissedCallList.Where(Function(C) C.VerpasstesTelefonat.Equals(MissedCall.VerpasstesTelefonat)))
-                ' Schließe das Pane, wenn gewünscht
-                If Not .Any And XMLData.POptionen.CBCloseEmptyCallPane Then Explorer.HideCallListPane()
-            End With
-        Next
+        Globals.ThisAddIn.ExplorerWrappers.Values.ToList.ForEach(Sub(ew) ew.RemoveMissedCall(MissedCall.VerpasstesTelefonat))
     End Sub
 #End Region
 

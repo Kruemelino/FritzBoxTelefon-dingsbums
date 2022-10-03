@@ -352,6 +352,10 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
     <value>Abbrechen</value>
     <comment>MainView</comment>
   </data>
+  <data name="strCBAnrMonCloseReDial" xml:space="preserve">
+    <value>Schließe den Anrufmonitor bei Rückruf</value>
+    <comment>OptAnrMonView</comment>
+  </data>
   <data name="strCBAnrMonHideMultipleCall" xml:space="preserve">
     <value>Vermeide mehrfache Signalisierung</value>
     <comment>OptAnrMonView</comment>

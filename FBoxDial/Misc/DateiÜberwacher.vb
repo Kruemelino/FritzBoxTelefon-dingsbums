@@ -23,6 +23,8 @@ Friend Class DateiÜberwacher
         Dim TelNr As New Telefonnummer With {.SetNummer = File.ReadLines(e.FullPath).First}
         NLogger.Info($"Telefonnummer aus tel:// bzw. callto:// erfasst: {TelNr.Unformatiert}")
 
+        ' Neuen Wählclient generieren
+        ' Finde das existierende Fenster, oder generiere ein neues
         Dim WählClient As New FritzBoxWählClient
         WählClient.WählboxStart(TelNr)
     End Sub

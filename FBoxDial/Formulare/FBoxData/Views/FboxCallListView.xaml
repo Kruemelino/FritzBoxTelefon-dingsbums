@@ -95,7 +95,7 @@
                   Margin="1,0,0,2"
                   Header="{x:Static localize:LocFBoxData.strJournalImport}">
             
-            <Grid  >
+            <Grid Margin="0,2,0,0" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*" />
@@ -116,8 +116,9 @@
                         Command="{Binding CancelCommand}" 
                         IsEnabled="{Binding IsAktiv}" Cursor="Hand"/>
 
-                <Label Grid.Row="1" Grid.Column="0" Content="{x:Static localize:LocFBoxData.strStatus}" Margin="8,0"/>
-                <ProgressBar Grid.Row="1" Grid.Column="1"  Margin="8"
+                <Label Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" HorizontalAlignment="Right"
+                       Content="{x:Static localize:LocFBoxData.strStatus}" Margin="8,0"/>
+                <ProgressBar Grid.Row="1" Grid.Column="1" Margin="8"
                              Value="{Binding Path=ImportProgressValue, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                              Maximum="{Binding Path=ImportProgressMax, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
             </Grid>

@@ -99,7 +99,7 @@ Public Class ContactDialViewModel
         ' Init Command
 
         ShowContactCommand = New RelayCommand(AddressOf ShowContact, AddressOf CanShow)
-        VIPCommand = New RelayCommand(AddressOf ToggleVIP)
+        VIPCommand = New RelayCommand(AddressOf ToggleVIP, AddressOf CanToggleVIP)
 
     End Sub
 
@@ -108,6 +108,7 @@ Public Class ContactDialViewModel
         With olKontakt
 
             ' Telefonnummern des Kontaktes setzen 
+            DialNumberList.Clear()
             DialNumberList.AddRange(.GetKontaktTelNrList)
 
             ' Kopfdaten setzen
@@ -123,6 +124,7 @@ Public Class ContactDialViewModel
         With olExchangeUser
 
             ' Telefonnummern des Kontaktes setzen 
+            DialNumberList.Clear()
             DialNumberList.AddRange(.GetKontaktTelNrList)
 
             ' Kopfdaten setzen
@@ -134,6 +136,7 @@ Public Class ContactDialViewModel
         With FBoxXMLKontakt
 
             ' Telefonnummern des Kontaktes setzen 
+            DialNumberList.Clear()
             DialNumberList.AddRange(.GetKontaktTelNrList)
 
             ' Kopfdaten setzen
@@ -149,11 +152,10 @@ Public Class ContactDialViewModel
     End Sub
 
 #Region "ICommand Callback"
-    Private Function CanShow(obj As Object) As Boolean
+    Private Function CanShow(o As Object) As Boolean
         ' Nur für Outlook Kontakte und ExchangeUser
         Return OKontakt IsNot Nothing Or OExchangeNutzer IsNot Nothing
     End Function
-
 
     Private Sub ShowContact(o As Object)
         ' Outlook Kontakt anzeigen
@@ -161,6 +163,11 @@ Public Class ContactDialViewModel
         ' Outlook ExchangeUser anzeigen
         If OExchangeNutzer IsNot Nothing Then OExchangeNutzer.Details()
     End Sub
+
+    Private Function CanToggleVIP(o As Object) As Boolean
+        ' Nur für Outlook Kontakte und ExchangeUser
+        Return OKontakt IsNot Nothing 'Or OExchangeNutzer IsNot Nothing
+    End Function
 
     Private Sub ToggleVIP(o As Object)
         OKontakt?.ToggleVIP()

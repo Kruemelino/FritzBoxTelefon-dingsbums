@@ -154,10 +154,12 @@ Public Class TelNrToFontWeightConverter
 
     Public Function Convert(values() As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IMultiValueConverter.Convert
 
-        With values.Cast(Of Telefonnummer)
-            Return If(.First.Equals(.Last), (New FontWeightConverter).ConvertFrom(parameter), FontWeights.Normal)
-        End With
-
+        If values.All(Function(T) T IsNot Nothing) AndAlso values.First.GetType Is values.Last.GetType Then
+            With values.Cast(Of Telefonnummer)
+                Return If(.First.Equals(.Last), (New FontWeightConverter).ConvertFrom(parameter), FontWeights.Normal)
+            End With
+        End If
+        Return FontWeights.Normal
     End Function
 
     Public Function ConvertBack(value As Object, targetTypes() As Type, parameter As Object, culture As CultureInfo) As Object() Implements IMultiValueConverter.ConvertBack

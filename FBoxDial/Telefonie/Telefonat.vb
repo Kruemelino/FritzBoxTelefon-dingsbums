@@ -2,6 +2,7 @@
 Imports System.Threading.Tasks
 Imports System.Windows
 Imports System.Xml.Serialization
+Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 <Serializable()> Public Class Telefonat
     Inherits NotifyBase
@@ -769,11 +770,32 @@ Imports Microsoft.Office.Interop
     Friend Sub Rückruf()
         ' Wenn man aus dem Anrufmonitor auf Rückruf klickt, öffnet sich der Wähldialog.
         ' Wenn man dann den Anrufmonitor schließt, stürzt Outlook ab. Fix für #60
-        Globals.ThisAddIn.WPFApplication.Dispatcher.Invoke(Sub()
-                                                               ' Wählclient einblenden
-        Dim WählClient As New FritzBoxWählClient
-        WählClient.WählboxStart(Me)
-                                                           End Sub)
+        With Globals.ThisAddIn.WPFApplication.Dispatcher
+
+            .Invoke(Sub()
+                        ' Neuen Wählclient generieren
+                        ' Finde das existierende Fenster, oder generiere ein neues
+                        With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+                            .WählboxStart(Me)
+                        End With
+
+                    End Sub)
+        End With
+
+    End Sub
+
+    ''' <summary>
+    ''' Schließt den Anrufmonitor und denn Eintrag im MissedCallPande
+    ''' </summary>
+    Friend Sub CloseAnrMonAndCallPane()
+        ' Schließe den vorhandenen Anrufmonitor, falls vorhanden
+        If XMLData.POptionen.CBAnrMonCloseReDial Then
+            ' MissedCallPane entfernen
+            Globals.ThisAddIn.ExplorerWrappers.Values.ToList.ForEach(Sub(ew) ew.RemoveMissedCall(Me))
+
+            ' Sofortiges Ausblenden des Anrufmonitors
+            If PopUpAnrMonWPF IsNot Nothing Then PopUpAnrMonWPF.StarteAusblendTimer(TimeSpan.Zero)
+        End If
     End Sub
 
     ''' <summary>

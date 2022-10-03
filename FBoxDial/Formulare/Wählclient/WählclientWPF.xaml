@@ -34,7 +34,7 @@
                       IsEnabled="{Binding Path=IsNotDialing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
                 
                 <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
-                    <CheckBox DockPanel.Dock="Top" Margin="0,0,2,5" 
+                    <CheckBox DockPanel.Dock="Top" Margin="0,2,2,2" 
                               Content="{x:Static localize:LocWählclient.strCLIR}" HorizontalAlignment="Left" 
                               IsChecked="{Binding Path=CLIR, UpdateSourceTrigger=PropertyChanged}" />
                     

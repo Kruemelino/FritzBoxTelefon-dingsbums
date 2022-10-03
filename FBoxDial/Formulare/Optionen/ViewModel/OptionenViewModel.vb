@@ -233,18 +233,18 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-    'Private _TBAnrMonHideMultibleCallTime As Integer
-    '''' <summary>
-    '''' Zeitfenster in dem wiederholte Anrufe nicht angezeigt werden (Minuten)
-    '''' </summary>
-    'Public Property TBAnrMonHideMultibleCallTime As Integer
-    '    Get
-    '        Return _TBAnrMonHideMultibleCallTime
-    '    End Get
-    '    Set
-    '        SetProperty(_TBAnrMonHideMultibleCallTime, Value)
-    '    End Set
-    'End Property
+    Private _CBAnrMonCloseReDial As Boolean
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor bei Rückruf geschlossen werden soll
+    ''' </summary>
+    Public Property CBAnrMonCloseReDial As Boolean
+        Get
+            Return _CBAnrMonCloseReDial
+        End Get
+        Set
+            SetProperty(_CBAnrMonCloseReDial, Value)
+        End Set
+    End Property
 
     Private _CBIsTAMMissed As Boolean = True
     ''' <summary>

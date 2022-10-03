@@ -590,6 +590,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Schließe den Anrufmonitor bei Rückruf ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCBAnrMonCloseReDial() As String
+            Get
+                Return ResourceManager.GetString("strCBAnrMonCloseReDial", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Vermeide mehrfache Signalisierung ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCBAnrMonHideMultipleCall() As String

@@ -1,6 +1,4 @@
 ﻿Imports Microsoft.Office.Interop
-'Imports System.Windows
-'Imports System.Windows.Interop
 
 Friend Module Fenster
 #Region "Properties"
@@ -93,4 +91,5 @@ Friend Module Fenster
 
         NLogger.Debug("Fenster aus der Gesamtliste entfernt.")
     End Sub
+
 End Module

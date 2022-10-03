@@ -356,38 +356,45 @@ Public Class FritzBoxWählClient
     ''' </summary>
     ''' <param name="DialTelefonat">Telefonat</param>
     Friend Overloads Sub WählboxStart(DialTelefonat As Telefonat)
-
-        With DialTelefonat
-            ' Kontakt aus Telefonat ermitteln
-            If .OlKontakt Is Nothing AndAlso (.OutlookKontaktID.IsNotStringNothingOrEmpty And .OutlookStoreID.IsNotStringNothingOrEmpty) Then
-                ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
-                .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
-            End If
-
-            If .OlKontakt Is Nothing Then
-                If .OutlookKontaktID.IsNotStringNothingOrEmpty And .OutlookStoreID.IsNotStringNothingOrEmpty Then
+        If DialTelefonat IsNot Nothing Then
+            With DialTelefonat
+                ' Kontakt aus Telefonat ermitteln
+                If .OlKontakt Is Nothing AndAlso (.OutlookKontaktID.IsNotStringNothingOrEmpty And .OutlookStoreID.IsNotStringNothingOrEmpty) Then
                     ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
                     .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
-                ElseIf .VCard.IsNotStringNothingOrEmpty Then
-                    ' Erstelle einen temporären Kontsakt aus einer vCard
-                    .OlKontakt = ErstelleKontakt(.VCard, .GegenstelleTelNr, False)
                 End If
 
-            End If
+                If .OlKontakt Is Nothing Then
+                    If .OutlookKontaktID.IsNotStringNothingOrEmpty And .OutlookStoreID.IsNotStringNothingOrEmpty Then
+                        ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
+                        .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
+                    ElseIf .VCard.IsNotStringNothingOrEmpty Then
+                        ' Erstelle einen temporären Kontsakt aus einer vCard
+                        .OlKontakt = ErstelleKontakt(.VCard, .GegenstelleTelNr, False)
+                    End If
+                End If
 
-            If .OlKontakt IsNot Nothing Then
-                Wählbox(.OlKontakt, .GegenstelleTelNr)
-            Else
-                Wählbox(.GegenstelleTelNr)
-            End If
+                ' Falls es sich um einen Rückruf handelt, wird der Anrufmonitor und der MissedCallPane ausgeblendet
+                .CloseAnrMonAndCallPane()
 
-        End With
+                ' TODO: Prüfe auf Exchange?
+                If .OlKontakt IsNot Nothing Then
+                    Wählbox(.OlKontakt, .GegenstelleTelNr)
+                Else
+                    Wählbox(.GegenstelleTelNr)
+                End If
+
+            End With
+        Else
+            NLogger.Warn($"Das übergebene Telefonat ist Nothing (null).")
+        End If
+
     End Sub
 
     Friend Overloads Sub WählboxStart(DialVIP As VIPEntry)
 
         With DialVIP
-            ' Kontakt aus telefinat ermitteln
+            ' Kontakt aus VIP-Eintrag ermitteln
             If .OlContact Is Nothing AndAlso (.StoreID.IsNotStringNothingOrEmpty And .EntryID.IsNotStringNothingOrEmpty) Then
                 ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
                 .OlContact = GetOutlookKontakt(.EntryID, .StoreID)
@@ -399,14 +406,19 @@ Public Class FritzBoxWählClient
 
     Friend Overloads Sub WählboxStart(Kontakt As FBoxAPI.Contact)
 
-        WPFWindow = New WählclientWPF
-        With WPFWindow
-            .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
-                                                                           .IsContactDial = True,
-                                                                           .SetOutlookFBoxXMLKontakt = Kontakt}
+        If Kontakt IsNot Nothing Then
 
-            .Show()
-        End With
+            With WPFWindow
+                .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
+                                                                               .IsContactDial = True,
+                                                                               .SetOutlookFBoxXMLKontakt = Kontakt}
+                .Show()
+            End With
+
+        Else
+            NLogger.Error("Der Telefonbucheintrag ist nicht vorhanden.")
+        End If
+
     End Sub
 
     ''' <summary>
@@ -415,17 +427,19 @@ Public Class FritzBoxWählClient
     ''' <param name="TelNr"></param>
     Friend Overloads Async Sub WählboxStart(TelNr As Telefonnummer)
         Await StartSTATask(Function() As Boolean
-                               If WPFWindow Is Nothing Then
-                                   NLogger.Debug("Blende einen neuen Wählclient als STA Task ein")
-                                   ' Blende einen neuen Anrufmonitor ein
-                                   Wählbox(TelNr)
+                               NLogger.Debug("Blende einen neuen Wählclient als STA Task ein")
 
-                                   While WPFWindow.IsVisible
+                               ' Neuen Wählclient generieren
+                               ' Finde das existierende Fenster, oder generiere ein neues
+                               WPFWindow = AddWindow(Of WählclientWPF)()
 
-                                       Forms.Application.DoEvents()
-                                       Thread.Sleep(100)
-                                   End While
-                               End If
+                               Wählbox(TelNr)
+
+                               While WPFWindow.IsVisible
+                                   Forms.Application.DoEvents()
+                                   Thread.Sleep(100)
+                               End While
+
                                Return False
                            End Function)
     End Sub
@@ -435,9 +449,8 @@ Public Class FritzBoxWählClient
     ''' </summary>
     ''' <param name="oContact">Der Outlook-Kontakt, welcher angerufen werden soll</param>
     Private Sub Wählbox(oContact As Outlook.ContactItem)
-        If oContact IsNot Nothing Then
 
-            WPFWindow = New WählclientWPF
+        If oContact IsNot Nothing Then
 
             With WPFWindow
                 .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
@@ -457,9 +470,8 @@ Public Class FritzBoxWählClient
     ''' </summary>
     ''' <param name="oContact">Der Outlook-Kontakt, welcher angerufen werden soll</param>
     Private Sub Wählbox(oContact As Outlook.ContactItem, TelNr As Telefonnummer)
-        If oContact IsNot Nothing Then
 
-            WPFWindow = New WählclientWPF
+        If oContact IsNot Nothing Then
 
             With WPFWindow
                 .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
@@ -482,7 +494,6 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(oExchangeNutzer As Outlook.ExchangeUser)
 
         If oExchangeNutzer IsNot Nothing Then
-            WPFWindow = New WählclientWPF
 
             With WPFWindow
                 .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
@@ -491,7 +502,6 @@ Public Class FritzBoxWählClient
 
                 .Show()
             End With
-
 
         Else
             NLogger.Error("Der Outlook-oExchangeUser ist nicht vorhanden.")
@@ -505,7 +515,6 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(TelNr As Telefonnummer)
 
         If TelNr IsNot Nothing Then
-            WPFWindow = New WählclientWPF
 
             With WPFWindow
                 .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,
@@ -514,7 +523,6 @@ Public Class FritzBoxWählClient
 
                 .Show()
             End With
-
         Else
             NLogger.Error("Die Telefonnummer ist nicht vorhanden.")
         End If
@@ -524,8 +532,6 @@ Public Class FritzBoxWählClient
     ''' Startet das Wählen als Direktwahl 
     ''' </summary>
     Private Sub Wählbox()
-
-        WPFWindow = New WählclientWPF
 
         With WPFWindow
             .DataContext = New WählClientViewModel(DialDatenService) With {.Instance = WPFWindow.Dispatcher,

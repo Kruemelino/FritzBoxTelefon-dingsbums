@@ -148,7 +148,7 @@ Public Class FBoxDataCallListViewModel
         ImportCommand = New RelayCommand(AddressOf JournalImport)
         SelectAllCommand = New RelayCommand(AddressOf SelectAll)
         BlockCommand = New RelayCommand(AddressOf BlockNumbers)
-        CallCommand = New RelayCommand(AddressOf [Call], AddressOf CanCall)
+        CallCommand = New RelayCommand(AddressOf Dial, AddressOf CanDial)
         ShowContactCommand = New RelayCommand(AddressOf ShowContact, AddressOf CanShowContact)
     End Sub
 
@@ -283,11 +283,11 @@ Public Class FBoxDataCallListViewModel
 #End Region
 
 #Region "Kontakt Anrufen"
-    Private Sub [Call](o As Object)
+    Private Sub Dial(o As Object)
         DatenService.CallXMLContact((From a In CType(o, IList).Cast(Of CallViewModel)()).ToList.First.CallItem)
     End Sub
 
-    Private Function CanCall(o As Object) As Boolean
+    Private Function CanDial(o As Object) As Boolean
         If o IsNot Nothing Then
             Dim XMLKontaktListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
 

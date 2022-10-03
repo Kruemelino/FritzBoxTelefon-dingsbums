@@ -425,11 +425,9 @@ Friend Module KontaktFunktionen
         If olKontakt.IsVIP Then
             ' Entferne den Kontakt von der Liste
             XMLData.PTelListen.VIPListe.RemoveAll(Function(VIPEintrag) VIPEintrag.EntryID.IsEqual(olKontakt.EntryID) And VIPEintrag.StoreID.IsEqual(olKontakt.StoreID))
-
         Else
             ' Füge einen neuen Eintrag hinzu
             XMLData.PTelListen.VIPListe.Add(New VIPEntry With {.Name = olKontakt.FullNameAndCompany, .EntryID = olKontakt.EntryID, .StoreID = olKontakt.StoreID})
-
         End If
 
         Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
