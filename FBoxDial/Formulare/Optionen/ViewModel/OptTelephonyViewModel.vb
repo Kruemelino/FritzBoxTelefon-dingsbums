@@ -97,6 +97,7 @@
             'Ortskennzahl(OKZ) übernehmen
             OptVM.TBOrtsKZ = .OKZ
 
+            OptVM.Farben = OptVM.GetDefaultColors
         End With
 
         ' Aktiviere den Button

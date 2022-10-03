@@ -1277,9 +1277,10 @@ Public Class OptionenViewModel
     ''' <summary>
     ''' Erstellt die Farbdefinitionen für den Anrufmonitor, Stoppuhr und VIP
     ''' </summary>
-    Private Function GetDefaultColors() As ObservableCollectionEx(Of Farbdefinition)
-        If XMLData.POptionen.Farbdefinitionen Is Nothing Then XMLData.POptionen.Farbdefinitionen = New List(Of Farbdefinition)
+    Friend Function GetDefaultColors() As ObservableCollectionEx(Of Farbdefinition)
+        'If XMLData.POptionen.Farbdefinitionen Is Nothing Then XMLData.POptionen.Farbdefinitionen = New List(Of Farbdefinition)
 
+        ' Erstelle die Standardfarbdefinitionen, falls diese nicht vorhanden sein sollten.
         With XMLData.POptionen.Farbdefinitionen
             ' Anrufmonitor
             If Not .Exists(Function(FD) FD.Kontext.Equals(Localize.LocOptionen.strAnrMon)) Then
@@ -1297,16 +1298,24 @@ Public Class OptionenViewModel
             End If
         End With
 
-        Dim Farben As New ObservableCollectionEx(Of Farbdefinition)
-
+        ' Erarbeite die Rückgabewerte
+        If Farben Is Nothing Then Farben = New ObservableCollectionEx(Of Farbdefinition)
+        ' Alle vorhandenen Farbinformationen entfernen
+        Farben.Clear()
         ' Farben für den Anrufmonitor, die Stoppuhr und VIP
         Farben.AddRange(XMLData.POptionen.Farbdefinitionen)
         ' Farben für die einzelnen eigenen Telefonnummern
-        Farben.AddRange(XMLData.PTelefonie.Telefonnummern.Select(Function(TelNr)
-                                                                     If TelNr.EigeneNummerInfo.Farben Is Nothing Then TelNr.EigeneNummerInfo.Farben = New Farbdefinition With {.Kontext = TelNr.Einwahl}
+        Farben.AddRange(TelNrListe.Select(Function(TelNr)
+                                              If TelNr.EigeneNummerInfo.Farben Is Nothing Then
+                                                  ' Definiere eine neue Farbzuordnung.
+                                                  TelNr.EigeneNummerInfo.Farben = New Farbdefinition With {.Kontext = TelNr.Einwahl}
+                                              Else
+                                                  ' Anzeigetext der Farbdefinition setzen, da der nach dem Einlsesen noch nicht vorhanden
+                                                  TelNr.EigeneNummerInfo.Farben.Kontext = TelNr.Einwahl
+                                              End If
 
-                                                                     Return TelNr.EigeneNummerInfo.Farben
-                                                                 End Function))
+                                              Return TelNr.EigeneNummerInfo.Farben
+                                          End Function))
 
 
         Return Farben

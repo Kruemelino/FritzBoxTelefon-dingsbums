@@ -521,9 +521,6 @@ Imports FBoxDial.FritzBoxDefault
                         AddEigeneTelNr.EigeneNummerInfo.Farben = AlteNummer.EigeneNummerInfo.Farben
                     End If
 
-                    ' Schreibe die SIP-ID zurück
-                    AddEigeneTelNr.EigeneNummerInfo.SIP = ID.ToInt
-
                 End If
 
             End If
