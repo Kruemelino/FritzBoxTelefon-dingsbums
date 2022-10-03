@@ -340,35 +340,32 @@ function InitializeSetup(): Boolean;
                         inst_VSTO2010_Redistributable := true            
                     end; 
       
-            // Prüfe, ob .NET 4.8 installiert ist    
-            if not IsDotNetDetected(strNet, 0) then
-                begin
-                    Result := false
-                    inst_dotnetfx := true
-            end;
+                // Prüfe, ob .NET 4.8 installiert ist    
+                if not IsDotNetDetected(strNet, 0) then
+                    begin
+                        Result := false
+                        inst_dotnetfx := true
+                    end;
           
-            if Not Result then
-                begin
-                    strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
-              
-                    // .NET 4.8
-                    if inst_dotnetfx then strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10'';                 
-                    // VSTO
-                    if inst_VSTO2010_Redistributable then strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10'';
-   
-                    strERR := strERR + #13#10 + 'Sollen die fehlenden Komponenten heruntergeladen und installiert werden?'
+                if Not Result then
+                    begin
+                        strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
+                  
+                        // .NET 4.8
+                        if inst_dotnetfx then strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10'';                 
+                        // VSTO
+                        if inst_VSTO2010_Redistributable then strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10'';
+       
+                        strERR := strERR + #13#10 + 'Sollen die fehlenden Komponenten heruntergeladen und installiert werden?'
 
-                    if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then
-                        begin
+                        if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then Result := true
 
-                            Result := true
-                        end
-                end
+                    end
             end 
-    else
-        begin
-        // Outlook ist nicht installiert oder Version ist nicht ausreichend
-        MsgBox('Die Installation von {#MyAppName} wurde abgebrochen.', mbInformation, MB_OK)
-        Result := false
+        else
+            begin
+                // Outlook ist nicht installiert oder Version ist nicht ausreichend
+                MsgBox('Die Installation von {#MyAppName} wurde abgebrochen.'#13#10'Outlook ist nicht installiert oder Version ist nicht ausreichend.', mbInformation, MB_OK)
+                Result := false
+        end;
     end;
-end;
