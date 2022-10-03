@@ -5131,14 +5131,14 @@
 		<ONKZ n="2064" Name="Dinslaken"/>
 		<ONKZ n="2065" Name="Duisburg-Rheinhausen"/>
 		<ONKZ n="2066" Name="Duisburg-Homberg"/>
-		<ONKZ n="208" Name="Oberhausen Rheinl"/>
+		<ONKZ n="208" Name="Oberhausen Rheinland"/>
 		<ONKZ n="209" Name="Gelsenkirchen"/>
 		<ONKZ n="2102" Name="Ratingen"/>
 		<ONKZ n="2103" Name="Hilden"/>
 		<ONKZ n="2104" Name="Mettmann"/>
 		<ONKZ n="211" Name="Düsseldorf"/>
 		<ONKZ n="212" Name="Solingen"/>
-		<ONKZ n="2129" Name="Haan Rheinl"/>
+		<ONKZ n="2129" Name="Haan Rheinland"/>
 		<ONKZ n="2131" Name="Neuss"/>
 		<ONKZ n="2132" Name="Meerbusch-Büderich"/>
 		<ONKZ n="2133" Name="Dormagen"/>
@@ -5151,7 +5151,7 @@
 		<ONKZ n="2154" Name="Willich"/>
 		<ONKZ n="2156" Name="Willich-Anrath"/>
 		<ONKZ n="2157" Name="Nettetal-Kaldenkirchen"/>
-		<ONKZ n="2158" Name="Grefrath b Krefeld"/>
+		<ONKZ n="2158" Name="Grefrath bei Krefeld"/>
 		<ONKZ n="2159" Name="Meerbusch-Osterath"/>
 		<ONKZ n="2161" Name="Mönchengladbach"/>
 		<ONKZ n="2162" Name="Viersen"/>
@@ -5161,7 +5161,7 @@
 		<ONKZ n="2166" Name="Mönchengladbach-Rheydt"/>
 		<ONKZ n="2171" Name="Leverkusen-Opladen"/>
 		<ONKZ n="2173" Name="Langenfeld Rheinland"/>
-		<ONKZ n="2174" Name="Burscheid Rheinl"/>
+		<ONKZ n="2174" Name="Burscheid Rheinland"/>
 		<ONKZ n="2175" Name="Leichlingen Rheinland"/>
 		<ONKZ n="2181" Name="Grevenbroich"/>
 		<ONKZ n="2182" Name="Grevenbroich-Kapellen"/>
@@ -5179,18 +5179,18 @@
 		<ONKZ n="2207" Name="Kürten-Dürscheid"/>
 		<ONKZ n="2208" Name="Niederkassel"/>
 		<ONKZ n="221" Name="Köln"/>
-		<ONKZ n="2222" Name="Bornheim Rheinl"/>
+		<ONKZ n="2222" Name="Bornheim Rheinland"/>
 		<ONKZ n="2223" Name="Königswinter"/>
 		<ONKZ n="2224" Name="Bad Honnef"/>
-		<ONKZ n="2225" Name="Meckenheim Rheinl"/>
+		<ONKZ n="2225" Name="Meckenheim Rheinland"/>
 		<ONKZ n="2226" Name="Rheinbach"/>
 		<ONKZ n="2227" Name="Bornheim-Merten"/>
 		<ONKZ n="2228" Name="Remagen-Rolandseck"/>
-		<ONKZ n="2232" Name="Brühl Rheinl"/>
-		<ONKZ n="2233" Name="Hürth Rheinl"/>
+		<ONKZ n="2232" Name="Brühl Rheinland"/>
+		<ONKZ n="2233" Name="Hürth Rheinland"/>
 		<ONKZ n="2234" Name="Frechen"/>
 		<ONKZ n="2235" Name="Erftstadt"/>
-		<ONKZ n="2236" Name="Wesseling Rheinl"/>
+		<ONKZ n="2236" Name="Wesseling Rheinland"/>
 		<ONKZ n="2237" Name="Kerpen Rheinl-Türnich"/>
 		<ONKZ n="2238" Name="Pulheim"/>
 		<ONKZ n="2241" Name="Siegburg"/>
@@ -5220,7 +5220,7 @@
 		<ONKZ n="2271" Name="Bergheim Erft"/>
 		<ONKZ n="2272" Name="Bedburg Erft"/>
 		<ONKZ n="2273" Name="Kerpen-Horrem"/>
-		<ONKZ n="2274" Name="Elsdorf Rheinl"/>
+		<ONKZ n="2274" Name="Elsdorf Rheinland"/>
 		<ONKZ n="2275" Name="Kerpen-Buir"/>
 		<ONKZ n="228" Name="Bonn"/>
 		<ONKZ n="2291" Name="Waldbröl"/>
@@ -5245,7 +5245,7 @@
 		<ONKZ n="2325" Name="Wanne-Eickel"/>
 		<ONKZ n="2327" Name="Bochum-Wattenscheid"/>
 		<ONKZ n="2330" Name="Herdecke"/>
-		<ONKZ n="2331" Name="Hagen Westf"/>
+		<ONKZ n="2331" Name="Hagen Westfalen"/>
 		<ONKZ n="2332" Name="Gevelsberg"/>
 		<ONKZ n="2333" Name="Ennepetal"/>
 		<ONKZ n="2334" Name="Hagen-Hohenlimburg"/>
@@ -5256,20 +5256,20 @@
 		<ONKZ n="2339" Name="Sprockhövel-Haßlinghausen"/>
 		<ONKZ n="234" Name="Bochum"/>
 		<ONKZ n="2351" Name="Lüdenscheid"/>
-		<ONKZ n="2352" Name="Altena Westf"/>
+		<ONKZ n="2352" Name="Altena Westfalen"/>
 		<ONKZ n="2353" Name="Halver"/>
 		<ONKZ n="2354" Name="Meinerzhagen"/>
 		<ONKZ n="2355" Name="Schalksmühle"/>
-		<ONKZ n="2357" Name="Herscheid Westf"/>
+		<ONKZ n="2357" Name="Herscheid Westfalen"/>
 		<ONKZ n="2358" Name="Meinerzhagen-Valbert"/>
 		<ONKZ n="2359" Name="Kierspe"/>
 		<ONKZ n="2360" Name="Haltern-Lippramsdorf"/>
 		<ONKZ n="2361" Name="Recklinghausen"/>
 		<ONKZ n="2362" Name="Dorsten"/>
 		<ONKZ n="2363" Name="Datteln"/>
-		<ONKZ n="2364" Name="Haltern Westf"/>
+		<ONKZ n="2364" Name="Haltern Westfalen"/>
 		<ONKZ n="2365" Name="Marl"/>
-		<ONKZ n="2366" Name="Herten Westf"/>
+		<ONKZ n="2366" Name="Herten Westfalen"/>
 		<ONKZ n="2367" Name="Henrichenburg"/>
 		<ONKZ n="2368" Name="Oer-Erkenschwick"/>
 		<ONKZ n="2369" Name="Dorsten-Wulfen"/>
@@ -5281,8 +5281,8 @@
 		<ONKZ n="2377" Name="Wickede Ruhr"/>
 		<ONKZ n="2378" Name="Fröndenberg-Langschede"/>
 		<ONKZ n="2379" Name="Menden-Asbeck"/>
-		<ONKZ n="2381" Name="Hamm Westf"/>
-		<ONKZ n="2382" Name="Ahlen Westf"/>
+		<ONKZ n="2381" Name="Hamm Westfalen"/>
+		<ONKZ n="2382" Name="Ahlen Westfalen"/>
 		<ONKZ n="2383" Name="Bönen"/>
 		<ONKZ n="2384" Name="Welver"/>
 		<ONKZ n="2385" Name="Hamm-Rhynern"/>
@@ -5295,9 +5295,9 @@
 		<ONKZ n="2394" Name="Neuenrade-Affeln"/>
 		<ONKZ n="2395" Name="Finnentrop-Rönkhausen"/>
 		<ONKZ n="2401" Name="Baesweiler"/>
-		<ONKZ n="2402" Name="Stolberg Rheinl"/>
-		<ONKZ n="2403" Name="Eschweiler Rheinl"/>
-		<ONKZ n="2404" Name="Alsdorf Rheinl"/>
+		<ONKZ n="2402" Name="Stolberg Rheinland"/>
+		<ONKZ n="2403" Name="Eschweiler Rheinland"/>
+		<ONKZ n="2404" Name="Alsdorf Rheinland"/>
 		<ONKZ n="2405" Name="Würselen"/>
 		<ONKZ n="2406" Name="Herzogenrath"/>
 		<ONKZ n="2407" Name="Herzogenrath-Kohlscheid"/>
@@ -5325,11 +5325,11 @@
 		<ONKZ n="2444" Name="Schleiden-Gemünd"/>
 		<ONKZ n="2445" Name="Schleiden Eifel"/>
 		<ONKZ n="2446" Name="Heimbach Eifel"/>
-		<ONKZ n="2447" Name="Dahlem b Kall"/>
+		<ONKZ n="2447" Name="Dahlem bei Kall"/>
 		<ONKZ n="2448" Name="Hellenthal-Rescheid"/>
 		<ONKZ n="2449" Name="Blankenheim Ahr"/>
 		<ONKZ n="2451" Name="Geilenkirchen"/>
-		<ONKZ n="2452" Name="Heinsberg Rheinl"/>
+		<ONKZ n="2452" Name="Heinsberg Rheinland"/>
 		<ONKZ n="2453" Name="Heinsberg-Randerath"/>
 		<ONKZ n="2454" Name="Gangelt"/>
 		<ONKZ n="2455" Name="Waldfeucht"/>
@@ -5337,7 +5337,7 @@
 		<ONKZ n="2461" Name="Jülich"/>
 		<ONKZ n="2462" Name="Linnich"/>
 		<ONKZ n="2463" Name="Titz"/>
-		<ONKZ n="2464" Name="Aldenhoven b Jülich"/>
+		<ONKZ n="2464" Name="Aldenhoven bei Jülich"/>
 		<ONKZ n="2465" Name="Inden"/>
 		<ONKZ n="2471" Name="Roetgen Eifel"/>
 		<ONKZ n="2472" Name="Monschau"/>
@@ -5350,7 +5350,7 @@
 		<ONKZ n="2501" Name="Münster-Hiltrup"/>
 		<ONKZ n="2502" Name="Nottuln"/>
 		<ONKZ n="2504" Name="Telgte"/>
-		<ONKZ n="2505" Name="Altenberge Westf"/>
+		<ONKZ n="2505" Name="Altenberge Westfalen"/>
 		<ONKZ n="2506" Name="Münster-Wolbeck"/>
 		<ONKZ n="2507" Name="Havixbeck"/>
 		<ONKZ n="2508" Name="Drensteinfurt"/>
@@ -5374,7 +5374,7 @@
 		<ONKZ n="2538" Name="Drensteinfurt-Rinkerode"/>
 		<ONKZ n="2541" Name="Coesfeld"/>
 		<ONKZ n="2542" Name="Gescher"/>
-		<ONKZ n="2543" Name="Billerbeck Westf"/>
+		<ONKZ n="2543" Name="Billerbeck Westfalen"/>
 		<ONKZ n="2545" Name="Rosendahl-Darfeld"/>
 		<ONKZ n="2546" Name="Coesfeld-Lette"/>
 		<ONKZ n="2547" Name="Rosendahl-Osterwick"/>
@@ -5382,10 +5382,10 @@
 		<ONKZ n="2551" Name="Steinfurt-Burgsteinfurt"/>
 		<ONKZ n="2552" Name="Steinfurt-Borghorst"/>
 		<ONKZ n="2553" Name="Ochtrup"/>
-		<ONKZ n="2554" Name="Laer Kr Steinfurt"/>
+		<ONKZ n="2554" Name="Laer (Kreis Steinfurt)"/>
 		<ONKZ n="2555" Name="Schöppingen"/>
 		<ONKZ n="2556" Name="Metelen"/>
-		<ONKZ n="2557" Name="Wettringen Kr Steinfurt"/>
+		<ONKZ n="2557" Name="Wettringen (Kreis Steinfurt)"/>
 		<ONKZ n="2558" Name="Horstmar"/>
 		<ONKZ n="2561" Name="Ahaus"/>
 		<ONKZ n="2562" Name="Gronau Westfalen"/>
@@ -5395,7 +5395,7 @@
 		<ONKZ n="2566" Name="Legden"/>
 		<ONKZ n="2567" Name="Ahaus-Alstätte"/>
 		<ONKZ n="2568" Name="Heek"/>
-		<ONKZ n="2571" Name="Greven Westf"/>
+		<ONKZ n="2571" Name="Greven Westfalen"/>
 		<ONKZ n="2572" Name="Emsdetten"/>
 		<ONKZ n="2573" Name="Nordwalde"/>
 		<ONKZ n="2574" Name="Saerbeck"/>
@@ -5411,11 +5411,11 @@
 		<ONKZ n="2590" Name="Dülmen-Buldern"/>
 		<ONKZ n="2591" Name="Lüdinghausen"/>
 		<ONKZ n="2592" Name="Selm"/>
-		<ONKZ n="2593" Name="Ascheberg Westf"/>
+		<ONKZ n="2593" Name="Ascheberg Westfalen"/>
 		<ONKZ n="2594" Name="Dülmen"/>
 		<ONKZ n="2595" Name="Olfen"/>
 		<ONKZ n="2596" Name="Nordkirchen"/>
-		<ONKZ n="2597" Name="Senden Westf"/>
+		<ONKZ n="2597" Name="Senden Westfalen"/>
 		<ONKZ n="2598" Name="Senden-Ottmarsbocholt"/>
 		<ONKZ n="2599" Name="Ascheberg-Herbern"/>
 		<ONKZ n="2601" Name="Nauort"/>
@@ -5426,8 +5426,8 @@
 		<ONKZ n="2606" Name="Winningen Mosel"/>
 		<ONKZ n="2607" Name="Kobern-Gondorf"/>
 		<ONKZ n="2608" Name="Welschneudorf"/>
-		<ONKZ n="261" Name="Koblenz a Rhein"/>
-		<ONKZ n="2620" Name="Neuhäusel Westerw"/>
+		<ONKZ n="261" Name="Koblenz am Rhein"/>
+		<ONKZ n="2620" Name="Neuhäusel Westerwald"/>
 		<ONKZ n="2621" Name="Lahnstein"/>
 		<ONKZ n="2622" Name="Bendorf Rhein"/>
 		<ONKZ n="2623" Name="Ransbach-Baumbach"/>
@@ -5445,7 +5445,7 @@
 		<ONKZ n="2636" Name="Burgbrohl"/>
 		<ONKZ n="2637" Name="Weissenthurm"/>
 		<ONKZ n="2638" Name="Waldbreitbach"/>
-		<ONKZ n="2639" Name="Anhausen Kr Neuwied"/>
+		<ONKZ n="2639" Name="Anhausen (Kreis Neuwied)"/>
 		<ONKZ n="2641" Name="Bad Neuenahr-Ahrweiler"/>
 		<ONKZ n="2642" Name="Remagen"/>
 		<ONKZ n="2643" Name="Altenahr"/>
@@ -5462,9 +5462,9 @@
 		<ONKZ n="2657" Name="Uersfeld"/>
 		<ONKZ n="2661" Name="Bad Marienberg Westerwald"/>
 		<ONKZ n="2662" Name="Hachenburg"/>
-		<ONKZ n="2663" Name="Westerburg Westerw"/>
+		<ONKZ n="2663" Name="Westerburg Westerwald"/>
 		<ONKZ n="2664" Name="Rennerod"/>
-		<ONKZ n="2666" Name="Freilingen Westerw"/>
+		<ONKZ n="2666" Name="Freilingen Westerwald"/>
 		<ONKZ n="2667" Name="Stein-Neukirch"/>
 		<ONKZ n="2671" Name="Cochem"/>
 		<ONKZ n="2672" Name="Treis-Karden"/>
@@ -5473,12 +5473,12 @@
 		<ONKZ n="2675" Name="Ediger-Eller"/>
 		<ONKZ n="2676" Name="Ulmen"/>
 		<ONKZ n="2677" Name="Lutzerath"/>
-		<ONKZ n="2678" Name="Büchel b Cochem"/>
+		<ONKZ n="2678" Name="Büchel bei Cochem"/>
 		<ONKZ n="2680" Name="Mündersbach"/>
 		<ONKZ n="2681" Name="Altenkirchen Westerwald"/>
 		<ONKZ n="2682" Name="Hamm Sieg"/>
-		<ONKZ n="2683" Name="Asbach Westerw"/>
-		<ONKZ n="2684" Name="Puderbach Westerw"/>
+		<ONKZ n="2683" Name="Asbach Westerwald"/>
+		<ONKZ n="2684" Name="Puderbach Westerwald"/>
 		<ONKZ n="2685" Name="Flammersfeld"/>
 		<ONKZ n="2686" Name="Weyerbusch"/>
 		<ONKZ n="2687" Name="Horhausen Westerwald"/>
@@ -5499,9 +5499,9 @@
 		<ONKZ n="2725" Name="Lennestadt-Oedingen"/>
 		<ONKZ n="2732" Name="Kreuztal"/>
 		<ONKZ n="2733" Name="Hilchenbach"/>
-		<ONKZ n="2734" Name="Freudenberg Westf"/>
-		<ONKZ n="2735" Name="Neunkirchen Siegerl"/>
-		<ONKZ n="2736" Name="Burbach Siegerl"/>
+		<ONKZ n="2734" Name="Freudenberg Westfalen"/>
+		<ONKZ n="2735" Name="Neunkirchen Siegerland"/>
+		<ONKZ n="2736" Name="Burbach Siegerland"/>
 		<ONKZ n="2737" Name="Netphen-Deuz"/>
 		<ONKZ n="2738" Name="Netphen"/>
 		<ONKZ n="2739" Name="Wilnsdorf"/>
@@ -5525,12 +5525,12 @@
 		<ONKZ n="2764" Name="Welschen Ennest"/>
 		<ONKZ n="2770" Name="Eschenburg"/>
 		<ONKZ n="2771" Name="Dillenburg"/>
-		<ONKZ n="2772" Name="Herborn Hess"/>
+		<ONKZ n="2772" Name="Herborn Hessen"/>
 		<ONKZ n="2773" Name="Haiger"/>
 		<ONKZ n="2774" Name="Dietzhölztal"/>
 		<ONKZ n="2775" Name="Driedorf"/>
 		<ONKZ n="2776" Name="Bad Endbach-Hartenrod"/>
-		<ONKZ n="2777" Name="Breitscheid Hess"/>
+		<ONKZ n="2777" Name="Breitscheid Hessen"/>
 		<ONKZ n="2778" Name="Siegbach"/>
 		<ONKZ n="2779" Name="Greifenstein-Beilstein"/>
 		<ONKZ n="2801" Name="Xanten"/>
@@ -5569,15 +5569,15 @@
 		<ONKZ n="2857" Name="Rees-Mehr"/>
 		<ONKZ n="2858" Name="Hünxe"/>
 		<ONKZ n="2859" Name="Wesel-Bislich"/>
-		<ONKZ n="2861" Name="Borken Westf"/>
+		<ONKZ n="2861" Name="Borken Westfalen"/>
 		<ONKZ n="2862" Name="Südlohn"/>
 		<ONKZ n="2863" Name="Velen"/>
 		<ONKZ n="2864" Name="Reken"/>
 		<ONKZ n="2865" Name="Raesfeld"/>
 		<ONKZ n="2866" Name="Dorsten-Rhade"/>
-		<ONKZ n="2867" Name="Heiden Kr Borken"/>
+		<ONKZ n="2867" Name="Heiden (Kreis Borken)"/>
 		<ONKZ n="2871" Name="Bocholt"/>
-		<ONKZ n="2872" Name="Rhede Westf"/>
+		<ONKZ n="2872" Name="Rhede Westfalen"/>
 		<ONKZ n="2873" Name="Isselburg-Werth"/>
 		<ONKZ n="2874" Name="Isselburg"/>
 		<ONKZ n="2902" Name="Warstein"/>
@@ -5623,7 +5623,7 @@
 		<ONKZ n="2974" Name="Schmallenberg-Fredeburg"/>
 		<ONKZ n="2975" Name="Schmallenberg-Oberkirchen"/>
 		<ONKZ n="2977" Name="Schmallenberg-Bödefeld"/>
-		<ONKZ n="2981" Name="Winterberg Westf"/>
+		<ONKZ n="2981" Name="Winterberg Westfalen"/>
 		<ONKZ n="2982" Name="Medebach"/>
 		<ONKZ n="2983" Name="Winterberg-Siedlinghausen"/>
 		<ONKZ n="2984" Name="Hallenberg"/>
@@ -5639,18 +5639,18 @@
 		<ONKZ n="3304" Name="Velten"/>
 		<ONKZ n="33051" Name="Nassenheide"/>
 		<ONKZ n="33052" Name="Leegebruch"/>
-		<ONKZ n="33053" Name="Zehlendorf Kr Oberhavel"/>
+		<ONKZ n="33053" Name="Zehlendorf (Kreis Oberhavel)"/>
 		<ONKZ n="33054" Name="Liebenwalde"/>
 		<ONKZ n="33055" Name="Kremmen"/>
-		<ONKZ n="33056" Name="Mühlenbeck Kr Oberhavel"/>
+		<ONKZ n="33056" Name="Mühlenbeck (Kreis Oberhavel)"/>
 		<ONKZ n="3306" Name="Gransee"/>
 		<ONKZ n="3307" Name="Zehdenick"/>
-		<ONKZ n="33080" Name="Marienthal Kr Oberhavel"/>
-		<ONKZ n="33082" Name="Menz Kr Oberhavel"/>
-		<ONKZ n="33083" Name="Schulzendorf Kr Oberhavel"/>
+		<ONKZ n="33080" Name="Marienthal (Kreis Oberhavel)"/>
+		<ONKZ n="33082" Name="Menz (Kreis Oberhavel)"/>
+		<ONKZ n="33083" Name="Schulzendorf (Kreis Oberhavel)"/>
 		<ONKZ n="33084" Name="Gutengermendorf"/>
 		<ONKZ n="33085" Name="Seilershof"/>
-		<ONKZ n="33086" Name="Grieben Kr Oberhavel"/>
+		<ONKZ n="33086" Name="Grieben (Kreis Oberhavel)"/>
 		<ONKZ n="33087" Name="Bredereiche"/>
 		<ONKZ n="33088" Name="Falkenthal"/>
 		<ONKZ n="33089" Name="Himmelpfort"/>
@@ -5667,9 +5667,9 @@
 		<ONKZ n="33207" Name="Gross Kreutz"/>
 		<ONKZ n="33208" Name="Fahrland"/>
 		<ONKZ n="33209" Name="Caputh"/>
-		<ONKZ n="3321" Name="Nauen Brandenb"/>
+		<ONKZ n="3321" Name="Nauen Brandenburg"/>
 		<ONKZ n="3322" Name="Falkensee"/>
-		<ONKZ n="33230" Name="Börnicke Kr Havelland"/>
+		<ONKZ n="33230" Name="Börnicke (Kreis Havelland)"/>
 		<ONKZ n="33231" Name="Pausin"/>
 		<ONKZ n="33232" Name="Brieselang"/>
 		<ONKZ n="33233" Name="Ketzin"/>
@@ -5687,37 +5687,37 @@
 		<ONKZ n="33332" Name="Gartz Oder"/>
 		<ONKZ n="33333" Name="Tantow"/>
 		<ONKZ n="33334" Name="Greiffenberg"/>
-		<ONKZ n="33335" Name="Pinnow Kr Uckermark"/>
-		<ONKZ n="33336" Name="Passow Kr Uckermark"/>
+		<ONKZ n="33335" Name="Pinnow (Kreis Uckermark)"/>
+		<ONKZ n="33336" Name="Passow (Kreis Uckermark)"/>
 		<ONKZ n="33337" Name="Altkünkendorf"/>
 		<ONKZ n="33338" Name="Stolpe/Oder"/>
 		<ONKZ n="3334" Name="Eberswalde"/>
 		<ONKZ n="3335" Name="Finowfurt"/>
 		<ONKZ n="33361" Name="Joachimsthal"/>
-		<ONKZ n="33362" Name="Liepe Kr Barnim"/>
-		<ONKZ n="33363" Name="Altenhof Kr Barnim"/>
-		<ONKZ n="33364" Name="Gross Ziethen Kr Barnim"/>
-		<ONKZ n="33365" Name="Lüdersdorf Kr Barnim"/>
+		<ONKZ n="33362" Name="Liepe (Kreis Barnim)"/>
+		<ONKZ n="33363" Name="Altenhof (Kreis Barnim)"/>
+		<ONKZ n="33364" Name="Gross Ziethen (Kreis Barnim)"/>
+		<ONKZ n="33365" Name="Lüdersdorf (Kreis Barnim)"/>
 		<ONKZ n="33366" Name="Chorin"/>
-		<ONKZ n="33367" Name="Friedrichswalde Brandenb"/>
+		<ONKZ n="33367" Name="Friedrichswalde Brandenburg"/>
 		<ONKZ n="33368" Name="Hohensaaten"/>
 		<ONKZ n="33369" Name="Oderberg"/>
-		<ONKZ n="3337" Name="Biesenthal Brandenb"/>
-		<ONKZ n="3338" Name="Bernau Brandenb"/>
-		<ONKZ n="33393" Name="Gross Schönebeck Kr Barnim"/>
-		<ONKZ n="33394" Name="Blumberg Kr Barnim"/>
+		<ONKZ n="3337" Name="Biesenthal Brandenburg"/>
+		<ONKZ n="3338" Name="Bernau Brandenburg"/>
+		<ONKZ n="33393" Name="Gross Schönebeck (Kreis Barnim)"/>
+		<ONKZ n="33394" Name="Blumberg (Kreis Barnim)"/>
 		<ONKZ n="33395" Name="Zerpenschleuse"/>
 		<ONKZ n="33396" Name="Klosterfelde"/>
 		<ONKZ n="33397" Name="Wandlitz"/>
 		<ONKZ n="33398" Name="Werneuchen"/>
 		<ONKZ n="3341" Name="Strausberg"/>
-		<ONKZ n="3342" Name="Neuenhagen b Berlin"/>
+		<ONKZ n="3342" Name="Neuenhagen bei Berlin"/>
 		<ONKZ n="33432" Name="Müncheberg"/>
 		<ONKZ n="33433" Name="Buckow Märk Schweiz"/>
-		<ONKZ n="33434" Name="Herzfelde b Strausberg"/>
+		<ONKZ n="33434" Name="Herzfelde bei Strausberg"/>
 		<ONKZ n="33435" Name="Rehfelde"/>
 		<ONKZ n="33436" Name="Prötzel"/>
-		<ONKZ n="33437" Name="Reichenberg b Strausberg"/>
+		<ONKZ n="33437" Name="Reichenberg bei Strausberg"/>
 		<ONKZ n="33438" Name="Altlandsberg"/>
 		<ONKZ n="33439" Name="Fredersdorf-Vogelsdorf"/>
 		<ONKZ n="3344" Name="Bad Freienwalde"/>
@@ -5729,18 +5729,18 @@
 		<ONKZ n="33458" Name="Falkenberg Mark"/>
 		<ONKZ n="3346" Name="Seelow"/>
 		<ONKZ n="33470" Name="Lietzen"/>
-		<ONKZ n="33472" Name="Golzow b Seelow"/>
+		<ONKZ n="33472" Name="Golzow bei Seelow"/>
 		<ONKZ n="33473" Name="Zechin"/>
 		<ONKZ n="33474" Name="Neutrebbin"/>
 		<ONKZ n="33475" Name="Letschin"/>
 		<ONKZ n="33476" Name="Neuhardenberg"/>
-		<ONKZ n="33477" Name="Trebnitz b Müncheberg"/>
+		<ONKZ n="33477" Name="Trebnitz bei Müncheberg"/>
 		<ONKZ n="33478" Name="Gross Neuendorf"/>
 		<ONKZ n="33479" Name="Küstrin-Kietz"/>
 		<ONKZ n="335" Name="Frankfurt (Oder)"/>
 		<ONKZ n="33601" Name="Podelzig"/>
 		<ONKZ n="33602" Name="Alt Zeschdorf"/>
-		<ONKZ n="33603" Name="Falkenhagen b Seelow"/>
+		<ONKZ n="33603" Name="Falkenhagen bei Seelow"/>
 		<ONKZ n="33604" Name="Lebus"/>
 		<ONKZ n="33605" Name="Boossen"/>
 		<ONKZ n="33606" Name="Müllrose"/>
@@ -5752,26 +5752,26 @@
 		<ONKZ n="33631" Name="Bad Saarow-Pieskow"/>
 		<ONKZ n="33632" Name="Hangelsberg"/>
 		<ONKZ n="33633" Name="Spreenhagen"/>
-		<ONKZ n="33634" Name="Berkenbrück Kr Oder-Spree"/>
-		<ONKZ n="33635" Name="Arensdorf Kr Oder-Spree"/>
-		<ONKZ n="33636" Name="Steinhöfel Kr Oder-Spree"/>
+		<ONKZ n="33634" Name="Berkenbrück (Kreis Oder-Spree)"/>
+		<ONKZ n="33635" Name="Arensdorf (Kreis Oder-Spree)"/>
+		<ONKZ n="33636" Name="Steinhöfel (Kreis Oder-Spree)"/>
 		<ONKZ n="33637" Name="Beerfelde"/>
-		<ONKZ n="33638" Name="Rüdersdorf b Berlin"/>
+		<ONKZ n="33638" Name="Rüdersdorf bei Berlin"/>
 		<ONKZ n="3364" Name="Eisenhüttenstadt"/>
 		<ONKZ n="33652" Name="Neuzelle"/>
 		<ONKZ n="33653" Name="Ziltendorf"/>
 		<ONKZ n="33654" Name="Fünfeichen"/>
-		<ONKZ n="33655" Name="Grunow Kr Oder-Spree"/>
+		<ONKZ n="33655" Name="Grunow (Kreis Oder-Spree)"/>
 		<ONKZ n="33656" Name="Bahro"/>
-		<ONKZ n="33657" Name="Steinsdorf Brandenb"/>
+		<ONKZ n="33657" Name="Steinsdorf Brandenburg"/>
 		<ONKZ n="3366" Name="Beeskow"/>
 		<ONKZ n="33671" Name="Lieberose"/>
 		<ONKZ n="33672" Name="Pfaffendorfb Beeskow"/>
 		<ONKZ n="33673" Name="Weichensdorf"/>
 		<ONKZ n="33674" Name="Trebatsch"/>
 		<ONKZ n="33675" Name="Tauche"/>
-		<ONKZ n="33676" Name="Friedland b Beeskow"/>
-		<ONKZ n="33677" Name="Glienicke b Beeskow"/>
+		<ONKZ n="33676" Name="Friedland bei Beeskow"/>
+		<ONKZ n="33677" Name="Glienicke bei Beeskow"/>
 		<ONKZ n="33678" Name="Storkow Mark"/>
 		<ONKZ n="33679" Name="Wendisch Rietz"/>
 		<ONKZ n="33701" Name="Grossbeeren"/>
@@ -5782,28 +5782,28 @@
 		<ONKZ n="3371" Name="Luckenwalde"/>
 		<ONKZ n="3372" Name="Jüterbog"/>
 		<ONKZ n="33731" Name="Trebbin"/>
-		<ONKZ n="33732" Name="Hennickendorf b Luckenwalde"/>
+		<ONKZ n="33732" Name="Hennickendorf bei Luckenwalde"/>
 		<ONKZ n="33733" Name="Stülpe"/>
 		<ONKZ n="33734" Name="Felgentreu"/>
 		<ONKZ n="33741" Name="Niedergörsdorf"/>
-		<ONKZ n="33742" Name="Oehna Brandenb"/>
+		<ONKZ n="33742" Name="Oehna Brandenburg"/>
 		<ONKZ n="33743" Name="Blönsdorf"/>
 		<ONKZ n="33744" Name="Hohenseefeld"/>
 		<ONKZ n="33745" Name="Petkus"/>
-		<ONKZ n="33746" Name="Werbig b Jüterbog"/>
+		<ONKZ n="33746" Name="Werbig bei Jüterbog"/>
 		<ONKZ n="33747" Name="Marzahna"/>
 		<ONKZ n="33748" Name="Treuenbrietzen"/>
 		<ONKZ n="3375" Name="Königs Wusterhausen"/>
-		<ONKZ n="33760" Name="Münchehofe Kr Dahme-Spreewald"/>
+		<ONKZ n="33760" Name="Münchehofe (Kreis Dahme-Spreewald)"/>
 		<ONKZ n="33762" Name="Zeuthen"/>
 		<ONKZ n="33763" Name="Bestensee"/>
 		<ONKZ n="33764" Name="Mittenwalde Mark"/>
 		<ONKZ n="33765" Name="Märkisch Buchholz"/>
 		<ONKZ n="33766" Name="Teupitz"/>
-		<ONKZ n="33767" Name="Friedersdorf b Berlin"/>
+		<ONKZ n="33767" Name="Friedersdorf bei Berlin"/>
 		<ONKZ n="33768" Name="Prieros"/>
 		<ONKZ n="33769" Name="Töpchin"/>
-		<ONKZ n="3377" Name="Zossen Brandenb"/>
+		<ONKZ n="3377" Name="Zossen Brandenburg"/>
 		<ONKZ n="3378" Name="Ludwigsfelde"/>
 		<ONKZ n="3379" Name="Mahlow"/>
 		<ONKZ n="3381" Name="Brandenburg an der Havel"/>
@@ -5811,16 +5811,16 @@
 		<ONKZ n="33830" Name="Ziesar"/>
 		<ONKZ n="33831" Name="Weseram"/>
 		<ONKZ n="33832" Name="Rogäsen"/>
-		<ONKZ n="33833" Name="Wollin b Brandenburg"/>
+		<ONKZ n="33833" Name="Wollin bei Brandenburg"/>
 		<ONKZ n="33834" Name="Pritzerbe"/>
-		<ONKZ n="33835" Name="Golzow b Brandenburg"/>
-		<ONKZ n="33836" Name="Butzow b Brandenburg"/>
+		<ONKZ n="33835" Name="Golzow bei Brandenburg"/>
+		<ONKZ n="33836" Name="Butzow bei Brandenburg"/>
 		<ONKZ n="33837" Name="Brielow"/>
 		<ONKZ n="33838" Name="Päwesin"/>
 		<ONKZ n="33839" Name="Wusterwitz"/>
 		<ONKZ n="33841" Name="Belzig"/>
 		<ONKZ n="33843" Name="Niemegk"/>
-		<ONKZ n="33844" Name="Brück Brandenb"/>
+		<ONKZ n="33844" Name="Brück Brandenburg"/>
 		<ONKZ n="33845" Name="Borkheide"/>
 		<ONKZ n="33846" Name="Dippmannsdorf"/>
 		<ONKZ n="33847" Name="Görzke"/>
@@ -5828,16 +5828,16 @@
 		<ONKZ n="33849" Name="Wiesenburg Mark"/>
 		<ONKZ n="3385" Name="Rathenow"/>
 		<ONKZ n="3386" Name="Premnitz"/>
-		<ONKZ n="33870" Name="Zollchow b Rathenow"/>
+		<ONKZ n="33870" Name="Zollchow bei Rathenow"/>
 		<ONKZ n="33872" Name="Hohennauen"/>
 		<ONKZ n="33873" Name="Grosswudicke"/>
-		<ONKZ n="33874" Name="Stechow Brandenb"/>
+		<ONKZ n="33874" Name="Stechow Brandenburg"/>
 		<ONKZ n="33875" Name="Rhinow"/>
 		<ONKZ n="33876" Name="Buschow"/>
 		<ONKZ n="33877" Name="Nitzahn"/>
 		<ONKZ n="33878" Name="Nennhausen"/>
 		<ONKZ n="3391" Name="Neuruppin"/>
-		<ONKZ n="33920" Name="Walsleben b Neuruppin"/>
+		<ONKZ n="33920" Name="Walsleben bei Neuruppin"/>
 		<ONKZ n="33921" Name="Zechlinerhütte"/>
 		<ONKZ n="33922" Name="Karwesee"/>
 		<ONKZ n="33923" Name="Flecken Zechlin"/>
@@ -5845,7 +5845,7 @@
 		<ONKZ n="33925" Name="Wustrau-Altfriesack"/>
 		<ONKZ n="33926" Name="Herzberg Mark"/>
 		<ONKZ n="33927" Name="Linum"/>
-		<ONKZ n="33928" Name="Wildberg Brandenb"/>
+		<ONKZ n="33928" Name="Wildberg Brandenburg"/>
 		<ONKZ n="33929" Name="Gühlen-Glienicke"/>
 		<ONKZ n="33931" Name="Rheinsberg Mark"/>
 		<ONKZ n="33932" Name="Fehrbellin"/>
@@ -5853,28 +5853,28 @@
 		<ONKZ n="3394" Name="Wittstock Dosse"/>
 		<ONKZ n="3395" Name="Pritzwalk"/>
 		<ONKZ n="33962" Name="Heiligengrabe"/>
-		<ONKZ n="33963" Name="Wulfersdorf b Wittstock"/>
+		<ONKZ n="33963" Name="Wulfersdorf bei Wittstock"/>
 		<ONKZ n="33964" Name="Fretzdorf"/>
-		<ONKZ n="33965" Name="Herzsprung b Wittstock"/>
+		<ONKZ n="33965" Name="Herzsprung bei Wittstock"/>
 		<ONKZ n="33966" Name="Dranse"/>
 		<ONKZ n="33967" Name="Freyenstein"/>
-		<ONKZ n="33968" Name="Meyenburg Kr Prignitz"/>
+		<ONKZ n="33968" Name="Meyenburg (Kreis Prignitz)"/>
 		<ONKZ n="33969" Name="Stepenitz"/>
 		<ONKZ n="33970" Name="Neustadt Dosse"/>
-		<ONKZ n="33971" Name="Kyritz Brandenb"/>
+		<ONKZ n="33971" Name="Kyritz Brandenburg"/>
 		<ONKZ n="33972" Name="Breddin"/>
-		<ONKZ n="33973" Name="Zernitz b Neustadt Dosse"/>
+		<ONKZ n="33973" Name="Zernitz bei Neustadt Dosse"/>
 		<ONKZ n="33974" Name="Dessow"/>
-		<ONKZ n="33975" Name="Dannenwalde Kr Prignitz"/>
+		<ONKZ n="33975" Name="Dannenwalde (Kreis Prignitz)"/>
 		<ONKZ n="33976" Name="Wutike"/>
 		<ONKZ n="33977" Name="Gumtow"/>
 		<ONKZ n="33978" Name="Segeletz"/>
 		<ONKZ n="33979" Name="Wusterhausen Dosse"/>
 		<ONKZ n="33981" Name="Putlitz"/>
-		<ONKZ n="33982" Name="Hoppenrade Kr Prignitz"/>
-		<ONKZ n="33983" Name="Gross Pankow Kr Prignitz"/>
-		<ONKZ n="33984" Name="Blumenthal b Pritzwalk"/>
-		<ONKZ n="33986" Name="Falkenhagen Kr Prignitz"/>
+		<ONKZ n="33982" Name="Hoppenrade (Kreis Prignitz)"/>
+		<ONKZ n="33983" Name="Gross Pankow (Kreis Prignitz)"/>
+		<ONKZ n="33984" Name="Blumenthal bei Pritzwalk"/>
+		<ONKZ n="33986" Name="Falkenhagen (Kreis Prignitz)"/>
 		<ONKZ n="33989" Name="Sadenbeck"/>
 		<ONKZ n="340" Name="Dessau Anh"/>
 		<ONKZ n="341" Name="Leipzig"/>
@@ -5884,37 +5884,37 @@
 		<ONKZ n="34205" Name="Markranstädt"/>
 		<ONKZ n="34206" Name="Rötha"/>
 		<ONKZ n="34207" Name="Zwochau"/>
-		<ONKZ n="34208" Name="Löbnitz B Delitzsch"/>
+		<ONKZ n="34208" Name="Löbnitz bei Delitzsch"/>
 		<ONKZ n="3421" Name="Torgau"/>
 		<ONKZ n="34221" Name="Schildau Gneisenaustadt"/>
-		<ONKZ n="34222" Name="Arzberg b Torgau"/>
+		<ONKZ n="34222" Name="Arzberg bei Torgau"/>
 		<ONKZ n="34223" Name="Dommitzsch"/>
-		<ONKZ n="34224" Name="Belgern Sachs"/>
+		<ONKZ n="34224" Name="Belgern Sachsen"/>
 		<ONKZ n="3423" Name="Eilenburg"/>
 		<ONKZ n="34241" Name="Jesewitz"/>
 		<ONKZ n="34242" Name="Hohenpriessnitz"/>
 		<ONKZ n="34243" Name="Bad Düben"/>
 		<ONKZ n="34244" Name="Mockrehna"/>
 		<ONKZ n="3425" Name="Wurzen"/>
-		<ONKZ n="34261" Name="Kühren b Wurzen"/>
-		<ONKZ n="34262" Name="Falkenhain b Wurzen"/>
+		<ONKZ n="34261" Name="Kühren bei Wurzen"/>
+		<ONKZ n="34262" Name="Falkenhain bei Wurzen"/>
 		<ONKZ n="34263" Name="Hohburg"/>
 		<ONKZ n="34291" Name="Borsdorf"/>
-		<ONKZ n="34292" Name="Brandis b Wurzen"/>
-		<ONKZ n="34293" Name="Naunhof b Grimma"/>
+		<ONKZ n="34292" Name="Brandis bei Wurzen"/>
+		<ONKZ n="34293" Name="Naunhof bei Grimma"/>
 		<ONKZ n="34294" Name="Rackwitz"/>
 		<ONKZ n="34295" Name="Krensitz"/>
-		<ONKZ n="34296" Name="Groitzsch b Pegau"/>
+		<ONKZ n="34296" Name="Groitzsch bei Pegau"/>
 		<ONKZ n="34297" Name="Liebertwolkwitz"/>
-		<ONKZ n="34298" Name="Taucha b Leipzig"/>
+		<ONKZ n="34298" Name="Taucha bei Leipzig"/>
 		<ONKZ n="34299" Name="Gaschwitz"/>
 		<ONKZ n="3431" Name="Döbeln"/>
 		<ONKZ n="34321" Name="Leisnig"/>
 		<ONKZ n="34322" Name="Rosswein"/>
-		<ONKZ n="34324" Name="Ostrau Sachs"/>
+		<ONKZ n="34324" Name="Ostrau Sachsen"/>
 		<ONKZ n="34325" Name="Mochau-Lüttewitz"/>
-		<ONKZ n="34327" Name="Waldheim Sachs"/>
-		<ONKZ n="34328" Name="Hartha b Döbeln"/>
+		<ONKZ n="34327" Name="Waldheim Sachsen"/>
+		<ONKZ n="34328" Name="Hartha bei Döbeln"/>
 		<ONKZ n="3433" Name="Borna Stadt"/>
 		<ONKZ n="34341" Name="Geithain"/>
 		<ONKZ n="34342" Name="Neukieritzsch"/>
@@ -5922,11 +5922,11 @@
 		<ONKZ n="34344" Name="Kohren-Sahlis"/>
 		<ONKZ n="34345" Name="Bad Lausick"/>
 		<ONKZ n="34346" Name="Narsdorf"/>
-		<ONKZ n="34347" Name="Oelzschau b Borna"/>
+		<ONKZ n="34347" Name="Oelzschau bei Borna"/>
 		<ONKZ n="34348" Name="Frohburg"/>
 		<ONKZ n="3435" Name="Oschatz"/>
-		<ONKZ n="34361" Name="Dahlen Sachs"/>
-		<ONKZ n="34362" Name="Mügeln b Oschatz"/>
+		<ONKZ n="34361" Name="Dahlen Sachsen"/>
+		<ONKZ n="34362" Name="Mügeln bei Oschatz"/>
 		<ONKZ n="34363" Name="Cavertitz"/>
 		<ONKZ n="34364" Name="Wermsdorf"/>
 		<ONKZ n="3437" Name="Grimma"/>
@@ -5935,14 +5935,14 @@
 		<ONKZ n="34383" Name="Trebsen Mulde"/>
 		<ONKZ n="34384" Name="Grossbothen"/>
 		<ONKZ n="34385" Name="Mutzschen"/>
-		<ONKZ n="34386" Name="Dürrweitzschen B Grimma"/>
+		<ONKZ n="34386" Name="Dürrweitzschen bei Grimma"/>
 		<ONKZ n="3441" Name="Zeitz"/>
 		<ONKZ n="34422" Name="Osterfeld"/>
 		<ONKZ n="34423" Name="Heuckewalde"/>
-		<ONKZ n="34424" Name="Reuden b Zeitz"/>
+		<ONKZ n="34424" Name="Reuden bei Zeitz"/>
 		<ONKZ n="34425" Name="Droyssig"/>
 		<ONKZ n="34426" Name="Kayna"/>
-		<ONKZ n="3443" Name="Weissenfels Sachs-Anh"/>
+		<ONKZ n="3443" Name="Weissenfels Sachsen-Anhalt"/>
 		<ONKZ n="34441" Name="Hohenmölsen"/>
 		<ONKZ n="34443" Name="Teuchern"/>
 		<ONKZ n="34444" Name="Lützen"/>
@@ -5956,11 +5956,11 @@
 		<ONKZ n="34465" Name="Bad Bibra"/>
 		<ONKZ n="34466" Name="Janisroda"/>
 		<ONKZ n="34467" Name="Eckartsberga"/>
-		<ONKZ n="3447" Name="Altenburg Thür"/>
-		<ONKZ n="3448" Name="Meuselwitz Thür"/>
-		<ONKZ n="34491" Name="Schmölln Thür"/>
+		<ONKZ n="3447" Name="Altenburg Thüringen"/>
+		<ONKZ n="3448" Name="Meuselwitz Thüringen"/>
+		<ONKZ n="34491" Name="Schmölln Thüringen"/>
 		<ONKZ n="34492" Name="Lucka"/>
-		<ONKZ n="34493" Name="Gößnitz Thür"/>
+		<ONKZ n="34493" Name="Gößnitz Thüringen"/>
 		<ONKZ n="34494" Name="Ehrenhain"/>
 		<ONKZ n="34495" Name="Dobitschen"/>
 		<ONKZ n="34496" Name="Nöbdenitz"/>
@@ -5969,11 +5969,11 @@
 		<ONKZ n="345" Name="Halle Saale"/>
 		<ONKZ n="34600" Name="Ostrau Saalkreis"/>
 		<ONKZ n="34601" Name="Teutschenthal"/>
-		<ONKZ n="34602" Name="Landsberg Sachs-Anh"/>
-		<ONKZ n="34603" Name="Nauendorf Sachs-Anh"/>
+		<ONKZ n="34602" Name="Landsberg Sachsen-Anhalt"/>
+		<ONKZ n="34603" Name="Nauendorf Sachsen-Anhalt"/>
 		<ONKZ n="34604" Name="Niemberg"/>
 		<ONKZ n="34605" Name="Gröbers"/>
-		<ONKZ n="34606" Name="Teicha Sachs-Anh"/>
+		<ONKZ n="34606" Name="Teicha Sachsen-Anhalt"/>
 		<ONKZ n="34607" Name="Wettin"/>
 		<ONKZ n="34609" Name="Salzmünde"/>
 		<ONKZ n="3461" Name="Merseburg Saale"/>
@@ -5990,9 +5990,9 @@
 		<ONKZ n="34652" Name="Allstedt"/>
 		<ONKZ n="34653" Name="Rottleberode"/>
 		<ONKZ n="34654" Name="Stolberg Harz"/>
-		<ONKZ n="34656" Name="Wallhausen Sachs-Anh"/>
+		<ONKZ n="34656" Name="Wallhausen Sachsen-Anhalt"/>
 		<ONKZ n="34658" Name="Hayn Harz"/>
-		<ONKZ n="34659" Name="Blankenheim b Sangerhausen"/>
+		<ONKZ n="34659" Name="Blankenheim bei Sangerhausen"/>
 		<ONKZ n="3466" Name="Artern Unstrut"/>
 		<ONKZ n="34671" Name="Bad Frankenhausen Kyffhäuser"/>
 		<ONKZ n="34672" Name="Rossleben"/>
@@ -6002,14 +6002,14 @@
 		<ONKZ n="3471" Name="Bernburg Saale"/>
 		<ONKZ n="34721" Name="Nienburg Saale"/>
 		<ONKZ n="34722" Name="Preusslitz"/>
-		<ONKZ n="3473" Name="Aschersleben Sachs-Anh"/>
+		<ONKZ n="3473" Name="Aschersleben Sachsen-Anhalt"/>
 		<ONKZ n="34741" Name="Frose"/>
 		<ONKZ n="34742" Name="Sylda"/>
 		<ONKZ n="34743" Name="Ermsleben"/>
-		<ONKZ n="34745" Name="Winningen Sachs-Anh"/>
+		<ONKZ n="34745" Name="Winningen Sachsen-Anhalt"/>
 		<ONKZ n="34746" Name="Giersleben"/>
 		<ONKZ n="3475" Name="Lutherstadt Eisleben"/>
-		<ONKZ n="3476" Name="Hettstedt Sachs-Anh"/>
+		<ONKZ n="3476" Name="Hettstedt Sachsen-Anhalt"/>
 		<ONKZ n="34771" Name="Querfurt"/>
 		<ONKZ n="34772" Name="Helbra"/>
 		<ONKZ n="34773" Name="Schwittersdorf"/>
@@ -6042,19 +6042,19 @@
 		<ONKZ n="3493" Name="Bitterfeld"/>
 		<ONKZ n="3494" Name="Wolfen"/>
 		<ONKZ n="34953" Name="Gräfenhainichen"/>
-		<ONKZ n="34954" Name="Roitzsch b Bitterfeld"/>
+		<ONKZ n="34954" Name="Roitzsch bei Bitterfeld"/>
 		<ONKZ n="34955" Name="Gossa"/>
 		<ONKZ n="34956" Name="Zörbig"/>
 		<ONKZ n="3496" Name="Köthen Anhalt"/>
 		<ONKZ n="34973" Name="Osternienburg"/>
-		<ONKZ n="34975" Name="Görzig Kr Köthen"/>
+		<ONKZ n="34975" Name="Görzig (Kreis Köthen)"/>
 		<ONKZ n="34976" Name="Gröbzig"/>
 		<ONKZ n="34977" Name="Quellendorf"/>
-		<ONKZ n="34978" Name="Radegast Kr Köthen"/>
-		<ONKZ n="34979" Name="Wulfen Sachs-Anh"/>
+		<ONKZ n="34978" Name="Radegast (Kreis Köthen)"/>
+		<ONKZ n="34979" Name="Wulfen Sachsen-Anhalt"/>
 		<ONKZ n="3501" Name="Pirna"/>
 		<ONKZ n="35020" Name="Struppen"/>
-		<ONKZ n="35021" Name="Königstein Sächs Schweiz"/>
+		<ONKZ n="35021" Name="Königstein Sächsische Schweiz"/>
 		<ONKZ n="35022" Name="Bad Schandau"/>
 		<ONKZ n="35023" Name="Bad Gottleuba"/>
 		<ONKZ n="35024" Name="Stadt Wehlen"/>
@@ -6063,69 +6063,69 @@
 		<ONKZ n="35027" Name="Weesenstein"/>
 		<ONKZ n="35028" Name="Krippen"/>
 		<ONKZ n="35032" Name="Langenhennersdorf"/>
-		<ONKZ n="35033" Name="Rosenthal Sächs Schweiz"/>
+		<ONKZ n="35033" Name="Rosenthal Sächsische Schweiz"/>
 		<ONKZ n="3504" Name="Dippoldiswalde"/>
 		<ONKZ n="35052" Name="Kipsdorf Kurort"/>
-		<ONKZ n="35053" Name="Glashütte Sachs"/>
-		<ONKZ n="35054" Name="Lauenstein Sachs"/>
-		<ONKZ n="35055" Name="Höckendorf b Dippoldiswalde"/>
-		<ONKZ n="35056" Name="Altenberg Sachs"/>
-		<ONKZ n="35057" Name="Hermsdorf Erzgeb"/>
+		<ONKZ n="35053" Name="Glashütte Sachsen"/>
+		<ONKZ n="35054" Name="Lauenstein Sachsen"/>
+		<ONKZ n="35055" Name="Höckendorf bei Dippoldiswalde"/>
+		<ONKZ n="35056" Name="Altenberg Sachsen"/>
+		<ONKZ n="35057" Name="Hermsdorf Erzgebirge"/>
 		<ONKZ n="35058" Name="Pretzschendorf"/>
 		<ONKZ n="351" Name="Dresden"/>
-		<ONKZ n="35200" Name="Arnsdorf b Dresden"/>
+		<ONKZ n="35200" Name="Arnsdorf bei Dresden"/>
 		<ONKZ n="35201" Name="Langebrück"/>
-		<ONKZ n="35202" Name="Klingenberg Sachs"/>
+		<ONKZ n="35202" Name="Klingenberg Sachsen"/>
 		<ONKZ n="35203" Name="Tharandt"/>
 		<ONKZ n="35204" Name="Wilsdruff"/>
 		<ONKZ n="35205" Name="Ottendorf-Okrilla"/>
-		<ONKZ n="35206" Name="Kreischa b Dresden"/>
+		<ONKZ n="35206" Name="Kreischa bei Dresden"/>
 		<ONKZ n="35207" Name="Moritzburg"/>
 		<ONKZ n="35208" Name="Radeburg"/>
 		<ONKZ n="35209" Name="Mohorn"/>
 		<ONKZ n="3521" Name="Meissen"/>
-		<ONKZ n="3522" Name="Grossenhain Sachs"/>
-		<ONKZ n="3523" Name="Coswig b Dresden"/>
-		<ONKZ n="35240" Name="Tauscha b Großenhain"/>
+		<ONKZ n="3522" Name="Grossenhain Sachsen"/>
+		<ONKZ n="3523" Name="Coswig bei Dresden"/>
+		<ONKZ n="35240" Name="Tauscha bei Großenhain"/>
 		<ONKZ n="35241" Name="Lommatzsch"/>
 		<ONKZ n="35242" Name="Nossen"/>
 		<ONKZ n="35243" Name="Weinböhla"/>
 		<ONKZ n="35244" Name="Krögis"/>
 		<ONKZ n="35245" Name="Burkhardswalde-Munzig"/>
-		<ONKZ n="35246" Name="Ziegenhain Sachs"/>
-		<ONKZ n="35247" Name="Zehren Sachs"/>
-		<ONKZ n="35248" Name="Schönfeld b Großenhain"/>
+		<ONKZ n="35246" Name="Ziegenhain Sachsen"/>
+		<ONKZ n="35247" Name="Zehren Sachsen"/>
+		<ONKZ n="35248" Name="Schönfeld bei Großenhain"/>
 		<ONKZ n="35249" Name="Basslitz"/>
 		<ONKZ n="3525" Name="Riesa"/>
-		<ONKZ n="35263" Name="Gröditz b Riesa"/>
+		<ONKZ n="35263" Name="Gröditz bei Riesa"/>
 		<ONKZ n="35264" Name="Strehla"/>
 		<ONKZ n="35265" Name="Glaubitz"/>
-		<ONKZ n="35266" Name="Heyda b Riesa"/>
+		<ONKZ n="35266" Name="Heyda bei Riesa"/>
 		<ONKZ n="35267" Name="Diesbar-Seusslitz"/>
 		<ONKZ n="35268" Name="Stauchitz"/>
 		<ONKZ n="3528" Name="Radeberg"/>
-		<ONKZ n="3529" Name="Heidenau Sachs"/>
+		<ONKZ n="3529" Name="Heidenau Sachsen"/>
 		<ONKZ n="3531" Name="Finsterwalde"/>
 		<ONKZ n="35322" Name="Doberlug-Kirchhain"/>
 		<ONKZ n="35323" Name="Sonnewalde"/>
 		<ONKZ n="35324" Name="Crinitz"/>
-		<ONKZ n="35325" Name="Rückersdorf b Finsterwalde"/>
-		<ONKZ n="35326" Name="Schönborn Kr Elbe-Elster"/>
+		<ONKZ n="35325" Name="Rückersdorf bei Finsterwalde"/>
+		<ONKZ n="35326" Name="Schönborn (Kreis Elbe-Elster)"/>
 		<ONKZ n="35327" Name="Priessen"/>
 		<ONKZ n="35329" Name="Dollenchen"/>
 		<ONKZ n="3533" Name="Elsterwerda"/>
 		<ONKZ n="35341" Name="Bad Liebenwerda"/>
 		<ONKZ n="35342" Name="Mühlberg Elbe"/>
-		<ONKZ n="35343" Name="Hirschfeld b Elsterwerda"/>
+		<ONKZ n="35343" Name="Hirschfeld bei Elsterwerda"/>
 		<ONKZ n="3535" Name="Herzberg Elster"/>
 		<ONKZ n="35361" Name="Schlieben"/>
-		<ONKZ n="35362" Name="Schönewalde b Herzberg"/>
+		<ONKZ n="35362" Name="Schönewalde bei Herzberg"/>
 		<ONKZ n="35363" Name="Fermerswalde"/>
 		<ONKZ n="35364" Name="Lebusa"/>
 		<ONKZ n="35365" Name="Falkenberg Elster"/>
 		<ONKZ n="3537" Name="Jessen Elster"/>
 		<ONKZ n="35383" Name="Elster Elbe"/>
-		<ONKZ n="35384" Name="Steinsdorf b Jessen"/>
+		<ONKZ n="35384" Name="Steinsdorf bei Jessen"/>
 		<ONKZ n="35385" Name="Annaburg"/>
 		<ONKZ n="35386" Name="Prettin"/>
 		<ONKZ n="35387" Name="Seyda"/>
@@ -6135,11 +6135,11 @@
 		<ONKZ n="3542" Name="Lübbenau Spreewald"/>
 		<ONKZ n="35433" Name="Vetschau"/>
 		<ONKZ n="35434" Name="Altdöbern"/>
-		<ONKZ n="35435" Name="Gollmitz b Calau"/>
-		<ONKZ n="35436" Name="Laasow b Calau"/>
+		<ONKZ n="35435" Name="Gollmitz bei Calau"/>
+		<ONKZ n="35436" Name="Laasow bei Calau"/>
 		<ONKZ n="35439" Name="Zinnitz"/>
-		<ONKZ n="3544" Name="Luckau Brandenb"/>
-		<ONKZ n="35451" Name="Dahme Brandenb"/>
+		<ONKZ n="3544" Name="Luckau Brandenburg"/>
+		<ONKZ n="35451" Name="Dahme Brandenburg"/>
 		<ONKZ n="35452" Name="Golssen"/>
 		<ONKZ n="35453" Name="Drahnsdorf"/>
 		<ONKZ n="35454" Name="Uckro"/>
@@ -6149,19 +6149,19 @@
 		<ONKZ n="35471" Name="Birkenhainchen"/>
 		<ONKZ n="35472" Name="Schlepzig"/>
 		<ONKZ n="35473" Name="Neu Lübbenau"/>
-		<ONKZ n="35474" Name="Schönwalde b Lübben"/>
+		<ONKZ n="35474" Name="Schönwalde bei Lübben"/>
 		<ONKZ n="35475" Name="Straupitz"/>
 		<ONKZ n="35476" Name="Wittmannsdorf-Bückchen"/>
 		<ONKZ n="35477" Name="Rietzneuendorf-Friedrichshof"/>
 		<ONKZ n="35478" Name="Goyatz"/>
 		<ONKZ n="355" Name="Cottbus"/>
-		<ONKZ n="35600" Name="Döbern NL"/>
+		<ONKZ n="35600" Name="Döbern Niederlausitz"/>
 		<ONKZ n="35601" Name="Peitz"/>
 		<ONKZ n="35602" Name="Drebkau"/>
 		<ONKZ n="35603" Name="Burg Spreewald"/>
 		<ONKZ n="35604" Name="Krieschow"/>
 		<ONKZ n="35605" Name="Komptendorf"/>
-		<ONKZ n="35606" Name="Briesen b Cottbus"/>
+		<ONKZ n="35606" Name="Briesen bei Cottbus"/>
 		<ONKZ n="35607" Name="Jänschwalde"/>
 		<ONKZ n="35608" Name="Gross Ossnig"/>
 		<ONKZ n="35609" Name="Drachhausen"/>
@@ -6169,17 +6169,17 @@
 		<ONKZ n="3562" Name="Forst Lausitz"/>
 		<ONKZ n="3563" Name="Spremberg"/>
 		<ONKZ n="3564" Name="Schwarze Pumpe"/>
-		<ONKZ n="35691" Name="Bärenklau NL"/>
+		<ONKZ n="35691" Name="Bärenklau Niederlausitz"/>
 		<ONKZ n="35692" Name="Kerkwitz"/>
 		<ONKZ n="35693" Name="Lauschütz"/>
-		<ONKZ n="35694" Name="Gosda b Klinge"/>
+		<ONKZ n="35694" Name="Gosda bei Klinge"/>
 		<ONKZ n="35695" Name="Simmersdorf"/>
 		<ONKZ n="35696" Name="Briesnig"/>
 		<ONKZ n="35697" Name="Bagenz"/>
 		<ONKZ n="35698" Name="Hornow"/>
 		<ONKZ n="3571" Name="Hoyerswerda"/>
-		<ONKZ n="35722" Name="Lauta b Hoyerswerda"/>
-		<ONKZ n="35723" Name="Bernsdorf OL"/>
+		<ONKZ n="35722" Name="Lauta bei Hoyerswerda"/>
+		<ONKZ n="35723" Name="Bernsdorf Oberlausitz"/>
 		<ONKZ n="35724" Name="Lohsa"/>
 		<ONKZ n="35725" Name="Wittichenau"/>
 		<ONKZ n="35726" Name="Groß Särchen"/>
@@ -6197,7 +6197,7 @@
 		<ONKZ n="35771" Name="Bad Muskau"/>
 		<ONKZ n="35772" Name="Rietschen"/>
 		<ONKZ n="35773" Name="Schleife"/>
-		<ONKZ n="35774" Name="Boxberg Sachs"/>
+		<ONKZ n="35774" Name="Boxberg Sachsen"/>
 		<ONKZ n="35775" Name="Pechern"/>
 		<ONKZ n="3578" Name="Kamenz"/>
 		<ONKZ n="35792" Name="Ossling"/>
@@ -6210,26 +6210,26 @@
 		<ONKZ n="35822" Name="Hagenwerder"/>
 		<ONKZ n="35823" Name="Ostritz"/>
 		<ONKZ n="35825" Name="Kodersdorf"/>
-		<ONKZ n="35826" Name="Königshain b Görlitz"/>
+		<ONKZ n="35826" Name="Königshain bei Görlitz"/>
 		<ONKZ n="35827" Name="Nieder-Seifersdorf"/>
-		<ONKZ n="35828" Name="Reichenbach OL"/>
-		<ONKZ n="35829" Name="Gersdorf b Görlitz"/>
+		<ONKZ n="35828" Name="Reichenbach Oberlausitz"/>
+		<ONKZ n="35829" Name="Gersdorf bei Görlitz"/>
 		<ONKZ n="3583" Name="Zittau"/>
-		<ONKZ n="35841" Name="Großschönau Sachs"/>
+		<ONKZ n="35841" Name="Großschönau Sachsen"/>
 		<ONKZ n="35842" Name="Oderwitz"/>
-		<ONKZ n="35843" Name="Hirschfelde b Zittau"/>
+		<ONKZ n="35843" Name="Hirschfelde bei Zittau"/>
 		<ONKZ n="35844" Name="Oybin Kurort"/>
 		<ONKZ n="3585" Name="Löbau"/>
-		<ONKZ n="3586" Name="Neugersdorf Sachs"/>
+		<ONKZ n="3586" Name="Neugersdorf Sachsen"/>
 		<ONKZ n="35872" Name="Neusalza-Spremberg"/>
 		<ONKZ n="35873" Name="Herrnhut"/>
-		<ONKZ n="35874" Name="Bernstadt a d Eigen"/>
-		<ONKZ n="35875" Name="Obercunnersdorf b Löbau"/>
-		<ONKZ n="35876" Name="Weissenberg Sachs"/>
+		<ONKZ n="35874" Name="Bernstadt an der Eigen"/>
+		<ONKZ n="35875" Name="Obercunnersdorf bei Löbau"/>
+		<ONKZ n="35876" Name="Weissenberg Sachsen"/>
 		<ONKZ n="35877" Name="Cunewalde"/>
 		<ONKZ n="3588" Name="Niesky"/>
-		<ONKZ n="35891" Name="Rothenburg OL"/>
-		<ONKZ n="35892" Name="Horka OL"/>
+		<ONKZ n="35891" Name="Rothenburg Oberlausitz"/>
+		<ONKZ n="35892" Name="Horka Oberlausitz"/>
 		<ONKZ n="35893" Name="Mücka"/>
 		<ONKZ n="35894" Name="Hähnichen"/>
 		<ONKZ n="35895" Name="Klitten"/>
@@ -6243,29 +6243,29 @@
 		<ONKZ n="35935" Name="Kleinwelka"/>
 		<ONKZ n="35936" Name="Sohland Spree"/>
 		<ONKZ n="35937" Name="Prischwitz"/>
-		<ONKZ n="35938" Name="Großpostwitz OL"/>
+		<ONKZ n="35938" Name="Großpostwitz Oberlausitz"/>
 		<ONKZ n="35939" Name="Hochkirch"/>
 		<ONKZ n="3594" Name="Bischofswerda"/>
 		<ONKZ n="35951" Name="Neukirch Lausitz"/>
-		<ONKZ n="35952" Name="Großröhrsdorf OL"/>
+		<ONKZ n="35952" Name="Großröhrsdorf Oberlausitz"/>
 		<ONKZ n="35953" Name="Burkau"/>
 		<ONKZ n="35954" Name="Grossharthau"/>
 		<ONKZ n="35955" Name="Pulsnitz"/>
-		<ONKZ n="3596" Name="Neustadt i Sa"/>
+		<ONKZ n="3596" Name="Neustadt in Sachsen"/>
 		<ONKZ n="35971" Name="Sebnitz"/>
 		<ONKZ n="35973" Name="Stolpen"/>
 		<ONKZ n="35974" Name="Hinterhermsdorf"/>
 		<ONKZ n="35975" Name="Hohnstein"/>
-		<ONKZ n="3601" Name="Mühlhausen Thür"/>
+		<ONKZ n="3601" Name="Mühlhausen Thüringen"/>
 		<ONKZ n="36020" Name="Ebeleben"/>
 		<ONKZ n="36021" Name="Schlotheim"/>
 		<ONKZ n="36022" Name="Grossengottern"/>
 		<ONKZ n="36023" Name="Horsmar"/>
-		<ONKZ n="36024" Name="Diedorf b Mühlhausen Thür"/>
+		<ONKZ n="36024" Name="Diedorf bei Mühlhausen Thüringen"/>
 		<ONKZ n="36025" Name="Körner"/>
-		<ONKZ n="36026" Name="Struth b Mühlhausen Thür"/>
+		<ONKZ n="36026" Name="Struth bei Mühlhausen Thüringen"/>
 		<ONKZ n="36027" Name="Lengenfeld Unterm Stein"/>
-		<ONKZ n="36028" Name="Kammerforst Thür"/>
+		<ONKZ n="36028" Name="Kammerforst Thüringen"/>
 		<ONKZ n="36029" Name="Menteroda"/>
 		<ONKZ n="3603" Name="Bad Langensalza"/>
 		<ONKZ n="36041" Name="Bad Tennstedt"/>
@@ -6286,31 +6286,31 @@
 		<ONKZ n="36085" Name="Reinholterode"/>
 		<ONKZ n="36087" Name="Wüstheuterode"/>
 		<ONKZ n="361" Name="Erfurt"/>
-		<ONKZ n="36200" Name="Elxleben b Arnstadt"/>
+		<ONKZ n="36200" Name="Elxleben bei Arnstadt"/>
 		<ONKZ n="36201" Name="Walschleben"/>
 		<ONKZ n="36202" Name="Neudietendorf"/>
 		<ONKZ n="36203" Name="Vieselbach"/>
 		<ONKZ n="36204" Name="Stotternheim"/>
 		<ONKZ n="36205" Name="Gräfenroda"/>
 		<ONKZ n="36206" Name="Grossfahner"/>
-		<ONKZ n="36207" Name="Plaue Thür"/>
+		<ONKZ n="36207" Name="Plaue Thüringen"/>
 		<ONKZ n="36208" Name="Ermstedt"/>
 		<ONKZ n="36209" Name="Klettbach"/>
-		<ONKZ n="3621" Name="Gotha Thür"/>
-		<ONKZ n="3622" Name="Waltershausen Thür"/>
+		<ONKZ n="3621" Name="Gotha Thüringen"/>
+		<ONKZ n="3622" Name="Waltershausen Thüringen"/>
 		<ONKZ n="3623" Name="Friedrichroda"/>
 		<ONKZ n="3624" Name="Ohrdruf"/>
 		<ONKZ n="36252" Name="Tambach-Dietharz Thür Wald"/>
 		<ONKZ n="36253" Name="Georgenthal Thür Wald"/>
 		<ONKZ n="36254" Name="Friedrichswerth"/>
-		<ONKZ n="36255" Name="Goldbach b Gotha"/>
+		<ONKZ n="36255" Name="Goldbach bei Gotha"/>
 		<ONKZ n="36256" Name="Wechmar"/>
-		<ONKZ n="36257" Name="Luisenthal Thür"/>
+		<ONKZ n="36257" Name="Luisenthal Thüringen"/>
 		<ONKZ n="36258" Name="Friemar"/>
 		<ONKZ n="36259" Name="Tabarz Thür Wald"/>
 		<ONKZ n="3628" Name="Arnstadt"/>
 		<ONKZ n="3629" Name="Stadtilm"/>
-		<ONKZ n="3631" Name="Nordhausen Thür"/>
+		<ONKZ n="3631" Name="Nordhausen Thüringen"/>
 		<ONKZ n="3632" Name="Sondershausen"/>
 		<ONKZ n="36330" Name="Grossberndten"/>
 		<ONKZ n="36331" Name="Ilfeld"/>
@@ -6336,14 +6336,14 @@
 		<ONKZ n="36379" Name="Holzengel"/>
 		<ONKZ n="3641" Name="Jena"/>
 		<ONKZ n="36421" Name="Camburg"/>
-		<ONKZ n="36422" Name="Reinstädt Thür"/>
+		<ONKZ n="36422" Name="Reinstädt Thüringen"/>
 		<ONKZ n="36423" Name="Orlamünde"/>
-		<ONKZ n="36424" Name="Kahla Thür"/>
+		<ONKZ n="36424" Name="Kahla Thüringen"/>
 		<ONKZ n="36425" Name="Isserstedt"/>
-		<ONKZ n="36426" Name="Ottendorf b Stadtroda"/>
+		<ONKZ n="36426" Name="Ottendorf bei Stadtroda"/>
 		<ONKZ n="36427" Name="Dornburg Saale"/>
 		<ONKZ n="36428" Name="Stadtroda"/>
-		<ONKZ n="3643" Name="Weimar Thür"/>
+		<ONKZ n="3643" Name="Weimar Thüringen"/>
 		<ONKZ n="3644" Name="Apolda"/>
 		<ONKZ n="36450" Name="Kranichfeld"/>
 		<ONKZ n="36451" Name="Buttelstedt"/>
@@ -6351,28 +6351,28 @@
 		<ONKZ n="36453" Name="Mellingen"/>
 		<ONKZ n="36454" Name="Magdala"/>
 		<ONKZ n="36458" Name="Bad Berka"/>
-		<ONKZ n="36459" Name="Blankenhain Thür"/>
+		<ONKZ n="36459" Name="Blankenhain Thüringen"/>
 		<ONKZ n="36461" Name="Bad Sulza"/>
 		<ONKZ n="36462" Name="Ossmannstedt"/>
 		<ONKZ n="36463" Name="Gebstedt"/>
 		<ONKZ n="36464" Name="Wormstedt"/>
-		<ONKZ n="36465" Name="Oberndorf b Apolda"/>
+		<ONKZ n="36465" Name="Oberndorf bei Apolda"/>
 		<ONKZ n="3647" Name="Pößneck"/>
 		<ONKZ n="36481" Name="Neustadt an der Orla"/>
 		<ONKZ n="36482" Name="Triptis"/>
 		<ONKZ n="36483" Name="Ziegenrück"/>
-		<ONKZ n="36484" Name="Knau b Pößneck"/>
+		<ONKZ n="36484" Name="Knau bei Pößneck"/>
 		<ONKZ n="365" Name="Gera"/>
-		<ONKZ n="36601" Name="Hermsdorf Thür"/>
-		<ONKZ n="36602" Name="Ronneburg Thür"/>
+		<ONKZ n="36601" Name="Hermsdorf Thüringen"/>
+		<ONKZ n="36602" Name="Ronneburg Thüringen"/>
 		<ONKZ n="36603" Name="Weida"/>
 		<ONKZ n="36604" Name="Münchenbernsdorf"/>
 		<ONKZ n="36605" Name="Bad Köstritz"/>
 		<ONKZ n="36606" Name="Kraftsdorf"/>
 		<ONKZ n="36607" Name="Niederpöllnitz"/>
-		<ONKZ n="36608" Name="Seelingstädt b Gera"/>
+		<ONKZ n="36608" Name="Seelingstädt bei Gera"/>
 		<ONKZ n="3661" Name="Greiz"/>
-		<ONKZ n="36621" Name="Elsterberg b Plauen"/>
+		<ONKZ n="36621" Name="Elsterberg bei Plauen"/>
 		<ONKZ n="36622" Name="Triebes"/>
 		<ONKZ n="36623" Name="Berga Elster"/>
 		<ONKZ n="36624" Name="Teichwolframsdorf"/>
@@ -6385,17 +6385,17 @@
 		<ONKZ n="36643" Name="Thimmendorf"/>
 		<ONKZ n="36644" Name="Hirschberg Saale"/>
 		<ONKZ n="36645" Name="Mühltroff"/>
-		<ONKZ n="36646" Name="Tanna b Schleiz"/>
-		<ONKZ n="36647" Name="Saalburg Thür"/>
-		<ONKZ n="36648" Name="Dittersdorf b Schleiz"/>
-		<ONKZ n="36649" Name="Gefell b Schleiz"/>
+		<ONKZ n="36646" Name="Tanna bei Schleiz"/>
+		<ONKZ n="36647" Name="Saalburg Thüringen"/>
+		<ONKZ n="36648" Name="Dittersdorf bei Schleiz"/>
+		<ONKZ n="36649" Name="Gefell bei Schleiz"/>
 		<ONKZ n="36651" Name="Lobenstein"/>
 		<ONKZ n="36652" Name="Wurzbach"/>
 		<ONKZ n="36653" Name="Lehesten Thür Wald"/>
-		<ONKZ n="36691" Name="Eisenberg Thür"/>
+		<ONKZ n="36691" Name="Eisenberg Thüringen"/>
 		<ONKZ n="36692" Name="Bürgel"/>
 		<ONKZ n="36693" Name="Crossen an der Elster"/>
-		<ONKZ n="36694" Name="Schkölen Thür"/>
+		<ONKZ n="36694" Name="Schkölen Thüringen"/>
 		<ONKZ n="36695" Name="Söllmnitz"/>
 		<ONKZ n="36701" Name="Lichte"/>
 		<ONKZ n="36702" Name="Lauscha"/>
@@ -6418,26 +6418,26 @@
 		<ONKZ n="36742" Name="Uhlstädt"/>
 		<ONKZ n="36743" Name="Teichel"/>
 		<ONKZ n="36744" Name="Remda"/>
-		<ONKZ n="3675" Name="Sonneberg Thür"/>
+		<ONKZ n="3675" Name="Sonneberg Thüringen"/>
 		<ONKZ n="36761" Name="Heubisch"/>
-		<ONKZ n="36762" Name="Steinach Thür"/>
+		<ONKZ n="36762" Name="Steinach Thüringen"/>
 		<ONKZ n="36764" Name="Neuhaus-Schierschnitz"/>
 		<ONKZ n="36766" Name="Schalkau"/>
-		<ONKZ n="3677" Name="Ilmenau Thür"/>
+		<ONKZ n="3677" Name="Ilmenau Thüringen"/>
 		<ONKZ n="36781" Name="Grossbreitenbach"/>
-		<ONKZ n="36782" Name="Schmiedefeld a Rennsteig"/>
-		<ONKZ n="36783" Name="Gehren Thür"/>
+		<ONKZ n="36782" Name="Schmiedefeld am Rennsteig"/>
+		<ONKZ n="36783" Name="Gehren Thüringen"/>
 		<ONKZ n="36784" Name="Stützerbach"/>
 		<ONKZ n="36785" Name="Gräfinau-Angstedt"/>
-		<ONKZ n="3679" Name="Neuhaus a Rennweg"/>
+		<ONKZ n="3679" Name="Neuhaus am Rennweg"/>
 		<ONKZ n="3681" Name="Suhl"/>
 		<ONKZ n="3682" Name="Zella-Mehlis"/>
 		<ONKZ n="3683" Name="Schmalkalden"/>
 		<ONKZ n="36840" Name="Trusetal"/>
 		<ONKZ n="36841" Name="Schleusingen"/>
-		<ONKZ n="36842" Name="Oberhof Thür"/>
+		<ONKZ n="36842" Name="Oberhof Thüringen"/>
 		<ONKZ n="36843" Name="Benshausen"/>
-		<ONKZ n="36844" Name="Rohr Thür"/>
+		<ONKZ n="36844" Name="Rohr Thüringen"/>
 		<ONKZ n="36845" Name="Gehlberg"/>
 		<ONKZ n="36846" Name="Suhl-Dietzhausen"/>
 		<ONKZ n="36847" Name="Steinbach-Hallenberg"/>
@@ -6448,10 +6448,10 @@
 		<ONKZ n="36870" Name="Masserberg"/>
 		<ONKZ n="36871" Name="Bad Colberg-Heldburg"/>
 		<ONKZ n="36873" Name="Themar"/>
-		<ONKZ n="36874" Name="Schönbrunn b Hildburghaus"/>
+		<ONKZ n="36874" Name="Schönbrunn bei Hildburghaus"/>
 		<ONKZ n="36875" Name="Straufhain-Streufdorf"/>
 		<ONKZ n="36878" Name="Oberland"/>
-		<ONKZ n="3691" Name="Eisenach Thür"/>
+		<ONKZ n="3691" Name="Eisenach Thüringen"/>
 		<ONKZ n="36920" Name="Grossenlupnitz"/>
 		<ONKZ n="36921" Name="Wutha-Farnroda"/>
 		<ONKZ n="36922" Name="Gerstungen"/>
@@ -6460,15 +6460,15 @@
 		<ONKZ n="36925" Name="Marksuhl"/>
 		<ONKZ n="36926" Name="Creuzburg"/>
 		<ONKZ n="36927" Name="Unterellen"/>
-		<ONKZ n="36928" Name="Neuenhof Thür"/>
+		<ONKZ n="36928" Name="Neuenhof Thüringen"/>
 		<ONKZ n="36929" Name="Ruhla"/>
 		<ONKZ n="3693" Name="Meiningen"/>
 		<ONKZ n="36940" Name="Oepfershausen"/>
 		<ONKZ n="36941" Name="Wasungen"/>
-		<ONKZ n="36943" Name="Bettenhausen Thür"/>
+		<ONKZ n="36943" Name="Bettenhausen Thüringen"/>
 		<ONKZ n="36944" Name="Rentwertshausen"/>
 		<ONKZ n="36945" Name="Henneberg"/>
-		<ONKZ n="36946" Name="Erbenhausen Thür"/>
+		<ONKZ n="36946" Name="Erbenhausen Thüringen"/>
 		<ONKZ n="36947" Name="Jüchsen"/>
 		<ONKZ n="36948" Name="Römhild"/>
 		<ONKZ n="36949" Name="Obermaßfeld-Grimmenthal"/>
@@ -6482,15 +6482,15 @@
 		<ONKZ n="36967" Name="Geisa"/>
 		<ONKZ n="36968" Name="Rossdorf Rhön"/>
 		<ONKZ n="36969" Name="Merkers"/>
-		<ONKZ n="371" Name="Chemnitz Sachs"/>
-		<ONKZ n="37200" Name="Wittgensdorf b Chemnitz"/>
-		<ONKZ n="37202" Name="Claussnitz b Chemnitz"/>
-		<ONKZ n="37203" Name="Gersdorf b Chemnitz"/>
-		<ONKZ n="37204" Name="Lichtenstein Sachs"/>
-		<ONKZ n="37206" Name="Frankenberg Sachs"/>
-		<ONKZ n="37207" Name="Hainichen Sachs"/>
+		<ONKZ n="371" Name="Chemnitz Sachsen"/>
+		<ONKZ n="37200" Name="Wittgensdorf bei Chemnitz"/>
+		<ONKZ n="37202" Name="Claussnitz bei Chemnitz"/>
+		<ONKZ n="37203" Name="Gersdorf bei Chemnitz"/>
+		<ONKZ n="37204" Name="Lichtenstein Sachsen"/>
+		<ONKZ n="37206" Name="Frankenberg Sachsen"/>
+		<ONKZ n="37207" Name="Hainichen Sachsen"/>
 		<ONKZ n="37208" Name="Auerswalde"/>
-		<ONKZ n="37209" Name="Einsiedel b Chemnitz"/>
+		<ONKZ n="37209" Name="Einsiedel bei Chemnitz"/>
 		<ONKZ n="3721" Name="Meinersdorf"/>
 		<ONKZ n="3722" Name="Limbach-Oberfrohna"/>
 		<ONKZ n="3723" Name="Hohenstein-Ernstthal"/>
@@ -6500,20 +6500,20 @@
 		<ONKZ n="3727" Name="Mittweida"/>
 		<ONKZ n="37291" Name="Augustusburg"/>
 		<ONKZ n="37292" Name="Oederan"/>
-		<ONKZ n="37293" Name="Eppendorf Sachs"/>
+		<ONKZ n="37293" Name="Eppendorf Sachsen"/>
 		<ONKZ n="37294" Name="Grünhainichen"/>
-		<ONKZ n="37295" Name="Lugau Erzgeb"/>
-		<ONKZ n="37296" Name="Stollberg Erzgeb"/>
-		<ONKZ n="37297" Name="Thum Sachs"/>
-		<ONKZ n="37298" Name="Oelsnitz Erzgeb"/>
-		<ONKZ n="3731" Name="Freiberg Sachs"/>
-		<ONKZ n="37320" Name="Mulda Sachs"/>
-		<ONKZ n="37321" Name="Frankenstein Sachs"/>
+		<ONKZ n="37295" Name="Lugau Erzgebirge"/>
+		<ONKZ n="37296" Name="Stollberg Erzgebirge"/>
+		<ONKZ n="37297" Name="Thum Sachsen"/>
+		<ONKZ n="37298" Name="Oelsnitz Erzgebirge"/>
+		<ONKZ n="3731" Name="Freiberg Sachsen"/>
+		<ONKZ n="37320" Name="Mulda Sachsen"/>
+		<ONKZ n="37321" Name="Frankenstein Sachsen"/>
 		<ONKZ n="37322" Name="Brand-Erbisdorf"/>
-		<ONKZ n="37323" Name="Lichtenberg Erzgeb"/>
-		<ONKZ n="37324" Name="Reinsberg Sachs"/>
+		<ONKZ n="37323" Name="Lichtenberg Erzgebirge"/>
+		<ONKZ n="37324" Name="Reinsberg Sachsen"/>
 		<ONKZ n="37325" Name="Niederbobritzsch"/>
-		<ONKZ n="37326" Name="Frauenstein Sachs"/>
+		<ONKZ n="37326" Name="Frauenstein Sachsen"/>
 		<ONKZ n="37327" Name="Rechenberg-Bienenmühle"/>
 		<ONKZ n="37328" Name="Grossschirma"/>
 		<ONKZ n="37329" Name="Grosshartmannsdorf"/>
@@ -6521,20 +6521,20 @@
 		<ONKZ n="37341" Name="Ehrenfriedersdorf"/>
 		<ONKZ n="37342" Name="Cranzahl"/>
 		<ONKZ n="37343" Name="Jöhstadt"/>
-		<ONKZ n="37344" Name="Crottendorf Sachs"/>
+		<ONKZ n="37344" Name="Crottendorf Sachsen"/>
 		<ONKZ n="37346" Name="Geyer"/>
-		<ONKZ n="37347" Name="Bärenstein Kr Annaberg"/>
+		<ONKZ n="37347" Name="Bärenstein (Kreis Annaberg)"/>
 		<ONKZ n="37348" Name="Oberwiesenthal Kurort"/>
 		<ONKZ n="37349" Name="Scheibenberg"/>
-		<ONKZ n="3735" Name="Marienberg Sachs"/>
+		<ONKZ n="3735" Name="Marienberg Sachsen"/>
 		<ONKZ n="37360" Name="Olbernhau"/>
-		<ONKZ n="37361" Name="Neuhausen Erzgeb"/>
-		<ONKZ n="37362" Name="Seiffen Erzgeb"/>
+		<ONKZ n="37361" Name="Neuhausen Erzgebirge"/>
+		<ONKZ n="37362" Name="Seiffen Erzgebirge"/>
 		<ONKZ n="37363" Name="Zöblitz"/>
-		<ONKZ n="37364" Name="Reitzenhain Erzgeb"/>
+		<ONKZ n="37364" Name="Reitzenhain Erzgebirge"/>
 		<ONKZ n="37365" Name="Sayda"/>
 		<ONKZ n="37366" Name="Rübenau"/>
-		<ONKZ n="37367" Name="Lengefeld Erzgeb"/>
+		<ONKZ n="37367" Name="Lengefeld Erzgebirge"/>
 		<ONKZ n="37368" Name="Deutschneudorf"/>
 		<ONKZ n="37369" Name="Wolkenstein"/>
 		<ONKZ n="3737" Name="Rochlitz"/>
@@ -6543,62 +6543,62 @@
 		<ONKZ n="37383" Name="Lunzenau"/>
 		<ONKZ n="37384" Name="Wechselburg"/>
 		<ONKZ n="3741" Name="Plauen"/>
-		<ONKZ n="37421" Name="Oelsnitz Vogtl"/>
+		<ONKZ n="37421" Name="Oelsnitz Vogtland"/>
 		<ONKZ n="37422" Name="Markneukirchen"/>
-		<ONKZ n="37423" Name="Adorf Vogtl"/>
+		<ONKZ n="37423" Name="Adorf Vogtland"/>
 		<ONKZ n="37430" Name="Eichigt"/>
-		<ONKZ n="37431" Name="Mehltheuer Vogtl"/>
-		<ONKZ n="37432" Name="Pausa Vogtl"/>
+		<ONKZ n="37431" Name="Mehltheuer Vogtland"/>
+		<ONKZ n="37432" Name="Pausa Vogtland"/>
 		<ONKZ n="37433" Name="Gutenfürst"/>
 		<ONKZ n="37434" Name="Bobenneukirchen"/>
-		<ONKZ n="37435" Name="Reuth b Plauen"/>
+		<ONKZ n="37435" Name="Reuth bei Plauen"/>
 		<ONKZ n="37436" Name="Weischlitz"/>
 		<ONKZ n="37437" Name="Bad Elster"/>
 		<ONKZ n="37438" Name="Bad Brambach"/>
 		<ONKZ n="37439" Name="Jocketa"/>
-		<ONKZ n="3744" Name="Auerbach Vogtl"/>
-		<ONKZ n="3745" Name="Falkenstein Vogtl"/>
-		<ONKZ n="37462" Name="Rothenkirchen Vogtl"/>
-		<ONKZ n="37463" Name="Bergen Vogtl"/>
-		<ONKZ n="37464" Name="Schöneck Vogtl"/>
-		<ONKZ n="37465" Name="Tannenbergsthal Vogtl"/>
-		<ONKZ n="37467" Name="Klingenthal Sachs"/>
-		<ONKZ n="37468" Name="Treuen Vogtl"/>
+		<ONKZ n="3744" Name="Auerbach Vogtland"/>
+		<ONKZ n="3745" Name="Falkenstein Vogtland"/>
+		<ONKZ n="37462" Name="Rothenkirchen Vogtland"/>
+		<ONKZ n="37463" Name="Bergen Vogtland"/>
+		<ONKZ n="37464" Name="Schöneck Vogtland"/>
+		<ONKZ n="37465" Name="Tannenbergsthal Vogtland"/>
+		<ONKZ n="37467" Name="Klingenthal Sachsen"/>
+		<ONKZ n="37468" Name="Treuen Vogtland"/>
 		<ONKZ n="375" Name="Zwickau"/>
-		<ONKZ n="37600" Name="Neumark Sachs"/>
+		<ONKZ n="37600" Name="Neumark Sachsen"/>
 		<ONKZ n="37601" Name="Mülsen Skt Jacob"/>
-		<ONKZ n="37602" Name="Kirchberg Sachs"/>
+		<ONKZ n="37602" Name="Kirchberg Sachsen"/>
 		<ONKZ n="37603" Name="Wildenfels"/>
 		<ONKZ n="37604" Name="Mosel"/>
-		<ONKZ n="37605" Name="Hartenstein Sachs"/>
-		<ONKZ n="37606" Name="Lengenfeld Vogtl"/>
-		<ONKZ n="37607" Name="Ebersbrunn Sachs"/>
-		<ONKZ n="37608" Name="Waldenburg Sachs"/>
+		<ONKZ n="37605" Name="Hartenstein Sachsen"/>
+		<ONKZ n="37606" Name="Lengenfeld Vogtland"/>
+		<ONKZ n="37607" Name="Ebersbrunn Sachsen"/>
+		<ONKZ n="37608" Name="Waldenburg Sachsen"/>
 		<ONKZ n="37609" Name="Wolkenburg Mulde"/>
-		<ONKZ n="3761" Name="Werdau Sachs"/>
+		<ONKZ n="3761" Name="Werdau Sachsen"/>
 		<ONKZ n="3762" Name="Crimmitschau"/>
 		<ONKZ n="3763" Name="Glauchau"/>
 		<ONKZ n="3764" Name="Meerane"/>
-		<ONKZ n="3765" Name="Reichenbach Vogtl"/>
-		<ONKZ n="3771" Name="Aue Sachs"/>
-		<ONKZ n="3772" Name="Schneeberg Erzgeb"/>
+		<ONKZ n="3765" Name="Reichenbach Vogtland"/>
+		<ONKZ n="3771" Name="Aue Sachsen"/>
+		<ONKZ n="3772" Name="Schneeberg Erzgebirge"/>
 		<ONKZ n="3773" Name="Johanngeorgenstadt"/>
 		<ONKZ n="3774" Name="Schwarzenberg"/>
 		<ONKZ n="37752" Name="Eibenstock"/>
 		<ONKZ n="37754" Name="Zwönitz"/>
-		<ONKZ n="37755" Name="Schönheide Erzgeb"/>
-		<ONKZ n="37756" Name="Breitenbrunn Erzgeb"/>
+		<ONKZ n="37755" Name="Schönheide Erzgebirge"/>
+		<ONKZ n="37756" Name="Breitenbrunn Erzgebirge"/>
 		<ONKZ n="37757" Name="Rittersgrün"/>
 		<ONKZ n="381" Name="Rostock"/>
 		<ONKZ n="38201" Name="Gelbensande"/>
 		<ONKZ n="38202" Name="Volkenshagen"/>
 		<ONKZ n="38203" Name="Bad Doberan"/>
 		<ONKZ n="38204" Name="Broderstorf"/>
-		<ONKZ n="38205" Name="Tessin b Rostock"/>
+		<ONKZ n="38205" Name="Tessin bei Rostock"/>
 		<ONKZ n="38206" Name="Graal-Müritz Seeheilbad"/>
 		<ONKZ n="38207" Name="Stäbelow"/>
 		<ONKZ n="38208" Name="Kavelstorf"/>
-		<ONKZ n="38209" Name="Sanitz b Rostock"/>
+		<ONKZ n="38209" Name="Sanitz bei Rostock"/>
 		<ONKZ n="3821" Name="Ribnitz-Damgarten"/>
 		<ONKZ n="38220" Name="Wustrow Ostseebad"/>
 		<ONKZ n="38221" Name="Marlow"/>
@@ -6607,17 +6607,17 @@
 		<ONKZ n="38224" Name="Gresenhorst"/>
 		<ONKZ n="38225" Name="Trinwillershagen"/>
 		<ONKZ n="38226" Name="Dierhagen Ostseebad"/>
-		<ONKZ n="38227" Name="Lüdershagen b Barth"/>
+		<ONKZ n="38227" Name="Lüdershagen bei Barth"/>
 		<ONKZ n="38228" Name="Dettmannsdorf-Kölzow"/>
 		<ONKZ n="38229" Name="Bad Sülze"/>
 		<ONKZ n="38231" Name="Barth"/>
 		<ONKZ n="38232" Name="Zingst Ostseebad"/>
 		<ONKZ n="38233" Name="Prerow Ostseebad"/>
-		<ONKZ n="38234" Name="Born a Darß"/>
+		<ONKZ n="38234" Name="Born am Darß"/>
 		<ONKZ n="38292" Name="Kröpelin"/>
 		<ONKZ n="38293" Name="Kühlungsborn Ostseebad"/>
 		<ONKZ n="38294" Name="Neubukow"/>
-		<ONKZ n="38295" Name="Satow b Bad Doberan"/>
+		<ONKZ n="38295" Name="Satow bei Bad Doberan"/>
 		<ONKZ n="38296" Name="Rerik Ostseebad"/>
 		<ONKZ n="38297" Name="Moitin"/>
 		<ONKZ n="38300" Name="Insel Hiddensee"/>
@@ -6632,7 +6632,7 @@
 		<ONKZ n="38309" Name="Trent"/>
 		<ONKZ n="3831" Name="Stralsund"/>
 		<ONKZ n="38320" Name="Tribsees"/>
-		<ONKZ n="38321" Name="Martensdorf b Stralsund"/>
+		<ONKZ n="38321" Name="Martensdorf bei Stralsund"/>
 		<ONKZ n="38322" Name="Richtenberg"/>
 		<ONKZ n="38323" Name="Prohn"/>
 		<ONKZ n="38324" Name="Velgast"/>
@@ -6642,12 +6642,12 @@
 		<ONKZ n="38328" Name="Miltzow"/>
 		<ONKZ n="38331" Name="Rakow Vorpom"/>
 		<ONKZ n="38332" Name="Gross Bisdorf"/>
-		<ONKZ n="38333" Name="Horst b Grimmen"/>
+		<ONKZ n="38333" Name="Horst bei Grimmen"/>
 		<ONKZ n="38334" Name="Grammendorf"/>
 		<ONKZ n="3834" Name="Greifswald"/>
 		<ONKZ n="38351" Name="Mesekenhagen"/>
-		<ONKZ n="38352" Name="Kemnitz b Greifswald"/>
-		<ONKZ n="38353" Name="Gützkow b Greifswald"/>
+		<ONKZ n="38352" Name="Kemnitz bei Greifswald"/>
+		<ONKZ n="38353" Name="Gützkow bei Greifswald"/>
 		<ONKZ n="38354" Name="Wusterhusen"/>
 		<ONKZ n="38355" Name="Züssow"/>
 		<ONKZ n="38356" Name="Behrenhoff"/>
@@ -6656,7 +6656,7 @@
 		<ONKZ n="38371" Name="Karlshagen"/>
 		<ONKZ n="38372" Name="Usedom"/>
 		<ONKZ n="38373" Name="Katzow"/>
-		<ONKZ n="38374" Name="Lassan b Wolgast"/>
+		<ONKZ n="38374" Name="Lassan bei Wolgast"/>
 		<ONKZ n="38375" Name="Koserow"/>
 		<ONKZ n="38376" Name="Zirchow"/>
 		<ONKZ n="38377" Name="Zinnowitz"/>
@@ -6666,29 +6666,29 @@
 		<ONKZ n="38391" Name="Altenkirchen Rügen"/>
 		<ONKZ n="38392" Name="Sassnitz"/>
 		<ONKZ n="38393" Name="Binz Ostseebad"/>
-		<ONKZ n="3841" Name="Wismar Meckl"/>
+		<ONKZ n="3841" Name="Wismar Mecklenburg"/>
 		<ONKZ n="38422" Name="Neukloster"/>
 		<ONKZ n="38423" Name="Bad Kleinen"/>
 		<ONKZ n="38424" Name="Bobitz"/>
 		<ONKZ n="38425" Name="Kirchdorf Poel"/>
 		<ONKZ n="38426" Name="Neuburg-Steinhausen"/>
 		<ONKZ n="38427" Name="Blowatz"/>
-		<ONKZ n="38428" Name="Hohenkirchen b Wismar"/>
+		<ONKZ n="38428" Name="Hohenkirchen bei Wismar"/>
 		<ONKZ n="38429" Name="Glasin"/>
 		<ONKZ n="3843" Name="Güstrow"/>
 		<ONKZ n="3844" Name="Schwaan"/>
-		<ONKZ n="38450" Name="Tarnow b Bützow"/>
-		<ONKZ n="38451" Name="Hoppenrade b Güstrow"/>
+		<ONKZ n="38450" Name="Tarnow bei Bützow"/>
+		<ONKZ n="38451" Name="Hoppenrade bei Güstrow"/>
 		<ONKZ n="38452" Name="Lalendorf"/>
 		<ONKZ n="38453" Name="Mistorf"/>
 		<ONKZ n="38454" Name="Kritzkow"/>
 		<ONKZ n="38455" Name="Plaaz"/>
-		<ONKZ n="38456" Name="Langhagen b Güstrow"/>
+		<ONKZ n="38456" Name="Langhagen bei Güstrow"/>
 		<ONKZ n="38457" Name="Krakow am See"/>
 		<ONKZ n="38458" Name="Zehna"/>
 		<ONKZ n="38459" Name="Laage"/>
 		<ONKZ n="38461" Name="Bützow"/>
-		<ONKZ n="38462" Name="Baumgarten Meckl"/>
+		<ONKZ n="38462" Name="Baumgarten Mecklenburg"/>
 		<ONKZ n="38464" Name="Bernitt"/>
 		<ONKZ n="38466" Name="Jürgenshagen"/>
 		<ONKZ n="3847" Name="Sternberg"/>
@@ -6699,7 +6699,7 @@
 		<ONKZ n="38485" Name="Dabel"/>
 		<ONKZ n="38486" Name="Gustävel"/>
 		<ONKZ n="38488" Name="Demen"/>
-		<ONKZ n="385" Name="Schwerin Meckl"/>
+		<ONKZ n="385" Name="Schwerin Mecklenburg"/>
 		<ONKZ n="3860" Name="Raben Steinfeld"/>
 		<ONKZ n="3861" Name="Plate"/>
 		<ONKZ n="3863" Name="Crivitz"/>
@@ -6720,49 +6720,49 @@
 		<ONKZ n="38728" Name="Domsühl"/>
 		<ONKZ n="38729" Name="Marnitz"/>
 		<ONKZ n="38731" Name="Lübz"/>
-		<ONKZ n="38732" Name="Gallin b Lübz"/>
+		<ONKZ n="38732" Name="Gallin bei Lübz"/>
 		<ONKZ n="38733" Name="Karbow-Vietlübbe"/>
 		<ONKZ n="38735" Name="Plau am See"/>
-		<ONKZ n="38736" Name="Goldberg Meckl"/>
+		<ONKZ n="38736" Name="Goldberg Mecklenburg"/>
 		<ONKZ n="38737" Name="Ganzlin"/>
-		<ONKZ n="38738" Name="Karow b Lübz"/>
-		<ONKZ n="3874" Name="Ludwigslust Meckl"/>
+		<ONKZ n="38738" Name="Karow bei Lübz"/>
+		<ONKZ n="3874" Name="Ludwigslust Mecklenburg"/>
 		<ONKZ n="38750" Name="Malliss"/>
 		<ONKZ n="38751" Name="Picher"/>
-		<ONKZ n="38752" Name="Zierzow b Ludwigslust"/>
+		<ONKZ n="38752" Name="Zierzow bei Ludwigslust"/>
 		<ONKZ n="38753" Name="Wöbbelin"/>
-		<ONKZ n="38754" Name="Leussow b Ludwigslust"/>
+		<ONKZ n="38754" Name="Leussow bei Ludwigslust"/>
 		<ONKZ n="38755" Name="Eldena"/>
-		<ONKZ n="38756" Name="Grabow Meckl"/>
+		<ONKZ n="38756" Name="Grabow Mecklenburg"/>
 		<ONKZ n="38757" Name="Neustadt-Glewe"/>
 		<ONKZ n="38758" Name="Dömitz"/>
 		<ONKZ n="38759" Name="Tewswoos"/>
 		<ONKZ n="3876" Name="Perleberg"/>
 		<ONKZ n="3877" Name="Wittenberge"/>
-		<ONKZ n="38780" Name="Lanz Brandenb"/>
+		<ONKZ n="38780" Name="Lanz Brandenburg"/>
 		<ONKZ n="38781" Name="Mellen"/>
-		<ONKZ n="38782" Name="Reetz b Perleberg"/>
+		<ONKZ n="38782" Name="Reetz bei Perleberg"/>
 		<ONKZ n="38783" Name="Dallmin"/>
-		<ONKZ n="38784" Name="Kleinow Kr Prignitz"/>
-		<ONKZ n="38785" Name="Berge b Perleberg"/>
+		<ONKZ n="38784" Name="Kleinow (Kreis Prignitz)"/>
+		<ONKZ n="38785" Name="Berge bei Perleberg"/>
 		<ONKZ n="38787" Name="Glöwen"/>
 		<ONKZ n="38788" Name="Gross Warnow"/>
-		<ONKZ n="38789" Name="Wolfshagen b Perleberg"/>
+		<ONKZ n="38789" Name="Wolfshagen bei Perleberg"/>
 		<ONKZ n="38791" Name="Bad Wilsnack"/>
 		<ONKZ n="38792" Name="Lenzen (Elbe)"/>
 		<ONKZ n="38793" Name="Dergenthin"/>
 		<ONKZ n="38794" Name="Cumlosen"/>
 		<ONKZ n="38796" Name="Viesecke"/>
-		<ONKZ n="38797" Name="Karstädt Kr Prignitz"/>
+		<ONKZ n="38797" Name="Karstädt (Kreis Prignitz)"/>
 		<ONKZ n="3881" Name="Grevesmühlen"/>
-		<ONKZ n="38821" Name="Lüdersdorf Meckl"/>
-		<ONKZ n="38822" Name="Diedrichshagen b Grevesmühlen"/>
+		<ONKZ n="38821" Name="Lüdersdorf Mecklenburg"/>
+		<ONKZ n="38822" Name="Diedrichshagen bei Grevesmühlen"/>
 		<ONKZ n="38823" Name="Selmsdorf"/>
 		<ONKZ n="38824" Name="Mallentin"/>
 		<ONKZ n="38825" Name="Klütz"/>
 		<ONKZ n="38826" Name="Dassow"/>
 		<ONKZ n="38827" Name="Kalkhorst"/>
-		<ONKZ n="38828" Name="Schönberg Meckl"/>
+		<ONKZ n="38828" Name="Schönberg Mecklenburg"/>
 		<ONKZ n="3883" Name="Hagenow"/>
 		<ONKZ n="38841" Name="Neuhaus Elbe"/>
 		<ONKZ n="38842" Name="Lüttenmark"/>
@@ -6772,12 +6772,12 @@
 		<ONKZ n="38847" Name="Boizenburg Elbe"/>
 		<ONKZ n="38848" Name="Vellahn"/>
 		<ONKZ n="38850" Name="Gammelin"/>
-		<ONKZ n="38851" Name="Zarrentin Meckl"/>
+		<ONKZ n="38851" Name="Zarrentin Mecklenburg"/>
 		<ONKZ n="38852" Name="Wittenburg"/>
-		<ONKZ n="38853" Name="Drönnewitz b Hagenow"/>
+		<ONKZ n="38853" Name="Drönnewitz bei Hagenow"/>
 		<ONKZ n="38854" Name="Redefin"/>
 		<ONKZ n="38855" Name="Lübtheen"/>
-		<ONKZ n="38856" Name="Pritzier b Hagenow"/>
+		<ONKZ n="38856" Name="Pritzier bei Hagenow"/>
 		<ONKZ n="38858" Name="Lassahn"/>
 		<ONKZ n="38859" Name="Alt Zachun"/>
 		<ONKZ n="3886" Name="Gadebusch"/>
@@ -6785,13 +6785,13 @@
 		<ONKZ n="38872" Name="Rehna"/>
 		<ONKZ n="38873" Name="Carlow"/>
 		<ONKZ n="38874" Name="Lützow"/>
-		<ONKZ n="38875" Name="Schlagsdorf b Gadebusch"/>
+		<ONKZ n="38875" Name="Schlagsdorf bei Gadebusch"/>
 		<ONKZ n="38876" Name="Roggendorf"/>
 		<ONKZ n="39000" Name="Beetzendorf"/>
 		<ONKZ n="39001" Name="Apenburg"/>
 		<ONKZ n="39002" Name="Oebisfelde"/>
 		<ONKZ n="39003" Name="Jübar"/>
-		<ONKZ n="39004" Name="Köckte b Gardelegen"/>
+		<ONKZ n="39004" Name="Köckte bei Gardelegen"/>
 		<ONKZ n="39005" Name="Kusey"/>
 		<ONKZ n="39006" Name="Miesterhorst"/>
 		<ONKZ n="39007" Name="Tangeln"/>
@@ -6801,7 +6801,7 @@
 		<ONKZ n="3902" Name="Diesdorf Altm"/>
 		<ONKZ n="39030" Name="Brunau"/>
 		<ONKZ n="39031" Name="Dähre"/>
-		<ONKZ n="39032" Name="Mahlsdorf b Salzwedel"/>
+		<ONKZ n="39032" Name="Mahlsdorf bei Salzwedel"/>
 		<ONKZ n="39033" Name="Wallstawe"/>
 		<ONKZ n="39034" Name="Fleetmark"/>
 		<ONKZ n="39035" Name="Kuhfelde"/>
@@ -6812,19 +6812,19 @@
 		<ONKZ n="3904" Name="Haldensleben"/>
 		<ONKZ n="39050" Name="Bartensleben"/>
 		<ONKZ n="39051" Name="Calvörde"/>
-		<ONKZ n="39052" Name="Erxleben b Haldensleben"/>
+		<ONKZ n="39052" Name="Erxleben bei Haldensleben"/>
 		<ONKZ n="39053" Name="Süplingen"/>
 		<ONKZ n="39054" Name="Flechtingen"/>
 		<ONKZ n="39055" Name="Hörsingen"/>
 		<ONKZ n="39056" Name="Klüden"/>
-		<ONKZ n="39057" Name="Rätzlingen Sachs-Anh"/>
+		<ONKZ n="39057" Name="Rätzlingen Sachsen-Anhalt"/>
 		<ONKZ n="39058" Name="Uthmöden"/>
 		<ONKZ n="39059" Name="Wegenstedt"/>
 		<ONKZ n="39061" Name="Weferlingen"/>
 		<ONKZ n="39062" Name="Bebertal"/>
 		<ONKZ n="3907" Name="Gardelegen"/>
 		<ONKZ n="39080" Name="Kalbe Milde"/>
-		<ONKZ n="39081" Name="Kakerbeck Sachs-Anh"/>
+		<ONKZ n="39081" Name="Kakerbeck Sachsen-Anhalt"/>
 		<ONKZ n="39082" Name="Mieste"/>
 		<ONKZ n="39083" Name="Messdorf"/>
 		<ONKZ n="39084" Name="Lindstedt"/>
@@ -6845,8 +6845,8 @@
 		<ONKZ n="39207" Name="Colbitz"/>
 		<ONKZ n="39208" Name="Loitsche"/>
 		<ONKZ n="39209" Name="Wanzleben"/>
-		<ONKZ n="3921" Name="Burg b Magdeburg"/>
-		<ONKZ n="39221" Name="Möckern b Magdeburg"/>
+		<ONKZ n="3921" Name="Burg bei Magdeburg"/>
+		<ONKZ n="39221" Name="Möckern bei Magdeburg"/>
 		<ONKZ n="39222" Name="Möser"/>
 		<ONKZ n="39223" Name="Theessen"/>
 		<ONKZ n="39224" Name="Büden"/>
@@ -6855,7 +6855,7 @@
 		<ONKZ n="3923" Name="Zerbst"/>
 		<ONKZ n="39241" Name="Leitzkau"/>
 		<ONKZ n="39242" Name="Prödel"/>
-		<ONKZ n="39243" Name="Nedlitz b Zerbst"/>
+		<ONKZ n="39243" Name="Nedlitz bei Zerbst"/>
 		<ONKZ n="39244" Name="Steutz"/>
 		<ONKZ n="39245" Name="Loburg"/>
 		<ONKZ n="39246" Name="Lindau Anh"/>
@@ -6876,14 +6876,14 @@
 		<ONKZ n="39294" Name="Gross Rosenburg"/>
 		<ONKZ n="39295" Name="Zuchau"/>
 		<ONKZ n="39296" Name="Welsleben"/>
-		<ONKZ n="39297" Name="Eickendorf Kr Schönebeck"/>
+		<ONKZ n="39297" Name="Eickendorf (Kreis Schönebeck)"/>
 		<ONKZ n="39298" Name="Barby Elbe"/>
 		<ONKZ n="3931" Name="Stendal"/>
 		<ONKZ n="39320" Name="Schinne"/>
 		<ONKZ n="39321" Name="Arneburg"/>
 		<ONKZ n="39322" Name="Tangermünde"/>
 		<ONKZ n="39323" Name="Schönhausen Elbe"/>
-		<ONKZ n="39324" Name="Kläden b Stendal"/>
+		<ONKZ n="39324" Name="Kläden bei Stendal"/>
 		<ONKZ n="39325" Name="Vinzelberg"/>
 		<ONKZ n="39327" Name="Klietz"/>
 		<ONKZ n="39328" Name="Rochau"/>
@@ -6900,10 +6900,10 @@
 		<ONKZ n="39349" Name="Parey Elbe"/>
 		<ONKZ n="3935" Name="Tangerhütte"/>
 		<ONKZ n="39361" Name="Lüderitz"/>
-		<ONKZ n="39362" Name="Grieben b Tangerhütte"/>
+		<ONKZ n="39362" Name="Grieben bei Tangerhütte"/>
 		<ONKZ n="39363" Name="Angern"/>
 		<ONKZ n="39364" Name="Dolle"/>
-		<ONKZ n="39365" Name="Bellingen b Stendal"/>
+		<ONKZ n="39365" Name="Bellingen bei Stendal"/>
 		<ONKZ n="39366" Name="Kehnert"/>
 		<ONKZ n="3937" Name="Osterburg Altmark"/>
 		<ONKZ n="39382" Name="Kamern"/>
@@ -6915,7 +6915,7 @@
 		<ONKZ n="39389" Name="Schollene"/>
 		<ONKZ n="39390" Name="Iden"/>
 		<ONKZ n="39391" Name="Lückstedt"/>
-		<ONKZ n="39392" Name="Rönnebeck Sachs-Ahn"/>
+		<ONKZ n="39392" Name="Rönnebeck Sachsen-Anhalt"/>
 		<ONKZ n="39393" Name="Werben Elbe"/>
 		<ONKZ n="39394" Name="Hohenberg-Krusemark"/>
 		<ONKZ n="39395" Name="Wanzer"/>
@@ -6926,7 +6926,7 @@
 		<ONKZ n="39400" Name="Wefensleben"/>
 		<ONKZ n="39401" Name="Neuwegersleben"/>
 		<ONKZ n="39402" Name="Völpke"/>
-		<ONKZ n="39403" Name="Gröningen Sachs-Ahn"/>
+		<ONKZ n="39403" Name="Gröningen Sachsen-Anhalt"/>
 		<ONKZ n="39404" Name="Ausleben"/>
 		<ONKZ n="39405" Name="Hötensleben"/>
 		<ONKZ n="39406" Name="Harbke"/>
@@ -6937,8 +6937,8 @@
 		<ONKZ n="39421" Name="Osterwieck"/>
 		<ONKZ n="39422" Name="Badersleben"/>
 		<ONKZ n="39423" Name="Wegeleben"/>
-		<ONKZ n="39424" Name="Schwanebeck Sachs-Anh"/>
-		<ONKZ n="39425" Name="Dingelstedt a Huy"/>
+		<ONKZ n="39424" Name="Schwanebeck Sachsen-Anhalt"/>
+		<ONKZ n="39425" Name="Dingelstedt am Huy"/>
 		<ONKZ n="39426" Name="Hessen"/>
 		<ONKZ n="39427" Name="Ströbeck"/>
 		<ONKZ n="39428" Name="Pabstorf"/>
@@ -6955,7 +6955,7 @@
 		<ONKZ n="39459" Name="Hasselfelde"/>
 		<ONKZ n="3946" Name="Quedlinburg"/>
 		<ONKZ n="3947" Name="Thale"/>
-		<ONKZ n="39481" Name="Hedersleben b Aschersleben"/>
+		<ONKZ n="39481" Name="Hedersleben bei Aschersleben"/>
 		<ONKZ n="39482" Name="Gatersleben"/>
 		<ONKZ n="39483" Name="Ballenstedt"/>
 		<ONKZ n="39484" Name="Harzgerode"/>
@@ -6966,55 +6966,55 @@
 		<ONKZ n="3949" Name="Oschersleben Bode"/>
 		<ONKZ n="395" Name="Neubrandenburg"/>
 		<ONKZ n="39600" Name="Zwiedorf"/>
-		<ONKZ n="39601" Name="Friedland Meckl"/>
+		<ONKZ n="39601" Name="Friedland Mecklenburg"/>
 		<ONKZ n="39602" Name="Kleeth"/>
 		<ONKZ n="39603" Name="Burg Stargard"/>
-		<ONKZ n="39604" Name="Wildberg b Altentreptow"/>
+		<ONKZ n="39604" Name="Wildberg bei Altentreptow"/>
 		<ONKZ n="39605" Name="Gross Nemerow"/>
 		<ONKZ n="39606" Name="Glienke"/>
 		<ONKZ n="39607" Name="Kotelow"/>
 		<ONKZ n="39608" Name="Staven"/>
 		<ONKZ n="3961" Name="Altentreptow"/>
-		<ONKZ n="3962" Name="Penzlin b Waren"/>
+		<ONKZ n="3962" Name="Penzlin bei Waren"/>
 		<ONKZ n="3963" Name="Woldegk"/>
-		<ONKZ n="3964" Name="Bredenfelde b Strasburg"/>
-		<ONKZ n="3965" Name="Burow b Altentreptow"/>
+		<ONKZ n="3964" Name="Bredenfelde bei Strasburg"/>
+		<ONKZ n="3965" Name="Burow bei Altentreptow"/>
 		<ONKZ n="3966" Name="Cölpin"/>
-		<ONKZ n="3967" Name="Oertzenhof b Strasburg"/>
-		<ONKZ n="3968" Name="Schönbeck Meckl"/>
+		<ONKZ n="3967" Name="Oertzenhof bei Strasburg"/>
+		<ONKZ n="3968" Name="Schönbeck Mecklenburg"/>
 		<ONKZ n="3969" Name="Siedenbollentin"/>
 		<ONKZ n="3971" Name="Anklam"/>
-		<ONKZ n="39721" Name="Liepen b Anklam"/>
-		<ONKZ n="39722" Name="Sarnow b Anklam"/>
+		<ONKZ n="39721" Name="Liepen bei Anklam"/>
+		<ONKZ n="39722" Name="Sarnow bei Anklam"/>
 		<ONKZ n="39723" Name="Krien"/>
 		<ONKZ n="39724" Name="Klein Bünzow"/>
 		<ONKZ n="39726" Name="Ducherow"/>
 		<ONKZ n="39727" Name="Spantekow"/>
-		<ONKZ n="39728" Name="Medow b Anklam"/>
+		<ONKZ n="39728" Name="Medow bei Anklam"/>
 		<ONKZ n="3973" Name="Pasewalk"/>
 		<ONKZ n="39740" Name="Nechlin"/>
 		<ONKZ n="39741" Name="Jatznick"/>
-		<ONKZ n="39742" Name="Brüssow b Pasewalk"/>
+		<ONKZ n="39742" Name="Brüssow bei Pasewalk"/>
 		<ONKZ n="39743" Name="Zerrenthin"/>
 		<ONKZ n="39744" Name="Rothenklempenow"/>
-		<ONKZ n="39745" Name="Hetzdorf b Strasburg"/>
+		<ONKZ n="39745" Name="Hetzdorf bei Strasburg"/>
 		<ONKZ n="39746" Name="Krackow"/>
 		<ONKZ n="39747" Name="Züsedom"/>
 		<ONKZ n="39748" Name="Viereck"/>
-		<ONKZ n="39749" Name="Grambow b Pasewalk"/>
+		<ONKZ n="39749" Name="Grambow bei Pasewalk"/>
 		<ONKZ n="39751" Name="Penkun"/>
-		<ONKZ n="39752" Name="Blumenhagen b Strasburg"/>
+		<ONKZ n="39752" Name="Blumenhagen bei Strasburg"/>
 		<ONKZ n="39753" Name="Strasburg"/>
 		<ONKZ n="39754" Name="Löcknitz Vorpom"/>
-		<ONKZ n="3976" Name="Torgelow b Ueckermünde"/>
+		<ONKZ n="3976" Name="Torgelow bei Ueckermünde"/>
 		<ONKZ n="39771" Name="Ueckermünde"/>
 		<ONKZ n="39772" Name="Rothemühl"/>
 		<ONKZ n="39773" Name="Altwarp"/>
 		<ONKZ n="39774" Name="Mönkebude"/>
-		<ONKZ n="39775" Name="Ahlbeck b Torgelow"/>
+		<ONKZ n="39775" Name="Ahlbeck bei Torgelow"/>
 		<ONKZ n="39776" Name="Hintersee"/>
 		<ONKZ n="39777" Name="Borkenfriede"/>
-		<ONKZ n="39778" Name="Ferdinandshof b Torgelow"/>
+		<ONKZ n="39778" Name="Ferdinandshof bei Torgelow"/>
 		<ONKZ n="39779" Name="Eggesin"/>
 		<ONKZ n="3981" Name="Neustrelitz"/>
 		<ONKZ n="39820" Name="Triepkendorf"/>
@@ -7023,31 +7023,31 @@
 		<ONKZ n="39823" Name="Rechlin"/>
 		<ONKZ n="39824" Name="Hohenzieritz"/>
 		<ONKZ n="39825" Name="Wokuhl"/>
-		<ONKZ n="39826" Name="Blankensee b Neustrelitz"/>
-		<ONKZ n="39827" Name="Schwarz b Neustrelitz"/>
-		<ONKZ n="39828" Name="Wustrow Kr Mecklenburg-Strelitz"/>
+		<ONKZ n="39826" Name="Blankensee bei Neustrelitz"/>
+		<ONKZ n="39827" Name="Schwarz bei Neustrelitz"/>
+		<ONKZ n="39828" Name="Wustrow (Kreis Mecklenburg-Strelitz)"/>
 		<ONKZ n="39829" Name="Blankenförde"/>
-		<ONKZ n="39831" Name="Feldberg Meckl"/>
-		<ONKZ n="39832" Name="Wesenberg Meckl"/>
-		<ONKZ n="39833" Name="Mirow Kr Neustrelitz"/>
+		<ONKZ n="39831" Name="Feldberg Mecklenburg"/>
+		<ONKZ n="39832" Name="Wesenberg Mecklenburg"/>
+		<ONKZ n="39833" Name="Mirow (Kreis Neustrelitz)"/>
 		<ONKZ n="3984" Name="Prenzlau"/>
-		<ONKZ n="39851" Name="Göritz b Prenzlau"/>
-		<ONKZ n="39852" Name="Schönermark b Prenzlau"/>
-		<ONKZ n="39853" Name="Holzendorf b Prenzlau"/>
+		<ONKZ n="39851" Name="Göritz bei Prenzlau"/>
+		<ONKZ n="39852" Name="Schönermark bei Prenzlau"/>
+		<ONKZ n="39853" Name="Holzendorf bei Prenzlau"/>
 		<ONKZ n="39854" Name="Kleptow"/>
 		<ONKZ n="39855" Name="Parmen-Weggun"/>
-		<ONKZ n="39856" Name="Beenz b Prenzlau"/>
+		<ONKZ n="39856" Name="Beenz bei Prenzlau"/>
 		<ONKZ n="39857" Name="Drense"/>
 		<ONKZ n="39858" Name="Bietikow"/>
 		<ONKZ n="39859" Name="Fürstenwerder"/>
-		<ONKZ n="39861" Name="Gramzow b Prenzlau"/>
-		<ONKZ n="39862" Name="Schmölln b Prenzlau"/>
-		<ONKZ n="39863" Name="Seehausen b Prenzlau"/>
+		<ONKZ n="39861" Name="Gramzow bei Prenzlau"/>
+		<ONKZ n="39862" Name="Schmölln bei Prenzlau"/>
+		<ONKZ n="39863" Name="Seehausen bei Prenzlau"/>
 		<ONKZ n="3987" Name="Templin"/>
-		<ONKZ n="39881" Name="Ringenwalde b Templin"/>
+		<ONKZ n="39881" Name="Ringenwalde bei Templin"/>
 		<ONKZ n="39882" Name="Gollin"/>
 		<ONKZ n="39883" Name="Groß Dölln"/>
-		<ONKZ n="39884" Name="Hassleben b Prenzlau"/>
+		<ONKZ n="39884" Name="Hassleben bei Prenzlau"/>
 		<ONKZ n="39885" Name="Jakobshagen"/>
 		<ONKZ n="39886" Name="Milmersdorf"/>
 		<ONKZ n="39887" Name="Gerswalde"/>
@@ -7055,16 +7055,16 @@
 		<ONKZ n="39889" Name="Boitzenburg"/>
 		<ONKZ n="3991" Name="Waren Müritz"/>
 		<ONKZ n="39921" Name="Ankershagen"/>
-		<ONKZ n="39922" Name="Dambeck b Röbel"/>
+		<ONKZ n="39922" Name="Dambeck bei Röbel"/>
 		<ONKZ n="39923" Name="Priborn"/>
 		<ONKZ n="39924" Name="Stuer"/>
 		<ONKZ n="39925" Name="Wredenhagen"/>
 		<ONKZ n="39926" Name="Grabowhöfe"/>
 		<ONKZ n="39927" Name="Nossentiner Hütte"/>
 		<ONKZ n="39928" Name="Möllenhagen"/>
-		<ONKZ n="39929" Name="Jabel b Waren"/>
+		<ONKZ n="39929" Name="Jabel bei Waren"/>
 		<ONKZ n="39931" Name="Röbel Müritz"/>
-		<ONKZ n="39932" Name="Malchow b Waren"/>
+		<ONKZ n="39932" Name="Malchow bei Waren"/>
 		<ONKZ n="39933" Name="Vollrathsruhe"/>
 		<ONKZ n="39934" Name="Groß Plasten"/>
 		<ONKZ n="3994" Name="Malchin"/>
@@ -7072,7 +7072,7 @@
 		<ONKZ n="39952" Name="Grammentin"/>
 		<ONKZ n="39953" Name="Schwinkendorf"/>
 		<ONKZ n="39954" Name="Stavenhagen Reuterstadt"/>
-		<ONKZ n="39955" Name="Jürgenstorf Meckl"/>
+		<ONKZ n="39955" Name="Jürgenstorf Mecklenburg"/>
 		<ONKZ n="39956" Name="Neukalen"/>
 		<ONKZ n="39957" Name="Gielow"/>
 		<ONKZ n="39959" Name="Dargun"/>
@@ -7092,17 +7092,17 @@
 		<ONKZ n="39995" Name="Nossendorf"/>
 		<ONKZ n="39996" Name="Törpin"/>
 		<ONKZ n="39997" Name="Jarmen"/>
-		<ONKZ n="39998" Name="Loitz b Demmin"/>
+		<ONKZ n="39998" Name="Loitz bei Demmin"/>
 		<ONKZ n="39999" Name="Tutow"/>
 		<ONKZ n="40" Name="Hamburg"/>
 		<ONKZ n="4101" Name="Pinneberg"/>
 		<ONKZ n="4102" Name="Ahrensburg"/>
 		<ONKZ n="4103" Name="Wedel"/>
-		<ONKZ n="4104" Name="Aumühle b Hamburg"/>
+		<ONKZ n="4104" Name="Aumühle bei Hamburg"/>
 		<ONKZ n="4105" Name="Seevetal"/>
-		<ONKZ n="4106" Name="Quickborn Kr Pinneberg"/>
-		<ONKZ n="4107" Name="Siek Kr Stormarn"/>
-		<ONKZ n="4108" Name="Rosengarten Kr Harburg"/>
+		<ONKZ n="4106" Name="Quickborn (Kreis Pinneberg)"/>
+		<ONKZ n="4107" Name="Siek (Kreis Stormarn)"/>
+		<ONKZ n="4108" Name="Rosengarten (Kreis Harburg)"/>
 		<ONKZ n="4109" Name="Tangstedt Bz Hamburg"/>
 		<ONKZ n="4120" Name="Ellerhoop"/>
 		<ONKZ n="4121" Name="Elmshorn"/>
@@ -7116,16 +7116,16 @@
 		<ONKZ n="4129" Name="Haseldorf"/>
 		<ONKZ n="4131" Name="Lüneburg"/>
 		<ONKZ n="4132" Name="Amelinghausen"/>
-		<ONKZ n="4133" Name="Wittorf Kr Lünebeburg"/>
-		<ONKZ n="4134" Name="Embsen Kr Lünebeburg"/>
+		<ONKZ n="4133" Name="Wittorf (Kreis Lünebeburg)"/>
+		<ONKZ n="4134" Name="Embsen (Kreis Lünebeburg)"/>
 		<ONKZ n="4135" Name="Kirchgellersen"/>
 		<ONKZ n="4136" Name="Scharnebeck"/>
 		<ONKZ n="4137" Name="Barendorf"/>
-		<ONKZ n="4138" Name="Betzendorf Kr Lünebeburg"/>
+		<ONKZ n="4138" Name="Betzendorf (Kreis Lünebeburg)"/>
 		<ONKZ n="4139" Name="Hohnstorf Elbe"/>
-		<ONKZ n="4140" Name="Estorf Kr Stade"/>
+		<ONKZ n="4140" Name="Estorf (Kreis Stade)"/>
 		<ONKZ n="4141" Name="Stade"/>
-		<ONKZ n="4142" Name="Steinkirchen Kr Stade"/>
+		<ONKZ n="4142" Name="Steinkirchen (Kreis Stade)"/>
 		<ONKZ n="4143" Name="Drochtersen"/>
 		<ONKZ n="4144" Name="Himmelpforten"/>
 		<ONKZ n="4146" Name="Stade-Bützfleth"/>
@@ -7151,7 +7151,7 @@
 		<ONKZ n="4171" Name="Winsen Luhe"/>
 		<ONKZ n="4172" Name="Salzhausen"/>
 		<ONKZ n="4173" Name="Wulfsen"/>
-		<ONKZ n="4174" Name="Stelle Kr Harburg"/>
+		<ONKZ n="4174" Name="Stelle (Kreis Harburg)"/>
 		<ONKZ n="4175" Name="Egestorf Nordheide"/>
 		<ONKZ n="4176" Name="Marschacht"/>
 		<ONKZ n="4177" Name="Drage Elbe"/>
@@ -7167,13 +7167,13 @@
 		<ONKZ n="4187" Name="Holm-Seppensen"/>
 		<ONKZ n="4188" Name="Welle Nordheide"/>
 		<ONKZ n="4189" Name="Undeloh"/>
-		<ONKZ n="4191" Name="Kaltenkirchen Holst"/>
+		<ONKZ n="4191" Name="Kaltenkirchen Holstein"/>
 		<ONKZ n="4192" Name="Bad Bramstedt"/>
 		<ONKZ n="4193" Name="Henstedt-Ulzburg"/>
 		<ONKZ n="4194" Name="Sievershütten"/>
 		<ONKZ n="4195" Name="Hartenholm"/>
-		<ONKZ n="4202" Name="Achim b Bremen"/>
-		<ONKZ n="4203" Name="Weyhe b Bremen"/>
+		<ONKZ n="4202" Name="Achim bei Bremen"/>
+		<ONKZ n="4203" Name="Weyhe bei Bremen"/>
 		<ONKZ n="4204" Name="Thedinghausen"/>
 		<ONKZ n="4205" Name="Ottersberg"/>
 		<ONKZ n="4206" Name="Stuhr-Heiligenrode"/>
@@ -7187,7 +7187,7 @@
 		<ONKZ n="4224" Name="Gross Ippener"/>
 		<ONKZ n="4230" Name="Verden-Walle"/>
 		<ONKZ n="4231" Name="Verden Aller"/>
-		<ONKZ n="4232" Name="Langwedel Kr Verden"/>
+		<ONKZ n="4232" Name="Langwedel (Kreis Verden)"/>
 		<ONKZ n="4233" Name="Blender"/>
 		<ONKZ n="4234" Name="Dörverden"/>
 		<ONKZ n="4235" Name="Langwedel-Etelsen"/>
@@ -7200,14 +7200,14 @@
 		<ONKZ n="4242" Name="Syke"/>
 		<ONKZ n="4243" Name="Twistringen"/>
 		<ONKZ n="4244" Name="Harpstedt"/>
-		<ONKZ n="4245" Name="Neuenkirchen b Bassum"/>
+		<ONKZ n="4245" Name="Neuenkirchen bei Bassum"/>
 		<ONKZ n="4246" Name="Twistringen-Heiligenloh"/>
 		<ONKZ n="4247" Name="Affinghausen"/>
 		<ONKZ n="4248" Name="Bassum-Neubruchhausen"/>
 		<ONKZ n="4249" Name="Bassum-Nordwohlde"/>
 		<ONKZ n="4251" Name="Hoya"/>
 		<ONKZ n="4252" Name="Bruchhausen-Vilsen"/>
-		<ONKZ n="4253" Name="Asendorf Kr Diepholz"/>
+		<ONKZ n="4253" Name="Asendorf (Kreis Diepholz)"/>
 		<ONKZ n="4254" Name="Eystrup"/>
 		<ONKZ n="4255" Name="Martfeld"/>
 		<ONKZ n="4256" Name="Hilgermissen"/>
@@ -7217,7 +7217,7 @@
 		<ONKZ n="4261" Name="Rotenburg Wümme"/>
 		<ONKZ n="4262" Name="Visselhövede"/>
 		<ONKZ n="4263" Name="Scheessel"/>
-		<ONKZ n="4264" Name="Sottrum Kr Rotenburg"/>
+		<ONKZ n="4264" Name="Sottrum (Kreis Rotenburg)"/>
 		<ONKZ n="4265" Name="Fintel"/>
 		<ONKZ n="4266" Name="Brockel"/>
 		<ONKZ n="4267" Name="Lauenbrück"/>
@@ -7225,23 +7225,23 @@
 		<ONKZ n="4269" Name="Ahausen-Kirchwalsede"/>
 		<ONKZ n="4271" Name="Sulingen"/>
 		<ONKZ n="4272" Name="Siedenburg"/>
-		<ONKZ n="4273" Name="Kirchdorf b Sulingen"/>
-		<ONKZ n="4274" Name="Varrel b Sulingen"/>
+		<ONKZ n="4273" Name="Kirchdorf bei Sulingen"/>
+		<ONKZ n="4274" Name="Varrel bei Sulingen"/>
 		<ONKZ n="4275" Name="Ehrenburg"/>
-		<ONKZ n="4276" Name="Borstel b Sulingen"/>
+		<ONKZ n="4276" Name="Borstel bei Sulingen"/>
 		<ONKZ n="4277" Name="Schwaförden"/>
 		<ONKZ n="4281" Name="Zeven"/>
 		<ONKZ n="4282" Name="Sittensen"/>
 		<ONKZ n="4283" Name="Tarmstedt"/>
 		<ONKZ n="4284" Name="Selsingen"/>
-		<ONKZ n="4285" Name="Rhade b Zeven"/>
+		<ONKZ n="4285" Name="Rhade bei Zeven"/>
 		<ONKZ n="4286" Name="Gyhum"/>
 		<ONKZ n="4287" Name="Heeslingen-Boitzen"/>
-		<ONKZ n="4288" Name="Horstedt Kr Rotenburg"/>
+		<ONKZ n="4288" Name="Horstedt (Kreis Rotenburg)"/>
 		<ONKZ n="4289" Name="Kirchtimke"/>
 		<ONKZ n="4292" Name="Ritterhude"/>
 		<ONKZ n="4293" Name="Ottersberg-Fischerhude"/>
-		<ONKZ n="4294" Name="Riede Kr Verden"/>
+		<ONKZ n="4294" Name="Riede (Kreis Verden)"/>
 		<ONKZ n="4295" Name="Emtinghausen"/>
 		<ONKZ n="4296" Name="Schwanewede-Aschwarden"/>
 		<ONKZ n="4297" Name="Ottersberg-Posthausen"/>
@@ -7260,19 +7260,19 @@
 		<ONKZ n="4326" Name="Wankendorf"/>
 		<ONKZ n="4327" Name="Grossenaspe"/>
 		<ONKZ n="4328" Name="Rickling"/>
-		<ONKZ n="4329" Name="Langwedel Holst"/>
+		<ONKZ n="4329" Name="Langwedel Holstein"/>
 		<ONKZ n="4330" Name="Emkendorf"/>
 		<ONKZ n="4331" Name="Rendsburg"/>
-		<ONKZ n="4332" Name="Hamdorf b Rendsburg"/>
+		<ONKZ n="4332" Name="Hamdorf bei Rendsburg"/>
 		<ONKZ n="4333" Name="Erfde"/>
-		<ONKZ n="4334" Name="Bredenbek b Rendsburg"/>
-		<ONKZ n="4335" Name="Hohn b Rendsburg"/>
+		<ONKZ n="4334" Name="Bredenbek bei Rendsburg"/>
+		<ONKZ n="4335" Name="Hohn bei Rendsburg"/>
 		<ONKZ n="4336" Name="Owschlag"/>
 		<ONKZ n="4337" Name="Jevenstedt"/>
 		<ONKZ n="4338" Name="Alt Duvenstedt"/>
 		<ONKZ n="4339" Name="Christiansholm"/>
 		<ONKZ n="4340" Name="Achterwehr"/>
-		<ONKZ n="4342" Name="Preetz Kr Plön"/>
+		<ONKZ n="4342" Name="Preetz (Kreis Plön)"/>
 		<ONKZ n="4343" Name="Laboe"/>
 		<ONKZ n="4344" Name="Schönberg Holstein"/>
 		<ONKZ n="4346" Name="Gettorf"/>
@@ -7286,12 +7286,12 @@
 		<ONKZ n="4355" Name="Rieseby"/>
 		<ONKZ n="4356" Name="Gross Wittensee"/>
 		<ONKZ n="4357" Name="Sehestedt Eider"/>
-		<ONKZ n="4358" Name="Loose b Eckernförde"/>
+		<ONKZ n="4358" Name="Loose bei Eckernförde"/>
 		<ONKZ n="4361" Name="Oldenburg in Holstein"/>
 		<ONKZ n="4362" Name="Heiligenhafen"/>
 		<ONKZ n="4363" Name="Lensahn"/>
-		<ONKZ n="4364" Name="Dahme Kr Ostholstein"/>
-		<ONKZ n="4365" Name="Heringsdorf Holst"/>
+		<ONKZ n="4364" Name="Dahme (Kreis Ostholstein)"/>
+		<ONKZ n="4365" Name="Heringsdorf Holstein"/>
 		<ONKZ n="4366" Name="Grömitz-Cismar"/>
 		<ONKZ n="4367" Name="Grossenbrode"/>
 		<ONKZ n="4371" Name="Burg auf Fehmarn"/>
@@ -7300,8 +7300,8 @@
 		<ONKZ n="4382" Name="Wangels"/>
 		<ONKZ n="4383" Name="Grebin"/>
 		<ONKZ n="4384" Name="Selent"/>
-		<ONKZ n="4385" Name="Hohenfelde b Kiel"/>
-		<ONKZ n="4392" Name="Nortorf b Neumünster"/>
+		<ONKZ n="4385" Name="Hohenfelde bei Kiel"/>
+		<ONKZ n="4392" Name="Nortorf bei Neumünster"/>
 		<ONKZ n="4393" Name="Boostedt"/>
 		<ONKZ n="4394" Name="Bokhorst"/>
 		<ONKZ n="4401" Name="Brake Unterweser"/>
@@ -7315,7 +7315,7 @@
 		<ONKZ n="4409" Name="Westerstede-Ocholt"/>
 		<ONKZ n="441" Name="Oldenburg (Oldb)"/>
 		<ONKZ n="4421" Name="Wilhelmshaven"/>
-		<ONKZ n="4422" Name="Sande Kr Friesl"/>
+		<ONKZ n="4422" Name="Sande (Kreis Friesl)"/>
 		<ONKZ n="4423" Name="Fedderwarden"/>
 		<ONKZ n="4425" Name="Wangerland-Hooksiel"/>
 		<ONKZ n="4426" Name="Wangerland-Horumersiel"/>
@@ -7328,8 +7328,8 @@
 		<ONKZ n="4442" Name="Lohne Oldenburg"/>
 		<ONKZ n="4443" Name="Dinklage"/>
 		<ONKZ n="4444" Name="Goldenstedt"/>
-		<ONKZ n="4445" Name="Visbek Kr Vechta"/>
-		<ONKZ n="4446" Name="Bakum Kr Vechta"/>
+		<ONKZ n="4445" Name="Visbek (Kreis Vechta)"/>
+		<ONKZ n="4446" Name="Bakum (Kreis Vechta)"/>
 		<ONKZ n="4447" Name="Vechta-Langförden"/>
 		<ONKZ n="4451" Name="Varel Jadebusen"/>
 		<ONKZ n="4452" Name="Zetel-Neuenburg"/>
@@ -7374,7 +7374,7 @@
 		<ONKZ n="4497" Name="Barßel-Harkebrügge"/>
 		<ONKZ n="4498" Name="Saterland-Ramsloh"/>
 		<ONKZ n="4499" Name="Barssel"/>
-		<ONKZ n="4501" Name="Kastorf Holst"/>
+		<ONKZ n="4501" Name="Kastorf Holstein"/>
 		<ONKZ n="4502" Name="Lübeck-Travemünde"/>
 		<ONKZ n="4503" Name="Timmendorfer Strand"/>
 		<ONKZ n="4504" Name="Ratekau"/>
@@ -7395,24 +7395,24 @@
 		<ONKZ n="4531" Name="Bad Oldesloe"/>
 		<ONKZ n="4532" Name="Bargteheide"/>
 		<ONKZ n="4533" Name="Reinfeld Holstein"/>
-		<ONKZ n="4534" Name="Steinburg Kr Storman"/>
+		<ONKZ n="4534" Name="Steinburg (Kreis Storman)"/>
 		<ONKZ n="4535" Name="Nahe"/>
-		<ONKZ n="4536" Name="Steinhorst Lauenb"/>
-		<ONKZ n="4537" Name="Sülfeld Holst"/>
+		<ONKZ n="4536" Name="Steinhorst Lauenburg"/>
+		<ONKZ n="4537" Name="Sülfeld Holstein"/>
 		<ONKZ n="4539" Name="Westerau"/>
 		<ONKZ n="4541" Name="Ratzeburg"/>
-		<ONKZ n="4542" Name="Mölln Lauenb"/>
+		<ONKZ n="4542" Name="Mölln Lauenburg"/>
 		<ONKZ n="4543" Name="Nusse"/>
 		<ONKZ n="4544" Name="Berkenthin"/>
-		<ONKZ n="4545" Name="Seedorf Lauenb"/>
+		<ONKZ n="4545" Name="Seedorf Lauenburg"/>
 		<ONKZ n="4546" Name="Mustin Lauenburg"/>
-		<ONKZ n="4547" Name="Gudow Lauenb"/>
+		<ONKZ n="4547" Name="Gudow Lauenburg"/>
 		<ONKZ n="4550" Name="Bühnsdorf"/>
 		<ONKZ n="4551" Name="Bad Segeberg"/>
 		<ONKZ n="4552" Name="Leezen"/>
 		<ONKZ n="4553" Name="Geschendorf"/>
 		<ONKZ n="4554" Name="Wahlstedt"/>
-		<ONKZ n="4555" Name="Seedorf b Bad Segeberg"/>
+		<ONKZ n="4555" Name="Seedorf bei Bad Segeberg"/>
 		<ONKZ n="4556" Name="Ahrensbök-Gnissau"/>
 		<ONKZ n="4557" Name="Blunk"/>
 		<ONKZ n="4558" Name="Todesfelde"/>
@@ -7456,7 +7456,7 @@
 		<ONKZ n="4661" Name="Niebüll"/>
 		<ONKZ n="4662" Name="Leck"/>
 		<ONKZ n="4663" Name="Süderlügum"/>
-		<ONKZ n="4664" Name="Neukirchen b Niebüll"/>
+		<ONKZ n="4664" Name="Neukirchen bei Niebüll"/>
 		<ONKZ n="4665" Name="Emmelsbüll-Horsbüll"/>
 		<ONKZ n="4666" Name="Ladelund"/>
 		<ONKZ n="4667" Name="Dagebüll"/>
@@ -7490,14 +7490,14 @@
 		<ONKZ n="4736" Name="Butjadingen-Tossens"/>
 		<ONKZ n="4737" Name="Stadland-Schwei"/>
 		<ONKZ n="4740" Name="Loxstedt-Dedesdorf"/>
-		<ONKZ n="4741" Name="Nordholz b Bremerhaven"/>
+		<ONKZ n="4741" Name="Nordholz bei Bremerhaven"/>
 		<ONKZ n="4742" Name="Dorum"/>
-		<ONKZ n="4743" Name="Langen b Bremerhaven"/>
+		<ONKZ n="4743" Name="Langen bei Bremerhaven"/>
 		<ONKZ n="4744" Name="Loxstedt"/>
 		<ONKZ n="4745" Name="Bad Bederkesa"/>
-		<ONKZ n="4746" Name="Hagen b Bremerhaven"/>
+		<ONKZ n="4746" Name="Hagen bei Bremerhaven"/>
 		<ONKZ n="4747" Name="Beverstedt"/>
-		<ONKZ n="4748" Name="Stubben b Bremerhaven"/>
+		<ONKZ n="4748" Name="Stubben bei Bremerhaven"/>
 		<ONKZ n="4749" Name="Schiffdorf-Geestenseth"/>
 		<ONKZ n="4751" Name="Otterndorf"/>
 		<ONKZ n="4752" Name="Neuhaus Oste"/>
@@ -7511,7 +7511,7 @@
 		<ONKZ n="4762" Name="Kutenholz"/>
 		<ONKZ n="4763" Name="Gnarrenburg"/>
 		<ONKZ n="4764" Name="Gnarrenburg-Klenkendorf"/>
-		<ONKZ n="4765" Name="Ebersdorf b Bremervörde"/>
+		<ONKZ n="4765" Name="Ebersdorf bei Bremervörde"/>
 		<ONKZ n="4766" Name="Basdahl"/>
 		<ONKZ n="4767" Name="Bremervörde-Bevern"/>
 		<ONKZ n="4768" Name="Hipstedt"/>
@@ -7537,7 +7537,7 @@
 		<ONKZ n="4804" Name="Nordhastedt"/>
 		<ONKZ n="4805" Name="Schafstedt"/>
 		<ONKZ n="4806" Name="Sarzbüttel"/>
-		<ONKZ n="481" Name="Heide Holst"/>
+		<ONKZ n="481" Name="Heide Holstein"/>
 		<ONKZ n="4821" Name="Itzehoe"/>
 		<ONKZ n="4822" Name="Kellinghusen"/>
 		<ONKZ n="4823" Name="Wilster"/>
@@ -7551,7 +7551,7 @@
 		<ONKZ n="4832" Name="Meldorf"/>
 		<ONKZ n="4833" Name="Wesselburen"/>
 		<ONKZ n="4834" Name="Büsum"/>
-		<ONKZ n="4835" Name="Albersdorf Holst"/>
+		<ONKZ n="4835" Name="Albersdorf Holstein"/>
 		<ONKZ n="4836" Name="Hennstedt Dithm"/>
 		<ONKZ n="4837" Name="Neuenkirchen Dithm"/>
 		<ONKZ n="4838" Name="Tellingstedt"/>
@@ -7572,7 +7572,7 @@
 		<ONKZ n="4855" Name="Eddelak"/>
 		<ONKZ n="4856" Name="Kronprinzenkoog"/>
 		<ONKZ n="4857" Name="Barlt"/>
-		<ONKZ n="4858" Name="Sankt Margarethen Holst"/>
+		<ONKZ n="4858" Name="Sankt Margarethen Holstein"/>
 		<ONKZ n="4859" Name="Windbergen"/>
 		<ONKZ n="4861" Name="Tönning"/>
 		<ONKZ n="4862" Name="Garding"/>
@@ -7584,14 +7584,14 @@
 		<ONKZ n="4873" Name="Aukrug"/>
 		<ONKZ n="4874" Name="Todenbüttel"/>
 		<ONKZ n="4875" Name="Stafstedt"/>
-		<ONKZ n="4876" Name="Reher Holst"/>
-		<ONKZ n="4877" Name="Hennstedt b Itzehoe"/>
+		<ONKZ n="4876" Name="Reher Holstein"/>
+		<ONKZ n="4877" Name="Hennstedt bei Itzehoe"/>
 		<ONKZ n="4881" Name="Friedrichstadt"/>
 		<ONKZ n="4882" Name="Lunden"/>
 		<ONKZ n="4883" Name="Süderstapel"/>
 		<ONKZ n="4884" Name="Schwabstedt"/>
 		<ONKZ n="4885" Name="Bergenhusen"/>
-		<ONKZ n="4892" Name="Schenefeld Mittelholst"/>
+		<ONKZ n="4892" Name="Schenefeld Mittelholstein"/>
 		<ONKZ n="4893" Name="Hohenaspe"/>
 		<ONKZ n="4902" Name="Jemgum-Ditzum"/>
 		<ONKZ n="4903" Name="Wymeer"/>
@@ -7605,7 +7605,7 @@
 		<ONKZ n="4926" Name="Krummhörn-Greetsiel"/>
 		<ONKZ n="4927" Name="Krummhörn-Loquard"/>
 		<ONKZ n="4928" Name="Ihlow-Riepe"/>
-		<ONKZ n="4929" Name="Ihlow Kr Aurich"/>
+		<ONKZ n="4929" Name="Ihlow (Kreis Aurich)"/>
 		<ONKZ n="4931" Name="Norden"/>
 		<ONKZ n="4932" Name="Norderney"/>
 		<ONKZ n="4933" Name="Dornum Ostfriesl"/>
@@ -7649,8 +7649,8 @@
 		<ONKZ n="4977" Name="Blomberg Ostfriesl"/>
 		<ONKZ n="5021" Name="Nienburg Weser"/>
 		<ONKZ n="5022" Name="Wietzen"/>
-		<ONKZ n="5023" Name="Liebenau Kr Nieburg Weser"/>
-		<ONKZ n="5024" Name="Rohrsen Kr Nienburg Weser"/>
+		<ONKZ n="5023" Name="Liebenau (Kreis Nieburg Weser)"/>
+		<ONKZ n="5024" Name="Rohrsen (Kreis Nienburg Weser)"/>
 		<ONKZ n="5025" Name="Estorf Weser"/>
 		<ONKZ n="5026" Name="Steimbke"/>
 		<ONKZ n="5027" Name="Linsburg"/>
@@ -7667,14 +7667,14 @@
 		<ONKZ n="5043" Name="Lauenau"/>
 		<ONKZ n="5044" Name="Springe-Eldagsen"/>
 		<ONKZ n="5045" Name="Springe-Bennigsen"/>
-		<ONKZ n="5051" Name="Bergen Kr Celle"/>
+		<ONKZ n="5051" Name="Bergen (Kreis Celle)"/>
 		<ONKZ n="5052" Name="Hermannsburg"/>
 		<ONKZ n="5053" Name="Faßberg-Müden"/>
 		<ONKZ n="5054" Name="Bergen-Sülze"/>
 		<ONKZ n="5055" Name="Fassberg"/>
 		<ONKZ n="5056" Name="Winsen-Meissendorf"/>
 		<ONKZ n="5060" Name="Bodenburg"/>
-		<ONKZ n="5062" Name="Holle b Hildesheim"/>
+		<ONKZ n="5062" Name="Holle bei Hildesheim"/>
 		<ONKZ n="5063" Name="Bad Salzdetfurth"/>
 		<ONKZ n="5064" Name="Groß Düngen"/>
 		<ONKZ n="5065" Name="Sibbesse"/>
@@ -7687,7 +7687,7 @@
 		<ONKZ n="5073" Name="Neustadt-Esperke"/>
 		<ONKZ n="5074" Name="Rodewald"/>
 		<ONKZ n="5082" Name="Langlingen"/>
-		<ONKZ n="5083" Name="Hohne b Celle"/>
+		<ONKZ n="5083" Name="Hohne bei Celle"/>
 		<ONKZ n="5084" Name="Hambühren"/>
 		<ONKZ n="5085" Name="Burgdorf-Ehlershausen"/>
 		<ONKZ n="5086" Name="Celle-Scheuen"/>
@@ -7708,7 +7708,7 @@
 		<ONKZ n="5131" Name="Garbsen"/>
 		<ONKZ n="5132" Name="Lehrte"/>
 		<ONKZ n="5135" Name="Burgwedel-Fuhrberg"/>
-		<ONKZ n="5136" Name="Burgdorf Kr Hannover"/>
+		<ONKZ n="5136" Name="Burgdorf (Kreis Hannover)"/>
 		<ONKZ n="5137" Name="Seelze"/>
 		<ONKZ n="5138" Name="Sehnde"/>
 		<ONKZ n="5139" Name="Burgwedel"/>
@@ -7719,7 +7719,7 @@
 		<ONKZ n="5145" Name="Beedenbostel"/>
 		<ONKZ n="5146" Name="Wietze"/>
 		<ONKZ n="5147" Name="Uetze-Hänigsen"/>
-		<ONKZ n="5148" Name="Steinhorst Niedersachs"/>
+		<ONKZ n="5148" Name="Steinhorst Niedersachsen"/>
 		<ONKZ n="5149" Name="Wienhausen"/>
 		<ONKZ n="5151" Name="Hameln"/>
 		<ONKZ n="5152" Name="Hessisch Oldendorf"/>
@@ -7757,15 +7757,15 @@
 		<ONKZ n="5192" Name="Munster"/>
 		<ONKZ n="5193" Name="Schneverdingen"/>
 		<ONKZ n="5194" Name="Bispingen"/>
-		<ONKZ n="5195" Name="Neuenkirchen b Soltau"/>
+		<ONKZ n="5195" Name="Neuenkirchen bei Soltau"/>
 		<ONKZ n="5196" Name="Wietzendorf"/>
 		<ONKZ n="5197" Name="Soltau-Frielingen"/>
 		<ONKZ n="5198" Name="Schneverdingen-Wintermoor"/>
 		<ONKZ n="5199" Name="Schneverdingen-Heber"/>
-		<ONKZ n="5201" Name="Halle Westf"/>
+		<ONKZ n="5201" Name="Halle Westfalen"/>
 		<ONKZ n="5202" Name="Oerlinghausen"/>
-		<ONKZ n="5203" Name="Werther Westf"/>
-		<ONKZ n="5204" Name="Steinhagen Westf"/>
+		<ONKZ n="5203" Name="Werther Westfalen"/>
+		<ONKZ n="5204" Name="Steinhagen Westfalen"/>
 		<ONKZ n="5205" Name="Bielefeld-Sennestadt"/>
 		<ONKZ n="5206" Name="Bielefeld-Jöllenbeck"/>
 		<ONKZ n="5207" Name="Schloss Holte-Stukenbrock"/>
@@ -7775,13 +7775,13 @@
 		<ONKZ n="5221" Name="Herford"/>
 		<ONKZ n="5222" Name="Bad Salzuflen"/>
 		<ONKZ n="5223" Name="Bünde"/>
-		<ONKZ n="5224" Name="Enger Westf"/>
+		<ONKZ n="5224" Name="Enger Westfalen"/>
 		<ONKZ n="5225" Name="Spenge"/>
-		<ONKZ n="5226" Name="Bruchmühlen Westf"/>
+		<ONKZ n="5226" Name="Bruchmühlen Westfalen"/>
 		<ONKZ n="5228" Name="Vlotho-Exter"/>
 		<ONKZ n="5231" Name="Detmold"/>
 		<ONKZ n="5232" Name="Lage Lippe"/>
-		<ONKZ n="5233" Name="Steinheim Westf"/>
+		<ONKZ n="5233" Name="Steinheim Westfalen"/>
 		<ONKZ n="5234" Name="Horn-Bad Meinberg"/>
 		<ONKZ n="5235" Name="Blomberg Lippe"/>
 		<ONKZ n="5236" Name="Blomberg-Grossenmarpe"/>
@@ -7793,8 +7793,8 @@
 		<ONKZ n="5245" Name="Herzebrock-Clarholz"/>
 		<ONKZ n="5246" Name="Verl"/>
 		<ONKZ n="5247" Name="Harsewinkel"/>
-		<ONKZ n="5248" Name="Langenberg Kr Gütersloh"/>
-		<ONKZ n="5250" Name="Delbrück Westf"/>
+		<ONKZ n="5248" Name="Langenberg (Kreis Gütersloh)"/>
+		<ONKZ n="5250" Name="Delbrück Westfalen"/>
 		<ONKZ n="5251" Name="Paderborn"/>
 		<ONKZ n="5252" Name="Bad Lippspringe"/>
 		<ONKZ n="5253" Name="Bad Driburg"/>
@@ -7810,7 +7810,7 @@
 		<ONKZ n="5265" Name="Dörentrup"/>
 		<ONKZ n="5266" Name="Lemgo-Kirchheide"/>
 		<ONKZ n="5271" Name="Höxter"/>
-		<ONKZ n="5272" Name="Brakel Westf"/>
+		<ONKZ n="5272" Name="Brakel Westfalen"/>
 		<ONKZ n="5273" Name="Beverungen"/>
 		<ONKZ n="5274" Name="Nieheim"/>
 		<ONKZ n="5275" Name="Höxter-Ottbergen"/>
@@ -7822,11 +7822,11 @@
 		<ONKZ n="5283" Name="Lügde-Rischenau"/>
 		<ONKZ n="5284" Name="Schwalenberg"/>
 		<ONKZ n="5285" Name="Bad Pyrmont-Kleinenberg"/>
-		<ONKZ n="5286" Name="Ottenstein Niedersachs"/>
+		<ONKZ n="5286" Name="Ottenstein Niedersachsen"/>
 		<ONKZ n="5292" Name="Lichtenau-Atteln"/>
 		<ONKZ n="5293" Name="Paderborn-Dahl"/>
 		<ONKZ n="5294" Name="Hövelhof-Espeln"/>
-		<ONKZ n="5295" Name="Lichtenau Westf"/>
+		<ONKZ n="5295" Name="Lichtenau Westfalen"/>
 		<ONKZ n="5300" Name="Salzgitter-Üfingen"/>
 		<ONKZ n="5301" Name="Lehre-Essenrode"/>
 		<ONKZ n="5302" Name="Vechelde"/>
@@ -7851,7 +7851,7 @@
 		<ONKZ n="5331" Name="Wolfenbüttel"/>
 		<ONKZ n="5332" Name="Schöppenstedt"/>
 		<ONKZ n="5333" Name="Dettum"/>
-		<ONKZ n="5334" Name="Hornburg Kr Wolfenbüttel"/>
+		<ONKZ n="5334" Name="Hornburg (Kreis Wolfenbüttel)"/>
 		<ONKZ n="5335" Name="Schladen"/>
 		<ONKZ n="5336" Name="Semmenstedt"/>
 		<ONKZ n="5337" Name="Kissenbrück"/>
@@ -7860,7 +7860,7 @@
 		<ONKZ n="5344" Name="Lengede"/>
 		<ONKZ n="5345" Name="Baddeckenstedt"/>
 		<ONKZ n="5346" Name="Liebenburg"/>
-		<ONKZ n="5347" Name="Burgdorf b Salzgitter"/>
+		<ONKZ n="5347" Name="Burgdorf bei Salzgitter"/>
 		<ONKZ n="5351" Name="Helmstedt"/>
 		<ONKZ n="5352" Name="Schöningen"/>
 		<ONKZ n="5353" Name="Königslutter am Elm"/>
@@ -7879,10 +7879,10 @@
 		<ONKZ n="5368" Name="Parsau"/>
 		<ONKZ n="5371" Name="Gifhorn"/>
 		<ONKZ n="5372" Name="Meinersen"/>
-		<ONKZ n="5373" Name="Hillerse Kr Gifhorn"/>
+		<ONKZ n="5373" Name="Hillerse (Kreis Gifhorn)"/>
 		<ONKZ n="5374" Name="Isenbüttel"/>
 		<ONKZ n="5375" Name="Müden Aller"/>
-		<ONKZ n="5376" Name="Wesendorf Kr Gifhorn"/>
+		<ONKZ n="5376" Name="Wesendorf (Kreis Gifhorn)"/>
 		<ONKZ n="5377" Name="Ehra-Lessien"/>
 		<ONKZ n="5378" Name="Sassenburg-Platendorf"/>
 		<ONKZ n="5379" Name="Sassenburg-Grussendorf"/>
@@ -7891,10 +7891,10 @@
 		<ONKZ n="5383" Name="Lutter am Barenberge"/>
 		<ONKZ n="5384" Name="Seesen-Groß Rhüden"/>
 		<ONKZ n="5401" Name="Georgsmarienhütte"/>
-		<ONKZ n="5402" Name="Bissendorf Kr Osnabrück"/>
+		<ONKZ n="5402" Name="Bissendorf (Kreis Osnabrück)"/>
 		<ONKZ n="5403" Name="Bad Iburg"/>
 		<ONKZ n="5404" Name="Westerkappeln"/>
-		<ONKZ n="5405" Name="Hasbergen Kr Osnabrück"/>
+		<ONKZ n="5405" Name="Hasbergen (Kreis Osnabrück)"/>
 		<ONKZ n="5406" Name="Belm"/>
 		<ONKZ n="5407" Name="Wallenhorst"/>
 		<ONKZ n="5409" Name="Hilter am Teutoburger Wald"/>
@@ -7912,13 +7912,13 @@
 		<ONKZ n="5432" Name="Löningen"/>
 		<ONKZ n="5433" Name="Badbergen"/>
 		<ONKZ n="5434" Name="Essen Oldenburg"/>
-		<ONKZ n="5435" Name="Berge b Quakenbrück"/>
+		<ONKZ n="5435" Name="Berge bei Quakenbrück"/>
 		<ONKZ n="5436" Name="Nortrup"/>
 		<ONKZ n="5437" Name="Menslage"/>
 		<ONKZ n="5438" Name="Bakum-Lüsche"/>
 		<ONKZ n="5439" Name="Bersenbrück"/>
 		<ONKZ n="5441" Name="Diepholz"/>
-		<ONKZ n="5442" Name="Barnstorf Kr Diepholz"/>
+		<ONKZ n="5442" Name="Barnstorf (Kreis Diepholz)"/>
 		<ONKZ n="5443" Name="Lemförde"/>
 		<ONKZ n="5444" Name="Wagenfeld"/>
 		<ONKZ n="5445" Name="Drebber"/>
@@ -7926,7 +7926,7 @@
 		<ONKZ n="5447" Name="Lembruch"/>
 		<ONKZ n="5448" Name="Barver"/>
 		<ONKZ n="5451" Name="Ibbenbüren"/>
-		<ONKZ n="5452" Name="Mettingen Westf"/>
+		<ONKZ n="5452" Name="Mettingen Westfalen"/>
 		<ONKZ n="5453" Name="Recke"/>
 		<ONKZ n="5454" Name="Hörstel-Riesenbeck"/>
 		<ONKZ n="5455" Name="Tecklenburg-Brochterbeck"/>
@@ -7937,7 +7937,7 @@
 		<ONKZ n="5461" Name="Bramsche Hase"/>
 		<ONKZ n="5462" Name="Ankum"/>
 		<ONKZ n="5464" Name="Alfhausen"/>
-		<ONKZ n="5465" Name="Neuenkirchen b Bramsche"/>
+		<ONKZ n="5465" Name="Neuenkirchen bei Bramsche"/>
 		<ONKZ n="5466" Name="Merzen"/>
 		<ONKZ n="5467" Name="Voltlage"/>
 		<ONKZ n="5468" Name="Bramsche-Engter"/>
@@ -7947,24 +7947,24 @@
 		<ONKZ n="5474" Name="Stemwede-Dielingen"/>
 		<ONKZ n="5475" Name="Bohmte-Hunteburg"/>
 		<ONKZ n="5476" Name="Ostercappeln-Venne"/>
-		<ONKZ n="5481" Name="Lengerich Westf"/>
+		<ONKZ n="5481" Name="Lengerich Westfalen"/>
 		<ONKZ n="5482" Name="Tecklenburg"/>
 		<ONKZ n="5483" Name="Lienen"/>
 		<ONKZ n="5484" Name="Lienen-Kattenvenne"/>
 		<ONKZ n="5485" Name="Ladbergen"/>
 		<ONKZ n="5491" Name="Damme Dümmer"/>
 		<ONKZ n="5492" Name="Steinfeld Oldenburg"/>
-		<ONKZ n="5493" Name="Neuenkirchen Kr Vechta"/>
-		<ONKZ n="5494" Name="Holdorf Niedersachs"/>
-		<ONKZ n="5495" Name="Vörden Kr Vechta"/>
+		<ONKZ n="5493" Name="Neuenkirchen (Kreis Vechta)"/>
+		<ONKZ n="5494" Name="Holdorf Niedersachsen"/>
+		<ONKZ n="5495" Name="Vörden (Kreis Vechta)"/>
 		<ONKZ n="5502" Name="Dransfeld"/>
 		<ONKZ n="5503" Name="Nörten-Hardenberg"/>
-		<ONKZ n="5504" Name="Friedland Kr Göttingen"/>
+		<ONKZ n="5504" Name="Friedland (Kreis Göttingen)"/>
 		<ONKZ n="5505" Name="Hardegsen"/>
 		<ONKZ n="5506" Name="Adelebsen"/>
 		<ONKZ n="5507" Name="Ebergötzen"/>
 		<ONKZ n="5508" Name="Gleichen-Rittmarshausen"/>
-		<ONKZ n="5509" Name="Rosdorf Kr Göttingen"/>
+		<ONKZ n="5509" Name="Rosdorf (Kreis Göttingen)"/>
 		<ONKZ n="551" Name="Göttingen"/>
 		<ONKZ n="5520" Name="Braunlage"/>
 		<ONKZ n="5521" Name="Herzberg am Harz"/>
@@ -7978,12 +7978,12 @@
 		<ONKZ n="5531" Name="Holzminden"/>
 		<ONKZ n="5532" Name="Stadtoldendorf"/>
 		<ONKZ n="5533" Name="Bodenwerder"/>
-		<ONKZ n="5534" Name="Eschershausen a d Lenne"/>
+		<ONKZ n="5534" Name="Eschershausen an der Lenne"/>
 		<ONKZ n="5535" Name="Polle"/>
 		<ONKZ n="5536" Name="Holzminden-Neuhaus"/>
 		<ONKZ n="5541" Name="Hann. Münden"/>
 		<ONKZ n="5542" Name="Witzenhausen"/>
-		<ONKZ n="5543" Name="Staufenberg Niedersachs"/>
+		<ONKZ n="5543" Name="Staufenberg Niedersachsen"/>
 		<ONKZ n="5544" Name="Reinhardshagen"/>
 		<ONKZ n="5545" Name="Hedemünden"/>
 		<ONKZ n="5546" Name="Scheden"/>
@@ -8014,7 +8014,7 @@
 		<ONKZ n="5602" Name="Hessisch Lichtenau"/>
 		<ONKZ n="5603" Name="Gudensberg"/>
 		<ONKZ n="5604" Name="Grossalmerode"/>
-		<ONKZ n="5605" Name="Kaufungen Hess"/>
+		<ONKZ n="5605" Name="Kaufungen Hessen"/>
 		<ONKZ n="5606" Name="Zierenberg"/>
 		<ONKZ n="5607" Name="Fuldatal"/>
 		<ONKZ n="5608" Name="Söhrewald"/>
@@ -8024,7 +8024,7 @@
 		<ONKZ n="5622" Name="Fritzlar"/>
 		<ONKZ n="5623" Name="Edertal"/>
 		<ONKZ n="5624" Name="Bad Emstal"/>
-		<ONKZ n="5625" Name="Naumburg Hess"/>
+		<ONKZ n="5625" Name="Naumburg Hessen"/>
 		<ONKZ n="5626" Name="Bad Zwesten"/>
 		<ONKZ n="5631" Name="Korbach"/>
 		<ONKZ n="5632" Name="Willingen Upland"/>
@@ -8051,20 +8051,20 @@
 		<ONKZ n="5658" Name="Wehretal"/>
 		<ONKZ n="5659" Name="Ringgau"/>
 		<ONKZ n="5661" Name="Melsungen"/>
-		<ONKZ n="5662" Name="Felsberg Hess"/>
+		<ONKZ n="5662" Name="Felsberg Hessen"/>
 		<ONKZ n="5663" Name="Spangenberg"/>
 		<ONKZ n="5664" Name="Morschen"/>
 		<ONKZ n="5665" Name="Guxhagen"/>
 		<ONKZ n="5671" Name="Hofgeismar"/>
 		<ONKZ n="5672" Name="Bad Karlshafen"/>
-		<ONKZ n="5673" Name="Immenhausen Hess"/>
+		<ONKZ n="5673" Name="Immenhausen Hessen"/>
 		<ONKZ n="5674" Name="Grebenstein"/>
 		<ONKZ n="5675" Name="Trendelburg"/>
-		<ONKZ n="5676" Name="Liebenau Hess"/>
+		<ONKZ n="5676" Name="Liebenau Hessen"/>
 		<ONKZ n="5677" Name="Calden-Westuffeln"/>
 		<ONKZ n="5681" Name="Homberg Efze"/>
 		<ONKZ n="5682" Name="Borken Hessen"/>
-		<ONKZ n="5683" Name="Wabern Hess"/>
+		<ONKZ n="5683" Name="Wabern Hessen"/>
 		<ONKZ n="5684" Name="Frielendorf"/>
 		<ONKZ n="5685" Name="Knüllwald"/>
 		<ONKZ n="5686" Name="Schwarzenborn Knüll"/>
@@ -8080,17 +8080,17 @@
 		<ONKZ n="5705" Name="Petershagen-Windheim"/>
 		<ONKZ n="5706" Name="Porta Westfalica"/>
 		<ONKZ n="5707" Name="Petershagen Weser"/>
-		<ONKZ n="571" Name="Minden Westf"/>
+		<ONKZ n="571" Name="Minden Westfalen"/>
 		<ONKZ n="5721" Name="Stadthagen"/>
 		<ONKZ n="5722" Name="Bückeburg"/>
 		<ONKZ n="5723" Name="Bad Nenndorf"/>
 		<ONKZ n="5724" Name="Obernkirchen"/>
-		<ONKZ n="5725" Name="Lindhorst b Stadthagen"/>
+		<ONKZ n="5725" Name="Lindhorst bei Stadthagen"/>
 		<ONKZ n="5726" Name="Wiedensahl"/>
 		<ONKZ n="5731" Name="Bad Oeynhausen"/>
 		<ONKZ n="5732" Name="Löhne"/>
 		<ONKZ n="5733" Name="Vlotho"/>
-		<ONKZ n="5734" Name="Bergkirchen Westf"/>
+		<ONKZ n="5734" Name="Bergkirchen Westfalen"/>
 		<ONKZ n="5741" Name="Lübbecke"/>
 		<ONKZ n="5742" Name="Preussisch Oldendorf"/>
 		<ONKZ n="5743" Name="Espelkamp-Gestringen"/>
@@ -8110,7 +8110,7 @@
 		<ONKZ n="5767" Name="Warmsen"/>
 		<ONKZ n="5768" Name="Petershagen-Heimsen"/>
 		<ONKZ n="5769" Name="Steyerberg-Voigtei"/>
-		<ONKZ n="5771" Name="Rahden Westf"/>
+		<ONKZ n="5771" Name="Rahden Westfalen"/>
 		<ONKZ n="5772" Name="Espelkamp"/>
 		<ONKZ n="5773" Name="Stemwede-Wehdem"/>
 		<ONKZ n="5774" Name="Wagenfeld-Ströhen"/>
@@ -8119,9 +8119,9 @@
 		<ONKZ n="5777" Name="Diepenau-Essern"/>
 		<ONKZ n="5802" Name="Wrestedt"/>
 		<ONKZ n="5803" Name="Rosche"/>
-		<ONKZ n="5804" Name="Rätzlingen Kr Uelzen"/>
+		<ONKZ n="5804" Name="Rätzlingen (Kreis Uelzen)"/>
 		<ONKZ n="5805" Name="Oetzen"/>
-		<ONKZ n="5806" Name="Barum b Bad Bevensen"/>
+		<ONKZ n="5806" Name="Barum bei Bad Bevensen"/>
 		<ONKZ n="5807" Name="Altenmedingen"/>
 		<ONKZ n="5808" Name="Gerdau"/>
 		<ONKZ n="581" Name="Uelzen"/>
@@ -8150,7 +8150,7 @@
 		<ONKZ n="5843" Name="Wustrow Wendland"/>
 		<ONKZ n="5844" Name="Clenze"/>
 		<ONKZ n="5845" Name="Bergen Dumme"/>
-		<ONKZ n="5846" Name="Gartow Niedersachs"/>
+		<ONKZ n="5846" Name="Gartow Niedersachsen"/>
 		<ONKZ n="5848" Name="Trebel"/>
 		<ONKZ n="5849" Name="Waddeweitz"/>
 		<ONKZ n="5850" Name="Neetze"/>
@@ -8173,7 +8173,7 @@
 		<ONKZ n="5875" Name="Emmendorf"/>
 		<ONKZ n="5882" Name="Gorleben"/>
 		<ONKZ n="5883" Name="Lemgow"/>
-		<ONKZ n="5901" Name="Fürstenau b Bramsche"/>
+		<ONKZ n="5901" Name="Fürstenau bei Bramsche"/>
 		<ONKZ n="5902" Name="Freren"/>
 		<ONKZ n="5903" Name="Emsbüren"/>
 		<ONKZ n="5904" Name="Lengerich Emsl"/>
@@ -8219,26 +8219,26 @@
 		<ONKZ n="5965" Name="Klein Berssen"/>
 		<ONKZ n="5966" Name="Meppen-Apeldorn"/>
 		<ONKZ n="5971" Name="Rheine"/>
-		<ONKZ n="5973" Name="Neuenkirchen Kr Steinfurt"/>
+		<ONKZ n="5973" Name="Neuenkirchen (Kreis Steinfurt)"/>
 		<ONKZ n="5975" Name="Rheine-Mesum"/>
 		<ONKZ n="5976" Name="Salzbergen"/>
 		<ONKZ n="5977" Name="Spelle"/>
 		<ONKZ n="5978" Name="Hörstel-Dreierwalde"/>
 		<ONKZ n="6002" Name="Ober-Mörlen"/>
-		<ONKZ n="6003" Name="Rosbach v d Höhe"/>
+		<ONKZ n="6003" Name="Rosbach vor der Höhe"/>
 		<ONKZ n="6004" Name="Lich-Eberstadt"/>
 		<ONKZ n="6007" Name="Rosbach-Rodheim"/>
 		<ONKZ n="6008" Name="Echzell"/>
 		<ONKZ n="6020" Name="Heigenbrücken"/>
 		<ONKZ n="6021" Name="Aschaffenburg"/>
-		<ONKZ n="6022" Name="Obernburg a Main"/>
-		<ONKZ n="6023" Name="Alzenau i Ufr"/>
+		<ONKZ n="6022" Name="Obernburg am Main"/>
+		<ONKZ n="6023" Name="Alzenau in Unterfranken"/>
 		<ONKZ n="6024" Name="Schöllkrippen"/>
 		<ONKZ n="6026" Name="Grossostheim"/>
-		<ONKZ n="6027" Name="Stockstadt a Main"/>
-		<ONKZ n="6028" Name="Sulzbach a Main"/>
+		<ONKZ n="6027" Name="Stockstadt am Main"/>
+		<ONKZ n="6028" Name="Sulzbach am Main"/>
 		<ONKZ n="6029" Name="Mömbris"/>
-		<ONKZ n="6031" Name="Friedberg Hess"/>
+		<ONKZ n="6031" Name="Friedberg Hessen"/>
 		<ONKZ n="6032" Name="Bad Nauheim"/>
 		<ONKZ n="6033" Name="Butzbach"/>
 		<ONKZ n="6034" Name="Wöllstadt"/>
@@ -8246,12 +8246,12 @@
 		<ONKZ n="6036" Name="Wölfersheim"/>
 		<ONKZ n="6039" Name="Karben"/>
 		<ONKZ n="6041" Name="Glauburg"/>
-		<ONKZ n="6042" Name="Büdingen Hess"/>
+		<ONKZ n="6042" Name="Büdingen Hessen"/>
 		<ONKZ n="6043" Name="Nidda"/>
-		<ONKZ n="6044" Name="Schotten Hess"/>
+		<ONKZ n="6044" Name="Schotten Hessen"/>
 		<ONKZ n="6045" Name="Gedern"/>
-		<ONKZ n="6046" Name="Ortenberg Hess"/>
-		<ONKZ n="6047" Name="Altenstadt Hess"/>
+		<ONKZ n="6046" Name="Ortenberg Hessen"/>
+		<ONKZ n="6047" Name="Altenstadt Hessen"/>
 		<ONKZ n="6048" Name="Büdingen-Eckartshausen"/>
 		<ONKZ n="6049" Name="Kefenrod"/>
 		<ONKZ n="6050" Name="Biebergemünd"/>
@@ -8265,12 +8265,12 @@
 		<ONKZ n="6058" Name="Gründau"/>
 		<ONKZ n="6059" Name="Jossgrund"/>
 		<ONKZ n="6061" Name="Michelstadt"/>
-		<ONKZ n="6062" Name="Erbach Odenw"/>
+		<ONKZ n="6062" Name="Erbach Odenwald"/>
 		<ONKZ n="6063" Name="Bad König"/>
 		<ONKZ n="6066" Name="Michelstadt-Vielbrunn"/>
 		<ONKZ n="6068" Name="Beerfelden"/>
 		<ONKZ n="6071" Name="Dieburg"/>
-		<ONKZ n="6073" Name="Babenhausen Hess"/>
+		<ONKZ n="6073" Name="Babenhausen Hessen"/>
 		<ONKZ n="6074" Name="Rödermark"/>
 		<ONKZ n="6078" Name="Gross-Umstadt"/>
 		<ONKZ n="6081" Name="Usingen"/>
@@ -8284,10 +8284,10 @@
 		<ONKZ n="6093" Name="Laufach"/>
 		<ONKZ n="6094" Name="Weibersbrunn"/>
 		<ONKZ n="6095" Name="Bessenbach"/>
-		<ONKZ n="6096" Name="Wiesen Unterfr"/>
+		<ONKZ n="6096" Name="Wiesen Unterfranken"/>
 		<ONKZ n="6101" Name="Bad Vilbel"/>
 		<ONKZ n="6102" Name="Neu-Isenburg"/>
-		<ONKZ n="6103" Name="Langen Hess"/>
+		<ONKZ n="6103" Name="Langen Hessen"/>
 		<ONKZ n="6104" Name="Heusenstamm"/>
 		<ONKZ n="6105" Name="Mörfelden-Walldorf"/>
 		<ONKZ n="6106" Name="Rodgau"/>
@@ -8313,7 +8313,7 @@
 		<ONKZ n="6138" Name="Mommenheim"/>
 		<ONKZ n="6139" Name="Budenheim"/>
 		<ONKZ n="6142" Name="Rüsselsheim"/>
-		<ONKZ n="6144" Name="Bischofsheim b Rüsselsheim"/>
+		<ONKZ n="6144" Name="Bischofsheim bei Rüsselsheim"/>
 		<ONKZ n="6145" Name="Flörsheim am Main"/>
 		<ONKZ n="6146" Name="Hochheim am Main"/>
 		<ONKZ n="6147" Name="Trebur"/>
@@ -8321,19 +8321,19 @@
 		<ONKZ n="6151" Name="Darmstadt"/>
 		<ONKZ n="6152" Name="Gross-Gerau"/>
 		<ONKZ n="6154" Name="Ober-Ramstadt"/>
-		<ONKZ n="6155" Name="Griesheim Hess"/>
+		<ONKZ n="6155" Name="Griesheim Hessen"/>
 		<ONKZ n="6157" Name="Pfungstadt"/>
 		<ONKZ n="6158" Name="Riedstadt"/>
 		<ONKZ n="6159" Name="Messel"/>
 		<ONKZ n="6161" Name="Brensbach"/>
-		<ONKZ n="6162" Name="Reinheim Odenw"/>
-		<ONKZ n="6163" Name="Höchst i Odw"/>
+		<ONKZ n="6162" Name="Reinheim Odenwald"/>
+		<ONKZ n="6163" Name="Höchst im Odw"/>
 		<ONKZ n="6164" Name="Reichelsheim Odenwald"/>
 		<ONKZ n="6165" Name="Breuberg"/>
 		<ONKZ n="6166" Name="Fischbachtal"/>
 		<ONKZ n="6167" Name="Modautal"/>
 		<ONKZ n="6171" Name="Oberursel Taunus"/>
-		<ONKZ n="6172" Name="Bad Homburg v d Höhe"/>
+		<ONKZ n="6172" Name="Bad Homburg vor der Höhe"/>
 		<ONKZ n="6173" Name="Kronberg im Taunus"/>
 		<ONKZ n="6174" Name="Königstein im Taunus"/>
 		<ONKZ n="6175" Name="Friedrichsdorf Taunus"/>
@@ -8341,11 +8341,11 @@
 		<ONKZ n="6182" Name="Seligenstadt"/>
 		<ONKZ n="6183" Name="Erlensee"/>
 		<ONKZ n="6184" Name="Langenselbold"/>
-		<ONKZ n="6185" Name="Hammersbach Hess"/>
+		<ONKZ n="6185" Name="Hammersbach Hessen"/>
 		<ONKZ n="6186" Name="Grosskrotzenburg"/>
 		<ONKZ n="6187" Name="Schöneck"/>
-		<ONKZ n="6188" Name="Kahl a Main"/>
-		<ONKZ n="6190" Name="Hattersheim a Main"/>
+		<ONKZ n="6188" Name="Kahl am Main"/>
+		<ONKZ n="6190" Name="Hattersheim am Main"/>
 		<ONKZ n="6192" Name="Hofheim am Taunus"/>
 		<ONKZ n="6195" Name="Kelkheim Taunus"/>
 		<ONKZ n="6196" Name="Bad Soden am Taunus"/>
@@ -8366,7 +8366,7 @@
 		<ONKZ n="6224" Name="Sandhausen Baden"/>
 		<ONKZ n="6226" Name="Meckesheim"/>
 		<ONKZ n="6227" Name="Walldorf Baden"/>
-		<ONKZ n="6228" Name="Schönau Odenw"/>
+		<ONKZ n="6228" Name="Schönau Odenwald"/>
 		<ONKZ n="6229" Name="Neckarsteinach"/>
 		<ONKZ n="6231" Name="Hochdorf-Assenheim"/>
 		<ONKZ n="6232" Name="Speyer"/>
@@ -8380,14 +8380,14 @@
 		<ONKZ n="6241" Name="Worms"/>
 		<ONKZ n="6242" Name="Osthofen"/>
 		<ONKZ n="6243" Name="Monsheim"/>
-		<ONKZ n="6244" Name="Westhofen Rheinhess"/>
+		<ONKZ n="6244" Name="Westhofen Rheinhessen"/>
 		<ONKZ n="6245" Name="Biblis"/>
-		<ONKZ n="6246" Name="Eich Rheinhess"/>
+		<ONKZ n="6246" Name="Eich Rheinhessen"/>
 		<ONKZ n="6247" Name="Worms-Pfeddersheim"/>
 		<ONKZ n="6249" Name="Guntersblum"/>
 		<ONKZ n="6251" Name="Bensheim"/>
 		<ONKZ n="6252" Name="Heppenheim Bergstraße"/>
-		<ONKZ n="6253" Name="Fürth Odenw"/>
+		<ONKZ n="6253" Name="Fürth Odenwald"/>
 		<ONKZ n="6254" Name="Lautertal Odenwald"/>
 		<ONKZ n="6255" Name="Lindenfels"/>
 		<ONKZ n="6256" Name="Lampertheim-Hüttenfeld"/>
@@ -8401,15 +8401,15 @@
 		<ONKZ n="6266" Name="Hassmersheim"/>
 		<ONKZ n="6267" Name="Fahrenbach Baden"/>
 		<ONKZ n="6268" Name="Hüffenhardt"/>
-		<ONKZ n="6269" Name="Gundelsheim Württ"/>
+		<ONKZ n="6269" Name="Gundelsheim Württenberg"/>
 		<ONKZ n="6271" Name="Eberbach Baden"/>
 		<ONKZ n="6272" Name="Hirschhorn Neckar"/>
-		<ONKZ n="6274" Name="Waldbrunn Odenw"/>
-		<ONKZ n="6275" Name="Rothenberg Odenw"/>
+		<ONKZ n="6274" Name="Waldbrunn Odenwald"/>
+		<ONKZ n="6275" Name="Rothenberg Odenwald"/>
 		<ONKZ n="6276" Name="Hesseneck"/>
 		<ONKZ n="6281" Name="Buchen Odenwald"/>
 		<ONKZ n="6282" Name="Walldürn"/>
-		<ONKZ n="6283" Name="Hardheim Odenw"/>
+		<ONKZ n="6283" Name="Hardheim Odenwald"/>
 		<ONKZ n="6284" Name="Mudau"/>
 		<ONKZ n="6285" Name="Walldürn-Altheim"/>
 		<ONKZ n="6286" Name="Walldürn-Rippberg"/>
@@ -8492,13 +8492,13 @@
 		<ONKZ n="6397" Name="Leimen Pfalz"/>
 		<ONKZ n="6398" Name="Vorderweidenthal"/>
 		<ONKZ n="6400" Name="Mücke"/>
-		<ONKZ n="6401" Name="Grünberg Hess"/>
+		<ONKZ n="6401" Name="Grünberg Hessen"/>
 		<ONKZ n="6402" Name="Hungen"/>
-		<ONKZ n="6403" Name="Linden Hess"/>
-		<ONKZ n="6404" Name="Lich Hess"/>
-		<ONKZ n="6405" Name="Laubach Hess"/>
+		<ONKZ n="6403" Name="Linden Hessen"/>
+		<ONKZ n="6404" Name="Lich Hessen"/>
+		<ONKZ n="6405" Name="Laubach Hessen"/>
 		<ONKZ n="6406" Name="Lollar"/>
-		<ONKZ n="6407" Name="Rabenau Hess"/>
+		<ONKZ n="6407" Name="Rabenau Hessen"/>
 		<ONKZ n="6408" Name="Buseck"/>
 		<ONKZ n="6409" Name="Biebertal"/>
 		<ONKZ n="641" Name="Giessen"/>
@@ -8507,24 +8507,24 @@
 		<ONKZ n="6422" Name="Kirchhain"/>
 		<ONKZ n="6423" Name="Wetter Hessen"/>
 		<ONKZ n="6424" Name="Ebsdorfergrund"/>
-		<ONKZ n="6425" Name="Rauschenberg Hess"/>
+		<ONKZ n="6425" Name="Rauschenberg Hessen"/>
 		<ONKZ n="6426" Name="Fronhausen"/>
 		<ONKZ n="6427" Name="Cölbe-Schönstadt"/>
 		<ONKZ n="6428" Name="Stadtallendorf"/>
-		<ONKZ n="6429" Name="Schweinsberg Hess"/>
+		<ONKZ n="6429" Name="Schweinsberg Hessen"/>
 		<ONKZ n="6430" Name="Hahnstätten"/>
-		<ONKZ n="6431" Name="Limburg a d Lahn"/>
+		<ONKZ n="6431" Name="Limburg an der Lahn"/>
 		<ONKZ n="6432" Name="Diez"/>
 		<ONKZ n="6433" Name="Hadamar"/>
 		<ONKZ n="6434" Name="Bad Camberg"/>
 		<ONKZ n="6435" Name="Wallmerod"/>
-		<ONKZ n="6436" Name="Dornburg Hess"/>
+		<ONKZ n="6436" Name="Dornburg Hessen"/>
 		<ONKZ n="6438" Name="Hünfelden"/>
 		<ONKZ n="6439" Name="Holzappel"/>
 		<ONKZ n="6440" Name="Kölschhausen"/>
 		<ONKZ n="6441" Name="Wetzlar"/>
 		<ONKZ n="6442" Name="Braunfels"/>
-		<ONKZ n="6443" Name="Ehringshausen Dill"/>
+		<ONKZ n="6443" Name="Ehringshausen Dillheim"/>
 		<ONKZ n="6444" Name="Bischoffen"/>
 		<ONKZ n="6445" Name="Schöffengrund"/>
 		<ONKZ n="6446" Name="Hohenahr"/>
@@ -8534,14 +8534,14 @@
 		<ONKZ n="6452" Name="Battenberg Eder"/>
 		<ONKZ n="6453" Name="Gemünden Wohra"/>
 		<ONKZ n="6454" Name="Lichtenfels-Sachsenberg"/>
-		<ONKZ n="6455" Name="Frankenau Hess"/>
+		<ONKZ n="6455" Name="Frankenau Hessen"/>
 		<ONKZ n="6456" Name="Haina Kloster"/>
 		<ONKZ n="6457" Name="Burgwald Eder"/>
-		<ONKZ n="6458" Name="Rosenthal Hess"/>
+		<ONKZ n="6458" Name="Rosenthal Hessen"/>
 		<ONKZ n="6461" Name="Biedenkopf"/>
 		<ONKZ n="6462" Name="Gladenbach"/>
 		<ONKZ n="6464" Name="Angelburg"/>
-		<ONKZ n="6465" Name="Breidenbach b Biedenkopf"/>
+		<ONKZ n="6465" Name="Breidenbach bei Biedenkopf"/>
 		<ONKZ n="6466" Name="Dautphetal-Friedensdorf"/>
 		<ONKZ n="6467" Name="Hatzfeld Eder"/>
 		<ONKZ n="6468" Name="Dautphetal-Mornshausen"/>
@@ -8557,7 +8557,7 @@
 		<ONKZ n="6482" Name="Runkel"/>
 		<ONKZ n="6483" Name="Selters Taunus"/>
 		<ONKZ n="6484" Name="Beselich"/>
-		<ONKZ n="6485" Name="Nentershausen Westerw"/>
+		<ONKZ n="6485" Name="Nentershausen Westerwald"/>
 		<ONKZ n="6486" Name="Katzenelnbogen"/>
 		<ONKZ n="6500" Name="Waldrach"/>
 		<ONKZ n="6501" Name="Konz"/>
@@ -8629,16 +8629,16 @@
 		<ONKZ n="6595" Name="Dockweiler"/>
 		<ONKZ n="6596" Name="Üdersdorf"/>
 		<ONKZ n="6597" Name="Jünkerath"/>
-		<ONKZ n="6599" Name="Weidenbach b Gerolstein"/>
+		<ONKZ n="6599" Name="Weidenbach bei Gerolstein"/>
 		<ONKZ n="661" Name="Fulda"/>
 		<ONKZ n="6620" Name="Philippsthal Werra"/>
 		<ONKZ n="6621" Name="Bad Hersfeld"/>
 		<ONKZ n="6622" Name="Bebra"/>
-		<ONKZ n="6623" Name="Rotenburg a d Fulda"/>
+		<ONKZ n="6623" Name="Rotenburg an der Fulda"/>
 		<ONKZ n="6624" Name="Heringen Werra"/>
 		<ONKZ n="6625" Name="Niederaula"/>
 		<ONKZ n="6626" Name="Wildeck-Obersuhl"/>
-		<ONKZ n="6627" Name="Nentershausen Hess"/>
+		<ONKZ n="6627" Name="Nentershausen Hessen"/>
 		<ONKZ n="6628" Name="Oberaula"/>
 		<ONKZ n="6629" Name="Schenklengsfeld"/>
 		<ONKZ n="6630" Name="Schwalmtal-Storndorf"/>
@@ -8663,7 +8663,7 @@
 		<ONKZ n="6652" Name="Hünfeld"/>
 		<ONKZ n="6653" Name="Burghaun"/>
 		<ONKZ n="6654" Name="Gersfeld Rhön"/>
-		<ONKZ n="6655" Name="Neuhof Kr Fulda"/>
+		<ONKZ n="6655" Name="Neuhof (Kreis Fulda)"/>
 		<ONKZ n="6656" Name="Ebersburg"/>
 		<ONKZ n="6657" Name="Hofbieber"/>
 		<ONKZ n="6658" Name="Poppenhausen Wasserkuppe"/>
@@ -8677,13 +8677,13 @@
 		<ONKZ n="6667" Name="Steinau-Ulmbach"/>
 		<ONKZ n="6668" Name="Birstein-Lichenroth"/>
 		<ONKZ n="6669" Name="Neuhof-Hauswurz"/>
-		<ONKZ n="6670" Name="Ludwigsau Hess"/>
+		<ONKZ n="6670" Name="Ludwigsau Hessen"/>
 		<ONKZ n="6672" Name="Eiterfeld"/>
 		<ONKZ n="6673" Name="Haunetal"/>
-		<ONKZ n="6674" Name="Friedewald Hess"/>
-		<ONKZ n="6675" Name="Breitenbach a Herzberg"/>
-		<ONKZ n="6676" Name="Hohenroda Hess"/>
-		<ONKZ n="6677" Name="Neuenstein Hess"/>
+		<ONKZ n="6674" Name="Friedewald Hessen"/>
+		<ONKZ n="6675" Name="Breitenbach am Herzberg"/>
+		<ONKZ n="6676" Name="Hohenroda Hessen"/>
+		<ONKZ n="6677" Name="Neuenstein Hessen"/>
 		<ONKZ n="6678" Name="Wildeck-Hönebach"/>
 		<ONKZ n="6681" Name="Hilders"/>
 		<ONKZ n="6682" Name="Tann Rhön"/>
@@ -8697,13 +8697,13 @@
 		<ONKZ n="6696" Name="Gilserberg"/>
 		<ONKZ n="6697" Name="Willingshausen"/>
 		<ONKZ n="6698" Name="Schrecksbach"/>
-		<ONKZ n="6701" Name="Sprendlingen Rheinhess"/>
-		<ONKZ n="6703" Name="Wöllstein Rheinhess"/>
+		<ONKZ n="6701" Name="Sprendlingen Rheinhessen"/>
+		<ONKZ n="6703" Name="Wöllstein Rheinhessen"/>
 		<ONKZ n="6704" Name="Langenlonsheim"/>
 		<ONKZ n="6706" Name="Wallhausen Nahe"/>
 		<ONKZ n="6707" Name="Windesheim"/>
 		<ONKZ n="6708" Name="Bad Münster am Stein-Ebernburg"/>
-		<ONKZ n="6709" Name="Fürfeld Kr Bad Kreuznach"/>
+		<ONKZ n="6709" Name="Fürfeld (Kreis Bad Kreuznach)"/>
 		<ONKZ n="671" Name="Bad Kreuznach"/>
 		<ONKZ n="6721" Name="Bingen am Rhein"/>
 		<ONKZ n="6722" Name="Rüdesheim am Rhein"/>
@@ -8720,7 +8720,7 @@
 		<ONKZ n="6735" Name="Eppelsheim"/>
 		<ONKZ n="6736" Name="Bechenheim"/>
 		<ONKZ n="6737" Name="Köngernheim"/>
-		<ONKZ n="6741" Name="St Goar"/>
+		<ONKZ n="6741" Name="St. Goar"/>
 		<ONKZ n="6742" Name="Boppard"/>
 		<ONKZ n="6743" Name="Bacharach"/>
 		<ONKZ n="6744" Name="Oberwesel"/>
@@ -8741,7 +8741,7 @@
 		<ONKZ n="6764" Name="Rheinböllen"/>
 		<ONKZ n="6765" Name="Gemünden Hunsrück"/>
 		<ONKZ n="6766" Name="Kisselbach"/>
-		<ONKZ n="6771" Name="St Goarshausen"/>
+		<ONKZ n="6771" Name="St. Goarshausen"/>
 		<ONKZ n="6772" Name="Nastätten"/>
 		<ONKZ n="6773" Name="Kamp-Bornhofen"/>
 		<ONKZ n="6774" Name="Kaub"/>
@@ -8782,12 +8782,12 @@
 		<ONKZ n="6844" Name="Blieskastel-Altheim"/>
 		<ONKZ n="6848" Name="Homburg-Einöd"/>
 		<ONKZ n="6849" Name="Kirkel"/>
-		<ONKZ n="6851" Name="St Wendel"/>
+		<ONKZ n="6851" Name="St. Wendel"/>
 		<ONKZ n="6852" Name="Nohfelden"/>
 		<ONKZ n="6853" Name="Marpingen"/>
 		<ONKZ n="6854" Name="Oberthal Saar"/>
 		<ONKZ n="6855" Name="Freisen"/>
-		<ONKZ n="6856" Name="St Wendel-Niederkirchen"/>
+		<ONKZ n="6856" Name="St. Wendel-Niederkirchen"/>
 		<ONKZ n="6857" Name="Namborn"/>
 		<ONKZ n="6858" Name="Ottweiler-Fürth"/>
 		<ONKZ n="6861" Name="Merzig"/>
@@ -8807,7 +8807,7 @@
 		<ONKZ n="6887" Name="Schmelz Saar"/>
 		<ONKZ n="6888" Name="Lebach-Steinbach"/>
 		<ONKZ n="6893" Name="Saarbrücken-Ensheim"/>
-		<ONKZ n="6894" Name="St Ingbert"/>
+		<ONKZ n="6894" Name="St. Ingbert"/>
 		<ONKZ n="6897" Name="Sulzbach Saar"/>
 		<ONKZ n="6898" Name="Völklingen"/>
 		<ONKZ n="69" Name="Frankfurt am Main"/>
@@ -8830,31 +8830,31 @@
 		<ONKZ n="7051" Name="Calw"/>
 		<ONKZ n="7052" Name="Bad Liebenzell"/>
 		<ONKZ n="7053" Name="Bad Teinach-Zavelstein"/>
-		<ONKZ n="7054" Name="Wildberg Württ"/>
-		<ONKZ n="7055" Name="Neuweiler Kr Calw"/>
+		<ONKZ n="7054" Name="Wildberg Württenberg"/>
+		<ONKZ n="7055" Name="Neuweiler (Kreis Calw)"/>
 		<ONKZ n="7056" Name="Gechingen"/>
-		<ONKZ n="7062" Name="Beilstein Württ"/>
+		<ONKZ n="7062" Name="Beilstein Württenberg"/>
 		<ONKZ n="7063" Name="Bad Wimpfen"/>
 		<ONKZ n="7066" Name="Bad Rappenau-Bonfeld"/>
 		<ONKZ n="7071" Name="Tübingen"/>
 		<ONKZ n="7072" Name="Gomaringen"/>
 		<ONKZ n="7073" Name="Ammerbuch"/>
 		<ONKZ n="7081" Name="Bad Wildbad"/>
-		<ONKZ n="7082" Name="Neuenbürg Württ"/>
+		<ONKZ n="7082" Name="Neuenbürg Württenberg"/>
 		<ONKZ n="7083" Name="Bad Herrenalb"/>
-		<ONKZ n="7084" Name="Schömberg b Neuenbürg"/>
+		<ONKZ n="7084" Name="Schömberg bei Neuenbürg"/>
 		<ONKZ n="7085" Name="Enzklösterle"/>
 		<ONKZ n="711" Name="Stuttgart"/>
 		<ONKZ n="7121" Name="Reutlingen"/>
-		<ONKZ n="7122" Name="St Johann Württ"/>
-		<ONKZ n="7123" Name="Metzingen Württ"/>
+		<ONKZ n="7122" Name="St. Johann Württenberg"/>
+		<ONKZ n="7123" Name="Metzingen Württenberg"/>
 		<ONKZ n="7124" Name="Trochtelfingen Hohenz"/>
 		<ONKZ n="7125" Name="Bad Urach"/>
 		<ONKZ n="7126" Name="Burladingen-Melchingen"/>
 		<ONKZ n="7127" Name="Neckartenzlingen"/>
 		<ONKZ n="7128" Name="Sonnenbühl"/>
-		<ONKZ n="7129" Name="Lichtenstein Württ"/>
-		<ONKZ n="7130" Name="Löwenstein Württ"/>
+		<ONKZ n="7129" Name="Lichtenstein Württenberg"/>
+		<ONKZ n="7130" Name="Löwenstein Württenberg"/>
 		<ONKZ n="7131" Name="Heilbronn Neckar"/>
 		<ONKZ n="7132" Name="Neckarsulm"/>
 		<ONKZ n="7133" Name="Lauffen am Neckar"/>
@@ -8863,17 +8863,17 @@
 		<ONKZ n="7136" Name="Bad Friedrichshall"/>
 		<ONKZ n="7138" Name="Schwaigern"/>
 		<ONKZ n="7139" Name="Neuenstadt am Kocher"/>
-		<ONKZ n="7141" Name="Ludwigsburg Württ"/>
+		<ONKZ n="7141" Name="Ludwigsburg Württenberg"/>
 		<ONKZ n="7142" Name="Bietigheim-Bissingen"/>
 		<ONKZ n="7143" Name="Besigheim"/>
 		<ONKZ n="7144" Name="Marbach am Neckar"/>
 		<ONKZ n="7145" Name="Markgröningen"/>
 		<ONKZ n="7146" Name="Remseck am Neckar"/>
-		<ONKZ n="7147" Name="Sachsenheim Württ"/>
+		<ONKZ n="7147" Name="Sachsenheim Württenberg"/>
 		<ONKZ n="7148" Name="Grossbottwar"/>
 		<ONKZ n="7150" Name="Korntal-Münchingen"/>
 		<ONKZ n="7151" Name="Waiblingen"/>
-		<ONKZ n="7152" Name="Leonberg Württ"/>
+		<ONKZ n="7152" Name="Leonberg Württenberg"/>
 		<ONKZ n="7153" Name="Plochingen"/>
 		<ONKZ n="7154" Name="Kornwestheim"/>
 		<ONKZ n="7156" Name="Ditzingen"/>
@@ -8883,18 +8883,18 @@
 		<ONKZ n="7161" Name="Göppingen"/>
 		<ONKZ n="7162" Name="Süßen"/>
 		<ONKZ n="7163" Name="Ebersbach an der Fils"/>
-		<ONKZ n="7164" Name="Boll Kr Göppingen"/>
+		<ONKZ n="7164" Name="Boll (Kreis Göppingen)"/>
 		<ONKZ n="7165" Name="Göppingen-Hohenstaufen"/>
 		<ONKZ n="7166" Name="Adelberg"/>
 		<ONKZ n="7171" Name="Schwäbisch Gmünd"/>
-		<ONKZ n="7172" Name="Lorch Württ"/>
+		<ONKZ n="7172" Name="Lorch Württenberg"/>
 		<ONKZ n="7173" Name="Heubach"/>
 		<ONKZ n="7174" Name="Mögglingen"/>
 		<ONKZ n="7175" Name="Leinzell"/>
 		<ONKZ n="7176" Name="Spraitbach"/>
-		<ONKZ n="7181" Name="Schorndorf Württ"/>
+		<ONKZ n="7181" Name="Schorndorf Württenberg"/>
 		<ONKZ n="7182" Name="Welzheim"/>
-		<ONKZ n="7183" Name="Rudersberg Württ"/>
+		<ONKZ n="7183" Name="Rudersberg Württenberg"/>
 		<ONKZ n="7184" Name="Kaisersbach"/>
 		<ONKZ n="7191" Name="Backnang"/>
 		<ONKZ n="7192" Name="Murrhardt"/>
@@ -8919,7 +8919,7 @@
 		<ONKZ n="7232" Name="Königsbach-Stein"/>
 		<ONKZ n="7233" Name="Niefern-Öschelbronn"/>
 		<ONKZ n="7234" Name="Tiefenbronn"/>
-		<ONKZ n="7235" Name="Unterreichenbach Kr Calw"/>
+		<ONKZ n="7235" Name="Unterreichenbach (Kreis Calw)"/>
 		<ONKZ n="7236" Name="Keltern"/>
 		<ONKZ n="7237" Name="Neulingen Enzkreis"/>
 		<ONKZ n="7240" Name="Pfinztal"/>
@@ -8927,7 +8927,7 @@
 		<ONKZ n="7243" Name="Ettlingen"/>
 		<ONKZ n="7244" Name="Weingarten Baden"/>
 		<ONKZ n="7245" Name="Durmersheim"/>
-		<ONKZ n="7246" Name="Malsch Kr Karlsruhe"/>
+		<ONKZ n="7246" Name="Malsch (Kreis Karlsruhe)"/>
 		<ONKZ n="7247" Name="Linkenheim-Hochstetten"/>
 		<ONKZ n="7248" Name="Marxzell"/>
 		<ONKZ n="7249" Name="Stutensee"/>
@@ -8959,20 +8959,20 @@
 		<ONKZ n="7276" Name="Herxheim bei Landau Pfalz"/>
 		<ONKZ n="7277" Name="Wörth-Büchelberg"/>
 		<ONKZ n="7300" Name="Roggenburg"/>
-		<ONKZ n="7302" Name="Pfaffenhofen a d Roth"/>
+		<ONKZ n="7302" Name="Pfaffenhofen an der Roth"/>
 		<ONKZ n="7303" Name="Illertissen"/>
-		<ONKZ n="7304" Name="Blaustein Württ"/>
+		<ONKZ n="7304" Name="Blaustein Württenberg"/>
 		<ONKZ n="7305" Name="Erbach Donau"/>
 		<ONKZ n="7306" Name="Vöhringen Iller"/>
 		<ONKZ n="7307" Name="Senden Iller"/>
 		<ONKZ n="7308" Name="Nersingen"/>
 		<ONKZ n="7309" Name="Weissenhorn"/>
 		<ONKZ n="731" Name="Ulm Donau"/>
-		<ONKZ n="7321" Name="Heidenheim a d Brenz"/>
-		<ONKZ n="7322" Name="Giengen a d Brenz"/>
+		<ONKZ n="7321" Name="Heidenheim an der Brenz"/>
+		<ONKZ n="7322" Name="Giengen an der Brenz"/>
 		<ONKZ n="7323" Name="Gerstetten"/>
 		<ONKZ n="7324" Name="Herbrechtingen"/>
-		<ONKZ n="7325" Name="Sontheim a d Brenz"/>
+		<ONKZ n="7325" Name="Sontheim an der Brenz"/>
 		<ONKZ n="7326" Name="Neresheim"/>
 		<ONKZ n="7327" Name="Dischingen"/>
 		<ONKZ n="7328" Name="Königsbronn"/>
@@ -8985,9 +8985,9 @@
 		<ONKZ n="7336" Name="Lonsee"/>
 		<ONKZ n="7337" Name="Nellingen Alb"/>
 		<ONKZ n="7340" Name="Neenstetten"/>
-		<ONKZ n="7343" Name="Buch b Illertissen"/>
+		<ONKZ n="7343" Name="Buch bei Illertissen"/>
 		<ONKZ n="7344" Name="Blaubeuren"/>
-		<ONKZ n="7345" Name="Langenau Württ"/>
+		<ONKZ n="7345" Name="Langenau Württenberg"/>
 		<ONKZ n="7346" Name="Illerkirchberg"/>
 		<ONKZ n="7347" Name="Dietenheim"/>
 		<ONKZ n="7348" Name="Beimerstetten"/>
@@ -9003,10 +9003,10 @@
 		<ONKZ n="7362" Name="Bopfingen"/>
 		<ONKZ n="7363" Name="Lauchheim"/>
 		<ONKZ n="7364" Name="Oberkochen"/>
-		<ONKZ n="7365" Name="Essingen Württ"/>
+		<ONKZ n="7365" Name="Essingen Württenberg"/>
 		<ONKZ n="7366" Name="Abtsgmünd"/>
 		<ONKZ n="7367" Name="Aalen-Ebnat"/>
-		<ONKZ n="7371" Name="Riedlingen Württ"/>
+		<ONKZ n="7371" Name="Riedlingen Württenberg"/>
 		<ONKZ n="7373" Name="Zwiefalten"/>
 		<ONKZ n="7374" Name="Uttenweiler"/>
 		<ONKZ n="7375" Name="Obermarchtal"/>
@@ -9017,7 +9017,7 @@
 		<ONKZ n="7384" Name="Schelklingen-Hütten"/>
 		<ONKZ n="7385" Name="Gomadingen"/>
 		<ONKZ n="7386" Name="Hayingen"/>
-		<ONKZ n="7387" Name="Hohenstein Württ"/>
+		<ONKZ n="7387" Name="Hohenstein Württenberg"/>
 		<ONKZ n="7388" Name="Pfronstetten"/>
 		<ONKZ n="7389" Name="Heroldstatt"/>
 		<ONKZ n="7391" Name="Ehingen Donau"/>
@@ -9035,7 +9035,7 @@
 		<ONKZ n="7424" Name="Spaichingen"/>
 		<ONKZ n="7425" Name="Trossingen"/>
 		<ONKZ n="7426" Name="Gosheim"/>
-		<ONKZ n="7427" Name="Schömberg b Balingen"/>
+		<ONKZ n="7427" Name="Schömberg bei Balingen"/>
 		<ONKZ n="7428" Name="Rosenfeld"/>
 		<ONKZ n="7429" Name="Egesheim"/>
 		<ONKZ n="7431" Name="Albstadt-Ebingen"/>
@@ -9056,7 +9056,7 @@
 		<ONKZ n="7449" Name="Baiersbronn-Obertal"/>
 		<ONKZ n="7451" Name="Horb am Neckar"/>
 		<ONKZ n="7452" Name="Nagold"/>
-		<ONKZ n="7453" Name="Altensteig Württ"/>
+		<ONKZ n="7453" Name="Altensteig Württenberg"/>
 		<ONKZ n="7454" Name="Sulz am Neckar"/>
 		<ONKZ n="7455" Name="Dornhan"/>
 		<ONKZ n="7456" Name="Haiterbach"/>
@@ -9066,7 +9066,7 @@
 		<ONKZ n="7461" Name="Tuttlingen"/>
 		<ONKZ n="7462" Name="Immendingen"/>
 		<ONKZ n="7463" Name="Mühlheim an der Donau"/>
-		<ONKZ n="7464" Name="Talheim Kr Tuttlingen"/>
+		<ONKZ n="7464" Name="Talheim (Kreis Tuttlingen)"/>
 		<ONKZ n="7465" Name="Emmingen-Liptingen"/>
 		<ONKZ n="7466" Name="Beuron"/>
 		<ONKZ n="7467" Name="Neuhausen ob Eck"/>
@@ -9076,7 +9076,7 @@
 		<ONKZ n="7474" Name="Haigerloch"/>
 		<ONKZ n="7475" Name="Burladingen"/>
 		<ONKZ n="7476" Name="Bisingen"/>
-		<ONKZ n="7477" Name="Jungingen b Hechingen"/>
+		<ONKZ n="7477" Name="Jungingen bei Hechingen"/>
 		<ONKZ n="7478" Name="Hirrlingen"/>
 		<ONKZ n="7482" Name="Horb-Dettingen"/>
 		<ONKZ n="7483" Name="Horb-Mühringen"/>
@@ -9084,7 +9084,7 @@
 		<ONKZ n="7485" Name="Empfingen"/>
 		<ONKZ n="7486" Name="Horb-Altheim"/>
 		<ONKZ n="7502" Name="Wolpertswende"/>
-		<ONKZ n="7503" Name="Wilhelmsdorf Württ"/>
+		<ONKZ n="7503" Name="Wilhelmsdorf Württenberg"/>
 		<ONKZ n="7504" Name="Horgenzell"/>
 		<ONKZ n="7505" Name="Fronreute"/>
 		<ONKZ n="7506" Name="Wangen-Leupolz"/>
@@ -9094,8 +9094,8 @@
 		<ONKZ n="7524" Name="Bad Waldsee"/>
 		<ONKZ n="7525" Name="Aulendorf"/>
 		<ONKZ n="7527" Name="Wolfegg"/>
-		<ONKZ n="7528" Name="Neukirch b Tettnang"/>
-		<ONKZ n="7529" Name="Waldburg Württ"/>
+		<ONKZ n="7528" Name="Neukirch bei Tettnang"/>
+		<ONKZ n="7529" Name="Waldburg Württenberg"/>
 		<ONKZ n="7531" Name="Konstanz"/>
 		<ONKZ n="7532" Name="Meersburg"/>
 		<ONKZ n="7533" Name="Allensbach"/>
@@ -9118,14 +9118,14 @@
 		<ONKZ n="7562" Name="Isny im Allgäu"/>
 		<ONKZ n="7563" Name="Kisslegg"/>
 		<ONKZ n="7564" Name="Bad Wurzach"/>
-		<ONKZ n="7565" Name="Aichstetten Kr Ravensburg"/>
+		<ONKZ n="7565" Name="Aichstetten (Kreis Ravensburg)"/>
 		<ONKZ n="7566" Name="Argenbühl"/>
 		<ONKZ n="7567" Name="Leutkirch-Friesenhofen"/>
 		<ONKZ n="7568" Name="Bad Wurzach-Hauerz"/>
 		<ONKZ n="7569" Name="Isny-Eisenbach"/>
 		<ONKZ n="7570" Name="Sigmaringen-Gutenstein"/>
 		<ONKZ n="7571" Name="Sigmaringen"/>
-		<ONKZ n="7572" Name="Mengen Württ"/>
+		<ONKZ n="7572" Name="Mengen Württenberg"/>
 		<ONKZ n="7573" Name="Stetten am kalten Markt"/>
 		<ONKZ n="7574" Name="Gammertingen"/>
 		<ONKZ n="7575" Name="Messkirch"/>
@@ -9149,7 +9149,7 @@
 		<ONKZ n="7624" Name="Grenzach-Wyhlen"/>
 		<ONKZ n="7625" Name="Zell im Wiesental"/>
 		<ONKZ n="7626" Name="Kandern"/>
-		<ONKZ n="7627" Name="Steinen Kr Lörrach"/>
+		<ONKZ n="7627" Name="Steinen (Kreis Lörrach)"/>
 		<ONKZ n="7628" Name="Efringen-Kirchen"/>
 		<ONKZ n="7629" Name="Tegernau Baden"/>
 		<ONKZ n="7631" Name="Müllheim Baden"/>
@@ -9171,7 +9171,7 @@
 		<ONKZ n="7655" Name="Feldberg-Altglashütten"/>
 		<ONKZ n="7656" Name="Schluchsee"/>
 		<ONKZ n="7657" Name="Eisenbach Hochschwarzwald"/>
-		<ONKZ n="7660" Name="St Peter Schwarzw"/>
+		<ONKZ n="7660" Name="St. Peter Schwarzwald"/>
 		<ONKZ n="7661" Name="Kirchzarten"/>
 		<ONKZ n="7662" Name="Vogtsburg im Kaiserstuhl"/>
 		<ONKZ n="7663" Name="Eichstetten"/>
@@ -9180,9 +9180,9 @@
 		<ONKZ n="7666" Name="Denzlingen"/>
 		<ONKZ n="7667" Name="Breisach am Rhein"/>
 		<ONKZ n="7668" Name="Ihringen"/>
-		<ONKZ n="7669" Name="St Märgen"/>
+		<ONKZ n="7669" Name="St. Märgen"/>
 		<ONKZ n="7671" Name="Todtnau"/>
-		<ONKZ n="7672" Name="St Blasien"/>
+		<ONKZ n="7672" Name="St. Blasien"/>
 		<ONKZ n="7673" Name="Schönau im Schwarzwald"/>
 		<ONKZ n="7674" Name="Todtmoos"/>
 		<ONKZ n="7675" Name="Bernau Baden"/>
@@ -9195,17 +9195,17 @@
 		<ONKZ n="7702" Name="Blumberg Baden"/>
 		<ONKZ n="7703" Name="Bonndorf im Schwarzwald"/>
 		<ONKZ n="7704" Name="Geisingen Baden"/>
-		<ONKZ n="7705" Name="Wolterdingen Schwarzw"/>
+		<ONKZ n="7705" Name="Wolterdingen Schwarzwald"/>
 		<ONKZ n="7706" Name="Oberbaldingen"/>
 		<ONKZ n="7707" Name="Bräunlingen"/>
 		<ONKZ n="7708" Name="Geisingen-Leipferdingen"/>
 		<ONKZ n="7709" Name="Wutach"/>
 		<ONKZ n="771" Name="Donaueschingen"/>
-		<ONKZ n="7720" Name="Schwenningen a Neckar"/>
-		<ONKZ n="7721" Name="Villingen i Schwarzw"/>
+		<ONKZ n="7720" Name="Schwenningen am Neckar"/>
+		<ONKZ n="7721" Name="Villingen im Schwarzwald"/>
 		<ONKZ n="7722" Name="Triberg im Schwarzwald"/>
 		<ONKZ n="7723" Name="Furtwangen im Schwarzwald"/>
-		<ONKZ n="7724" Name="St Georgen im Schwarzwald"/>
+		<ONKZ n="7724" Name="St. Georgen im Schwarzwald"/>
 		<ONKZ n="7725" Name="Königsfeld im Schwarzwald"/>
 		<ONKZ n="7726" Name="Bad Dürrheim"/>
 		<ONKZ n="7727" Name="Vöhrenbach"/>
@@ -9226,11 +9226,11 @@
 		<ONKZ n="7745" Name="Jestetten"/>
 		<ONKZ n="7746" Name="Wutöschingen"/>
 		<ONKZ n="7747" Name="Berau"/>
-		<ONKZ n="7748" Name="Grafenhausen Hochschwarzw"/>
+		<ONKZ n="7748" Name="Grafenhausen Hochschwarzwald"/>
 		<ONKZ n="7751" Name="Waldshut"/>
 		<ONKZ n="7753" Name="Albbruck"/>
 		<ONKZ n="7754" Name="Görwihl"/>
-		<ONKZ n="7755" Name="Weilheim Kr Waldshut"/>
+		<ONKZ n="7755" Name="Weilheim (Kreis Waldshut)"/>
 		<ONKZ n="7761" Name="Bad Säckingen"/>
 		<ONKZ n="7762" Name="Wehr Baden"/>
 		<ONKZ n="7763" Name="Murg"/>
@@ -9247,7 +9247,7 @@
 		<ONKZ n="7805" Name="Appenweier"/>
 		<ONKZ n="7806" Name="Bad Peterstal-Griesbach"/>
 		<ONKZ n="7807" Name="Neuried Ortenaukreis"/>
-		<ONKZ n="7808" Name="Hohberg b Offenburg"/>
+		<ONKZ n="7808" Name="Hohberg bei Offenburg"/>
 		<ONKZ n="781" Name="Offenburg"/>
 		<ONKZ n="7821" Name="Lahr Schwarzwald"/>
 		<ONKZ n="7822" Name="Ettenheim"/>
@@ -9280,7 +9280,7 @@
 		<ONKZ n="791" Name="Schwäbisch Hall"/>
 		<ONKZ n="7930" Name="Boxberg Baden"/>
 		<ONKZ n="7931" Name="Bad Mergentheim"/>
-		<ONKZ n="7932" Name="Niederstetten Württ"/>
+		<ONKZ n="7932" Name="Niederstetten Württenberg"/>
 		<ONKZ n="7933" Name="Creglingen"/>
 		<ONKZ n="7934" Name="Weikersheim"/>
 		<ONKZ n="7935" Name="Schrozberg"/>
@@ -9290,7 +9290,7 @@
 		<ONKZ n="7939" Name="Schrozberg-Spielbach"/>
 		<ONKZ n="7940" Name="Künzelsau"/>
 		<ONKZ n="7941" Name="Öhringen"/>
-		<ONKZ n="7942" Name="Neuenstein Württ"/>
+		<ONKZ n="7942" Name="Neuenstein Württenberg"/>
 		<ONKZ n="7943" Name="Schöntal Jagst"/>
 		<ONKZ n="7944" Name="Kupferzell"/>
 		<ONKZ n="7945" Name="Wüstenrot"/>
@@ -9303,7 +9303,7 @@
 		<ONKZ n="7952" Name="Gerabronn"/>
 		<ONKZ n="7953" Name="Blaufelden"/>
 		<ONKZ n="7954" Name="Kirchberg an der Jagst"/>
-		<ONKZ n="7955" Name="Wallhausen Württ"/>
+		<ONKZ n="7955" Name="Wallhausen Württenberg"/>
 		<ONKZ n="7957" Name="Kressberg"/>
 		<ONKZ n="7958" Name="Rot Am See-Brettheim"/>
 		<ONKZ n="7959" Name="Frankenhardt"/>
@@ -9315,12 +9315,12 @@
 		<ONKZ n="7966" Name="Unterschneidheim"/>
 		<ONKZ n="7967" Name="Jagstzell"/>
 		<ONKZ n="7971" Name="Gaildorf"/>
-		<ONKZ n="7972" Name="Gschwend b Gaildorf"/>
+		<ONKZ n="7972" Name="Gschwend bei Gaildorf"/>
 		<ONKZ n="7973" Name="Obersontheim"/>
 		<ONKZ n="7974" Name="Bühlerzell"/>
 		<ONKZ n="7975" Name="Untergröningen"/>
 		<ONKZ n="7976" Name="Sulzbach-Laufen"/>
-		<ONKZ n="7977" Name="Oberrot b Gaildorf"/>
+		<ONKZ n="7977" Name="Oberrot bei Gaildorf"/>
 		<ONKZ n="8020" Name="Weyarn"/>
 		<ONKZ n="8021" Name="Waakirchen"/>
 		<ONKZ n="8022" Name="Tegernsee"/>
@@ -9330,37 +9330,37 @@
 		<ONKZ n="8026" Name="Hausham"/>
 		<ONKZ n="8027" Name="Dietramszell"/>
 		<ONKZ n="8028" Name="Fischbachau"/>
-		<ONKZ n="8029" Name="Kreuth b Tegernsee"/>
-		<ONKZ n="8031" Name="Rosenheim Oberbay"/>
-		<ONKZ n="8032" Name="Rohrdorf Kr Rosenheim"/>
+		<ONKZ n="8029" Name="Kreuth bei Tegernsee"/>
+		<ONKZ n="8031" Name="Rosenheim Oberbayern"/>
+		<ONKZ n="8032" Name="Rohrdorf (Kreis Rosenheim)"/>
 		<ONKZ n="8033" Name="Oberaudorf"/>
 		<ONKZ n="8034" Name="Brannenburg"/>
 		<ONKZ n="8035" Name="Raubling"/>
 		<ONKZ n="8036" Name="Stephanskirchen Simssee"/>
 		<ONKZ n="8038" Name="Vogtareuth"/>
-		<ONKZ n="8039" Name="Rott a Inn"/>
+		<ONKZ n="8039" Name="Rott am Inn"/>
 		<ONKZ n="8041" Name="Bad Tölz"/>
 		<ONKZ n="8042" Name="Lenggries"/>
 		<ONKZ n="8043" Name="Jachenau"/>
 		<ONKZ n="8045" Name="Lenggries-Fall"/>
 		<ONKZ n="8046" Name="Bad Heilbrunn"/>
-		<ONKZ n="8051" Name="Prien a Chiemsee"/>
-		<ONKZ n="8052" Name="Aschau i Chiemgau"/>
+		<ONKZ n="8051" Name="Prien am Chiemsee"/>
+		<ONKZ n="8052" Name="Aschau im Chiemgau"/>
 		<ONKZ n="8053" Name="Bad Endorf"/>
-		<ONKZ n="8054" Name="Breitbrunn a Chiemsee"/>
+		<ONKZ n="8054" Name="Breitbrunn am Chiemsee"/>
 		<ONKZ n="8055" Name="Halfing"/>
 		<ONKZ n="8056" Name="Eggstätt"/>
 		<ONKZ n="8057" Name="Aschau-Sachrang"/>
 		<ONKZ n="8061" Name="Bad Aibling"/>
 		<ONKZ n="8062" Name="Bruckmühl Mangfall"/>
 		<ONKZ n="8063" Name="Feldkirchen-Westerham"/>
-		<ONKZ n="8064" Name="Au b Bad Aibling"/>
+		<ONKZ n="8064" Name="Au bei Bad Aibling"/>
 		<ONKZ n="8065" Name="Tuntenhausen-Schönau"/>
 		<ONKZ n="8066" Name="Bad Feilnbach"/>
 		<ONKZ n="8067" Name="Tuntenhausen"/>
-		<ONKZ n="8071" Name="Wasserburg a Inn"/>
-		<ONKZ n="8072" Name="Haag i OB"/>
-		<ONKZ n="8073" Name="Gars a Inn"/>
+		<ONKZ n="8071" Name="Wasserburg am Inn"/>
+		<ONKZ n="8072" Name="Haag in Oberbayern"/>
+		<ONKZ n="8073" Name="Gars am Inn"/>
 		<ONKZ n="8074" Name="Schnaitsee"/>
 		<ONKZ n="8075" Name="Amerang"/>
 		<ONKZ n="8076" Name="Pfaffing"/>
@@ -9369,10 +9369,10 @@
 		<ONKZ n="8083" Name="Isen"/>
 		<ONKZ n="8084" Name="Taufkirchen Vils"/>
 		<ONKZ n="8085" Name="Sankt Wolfgang"/>
-		<ONKZ n="8086" Name="Buchbach Oberbay"/>
+		<ONKZ n="8086" Name="Buchbach Oberbayern"/>
 		<ONKZ n="8091" Name="Kirchseeon"/>
-		<ONKZ n="8092" Name="Grafing b München"/>
-		<ONKZ n="8093" Name="Glonn Kr Ebersberg"/>
+		<ONKZ n="8092" Name="Grafing bei München"/>
+		<ONKZ n="8093" Name="Glonn (Kreis Ebersberg)"/>
 		<ONKZ n="8094" Name="Steinhöring"/>
 		<ONKZ n="8095" Name="Aying"/>
 		<ONKZ n="8102" Name="Höhenkirchen-Siegertsbrunn"/>
@@ -9383,59 +9383,59 @@
 		<ONKZ n="8121" Name="Markt Schwaben"/>
 		<ONKZ n="8122" Name="Erding"/>
 		<ONKZ n="8123" Name="Moosinning"/>
-		<ONKZ n="8124" Name="Forstern Oberbay"/>
+		<ONKZ n="8124" Name="Forstern Oberbayern"/>
 		<ONKZ n="8131" Name="Dachau"/>
-		<ONKZ n="8133" Name="Haimhausen Oberbay"/>
+		<ONKZ n="8133" Name="Haimhausen Oberbayern"/>
 		<ONKZ n="8134" Name="Odelzhausen"/>
 		<ONKZ n="8135" Name="Sulzemoos"/>
 		<ONKZ n="8136" Name="Markt Indersdorf"/>
 		<ONKZ n="8137" Name="Petershausen"/>
-		<ONKZ n="8138" Name="Schwabhausen b Dachau"/>
+		<ONKZ n="8138" Name="Schwabhausen bei Dachau"/>
 		<ONKZ n="8139" Name="Röhrmoos"/>
 		<ONKZ n="8141" Name="Fürstenfeldbruck"/>
 		<ONKZ n="8142" Name="Olching"/>
-		<ONKZ n="8143" Name="Inning a Ammersee"/>
+		<ONKZ n="8143" Name="Inning am Ammersee"/>
 		<ONKZ n="8144" Name="Grafrath"/>
 		<ONKZ n="8145" Name="Mammendorf"/>
 		<ONKZ n="8146" Name="Moorenweis"/>
 		<ONKZ n="8151" Name="Starnberg"/>
-		<ONKZ n="8152" Name="Herrsching a Ammersee"/>
+		<ONKZ n="8152" Name="Herrsching am Ammersee"/>
 		<ONKZ n="8153" Name="Wessling"/>
 		<ONKZ n="8157" Name="Feldafing"/>
 		<ONKZ n="8158" Name="Tutzing"/>
 		<ONKZ n="8161" Name="Freising"/>
-		<ONKZ n="8165" Name="Neufahrn b Freising"/>
-		<ONKZ n="8166" Name="Allershausen Oberbay"/>
+		<ONKZ n="8165" Name="Neufahrn bei Freising"/>
+		<ONKZ n="8166" Name="Allershausen Oberbayern"/>
 		<ONKZ n="8167" Name="Zolling"/>
 		<ONKZ n="8168" Name="Attenkirchen"/>
 		<ONKZ n="8170" Name="Straßlach-Dingharting"/>
 		<ONKZ n="8171" Name="Wolfratshausen"/>
-		<ONKZ n="8176" Name="Egling b Wolfratshausen"/>
+		<ONKZ n="8176" Name="Egling bei Wolfratshausen"/>
 		<ONKZ n="8177" Name="Münsing Starnberger See"/>
 		<ONKZ n="8178" Name="Icking"/>
-		<ONKZ n="8179" Name="Eurasburg a d Loisach"/>
-		<ONKZ n="8191" Name="Landsberg a Lech"/>
-		<ONKZ n="8192" Name="Schondorf a Ammersee"/>
+		<ONKZ n="8179" Name="Eurasburg an der Loisach"/>
+		<ONKZ n="8191" Name="Landsberg am Lech"/>
+		<ONKZ n="8192" Name="Schondorf am Ammersee"/>
 		<ONKZ n="8193" Name="Geltendorf"/>
 		<ONKZ n="8194" Name="Vilgertshofen"/>
-		<ONKZ n="8195" Name="Weil Kr Landsberg a Lech"/>
+		<ONKZ n="8195" Name="Weil (Kreis Landsberg am Lech)"/>
 		<ONKZ n="8196" Name="Pürgen"/>
 		<ONKZ n="8202" Name="Althegnenberg"/>
 		<ONKZ n="8203" Name="Grossaitingen"/>
 		<ONKZ n="8204" Name="Mickhausen"/>
 		<ONKZ n="8205" Name="Dasing"/>
-		<ONKZ n="8206" Name="Egling a d Paar"/>
+		<ONKZ n="8206" Name="Egling an der Paar"/>
 		<ONKZ n="8207" Name="Affing"/>
-		<ONKZ n="8208" Name="Eurasburg b Augsburg"/>
+		<ONKZ n="8208" Name="Eurasburg bei Augsburg"/>
 		<ONKZ n="821" Name="Augsburg"/>
 		<ONKZ n="8221" Name="Günzburg"/>
-		<ONKZ n="8222" Name="Burgau Schwab"/>
+		<ONKZ n="8222" Name="Burgau Schwaben"/>
 		<ONKZ n="8223" Name="Ichenhausen"/>
 		<ONKZ n="8224" Name="Offingen Donau"/>
 		<ONKZ n="8225" Name="Jettingen-Scheppach"/>
 		<ONKZ n="8226" Name="Bibertal"/>
 		<ONKZ n="8230" Name="Gablingen"/>
-		<ONKZ n="8231" Name="Königsbrunn b Augsburg"/>
+		<ONKZ n="8231" Name="Königsbrunn bei Augsburg"/>
 		<ONKZ n="8232" Name="Schwabmünchen"/>
 		<ONKZ n="8233" Name="Kissing"/>
 		<ONKZ n="8234" Name="Bobingen"/>
@@ -9460,27 +9460,27 @@
 		<ONKZ n="8259" Name="Schiltberg"/>
 		<ONKZ n="8261" Name="Mindelheim"/>
 		<ONKZ n="8262" Name="Mittelneufnach"/>
-		<ONKZ n="8263" Name="Breitenbrunn Schwab"/>
-		<ONKZ n="8265" Name="Pfaffenhausen Schwab"/>
-		<ONKZ n="8266" Name="Kirchheim i Schw"/>
+		<ONKZ n="8263" Name="Breitenbrunn Schwaben"/>
+		<ONKZ n="8265" Name="Pfaffenhausen Schwaben"/>
+		<ONKZ n="8266" Name="Kirchheim in Schwaben"/>
 		<ONKZ n="8267" Name="Dirlewang"/>
 		<ONKZ n="8268" Name="Tussenhausen"/>
-		<ONKZ n="8269" Name="Unteregg b Mindelheim"/>
+		<ONKZ n="8269" Name="Unteregg bei Mindelheim"/>
 		<ONKZ n="8271" Name="Meitingen"/>
 		<ONKZ n="8272" Name="Wertingen"/>
 		<ONKZ n="8273" Name="Nordendorf"/>
 		<ONKZ n="8274" Name="Buttenwiesen"/>
 		<ONKZ n="8276" Name="Baar Schwaben"/>
-		<ONKZ n="8281" Name="Thannhausen Schwab"/>
+		<ONKZ n="8281" Name="Thannhausen Schwaben"/>
 		<ONKZ n="8282" Name="Krumbach Schwaben"/>
-		<ONKZ n="8283" Name="Neuburg a d Kammel"/>
+		<ONKZ n="8283" Name="Neuburg an der Kammel"/>
 		<ONKZ n="8284" Name="Ziemetshausen"/>
 		<ONKZ n="8285" Name="Burtenbach"/>
 		<ONKZ n="8291" Name="Zusmarshausen"/>
 		<ONKZ n="8292" Name="Dinkelscherben"/>
-		<ONKZ n="8293" Name="Welden b Augsburg"/>
+		<ONKZ n="8293" Name="Welden bei Augsburg"/>
 		<ONKZ n="8294" Name="Horgau"/>
-		<ONKZ n="8295" Name="Altenmünster Schwab"/>
+		<ONKZ n="8295" Name="Altenmünster Schwaben"/>
 		<ONKZ n="8296" Name="Villenbach"/>
 		<ONKZ n="8302" Name="Görisried"/>
 		<ONKZ n="8303" Name="Waltenhofen"/>
@@ -9490,16 +9490,16 @@
 		<ONKZ n="8320" Name="Missen-Wilhams"/>
 		<ONKZ n="8321" Name="Sonthofen"/>
 		<ONKZ n="8322" Name="Oberstdorf"/>
-		<ONKZ n="8323" Name="Immenstadt i Allgäu"/>
+		<ONKZ n="8323" Name="Immenstadt im Allgäu"/>
 		<ONKZ n="8324" Name="Hindelang"/>
 		<ONKZ n="8325" Name="Oberstaufen-Thalkirchdorf"/>
-		<ONKZ n="8326" Name="Fischen i Allgäu"/>
+		<ONKZ n="8326" Name="Fischen im Allgäu"/>
 		<ONKZ n="8327" Name="Rettenberg"/>
 		<ONKZ n="8328" Name="Balderschwang"/>
 		<ONKZ n="8330" Name="Legau"/>
 		<ONKZ n="8331" Name="Memmingen"/>
 		<ONKZ n="8332" Name="Ottobeuren"/>
-		<ONKZ n="8333" Name="Babenhausen Schwab"/>
+		<ONKZ n="8333" Name="Babenhausen Schwaben"/>
 		<ONKZ n="8334" Name="Bad Grönenbach"/>
 		<ONKZ n="8335" Name="Fellheim"/>
 		<ONKZ n="8336" Name="Erkheim"/>
@@ -9509,12 +9509,12 @@
 		<ONKZ n="8341" Name="Kaufbeuren"/>
 		<ONKZ n="8342" Name="Marktoberdorf"/>
 		<ONKZ n="8343" Name="Aitrang"/>
-		<ONKZ n="8344" Name="Westendorf b Kaufbeuren"/>
+		<ONKZ n="8344" Name="Westendorf bei Kaufbeuren"/>
 		<ONKZ n="8345" Name="Stöttwang"/>
 		<ONKZ n="8346" Name="Pforzen"/>
 		<ONKZ n="8347" Name="Friesenried"/>
 		<ONKZ n="8348" Name="Bidingen"/>
-		<ONKZ n="8349" Name="Stötten a Auerberg"/>
+		<ONKZ n="8349" Name="Stötten am Auerberg"/>
 		<ONKZ n="8361" Name="Nesselwang"/>
 		<ONKZ n="8362" Name="Füssen"/>
 		<ONKZ n="8363" Name="Pfronten"/>
@@ -9531,10 +9531,10 @@
 		<ONKZ n="8375" Name="Weitnau"/>
 		<ONKZ n="8376" Name="Sulzberg Allgäu"/>
 		<ONKZ n="8377" Name="Unterthingau"/>
-		<ONKZ n="8378" Name="Buchenberg b Kempten"/>
+		<ONKZ n="8378" Name="Buchenberg bei Kempten"/>
 		<ONKZ n="8379" Name="Waltenhofen-Oberdorf"/>
 		<ONKZ n="8380" Name="Achberg"/>
-		<ONKZ n="8381" Name="Lindenberg i Allgäu"/>
+		<ONKZ n="8381" Name="Lindenberg im Allgäu"/>
 		<ONKZ n="8382" Name="Lindau Bodensee"/>
 		<ONKZ n="8383" Name="Grünenbach Allgäu"/>
 		<ONKZ n="8384" Name="Röthenbach Allgäu"/>
@@ -9546,26 +9546,26 @@
 		<ONKZ n="8392" Name="Markt Rettenbach"/>
 		<ONKZ n="8393" Name="Holzgünz"/>
 		<ONKZ n="8394" Name="Lautrach"/>
-		<ONKZ n="8395" Name="Tannheim Württ"/>
+		<ONKZ n="8395" Name="Tannheim Württenberg"/>
 		<ONKZ n="8402" Name="Münchsmünster"/>
 		<ONKZ n="8403" Name="Pförring"/>
 		<ONKZ n="8404" Name="Oberdolling"/>
-		<ONKZ n="8405" Name="Stammham b Ingolstadt"/>
+		<ONKZ n="8405" Name="Stammham bei Ingolstadt"/>
 		<ONKZ n="8406" Name="Böhmfeld"/>
 		<ONKZ n="8407" Name="Grossmehring"/>
 		<ONKZ n="841" Name="Ingolstadt Donau"/>
-		<ONKZ n="8421" Name="Eichstätt Bay"/>
+		<ONKZ n="8421" Name="Eichstätt Bayern"/>
 		<ONKZ n="8422" Name="Dollnstein"/>
 		<ONKZ n="8423" Name="Titting"/>
 		<ONKZ n="8424" Name="Nassenfels"/>
-		<ONKZ n="8426" Name="Walting Kr Eichstätt"/>
+		<ONKZ n="8426" Name="Walting (Kreis Eichstätt)"/>
 		<ONKZ n="8427" Name="Wellheim"/>
-		<ONKZ n="8431" Name="Neuburg a d Donau"/>
+		<ONKZ n="8431" Name="Neuburg an der Donau"/>
 		<ONKZ n="8432" Name="Burgheim"/>
 		<ONKZ n="8433" Name="Königsmoos"/>
 		<ONKZ n="8434" Name="Rennertshofen"/>
 		<ONKZ n="8435" Name="Ehekirchen"/>
-		<ONKZ n="8441" Name="Pfaffenhofen a d Ilm"/>
+		<ONKZ n="8441" Name="Pfaffenhofen an der Ilm"/>
 		<ONKZ n="8442" Name="Wolnzach"/>
 		<ONKZ n="8443" Name="Hohenwart Paar"/>
 		<ONKZ n="8444" Name="Schweitenkirchen"/>
@@ -9573,93 +9573,93 @@
 		<ONKZ n="8446" Name="Pörnbach"/>
 		<ONKZ n="8450" Name="Ingolstadt-Zuchering"/>
 		<ONKZ n="8452" Name="Geisenfeld"/>
-		<ONKZ n="8453" Name="Reichertshofen Oberbay"/>
+		<ONKZ n="8453" Name="Reichertshofen Oberbayern"/>
 		<ONKZ n="8454" Name="Karlshuld"/>
 		<ONKZ n="8456" Name="Lenting"/>
-		<ONKZ n="8457" Name="Vohburg a d Donau"/>
+		<ONKZ n="8457" Name="Vohburg an der Donau"/>
 		<ONKZ n="8458" Name="Gaimersheim"/>
 		<ONKZ n="8459" Name="Manching"/>
 		<ONKZ n="8460" Name="Berching-Holnstein"/>
 		<ONKZ n="8461" Name="Beilngries"/>
 		<ONKZ n="8462" Name="Berching"/>
 		<ONKZ n="8463" Name="Greding"/>
-		<ONKZ n="8464" Name="Dietfurt a d Altmühl"/>
+		<ONKZ n="8464" Name="Dietfurt an der Altmühl"/>
 		<ONKZ n="8465" Name="Kipfenberg"/>
-		<ONKZ n="8466" Name="Denkendorf Oberbay"/>
+		<ONKZ n="8466" Name="Denkendorf Oberbayern"/>
 		<ONKZ n="8467" Name="Kinding"/>
 		<ONKZ n="8468" Name="Altmannstein-Pondorf"/>
 		<ONKZ n="8469" Name="Freystadt-Burggriesbach"/>
 		<ONKZ n="8501" Name="Thyrnau"/>
 		<ONKZ n="8502" Name="Fürstenzell"/>
-		<ONKZ n="8503" Name="Neuhaus a Inn"/>
+		<ONKZ n="8503" Name="Neuhaus am Inn"/>
 		<ONKZ n="8504" Name="Tittling"/>
 		<ONKZ n="8505" Name="Hutthurm"/>
 		<ONKZ n="8506" Name="Bad Höhenstadt"/>
-		<ONKZ n="8507" Name="Neuburg a Inn"/>
+		<ONKZ n="8507" Name="Neuburg am Inn"/>
 		<ONKZ n="8509" Name="Ruderting"/>
 		<ONKZ n="851" Name="Passau"/>
 		<ONKZ n="8531" Name="Pocking"/>
-		<ONKZ n="8532" Name="Griesbach i Rottal"/>
+		<ONKZ n="8532" Name="Griesbach im Rottal"/>
 		<ONKZ n="8533" Name="Rotthalmünster"/>
 		<ONKZ n="8534" Name="Tettenweis"/>
 		<ONKZ n="8535" Name="Haarbach"/>
 		<ONKZ n="8536" Name="Kößlarn"/>
 		<ONKZ n="8537" Name="Bad Füssing-Aigen"/>
 		<ONKZ n="8538" Name="Pocking-Hartkirchen"/>
-		<ONKZ n="8541" Name="Vilshofen Niederbay"/>
+		<ONKZ n="8541" Name="Vilshofen Niederbayern"/>
 		<ONKZ n="8542" Name="Ortenburg"/>
 		<ONKZ n="8543" Name="Aidenbach"/>
-		<ONKZ n="8544" Name="Eging a See"/>
-		<ONKZ n="8545" Name="Hofkirchen Bay"/>
+		<ONKZ n="8544" Name="Eging am See"/>
+		<ONKZ n="8545" Name="Hofkirchen Bayern"/>
 		<ONKZ n="8546" Name="Windorf-Otterskirchen"/>
 		<ONKZ n="8547" Name="Osterhofen-Gergweis"/>
 		<ONKZ n="8548" Name="Vilshofen-Sandbach"/>
 		<ONKZ n="8549" Name="Vilshofen-Pleinting"/>
 		<ONKZ n="8550" Name="Philippsreut"/>
 		<ONKZ n="8551" Name="Freyung"/>
-		<ONKZ n="8552" Name="Grafenau Niederbay"/>
+		<ONKZ n="8552" Name="Grafenau Niederbayern"/>
 		<ONKZ n="8553" Name="Spiegelau"/>
-		<ONKZ n="8554" Name="Schönberg Niederbay"/>
+		<ONKZ n="8554" Name="Schönberg Niederbayern"/>
 		<ONKZ n="8555" Name="Perlesreut"/>
 		<ONKZ n="8556" Name="Haidmühle"/>
 		<ONKZ n="8557" Name="Mauth"/>
-		<ONKZ n="8558" Name="Hohenau Niederbay"/>
-		<ONKZ n="8561" Name="Pfarrkirchen Niederbay"/>
+		<ONKZ n="8558" Name="Hohenau Niederbayern"/>
+		<ONKZ n="8561" Name="Pfarrkirchen Niederbayern"/>
 		<ONKZ n="8562" Name="Triftern"/>
 		<ONKZ n="8563" Name="Bad Birnbach Rottal"/>
 		<ONKZ n="8564" Name="Johanniskirchen"/>
 		<ONKZ n="8565" Name="Dietersburg-Baumgarten"/>
-		<ONKZ n="8571" Name="Simbach a Inn"/>
-		<ONKZ n="8572" Name="Tann Niederbay"/>
+		<ONKZ n="8571" Name="Simbach am Inn"/>
+		<ONKZ n="8572" Name="Tann Niederbayern"/>
 		<ONKZ n="8573" Name="Ering"/>
 		<ONKZ n="8574" Name="Wittibreut"/>
-		<ONKZ n="8581" Name="Waldkirchen Niederbay"/>
+		<ONKZ n="8581" Name="Waldkirchen Niederbayern"/>
 		<ONKZ n="8582" Name="Röhrnbach"/>
 		<ONKZ n="8583" Name="Neureichenau"/>
-		<ONKZ n="8584" Name="Breitenberg Niederbay"/>
+		<ONKZ n="8584" Name="Breitenberg Niederbayern"/>
 		<ONKZ n="8585" Name="Grainet"/>
 		<ONKZ n="8586" Name="Hauzenberg"/>
 		<ONKZ n="8591" Name="Obernzell"/>
-		<ONKZ n="8592" Name="Wegscheid Niederbay"/>
+		<ONKZ n="8592" Name="Wegscheid Niederbayern"/>
 		<ONKZ n="8593" Name="Untergriesbach"/>
 		<ONKZ n="861" Name="Traunstein"/>
 		<ONKZ n="8621" Name="Trostberg"/>
 		<ONKZ n="8622" Name="Tacherting- Peterskirchen"/>
 		<ONKZ n="8623" Name="Kirchweidach"/>
 		<ONKZ n="8624" Name="Obing"/>
-		<ONKZ n="8628" Name="Kienberg Oberbay"/>
+		<ONKZ n="8628" Name="Kienberg Oberbayern"/>
 		<ONKZ n="8629" Name="Palling"/>
 		<ONKZ n="8630" Name="Oberneukirchen"/>
-		<ONKZ n="8631" Name="Mühldorf a Inn"/>
+		<ONKZ n="8631" Name="Mühldorf am Inn"/>
 		<ONKZ n="8633" Name="Tüßling"/>
-		<ONKZ n="8634" Name="Garching a d Alz"/>
+		<ONKZ n="8634" Name="Garching an der Alz"/>
 		<ONKZ n="8635" Name="Pleiskirchen"/>
 		<ONKZ n="8636" Name="Ampfing"/>
 		<ONKZ n="8637" Name="Lohkirchen"/>
 		<ONKZ n="8638" Name="Waldkraiburg"/>
 		<ONKZ n="8639" Name="Neumarkt-Sankt Veit"/>
 		<ONKZ n="8640" Name="Reit Im Winkl"/>
-		<ONKZ n="8641" Name="Grassau Kr Traunstein"/>
+		<ONKZ n="8641" Name="Grassau (Kreis Traunstein)"/>
 		<ONKZ n="8642" Name="Übersee"/>
 		<ONKZ n="8649" Name="Schleching"/>
 		<ONKZ n="8650" Name="Marktschellenberg"/>
@@ -9667,48 +9667,48 @@
 		<ONKZ n="8652" Name="Berchtesgaden"/>
 		<ONKZ n="8654" Name="Freilassing"/>
 		<ONKZ n="8656" Name="Anger"/>
-		<ONKZ n="8657" Name="Ramsau b Berchtesgaden"/>
+		<ONKZ n="8657" Name="Ramsau bei Berchtesgaden"/>
 		<ONKZ n="8661" Name="Grabenstätt Chiemsee"/>
-		<ONKZ n="8662" Name="Siegsdorf Kr Traunstein"/>
+		<ONKZ n="8662" Name="Siegsdorf (Kreis Traunstein)"/>
 		<ONKZ n="8663" Name="Ruhpolding"/>
 		<ONKZ n="8664" Name="Chieming"/>
 		<ONKZ n="8665" Name="Inzell"/>
 		<ONKZ n="8666" Name="Teisendorf"/>
 		<ONKZ n="8667" Name="Seeon-Seebruck"/>
 		<ONKZ n="8669" Name="Traunreut"/>
-		<ONKZ n="8670" Name="Reischach Kr Altötting"/>
+		<ONKZ n="8670" Name="Reischach (Kreis Altötting)"/>
 		<ONKZ n="8671" Name="Altötting"/>
 		<ONKZ n="8677" Name="Burghausen Salzach"/>
 		<ONKZ n="8678" Name="Marktl"/>
-		<ONKZ n="8679" Name="Burgkirchen a d Alz"/>
-		<ONKZ n="8681" Name="Waging a See"/>
+		<ONKZ n="8679" Name="Burgkirchen an der Alz"/>
+		<ONKZ n="8681" Name="Waging am See"/>
 		<ONKZ n="8682" Name="Laufen Salzach"/>
 		<ONKZ n="8683" Name="Tittmoning"/>
 		<ONKZ n="8684" Name="Fridolfing"/>
 		<ONKZ n="8685" Name="Kirchanschöring"/>
 		<ONKZ n="8686" Name="Petting"/>
 		<ONKZ n="8687" Name="Taching-Tengling"/>
-		<ONKZ n="8702" Name="Wörth a d Isar"/>
+		<ONKZ n="8702" Name="Wörth an der Isar"/>
 		<ONKZ n="8703" Name="Essenbach"/>
 		<ONKZ n="8704" Name="Altdorf-Pfettrach"/>
 		<ONKZ n="8705" Name="Altfraunhofen"/>
 		<ONKZ n="8706" Name="Vilsheim"/>
 		<ONKZ n="8707" Name="Adlkofen"/>
 		<ONKZ n="8708" Name="Weihmichl-Unterneuhausen"/>
-		<ONKZ n="8709" Name="Eching Niederbay"/>
+		<ONKZ n="8709" Name="Eching Niederbayern"/>
 		<ONKZ n="871" Name="Landshut"/>
 		<ONKZ n="8721" Name="Eggenfelden"/>
 		<ONKZ n="8722" Name="Gangkofen"/>
 		<ONKZ n="8723" Name="Arnstorf"/>
 		<ONKZ n="8724" Name="Massing"/>
 		<ONKZ n="8725" Name="Wurmannsquick"/>
-		<ONKZ n="8726" Name="Schönau Niederbay"/>
-		<ONKZ n="8727" Name="Falkenberg Niederbay"/>
+		<ONKZ n="8726" Name="Schönau Niederbayern"/>
+		<ONKZ n="8727" Name="Falkenberg Niederbayern"/>
 		<ONKZ n="8728" Name="Geratskirchen"/>
 		<ONKZ n="8731" Name="Dingolfing"/>
 		<ONKZ n="8732" Name="Frontenhausen"/>
 		<ONKZ n="8733" Name="Mengkofen"/>
-		<ONKZ n="8734" Name="Reisbach Niederbay"/>
+		<ONKZ n="8734" Name="Reisbach Niederbayern"/>
 		<ONKZ n="8735" Name="Gangkofen-Kollbach"/>
 		<ONKZ n="8741" Name="Vilsbiburg"/>
 		<ONKZ n="8742" Name="Velden Vils"/>
@@ -9716,75 +9716,75 @@
 		<ONKZ n="8744" Name="Gerzen"/>
 		<ONKZ n="8745" Name="Bodenkirchen"/>
 		<ONKZ n="8751" Name="Mainburg"/>
-		<ONKZ n="8752" Name="Au i d Hallertau"/>
-		<ONKZ n="8753" Name="Elsendorf Niederbay"/>
+		<ONKZ n="8752" Name="Au in der Hallertau"/>
+		<ONKZ n="8753" Name="Elsendorf Niederbayern"/>
 		<ONKZ n="8754" Name="Volkenschwand"/>
 		<ONKZ n="8756" Name="Nandlstadt"/>
-		<ONKZ n="8761" Name="Moosburg a d Isar"/>
-		<ONKZ n="8762" Name="Wartenberg Oberbay"/>
-		<ONKZ n="8764" Name="Mauern Kr Freising"/>
-		<ONKZ n="8765" Name="Bruckberg Niederbay"/>
+		<ONKZ n="8761" Name="Moosburg an der Isar"/>
+		<ONKZ n="8762" Name="Wartenberg Oberbayern"/>
+		<ONKZ n="8764" Name="Mauern (Kreis Freising)"/>
+		<ONKZ n="8765" Name="Bruckberg Niederbayern"/>
 		<ONKZ n="8766" Name="Gammelsdorf"/>
 		<ONKZ n="8771" Name="Ergoldsbach"/>
 		<ONKZ n="8772" Name="Mallersdorf-Pfaffenberg"/>
-		<ONKZ n="8773" Name="Neufahrn i NB"/>
-		<ONKZ n="8774" Name="Bayerbach b Ergoldsbach"/>
-		<ONKZ n="8781" Name="Rottenburg a d Laaber"/>
+		<ONKZ n="8773" Name="Neufahrn in Niederbayern"/>
+		<ONKZ n="8774" Name="Bayerbach bei Ergoldsbach"/>
+		<ONKZ n="8781" Name="Rottenburg an der Laaber"/>
 		<ONKZ n="8782" Name="Pfeffenhausen"/>
-		<ONKZ n="8783" Name="Rohr i NB"/>
+		<ONKZ n="8783" Name="Rohr in Niederbayern"/>
 		<ONKZ n="8784" Name="Hohenthann"/>
 		<ONKZ n="8785" Name="Rottenburg-Oberroning"/>
 		<ONKZ n="8801" Name="Seeshaupt"/>
 		<ONKZ n="8802" Name="Huglfing"/>
 		<ONKZ n="8803" Name="Peissenberg"/>
 		<ONKZ n="8805" Name="Hohenpeissenberg"/>
-		<ONKZ n="8806" Name="Utting a Ammersee"/>
-		<ONKZ n="8807" Name="Dießen a Ammersee"/>
+		<ONKZ n="8806" Name="Utting am Ammersee"/>
+		<ONKZ n="8807" Name="Dießen am Ammersee"/>
 		<ONKZ n="8808" Name="Pähl"/>
 		<ONKZ n="8809" Name="Wessobrunn"/>
-		<ONKZ n="881" Name="Weilheim i OB"/>
+		<ONKZ n="881" Name="Weilheim in Oberbayern"/>
 		<ONKZ n="8821" Name="Garmisch-Partenkirchen"/>
 		<ONKZ n="8822" Name="Oberammergau"/>
 		<ONKZ n="8823" Name="Mittenwald"/>
 		<ONKZ n="8824" Name="Oberau Loisach"/>
 		<ONKZ n="8825" Name="Krün"/>
-		<ONKZ n="8841" Name="Murnau a Staffelsee"/>
+		<ONKZ n="8841" Name="Murnau am Staffelsee"/>
 		<ONKZ n="8845" Name="Bad Kohlgrub"/>
-		<ONKZ n="8846" Name="Uffing a Staffelsee"/>
+		<ONKZ n="8846" Name="Uffing am Staffelsee"/>
 		<ONKZ n="8847" Name="Obersöchering"/>
-		<ONKZ n="8851" Name="Kochel a See"/>
+		<ONKZ n="8851" Name="Kochel am See"/>
 		<ONKZ n="8856" Name="Penzberg"/>
 		<ONKZ n="8857" Name="Benediktbeuern"/>
 		<ONKZ n="8858" Name="Kochel-Walchensee"/>
 		<ONKZ n="8860" Name="Bernbeuren"/>
 		<ONKZ n="8861" Name="Schongau"/>
-		<ONKZ n="8862" Name="Steingaden Oberbay"/>
-		<ONKZ n="8867" Name="Rottenbuch Oberbay"/>
+		<ONKZ n="8862" Name="Steingaden Oberbayern"/>
+		<ONKZ n="8867" Name="Rottenbuch Oberbayern"/>
 		<ONKZ n="8868" Name="Schwabsoien"/>
 		<ONKZ n="8869" Name="Kinsau"/>
 		<ONKZ n="89" Name="München"/>
 		<ONKZ n="906" Name="Donauwörth"/>
 		<ONKZ n="9070" Name="Tapfheim"/>
-		<ONKZ n="9071" Name="Dillingen a d Donau"/>
+		<ONKZ n="9071" Name="Dillingen an der Donau"/>
 		<ONKZ n="9072" Name="Lauingen Donau"/>
-		<ONKZ n="9073" Name="Gundelfingen a d Donau"/>
-		<ONKZ n="9074" Name="Höchstädt a d Donau"/>
+		<ONKZ n="9073" Name="Gundelfingen an der Donau"/>
+		<ONKZ n="9074" Name="Höchstädt an der Donau"/>
 		<ONKZ n="9075" Name="Glött"/>
 		<ONKZ n="9076" Name="Wittislingen"/>
 		<ONKZ n="9077" Name="Bachhagel"/>
 		<ONKZ n="9078" Name="Mertingen"/>
 		<ONKZ n="9080" Name="Harburg Schwaben"/>
 		<ONKZ n="9081" Name="Nördlingen"/>
-		<ONKZ n="9082" Name="Oettingen i Bay"/>
+		<ONKZ n="9082" Name="Oettingen in Bayern"/>
 		<ONKZ n="9083" Name="Möttingen"/>
-		<ONKZ n="9084" Name="Bissingen Schwab"/>
+		<ONKZ n="9084" Name="Bissingen Schwaben"/>
 		<ONKZ n="9085" Name="Alerheim"/>
 		<ONKZ n="9086" Name="Fremdingen"/>
 		<ONKZ n="9087" Name="Marktoffingen"/>
 		<ONKZ n="9088" Name="Mönchsdeggingen"/>
 		<ONKZ n="9089" Name="Bissingen-Unterringingen"/>
 		<ONKZ n="9090" Name="Rain Lech"/>
-		<ONKZ n="9091" Name="Monheim Schwab"/>
+		<ONKZ n="9091" Name="Monheim Schwaben"/>
 		<ONKZ n="9092" Name="Wemding"/>
 		<ONKZ n="9093" Name="Polsingen"/>
 		<ONKZ n="9094" Name="Tagmersheim"/>
@@ -9800,19 +9800,19 @@
 		<ONKZ n="911" Name="Nürnberg"/>
 		<ONKZ n="9120" Name="Leinburg"/>
 		<ONKZ n="9122" Name="Schwabach"/>
-		<ONKZ n="9123" Name="Lauf a d Pegnitz"/>
+		<ONKZ n="9123" Name="Lauf an der Pegnitz"/>
 		<ONKZ n="9126" Name="Eckental"/>
-		<ONKZ n="9127" Name="Rosstal Mittelfr"/>
+		<ONKZ n="9127" Name="Rosstal Mittelfranken"/>
 		<ONKZ n="9128" Name="Feucht"/>
 		<ONKZ n="9129" Name="Wendelstein"/>
 		<ONKZ n="9131" Name="Erlangen"/>
 		<ONKZ n="9132" Name="Herzogenaurach"/>
-		<ONKZ n="9133" Name="Baiersdorf Mittelfr"/>
-		<ONKZ n="9134" Name="Neunkirchen a Brand"/>
-		<ONKZ n="9135" Name="Heßdorf Mittelfr"/>
-		<ONKZ n="9141" Name="Weißenburg i Bay"/>
+		<ONKZ n="9133" Name="Baiersdorf Mittelfranken"/>
+		<ONKZ n="9134" Name="Neunkirchen am Brand"/>
+		<ONKZ n="9135" Name="Heßdorf Mittelfranken"/>
+		<ONKZ n="9141" Name="Weißenburg in Bayern"/>
 		<ONKZ n="9142" Name="Treuchtlingen"/>
-		<ONKZ n="9143" Name="Pappenheim Mittelfr"/>
+		<ONKZ n="9143" Name="Pappenheim Mittelfranken"/>
 		<ONKZ n="9144" Name="Pleinfeld"/>
 		<ONKZ n="9145" Name="Solnhofen"/>
 		<ONKZ n="9146" Name="Markt Berolzheim"/>
@@ -9820,49 +9820,49 @@
 		<ONKZ n="9148" Name="Ettenstatt"/>
 		<ONKZ n="9149" Name="Weissenburg-Suffersheim"/>
 		<ONKZ n="9151" Name="Hersbruck"/>
-		<ONKZ n="9152" Name="Hartenstein Mittelfr"/>
+		<ONKZ n="9152" Name="Hartenstein Mittelfranken"/>
 		<ONKZ n="9153" Name="Schnaittach"/>
 		<ONKZ n="9154" Name="Pommelsbrunn"/>
 		<ONKZ n="9155" Name="Simmelsdorf"/>
-		<ONKZ n="9156" Name="Neuhaus a d Pegnitz"/>
-		<ONKZ n="9157" Name="Alfeld Mittelfr"/>
-		<ONKZ n="9158" Name="Offenhausen Mittelfr"/>
-		<ONKZ n="9161" Name="Neustadt a d Aisch"/>
+		<ONKZ n="9156" Name="Neuhaus an der Pegnitz"/>
+		<ONKZ n="9157" Name="Alfeld Mittelfranken"/>
+		<ONKZ n="9158" Name="Offenhausen Mittelfranken"/>
+		<ONKZ n="9161" Name="Neustadt an der Aisch"/>
 		<ONKZ n="9162" Name="Scheinfeld"/>
 		<ONKZ n="9163" Name="Dachsbach"/>
-		<ONKZ n="9164" Name="Langenfeld Mittelfr"/>
+		<ONKZ n="9164" Name="Langenfeld Mittelfranken"/>
 		<ONKZ n="9165" Name="Sugenheim"/>
 		<ONKZ n="9166" Name="Münchsteinach"/>
 		<ONKZ n="9167" Name="Oberscheinfeld"/>
 		<ONKZ n="9170" Name="Schwanstetten"/>
-		<ONKZ n="9171" Name="Roth Mittelfr"/>
+		<ONKZ n="9171" Name="Roth Mittelfranken"/>
 		<ONKZ n="9172" Name="Georgensgmünd"/>
 		<ONKZ n="9173" Name="Thalmässing"/>
 		<ONKZ n="9174" Name="Hilpoltstein"/>
 		<ONKZ n="9175" Name="Spalt"/>
 		<ONKZ n="9176" Name="Allersberg"/>
 		<ONKZ n="9177" Name="Heideck"/>
-		<ONKZ n="9178" Name="Abenberg Mittelfr"/>
+		<ONKZ n="9178" Name="Abenberg Mittelfranken"/>
 		<ONKZ n="9179" Name="Freystadt"/>
 		<ONKZ n="9180" Name="Pyrbaum"/>
-		<ONKZ n="9181" Name="Neumarkt i d Opf"/>
+		<ONKZ n="9181" Name="Neumarkt in der Oberpfalz"/>
 		<ONKZ n="9182" Name="Velburg"/>
 		<ONKZ n="9183" Name="Burgthann"/>
-		<ONKZ n="9184" Name="Deining Oberpf"/>
-		<ONKZ n="9185" Name="Mühlhausen Oberpf"/>
-		<ONKZ n="9186" Name="Lauterhofen Oberpf"/>
-		<ONKZ n="9187" Name="Altdorf b Nürnberg"/>
+		<ONKZ n="9184" Name="Deining Oberpfalz"/>
+		<ONKZ n="9185" Name="Mühlhausen Oberpfalz"/>
+		<ONKZ n="9186" Name="Lauterhofen Oberpfalz"/>
+		<ONKZ n="9187" Name="Altdorf bei Nürnberg"/>
 		<ONKZ n="9188" Name="Postbauer-Heng"/>
-		<ONKZ n="9189" Name="Berg b Neumarkt i d Opf"/>
+		<ONKZ n="9189" Name="Berg bei Neumarkt in der Oberpfalz"/>
 		<ONKZ n="9190" Name="Heroldsbach"/>
-		<ONKZ n="9191" Name="Forchheim Oberfr"/>
+		<ONKZ n="9191" Name="Forchheim Oberfranken"/>
 		<ONKZ n="9192" Name="Gräfenberg"/>
-		<ONKZ n="9193" Name="Höchstadt a d Aisch"/>
+		<ONKZ n="9193" Name="Höchstadt an der Aisch"/>
 		<ONKZ n="9194" Name="Ebermannstadt"/>
-		<ONKZ n="9195" Name="Adelsdorf Mittelfr"/>
+		<ONKZ n="9195" Name="Adelsdorf Mittelfranken"/>
 		<ONKZ n="9196" Name="Wiesenttal"/>
 		<ONKZ n="9197" Name="Egloffstein"/>
-		<ONKZ n="9198" Name="Heiligenstadt i Ofr"/>
+		<ONKZ n="9198" Name="Heiligenstadt in Oberfranken"/>
 		<ONKZ n="9199" Name="Kunreuth"/>
 		<ONKZ n="9201" Name="Gesees"/>
 		<ONKZ n="9202" Name="Waischenfeld"/>
@@ -9870,7 +9870,7 @@
 		<ONKZ n="9204" Name="Plankenfels"/>
 		<ONKZ n="9205" Name="Vorbach"/>
 		<ONKZ n="9206" Name="Mistelgau-Obernsees"/>
-		<ONKZ n="9207" Name="Königsfeld Oberfr"/>
+		<ONKZ n="9207" Name="Königsfeld Oberfranken"/>
 		<ONKZ n="9208" Name="Bindlach"/>
 		<ONKZ n="9209" Name="Emtmannsberg"/>
 		<ONKZ n="921" Name="Bayreuth"/>
@@ -9884,7 +9884,7 @@
 		<ONKZ n="9229" Name="Mainleus"/>
 		<ONKZ n="9231" Name="Marktredwitz"/>
 		<ONKZ n="9232" Name="Wunsiedel"/>
-		<ONKZ n="9233" Name="Arzberg Oberfr"/>
+		<ONKZ n="9233" Name="Arzberg Oberfranken"/>
 		<ONKZ n="9234" Name="Neusorg"/>
 		<ONKZ n="9235" Name="Thierstein"/>
 		<ONKZ n="9236" Name="Nagel"/>
@@ -9901,8 +9901,8 @@
 		<ONKZ n="9254" Name="Gefrees"/>
 		<ONKZ n="9255" Name="Marktleugast"/>
 		<ONKZ n="9256" Name="Stammbach"/>
-		<ONKZ n="9257" Name="Zell Oberfr"/>
-		<ONKZ n="9260" Name="Wilhelmsthal Oberfr"/>
+		<ONKZ n="9257" Name="Zell Oberfranken"/>
+		<ONKZ n="9260" Name="Wilhelmsthal Oberfranken"/>
 		<ONKZ n="9261" Name="Kronach"/>
 		<ONKZ n="9262" Name="Wallenfels"/>
 		<ONKZ n="9263" Name="Ludwigsstadt"/>
@@ -9911,32 +9911,32 @@
 		<ONKZ n="9266" Name="Mitwitz"/>
 		<ONKZ n="9267" Name="Nordhalben"/>
 		<ONKZ n="9268" Name="Teuschnitz"/>
-		<ONKZ n="9269" Name="Tettau Kr Kronach"/>
+		<ONKZ n="9269" Name="Tettau (Kreis Kronach)"/>
 		<ONKZ n="9270" Name="Creussen"/>
 		<ONKZ n="9271" Name="Thurnau-Alladorf"/>
 		<ONKZ n="9272" Name="Fichtelberg"/>
-		<ONKZ n="9273" Name="Bad Berneck i Fichtelgebirge"/>
+		<ONKZ n="9273" Name="Bad Berneck im Fichtelgebirge"/>
 		<ONKZ n="9274" Name="Hollfeld"/>
 		<ONKZ n="9275" Name="Speichersdorf"/>
 		<ONKZ n="9276" Name="Bischofsgrün"/>
 		<ONKZ n="9277" Name="Warmensteinach"/>
 		<ONKZ n="9278" Name="Weidenberg"/>
 		<ONKZ n="9279" Name="Mistelgau"/>
-		<ONKZ n="9280" Name="Selbitz Oberfr"/>
+		<ONKZ n="9280" Name="Selbitz Oberfranken"/>
 		<ONKZ n="9281" Name="Hof Saale"/>
 		<ONKZ n="9282" Name="Naila"/>
 		<ONKZ n="9283" Name="Rehau"/>
-		<ONKZ n="9284" Name="Schwarzenbach a d Saale"/>
+		<ONKZ n="9284" Name="Schwarzenbach an der Saale"/>
 		<ONKZ n="9285" Name="Kirchenlamitz"/>
 		<ONKZ n="9286" Name="Oberkotzau"/>
 		<ONKZ n="9287" Name="Selb"/>
 		<ONKZ n="9288" Name="Bad Steben"/>
-		<ONKZ n="9289" Name="Schwarzenbach a Wald"/>
+		<ONKZ n="9289" Name="Schwarzenbach am Wald"/>
 		<ONKZ n="9292" Name="Konradsreuth"/>
-		<ONKZ n="9293" Name="Berg Oberfr"/>
+		<ONKZ n="9293" Name="Berg Oberfranken"/>
 		<ONKZ n="9294" Name="Regnitzlosau"/>
 		<ONKZ n="9295" Name="Töpen"/>
-		<ONKZ n="9302" Name="Rottendorf Unterfr"/>
+		<ONKZ n="9302" Name="Rottendorf Unterfranken"/>
 		<ONKZ n="9303" Name="Eibelstadt"/>
 		<ONKZ n="9305" Name="Estenfeld"/>
 		<ONKZ n="9306" Name="Kist"/>
@@ -9951,10 +9951,10 @@
 		<ONKZ n="9332" Name="Marktbreit"/>
 		<ONKZ n="9333" Name="Sommerhausen"/>
 		<ONKZ n="9334" Name="Giebelstadt"/>
-		<ONKZ n="9335" Name="Aub Kr Würzburg"/>
+		<ONKZ n="9335" Name="Aub (Kreis Würzburg)"/>
 		<ONKZ n="9336" Name="Bütthard"/>
 		<ONKZ n="9337" Name="Gaukönigshofen"/>
-		<ONKZ n="9338" Name="Röttingen Unterfr"/>
+		<ONKZ n="9338" Name="Röttingen Unterfranken"/>
 		<ONKZ n="9339" Name="Ippesheim"/>
 		<ONKZ n="9340" Name="Königheim-Brehmen"/>
 		<ONKZ n="9341" Name="Tauberbischofsheim"/>
@@ -9967,24 +9967,24 @@
 		<ONKZ n="9348" Name="Werbach-Gamburg"/>
 		<ONKZ n="9349" Name="Werbach-Wenkheim"/>
 		<ONKZ n="9350" Name="Eussenheim-Hundsbach"/>
-		<ONKZ n="9351" Name="Gemünden a Main"/>
-		<ONKZ n="9352" Name="Lohr a Main"/>
+		<ONKZ n="9351" Name="Gemünden am Main"/>
+		<ONKZ n="9352" Name="Lohr am Main"/>
 		<ONKZ n="9353" Name="Karlstadt"/>
 		<ONKZ n="9354" Name="Rieneck"/>
 		<ONKZ n="9355" Name="Frammersbach"/>
 		<ONKZ n="9356" Name="Burgsinn"/>
-		<ONKZ n="9357" Name="Gräfendorf Bay"/>
+		<ONKZ n="9357" Name="Gräfendorf Bayern"/>
 		<ONKZ n="9358" Name="Gössenheim"/>
 		<ONKZ n="9359" Name="Karlstadt-Wiesenfeld"/>
 		<ONKZ n="9360" Name="Thüngen"/>
-		<ONKZ n="9363" Name="Arnstein Unterfr"/>
+		<ONKZ n="9363" Name="Arnstein Unterfranken"/>
 		<ONKZ n="9364" Name="Zellingen"/>
 		<ONKZ n="9365" Name="Rimpar"/>
-		<ONKZ n="9366" Name="Geroldshausen Unterfr"/>
+		<ONKZ n="9366" Name="Geroldshausen Unterfranken"/>
 		<ONKZ n="9367" Name="Unterpleichfeld"/>
 		<ONKZ n="9369" Name="Uettingen"/>
 		<ONKZ n="9371" Name="Miltenberg"/>
-		<ONKZ n="9372" Name="Klingenberg a Main"/>
+		<ONKZ n="9372" Name="Klingenberg am Main"/>
 		<ONKZ n="9373" Name="Amorbach"/>
 		<ONKZ n="9374" Name="Eschau"/>
 		<ONKZ n="9375" Name="Freudenberg Baden"/>
@@ -9998,13 +9998,13 @@
 		<ONKZ n="9385" Name="Kolitzheim"/>
 		<ONKZ n="9386" Name="Prosselsheim"/>
 		<ONKZ n="9391" Name="Marktheidenfeld"/>
-		<ONKZ n="9392" Name="Faulbach Unterfr"/>
-		<ONKZ n="9393" Name="Rothenfels Unterfr"/>
+		<ONKZ n="9392" Name="Faulbach Unterfranken"/>
+		<ONKZ n="9393" Name="Rothenfels Unterfranken"/>
 		<ONKZ n="9394" Name="Esselbach"/>
 		<ONKZ n="9395" Name="Triefenstein"/>
-		<ONKZ n="9396" Name="Urspringen b Lohr"/>
+		<ONKZ n="9396" Name="Urspringen bei Lohr"/>
 		<ONKZ n="9397" Name="Wertheim-Dertingen"/>
-		<ONKZ n="9398" Name="Birkenfeld b Würzburg"/>
+		<ONKZ n="9398" Name="Birkenfeld bei Würzburg"/>
 		<ONKZ n="9401" Name="Neutraubling"/>
 		<ONKZ n="9402" Name="Regenstauf"/>
 		<ONKZ n="9403" Name="Donaustauf"/>
@@ -10015,15 +10015,15 @@
 		<ONKZ n="9408" Name="Altenthann"/>
 		<ONKZ n="9409" Name="Pielenhofen"/>
 		<ONKZ n="941" Name="Regensburg"/>
-		<ONKZ n="9420" Name="Feldkirchen Niederbay"/>
+		<ONKZ n="9420" Name="Feldkirchen Niederbayern"/>
 		<ONKZ n="9421" Name="Straubing"/>
-		<ONKZ n="9422" Name="Bogen Niederbay"/>
+		<ONKZ n="9422" Name="Bogen Niederbayern"/>
 		<ONKZ n="9423" Name="Geiselhöring"/>
 		<ONKZ n="9424" Name="Strasskirchen"/>
 		<ONKZ n="9426" Name="Oberschneiding"/>
 		<ONKZ n="9427" Name="Leiblfing"/>
 		<ONKZ n="9428" Name="Kirchroth"/>
-		<ONKZ n="9429" Name="Rain Niederbay"/>
+		<ONKZ n="9429" Name="Rain Niederbayern"/>
 		<ONKZ n="9431" Name="Schwandorf"/>
 		<ONKZ n="9433" Name="Nabburg"/>
 		<ONKZ n="9434" Name="Bodenwöhr"/>
@@ -10035,48 +10035,48 @@
 		<ONKZ n="9442" Name="Riedenburg"/>
 		<ONKZ n="9443" Name="Abensberg"/>
 		<ONKZ n="9444" Name="Siegenburg"/>
-		<ONKZ n="9445" Name="Neustadt a d Donau"/>
+		<ONKZ n="9445" Name="Neustadt an der Donau"/>
 		<ONKZ n="9446" Name="Altmannstein"/>
 		<ONKZ n="9447" Name="Essing"/>
-		<ONKZ n="9448" Name="Hausen Niederbay"/>
+		<ONKZ n="9448" Name="Hausen Niederbayern"/>
 		<ONKZ n="9451" Name="Schierling"/>
 		<ONKZ n="9452" Name="Langquaid"/>
 		<ONKZ n="9453" Name="Thalmassing"/>
-		<ONKZ n="9454" Name="Aufhausen Oberpf"/>
+		<ONKZ n="9454" Name="Aufhausen Oberpfalz"/>
 		<ONKZ n="9461" Name="Roding"/>
-		<ONKZ n="9462" Name="Falkenstein Oberpf"/>
-		<ONKZ n="9463" Name="Wald Oberpf"/>
+		<ONKZ n="9462" Name="Falkenstein Oberpfalz"/>
+		<ONKZ n="9463" Name="Wald Oberpfalz"/>
 		<ONKZ n="9464" Name="Walderbach"/>
 		<ONKZ n="9465" Name="Neukirchen-Balbini"/>
 		<ONKZ n="9466" Name="Stamsried"/>
 		<ONKZ n="9467" Name="Michelsneukirchen"/>
-		<ONKZ n="9468" Name="Zell Oberpf"/>
+		<ONKZ n="9468" Name="Zell Oberpfalz"/>
 		<ONKZ n="9469" Name="Roding-Neubäu"/>
 		<ONKZ n="9471" Name="Burglengenfeld"/>
-		<ONKZ n="9472" Name="Hohenfels Oberpf"/>
+		<ONKZ n="9472" Name="Hohenfels Oberpfalz"/>
 		<ONKZ n="9473" Name="Kallmünz"/>
 		<ONKZ n="9474" Name="Schmidmühlen"/>
 		<ONKZ n="9480" Name="Sünching"/>
 		<ONKZ n="9481" Name="Pfatter"/>
-		<ONKZ n="9482" Name="Wörth a d Donau"/>
+		<ONKZ n="9482" Name="Wörth an der Donau"/>
 		<ONKZ n="9484" Name="Brennberg"/>
 		<ONKZ n="9491" Name="Hemau"/>
 		<ONKZ n="9492" Name="Parsberg"/>
 		<ONKZ n="9493" Name="Beratzhausen"/>
-		<ONKZ n="9495" Name="Breitenbrunn Oberpf"/>
-		<ONKZ n="9497" Name="Seubersdorf i d Opf"/>
+		<ONKZ n="9495" Name="Breitenbrunn Oberpfalz"/>
+		<ONKZ n="9497" Name="Seubersdorf in der Oberpfalz"/>
 		<ONKZ n="9498" Name="Laaber"/>
 		<ONKZ n="9499" Name="Painten"/>
 		<ONKZ n="9502" Name="Frensdorf"/>
-		<ONKZ n="9503" Name="Oberhaid Oberfr"/>
+		<ONKZ n="9503" Name="Oberhaid Oberfranken"/>
 		<ONKZ n="9504" Name="Stadelhofen"/>
 		<ONKZ n="9505" Name="Litzendorf"/>
 		<ONKZ n="951" Name="Bamberg"/>
 		<ONKZ n="9521" Name="Hassfurt"/>
 		<ONKZ n="9522" Name="Eltmann"/>
-		<ONKZ n="9523" Name="Hofheim i Ufr"/>
-		<ONKZ n="9524" Name="Zeil a Main"/>
-		<ONKZ n="9525" Name="Königsberg i Bay"/>
+		<ONKZ n="9523" Name="Hofheim in Unterfranken"/>
+		<ONKZ n="9524" Name="Zeil am Main"/>
+		<ONKZ n="9525" Name="Königsberg in Bayern"/>
 		<ONKZ n="9526" Name="Riedbach"/>
 		<ONKZ n="9527" Name="Knetzgau"/>
 		<ONKZ n="9528" Name="Donnersdorf"/>
@@ -10093,15 +10093,15 @@
 		<ONKZ n="9545" Name="Buttenheim"/>
 		<ONKZ n="9546" Name="Burgebrach"/>
 		<ONKZ n="9547" Name="Zapfendorf"/>
-		<ONKZ n="9548" Name="Mühlhausen Mittelfr"/>
+		<ONKZ n="9548" Name="Mühlhausen Mittelfranken"/>
 		<ONKZ n="9549" Name="Lisberg"/>
 		<ONKZ n="9551" Name="Burgwindheim"/>
 		<ONKZ n="9552" Name="Burghaslach"/>
-		<ONKZ n="9553" Name="Ebrach Oberfr"/>
-		<ONKZ n="9554" Name="Untersteinbach Unterfr"/>
+		<ONKZ n="9553" Name="Ebrach Oberfranken"/>
+		<ONKZ n="9554" Name="Untersteinbach Unterfranken"/>
 		<ONKZ n="9555" Name="Schlüsselfeld-Aschbach"/>
 		<ONKZ n="9556" Name="Geiselwind"/>
-		<ONKZ n="9560" Name="Grub a Forst"/>
+		<ONKZ n="9560" Name="Grub am Forst"/>
 		<ONKZ n="9561" Name="Coburg"/>
 		<ONKZ n="9562" Name="Sonnefeld"/>
 		<ONKZ n="9563" Name="Rödental"/>
@@ -10109,28 +10109,28 @@
 		<ONKZ n="9565" Name="Untersiemau"/>
 		<ONKZ n="9566" Name="Meeder"/>
 		<ONKZ n="9567" Name="Seßlach-Gemünda"/>
-		<ONKZ n="9568" Name="Neustadt b Coburg"/>
+		<ONKZ n="9568" Name="Neustadt bei Coburg"/>
 		<ONKZ n="9569" Name="Sesslach"/>
-		<ONKZ n="9571" Name="Lichtenfels Bay"/>
+		<ONKZ n="9571" Name="Lichtenfels Bayern"/>
 		<ONKZ n="9572" Name="Burgkunstadt"/>
-		<ONKZ n="9573" Name="Staffelstein Oberfr"/>
+		<ONKZ n="9573" Name="Staffelstein Oberfranken"/>
 		<ONKZ n="9574" Name="Marktzeuln"/>
 		<ONKZ n="9575" Name="Weismain"/>
 		<ONKZ n="9576" Name="Lichtenfels-Isling"/>
-		<ONKZ n="9602" Name="Neustadt a d Waldnaab"/>
+		<ONKZ n="9602" Name="Neustadt an der Waldnaab"/>
 		<ONKZ n="9603" Name="Floss"/>
 		<ONKZ n="9604" Name="Wernberg-Köblitz"/>
 		<ONKZ n="9605" Name="Weiherhammer"/>
 		<ONKZ n="9606" Name="Pfreimd"/>
 		<ONKZ n="9607" Name="Luhe-Wildenau"/>
-		<ONKZ n="9608" Name="Kohlberg Oberpf"/>
-		<ONKZ n="961" Name="Weiden i d Opf"/>
-		<ONKZ n="9621" Name="Amberg Oberpf"/>
-		<ONKZ n="9622" Name="Hirschau Oberpf"/>
-		<ONKZ n="9624" Name="Ensdorf Oberpf"/>
-		<ONKZ n="9625" Name="Kastl b Amberg"/>
+		<ONKZ n="9608" Name="Kohlberg Oberpfalz"/>
+		<ONKZ n="961" Name="Weiden in der Oberpfalz"/>
+		<ONKZ n="9621" Name="Amberg Oberpfalz"/>
+		<ONKZ n="9622" Name="Hirschau Oberpfalz"/>
+		<ONKZ n="9624" Name="Ensdorf Oberpfalz"/>
+		<ONKZ n="9625" Name="Kastl bei Amberg"/>
 		<ONKZ n="9626" Name="Hohenburg"/>
-		<ONKZ n="9627" Name="Freudenberg Oberpf"/>
+		<ONKZ n="9627" Name="Freudenberg Oberpfalz"/>
 		<ONKZ n="9628" Name="Ursensollen"/>
 		<ONKZ n="9631" Name="Tirschenreuth"/>
 		<ONKZ n="9632" Name="Waldsassen"/>
@@ -10138,43 +10138,43 @@
 		<ONKZ n="9634" Name="Wiesau"/>
 		<ONKZ n="9635" Name="Bärnau"/>
 		<ONKZ n="9636" Name="Plößberg"/>
-		<ONKZ n="9637" Name="Falkenberg Oberpf"/>
+		<ONKZ n="9637" Name="Falkenberg Oberpfalz"/>
 		<ONKZ n="9638" Name="Neualbenreuth"/>
 		<ONKZ n="9639" Name="Mähring"/>
 		<ONKZ n="9641" Name="Grafenwöhr"/>
 		<ONKZ n="9642" Name="Kemnath Stadt"/>
-		<ONKZ n="9643" Name="Auerbach i d Opf"/>
+		<ONKZ n="9643" Name="Auerbach in der Oberpfalz"/>
 		<ONKZ n="9644" Name="Pressath"/>
-		<ONKZ n="9645" Name="Eschenbach i d Opf"/>
+		<ONKZ n="9645" Name="Eschenbach in der Oberpfalz"/>
 		<ONKZ n="9646" Name="Freihung"/>
 		<ONKZ n="9647" Name="Kirchenthumbach"/>
-		<ONKZ n="9648" Name="Neustadt a Kulm"/>
+		<ONKZ n="9648" Name="Neustadt am Kulm"/>
 		<ONKZ n="9651" Name="Vohenstrauss"/>
 		<ONKZ n="9652" Name="Waidhaus"/>
 		<ONKZ n="9653" Name="Eslarn"/>
 		<ONKZ n="9654" Name="Pleystein"/>
 		<ONKZ n="9655" Name="Tännesberg"/>
-		<ONKZ n="9656" Name="Moosbach b Vohenstrauß"/>
+		<ONKZ n="9656" Name="Moosbach bei Vohenstrauß"/>
 		<ONKZ n="9657" Name="Waldthurn"/>
 		<ONKZ n="9658" Name="Georgenberg"/>
 		<ONKZ n="9659" Name="Leuchtenberg"/>
 		<ONKZ n="9661" Name="Sulzbach-Rosenberg"/>
 		<ONKZ n="9662" Name="Vilseck"/>
-		<ONKZ n="9663" Name="Neukirchen b Sulzbach-Rosenberg"/>
+		<ONKZ n="9663" Name="Neukirchen bei Sulzbach-Rosenberg"/>
 		<ONKZ n="9664" Name="Hahnbach"/>
-		<ONKZ n="9665" Name="Königstein Oberpf"/>
+		<ONKZ n="9665" Name="Königstein Oberpfalz"/>
 		<ONKZ n="9666" Name="Illschwang"/>
 		<ONKZ n="9671" Name="Oberviechtach"/>
 		<ONKZ n="9672" Name="Neunburg vorm Wald"/>
-		<ONKZ n="9673" Name="Tiefenbach Oberpf"/>
+		<ONKZ n="9673" Name="Tiefenbach Oberpfalz"/>
 		<ONKZ n="9674" Name="Schönsee"/>
-		<ONKZ n="9675" Name="Altendorf a Nabburg"/>
+		<ONKZ n="9675" Name="Altendorf am Nabburg"/>
 		<ONKZ n="9676" Name="Winklarn"/>
 		<ONKZ n="9677" Name="Oberviechtach-Pullenried"/>
 		<ONKZ n="9681" Name="Windischeschenbach"/>
 		<ONKZ n="9682" Name="Erbendorf"/>
 		<ONKZ n="9683" Name="Friedenfels"/>
-		<ONKZ n="9701" Name="Sandberg Unterfr"/>
+		<ONKZ n="9701" Name="Sandberg Unterfranken"/>
 		<ONKZ n="9704" Name="Euerdorf"/>
 		<ONKZ n="9708" Name="Bad Bocklet"/>
 		<ONKZ n="971" Name="Bad Kissingen"/>
@@ -10183,10 +10183,10 @@
 		<ONKZ n="9722" Name="Werneck"/>
 		<ONKZ n="9723" Name="Röthlein"/>
 		<ONKZ n="9724" Name="Stadtlauringen"/>
-		<ONKZ n="9725" Name="Poppenhausen Unterfr"/>
+		<ONKZ n="9725" Name="Poppenhausen Unterfranken"/>
 		<ONKZ n="9726" Name="Euerbach"/>
 		<ONKZ n="9727" Name="Schonungen-Marktsteinach"/>
-		<ONKZ n="9728" Name="Wülfershausen Unterfr"/>
+		<ONKZ n="9728" Name="Wülfershausen Unterfranken"/>
 		<ONKZ n="9729" Name="Grettstadt"/>
 		<ONKZ n="9732" Name="Hammelburg"/>
 		<ONKZ n="9733" Name="Münnerstadt"/>
@@ -10200,43 +10200,43 @@
 		<ONKZ n="9744" Name="Zeitlofs-Detter"/>
 		<ONKZ n="9745" Name="Wildflecken"/>
 		<ONKZ n="9746" Name="Zeitlofs"/>
-		<ONKZ n="9747" Name="Geroda Bay"/>
+		<ONKZ n="9747" Name="Geroda Bayern"/>
 		<ONKZ n="9748" Name="Motten"/>
-		<ONKZ n="9749" Name="Oberbach Unterfr"/>
-		<ONKZ n="9761" Name="Bad Königshofen i Grabfeld"/>
-		<ONKZ n="9762" Name="Saal a d Saale"/>
-		<ONKZ n="9763" Name="Sulzdorf a d Lederhecke"/>
+		<ONKZ n="9749" Name="Oberbach Unterfranken"/>
+		<ONKZ n="9761" Name="Bad Königshofen im Grabfeld"/>
+		<ONKZ n="9762" Name="Saal an der Saale"/>
+		<ONKZ n="9763" Name="Sulzdorf an der Lederhecke"/>
 		<ONKZ n="9764" Name="Höchheim"/>
 		<ONKZ n="9765" Name="Trappstadt"/>
 		<ONKZ n="9766" Name="Grosswenkheim"/>
-		<ONKZ n="9771" Name="Bad Neustadt a d Saale"/>
-		<ONKZ n="9772" Name="Bischofsheim a d Rhön"/>
+		<ONKZ n="9771" Name="Bad Neustadt an der Saale"/>
+		<ONKZ n="9772" Name="Bischofsheim an der Rhön"/>
 		<ONKZ n="9773" Name="Unsleben"/>
 		<ONKZ n="9774" Name="Oberelsbach"/>
-		<ONKZ n="9775" Name="Schönau a d Brend"/>
+		<ONKZ n="9775" Name="Schönau an der Brend"/>
 		<ONKZ n="9776" Name="Mellrichstadt"/>
-		<ONKZ n="9777" Name="Ostheim v d Rhön"/>
+		<ONKZ n="9777" Name="Ostheim vor der Rhön"/>
 		<ONKZ n="9778" Name="Fladungen"/>
-		<ONKZ n="9779" Name="Nordheim v d Rhön"/>
+		<ONKZ n="9779" Name="Nordheim vor der Rhön"/>
 		<ONKZ n="9802" Name="Ansbach-Katterbach"/>
 		<ONKZ n="9803" Name="Colmberg"/>
 		<ONKZ n="9804" Name="Aurach"/>
 		<ONKZ n="9805" Name="Burgoberbach"/>
 		<ONKZ n="981" Name="Ansbach"/>
 		<ONKZ n="9820" Name="Lehrberg"/>
-		<ONKZ n="9822" Name="Bechhofen a d Heide"/>
+		<ONKZ n="9822" Name="Bechhofen an der Heide"/>
 		<ONKZ n="9823" Name="Leutershausen"/>
 		<ONKZ n="9824" Name="Dietenhofen"/>
 		<ONKZ n="9825" Name="Herrieden"/>
-		<ONKZ n="9826" Name="Weidenbach Mittelfr"/>
-		<ONKZ n="9827" Name="Lichtenau Mittelfr"/>
+		<ONKZ n="9826" Name="Weidenbach Mittelfranken"/>
+		<ONKZ n="9827" Name="Lichtenau Mittelfranken"/>
 		<ONKZ n="9828" Name="Rügland"/>
 		<ONKZ n="9829" Name="Flachslanden"/>
 		<ONKZ n="9831" Name="Gunzenhausen"/>
 		<ONKZ n="9832" Name="Wassertrüdingen"/>
-		<ONKZ n="9833" Name="Heidenheim Mittelfr"/>
+		<ONKZ n="9833" Name="Heidenheim Mittelfranken"/>
 		<ONKZ n="9834" Name="Theilenhofen"/>
-		<ONKZ n="9835" Name="Ehingen Mittelfr"/>
+		<ONKZ n="9835" Name="Ehingen Mittelfranken"/>
 		<ONKZ n="9836" Name="Gunzenhausen-Cronheim"/>
 		<ONKZ n="9837" Name="Haundorf"/>
 		<ONKZ n="9841" Name="Bad Windsheim"/>
@@ -10251,24 +10251,24 @@
 		<ONKZ n="9852" Name="Feuchtwangen"/>
 		<ONKZ n="9853" Name="Wilburgstetten"/>
 		<ONKZ n="9854" Name="Wittelshofen"/>
-		<ONKZ n="9855" Name="Dentlein a Forst"/>
+		<ONKZ n="9855" Name="Dentlein am Forst"/>
 		<ONKZ n="9856" Name="Dürrwangen"/>
-		<ONKZ n="9857" Name="Schopfloch Mittelfr"/>
+		<ONKZ n="9857" Name="Schopfloch Mittelfranken"/>
 		<ONKZ n="9861" Name="Rothenburg ob der Tauber"/>
-		<ONKZ n="9865" Name="Adelshofen Mittelfr"/>
+		<ONKZ n="9865" Name="Adelshofen Mittelfranken"/>
 		<ONKZ n="9867" Name="Geslau"/>
 		<ONKZ n="9868" Name="Schillingsfürst"/>
-		<ONKZ n="9869" Name="Wettringen Mittelfr"/>
+		<ONKZ n="9869" Name="Wettringen Mittelfranken"/>
 		<ONKZ n="9871" Name="Windsbach"/>
 		<ONKZ n="9872" Name="Heilsbronn"/>
 		<ONKZ n="9873" Name="Abenberg-Wassermungenau"/>
 		<ONKZ n="9874" Name="Neuendettelsau"/>
 		<ONKZ n="9875" Name="Wolframs-Eschenbach"/>
-		<ONKZ n="9876" Name="Rohr Mittelfr"/>
-		<ONKZ n="9901" Name="Hengersberg Bay"/>
+		<ONKZ n="9876" Name="Rohr Mittelfranken"/>
+		<ONKZ n="9901" Name="Hengersberg Bayern"/>
 		<ONKZ n="9903" Name="Schöllnach"/>
 		<ONKZ n="9904" Name="Lalling"/>
-		<ONKZ n="9905" Name="Bernried Niederbay"/>
+		<ONKZ n="9905" Name="Bernried Niederbayern"/>
 		<ONKZ n="9906" Name="Mariaposching"/>
 		<ONKZ n="9907" Name="Zenting"/>
 		<ONKZ n="9908" Name="Schöfweg"/>
@@ -10281,7 +10281,7 @@
 		<ONKZ n="9925" Name="Bayerisch Eisenstein"/>
 		<ONKZ n="9926" Name="Frauenau"/>
 		<ONKZ n="9927" Name="Kirchberg Wald"/>
-		<ONKZ n="9928" Name="Kirchdorf i Wald"/>
+		<ONKZ n="9928" Name="Kirchdorf im Wald"/>
 		<ONKZ n="9929" Name="Ruhmannsfelden"/>
 		<ONKZ n="9931" Name="Plattling"/>
 		<ONKZ n="9932" Name="Osterhofen"/>
@@ -10289,35 +10289,35 @@
 		<ONKZ n="9935" Name="Stephansposching"/>
 		<ONKZ n="9936" Name="Wallerfing"/>
 		<ONKZ n="9937" Name="Oberpöring"/>
-		<ONKZ n="9938" Name="Moos Niederbay"/>
+		<ONKZ n="9938" Name="Moos Niederbayern"/>
 		<ONKZ n="9941" Name="Kötzting"/>
 		<ONKZ n="9942" Name="Viechtach"/>
-		<ONKZ n="9943" Name="Lam Oberpf"/>
+		<ONKZ n="9943" Name="Lam Oberpfalz"/>
 		<ONKZ n="9944" Name="Miltach"/>
 		<ONKZ n="9945" Name="Arnbruck"/>
-		<ONKZ n="9946" Name="Hohenwarth b Kötzing"/>
-		<ONKZ n="9947" Name="Neukirchen b Hl Blut"/>
+		<ONKZ n="9946" Name="Hohenwarth bei Kötzing"/>
+		<ONKZ n="9947" Name="Neukirchen beim Heiligen Blut"/>
 		<ONKZ n="9948" Name="Eschlkam"/>
-		<ONKZ n="9951" Name="Landau a d Isar"/>
+		<ONKZ n="9951" Name="Landau an der Isar"/>
 		<ONKZ n="9952" Name="Eichendorf"/>
 		<ONKZ n="9953" Name="Pilsting"/>
-		<ONKZ n="9954" Name="Simbach Niederbay"/>
+		<ONKZ n="9954" Name="Simbach Niederbayern"/>
 		<ONKZ n="9955" Name="Mamming"/>
 		<ONKZ n="9956" Name="Eichendorf-Aufhausen"/>
 		<ONKZ n="9961" Name="Mitterfels"/>
-		<ONKZ n="9962" Name="Schwarzach Niederbay"/>
+		<ONKZ n="9962" Name="Schwarzach Niederbayern"/>
 		<ONKZ n="9963" Name="Konzell"/>
 		<ONKZ n="9964" Name="Stallwang"/>
 		<ONKZ n="9965" Name="Sankt Englmar"/>
 		<ONKZ n="9966" Name="Wiesenfelden"/>
 		<ONKZ n="9971" Name="Cham"/>
 		<ONKZ n="9972" Name="Waldmünchen"/>
-		<ONKZ n="9973" Name="Furth i Wald"/>
+		<ONKZ n="9973" Name="Furth im Wald"/>
 		<ONKZ n="9974" Name="Traitsching"/>
 		<ONKZ n="9975" Name="Waldmünchen-Geigant"/>
 		<ONKZ n="9976" Name="Rötz"/>
 		<ONKZ n="9977" Name="Arnschwang"/>
-		<ONKZ n="9978" Name="Schönthal Oberpf"/>
+		<ONKZ n="9978" Name="Schönthal Oberpfalz"/>
 		<ONKZ n="32" Name="Nationale Teilnehmerrufnummern (NTR)"/>
 		<ONKZ n="137" Name="Massenverkehrs-Rufnummer"/>
 		<ONKZ n="138" Name="Massenverkehrs-Rufnummer"/>
@@ -10367,13 +10367,14 @@
 		<ONKZ n="194" Name="Online service provider"/>
 		<ONKZ n="199" Name="Netzinterne Verkehrslenkung"/>
 		<ONKZ n="800" Name=""/>
-		<ONKZ n="1505" Name="Mobilfunk"/>
+		<ONKZ n="1501" Name="Mobilfunk"/>
 		<ONKZ n="1511" Name="Mobilfunk"/>
 		<ONKZ n="1512" Name="Mobilfunk"/>
 		<ONKZ n="1514" Name="Mobilfunk"/>
 		<ONKZ n="1515" Name="Mobilfunk"/>
 		<ONKZ n="1516" Name="Mobilfunk"/>
 		<ONKZ n="1517" Name="Mobilfunk"/>
+		<ONKZ n="1518" Name="Mobilfunk"/>
 		<ONKZ n="1520" Name="Mobilfunk"/>
 		<ONKZ n="1521" Name="Mobilfunk"/>
 		<ONKZ n="1522" Name="Mobilfunk"/>
@@ -10381,12 +10382,18 @@
 		<ONKZ n="1525" Name="Mobilfunk"/>
 		<ONKZ n="1526" Name="Mobilfunk"/>
 		<ONKZ n="1529" Name="Mobilfunk"/>
+		<ONKZ n="1531" Name="Mobilfunk"/>
+		<ONKZ n="1551" Name="Mobilfunk"/>
+		<ONKZ n="1556" Name="Mobilfunk"/>
+		<ONKZ n="1563" Name="Mobilfunk"/>
+		<ONKZ n="1567" Name="Mobilfunk"/>
 		<ONKZ n="1570" Name="Mobilfunk"/>
 		<ONKZ n="1573" Name="Mobilfunk"/>
 		<ONKZ n="1575" Name="Mobilfunk"/>
 		<ONKZ n="1577" Name="Mobilfunk"/>
 		<ONKZ n="1578" Name="Mobilfunk"/>
 		<ONKZ n="1579" Name="Mobilfunk"/>
+		<ONKZ n="1588" Name="Mobilfunk"/>
 		<ONKZ n="1590" Name="Mobilfunk"/>
 		<ONKZ n="1672" Name="Mobilfunk"/>
 		<ONKZ n="1801" Name="Servicedienste"/>
