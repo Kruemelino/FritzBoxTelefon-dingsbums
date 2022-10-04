@@ -14,8 +14,16 @@ Public Class FritzBoxWählClient
     Private Property DialDatenService As DialService
 #End Region
 
-    Public Sub New()
+    ''' <summary>
+    ''' Wählclient zur Steuerung der Fritz!Box Wählhilfe
+    ''' </summary>
+    ''' <param name="InSTAThread">Angabe, ob der Dialog in einem separaten STA-Tread erzeugt werden soll.</param>
+    Public Sub New(Optional InSTAThread As Boolean = False)
+        ' Neuer Datenservice
         DialDatenService = New DialService(Me)
+
+        ' Neues Fenster, sofern es nicht explizit in einem STA Thread erzeugt werden soll (Dateiüberwachung).
+        If Not InSTAThread Then WPFWindow = AddWindow(Of WählclientWPF)()
     End Sub
 
 #Region "Wählen per TR-064"
@@ -391,6 +399,10 @@ Public Class FritzBoxWählClient
 
     End Sub
 
+    ''' <summary>
+    ''' Wählen aus der VIP-liste bzw. Wählvorgang aus einem VIPEntry-Objekt.
+    ''' </summary>
+    ''' <param name="DialVIP">VIP-Eintrag</param>
     Friend Overloads Sub WählboxStart(DialVIP As VIPEntry)
 
         With DialVIP
@@ -404,6 +416,10 @@ Public Class FritzBoxWählClient
         End With
     End Sub
 
+    ''' <summary>
+    ''' Wählen aus dem Fritz!Box-Telefonbuch bzw. Wählvorgang aus einem FBoxAPI.Contact-Objekt.
+    ''' </summary>
+    ''' <param name="Kontakt">VIP-Eintrag</param>
     Friend Overloads Sub WählboxStart(Kontakt As FBoxAPI.Contact)
 
         If Kontakt IsNot Nothing Then
@@ -424,7 +440,7 @@ Public Class FritzBoxWählClient
     ''' <summary>
     ''' Wählen aus tel:// bzw. callto:// Links
     ''' </summary>
-    ''' <param name="TelNr"></param>
+    ''' <param name="TelNr">Anzurufende Telefonnummer</param>
     Friend Overloads Async Sub WählboxStart(TelNr As Telefonnummer)
         Await StartSTATask(Function() As Boolean
                                NLogger.Debug("Blende einen neuen Wählclient als STA Task ein")
@@ -433,8 +449,10 @@ Public Class FritzBoxWählClient
                                ' Finde das existierende Fenster, oder generiere ein neues
                                WPFWindow = AddWindow(Of WählclientWPF)()
 
+                               ' Übergib die Telefonnummer
                                Wählbox(TelNr)
 
+                               ' Halte den Thread offen so lange das Formular offen ist.
                                While WPFWindow.IsVisible
                                    Forms.Application.DoEvents()
                                    Thread.Sleep(100)

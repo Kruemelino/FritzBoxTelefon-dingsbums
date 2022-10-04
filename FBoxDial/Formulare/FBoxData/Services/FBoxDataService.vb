@@ -245,7 +245,7 @@ Public Class FBoxDataService
     Private Sub Dial(XMLDaten As FBoxAPI.Contact) Implements IFBoxDataService.Dial
         ' Neuen Wählclient generieren
         ' Finde das existierende Fenster, oder generiere ein neues
-        With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+        With New FritzBoxWählClient
             .WählboxStart(XMLDaten)
         End With
     End Sub

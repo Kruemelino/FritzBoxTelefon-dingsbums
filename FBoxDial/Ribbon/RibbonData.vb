@@ -174,7 +174,7 @@ Namespace RibbonData
         Private Sub DirectCall()
             ' Neuen Wählclient generieren
             ' Finde das existierende Fenster, oder generiere ein neues
-            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+            With New FritzBoxWählClient
                 .WählboxStart()
             End With
         End Sub
@@ -185,7 +185,7 @@ Namespace RibbonData
         Private Sub Dial()
             ' Neuen Wählclient generieren
             ' Finde das existierende Fenster, oder generiere ein neues
-            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+            With New FritzBoxWählClient
                 .WählboxStart(Globals.ThisAddIn.Application.ActiveExplorer.Selection)
             End With
         End Sub
@@ -196,7 +196,7 @@ Namespace RibbonData
         Private Sub Dial(OutlookInspector As Outlook.Inspector)
             ' Neuen Wählclient generieren
             ' Finde das existierende Fenster, oder generiere ein neues
-            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+            With New FritzBoxWählClient
                 .WählboxStart(OutlookInspector)
             End With
         End Sub
@@ -207,7 +207,7 @@ Namespace RibbonData
         Private Sub Dial(ContactCard As IMsoContactCard)
             ' Neuen Wählclient generieren
             ' Finde das existierende Fenster, oder generiere ein neues
-            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+            With New FritzBoxWählClient
                 .WählboxStart(ContactCard)
             End With
         End Sub
@@ -220,7 +220,7 @@ Namespace RibbonData
 
             Dim ID As String() = Tag.Split("_")
 
-            With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+            With New FritzBoxWählClient
 
                 If ID.First.Equals(My.Resources.strDfltNameListVIP) Then
                     .WählboxStart(XMLData.PTelListen.VIPListe.Item(ID.Last.ToInt))

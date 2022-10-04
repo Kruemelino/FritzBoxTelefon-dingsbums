@@ -25,7 +25,7 @@ Friend Class DateiÜberwacher
 
         ' Neuen Wählclient generieren
         ' Finde das existierende Fenster, oder generiere ein neues
-        Dim WählClient As New FritzBoxWählClient
+        Dim WählClient As New FritzBoxWählClient(True)
         WählClient.WählboxStart(TelNr)
     End Sub
 

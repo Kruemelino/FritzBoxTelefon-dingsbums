@@ -775,7 +775,7 @@ Imports Microsoft.Office.Interop
             .Invoke(Sub()
                         ' Neuen Wählclient generieren
                         ' Finde das existierende Fenster, oder generiere ein neues
-                        With New FritzBoxWählClient With {.WPFWindow = AddWindow(Of WählclientWPF)()}
+                        With New FritzBoxWählClient
                             .WählboxStart(Me)
                         End With
 
