@@ -366,11 +366,6 @@ Public Class FritzBoxWählClient
     Friend Overloads Sub WählboxStart(DialTelefonat As Telefonat)
         If DialTelefonat IsNot Nothing Then
             With DialTelefonat
-                ' Kontakt aus Telefonat ermitteln
-                If .OlKontakt Is Nothing AndAlso (.OutlookKontaktID.IsNotStringNothingOrEmpty And .OutlookStoreID.IsNotStringNothingOrEmpty) Then
-                    ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
-                    .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
-                End If
 
                 If .OlKontakt Is Nothing Then
                     If .OutlookKontaktID.IsNotStringNothingOrEmpty And .OutlookStoreID.IsNotStringNothingOrEmpty Then
@@ -385,7 +380,6 @@ Public Class FritzBoxWählClient
                 ' Falls es sich um einen Rückruf handelt, wird der Anrufmonitor und der MissedCallPane ausgeblendet
                 .CloseAnrMonAndCallPane()
 
-                ' TODO: Prüfe auf Exchange?
                 If .OlKontakt IsNot Nothing Then
                     Wählbox(.OlKontakt, .GegenstelleTelNr)
                 Else

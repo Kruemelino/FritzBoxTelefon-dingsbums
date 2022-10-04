@@ -106,11 +106,12 @@ Friend Class Vorwahlen
 
                 Else
                     ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt, oder die LKZ ist nicht in der Liste 
-                    NLogger.Warn($"Landeskennzahl der Telefonnummer '{ .Unformatiert}' kann nicht ermittelt werden.")
+                    NLogger.Trace($"Landeskennzahl der Telefonnummer '{ .Unformatiert}' kann nicht ermittelt werden.")
                     'If Not TelNr.EigeneNummer Then TelNr.Landeskennzahl = XMLData.PTelefonie.LKZ
                 End If
             End If
 
+            ' Die LKZ wurde bisher nicht ermittelt. Es handelt sich vermutlich um ein Inlandsgepräch. Setzte LKZ auf die 49
             If Not LKZListe.Any Then
                 LKZListe.Add(GetDefaultLKZ)
                 NLogger.Trace($"Standard-Landeskennzahl der Telefonnummer '{ .Unformatiert}' wurde gesetzt: {LKZListe.First.Landeskennzahl} ({LKZListe.First.Code})")

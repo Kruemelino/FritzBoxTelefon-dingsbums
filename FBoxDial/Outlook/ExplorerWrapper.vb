@@ -7,10 +7,21 @@ Friend Class ExplorerWrapper
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property OlExplorer As Explorer
     Private Property CallListPane As CustomTaskPane
-    Friend Property CallListPaneVM As CallListPaneViewModel
-    Friend Property Datenservice As IAnrMonService
-    Friend Property Dialogservice As IDialogService
+    Private Property CallListPaneVM As CallListPaneViewModel
+    Private Property Datenservice As IAnrMonService
+    Private Property Dialogservice As IDialogService
     Private Property PaneDispatcher As Windows.Threading.Dispatcher
+
+    Friend ReadOnly Property PaneVisible As Boolean
+        Get
+            Return CallListPane IsNot Nothing AndAlso CallListPane.Visible
+        End Get
+    End Property
+    Friend ReadOnly Property PaneItemsAny As Boolean
+        Get
+            Return CallListPaneVM IsNot Nothing AndAlso CallListPaneVM.MissedCallList.Any
+        End Get
+    End Property
 
     Friend Sub New(e As Explorer)
         OlExplorer = e
@@ -87,6 +98,8 @@ Friend Class ExplorerWrapper
     Private Sub CallListPane_VisibleChanged(sender As Object, e As EventArgs)
         ' Leere die Liste, wenn das Pane geschlossen wird.
         If XMLData.POptionen.CBClearCallPaneAtClose And Not CallListPane.Visible Then CallListPaneVM.MissedCallList.Clear()
+
+        Globals.ThisAddIn.POutlookRibbons.Invalidate()
     End Sub
 
     ''' <summary>
@@ -124,15 +137,17 @@ Friend Class ExplorerWrapper
     ''' </summary>
     ''' <param name="MissedCall">Telefonat, welches entfernt werden soll.</param>
     Friend Sub RemoveMissedCall(MissedCall As Telefonat)
-        With CallListPaneVM.MissedCallList
-            ' Finde alle passenden Einträge und entferne diese
-            NLogger.Debug($"Verpasster Anruf {MissedCall.NameGegenstelle} ({MissedCall.ZeitBeginn}) wird aus dem CallPane des entfernt.")
+        If CallListPaneVM IsNot Nothing Then
+            With CallListPaneVM.MissedCallList
+                ' Finde alle passenden Einträge und entferne diese
+                NLogger.Debug($"Verpasster Anruf {MissedCall.NameGegenstelle} ({MissedCall.ZeitBeginn}) wird aus dem CallPane des entfernt.")
 
-            PaneDispatcher?.Invoke(Sub() .RemoveRange(.Where(Function(C) C.VerpasstesTelefonat.Equals(MissedCall))))
+                PaneDispatcher?.Invoke(Sub() .RemoveRange(.Where(Function(C) C.VerpasstesTelefonat.Equals(MissedCall))))
 
-            ' Schließe das Pane, wenn gewünscht
-            If Not .Any And XMLData.POptionen.CBCloseEmptyCallPane Then HideCallListPane()
-        End With
+                ' Schließe das Pane, wenn gewünscht
+                If Not .Any And XMLData.POptionen.CBCloseEmptyCallPane Then HideCallListPane()
+            End With
+        End If
     End Sub
 
 #End Region

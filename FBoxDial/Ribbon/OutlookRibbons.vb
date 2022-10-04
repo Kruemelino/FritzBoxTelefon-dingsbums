@@ -13,6 +13,13 @@ Imports FBoxDial.RibbonData
     End Sub
 
     ''' <summary>
+    ''' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
+    ''' </summary>
+    Friend Sub Invalidate()
+        RibbonObjekt.Invalidate()
+    End Sub
+
+    ''' <summary>
     ''' Lädt das XML-Markup aus einer XML-Anpassungsdatei oder aus XML-Markup, das in die Prozedur eingebettet ist, mit der die Menüband-Benutzeroberfläche angepasst wird.
     ''' </summary>
     ''' <param name="ribbonID"></param>
@@ -45,7 +52,7 @@ Imports FBoxDial.RibbonData
         End If
         If RibbonObjekt IsNot Nothing Then
             Try
-                RibbonObjekt.Invalidate()
+                Invalidate()
             Catch ex As Exception
                 NLogger.Error(ex)
             End Try
@@ -135,14 +142,16 @@ Imports FBoxDial.RibbonData
         Return False
     End Function
 
-#Disable Warning IDE0060 ' Nicht verwendete Parameter entfernen
     Public Function CallPaneEnabled(control As IRibbonControl) As Boolean
-        'If XMLData.POptionen.CBShowMissedCallPane Then
-        '    Return Globals.ThisAddIn.ExplorerWrappers.Values.Where(Function(ew) ew.CallListPaneVM.MissedCallList.Any).Any
-        'End If
-        Return True
+        If XMLData.POptionen.CBShowMissedCallPane Then
+            With Globals.ThisAddIn.ExplorerWrappers(CType(control.Context, Outlook.Explorer))
+                Return Not .PaneVisible AndAlso .PaneItemsAny
+            End With
+        Else
+            Return False
+        End If
     End Function
-#Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
+
     ''' <summary>
     ''' Die Ribbons der Inspectoren sollen nur eingeblendet werden, wenn ein Explorer vorhanden ist.
     ''' </summary>
@@ -235,7 +244,7 @@ Imports FBoxDial.RibbonData
         GetRibbonAction(Of String, String)(control.Id, control.Tag, Nothing)
         ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
         ' Zeichne Ribbon neu
-        RibbonObjekt.Invalidate()
+        Invalidate()
     End Sub
 
     ''' <summary>
@@ -246,7 +255,7 @@ Imports FBoxDial.RibbonData
         GetRibbonAction(control.Id, CType(control.Context, Outlook.Inspector), control.Tag)
         ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
         ' Zeichne Ribbon neu
-        RibbonObjekt.Invalidate()
+        Invalidate()
     End Sub
 
     ''' <summary>
@@ -257,7 +266,7 @@ Imports FBoxDial.RibbonData
         GetRibbonAction(control.Id, CType(control.Context, IMsoContactCard), control.Tag)
         ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
         ' Zeichne Ribbon neu
-        RibbonObjekt.Invalidate()
+        Invalidate()
     End Sub
 
     ''' <summary>
@@ -274,7 +283,7 @@ Imports FBoxDial.RibbonData
         GetRibbonAction(control.Id, CType(control.Context, Outlook.Inspector), control.Tag)
         ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
         ' Zeichne Ribbon neu
-        RibbonObjekt.Invalidate()
+        Invalidate()
     End Sub
 #End Region
 
@@ -331,7 +340,7 @@ Imports FBoxDial.RibbonData
 
         ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
         ' Zeichne Ribbon neu
-        RibbonObjekt.Invalidate()
+        Invalidate()
     End Sub
 
     ''' <summary>
@@ -378,7 +387,7 @@ Imports FBoxDial.RibbonData
 
         ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
         ' Zeichne Ribbon neu
-        RibbonObjekt.Invalidate()
+        Invalidate()
     End Sub
 
 #End Region

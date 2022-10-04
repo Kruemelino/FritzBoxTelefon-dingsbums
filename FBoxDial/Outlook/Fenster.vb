@@ -74,7 +74,11 @@ Friend Module Fenster
             AddHandler AddinFenster.Closed, AddressOf Window_Closed
             ' Window in die Liste aufnehmen
             Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
+
+            NLogger.Debug($"Neues Fenster für '{AddinFenster.GetType.Name}' erzeugt.")
         Else
+            NLogger.Debug($" Fenster für '{AddinFenster.GetType.Name}' bereits vorhanden.")
+
             AddinFenster.Activate()
         End If
         Return AddinFenster
@@ -89,7 +93,7 @@ Friend Module Fenster
         ' Window aus der Liste entfernen
         Globals.ThisAddIn.AddinWindows.Remove(Window)
 
-        NLogger.Debug("Fenster aus der Gesamtliste entfernt.")
+        NLogger.Debug($"Fenster '{Window.GetType.Name}' aus der Gesamtliste entfernt.")
     End Sub
 
 End Module
