@@ -16,7 +16,7 @@ Imports FBoxDial.RibbonData
     ''' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
     ''' </summary>
     Friend Sub Invalidate()
-        RibbonObjekt.Invalidate()
+        RibbonObjekt?.Invalidate()
     End Sub
 
     ''' <summary>

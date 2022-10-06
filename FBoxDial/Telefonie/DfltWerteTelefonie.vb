@@ -30,9 +30,9 @@ Public NotInheritable Class DfltWerteTelefonie
         FON = 0
 
         ''' <summary>
-        ''' Durchwahl
+        ''' Durchwahl, Rufweiterleitung, CallThrough
         ''' </summary>
-        Durchwahl = 3
+        CallThrough = 3
 
         ''' <summary>
         ''' S0 ISDN Telefon
@@ -64,6 +64,12 @@ Public NotInheritable Class DfltWerteTelefonie
         ''' Anrufmonitor für integrierten Anrufbeantworter: 40, 41, 42, ..., 49
         ''' </summary>
         TAM = 40
+
+        DataFON1 = 32
+
+        DataFON2 = 33
+
+        DataFON3 = 34
 
         ''' <summary>
         ''' Data S0

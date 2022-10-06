@@ -144,6 +144,9 @@
   <data name="strJournalNichterfolgreich" xml:space="preserve">
     <value>Nicht erfolgreicher Anruf zu</value>
   </data>
+  <data name="strJournalRufweiterleitung" xml:space="preserve">
+    <value>Rufweiterleitung von</value>
+  </data>
   <data name="strJournalRWSFehler" xml:space="preserve">
     <value>Rückwärtssuche nicht erfolgreich: Es wurden keine Einträge gefunden.</value>
   </data>

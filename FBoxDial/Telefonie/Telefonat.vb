@@ -2,7 +2,7 @@
 Imports System.Threading.Tasks
 Imports System.Windows
 Imports System.Xml.Serialization
-Imports Microsoft.Office.Core
+Imports FBoxDial.DfltWerteTelefonie
 Imports Microsoft.Office.Interop
 <Serializable()> Public Class Telefonat
     Inherits NotifyBase
@@ -252,6 +252,14 @@ Imports Microsoft.Office.Interop
         End Get
     End Property
 
+    ''' <summary>
+    ''' Rufumleitungen (Parallelruf) werden mittels NebenstellenID 3 (Durchwahl/CallThrough) verarbeitet.
+    ''' </summary>
+    <XmlIgnore> Friend ReadOnly Property Rufweiterleitung As Boolean
+        Get
+            Return NebenstellenNummer = AnrMonTelIDBase.CallThrough
+        End Get
+    End Property
 #End Region
 
 #Region "Date"
@@ -438,18 +446,27 @@ Imports Microsoft.Office.Interop
                     Case 3 ' Nebenstellennummer, eindeutige Zuordnung des Telefons
                         NebenstellenNummer = CInt(FBStatus(i))
 
-                    Case 4 ' Eingehende (anrufende) Telefonnummer
+                    Case 4 ' Eigene Ausgehende Telefonnummer. Kann bei Rufweiterleitungen eine externe Nummer sein.
                         EigeneTelNr = XMLData.PTelefonie.GetEigeneTelNr(FBStatus(i))
-                        ' Wert für Serialisierung in separater Eigenschaft ablegen
+
                         If EigeneTelNr Is Nothing Then
-                            NLogger.Warn($"Eigene Telefonnummer für {FBStatus(i)} konnte nicht ermittelt werden.")
+
                             EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(i),
                                                                   .EigeneNummerInfo = New EigeneNrInfo With {.Überwacht = True}}
+
+                            ' Rufweiterleitung wurde festgestellt
+                            If Rufweiterleitung Then
+                                NLogger.Info($"Rufweiterleitung für {EigeneTelNr.Unformatiert} erfasst.")
+                            Else
+                                NLogger.Warn($"Eigene Telefonnummer für {FBStatus(i)} konnte nicht ermittelt werden.")
+                            End If
+
                         End If
 
+                        ' Wert für Serialisierung in separater Eigenschaft ablegen
                         OutEigeneTelNr = EigeneTelNr.Unformatiert
 
-                    Case 5 ' Gewählte (ausgehende) Telefonnummer
+                    Case 5 ' Gewählte Telefonnummer
                         ' Dies kann auch eine interne Nebenstellennummer sein:
                         ' 01.05.22 10:18:04;CALL;2;4;987654;62;SIP4;
                         GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
@@ -700,8 +717,6 @@ Imports Microsoft.Office.Interop
             AnruferName = Localize.LocAnrMon.strNrUnterdrückt
         End If
     End Function
-
-
 #End Region
 
     ''' <summary>
@@ -841,19 +856,24 @@ Imports Microsoft.Office.Interop
                 If olJournal IsNot Nothing Then
                     Dim tmpSubject As String
 
-                    If Not Blockiert Then
-                        If Angenommen Then
-                            tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalAusgehend, Localize.LocAnrMon.strJournalEingehend)
-                        Else 'Verpasst
-                            tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalNichterfolgreich, Localize.LocAnrMon.strJournalVerpasst)
-                        End If
-                    Else
+                    If Blockiert Then
                         tmpSubject = Localize.LocAnrMon.strJournalBlockiert
+                    Else
+                        If Rufweiterleitung Then
+                            ' Eine Rufweiterleitung wurde erfasst
+                            tmpSubject = Localize.LocAnrMon.strJournalRufweiterleitung
+                        Else
+                            If Angenommen Then
+                                tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalAusgehend, Localize.LocAnrMon.strJournalEingehend)
+                            Else 'Verpasst
+                                tmpSubject = If(AnrufRichtung = AnrufRichtungen.Ausgehend, Localize.LocAnrMon.strJournalNichterfolgreich, Localize.LocAnrMon.strJournalVerpasst)
+                            End If
+                        End If
                     End If
 
                     With olJournal
 
-                        .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, String.Empty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
+                        .Subject = $"{tmpSubject} {If(Rufweiterleitung, $"{EigeneTelNr.Formatiert} zu ", String.Empty)}{AnruferName}{If(NrUnterdrückt, String.Empty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, $" ({GegenstelleTelNr.Formatiert})"))}"
                         .Duration = Dauer.GetLarger(31) \ 60
                         .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{vbCrLf}Status: {If(Angenommen, String.Empty, "nicht ")}angenommen{vbCrLf & vbCrLf}{VCard}"
                         .Start = ZeitBeginn
@@ -913,11 +933,12 @@ Imports Microsoft.Office.Interop
     End Sub
 
     ''' <summary>
-    ''' Routine zum Aktialisieren der Wahlwiederholungs- und Rückrufliste. Das Telefonat wird in die entsprechende Liste aufgenommen.
+    ''' Routine zum Aktualisieren der Wahlwiederholungs- und Rückrufliste. Das Telefonat wird in die entsprechende Liste aufgenommen.
     ''' </summary>
     Friend Sub UpdateRingCallList()
 
-        If XMLData.POptionen.CBAnrListeUpdateCallLists Then
+        ' Nicht bei Rufweiterleitungen durchführen
+        If XMLData.POptionen.CBAnrListeUpdateCallLists And Not Rufweiterleitung Then
             ' Überprüfe, ob eigene Nummer überhaupt überwacht wird            ' 
             If AnrufRichtung = AnrufRichtungen.Eingehend Then
                 ' RING-Liste initialisieren, falls erforderlich
@@ -994,33 +1015,48 @@ Imports Microsoft.Office.Interop
         Select Case NebenstellenNummer
             Case -1 ' Tritt bei der Auswertung der Anrufliste auf. Ein Ermitteln des Gerätes ist nicht möglich.
 
-            Case DfltWerteTelefonie.AnrMonTelIDBase.Durchwahl ' 3
-                TelGerät = New Telefoniegerät With {.Name = "Durchwahl",
-                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.Durchwahl,
-                                                    .TelTyp = DfltWerteTelefonie.TelTypen.CallThrough}
+            Case AnrMonTelIDBase.CallThrough ' 3
+                TelGerät = New Telefoniegerät With {.Name = "Rufweiterleitung",
+                                                    .AnrMonID = AnrMonTelIDBase.CallThrough,
+                                                    .TelTyp = TelTypen.CallThrough}
 
-            Case DfltWerteTelefonie.AnrMonTelIDBase.S0 ' 4
+            Case AnrMonTelIDBase.S0 ' 4
                 ' ISDN S0 Geräte können nicht anhand der Nebenstellennummer ermittelt werden, da hier immer die 4 übermittelt wird.
                 TelGerät = New Telefoniegerät With {.Name = "ISDN/S0",
-                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.S0,
-                                                    .TelTyp = DfltWerteTelefonie.TelTypen.ISDN}
+                                                    .AnrMonID = AnrMonTelIDBase.S0,
+                                                    .TelTyp = TelTypen.ISDN}
 
-            Case DfltWerteTelefonie.AnrMonTelIDBase.OldTAM ' 6
+            Case AnrMonTelIDBase.OldTAM ' 6
                 ' Aus der Dokumentation der Anrufliste:
                 ' If port equals 6 or port in in the rage of 40 to 49 it is a TAM call.
                 TelGerät = New Telefoniegerät With {.Name = "Anrufbeantworter",
-                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.OldTAM,
-                                                    .TelTyp = DfltWerteTelefonie.TelTypen.TAM}
+                                                    .AnrMonID = AnrMonTelIDBase.OldTAM,
+                                                    .TelTyp = TelTypen.TAM}
 
-            Case DfltWerteTelefonie.AnrMonTelIDBase.DataS0 ' 36
+            Case AnrMonTelIDBase.DataFON1 ' 32
+                TelGerät = New Telefoniegerät With {.Name = "Data FON1",
+                                                    .AnrMonID = AnrMonTelIDBase.DataFON1,
+                                                    .TelTyp = TelTypen.DATA}
+
+            Case AnrMonTelIDBase.DataFON2 ' 33
+                TelGerät = New Telefoniegerät With {.Name = "Data FON2",
+                                                    .AnrMonID = AnrMonTelIDBase.DataFON2,
+                                                    .TelTyp = TelTypen.DATA}
+
+            Case AnrMonTelIDBase.DataFON3 ' 34
+                TelGerät = New Telefoniegerät With {.Name = "Data FON3",
+                                                    .AnrMonID = AnrMonTelIDBase.DataFON3,
+                                                    .TelTyp = TelTypen.DATA}
+
+            Case AnrMonTelIDBase.DataS0 ' 36
                 TelGerät = New Telefoniegerät With {.Name = "Data S0",
-                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.DataS0,
-                                                    .TelTyp = DfltWerteTelefonie.TelTypen.DATA}
+                                                    .AnrMonID = AnrMonTelIDBase.DataS0,
+                                                    .TelTyp = TelTypen.DATA}
 
-            Case DfltWerteTelefonie.AnrMonTelIDBase.DataPC ' 37
+            Case AnrMonTelIDBase.DataPC ' 37
                 TelGerät = New Telefoniegerät With {.Name = "Data PC",
-                                                    .AnrMonID = DfltWerteTelefonie.AnrMonTelIDBase.DataPC,
-                                                    .TelTyp = DfltWerteTelefonie.TelTypen.DATA}
+                                                    .AnrMonID = AnrMonTelIDBase.DataPC,
+                                                    .TelTyp = TelTypen.DATA}
 
             Case Else
                 ' FON, DECT, IP, TAM, interner Faxempfang
@@ -1085,8 +1121,8 @@ Imports Microsoft.Office.Interop
     Private Sub AnrMonCALL()
 
         If IstRelevant Then
-            ' Anrufername aus Kontakten und Rückwärtssuche ermitteln, sofern es sich nicht um eine interne Weiterleitung handelt.
-            If Not Intern Then KontaktSuche()
+            ' Anrufername aus Kontakten und Rückwärtssuche ermitteln, sofern es sich nicht um eine Weiterleitung handelt.
+            If Not Intern And Not Rufweiterleitung Then KontaktSuche()
 
             ' 01.05.22 10:18:04;CALL;2;4;987654;62;SIP4;
 
@@ -1099,16 +1135,21 @@ Imports Microsoft.Office.Interop
             ' 03.03.21 15:48:18;CALL;1;4;123456;0049987654321#;SIP3; *124# 654321
             ' 03.03.21 16:35:54;CALL;1;4;123456;0049987654321#;SIP1; *122# 123456
 
-            ' Bei Rufumleitungen im Modus Automatisch wird die umgeleitete eingehende Nummer als eigene rausgehende Nummer verwendet.
-            ' TODO: Anfangen von Rufumleitungen.
-            If AnschlussID.IsNotStringNothingOrEmpty Then
-                Dim tmpTel As Telefonnummer = XMLData.PTelefonie.GetEigeneTelNr(AnschlussID)
-                If Not EigeneTelNr.Equals(tmpTel) Then
-                    ' Eintrag ins Log
-                    NLogger.Debug($"Eigene Telefonnummer '{EigeneTelNr.Unformatiert}' mit '{tmpTel.Unformatiert}' überschrieben ({AnschlussID}).")
+            If Rufweiterleitung Then
+                ' Bei Rufumleitungen im Modus Automatisch wird die umgeleitete eingehende Nummer als eigene rausgehende Nummer verwendet.
+                ' Muss hier was gemacht werden?
+            Else
+                If AnschlussID.IsNotStringNothingOrEmpty Then
 
-                    ' Telefonnummer ersetzen
-                    EigeneTelNr = tmpTel
+                    Dim AnschlussIDTelNr As Telefonnummer = XMLData.PTelefonie.GetEigeneTelNr(AnschlussID)
+
+                    If Not EigeneTelNr.Equals(AnschlussIDTelNr) Then
+                        ' Eintrag ins Log
+                        NLogger.Debug($"Übermittelte eigene Telefonnummer '{EigeneTelNr.Unformatiert}' mit '{AnschlussIDTelNr.Unformatiert}' überschrieben ({AnschlussID}).")
+
+                        ' Telefonnummer ersetzen
+                        EigeneTelNr = AnschlussIDTelNr
+                    End If
                 End If
             End If
 

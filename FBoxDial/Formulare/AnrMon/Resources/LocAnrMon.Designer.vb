@@ -22,7 +22,7 @@ Namespace Localize
     '''<summary>
     '''  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class LocAnrMon
@@ -142,6 +142,15 @@ Namespace Localize
         Public Shared ReadOnly Property strJournalNichterfolgreich() As String
             Get
                 Return ResourceManager.GetString("strJournalNichterfolgreich", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Rufweiterleitung von ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strJournalRufweiterleitung() As String
+            Get
+                Return ResourceManager.GetString("strJournalRufweiterleitung", resourceCulture)
             End Get
         End Property
         
