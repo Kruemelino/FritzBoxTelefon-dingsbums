@@ -34,31 +34,35 @@ Friend Class ExplorerWrapper
             AddHandler OlExplorer.SelectionChange, AddressOf Explorer_SelectionChange
 
             ' CallListPane 
-
             If XMLData.POptionen.CBShowMissedCallPane Then
-                Dim UC As New UserControl
 
                 Datenservice = New AnrMonService
                 Dialogservice = New DialogService
 
-                CallListPaneVM = New CallListPaneViewModel(Datenservice)
+                If Not GetExistingCallListPane() Then
 
-                ' Erstelle ein neues WPF Pane
-                Dim WPFChild As New CallListPaneView With {.DataContext = CallListPaneVM}
+                    Dim UC As New UserControl
 
-                ' Merke den Dispatcher
-                PaneDispatcher = WPFChild.Dispatcher
+                    CallListPaneVM = New CallListPaneViewModel(Datenservice)
 
-                ' Bette in dem UserControl den ElementHost als Container für das eigentliche NotePaneView ein.
-                UC.Controls.Add(New ElementHost With {.Child = WPFChild,
-                                                      .Dock = DockStyle.Fill,
-                                                      .AutoSize = True})
+                    ' Erstelle ein neues WPF Pane
+                    Dim WPFChild As New CallListPaneView With {.DataContext = CallListPaneVM}
 
-                ' Pane hinzufügen
-                CallListPane = Globals.ThisAddIn.CustomTaskPanes.Add(UC, Localize.LocCallListPane.strPaneHead, OlExplorer)
+                    ' Merke den Dispatcher
+                    PaneDispatcher = WPFChild.Dispatcher
+
+                    ' Bette in dem UserControl den ElementHost als Container für das eigentliche NotePaneView ein.
+                    UC.Controls.Add(New ElementHost With {.Child = WPFChild,
+                                                          .Dock = DockStyle.Fill,
+                                                          .AutoSize = True})
+
+                    ' Pane hinzufügen
+                    CallListPane = Globals.ThisAddIn.CustomTaskPanes.Add(UC, Localize.LocCallListPane.strPaneHead, OlExplorer)
+
+                    NLogger.Debug("Ein neues CallListPane wurde erstellt")
+                End If
+
                 AddHandler CallListPane.VisibleChanged, AddressOf CallListPane_VisibleChanged
-
-                NLogger.Debug("Ein neues CallListPane wurde erstellt")
 
                 If XMLData.POptionen.CBShowCallPaneAtStart Then ShowCallListPane()
 
@@ -101,6 +105,44 @@ Friend Class ExplorerWrapper
 
         Globals.ThisAddIn.POutlookRibbons.Invalidate()
     End Sub
+
+    ''' <summary>
+    ''' Ermittelt einen vorhandenes CallListPane
+    ''' </summary>
+    Private Function GetExistingCallListPane() As Boolean
+
+        ' Vergleiche nach Namen
+        With Globals.ThisAddIn.CustomTaskPanes.Where(Function(P) P.Window.Equals(OlExplorer) And P.Title.IsEqual(Localize.LocCallListPane.strPaneHead))
+            If .Any Then
+                ' Es sollte nur Pane geben geben
+                CallListPane = .First
+
+                With CallListPane.Control.Controls
+
+                    ' Sofern Controls vorhanden sind und das erste Element vom Typ ElementHost ist
+                    If .Count.IsNotZero AndAlso TypeOf .Item(0) Is ElementHost Then
+
+                        ' Weise die fehlenden Eigenschaften dem ExplorerWrapper hinzu
+                        With CType(CType(.Item(0), ElementHost).Child, CallListPaneView)
+                            ' Ermittle den Dispatcher
+                            PaneDispatcher = .Dispatcher
+
+                            ' Ermittle das Viewmodel
+                            CallListPaneVM = CType(.DataContext, CallListPaneViewModel)
+                        End With
+
+                        NLogger.Debug("Ein vorhandenes CallListPane wurde ermittelt")
+
+                        Return True
+                    End If
+
+                End With
+            End If
+        End With
+
+        ' Standard-Rückgabewert
+        Return False
+    End Function
 
     ''' <summary>
     ''' Fügt ein Eintrag zu der Liste verpasster Telefonate hinzu.
