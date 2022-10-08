@@ -41,7 +41,10 @@ Friend Class ExplorerWrapper
 
                 If Not GetExistingCallListPane() Then
 
-                    Dim UC As New UserControl
+                    Dim UC As New UserControl 'With {.BackColor = GetOfficeBackGroundColor()}
+                    ' Dark: 0a0a0a
+                    ' Light: f0f0f0
+                    ' DarkGray: 2e2e2e
 
                     CallListPaneVM = New CallListPaneViewModel(Datenservice)
 

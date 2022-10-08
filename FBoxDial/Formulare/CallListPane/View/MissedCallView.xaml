@@ -4,12 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fbd="clr-namespace:FBoxDial"
-             xmlns:localize="clr-namespace:FBoxDial.Localize"
              MinHeight="102"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=fbd:MissedCallViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="122" d:DesignWidth="200" 
-             Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+             Background="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
 
     <UserControl.Resources>
         <ResourceDictionary>

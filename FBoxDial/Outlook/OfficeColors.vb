@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Drawing
 Imports Microsoft.Win32
 
 <TypeConverter(GetType(EnumDescriptionTypeConverter))>
@@ -32,7 +33,7 @@ Friend Module OfficeColors
 
     End Sub
 
-    Private Function GetThemebyOffice() As String
+    Private Function GetOfficeThemeID() As Integer
 
         Dim OfficeVersion As Integer = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName).ProductMajorPart
         Dim OfficeThemeKey As String = "UI Theme"
@@ -46,7 +47,7 @@ Friend Module OfficeColors
         ' 7: Bunt
 
         Dim OfficeTheme As Integer = 5
-        '  FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName).ProductMajorPart
+
         Using key = Registry.CurrentUser.OpenSubKey($"Software\Microsoft\Office\{OfficeVersion}.0\Common", False)
             OfficeTheme = CInt(key.GetValue(OfficeThemeKey))
         End Using
@@ -65,7 +66,27 @@ Friend Module OfficeColors
             End Using
         End If
 
-        Return If(OfficeTheme.AreEqual(4), "Dark", "Light")
+        Return OfficeTheme
+    End Function
+
+    Private Function GetThemebyOffice() As String
+        Return If(GetOfficeThemeID.AreEqual(4), "Dark", "Light")
+    End Function
+
+    ''' <summary>
+    ''' Gibt die Hintergrundfarbe des Office-Themes zurück. Dies ist nicht sonderlich schön, aber momentan nicht anders machbar.
+    ''' </summary>
+    Friend Function GetOfficeBackGroundColor() As Color
+
+        Select Case GetOfficeThemeID()
+            Case 3 ' 2e2e2e
+                Return ColorTranslator.FromHtml("#FF2E2E2E")
+            Case 4 ' 0a0a0a
+                Return ColorTranslator.FromHtml("#FF0A0A0A")
+            Case Else ' f0f0f0
+                Return ColorTranslator.FromHtml("#FFF0F0F0")
+        End Select
+
     End Function
 
     Friend Sub ToogleTheme()
