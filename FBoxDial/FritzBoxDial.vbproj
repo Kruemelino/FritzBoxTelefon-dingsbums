@@ -595,6 +595,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\UnSaveNativeMethods.vb" />
+    <None Include="FritzBoxDial.pfx" />
     <None Include="packages.config" />
     <None Include="Zertifikat\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
@@ -955,10 +956,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FritzBoxDial.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2D0955976091F4222A13E5EB76912871C33A16B3</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C623A05AD87F91C3A1FB75A5031D78ABCA1799B3</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a Visual Basic project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

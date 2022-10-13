@@ -1,6 +1,5 @@
 ﻿Imports System.Net
 Imports System.Net.Sockets
-Imports System.Timers
 
 Friend Class Anrufmonitor
 

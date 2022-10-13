@@ -24,7 +24,7 @@ OutputBaseFilename = FBDBSetup_{#MyAppVersion}_{#MyAppTime}
 Compression = lzma2
 SolidCompression = yes
 PrivilegesRequired = none
-SignTool = FBoxDial /t $qhttp://timestamp.digicert.com$q /du $q{#MyAppURL}$q /d $q{#MyAppDescription}$q $f
+SignTool = FBoxDial 
 SignedUninstaller = yes
 WizardStyle = modern
 

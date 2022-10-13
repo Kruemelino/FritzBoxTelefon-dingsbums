@@ -48,7 +48,14 @@ Friend Module OfficeColors
 
         Dim OfficeTheme As Integer = 5
 
-        Using key = Registry.CurrentUser.OpenSubKey($"Software\Microsoft\Office\{OfficeVersion}.0\Common", False)
+        Using key = Registry.CurrentUser.OpenSubKey($"Software\Microsoft\Office\{OfficeVersion}.0\Common", True)
+            If Not key.GetValueNames.Contains(OfficeThemeKey) Then
+                ' Der Schlüssel mit dem Namen "UI Theme" existiert nicht. Es genügt diesen anzulegen.
+                key.SetValue(OfficeThemeKey, 5, RegistryValueKind.DWord)
+
+                NLogger.Debug($"Der Eintrag '{OfficeThemeKey}' wurde mit dem Wert '5' in die Registry geschrieben.")
+            End If
+
             OfficeTheme = CInt(key.GetValue(OfficeThemeKey))
         End Using
 
