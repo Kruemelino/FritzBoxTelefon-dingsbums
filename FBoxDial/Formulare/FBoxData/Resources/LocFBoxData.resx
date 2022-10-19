@@ -202,7 +202,7 @@
     <value>Import der Anrufliste</value>
   </data>
   <data name="strJournalImport" xml:space="preserve">
-    <value>Jounalimport</value>
+    <value>Journalimport</value>
   </data>
   <data name="strMailHome" xml:space="preserve">
     <value>Privat</value>
@@ -295,8 +295,8 @@ Sollen die Einträge jetzt in die Fritz!Box geladen werden?</value>
   <data name="strShowContact" xml:space="preserve">
     <value>Kontakt anzeigen</value>
   </data>
-  <data name="strStartJounalImport" xml:space="preserve">
-    <value>Starte Jounalimport</value>
+  <data name="strStartJournalImport" xml:space="preserve">
+    <value>Starte Journalimport</value>
   </data>
   <data name="strStartTime" xml:space="preserve">
     <value>Startzeit</value>

@@ -107,9 +107,9 @@
                 </Grid.RowDefinitions>
 
                 <Button Grid.Column="0" Grid.Row="0" Margin="8,0"
-                        Content="{x:Static localize:LocFBoxData.strStartJounalImport}"
+                        Content="{x:Static localize:LocFBoxData.strStartJournalImport}"
                         Command="{Binding ImportCommand}"
-                        IsEnabled="{Binding IsNotAktiv}"/>
+                        IsEnabled="{Binding IsNotAktiv}" Cursor="Hand"/>
 
                 <Button Grid.Column="1" Grid.Row="0" Margin="8,0"
                         Content="{x:Static localize:LocFBoxData.strCancel}" 

@@ -317,7 +317,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Jounalimport ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Journalimport ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strJournalImport() As String
             Get
@@ -591,11 +591,11 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Starte Jounalimport ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Starte Journalimport ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strStartJounalImport() As String
+        Public Shared ReadOnly Property strStartJournalImport() As String
             Get
-                Return ResourceManager.GetString("strStartJounalImport", resourceCulture)
+                Return ResourceManager.GetString("strStartJournalImport", resourceCulture)
             End Get
         End Property
         
