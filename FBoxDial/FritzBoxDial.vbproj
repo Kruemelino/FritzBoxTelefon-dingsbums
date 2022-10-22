@@ -595,7 +595,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\UnSaveNativeMethods.vb" />
-    <None Include="FritzBoxDial.pfx" />
     <None Include="packages.config" />
     <None Include="Zertifikat\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
