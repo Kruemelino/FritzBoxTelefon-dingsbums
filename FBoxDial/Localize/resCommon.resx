@@ -129,6 +129,9 @@
   <data name="strDate" xml:space="preserve">
     <value>Datum</value>
   </data>
+  <data name="strErrorMsgBox" xml:space="preserve">
+    <value>Fehler in Funktion '{0}': {1}</value>
+  </data>
   <data name="strLocation" xml:space="preserve">
     <value>Ort</value>
   </data>

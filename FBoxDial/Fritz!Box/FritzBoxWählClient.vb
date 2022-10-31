@@ -212,11 +212,11 @@ Public Class FritzBoxWählClient
 
                 Case Else
                     ' Nix tun
-                    MsgBox(Localize.LocWählclient.strErrorAuswahl, MsgBoxStyle.Exclamation, "WählboxStart")
+                    AddinMsgBox(Localize.LocWählclient.strErrorAuswahl, MsgBoxStyle.Exclamation)
 
             End Select
         Else
-            MsgBox(Localize.LocWählclient.strErrorAuswahl, MsgBoxStyle.Exclamation, "WählboxStart")
+            AddinMsgBox(Localize.LocWählclient.strErrorAuswahl, MsgBoxStyle.Exclamation)
         End If
 
     End Sub
@@ -275,7 +275,7 @@ Public Class FritzBoxWählClient
                 ' Wenn ein ExchangeUser gefunden wurde so wähle diesen an.
                 Wählbox(aktExchangeNutzer)
             Else
-                MsgBox(String.Format(Localize.LocWählclient.strErrorMail, ContactCard.Address), MsgBoxStyle.Information, "WählboxStart")
+                AddinMsgBox(String.Format(Localize.LocWählclient.strErrorMail, ContactCard.Address), MsgBoxStyle.Information)
             End If
         End If
 
@@ -311,7 +311,7 @@ Public Class FritzBoxWählClient
                     ' Wenn ein ExchangeUser gefunden wurde so wähle diesen an.
                     Wählbox(aktExchangeNutzer)
                 Else
-                    MsgBox(String.Format(Localize.LocWählclient.strErrorMail, SMTPAdresse.Addresse), MsgBoxStyle.Information, "WählboxStart")
+                    AddinMsgBox(String.Format(Localize.LocWählclient.strErrorMail, SMTPAdresse.Addresse), MsgBoxStyle.Information)
                 End If
 
             End If

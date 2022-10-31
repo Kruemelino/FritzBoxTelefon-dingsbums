@@ -490,22 +490,20 @@ Friend Module KontaktFunktionen
 
     Friend Async Sub StartKontaktRWS(olContact As ContactItem, TelNr As Telefonnummer)
 
-        With olContact
-            Dim vCard As String
+        Dim vCard As String
 
-            vCard = Await StartRWS(TelNr, False)
+        vCard = Await StartRWS(TelNr, False)
 
-            If vCard.IsStringNothingOrEmpty Then
-                MsgBox($"{Localize.LocAnrMon.strJournalRWSFehler} {TelNr.Formatiert}", MsgBoxStyle.Information, Localize.LocOptionen.strSearchContactHeadRWS)
-            Else
-                If Not XMLData.POptionen.CBNoContactNotes Then
-                    .Body += String.Format($"{vbCrLf & vbCrLf}{Localize.LocAnrMon.strJournalTextvCard}{vCard}")
-                End If
-
-                DeserializevCard(vCard, olContact)
+        If vCard.IsStringNothingOrEmpty Then
+            AddinMsgBox($"{Localize.LocAnrMon.strJournalRWSFehler} {TelNr.Formatiert}", MsgBoxStyle.Information, Localize.LocOptionen.strSearchContactHeadRWS)
+        Else
+            If Not XMLData.POptionen.CBNoContactNotes Then
+                olContact.Body += String.Format($"{vbCrLf & vbCrLf}{Localize.LocAnrMon.strJournalTextvCard}{vCard}")
             End If
 
-        End With
+            DeserializevCard(vCard, olContact)
+        End If
+
     End Sub
 
     ''' <summary>

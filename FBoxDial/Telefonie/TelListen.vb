@@ -33,7 +33,7 @@ Imports System.Reflection
 
         ' Frage den User, ob er das wirklich will
         If ListPropertyInfo IsNot Nothing AndAlso
-            MsgBox(Localize.resRibbon.ResourceManager.GetString($"{KeyDelete}_Clear"), MsgBoxStyle.YesNo, "ClearList") = MsgBoxResult.Yes Then
+            AddinMsgBox(Localize.resRibbon.ResourceManager.GetString($"{KeyDelete}_Clear"), MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
 
             ' Suche die Methode Clear und führe sie aus
             ListPropertyInfo.PropertyType.GetMethod("Clear").Invoke(ListPropertyInfo.GetValue(Me), Nothing)

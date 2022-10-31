@@ -1,5 +1,6 @@
 ﻿Imports System.Threading
 Imports System.Threading.Tasks
+Imports System.Timers
 Imports System.Windows.Threading
 Imports Microsoft.Office.Interop.Outlook
 Imports Microsoft.Win32
@@ -440,6 +441,8 @@ Friend Class OptionenService
             tmpStr = XMLData.PTelefonie.Telefonnummern(RndGen.Next(0, XMLData.PTelefonie.Telefonnummern.Count)).Einwahl
         End If
 
+        NLogger.Debug($"Starte Test des Anrufmonitors mit {TelNr}.")
+
         ' Starte ein eingehendes Telefonat
         Dim AktivesTelefonat = New Telefonat With {.SetAnrMonRING = {Now.ToString("G"), "RING", "99", TelNr, tmpStr, "SIP4"}}
 
@@ -454,7 +457,10 @@ Friend Class OptionenService
         End If
 
         ' 23.06.18 13:20:52;DISCONNECT;1;9;
+        ' TODO: Verzögertes Starten. Ansonstne Timingproblem mit Kontaktsuche
         AktivesTelefonat.SetAnrMonDISCONNECT = {Now.ToString("G"), "DISCONNECT", "99", "60"}
+
+        NLogger.Debug($"Test des Anrufmonitors mit {TelNr} beendet.")
 
         RndGen = Nothing
     End Sub

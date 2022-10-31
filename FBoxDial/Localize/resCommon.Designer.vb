@@ -22,7 +22,7 @@ Namespace Localize
     '''<summary>
     '''  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class resCommon
@@ -97,6 +97,15 @@ Namespace Localize
         Public Shared ReadOnly Property strDate() As String
             Get
                 Return ResourceManager.GetString("strDate", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fehler in Funktion &apos;{0}&apos;: {1} ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strErrorMsgBox() As String
+            Get
+                Return ResourceManager.GetString("strErrorMsgBox", resourceCulture)
             End Get
         End Property
         

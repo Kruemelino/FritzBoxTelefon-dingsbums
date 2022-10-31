@@ -559,7 +559,7 @@
     <Compile Include="Kontakte\KontaktNotiz.vb" />
     <Compile Include="Kontakte\KontaktSucher.vb" />
     <Compile Include="Kontakte\Rückwärtssuche.vb" />
-    <Compile Include="Kontakte\VCard.vb" />
+    <Compile Include="Kontakte\Visitenkarte.vb" />
     <Compile Include="Logging\Logging.vb" />
     <Compile Include="Misc\Nutzerdaten.vb" />
     <Compile Include="Optionen\OutlookOrdner.vb" />
@@ -633,6 +633,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\Wählclient\Resources\LocWählclient.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

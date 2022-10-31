@@ -295,13 +295,12 @@ Public Module Extensions
 #End Region
 
 #Region "Hilfsfunktionen"
-    ' TODO: Auflösen
-    Public Function MsgBox(Meldung As String, Style As MsgBoxStyle, Aufruf As String) As MsgBoxResult
+    Public Function AddinMsgBox(Meldung As String, Style As MsgBoxStyle, <CallerMemberName> Optional Aufruf As String = Nothing) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then
-            Meldung = $"Die Funktion {Aufruf} meldet folgenden Fehler: {vbCrLf & vbCrLf}{Meldung}"
+            Meldung = String.Format(Localize.resCommon.strErrorMsgBox, Aufruf, vbCrLf & vbCrLf & Meldung)
             NLogger.Warn(Meldung)
         End If
-        Return Microsoft.VisualBasic.MsgBox(Meldung, Style, My.Resources.strDefLongName)
+        Return MsgBox(Meldung, Style, My.Resources.strDefLongName)
     End Function
 #End Region
 
