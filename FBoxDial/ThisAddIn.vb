@@ -33,24 +33,18 @@ Public NotInheritable Class ThisAddIn
         ' Logging konfigurieren
         LogManager.Configuration = DefaultNLogConfig()
 
-        ' Outlook.Application initialisieren
-        If Application.ActiveExplorer IsNot Nothing Then
+        ' Application laden https://github.com/didzispetkus/vsto-external-resource-library
+        If Windows.Application.Current Is Nothing Then WPFApplication = New App
+        Windows.Application.Current.ShutdownMode = Windows.ShutdownMode.OnExplicitShutdown
 
-            ' Application laden https://github.com/didzispetkus/vsto-external-resource-library
-            If Windows.Application.Current Is Nothing Then WPFApplication = New App
-            Windows.Application.Current.ShutdownMode = Windows.ShutdownMode.OnExplicitShutdown
+        ' Ereignishandler für StandBy / Resume
+        NLogger.Debug("Füge Ereignishandler für PowerModeChanged hinzu.")
+        AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf PowerModeChanged
 
-            ' Ereignishandler für StandBy / Resume
-            NLogger.Debug("Füge Ereignishandler für PowerModeChanged hinzu.")
-            AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf PowerModeChanged
+        NLogger.Info($"Starte {My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} ({Globals.ThisAddIn.Application.Name} {Globals.ThisAddIn.Application.Version})...")
+        ' Starte die Funktionen des Addins
+        StarteAddinFunktionen()
 
-            ' Starte die Funktionen des Addins asynchron
-            NLogger.Info($"Starte {My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} ({Globals.ThisAddIn.Application.Name} {Globals.ThisAddIn.Application.Version})...")
-
-            StarteAddinFunktionen()
-        Else
-            NLogger.Warn("Addin nicht gestartet, da kein Explorer vorhanden")
-        End If
     End Sub
 
     Private Sub StarteAddinFunktionen()
@@ -99,70 +93,75 @@ Public NotInheritable Class ThisAddIn
                                                                         .FritzBoxAdresse = XMLData.POptionen.ValidFBAdr,
                                                                         .LogWriter = New FBoxAPILog})
 
-        ' Anrufmonitor starten
-        If XMLData.POptionen.CBAnrMonAuto Then
-            If PAnrufmonitor Is Nothing Then PAnrufmonitor = New Anrufmonitor
-
-            PAnrufmonitor.Start()
-            NLogger.Debug("Anrufmonitor gestartet...")
-        End If
-
         ' Schreibe in das Log noch Informationen zur Fritz!Box
         NLogger.Info($"{FBoxTR064.FriendlyName} {FBoxTR064.DisplayVersion}")
 
-        ' Lade die Anrufliste herunter
-        If XMLData.POptionen.CBAutoAnrList Then TaskAnrList = LadeFritzBoxAnrufliste(XMLData.POptionen.FBoxCallListLastImportedID,
-                                                                                     XMLData.POptionen.FBoxCallListTimeStamp)
+        If Application.ActiveExplorer IsNot Nothing Then
+            ' Anrufmonitor starten
+            If XMLData.POptionen.CBAnrMonAuto Then
+                If PAnrufmonitor Is Nothing Then PAnrufmonitor = New Anrufmonitor
 
-        ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
-        If XMLData.POptionen.CBKontaktSucheFritzBox Then
-            TaskTelefonbücher = Telefonbücher.LadeTelefonbücher()
-        Else
-            ' Falls die Kontaktsuche nicht über die Fritz!Box Telefonbücher laufen soll, dann lade die Telefonbuchnamen herunter
-            TaskTelefonbücher = Task.Run(Function() Telefonbücher.LadeTelefonbücherNamen())
-        End If
-
-        ' Tellows ScoreList laden
-        If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
-            Using tellows As New Tellows
-                TaskScoreListe = tellows.LadeScoreList
-            End Using
-        End If
-
-        ' Beendigung des Task für das Herunterladen der Fritz!Box Telefonbücher abwarten
-        If TaskTelefonbücher IsNot Nothing Then
-            PhoneBookXML = Await TaskTelefonbücher
-            NLogger.Debug($"Fritz!Box Telefonbücher geladen...")
-        End If
-
-        ' Beendigung des Task für das Herunterladen der tellows ScoreList abwarten
-        If TaskScoreListe IsNot Nothing Then
-            TellowsScoreList = Await TaskScoreListe
-            If TellowsScoreList IsNot Nothing Then
-                NLogger.Debug($"Die tellows Scorelist mit {TellowsScoreList.Count} Einträgen geladen.")
-            Else
-                NLogger.Warn($"Die tellows Scorelist konnte nicht geladen werden.")
+                PAnrufmonitor.Start()
+                NLogger.Debug("Anrufmonitor gestartet...")
             End If
-        End If
 
-        ' Anrufliste auswerten
-        If TaskAnrList IsNot Nothing Then
-            NLogger.Debug("Auswertung Anrufliste gestartet...")
-            AutoAnrListe(Await TaskAnrList)
-        End If
+            ' Lade die Anrufliste herunter
+            If XMLData.POptionen.CBAutoAnrList Then TaskAnrList = LadeFritzBoxAnrufliste(XMLData.POptionen.FBoxCallListLastImportedID,
+                                                                                         XMLData.POptionen.FBoxCallListTimeStamp)
 
-        ' Aktualisierung der tellows Sperrliste
-        If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
-            NLogger.Debug("Update Rufsperre durch tellows gestartet...")
-            AutoBlockListe()
-        End If
+            ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
+            If XMLData.POptionen.CBKontaktSucheFritzBox Then
+                TaskTelefonbücher = Telefonbücher.LadeTelefonbücher()
+            Else
+                ' Falls die Kontaktsuche nicht über die Fritz!Box Telefonbücher laufen soll, dann lade die Telefonbuchnamen herunter
+                TaskTelefonbücher = Task.Run(Function() Telefonbücher.LadeTelefonbücherNamen())
+            End If
 
-        ' Dateisystemüberwachung für tel:// und callto:// Links
-        If XMLData.POptionen.CBLinkProtokoll Then
-            NLogger.Debug("Dateiüberwachung für tel:// und callto:// Links gestartet...")
-            LinkProtokoll = New DateiÜberwacher(IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName), My.Resources.strLinkProtFileName)
-        End If
+            ' Tellows ScoreList laden
+            If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
+                Using tellows As New Tellows
+                    TaskScoreListe = tellows.LadeScoreList
+                End Using
+            End If
 
+            ' Beendigung des Task für das Herunterladen der Fritz!Box Telefonbücher abwarten
+            If TaskTelefonbücher IsNot Nothing Then
+                PhoneBookXML = Await TaskTelefonbücher
+                NLogger.Debug($"Fritz!Box Telefonbücher geladen...")
+            End If
+
+            ' Beendigung des Task für das Herunterladen der tellows ScoreList abwarten
+            If TaskScoreListe IsNot Nothing Then
+                TellowsScoreList = Await TaskScoreListe
+                If TellowsScoreList IsNot Nothing Then
+                    NLogger.Debug($"Die tellows Scorelist mit {TellowsScoreList.Count} Einträgen geladen.")
+                Else
+                    NLogger.Warn($"Die tellows Scorelist konnte nicht geladen werden.")
+                End If
+            End If
+
+            ' Anrufliste auswerten
+            If TaskAnrList IsNot Nothing Then
+                NLogger.Debug("Auswertung Anrufliste gestartet...")
+                AutoAnrListe(Await TaskAnrList)
+            End If
+
+            ' Aktualisierung der tellows Sperrliste
+            If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
+                NLogger.Debug("Update Rufsperre durch tellows gestartet...")
+                AutoBlockListe()
+            End If
+
+            ' Dateisystemüberwachung für tel:// und callto:// Links
+            If XMLData.POptionen.CBLinkProtokoll Then
+                NLogger.Debug("Dateiüberwachung für tel:// und callto:// Links gestartet...")
+                LinkProtokoll = New DateiÜberwacher(IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName), My.Resources.strLinkProtFileName)
+            End If
+        Else
+            ' Wenn kein Active Explorer vorhanden ist, läuft der Code hier rein.
+            ' Z. B. wenn man eine msg-Datei öffnet, während Outlook nicht läuft. 
+            NLogger.Warn("Erweiterte Addin-Funktionen nicht gestartet, da kein Outlook-Explorer vorhanden")
+        End If
     End Sub
 
     Private Sub BeendeAddinFunktionen()

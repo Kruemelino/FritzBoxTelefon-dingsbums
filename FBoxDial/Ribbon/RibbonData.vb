@@ -521,11 +521,10 @@ Namespace RibbonData
 
         Friend Function InspectorGroupVisible(OutlookInspector As Outlook.Inspector) As Boolean
 
-            ' Soll ausgeblendet werden, wenn Kein Explorer vorhanden ist
-            ' oder das JournalItem nicht vom Addin ist
-
-            If (New Outlook.Application).ActiveExplorer Is Nothing Then
+            ' Soll ausgeblendet werden, wenn kein Explorer vorhanden ist oder das JournalItem nicht vom Addin ist
+            If Globals.ThisAddIn.Application.ActiveExplorer Is Nothing Then
                 Return False
+                NLogger.Debug("Kein Explorer")
             Else
                 If TypeOf OutlookInspector.CurrentItem Is Outlook.JournalItem Then
                     Return CheckJournalInspector(CType(OutlookInspector.CurrentItem, Outlook.JournalItem))
