@@ -7,7 +7,6 @@ Friend Module NLogging
                                                                                                                              {TraceLevel.Error, LogLevel.Error},
                                                                                                                              {TraceLevel.Off, LogLevel.Fatal}}
 
-
     Friend Function DefaultNLogConfig() As Config.LoggingConfiguration
 
         Dim config = New Config.LoggingConfiguration
@@ -37,10 +36,13 @@ Friend Module NLogging
                                                       .ConcurrentWrites = True,
                                                       .FileName = Path.Combine(BaseDir, $"{My.Resources.strDefShortName}.log"),
                                                       .Layout = String.Join("|", LayoutText),
-                                                      .ArchiveNumbering = Targets.ArchiveNumberingMode.Rolling,
+                                                      .DeleteOldFileOnStartup = True,
+                                                      .ArchiveOldFileOnStartup = True,
+                                                      .ArchiveNumbering = Targets.ArchiveNumberingMode.Date,
+                                                      .ArchiveDateFormat = "yyMMdd-HHmm",
                                                       .ArchiveFileName = Path.Combine(BaseDir, $"{My.Resources.strDefShortName}.{{#}}.log"),
-                                                      .ArchiveOldFileOnStartupAboveSize = 524288,
-                                                      .MaxArchiveFiles = 5})
+                                                      .MaxArchiveFiles = 24,
+                                                      .MaxArchiveDays = 7})
 
         ' Standard-Loglevel für das initiale Einlesen der Daten.
         config.AddRule(LogLevel.Trace, LogLevel.Fatal, config.AllTargets.First)
