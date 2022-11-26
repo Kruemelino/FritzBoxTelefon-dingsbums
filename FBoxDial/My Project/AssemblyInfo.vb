@@ -36,7 +36,7 @@ Imports System.Security
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("5.0.3.15")>
+<Assembly: AssemblyVersion("5.0.3.16")>
 <Assembly: AssemblyFileVersion("5.0.3.16")>
 <Assembly: NeutralResourcesLanguage("de-DE")>
 Friend Module DesignTimeConstants

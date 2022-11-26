@@ -26,7 +26,6 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU
 		Debug|Any CPU = Debug|Any CPU
-		FBoxDial|Any CPU = FBoxDial|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -34,33 +33,27 @@ Global
 		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.All|Any CPU.Build.0 = Release|Any CPU
 		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.FBoxDial|Any CPU.ActiveCfg = Debug|Any CPU
 		{B670FBA2-8BEA-49D7-B143-ACDEFD0776D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.All|Any CPU.ActiveCfg = Release|Any CPU
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.All|Any CPU.Build.0 = Release|Any CPU
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{985D1FE4-4B82-4553-B487-E6C998671AAD}.FBoxDial|Any CPU.ActiveCfg = Debug|Any CPU
-		{985D1FE4-4B82-4553-B487-E6C998671AAD}.FBoxDial|Any CPU.Build.0 = Debug|Any CPU
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{985D1FE4-4B82-4553-B487-E6C998671AAD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.All|Any CPU.ActiveCfg = Debug|Any CPU
 		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.All|Any CPU.Build.0 = Debug|Any CPU
 		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.FBoxDial|Any CPU.ActiveCfg = Debug|Any CPU
 		{44775C00-C7AE-4BC1-A15E-C58E1C57655C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.All|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.All|Any CPU.Build.0 = Debug|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.FBoxDial|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.All|Any CPU.ActiveCfg = Debug|Any CPU
 		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.All|Any CPU.Build.0 = Debug|Any CPU
 		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.FBoxDial|Any CPU.ActiveCfg = Debug|Any CPU
 		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
