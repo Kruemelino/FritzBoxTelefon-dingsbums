@@ -78,14 +78,14 @@
                             FirstDayOfWeek="Monday" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Stretch"                            
-                            SelectedDate="{Binding Path=StartDatum, Mode=TwoWay, TargetNullValue={x:Static sys:DateTime.Now}}"/>
+                            SelectedDate="{Binding Path=EndDatum, Mode=TwoWay, TargetNullValue={x:Static sys:DateTime.Now}}"/>
 
                 <fbd:TimePicker x:Name="TPEZeit" Margin="2"  
                                 Grid.Row="1" Grid.Column="2" 
                                 HorizontalAlignment="Left" 
                                 VerticalAlignment="Stretch"
                                 Height="{Binding ActualHeight, ElementName=DPEDatum}"
-                                SelectedTime="{Binding Path=StartZeit, Mode=TwoWay}"/>
+                                SelectedTime="{Binding Path=EndZeit, Mode=TwoWay}"/>
                 <!--#endregion-->
 
             </Grid>
