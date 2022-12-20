@@ -252,6 +252,9 @@
   <data name="VIPListe_Clear" xml:space="preserve">
     <value>Sollen alle Kontakte aus der VIP-Liste entfernt werden?</value>
   </data>
+  <data name="VIPListe_Deleted" xml:space="preserve">
+    <value>Der Eintrag '{0}' wurde nicht gefunden.</value>
+  </data>
   <data name="VIPListe_Label" xml:space="preserve">
     <value>VIP-Liste</value>
   </data>

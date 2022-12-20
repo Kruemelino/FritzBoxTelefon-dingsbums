@@ -789,6 +789,8 @@ Namespace RibbonData
                 .OlContact = GetOutlookKontakt(.EntryID, .StoreID)
                 If .OlContact IsNot Nothing Then
                     XAttribute.Value = $"{ .OlContact.FullName}{If(.OlContact.CompanyName.IsNotStringNothingOrEmpty, String.Format(" ({0})", .OlContact.CompanyName), String.Empty)}".XMLMaskiereZeichen
+                Else
+                    XAttribute.Value = String.Format(Localize.resRibbon.VIPListe_Deleted, VIP.Name.XMLMaskiereZeichen)
                 End If
 
                 XButton.Attributes.Append(XAttribute)
