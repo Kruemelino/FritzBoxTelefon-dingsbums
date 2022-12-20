@@ -1306,10 +1306,11 @@ Public Class OptionenViewModel
         Farben.AddRange(XMLData.POptionen.Farbdefinitionen)
         ' Farben für die einzelnen eigenen Telefonnummern
         Farben.AddRange(TelNrListe.Select(Function(TelNr)
-                                              If TelNr.EigeneNummerInfo.Farben Is Nothing Then
+                                              If TelNr.EigeneNummerInfo IsNot Nothing AndAlso TelNr.EigeneNummerInfo.Farben Is Nothing Then
                                                   ' Definiere eine neue Farbzuordnung.
                                                   TelNr.EigeneNummerInfo.Farben = New Farbdefinition With {.Kontext = TelNr.Einwahl}
                                               Else
+                                                  If TelNr.EigeneNummerInfo Is Nothing Then TelNr.EigeneNummerInfo = New EigeneNrInfo With {.Farben = New Farbdefinition}
                                                   ' Anzeigetext der Farbdefinition setzen, da der nach dem Einlsesen noch nicht vorhanden
                                                   TelNr.EigeneNummerInfo.Farben.Kontext = TelNr.Einwahl
                                               End If
