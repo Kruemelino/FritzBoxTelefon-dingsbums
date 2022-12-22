@@ -160,54 +160,87 @@ Friend Module KontaktFunktionen
     End Sub
 
     ''' <summary>
-    ''' Erstellt einen Kontakt aus einem Inspectorfenster (Journal)
+    ''' Erstellt einen Kontakt aus einem Outlook-Item (Journal oder Termin) oder blendet den verknüpften Kontakt ein.
     ''' </summary>
-    Friend Sub ZeigeKontaktAusJournal(olJournal As JournalItem)
+    Friend Sub ZeigeKontaktAusOutlookItem(Of T)(olItem As T)
         Dim vCard As String
-        Dim olKontakt As ContactItem = Nothing ' Objekt des Kontakteintrags
+        Dim olKontakt As ContactItem ' Objekt des Kontakteintrags
         Dim TelNr As Telefonnummer
+        Dim Body As String
+        Dim Categories As String
 
-        With olJournal
-            If .Categories.Contains(Localize.LocAnrMon.strJournalCatDefault) Then
+        Select Case True
+            Case TypeOf olItem Is AppointmentItem
+                With CType(olItem, AppointmentItem)
+                    ' Outlook-Kontakt ermitteln
+                    olKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagOlItem), Object()))
+                    ' Body entnehmen
+                    Body = .Body
+                    ' Categories entnehmen
+                    Categories = .Categories
+                End With
 
-                olKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object()))
+            Case TypeOf olItem Is JournalItem
+                With CType(olItem, JournalItem)
+                    ' Outlook-Kontakt ermitteln
+                    olKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagOlItem), Object()))
+                    ' Body entnehmen
+                    Body = .Body
+                    ' Categories entnehmen
+                    Categories = .Categories
+                End With
 
-                If olKontakt Is Nothing Then
+            Case Else
+                olKontakt = Nothing
+                Body = String.Empty
+                Categories = String.Empty
+        End Select
 
-                    TelNr = New Telefonnummer
-                    'Telefonnummer aus dem .Body herausfiltern
-                    TelNr.SetNummer = .Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, "Status: ")
+        ReleaseComObject(olItem)
 
-                    ' Prüfe ob TelNr unterdrückt
-                    If TelNr.Unterdrückt Then
+        If Categories.Contains(Localize.LocAnrMon.strJournalCatDefault) Then
+
+            If olKontakt Is Nothing Then
+
+                ' Telefonnummer aus dem .Body herausfiltern
+                TelNr = New Telefonnummer With {.SetNummer = Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, "Status: ")}
+
+                ' Prüfe ob TelNr unterdrückt
+                If TelNr.Unterdrückt Then
+                    olKontakt = ErstelleKontakt(TelNr, False)
+                Else
+                    ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
+                    ' vCard aus dem .Body herausfiltern
+                    vCard = $"BEGIN:VCARD{Body.GetSubString("BEGIN:VCARD", "END:VCARD")}END:VCARD"
+
+                    'Wenn keine vCard im Body gefunden
+                    If vCard.IsEqual($"BEGIN:VCARD-1END:VCARD") Then
+                        ' wenn nicht, dann neuen Kontakt mit TelNr öffnen
                         olKontakt = ErstelleKontakt(TelNr, False)
                     Else
-                        ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
-                        ' vCard aus dem .Body herausfiltern
-                        vCard = $"BEGIN:VCARD{ .Body.GetSubString("BEGIN:VCARD", "END:VCARD")}END:VCARD"
-
-                        'Wenn keine vCard im Body gefunden
-                        If vCard.IsNotEqual($"BEGIN:VCARD-1END:VCARD") Then
-                            ' wenn nicht, dann neuen Kontakt mit TelNr öffnen
-                            olKontakt = ErstelleKontakt(TelNr, False)
-                        Else
-                            'vCard gefunden
-                            olKontakt = ErstelleKontakt(vCard, TelNr, False)
-                        End If
+                        'vCard gefunden
+                        olKontakt = ErstelleKontakt(vCard, TelNr, False)
                     End If
                 End If
             End If
-        End With
+        End If
+
         If olKontakt IsNot Nothing Then olKontakt.Display()
-        ReleaseComObject(olJournal)
 
-    End Sub ' (ZeigeKontaktAusJournal)
+    End Sub ' (ZeigeKontaktAusOutlookItem)
 
+    ''' <summary>
+    ''' Erstellt einen Kontakt aus einem Inspectorfenster (Journal oder Termin) oder blendet den verknüpften Kontakt ein.
+    ''' </summary>
     Friend Sub ZeigeKontaktAusInspector(olInsp As Inspector)
         If olInsp IsNot Nothing Then
-            If TypeOf olInsp.CurrentItem Is JournalItem Then
-                ZeigeKontaktAusJournal(CType(olInsp.CurrentItem, JournalItem))
-            End If
+            Select Case True
+                Case TypeOf olInsp.CurrentItem Is JournalItem Or
+                     TypeOf olInsp.CurrentItem Is AppointmentItem
+
+                    ZeigeKontaktAusOutlookItem(olInsp.CurrentItem)
+
+            End Select
         End If
     End Sub ' (ZeigeKontaktAusInspector)
 

@@ -1,7 +1,6 @@
 ﻿Imports System.Xml.Serialization
 Imports System.Threading.Tasks
 Imports FBoxDial.DfltWerteTelefonie
-Imports FBoxDial.FritzBoxDefault
 
 <Serializable()> Public Class Telefonie
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -36,7 +35,6 @@ Imports FBoxDial.FritzBoxDefault
 #Region "Import Telefoniedaten der Fritz!Box"
 
     Friend Async Sub GetFritzBoxDaten()
-
 
         With Globals.ThisAddIn.FBoxTR064
 

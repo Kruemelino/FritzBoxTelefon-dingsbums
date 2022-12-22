@@ -1,10 +1,9 @@
 ﻿Imports System.Reflection
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Tab
 Imports System.Xml
-Imports System.Windows
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
-Imports System.Windows.Documents
-Imports System.Collections
+
 
 Namespace RibbonData
     ''' <summary>
@@ -213,7 +212,7 @@ Namespace RibbonData
         End Sub
 
         ''' <summary>
-        ''' Bahandelt das Klicken auf reguläre Einträge der Call, Ring und VIP Liste
+        ''' Behandelt das Klicken auf reguläre Einträge der Call, Ring und VIP Liste
         ''' </summary>
         ''' <param name="Tag">Identifikation des Listeneintrages: RingList_0</param>
         Private Sub ListCRV(Tag As String)
@@ -230,6 +229,22 @@ Namespace RibbonData
                 End If
             End With
 
+        End Sub
+
+        ''' <summary>
+        ''' Erstellt einen Rückruftermin
+        ''' </summary>
+        ''' <param name="Tag">Identifikation des Listeneintrages: RingList_0</param>
+        Private Sub SceduleButtonCRV(Tag As String)
+            XMLData.PTelListen.CreateAppointment(Tag)
+        End Sub
+
+        ''' <summary>
+        ''' Entfernt einen Eintrag aus der Liste
+        ''' </summary>
+        ''' <param name="Tag">Identifikation des Listeneintrages: RingList_0</param>
+        Private Sub DeleteEntryButtonCRV(Tag As String)
+            XMLData.PTelListen.ClearListEntry(Tag)
         End Sub
 
         ''' <summary>
@@ -271,6 +286,24 @@ Namespace RibbonData
             ZeigeKontaktAusInspector(OutlookInspector)
         End Sub
 
+        Private Sub Contact(OutlookSelection As Outlook.Selection)
+            With OutlookSelection
+                If .Count.IsNotZero Then
+                    Select Case True
+                        Case TypeOf .Item(1) Is Outlook.AppointmentItem Or
+                             TypeOf .Item(1) Is Outlook.JournalItem
+
+                            ZeigeKontaktAusOutlookItem(.Item(1))
+
+                        Case Else
+
+                    End Select
+                End If
+
+            End With
+
+        End Sub
+
         ''' <summary>
         ''' Setzt den übergebenen Outlook Kontakt auf die VIP-Liste oder entfernt diesen.
         ''' </summary>
@@ -286,8 +319,10 @@ Namespace RibbonData
         Private Sub RWS(OutlookInspector As Outlook.Inspector, Tag As String)
 
             Select Case True
-                Case TypeOf OutlookInspector.CurrentItem Is Outlook.JournalItem
-                    StartJournalRWS(CType(OutlookInspector.CurrentItem, Outlook.JournalItem))
+                Case TypeOf OutlookInspector.CurrentItem Is Outlook.JournalItem Or
+                     TypeOf OutlookInspector.CurrentItem Is Outlook.AppointmentItem
+
+                    StartOlItemRWS(OutlookInspector.CurrentItem)
 
                 Case TypeOf OutlookInspector.CurrentItem Is Outlook.ContactItem
                     StartKontaktRWS(CType(OutlookInspector.CurrentItem, Outlook.ContactItem), New Telefonnummer With {.SetNummer = Tag})
@@ -406,6 +441,10 @@ Namespace RibbonData
                                 ' Rekursiver Aufruf
                                 Return EnableDial(CType(.CurrentItem, Outlook.JournalItem))
 
+                            Case TypeOf .CurrentItem Is Outlook.AppointmentItem
+
+                                ' Rekursiver Aufruf
+                                Return EnableDial(CType(.CurrentItem, Outlook.AppointmentItem))
                         End Select
                     End With
 
@@ -448,6 +487,10 @@ Namespace RibbonData
                                     ' Rekursiver Aufruf
                                     Return EnableDial(CType(.Item(1), Outlook.JournalItem))
 
+                                Case TypeOf .Item(1) Is Outlook.AppointmentItem
+
+                                    ' Rekursiver Aufruf
+                                    Return EnableDial(CType(.Item(1), Outlook.AppointmentItem))
                             End Select
                         End If
                     End With
@@ -471,10 +514,17 @@ Namespace RibbonData
                     End With
 
                 Case TypeOf Context Is Outlook.JournalItem
-                    '' Ermittelt, ob dem Journaleintrag ein Kontakthinterlegt ist, oder eine vCard, oder eine Telefonnummer
+                    ' Ermittelt, ob dem Journaleintrag ein Kontakt hinterlegt ist, oder eine vCard, oder eine Telefonnummer
 
                     With CType(Context, Outlook.JournalItem)
-                        Return Not .Body.StartsWith(String.Format($"{Localize.LocAnrMon.strJournalBodyStart} {Localize.LocAnrMon.strNrUnterdrückt}"))
+                        Return .Body IsNot Nothing AndAlso Not .Body.StartsWith(String.Format($"{Localize.LocAnrMon.strJournalBodyStart} {Localize.LocAnrMon.strNrUnterdrückt}"))
+                    End With
+
+                Case TypeOf Context Is Outlook.AppointmentItem
+                    ' Ermittelt, ob dem Termin ein Kontakt hinterlegt ist, oder eine vCard, oder eine Telefonnummer
+
+                    With CType(Context, Outlook.AppointmentItem)
+                        Return .Body IsNot Nothing AndAlso Not .Body.StartsWith(String.Format($"{Localize.LocAnrMon.strJournalBodyStart} {Localize.LocAnrMon.strNrUnterdrückt}"))
                     End With
 
                 Case TypeOf Context Is Outlook.ExchangeUser
@@ -488,6 +538,54 @@ Namespace RibbonData
             Return False
         End Function
 
+#End Region
+
+#Region "Control Visible"
+        Friend Function VisibilityGroup(Of T)(Context As T) As Boolean
+
+            Select Case True
+                Case TypeOf Context Is Outlook.Explorer
+                    ' Werte die Selection des Explorer aus
+                    With CType(Context, Outlook.Explorer)
+                        ' Rekursiver Aufruf
+                        Try
+                            Return VisibilityGroup(.Selection)
+                        Catch ' ex As Runtime.InteropServices.COMException
+                            ' https://social.msdn.microsoft.com/Forums/en-US/1d6aa6df-53db-42d6-946d-130e642ddacb/comexception-when-checking-activeexplorerselection?forum=outlookdev
+                            NLogger.Debug("Outlook mit 'Outlook Heute' gestartet.")
+                            Return False
+                        End Try
+
+                    End With
+                Case TypeOf Context Is Outlook.Selection
+
+                    With CType(Context, Outlook.Selection)
+                        If .Count.IsNotZero Then
+                            Select Case True
+                                Case TypeOf .Item(1) Is Outlook.AppointmentItem Or
+                                     TypeOf .Item(1) Is Outlook.JournalItem
+
+                                    ' Rekursiver Aufruf
+                                    Return VisibilityGroup(.Item(1))
+
+                                Case Else
+                                    Return False
+                            End Select
+                        Else
+                            Return False
+                        End If
+                    End With
+                Case TypeOf Context Is Outlook.AppointmentItem
+                    Return CheckInspector(CType(Context, Outlook.AppointmentItem))
+
+                Case TypeOf Context Is Outlook.JournalItem
+                    Return CheckInspector(CType(Context, Outlook.JournalItem))
+
+                Case Else
+                    Return False
+            End Select
+
+        End Function
 #End Region
 
 #Region "Ribbon Pressed"
@@ -515,8 +613,31 @@ Namespace RibbonData
 #End Region
 
 #Region "Journal"
-        Friend Function JournalRibbonContent(Journal As Outlook.JournalItem, Key As String, DatenTyp As Typ) As String
-            Return GetRibbonContent($"{If(GetOutlookKontakt(CType(Journal.PropertyAccessor.GetProperties(DASLTagJournal), Object())) Is Nothing, "Create", "Show")}{Key}", DatenTyp)
+        ' TODO: Doppelte Funktionen
+
+        Friend Function RibbonContent(Of T)(OlItem As T, Key As String, DatenTyp As Typ) As String
+            Dim olKontakt As Outlook.ContactItem
+            Select Case True
+                Case TypeOf OlItem Is Outlook.AppointmentItem
+                    With CType(OlItem, Outlook.AppointmentItem)
+                        ' Outlook-Kontakt ermitteln
+                        olKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagOlItem), Object()))
+                    End With
+
+                Case TypeOf OlItem Is Outlook.JournalItem
+                    With CType(OlItem, Outlook.JournalItem)
+                        ' Outlook-Kontakt ermitteln
+                        olKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagOlItem), Object()))
+                    End With
+
+                Case Else
+                    olKontakt = Nothing
+            End Select
+
+            Return GetRibbonContent($"{If(olKontakt Is Nothing, "Create", "Show")}{Key}", DatenTyp)
+
+            ReleaseComObject(olKontakt)
+
         End Function
 
         Friend Function InspectorGroupVisible(OutlookInspector As Outlook.Inspector) As Boolean
@@ -526,11 +647,16 @@ Namespace RibbonData
                 Return False
                 NLogger.Debug("Kein Explorer")
             Else
-                If TypeOf OutlookInspector.CurrentItem Is Outlook.JournalItem Then
-                    Return CheckJournalInspector(CType(OutlookInspector.CurrentItem, Outlook.JournalItem))
-                Else
-                    Return True
-                End If
+                Select Case True
+                    Case TypeOf OutlookInspector.CurrentItem Is Outlook.JournalItem
+                        Return CheckInspector(CType(OutlookInspector.CurrentItem, Outlook.JournalItem))
+
+                    Case TypeOf OutlookInspector.CurrentItem Is Outlook.AppointmentItem
+                        Return CheckInspector(CType(OutlookInspector.CurrentItem, Outlook.AppointmentItem))
+
+                    Case Else
+                        Return True
+                End Select
             End If
 
         End Function
@@ -538,16 +664,32 @@ Namespace RibbonData
         ''' <summary>
         ''' Gibt zurück, ob das JournalItem, von diesem Addin erstellt wurde. Dazu wird die Kategorie geprüft.
         ''' </summary>
-        ''' <param name="OutlookJournal">Das zugehörige Ribbon Control.</param>
+        ''' <param name="olItem">Das zugehörige Ribbon Control.</param>
         ''' <returns>True, wenn JournalItem, von diesem Addin erstellt wurde. Ansonsten False</returns>
-        Friend Function CheckJournalInspector(OutlookJournal As Outlook.JournalItem) As Boolean
+        Friend Function CheckInspector(olItem As Outlook.JournalItem) As Boolean
 
             ' Bei Journal nur wenn Kategorien korrekt
             ' Wenn Journal keine Kategorie enthält, dann ist es kein vom Addin erzeugtes JournalItem
-            Return OutlookJournal.Categories IsNot Nothing AndAlso OutlookJournal.Categories.Contains(String.Join("; ", DfltJournalDefCategories.ToArray))
+            Return CheckCategories(olItem.Categories)
 
         End Function
 
+        ''' <summary>
+        ''' Gibt zurück, ob der Termin, von diesem Addin erstellt wurde. Dazu wird die Kategorie geprüft.
+        ''' </summary>
+        ''' <param name="olItem">Das zugehörige Ribbon Control.</param>
+        ''' <returns>True, wenn Termin, von diesem Addin erstellt wurde. Ansonsten False</returns>
+        Friend Function CheckInspector(olItem As Outlook.AppointmentItem) As Boolean
+
+            ' Bei Termin nur wenn Kategorien korrekt
+            ' Wenn Termin keine Kategorie enthält, dann ist es kein vom Addin erzeugtes JournalItem
+            Return CheckCategories(olItem.Categories)
+
+        End Function
+
+        Private Function CheckCategories(Categories As String) As Boolean
+            Return Categories IsNot Nothing AndAlso Categories.Contains(String.Join("; ", DfltOlItemCategories.ToArray))
+        End Function
 #End Region
 
 #Region "Rückwärtssuche"
@@ -664,7 +806,6 @@ Namespace RibbonData
         ''' <param name="ListName">Name der Liste</param>
         ''' <returns></returns>
         Friend Function GetDynamicMenu(ListName As String) As String
-            Dim ListevonTelefonaten As List(Of Telefonat)
             Dim XDynaMenu As New XmlDocument
 
             ListName = ListName.RegExRemove("_.*")
@@ -677,20 +818,27 @@ Namespace RibbonData
                 .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, $"DynListDel_{ListName}"))
                 .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
 
-                If ListName.IsEqual(My.Resources.strDfltNameListCALL) Or ListName.IsEqual(My.Resources.strDfltNameListRING) Then
-                    ListevonTelefonaten = If(ListName.IsEqual(My.Resources.strDfltNameListCALL), XMLData.PTelListen.CALLListe, XMLData.PTelListen.RINGListe)
+                Select Case ListName
+                    Case My.Resources.strDfltNameListCALL
 
-                    For Each TelFt As Telefonat In ListevonTelefonaten.Where(Function(Tf) Not Tf.NrUnterdrückt)
-                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, TelFt, ListevonTelefonaten.IndexOf(TelFt), ListName))
-                    Next
+                        For Each TelFt As Telefonat In XMLData.PTelListen.CALLListe.Where(Function(Tf) Not Tf.NrUnterdrückt)
+                            .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, XMLData.PTelListen.CALLListe.IndexOf(TelFt), ListName))
+                        Next
 
-                ElseIf ListName.IsEqual(My.Resources.strDfltNameListVIP) Then
+                    Case My.Resources.strDfltNameListRING
 
-                    For Each VIP As VIPEntry In XMLData.PTelListen.VIPListe
-                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, VIP, XMLData.PTelListen.VIPListe.IndexOf(VIP), ListName))
-                    Next
+                        For Each TelFt As Telefonat In XMLData.PTelListen.RINGListe.Where(Function(Tf) Not Tf.NrUnterdrückt)
+                            .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, XMLData.PTelListen.RINGListe.IndexOf(TelFt), ListName))
+                        Next
 
-                End If
+                    Case My.Resources.strDfltNameListVIP
+
+                        For Each VIP As VIPEntry In XMLData.PTelListen.VIPListe
+                            .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, VIP, XMLData.PTelListen.VIPListe.IndexOf(VIP), ListName))
+                        Next
+
+                End Select
+
             End With
 
             Return XDynaMenu.InnerXml
@@ -728,6 +876,87 @@ Namespace RibbonData
             Return XButton
         End Function
 
+        ''' <summary>
+        ''' Erstellt einen SplitButton für das DynamicMenu auf Basis eines Telefonates (RING/CALL -Liste)
+        ''' </summary>
+        ''' <param name="xDoc">Das Ribbon XML Dokument</param>
+        ''' <param name="Tlfnt">Das gegenständliche Telefonat</param>
+        ''' <param name="ID">Eine ID, die auf den Index des Telefonates in der Liste verweist.</param>
+        ''' <param name="Tag">Eine Zeichenfolge, die auf das ursprüngliche Listenelement verweist.</param>
+        ''' <returns>Ein XmlElement, welches in das finale Ribbon-XML eingefügt wird.</returns>
+        Private Function CreateDynMenuSplitButton(xDoc As XmlDocument, Tlfnt As Telefonat, ID As Integer, Tag As String) As XmlElement
+            Dim XAttribute As XmlAttribute
+            Dim XSplitButton As XmlElement = xDoc.CreateElement("splitButton", xDoc.DocumentElement.NamespaceURI)
+
+            ' ID des SplitButtons
+            XAttribute = xDoc.CreateAttribute("id")
+            XAttribute.Value = $"SplitButtonCRV_{ID}"
+            XSplitButton.Attributes.Append(XAttribute)
+
+            XSplitButton.AppendChild(CreateDynMenuButton(xDoc, Tlfnt, ID, Tag))
+
+            With xDoc.CreateElement("menu", xDoc.DocumentElement.NamespaceURI)
+                ' ID des SplitButtons-Menues
+                XAttribute = xDoc.CreateAttribute("id")
+                XAttribute.Value = $"SplitButtonMenuCRV_{ID}"
+                .Attributes.Append(XAttribute)
+
+                ' Erzeuge die Buttons für das Menu
+                .AppendChild(CreateDynMenuSplitMenueButton(xDoc, "SceduleButtonCRV", ID, Tag)) ' Terminerstellung
+                .AppendChild(CreateDynMenuSplitMenueButton(xDoc, "DeleteEntryButtonCRV", ID, Tag)) ' Eintrag löschem
+
+                ' Füge das Menu hinzu
+                XSplitButton.AppendChild(.Clone)
+
+            End With
+
+            Return XSplitButton
+        End Function
+
+        ''' <summary>
+        ''' Erstellt einen SplitButton für das DynamicMenu auf Basis eines VIP-Eintrages
+        ''' </summary>
+        ''' <param name="xDoc">Das Ribbon XML Dokument</param>
+        ''' <param name="VIP">Der gegenständliche VIP-Eintrag</param>
+        ''' <param name="ID">Eine ID, die auf den Index des VIP-Eintrages in der Liste verweist.</param>
+        ''' <param name="Tag">Eine Zeichenfolge, die auf das ursprüngliche Listenelement verweist.</param>
+        ''' <returns>Ein XmlElement, welches in das finale Ribbon-XML eingefügt wird.</returns>
+        Private Function CreateDynMenuSplitButton(xDoc As XmlDocument, VIP As VIPEntry, ID As Integer, Tag As String) As XmlElement
+            Dim XAttribute As XmlAttribute
+            Dim XSplitButton As XmlElement = xDoc.CreateElement("splitButton", xDoc.DocumentElement.NamespaceURI)
+
+            ' ID des SplitButtons
+            XAttribute = xDoc.CreateAttribute("id")
+            XAttribute.Value = $"SplitButtonCRV_{ID}"
+            XSplitButton.Attributes.Append(XAttribute)
+
+            XSplitButton.AppendChild(CreateDynMenuButton(xDoc, VIP, ID, Tag))
+
+            With xDoc.CreateElement("menu", xDoc.DocumentElement.NamespaceURI)
+                ' ID des SplitButtons-Menues
+                XAttribute = xDoc.CreateAttribute("id")
+                XAttribute.Value = $"SplitButtonMenuCRV_{ID}"
+                .Attributes.Append(XAttribute)
+
+                ' Erzeuge die Buttons für das Menu
+                .AppendChild(CreateDynMenuSplitMenueButton(xDoc, "DeleteEntryButtonCRV", ID, Tag)) ' Eintrag löschem
+
+                ' Füge das Menu hinzu
+                XSplitButton.AppendChild(.Clone)
+
+            End With
+
+            Return XSplitButton
+        End Function
+
+        ''' <summary>
+        ''' Erstellt einen Button für den SplitButton auf Basis eines Telefonates (RING/CALL -Liste)
+        ''' </summary>
+        ''' <param name="xDoc">Das Ribbon XML Dokument</param>
+        ''' <param name="Tlfnt">Das gegenständliche Telefonat</param>
+        ''' <param name="ID">Eine ID, die auf den Index des Telefonates in der Liste verweist.</param>
+        ''' <param name="Tag">Eine Zeichenfolge, die auf das ursprüngliche Listenelement verweist.</param>
+        ''' <returns>Ein XmlElement, welches in das finale Split-Button-XML eingefügt wird.</returns>
         Private Function CreateDynMenuButton(xDoc As XmlDocument, Tlfnt As Telefonat, ID As Integer, Tag As String) As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
@@ -736,31 +965,38 @@ Namespace RibbonData
 
                 XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
 
+                ' ID des Buttons
                 XAttribute = xDoc.CreateAttribute("id")
                 XAttribute.Value = $"ListCRV_{ID}"
                 XButton.Attributes.Append(XAttribute)
 
+                ' angezeigte Text
                 XAttribute = xDoc.CreateAttribute("label")
                 XAttribute.Value = .NameGegenstelle.XMLMaskiereZeichen
                 XButton.Attributes.Append(XAttribute)
 
+                ' Action des Bottons
                 XAttribute = xDoc.CreateAttribute("onAction")
                 XAttribute.Value = "BtnOnAction"
                 XButton.Attributes.Append(XAttribute)
 
+                ' Tag des Buttons
                 XAttribute = xDoc.CreateAttribute("tag")
                 XAttribute.Value = $"{Tag}_{ID}".XMLMaskiereZeichen
                 XButton.Attributes.Append(XAttribute)
 
+                ' Supertipp des Buttons
                 XAttribute = xDoc.CreateAttribute("supertip")
                 XAttribute.Value = $"{Localize.resCommon.strTime}: { .ZeitBeginn}{vbCrLf}"
                 XAttribute.Value += $"{Localize.resCommon.strTelNr}: { .GegenstelleTelNr.Formatiert}"
 
+                ' Sofern nachfolgende Informationen vorliegen, füge diese dem Supertipp hinzu.
                 If .GegenstelleTelNr.AreaCode.IsNotStringNothingOrEmpty Then XAttribute.Value += $"{vbCrLf}{Localize.resCommon.strArea}: {Localize.Länder.ResourceManager.GetString(.GegenstelleTelNr.AreaCode)}"
                 If .GegenstelleTelNr.Location.IsNotStringNothingOrEmpty Then XAttribute.Value += $"{vbCrLf}{Localize.resCommon.strLocation}: { .GegenstelleTelNr.Location}"
 
                 XButton.Attributes.Append(XAttribute)
 
+                ' Icon für verpasstes Telefonat
                 If Not .Angenommen Then
                     XAttribute = xDoc.CreateAttribute("getImage")
                     XAttribute.Value = "GetItemImageMso"
@@ -772,6 +1008,14 @@ Namespace RibbonData
             Return XButton
         End Function
 
+        ''' <summary>
+        ''' Erstellt einen Button für den SplitButton auf Basis eines VIP-Eintrages
+        ''' </summary>
+        ''' <param name="xDoc">Das Ribbon XML Dokument</param>
+        ''' <param name="VIP">Der gegenständliche VIP-Eintrag</param>
+        ''' <param name="ID">Eine ID, die auf den Index des VIP-Eintrages in der Liste verweist.</param>
+        ''' <param name="Tag">Eine Zeichenfolge, die eindeutig den Typ des Eintrages entspricht. </param>
+        ''' <returns>Ein XmlElement, welches in das finale Split-Button-XML eingefügt wird.</returns>
         Friend Function CreateDynMenuButton(xDoc As XmlDocument, VIP As VIPEntry, ID As Integer, Tag As String) As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
@@ -809,6 +1053,54 @@ Namespace RibbonData
             End With
 
             Return XButton
+        End Function
+
+        ''' <summary>
+        ''' Erstellt einen Menu-Button für das Menue-Element des SplitButtons
+        ''' </summary>
+        ''' <param name="xDoc">Das Ribbon XML Dokument</param>
+        ''' <param name="ExID">Eine Zeichenfolge, die eindeutig den Typ des Eintrages entspricht. Diese Zeichenfolge wird genutzt um dynamisch das Label, ScreenTip, ImageMSO festzulegen.</param>
+        ''' <param name="ID">Eine ID, die auf den Index des VIP-Eintrages in der Liste verweist.</param>
+        ''' <param name="Tag">Eine Zeichenfolge, die auf das ursprüngliche Listenelement verweist.</param>
+        ''' <returns>Ein XmlElement, welches in das finale Split-Menue-XML eingefügt wird.</returns>
+        Private Function CreateDynMenuSplitMenueButton(xDoc As XmlDocument, ExID As String, ID As Integer, Tag As String) As XmlElement
+            Dim XAttribute As XmlAttribute
+
+            ' Erzeuge die Buttons für das Menu
+            Dim MenueButton As XmlElement = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
+            With MenueButton
+                ' ID des ScheduleButtons
+                XAttribute = xDoc.CreateAttribute("id")
+                XAttribute.Value = $"{ExID}_{ID}"
+                .Attributes.Append(XAttribute)
+
+                ' angezeigte Text
+                XAttribute = xDoc.CreateAttribute("getLabel")
+                XAttribute.Value = "GetItemLabel"
+                .Attributes.Append(XAttribute)
+
+                ' ScreenTipp
+                XAttribute = xDoc.CreateAttribute("getScreentip")
+                XAttribute.Value = "GetItemScreenTipp"
+                .Attributes.Append(XAttribute)
+
+                ' Tag des Buttons
+                XAttribute = xDoc.CreateAttribute("tag")
+                XAttribute.Value = $"{Tag}_{ID}".XMLMaskiereZeichen
+                .Attributes.Append(XAttribute)
+
+                ' ScreenTipp
+                XAttribute = xDoc.CreateAttribute("getImage")
+                XAttribute.Value = "GetItemImageMso"
+                .Attributes.Append(XAttribute)
+
+                ' Action des Bottons
+                XAttribute = xDoc.CreateAttribute("onAction")
+                XAttribute.Value = "BtnOnAction"
+                .Attributes.Append(XAttribute)
+            End With
+
+            Return MenueButton
         End Function
 
         Private Function CreateDynMenuSeperator(xDoc As XmlDocument) As XmlElement

@@ -126,6 +126,9 @@
   <data name="CreateContact_ImageMso" xml:space="preserve">
     <value>RecordsSaveAsOutlookContact</value>
   </data>
+  <data name="DeleteEntryButtonCRV_ImageMso" xml:space="preserve">
+    <value>ToolDelete</value>
+  </data>
   <data name="Dial_ImageMso" xml:space="preserve">
     <value>AutoDial</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="RWS_ImageMso" xml:space="preserve">
     <value>CheckNames</value>
+  </data>
+  <data name="SceduleButtonCRV_ImageMso" xml:space="preserve">
+    <value>AddCalendarMenu</value>
   </data>
   <data name="Search_ImageMso" xml:space="preserve">
     <value>FindDialog</value>

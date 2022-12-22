@@ -101,6 +101,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Soll dieser Eintrag aus der Wahlwiederholungsliste entfernt werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property CALLListeEntry_Clear() As String
+            Get
+                Return ResourceManager.GetString("CALLListeEntry_Clear", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Anrufmonitor ähnelt.
         '''</summary>
         Public Shared ReadOnly Property CallMonitor_Label() As String
@@ -151,6 +160,24 @@ Namespace Localize
         Public Shared ReadOnly Property CreateContact_ScreenTipp() As String
             Get
                 Return ResourceManager.GetString("CreateContact_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Eintrag löschen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property DeleteEntryButtonCRV_Label() As String
+            Get
+                Return ResourceManager.GetString("DeleteEntryButtonCRV_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Entfernt diesen Eintrag aus dieser Liste ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property DeleteEntryButtonCRV_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("DeleteEntryButtonCRV_ScreenTipp", resourceCulture)
             End Get
         End Property
         
@@ -263,7 +290,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen alle Einträge aus der Rückruliste entfernt werden? ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sollen alle Einträge aus der Rückrufliste entfernt werden? ähnelt.
         '''</summary>
         Public Shared ReadOnly Property RINGListe_Clear() As String
             Get
@@ -290,6 +317,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Soll dieser Eintrag aus der Rückrufliste entfernt werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property RINGListeEntry_Clear() As String
+            Get
+                Return ResourceManager.GetString("RINGListeEntry_Clear", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Rückwärtssuche ähnelt.
         '''</summary>
         Public Shared ReadOnly Property RWS_Label() As String
@@ -304,6 +340,24 @@ Namespace Localize
         Public Shared ReadOnly Property RWS_ScreenTipp() As String
             Get
                 Return ResourceManager.GetString("RWS_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anruftermin erstellen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property SceduleButtonCRV_Label() As String
+            Get
+                Return ResourceManager.GetString("SceduleButtonCRV_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Erstellt einen Anruftermin ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property SceduleButtonCRV_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("SceduleButtonCRV_ScreenTipp", resourceCulture)
             End Get
         End Property
         
@@ -479,6 +533,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Eintrag &apos;{0}&apos; wurde nicht gefunden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property VIPListe_Deleted() As String
+            Get
+                Return ResourceManager.GetString("VIPListe_Deleted", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die VIP-Liste ähnelt.
         '''</summary>
         Public Shared ReadOnly Property VIPListe_Label() As String
@@ -493,6 +556,15 @@ Namespace Localize
         Public Shared ReadOnly Property VIPListe_ScreenTipp() As String
             Get
                 Return ResourceManager.GetString("VIPListe_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Soll dieser Eintrag aus der VIP-Liste entfernt werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property VIPListeEntry_Clear() As String
+            Get
+                Return ResourceManager.GetString("VIPListeEntry_Clear", resourceCulture)
             End Get
         End Property
     End Class

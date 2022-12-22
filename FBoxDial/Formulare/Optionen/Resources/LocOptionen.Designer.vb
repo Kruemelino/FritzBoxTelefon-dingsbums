@@ -318,6 +318,71 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Termine ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointment() As String
+            Get
+                Return ResourceManager.GetString("strAppointment", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Dauer des Termines in Minuten ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointmentDauer() As String
+            Get
+                Return ResourceManager.GetString("strAppointmentDauer", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Termin anzeigen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointmentDisplay() As String
+            Get
+                Return ResourceManager.GetString("strAppointmentDisplay", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Erstellung von Erinnerungen/Terminen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointmentHead() As String
+            Get
+                Return ResourceManager.GetString("strAppointmentHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur Outlook Termineinträgen:
+        '''Sofern Termineinträge erstellt werden sollen, muss hier festgelegt werden, in welchem Kalender die Termine erstellt werden sollen.
+        '''Wird kein Kalender gewählt, wird der Outlook-Standard verwendet. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointmentInfo() As String
+            Get
+                Return ResourceManager.GetString("strAppointmentInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeitraum bis zum Rückruftermin in Minuten ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointmentOffset() As String
+            Get
+                Return ResourceManager.GetString("strAppointmentOffset", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Erinnerung vor Rückruftermin in Minuten ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointmentReminder() As String
+            Get
+                Return ResourceManager.GetString("strAppointmentReminder", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Internationale Vorwahl ergänzen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strBaseCBintl() As String
@@ -2101,6 +2166,24 @@ Namespace Localize
         Public Shared ReadOnly Property strTest() As String
             Get
                 Return ResourceManager.GetString("strTest", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Test der 2FA der Fritz!Box ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTest2FAHead() As String
+            Get
+                Return ResourceManager.GetString("strTest2FAHead", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Starte Test der 2FA ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTest2FAStart() As String
+            Get
+                Return ResourceManager.GetString("strTest2FAStart", resourceCulture)
             End Get
         End Property
         

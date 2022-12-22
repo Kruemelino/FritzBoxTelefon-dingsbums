@@ -98,6 +98,22 @@ Namespace My.Resources
         '''&lt;customUI xmlns=&quot;http://schemas.microsoft.com/office/2009/07/customui&quot;&gt;
         '''  &lt;ribbon&gt;
         '''    &lt;tabs&gt;
+        '''      &lt;tab idMso=&quot;TabAppointment&quot;&gt;
+        '''        &lt;group id=&quot;Tab_Appointment&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
+        '''          &lt;button id=&quot;Dial_A&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;normal&quot; getEnabled=&quot;DialEnabled&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
+        '''          &lt;button id=&quot;RWS_A&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;G [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''</summary>
+        Public ReadOnly Property RibbonInspectorAppointment() As String
+            Get
+                Return ResourceManager.GetString("RibbonInspectorAppointment", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        '''&lt;customUI xmlns=&quot;http://schemas.microsoft.com/office/2009/07/customui&quot;&gt;
+        '''  &lt;ribbon&gt;
+        '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabJournal&quot;&gt;
         '''        &lt;group id=&quot;Tab_Journal&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
         '''          &lt;button id=&quot;Dial_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;normal&quot; getEnabled=&quot;DialEnabled&quot; onAction=&quot;BtnOnActionI&quot;/&gt;

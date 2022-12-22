@@ -881,6 +881,48 @@ Public Class OptionenViewModel
 #End Region
 #End Region
 
+#Region "Appointment"
+    Private _CBAppointmentDisplay As Boolean
+    Public Property CBAppointmentDisplay As Boolean
+        Get
+            Return _CBAppointmentDisplay
+        End Get
+        Set
+            SetProperty(_CBAppointmentDisplay, Value)
+        End Set
+    End Property
+
+    Private _TBAppointmentDauer As Integer
+    Public Property TBAppointmentDauer As Integer
+        Get
+            Return _TBAppointmentDauer
+        End Get
+        Set
+            SetProperty(_TBAppointmentDauer, Value)
+        End Set
+    End Property
+
+    Private _TBAppointmentOffset As Integer
+    Public Property TBAppointmentOffset As Integer
+        Get
+            Return _TBAppointmentOffset
+        End Get
+        Set
+            SetProperty(_TBAppointmentOffset, Value)
+        End Set
+    End Property
+
+    Private _TBAppointmentReminder As Integer
+    Public Property TBAppointmentReminder As Integer
+        Get
+            Return _TBAppointmentReminder
+        End Get
+        Set
+            SetProperty(_TBAppointmentReminder, Value)
+        End Set
+    End Property
+#End Region
+
 #Region "Telefoniedaten"
     ''' <summary>
     ''' Returns Or sets a list as Telefonnummern             
@@ -1070,6 +1112,7 @@ Public Class OptionenViewModel
             .Add(New OptAnrMonViewModel())
             .Add(New OptDialerViewModel(DatenService))
             .Add(New OptJournalViewModel(DatenService))
+            .Add(New OptAppointmentViewModel(DatenService))
             .Add(New OptSearchContactViewModel(DatenService))
             .Add(New OptCreateContactViewModel(DatenService))
             .Add(New OptTelephonyViewModel(DatenService))
@@ -1239,6 +1282,8 @@ Public Class OptionenViewModel
             .ClearNotExisting()
             OutlookOrdnerListe.ClearNotExisting()
 
+            ' <-- Kontaktordner -->
+
             ' deindiziere:
             Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = .FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
 
@@ -1258,7 +1303,7 @@ Public Class OptionenViewModel
         With XMLData.POptionen
             .OutlookOrdner = OutlookOrdnerListe
 
-            ' Loglevel Aktualisieren
+            ' Loglevel aktualisieren
             SetLogLevel(.CBoxMinLogLevel)
         End With
 

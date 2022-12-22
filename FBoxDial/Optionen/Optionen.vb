@@ -294,6 +294,13 @@
 #End Region
 #End Region
 
+#Region "Appointment"
+    <XmlElement("CBAppointmentAuto")> Public Property CBAppointmentDisplay As Boolean = False
+    <XmlElement("TBAppointmentDauer")> Public Property TBAppointmentDauer As Integer = 15
+    <XmlElement("TBAppointmentOffset")> Public Property TBAppointmentOffset As Integer = 30
+    <XmlElement("TBAppointmentReminder")> Public Property TBAppointmentReminder As Integer = 5
+#End Region
+
 #Region "Logging"
 #If DEBUG Then
     <XmlElement("CBoxMinLogLevel")> Public Property CBoxMinLogLevel As String = LogLevel.Debug.Name

@@ -198,14 +198,18 @@ Public Class FritzBoxWählClient
         If olAuswahl.Count.AreEqual(1) Then
 
             Select Case True
-                Case TypeOf olAuswahl.Item(1) Is Outlook.ContactItem   ' ist aktuelles Fenster ein Kontakt?
+                Case TypeOf olAuswahl.Item(1) Is Outlook.ContactItem     ' ist aktuelles Fenster ein Kontakt?
                     Wählbox(CType(olAuswahl.Item(1), Outlook.ContactItem))
 
-                Case TypeOf olAuswahl.Item(1) Is Outlook.JournalItem   ' ist aktuelles Fenster ein Journal?
+                Case TypeOf olAuswahl.Item(1) Is Outlook.JournalItem     ' ist aktuelles Fenster ein Journal?
                     ' Es wurde ein Journaleintrag gewählt!
                     WählboxStart(CType(olAuswahl.Item(1), Outlook.JournalItem))
 
-                Case TypeOf olAuswahl.Item(1) Is Outlook.MailItem      ' ist aktuelles Fenster ein Mail?
+                Case TypeOf olAuswahl.Item(1) Is Outlook.AppointmentItem ' ist aktuelles Fenster ein Termin?
+                    ' Es wurde ein Journaleintrag gewählt!
+                    WählboxStart(CType(olAuswahl.Item(1), Outlook.AppointmentItem))
+
+                Case TypeOf olAuswahl.Item(1) Is Outlook.MailItem        ' ist aktuelles Fenster ein Mail?
                     ' Es wurde eine Mail ausgewählt
                     ' Den zur Email-Adresse gehörigen Kontakt suchen
                     WählboxStart(CType(olAuswahl.Item(1), Outlook.MailItem))
@@ -235,15 +239,22 @@ Public Class FritzBoxWählClient
     Friend Overloads Sub WählboxStart(olInsp As Outlook.Inspector)
 
         Select Case True
-            Case TypeOf olInsp.CurrentItem Is Outlook.ContactItem   ' ist aktuelles Fenster ein Kontakt?
+            Case TypeOf olInsp.CurrentItem Is Outlook.ContactItem     ' ist aktuelles Fenster ein Kontakt?
                 Wählbox(CType(olInsp.CurrentItem, Outlook.ContactItem))
-            Case TypeOf olInsp.CurrentItem Is Outlook.JournalItem   ' ist aktuelles Fenster ein Journal?
+
+            Case TypeOf olInsp.CurrentItem Is Outlook.JournalItem     ' ist aktuelles Fenster ein Journal?
                 ' Es wurde ein Journaleintrag gewählt!
                 WählboxStart(CType(olInsp.CurrentItem, Outlook.JournalItem))
-            Case TypeOf olInsp.CurrentItem Is Outlook.MailItem      ' ist aktuelles Fenster ein Mail?
+
+            Case TypeOf olInsp.CurrentItem Is Outlook.AppointmentItem ' ist aktuelles Fenster ein Termin?
+                ' Es wurde ein Termin gewählt!
+                WählboxStart(CType(olInsp.CurrentItem, Outlook.AppointmentItem))
+
+            Case TypeOf olInsp.CurrentItem Is Outlook.MailItem        ' ist aktuelles Fenster ein Mail?
                 ' Es wurde eine Mail ausgewählt
                 ' Den zur Email-Adresse gehörigen Kontakt suchen
                 WählboxStart(CType(olInsp.CurrentItem, Outlook.MailItem))
+
             Case Else
                 ' Nix tun
         End Select
@@ -323,7 +334,7 @@ Public Class FritzBoxWählClient
     ''' <summary>
     ''' Wählen aus einem Journaleintrag
     ''' </summary>
-    ''' <param name="olJournal">Der Journaleintrag, deren verknüpfter Kontakt angerufen werden soll</param>
+    ''' <param name="olJournal">Der Journaleintrag, deren verknüpfter Kontakt angerufen werden soll.</param>
     Friend Overloads Sub WählboxStart(olJournal As Outlook.JournalItem)
 
         With olJournal
@@ -336,7 +347,46 @@ Public Class FritzBoxWählClient
                 TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, vbCrLf)}
 
                 ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
-                aktKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object()))
+                aktKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagOlItem), Object()))
+
+                If aktKontakt Is Nothing Then
+                    ' vCard aus dem .Body herausfiltern
+                    vCard = $"BEGIN:VCARD{ .Body.GetSubString("BEGIN:VCARD", "END:VCARD")}END:VCARD"
+
+                    'Wenn keine vCard im Body gefunden
+                    If vCard.IsNotEqual($"BEGIN:VCARD-1END:VCARD") Then
+                        'vCard gefunden
+                        aktKontakt = ErstelleKontakt(vCard, TelNr, False)
+                    End If
+                End If
+
+                If aktKontakt IsNot Nothing Then
+                    Wählbox(aktKontakt)
+                Else
+                    Wählbox(TelNr)
+                End If
+
+            End If
+        End With
+    End Sub
+
+    ''' <summary>
+    ''' Wählen aus einem Termin
+    ''' </summary>
+    ''' <param name="olAppointment">Der Termin, deren verknüpfter Kontakt angerufen werden soll.</param>
+    Friend Overloads Sub WählboxStart(olAppointment As Outlook.AppointmentItem)
+
+        With olAppointment
+            If Not .Body.Contains(Localize.LocAnrMon.strNrUnterdrückt) And .Categories.Contains(Localize.LocAnrMon.strJournalCatDefault) Then
+                Dim aktKontakt As Outlook.ContactItem
+                Dim vCard As String
+                Dim TelNr As Telefonnummer
+
+                ' Telefonnummer aus dem Body ermitteln
+                TelNr = New Telefonnummer With {.SetNummer = olAppointment.Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, vbCrLf)}
+
+                ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
+                aktKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagOlItem), Object()))
 
                 If aktKontakt Is Nothing Then
                     ' vCard aus dem .Body herausfiltern

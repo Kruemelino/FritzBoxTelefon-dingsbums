@@ -65,6 +65,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Termineintrag konnte nicht erstellt werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointmentError() As String
+            Get
+                Return ResourceManager.GetString("strAppointmentError", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anruferinnerung:  ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointmentSubject() As String
+            Get
+                Return ResourceManager.GetString("strAppointmentSubject", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Land ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strArea() As String
@@ -110,6 +128,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die 2-Faktor-Authentisierung der Fritz!Box ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strHead2FA() As String
+            Get
+                Return ResourceManager.GetString("strHead2FA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Ort ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strLocation() As String
@@ -124,6 +151,15 @@ Namespace Localize
         Public Shared ReadOnly Property strOhneName() As String
             Get
                 Return ResourceManager.GetString("strOhneName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die 2-Faktor-Authentisierung ist erforderlich: {0} ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strQuestion2FA() As String
+            Get
+                Return ResourceManager.GetString("strQuestion2FA", resourceCulture)
             End Get
         End Property
         

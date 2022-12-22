@@ -10,7 +10,6 @@ Public Class Telefonnummer
 #Region "Eigenschaften"
     <XmlElement> Public Property EigeneNummerInfo As EigeneNrInfo = Nothing
     <XmlElement> Public Property Nummer As String
-    '<XmlAttribute> Public Property EigeneNummer As Boolean
     <XmlElement> Public Property Landeskennzahl As String
     <XmlElement> Public Property Ortskennzahl As String
     <XmlElement> Public Property Einwahl As String

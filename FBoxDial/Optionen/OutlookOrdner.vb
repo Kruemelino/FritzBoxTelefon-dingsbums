@@ -5,6 +5,7 @@ Public Enum OutlookOrdnerVerwendung As Integer
     KontaktSuche = 1
     KontaktSpeichern = 2
     JournalSpeichern = 4
+    TerminSpeichern = 8
 End Enum
 
 <Serializable()>
@@ -59,7 +60,12 @@ Public Class OutlookOrdner
 
     Public Overloads Function Equals(other As Outlook.MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
         If other Is Nothing Then Return False
-        Return FolderID.IsEqual(other.EntryID) And StoreID.IsEqual(other.StoreID) And Typ.Equals(Verwendung)
+        Return Equals(other) And Typ.Equals(Verwendung)
+    End Function
+
+    Public Overloads Function Equals(other As Outlook.MAPIFolder) As Boolean
+        If other Is Nothing Then Return False
+        Return FolderID.IsEqual(other.EntryID) And StoreID.IsEqual(other.StoreID)
     End Function
 
     Public Overrides Function GetHashCode() As Integer

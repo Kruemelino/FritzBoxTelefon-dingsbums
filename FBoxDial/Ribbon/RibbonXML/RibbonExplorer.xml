@@ -2,7 +2,33 @@
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
 	<ribbon startFromScratch="false">
 		<tabs>
-			<tab idMso="TabCalendar">
+      <tab idMso="TabSetAppointment">
+        <group id="Tab_TabSetAppointment" getLabel="GetItemLabel" autoScale="false" imageMso="AutoDial">
+          <splitButton id="spb1_A" size="large">
+            <button id="Dial_A" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getScreentip="GetItemScreenTipp" getEnabled="DialEnabled"/>
+            <menu id="mnu_A1">
+              <button id="DirectCall_A" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
+            </menu>
+          </splitButton>
+          <separator id="Seperator_A1"/>
+          <dynamicMenu id="CALLListe_A" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+          <dynamicMenu id="RINGListe_A" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+          <dynamicMenu id="VIPListe_A" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp"/>
+          <splitButton id="spb2_A">
+            <toggleButton id="CallMonitor_A" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMsoAnrMon" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
+            <menu id="mnu_A2">
+              <button id="ShowCallMonitor_A" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+              <button id="ShowMissedCalls_A" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getEnabled="CallPaneEnabled"/>
+            </menu>
+          </splitButton>
+          <button id="FritzBoxData_A" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="Search_A" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <dialogBoxLauncher>
+            <button id="Einstellungen_A" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
+          </dialogBoxLauncher>
+        </group>
+      </tab>
+      <tab idMso="TabCalendar">
 				<group id="Tab_Calendar" getLabel="GetItemLabel" autoScale="false" imageMso="AutoDial">
 					<splitButton id="spb1_K" size="large">
 						<button id="Dial_K" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getScreentip="GetItemScreenTipp" getEnabled="DialEnabled"/>
@@ -111,7 +137,14 @@
 			</tab>
 		</tabs>
 		<contextualTabs>
-			<tabSet idMso="TabComposeTools">
+      <tabSet idMso="TabSetAppointment">
+        <tab idMso="TabAppointment" getVisible="GroupVisible" >
+          <group id="Tab_Appointment" getLabel="GetItemLabel" >
+            <button id="Dial_AP" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getScreentip="GetItemScreenTipp" getEnabled="DialEnabled" size="large"/>
+          </group>
+        </tab>
+      </tabSet>
+      <tabSet idMso="TabComposeTools">
 				<tab idMso="TabMessage">
 					<group id="Tab_NewMail" getLabel="GetItemLabel" imageMso="AutoDial">
 						<splitButton id="spb1_NM" size="large">
@@ -151,15 +184,20 @@
 		</contextMenu>
 		<contextMenu idMso="ContextMenuJournalItem">
 			<menuSeparator id="Seperator_CM2"/>
-			<button id="Dial_CMJ" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled"/>
-			<button id="Contact_CMJ" getLabel="GetItemLabelJournal" getImage="GetItemImageMsoJournal" getScreentip="GetItemScreenTipJournal" onAction="BtnOnAction"/>
+			<button id="Dial_CMJ" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled" getVisible="GroupVisible"/>
+			<button id="Contact_CMJ" getLabel="GetItemLabelJournal" getImage="GetItemImageMsoJournal" getScreentip="GetItemScreenTipJournal" onAction="BtnOnActionS" getVisible="GroupVisible"/>
 		</contextMenu>
+    <contextMenu idMso="ContextMenuCalendarItem">
+      <menuSeparator id="Seperator_CM3" />
+      <button id="Dial_CMA" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled" getVisible="GroupVisible"/>
+      <button id="Contact_CMA" getLabel="GetItemLabelAppointment" getImage="GetItemImageMsoAppointment" getScreentip="GetItemScreenTipAppointment" onAction="BtnOnActionS" getVisible="GroupVisible"/>
+    </contextMenu>
 		<contextMenu idMso="ContextMenuMailItem">
-			<menuSeparator id="Seperator_CM3"/>
+			<menuSeparator id="Seperator_CM4"/>
 			<button id="Dial_CMM" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled"/>
 		</contextMenu>
 		<contextMenu idMso="ContextMenuMultipleItems">
-			<menuSeparator id="Seperator_CM4"/>
+			<menuSeparator id="Seperator_CM5"/>
 			<dynamicMenu id="Upload_CMulti" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="FillDynamicMenuTelBk" invalidateContentOnDrop="true" getVisible="GetVisibleContextMenuMultipleItems"/>
 		</contextMenu>
 	</contextMenus>

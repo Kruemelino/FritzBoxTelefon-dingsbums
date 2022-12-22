@@ -66,4 +66,7 @@ Public Interface IOptionenService
                         AnrMonGeräteID As Integer)
 #End Region
 
+#Region "Test 2FA"
+    Sub Start2FATest()
+#End Region
 End Interface

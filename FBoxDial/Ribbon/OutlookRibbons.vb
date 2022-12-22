@@ -33,6 +33,8 @@ Imports FBoxDial.RibbonData
                 Return My.Resources.RibbonInspectorMailRead
             Case "Microsoft.Outlook.Journal"
                 Return My.Resources.RibbonInspectorJournal
+            Case "Microsoft.Outlook.Appointment"
+                Return My.Resources.RibbonInspectorAppointment
             Case "Microsoft.Outlook.Contact"
                 Return My.Resources.RibbonInspectorKontakt
             Case "Microsoft.Mso.IMLayerUI"
@@ -62,20 +64,19 @@ Imports FBoxDial.RibbonData
 
 #End Region
 
-#Region "Ribbon Office 2010 bis Office 2019" ' Ribbon Inspektorfenster
-
+#Region "Ribbon Office" ' Ribbon Inspektorfenster
     ''' <summary>
     ''' Funktion ermittelt anhand des Controls und dessen Context das JournalItem.
     ''' </summary>
     ''' <param name="control">Das Control, von dem das JournalItem ermittelt werden soll.</param>
     ''' <returns>Das JournalItem</returns>
-    Private Function GetJournalItem(control As IRibbonControl) As Outlook.JournalItem
+    Private Function GetOutlookItem(Of T)(control As IRibbonControl) As T
         Select Case True
             Case TypeOf control.Context Is Outlook.Selection
-                Return CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.JournalItem)
+                Return CType(CType(control.Context, Outlook.Selection).Item(1), T)
 
             Case TypeOf control.Context Is Outlook.Inspector
-                Return CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.JournalItem)
+                Return CType(CType(control.Context, Outlook.Inspector).CurrentItem, T)
 
             Case Else
                 Return Nothing
@@ -89,7 +90,7 @@ Imports FBoxDial.RibbonData
     ''' <param name="control">Das Ribbon Control</param>
     ''' <returns>"Kontakt Anzeigen", wenn Link im JournalItem zu einem ContactItem führt. Ansonsten "Kontakt Erstellen"</returns>
     Public Function GetItemLabelJournal(control As IRibbonControl) As String
-        Return JournalRibbonContent(GetJournalItem(control), control.Id, Typ.Label)
+        Return RibbonContent(GetOutlookItem(Of Outlook.JournalItem)(control), control.Id, Typ.Label)
     End Function
 
     ''' <summary>
@@ -98,7 +99,7 @@ Imports FBoxDial.RibbonData
     ''' <param name="control">Das zugehörige Ribbon Control.</param>
     ''' <returns>Den entsprechenden ScreenTip, wenn Link im JournalItem zu einem ContactItem führt.</returns>
     Public Function GetItemScreenTipJournal(control As IRibbonControl) As String
-        Return JournalRibbonContent(GetJournalItem(control), control.Id, Typ.ScreenTipp)
+        Return RibbonContent(GetOutlookItem(Of Outlook.JournalItem)(control), control.Id, Typ.ScreenTipp)
     End Function
 
     ''' <summary>
@@ -107,7 +108,34 @@ Imports FBoxDial.RibbonData
     ''' <param name="control">Das zugehörige Ribbon Control.</param>
     ''' <returns>Den entsprechenden ImageMso, wenn Link im JournalItem zu einem ContactItem führt. </returns>
     Public Function GetItemImageMsoJournal(control As IRibbonControl) As String
-        Return JournalRibbonContent(GetJournalItem(control), control.Id, Typ.ImageMso)
+        Return RibbonContent(GetOutlookItem(Of Outlook.JournalItem)(control), control.Id, Typ.ImageMso)
+    End Function
+
+    ''' <summary>
+    ''' Gibt das Label des Buttons "Kontakt Erstellen" bzw. "Kontakt Anzeigen" zurück. 
+    ''' </summary>
+    ''' <param name="control">Das Ribbon Control</param>
+    ''' <returns>"Kontakt Anzeigen", wenn Link im JournalItem zu einem ContactItem führt. Ansonsten "Kontakt Erstellen"</returns>
+    Public Function GetItemLabelAppointment(control As IRibbonControl) As String
+        Return RibbonContent(GetOutlookItem(Of Outlook.AppointmentItem)(control), control.Id, Typ.Label)
+    End Function
+
+    ''' <summary>
+    ''' Gibt das ScreenTip des Buttons "Kontakt Erstellen" bzw. "Kontakt Anzeigen" zurück. 
+    ''' </summary>
+    ''' <param name="control">Das zugehörige Ribbon Control.</param>
+    ''' <returns>Den entsprechenden ScreenTip, wenn Link im JournalItem zu einem ContactItem führt.</returns>
+    Public Function GetItemScreenTipAppointment(control As IRibbonControl) As String
+        Return RibbonContent(GetOutlookItem(Of Outlook.AppointmentItem)(control), control.Id, Typ.ScreenTipp)
+    End Function
+
+    ''' <summary>
+    ''' Gibt das ImageMso des Buttons "Kontakt Erstellen" bzw. "Kontakt Anzeigen" zurück. 
+    ''' </summary>
+    ''' <param name="control">Das zugehörige Ribbon Control.</param>
+    ''' <returns>Den entsprechenden ImageMso, wenn Link im JournalItem zu einem ContactItem führt. </returns>
+    Public Function GetItemImageMsoAppointment(control As IRibbonControl) As String
+        Return RibbonContent(GetOutlookItem(Of Outlook.AppointmentItem)(control), control.Id, Typ.ImageMso)
     End Function
 
     ''' <summary>
@@ -150,6 +178,10 @@ Imports FBoxDial.RibbonData
         Else
             Return False
         End If
+    End Function
+
+    Public Function GroupVisible(control As IRibbonControl) As Boolean
+        Return VisibilityGroup(control.Context)
     End Function
 
     ''' <summary>
@@ -264,6 +296,13 @@ Imports FBoxDial.RibbonData
     ''' <param name="control">Die Object, was im Ribbon angeklickt wurde.</param>>
     Public Sub BtnOnActionCC(control As IRibbonControl)
         GetRibbonAction(control.Id, CType(control.Context, IMsoContactCard), control.Tag)
+        ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
+        ' Zeichne Ribbon neu
+        Invalidate()
+    End Sub
+
+    Public Sub BtnOnActionS(control As IRibbonControl)
+        GetRibbonAction(control.Id, CType(control.Context, Outlook.Selection), control.Tag)
         ' Macht die zwischengespeicherten Werte für alle Steuerelemente der Menüband-Benutzeroberfläche ungültig.
         ' Zeichne Ribbon neu
         Invalidate()

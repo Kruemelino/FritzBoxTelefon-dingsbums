@@ -230,6 +230,36 @@ Das Seitenfenster wird beim manuellen Importieren der Anrufliste (Journalimport)
     <value>Ausblendverzögerung in Sekunden</value>
     <comment>OptAnrMonView</comment>
   </data>
+  <data name="strAppointment" xml:space="preserve">
+    <value>Termine</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strAppointmentDauer" xml:space="preserve">
+    <value>Dauer des Termines in Minuten</value>
+    <comment>OptAppointmentView</comment>
+  </data>
+  <data name="strAppointmentDisplay" xml:space="preserve">
+    <value>Termin anzeigen</value>
+    <comment>OptAppointmentView</comment>
+  </data>
+  <data name="strAppointmentHead" xml:space="preserve">
+    <value>Erstellung von Erinnerungen/Terminen</value>
+    <comment>OptAppointmentView</comment>
+  </data>
+  <data name="strAppointmentInfo" xml:space="preserve">
+    <value>Hinweise zur Outlook Termineinträgen:
+Sofern Termineinträge erstellt werden sollen, muss hier festgelegt werden, in welchem Kalender die Termine erstellt werden sollen.
+Wird kein Kalender gewählt, wird der Outlook-Standard verwendet.</value>
+    <comment>OptAppointmentView</comment>
+  </data>
+  <data name="strAppointmentOffset" xml:space="preserve">
+    <value>Zeitraum bis zum Rückruftermin in Minuten</value>
+    <comment>OptAppointmentView</comment>
+  </data>
+  <data name="strAppointmentReminder" xml:space="preserve">
+    <value>Erinnerung vor Rückruftermin in Minuten</value>
+    <comment>OptAppointmentView</comment>
+  </data>
   <data name="strBaseCBintl" xml:space="preserve">
     <value>Internationale Vorwahl ergänzen</value>
     <comment>OptBaseView</comment>
@@ -1042,6 +1072,14 @@ Warnung: Wenn viele Einträge auf die Fritz!Box geladen werden, kann diese träg
   <data name="strTest" xml:space="preserve">
     <value>Testbereich</value>
     <comment>MainView</comment>
+  </data>
+  <data name="strTest2FAHead" xml:space="preserve">
+    <value>Test der 2FA der Fritz!Box</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTest2FAStart" xml:space="preserve">
+    <value>Starte Test der 2FA</value>
+    <comment>OptTestView</comment>
   </data>
   <data name="strTestAnrMonCONNECT" xml:space="preserve">
     <value>Anruf verbunden (CONNECT)</value>

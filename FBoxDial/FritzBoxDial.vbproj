@@ -159,7 +159,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.5.0.5\lib\net46\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.5.1.0\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -243,6 +243,16 @@
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
     <Compile Include="App.xaml.vb">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\ViewModel\OptAppointmentViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Views\OptAppointmentView.xaml.vb">
+      <DependentUpon>OptAppointmentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\ZweiFaktorBoxWPF\Services\ZweiFAService.vb" />
+    <Compile Include="Formulare\ZweiFaktorBoxWPF\Services\IZweiFAService.vb" />
+    <Compile Include="Formulare\ZweiFaktorBoxWPF\ViewModel\ZweiFaktorBoxViewModel.vb" />
+    <Compile Include="Formulare\ZweiFaktorBoxWPF\ZweiFaktorBoxWPF.xaml.vb">
+      <DependentUpon>ZweiFaktorBoxWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\CallListPane\Resources\LocCallListPane.Designer.vb">
       <DependentUpon>LocCallListPane.resx</DependentUpon>
@@ -416,6 +426,7 @@
     <Compile Include="Fritz!Box\FBoxAPILog.vb" />
     <Compile Include="Fritz!Box\FritzBoxDeflection.vb" />
     <Compile Include="Fritz!Box\FritzBoxTAM.vb" />
+    <Compile Include="Fritz!Box\ZweiFaktorAuthentifizierung.vb" />
     <Compile Include="JSON\JSONSerialize.vb" />
     <Compile Include="JSON\JSONTraceWriter.vb" />
     <Compile Include="Misc\AddinHTTPClient.vb" />
@@ -653,6 +664,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resRibbon.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\Optionen\Resources\LocOptionen.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -689,6 +701,18 @@
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptAppointmentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\ZweiFaktorBoxWPF\Resources\ZweiFaktorBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\ZweiFaktorBoxWPF\ZweiFaktorBoxWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Formulare\CallListPane\Resources\CallListPane.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -913,6 +937,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorAppointment.xml" />
     <Content Include="Telefonie\Listen\Vorwahlen.xml" />
     <Resource Include="Tellows\Resources\score1.png" />
     <Resource Include="Tellows\Resources\score2.png" />

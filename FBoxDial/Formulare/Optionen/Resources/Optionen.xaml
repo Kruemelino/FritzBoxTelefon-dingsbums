@@ -22,7 +22,11 @@
     <DataTemplate DataType="{x:Type fbd:OptJournalViewModel}">
         <fbd:OptJournalView />
     </DataTemplate>
-    
+
+    <DataTemplate DataType="{x:Type fbd:OptAppointmentViewModel}">
+        <fbd:OptAppointmentView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type fbd:OptSearchContactViewModel}">
         <fbd:OptSearchContactView />
     </DataTemplate>

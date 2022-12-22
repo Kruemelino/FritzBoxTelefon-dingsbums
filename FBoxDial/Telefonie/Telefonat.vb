@@ -880,7 +880,7 @@ Imports Microsoft.Office.Interop
                         .Companies = Firma
 
                         ' Bei verpassten Anrufen ist TelGerät ggf. leer
-                        .Categories = $"{If(TelGerät Is Nothing, Localize.LocAnrMon.strJournalCatVerpasst, TelGerät.Name)};{String.Join("; ", DfltJournalDefCategories.ToArray)}"
+                        .Categories = $"{If(TelGerät Is Nothing, Localize.LocAnrMon.strJournalCatVerpasst, TelGerät.Name)};{String.Join("; ", DfltOlItemCategories.ToArray)}"
 
                         ' Speichern der EntryID und StoreID in benutzerdefinierten Feldern
                         If OlKontakt IsNot Nothing Then
@@ -890,11 +890,11 @@ Imports Microsoft.Office.Interop
                             colArgs(1) = OlKontakt.StoreID
 
                             For i As Integer = 0 To 1
-                                .PropertyAccessor.SetProperty(DASLTagJournal(i).ToString, colArgs(i))
+                                .PropertyAccessor.SetProperty(DASLTagOlItem(i).ToString, colArgs(i))
                             Next
 
                             ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
-                            '.PropertyAccessor.SetProperties(DASLTagJournal, colArgs)
+                            '.PropertyAccessor.SetProperties(DASLTagOlItem, colArgs)
                         End If
 
                         ' Speicherort wählen
@@ -903,7 +903,7 @@ Imports Microsoft.Office.Interop
                         If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing AndAlso
                         Not olJournalFolder.Equals(Globals.ThisAddIn.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
                             ' Verschiebe den Journaleintrag in den ausgewählten Ordner
-                            ' Damit wird der Kontakt gleichzeitig im Zielordner gespeichert.
+                            ' Damit wird der Journaleintrag gleichzeitig im Zielordner gespeichert.
                             .Move(olJournalFolder.MAPIFolder)
                             ' Verwerfe diesen Journaleintrag
                             .Close(Outlook.OlInspectorClose.olDiscard)
@@ -926,12 +926,88 @@ Imports Microsoft.Office.Interop
                 End If
 
             Else
-                NLogger.Info(Localize.LocAnrMon.strJournalFehler)
+                NLogger.Warn(Localize.LocAnrMon.strJournalFehler)
             End If
 
         End If
     End Sub
 
+    Friend Sub ErstelleErinnerungEintrag()
+        If Globals.ThisAddIn.Application IsNot Nothing Then
+            Dim olAppointment As Outlook.AppointmentItem = Nothing
+            Dim olAppointmentFolder As OutlookOrdner
+
+            Try
+                ' Erstelle einen Termin im Standard-Ordner.
+                olAppointment = CType(Globals.ThisAddIn.Application.CreateItem(Outlook.OlItemType.olAppointmentItem), Outlook.AppointmentItem)
+            Catch ex As Exception
+                NLogger.Error(ex)
+            End Try
+
+            If olAppointment IsNot Nothing Then
+
+                With olAppointment
+                    .Subject = $"{Localize.resCommon.strAppointmentSubject} {AnruferName}"
+                    .Categories = $"{String.Join("; ", DfltOlItemCategories.ToArray)}"
+                    .Start = Now.AddMinutes(XMLData.POptionen.TBAppointmentOffset)
+                    .Duration = XMLData.POptionen.TBAppointmentDauer
+                    .Importance = Outlook.OlImportance.olImportanceHigh
+
+                    .ReminderSet = True
+                    .ReminderMinutesBeforeStart = XMLData.POptionen.TBAppointmentReminder
+
+                    .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{vbCrLf}Status: {If(Angenommen, String.Empty, "nicht ")}angenommen{vbCrLf & vbCrLf}{VCard}"
+
+                    ' Speichern der EntryID und StoreID in benutzerdefinierten Feldern
+                    If OlKontakt IsNot Nothing Then
+
+                        Dim colArgs(1) As Object
+                        colArgs(0) = OlKontakt.EntryID
+                        colArgs(1) = OlKontakt.StoreID
+
+                        ' TODO: OlKontakt ist aufgelößt wenn Wählclient vorher genutzt.
+                        For i As Integer = 0 To 1
+                            .PropertyAccessor.SetProperty(DASLTagOlItem(i).ToString, colArgs(i))
+                        Next
+
+                        ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
+                        '.PropertyAccessor.SetProperties(DASLTagOlItem, colArgs)
+                    End If
+
+                    ' Speicherort wählen
+                    olAppointmentFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.TerminSpeichern)
+
+                    If olAppointmentFolder IsNot Nothing AndAlso olAppointmentFolder.MAPIFolder IsNot Nothing AndAlso
+                        Not olAppointmentFolder.Equals(Globals.ThisAddIn.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar)) Then
+
+                        ' Die Erinnerung wird erst übernommen, wenn der Termin gespeichert wurde.
+                        .Save()
+                        ' Verschiebe den Kalendereintrag in den ausgewählten Ordner
+                        ' Damit wird der Termin gleichzeitig im Zielordner gespeichert.
+
+                        .Move(olAppointmentFolder.MAPIFolder)
+                        ' Verwerfe diesen Termin
+                        .Close(Outlook.OlInspectorClose.olDiscard)
+
+                        NLogger.Info($"Anruferinnerung im Kalender {olAppointmentFolder.Name} (Store: {olAppointmentFolder.MAPIFolder.Store.DisplayName}) erstellt: { .Start}, { .Subject}, { .Duration}")
+                    Else
+                        ' Speicher den Termin im Standard-Ordner
+                        .Close(Outlook.OlInspectorClose.olSave)
+                        With Globals.ThisAddIn.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar)
+                            NLogger.Info($"Anruferinnerung im Standardordner { .Name} (Store: { .Store.DisplayName}) erstellt: { olAppointment.Start}, { olAppointment.Subject}, { olAppointment.Duration}")
+                        End With
+                    End If
+
+                    If XMLData.POptionen.CBAppointmentDisplay Then .Display()
+
+                End With
+
+                ReleaseComObject(olAppointment)
+            End If
+        Else
+            NLogger.Warn(Localize.resCommon.strAppointmentError)
+        End If
+    End Sub
     ''' <summary>
     ''' Routine zum Aktualisieren der Wahlwiederholungs- und Rückrufliste. Das Telefonat wird in die entsprechende Liste aufgenommen.
     ''' </summary>

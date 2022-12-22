@@ -124,6 +124,9 @@
   <data name="RibbonIMLayerUI" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\ribbon\ribbonxml\ribbonimlayerui.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="RibbonInspectorAppointment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ribbon\ribbonxml\ribboninspectorappointment.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="RibbonInspectorJournal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\ribbon\ribbonxml\ribboninspectorjournal.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>

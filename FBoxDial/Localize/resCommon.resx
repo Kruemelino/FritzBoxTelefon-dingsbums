@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="strAppointmentError" xml:space="preserve">
+    <value>Termineintrag konnte nicht erstellt werden.</value>
+  </data>
+  <data name="strAppointmentSubject" xml:space="preserve">
+    <value>Anruferinnerung: </value>
+  </data>
   <data name="strArea" xml:space="preserve">
     <value>Land</value>
   </data>
@@ -132,11 +138,17 @@
   <data name="strErrorMsgBox" xml:space="preserve">
     <value>Fehler in Funktion '{0}': {1}</value>
   </data>
+  <data name="strHead2FA" xml:space="preserve">
+    <value>2-Faktor-Authentisierung der Fritz!Box</value>
+  </data>
   <data name="strLocation" xml:space="preserve">
     <value>Ort</value>
   </data>
   <data name="strOhneName" xml:space="preserve">
     <value>Ohne Name</value>
+  </data>
+  <data name="strQuestion2FA" xml:space="preserve">
+    <value>2-Faktor-Authentisierung ist erforderlich: {0}</value>
   </data>
   <data name="strTelNr" xml:space="preserve">
     <value>Nummer</value>

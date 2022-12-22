@@ -120,6 +120,9 @@
   <data name="AddVIP_ScreenTipp" xml:space="preserve">
     <value>Fügt diesen Kontakt zur VIP-Liste hinzu...</value>
   </data>
+  <data name="CALLListeEntry_Clear" xml:space="preserve">
+    <value>Soll dieser Eintrag aus der Wahlwiederholungsliste entfernt werden?</value>
+  </data>
   <data name="CALLListe_Clear" xml:space="preserve">
     <value>Sollen alle Einträge aus der Wahlwiederholungsliste entfernt werden?</value>
   </data>
@@ -146,6 +149,12 @@
   </data>
   <data name="CreateContact_ScreenTipp" xml:space="preserve">
     <value>Erstellt einen neuen Kontakt...</value>
+  </data>
+  <data name="DeleteEntryButtonCRV_Label" xml:space="preserve">
+    <value>Eintrag löschen</value>
+  </data>
+  <data name="DeleteEntryButtonCRV_ScreenTipp" xml:space="preserve">
+    <value>Entfernt diesen Eintrag aus dieser Liste</value>
   </data>
   <data name="DeleteList_Label" xml:space="preserve">
     <value>Liste löschen...</value>
@@ -183,8 +192,11 @@
   <data name="RemoveVIP_ScreenTipp" xml:space="preserve">
     <value>Entfernt diesen Kontakt von der VIP-Liste...</value>
   </data>
+  <data name="RINGListeEntry_Clear" xml:space="preserve">
+    <value>Soll dieser Eintrag aus der Rückrufliste entfernt werden?</value>
+  </data>
   <data name="RINGListe_Clear" xml:space="preserve">
-    <value>Sollen alle Einträge aus der Rückruliste entfernt werden?</value>
+    <value>Sollen alle Einträge aus der Rückrufliste entfernt werden?</value>
   </data>
   <data name="RINGListe_Label" xml:space="preserve">
     <value>Rückruf</value>
@@ -197,6 +209,12 @@
   </data>
   <data name="RWS_ScreenTipp" xml:space="preserve">
     <value>Sucht zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche...</value>
+  </data>
+  <data name="SceduleButtonCRV_Label" xml:space="preserve">
+    <value>Anruftermin erstellen</value>
+  </data>
+  <data name="SceduleButtonCRV_ScreenTipp" xml:space="preserve">
+    <value>Erstellt einen Anruftermin</value>
   </data>
   <data name="Search_Label" xml:space="preserve">
     <value>Kontaktsuche</value>
@@ -248,6 +266,9 @@
   </data>
   <data name="Upload_ScreenTipp" xml:space="preserve">
     <value>Lädt diesen Kontakt auf die Fritz!Box hoch....</value>
+  </data>
+  <data name="VIPListeEntry_Clear" xml:space="preserve">
+    <value>Soll dieser Eintrag aus der VIP-Liste entfernt werden?</value>
   </data>
   <data name="VIPListe_Clear" xml:space="preserve">
     <value>Sollen alle Kontakte aus der VIP-Liste entfernt werden?</value>

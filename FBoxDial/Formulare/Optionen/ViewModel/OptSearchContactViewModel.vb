@@ -119,7 +119,6 @@ Public Class OptSearchContactViewModel
         _DatenService = ds
     End Sub
 
-
 #Region "ICommand Callback"
     Private Sub CancelImport(o As Object)
 

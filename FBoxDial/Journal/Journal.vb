@@ -51,27 +51,42 @@ Friend Module Journal
         End With
     End Sub
 
-    Friend Async Sub StartJournalRWS(olJournal As Outlook.JournalItem)
-        With olJournal
+    Friend Async Sub StartOlItemRWS(Of T)(olItem As T)
+        Select Case True
+            Case TypeOf olItem Is Outlook.AppointmentItem
+                With CType(olItem, Outlook.AppointmentItem)
+                    .Body = Await GetRWSResponse(.Body, .Categories)
+                End With
 
-            If Not .Body.Contains(Localize.LocAnrMon.strNrUnterdrückt) And .Categories.Contains(Localize.LocAnrMon.strJournalCatDefault) Then
+            Case TypeOf olItem Is Outlook.JournalItem
+                With CType(olItem, Outlook.JournalItem)
+                    .Body = Await GetRWSResponse(.Body, .Categories)
+                End With
 
-                Dim vCard As String
-                Dim TelNr As Telefonnummer
+        End Select
 
-                ' Telefonnummer aus dem Body ermitteln
-                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, vbCrLf)}
-                vCard = Await StartRWS(TelNr, False)
-
-                If vCard.IsStringNothingOrEmpty Then
-                    .Body += String.Format($"{vbCrLf}{Localize.LocAnrMon.strJournalFehler}")
-                Else
-                    .Body += String.Format($"{vbCrLf}{Localize.LocAnrMon.strJournalTextvCard}{vbCrLf & vbCrLf}{vCard}")
-                End If
-
-            End If
-        End With
     End Sub
+
+    Private Async Function GetRWSResponse(Body As String, Categories As String) As Task(Of String)
+        If Not Body.Contains(Localize.LocAnrMon.strNrUnterdrückt) And Categories.Contains(Localize.LocAnrMon.strJournalCatDefault) Then
+
+            Dim vCard As String
+            Dim TelNr As Telefonnummer
+
+            ' Telefonnummer aus dem Body ermitteln
+            TelNr = New Telefonnummer With {.SetNummer = Body.GetSubString(Localize.LocAnrMon.strJournalBodyStart, vbCrLf)}
+            vCard = Await StartRWS(TelNr, False)
+
+            If vCard.IsStringNothingOrEmpty Then
+                Body += String.Format($"{vbCrLf}{Localize.LocAnrMon.strJournalFehler}")
+            Else
+                Body += String.Format($"{vbCrLf}{Localize.LocAnrMon.strJournalTextvCard}{vbCrLf & vbCrLf}{vCard}")
+            End If
+
+        End If
+
+        Return Body
+    End Function
 
     Friend Sub UpdateTimeAnrList()
         ' Merke die Zeit

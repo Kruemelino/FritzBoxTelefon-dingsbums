@@ -44,4 +44,41 @@ Imports System.Reflection
 
     End Sub
 
+    ''' <summary>
+    ''' Entfernt einen Eintrag aus der Liste
+    ''' </summary>
+    ''' <param name="Tag">Name der Liste gefolgt von einem _ und einer Nummer. Dies ist der Index des Eintrages in der Liste.</param>
+    Friend Sub ClearListEntry(Tag As String)
+        Dim ID As String() = Tag.Split("_")
+
+        ' Liste anhand des übergeben Parameter ermitteln
+        Dim ListPropertyInfo As PropertyInfo = Array.Find([GetType].GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.IsEqual(ID.First))
+
+        ' Frage den User, ob er das wirklich will
+        If ListPropertyInfo IsNot Nothing AndAlso
+            AddinMsgBox(Localize.resRibbon.ResourceManager.GetString($"{ID.First}Entry_Clear"), MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+
+            ' Suche die Methode RemoveAt und führe sie aus
+            ListPropertyInfo.PropertyType.GetMethod("RemoveAt").Invoke(ListPropertyInfo.GetValue(Me), {ID.Last.ToInt})
+
+            ' Schreibe einen Log-Eintrag
+            NLogger.Info($"Eintrag {ID.Last} der Liste {ID.First} gelöscht.")
+        End If
+    End Sub
+
+    Friend Sub CreateAppointment(Tag As String)
+        Dim ID As String() = Tag.Split("_")
+
+        ' Liste anhand des übergeben Parameter ermitteln
+        Dim ListPropertyInfo As PropertyInfo = Array.Find([GetType].GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.IsEqual(ID.First))
+
+        If ListPropertyInfo IsNot Nothing Then
+
+            ' Suche die Eigenschaft Item und löse sie mit dem Index auf.
+            Dim o As Telefonat = CType(ListPropertyInfo.PropertyType.GetProperty("Item").GetValue(ListPropertyInfo.GetValue(Me), {ID.Last.ToInt}), Telefonat)
+
+            ' Erstelle eine Terminerinnerung
+            If o IsNot Nothing Then o.ErstelleErinnerungEintrag()
+        End If
+    End Sub
 End Class

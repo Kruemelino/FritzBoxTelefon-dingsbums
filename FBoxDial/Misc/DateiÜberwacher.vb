@@ -24,7 +24,6 @@ Friend Class DateiÜberwacher
         NLogger.Info($"Telefonnummer aus tel:// bzw. callto:// erfasst: {TelNr.Unformatiert}")
 
         ' Neuen Wählclient generieren
-        ' Finde das existierende Fenster, oder generiere ein neues
         Dim WählClient As New FritzBoxWählClient(True)
         WählClient.WählboxStart(TelNr)
     End Sub
