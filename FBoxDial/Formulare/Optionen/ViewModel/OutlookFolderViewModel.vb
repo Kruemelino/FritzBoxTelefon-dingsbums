@@ -54,7 +54,7 @@ Public Class OutlookFolderViewModel
                 _CheckItemCommand = New RelayCommand(Of Object)(Sub(p)
                                                                     Dim param = TryCast(p, OlFolderViewModel)
 
-                                                                    If param IsNot Nothing Then CheckItemCommand_Executed(param, True)
+                                                                    If param IsNot Nothing Then CheckItemCommand_Executed(param)
                                                                 End Sub)
             End If
 
@@ -69,22 +69,16 @@ Public Class OutlookFolderViewModel
         _Stores = New ObservableCollectionEx(Of OlFolderViewModel)
 
         ' Lade die Root-Folder jedes Outlook Stores Outlook
-        'Task.Run(Sub()
-        '             ' Lade die Outlook Folders
         _Stores.AddRange(From F In OutlookStoreRootFolder Select New OlFolderViewModel(F, OutlookItemType))
-
-        '             NLogger.Debug($"Outlook Ordner für TreeView ({Verwendung}) geladen.")
-        '         End Sub)
-
     End Sub
 
     ''' <summary>
     ''' Method executes when the corresponding command executes to re-evaluate
     ''' all items below And above a recently checked Or unchecked item.
     ''' </summary>
-    Friend Sub CheckItemCommand_Executed(ChangedItem As OlFolderViewModel, Save As Boolean)
+    Friend Sub CheckItemCommand_Executed(ChangedItem As OlFolderViewModel)
 
-        If Save Then AddFolder(ChangedItem)
+        AddFolder(ChangedItem)
 
         Dim TreeViewOutlookOrdner = TreeLib.BreadthFirst.Traverse.LevelOrder(ChangedItem.Folders, Function(i) i.ChildFolders)
         ' All children of the checked/unchecked item have to assume it's state
@@ -187,55 +181,60 @@ Public Class OutlookFolderViewModel
                             .Node.IsChecked = IsChecked
 
                             ' Führe das Setzen aller benachbarter Knoten aus.
-                            CheckItemCommand_Executed(CType(.Node, OlFolderViewModel), False)
+                            CheckItemCommand_Executed(CType(.Node, OlFolderViewModel))
                         End With
 
                     End If
                 End If
-                'End Sub))
+
             Next
             ' Setze das Flag, dass alle Daten geladen wurden
             DatenGeladen = True
         End If
     End Sub
 
-    '''' <summary>
-    '''' Hier erfolgt die Logik zur Setzung der Ordnermarkierungen.
-    '''' <list type="bullet">
-    '''' <item>Unterscheidung nach Verwendung (<see cref="OutlookOrdnerVerwendung"/>): Bei Kontaktsuche ist Mehrfachauswahl möglich, bei den anderen nicht.
-    '''' </item>
-    '''' </list>
-    '''' </summary>
+    ''' <summary>
+    ''' Hier erfolgt die Logik zur Setzung der Ordnermarkierungen.
+    ''' <list type="bullet">
+    ''' <item>Unterscheidung nach Verwendung (<see cref="OutlookOrdnerVerwendung"/>): Bei Kontaktsuche ist Mehrfachauswahl möglich, bei den anderen nicht.
+    ''' </item>
+    ''' </list>
+    ''' </summary>
     ''' <param name="ChangedItem">Der veränderte Ordner als <see cref="OlFolderViewModel"/></param>
     Private Sub AddFolder(ChangedItem As OlFolderViewModel)
         If OptVM IsNot Nothing Then
             With ChangedItem
 
                 Dim tmpfold As New OutlookOrdner(.OutlookFolder, Verwendung)
+
                 ' Überprüfe, ob dieser Ordner noch verwendet werden soll
                 If Not .IsChecked Then
+
                     ' Entferne den Ordner von der Liste
                     OptVM.OutlookOrdnerListe.Remove(tmpfold)
                     NLogger.Debug($"Ordner '{tmpfold.Name}' für die Verwendung '{Verwendung}' entfernt.")
 
                 Else
+
                     ' Bei Kontaktsuche ist Mehrfachauswahl möglich, bei den anderen nicht.
                     ' Wenn die Verwendung KontaktErstellung oder Journalerstellung, dann entferne alle anderen gewählten Ordner
                     If Not Verwendung = OutlookOrdnerVerwendung.KontaktSuche Then
                         SetUserFolder(False)
+
                         ' Durch die Routine wird auch dieser Ordner auf False gesetzt.
                         ChangedItem.IsChecked = True
                     End If
 
                     ' Speichere den Ordner
-
                     OptVM.OutlookOrdnerListe.Add(tmpfold)
                     NLogger.Debug($"Ordner '{tmpfold.Name}' für die Verwendung '{Verwendung}' hinzugefügt.")
 
                 End If
 
             End With
+
         End If
+
     End Sub
 
 End Class
