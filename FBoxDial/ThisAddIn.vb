@@ -91,7 +91,7 @@ Public NotInheritable Class ThisAddIn
         ' TR064 Schnittstelle definieren. 
         FBoxTR064 = New FBoxAPI.FritzBoxTR64(New FBoxAPI.Settings With {.Anmeldeinformationen = FritzBoxDefault.Anmeldeinformationen,
                                                                         .FritzBoxAdresse = XMLData.POptionen.ValidFBAdr,
-                                                                        .LogWriter = New FBoxAPILog})
+                                                                        .FBAPIConnector = New FBoxAPIConnector})
 
         ' Schreibe in das Log noch Informationen zur Fritz!Box
         NLogger.Info($"{FBoxTR064.FriendlyName} {FBoxTR064.DisplayVersion}")

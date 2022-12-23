@@ -428,7 +428,7 @@
     </Compile>
     <Compile Include="Fritz!Box\Extended\ContactEx.vb" />
     <Compile Include="Fritz!Box\Extended\PhonebookEx.vb" />
-    <Compile Include="Fritz!Box\FBoxAPILog.vb" />
+    <Compile Include="Fritz!Box\FBoxAPIConnector.vb" />
     <Compile Include="Fritz!Box\FritzBoxDeflection.vb" />
     <Compile Include="Fritz!Box\FritzBoxTAM.vb" />
     <Compile Include="Fritz!Box\ZweiFaktorAuthentifizierung.vb" />

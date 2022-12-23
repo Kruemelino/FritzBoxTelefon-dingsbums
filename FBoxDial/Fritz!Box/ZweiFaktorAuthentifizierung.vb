@@ -9,11 +9,11 @@ Friend Class ZweiFaktorAuthentifizierung
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Private Property DatenService As IZweiFAService
-    Private Property FBoxAPIConnector As FBoxAPILog
+    Private Property FBoxAPIConnector As FBoxAPIConnector
 
 #End Region
 
-    Public Sub New(APIConnector As FBoxAPILog)
+    Public Sub New(APIConnector As FBoxAPIConnector)
         ' Neuer Datenservice
         DatenService = New ZweiFAService(Me)
         FBoxAPIConnector = APIConnector
