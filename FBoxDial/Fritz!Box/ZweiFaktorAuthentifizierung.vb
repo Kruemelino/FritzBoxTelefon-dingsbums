@@ -40,20 +40,47 @@ Friend Class ZweiFaktorAuthentifizierung
                            End Function)
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Methods">button,dtmf;*10637</param>
     Private Sub ZweiFaktorBox(Methods As String)
 
         If Methods.IsNotStringNothingOrEmpty Then
 
             With ZweiFAWPF
                 .DataContext = New ZweiFaktorBoxViewModel(DatenService) With {.Instance = ZweiFAWPF.Dispatcher,
-                                                                              .SetMethods = Methods}
+                                                                              .SetMethods = GetMethodText(Methods)}
 
                 .Show()
             End With
         Else
-            NLogger.Error("Die Methods sind nicht vorhanden.")
+            NLogger.Error("Die Methoden sind nicht gesetzt.")
         End If
     End Sub
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Methods">button,dtmf;*10637</param>
+    ''' <returns></returns>
+    Private Function GetMethodText(Methods As String) As String
+        Dim MethodsArray As String() = Split(Methods, ";")
+
+        GetMethodText = Localize.LocZweiFaktorBox.strMethod01
+
+        ' Schleife duch die Methoden
+        For Each Method In Split(MethodsArray.First, ",")
+
+            ' Wenn die Authentifizierung mittels Button möglich ist:
+            If Method.IsEqual("button") Then GetMethodText += vbCrLf & vbCrLf & Localize.LocZweiFaktorBox.strMethodButton
+
+            ' Wenn die Authentifizierung mittels Tastenkombination möglich ist:
+            If Method.IsEqual("dtmf") Then GetMethodText += vbCrLf & vbCrLf & String.Format(Localize.LocZweiFaktorBox.strMethodDTMF, MethodsArray.Last)
+
+        Next
+
+    End Function
 
     Friend Sub Hide()
         ZweiFAWPF.CloseBox()

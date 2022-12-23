@@ -248,6 +248,11 @@
     <Compile Include="Formulare\Optionen\Views\OptAppointmentView.xaml.vb">
       <DependentUpon>OptAppointmentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\ZweiFaktorBoxWPF\Resources\LocZweiFaktorBox.Designer.vb">
+      <DependentUpon>LocZweiFaktorBox.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Formulare\ZweiFaktorBoxWPF\Services\ZweiFAService.vb" />
     <Compile Include="Formulare\ZweiFaktorBoxWPF\Services\IZweiFAService.vb" />
     <Compile Include="Formulare\ZweiFaktorBoxWPF\ViewModel\ZweiFaktorBoxViewModel.vb" />
@@ -634,6 +639,12 @@
       <CustomToolNamespace>Localize</CustomToolNamespace>
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocKontaktsuche.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\ZweiFaktorBoxWPF\Resources\LocZweiFaktorBox.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocZweiFaktorBox.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Localize\Länder.resx">
       <Generator>ResXFileCodeGenerator</Generator>

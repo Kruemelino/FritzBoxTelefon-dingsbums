@@ -144,6 +144,20 @@ Friend Class WindowHelper
             NLogger.Debug($"Timer nach {Now.Subtract(PauseTime).TotalSeconds} Sekunden fortgesetzt.")
         End If
     End Sub
+
+    Friend Sub Close()
+        RemoveHandler Fenster.MouseEnter, AddressOf Fenster_MouseEnter
+        RemoveHandler Fenster.MouseLeave, AddressOf Fenster_MouseLeave
+
+        NLogger.Debug("Timer für Schließen des Fensters gestoppt.")
+
+        ' Fenster schließen
+        If Fenster.Dispatcher.CheckAccess() Then
+            Fenster.Close()
+        Else
+            Fenster.Dispatcher.Invoke(New ThreadStart(AddressOf Fenster.Close), Threading.DispatcherPriority.Normal)
+        End If
+    End Sub
 #End Region
 
 #Region "Position"

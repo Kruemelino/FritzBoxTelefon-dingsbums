@@ -30,6 +30,7 @@ Public Class OptTestViewModel
     Public Property TestAuthCommand As RelayCommand
     Public Property TestKontaktsucheCommand As RelayCommand
     Public Property TestAnrMonCommand As RelayCommand
+    Public Property Test2FACommand As RelayCommand
 #End Region
     Public Sub New(ds As IOptionenService)
         ' Commands
@@ -37,7 +38,7 @@ Public Class OptTestViewModel
         TestRWSCommand = New RelayCommand(AddressOf StartRWSTest, AddressOf CanRunTestRWS)
         TestKontaktsucheCommand = New RelayCommand(AddressOf StartKontaktsucheTest, AddressOf CanRunTestKontaktsuche)
         TestAnrMonCommand = New RelayCommand(AddressOf StartAnrMonTest, AddressOf CanRunAnrMonTest)
-
+        Test2FACommand = New RelayCommand(AddressOf Start2FATest)
         ' Interface
         _DatenService = ds
     End Sub
@@ -317,7 +318,7 @@ Public Class OptTestViewModel
             SetProperty(_CBoxAnrMonGeräteID, Value)
         End Set
     End Property
-    Private Sub StartAnrMonTest(obj As Object)
+    Private Sub StartAnrMonTest(o As Object)
         DatenService.StartAnrMonTest(TBTestAnrMonInput,
                                      TBTestAnrMonCONNECT,
                                      RBBRnd,
@@ -329,4 +330,9 @@ Public Class OptTestViewModel
     End Sub
 #End Region
 
+#Region "Test 2FA"
+    Private Sub Start2FATest(o As Object)
+        DatenService.Start2FATest()
+    End Sub
+#End Region
 End Class

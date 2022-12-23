@@ -613,8 +613,6 @@ Namespace RibbonData
 #End Region
 
 #Region "Journal"
-        ' TODO: Doppelte Funktionen
-
         Friend Function RibbonContent(Of T)(OlItem As T, Key As String, DatenTyp As Typ) As String
             Dim olKontakt As Outlook.ContactItem
             Select Case True
