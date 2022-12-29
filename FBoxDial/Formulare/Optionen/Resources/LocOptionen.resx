@@ -775,7 +775,7 @@ HInweis: Es wird bei Auswahl der Anwendung eine "Windows-Befehlsprozessor" (cmd)
     <comment>MainView</comment>
   </data>
   <data name="strSearchContactCBKontaktSucheFritzBox" xml:space="preserve">
-    <value>Fritz!Box Telefonbüchern einbeziehen</value>
+    <value>Fritz!Box Telefonbücher einbeziehen</value>
     <comment>OptSearchContactView</comment>
   </data>
   <data name="strSearchContactCBRWS" xml:space="preserve">

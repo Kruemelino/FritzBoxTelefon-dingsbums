@@ -9,6 +9,7 @@ Public Class Telefonnummer
 
 #Region "Eigenschaften"
     <XmlElement> Public Property EigeneNummerInfo As EigeneNrInfo = Nothing
+    <XmlIgnore> Public Property Original As String
     <XmlElement> Public Property Nummer As String
     <XmlElement> Public Property Landeskennzahl As String
     <XmlElement> Public Property Ortskennzahl As String
@@ -31,10 +32,10 @@ Public Class Telefonnummer
                 Unterdrückt = True
 
             Else
-                Nummer = Value
+                Original = Value
 
                 ' Ermittle die unformatierte Telefonnummer
-                Unformatiert = NurZiffern(Nummer)
+                Unformatiert = NurZiffern(Original)
 
                 ' Ermittle die Kennzahlen LKZ und ONKZ aus der Datei
                 ' Gibt True zurück, wenn die LKZ und ONKZ ermittelt werden konnten.
@@ -46,12 +47,12 @@ Public Class Telefonnummer
                     Unformatiert = NurZiffern(Formatiert)
                 Else
                     ' Die Nummer ist ungültig
-                    NLogger.Info($"Formatierung der ungültigen Telefonnummer '{Nummer}' nicht durchgeführt.")
+                    NLogger.Info($"Formatierung der ungültigen Telefonnummer '{Original}' nicht durchgeführt.")
                     Formatiert = Unformatiert
                 End If
 
             End If
-            NLogger.Trace($"Nummer erfasst: '{Value}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
+            NLogger.Trace($"Nummer erfasst: '{Original}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
         End Set
     End Property
     <XmlIgnore> Public ReadOnly Property TellowsNummer As String
@@ -121,8 +122,15 @@ Public Class Telefonnummer
 
         If NurZiffern.IsNotStringNothingOrEmpty Then
 
+            ' Entferne alle Klammerausdrücke, die sich am Ende der Telefonnummer befinden können.
+            ' In der Klammer muss ein Text gefolgt von einem Doppelpunkt enthalten sein.
+            NurZiffern = NurZiffern.ToLower.RegExRemove("[\(|\{|\[].+:.+[\)|\}|\]]$")
+
             ' Entferne jeden String, der vor einem Doppelpunkt steht (einschließlich :)
             NurZiffern = NurZiffern.ToLower.RegExRemove("^.+:+")
+
+            ' Schreibe die relevate noch formatierte Nummer in die Eigenschaft
+            Nummer = NurZiffern.Trim
 
             ' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
             NurZiffern = NurZiffern.RegExReplace("[abc]", "2").

@@ -1506,7 +1506,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefonbüchern einbeziehen ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefonbücher einbeziehen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strSearchContactCBKontaktSucheFritzBox() As String
             Get

@@ -37,6 +37,8 @@ Friend Module KontaktIndizierer
 
         With olKontakt
 
+            NLogger.Trace($"Indizierung des Kontaktes { .FullNameAndCompany} gestartet.")
+
             Dim colArgs As Object()
             ' Lade alle Telefonnummern des Kontaktes
             ' Das Laden der Telefonnummern mittels PropertyAccessor ist nicht sinnvoll.
@@ -45,15 +47,16 @@ Friend Module KontaktIndizierer
             ' Die Telefonnummern werden stattdessen aus den Eigenschaften des Kontaktes direkt ausgelesen.
             colArgs = .GetTelNrArray
 
-            ' Entferne alle Formatierungen der Telefonnummgern
+            ' Entferne alle Formatierungen der Telefonnummern
             For i = LBound(colArgs) To UBound(colArgs)
                 If colArgs(i) IsNot Nothing Then
-                    'If TypeOf colArgs(i) IsNot Integer Then
+
                     If colArgs(i).ToString.IsNotStringNothingOrEmpty Then
                         Using tempTelNr = New Telefonnummer() With {.SetNummer = colArgs(i).ToString}
                             colArgs(i) = tempTelNr.Unformatiert
                         End Using
                     End If
+
                 Else
                     colArgs(i) = String.Empty
                 End If
@@ -71,7 +74,7 @@ Friend Module KontaktIndizierer
 
             ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
 
-            If .Speichern Then NLogger.Debug($"Kontakt { .FullNameAndCompany} gespeichert")
+            If .Speichern Then NLogger.Debug($"Indizierung des Kontaktes { .FullNameAndCompany} abgeschlossen.")
 
         End With
     End Sub
