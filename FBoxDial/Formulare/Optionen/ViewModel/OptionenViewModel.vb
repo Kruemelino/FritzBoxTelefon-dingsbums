@@ -1284,16 +1284,19 @@ Public Class OptionenViewModel
 
             ' <-- Kontaktordner -->
 
-            ' deindiziere:
-            Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = .FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
+            ' deindiziere (Task muss abgeschlossen sein. Ansonsten startet der Deindizierungstaskmit einer leeren Liste):
+            Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = Await Task.Run(Function()
+                                                                                   Return .FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
+                                                                               End Function)
 
             ' Füge die Unterordner hinzu
             If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
             TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, False, Nothing, Nothing)))
 
-            ' indiziere:
-            MAPIFolderList = OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
-
+            ' indiziere (Task muss abgeschlossen sein. Ansonsten startet der Indizierungstask mit einer leeren Liste):
+            MAPIFolderList = Await Task.Run(Function()
+                                                Return OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
+                                            End Function)
             ' Füge die Unterordner hinzu
             If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
             TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, True, Nothing, Nothing)))
