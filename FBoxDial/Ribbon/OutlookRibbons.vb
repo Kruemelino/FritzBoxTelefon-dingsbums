@@ -200,7 +200,11 @@ Imports FBoxDial.RibbonData
 
         Select Case True
             Case TypeOf control.Context Is Outlook.Selection
-                oKontakt = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+                With CType(control.Context, Outlook.Selection)
+                    If TypeOf .Item(1) Is Outlook.ContactItem Then
+                        oKontakt = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+                    End If
+                End With
 
             Case TypeOf control.Context Is Outlook.Inspector
                 oKontakt = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
@@ -392,7 +396,12 @@ Imports FBoxDial.RibbonData
 
         Select Case True
             Case TypeOf control.Context Is Outlook.Selection
-                oKontakt = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+
+                With CType(control.Context, Outlook.Selection)
+                    If TypeOf .Item(1) Is Outlook.ContactItem Then
+                        oKontakt = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+                    End If
+                End With
 
             Case TypeOf control.Context Is Outlook.Inspector
                 oKontakt = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)

@@ -106,32 +106,51 @@ Friend Class OptionenService
         Return retval
     End Function
 
-    Private Function Indexer(olOrdner As MAPIFolder, IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of Integer)) As Integer
+    Private Function Indexer(olOrdner As MAPIFolder, IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of String)) As Integer
 
         Dim VerarbeiteteKontakte As Integer = 0
 
+        ' Schleife durch jedes Element dieses Ordners. 
         For Each Item In olOrdner.Items
 
-            If TypeOf Item Is ContactItem Then
+            Select Case True
+                ' Unterscheidung je nach Datentyp
+                Case TypeOf Item Is ContactItem
 
-                Dim aktKontakt As ContactItem = CType(Item, ContactItem)
+                    Dim aktKontakt As ContactItem = CType(Item, ContactItem)
 
-                If IndexModus Then
-                    IndiziereKontakt(aktKontakt)
-                Else
-                    DeIndiziereKontakt(aktKontakt)
-                End If
+                    If IndexModus Then
+                        IndiziereKontakt(aktKontakt)
+                    Else
+                        DeIndiziereKontakt(aktKontakt)
+                    End If
 
-                aktKontakt.Speichern
+                    aktKontakt.Speichern
 
-                ReleaseComObject(aktKontakt)
+                    ' Erhöhe Wert für Progressbar und schreibe einen Status
+                    progress?.Report($"Kontakt '{aktKontakt.FullName}' abgeschlossen ...")
 
-            End If
+                    aktKontakt = Nothing
+                    'ReleaseComObject(aktKontakt)
+
+                Case TypeOf Item Is AddressList ' Adressliste
+                    With CType(Item, AddressList)
+                        progress?.Report($"Adressliste '{ .Name}' übergangen ...")
+                    End With
+
+                Case TypeOf Item Is DistListItem ' Verteilerliste
+                    With CType(Item, DistListItem)
+                        progress?.Report($"Verteilerliste '{ .DLName}' übergangen ...")
+                    End With
+
+                Case Else
+                    progress?.Report($"Unbekanntes Objekt übergangen ...")
+
+            End Select
+
+            ReleaseComObject(Item)
             ' Frage Cancelation ab
             If ct.IsCancellationRequested Then Exit For
-
-            ' Erhöhe Wert für Progressbar
-            progress?.Report(1)
 
             VerarbeiteteKontakte += 1
         Next
@@ -139,16 +158,17 @@ Friend Class OptionenService
         NLogger.Info($"{If(IndexModus, "Indizierung", "Deindizierung")} des Ordners {olOrdner.Name} ist abgeschlossen ({VerarbeiteteKontakte} Kontakte verarbeitet).")
 
         ReleaseComObject(olOrdner)
+
         Return VerarbeiteteKontakte
     End Function
 
-    Private Async Function Indexer(OrdnerListe As List(Of MAPIFolder), IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer) Implements IOptionenService.Indexer
+    Private Async Function Indexer(OrdnerListe As List(Of MAPIFolder), IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of String)) As Task(Of Integer) Implements IOptionenService.Indexer
 
         Dim IndexTasks As New List(Of Task(Of Integer))
 
         ' Verarbeite alle Ordner die der Kontaktsuche entsprechen
         For Each Ordner In OrdnerListe
-            NLogger.Debug($"{If(IndexModus, "Indiziere", "Deindiziere")} Odner {Ordner.Name}")
+            NLogger.Debug($"{If(IndexModus, "Indiziere", "Deindiziere")} Ordner {Ordner.Name}")
             ' Starte das Indizieren
             IndexTasks.Add(Task.Run(Function()
                                         Return Indexer(Ordner, IndexModus, ct, progress)
@@ -469,7 +489,6 @@ Friend Class OptionenService
 
 #Region "Test 2FA"
     Private Sub Start2FATest() Implements IOptionenService.Start2FATest
-
 
         Globals.ThisAddIn.FBoxTR064.X_voip.DialSetConfig("DECT: Gert")
 

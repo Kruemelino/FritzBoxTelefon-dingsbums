@@ -26,7 +26,7 @@ Public Interface IOptionenService
     ''' </summary>
     ''' <param name="Ordner">Outlook-Ordner, der indiziert werden soll</param>
     ''' <param name="IndexModus">Modus: true indizieren, false deindizieren</param>
-    Function Indexer(Ordner As List(Of MAPIFolder), IndexModus As Boolean, ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer)
+    Function Indexer(Ordner As List(Of MAPIFolder), IndexModus As Boolean, ct As Threading.CancellationToken, progress As IProgress(Of String)) As Task(Of Integer)
     Function ZähleOutlookKontakte(olFolders As List(Of MAPIFolder)) As Integer
 #End Region
 

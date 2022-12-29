@@ -178,9 +178,9 @@
 	<contextMenus>
 		<contextMenu idMso="ContextMenuContactItem">
 			<menuSeparator id="Seperator_CM1"/>
-			<button id="Dial_CMC" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled"/>
-			<toggleButton id="VIP_CMC" getLabel="GetItemLabel" getImage="GetItemImageMsoVIP" getPressed="TBtnPressedVIP" onAction="ToggleBtnOnActionVIP"/>
-			<dynamicMenu id="Upload_CMC" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="FillDynamicMenuTelBk" invalidateContentOnDrop="true"/>
+			<button id="Dial_CMC" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction" getEnabled="DialEnabled" getVisible="GroupVisible"/>
+			<toggleButton id="VIP_CMC" getLabel="GetItemLabel" getImage="GetItemImageMsoVIP" getPressed="TBtnPressedVIP" onAction="ToggleBtnOnActionVIP"  getVisible="GroupVisible"/>
+			<dynamicMenu id="Upload_CMC" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="FillDynamicMenuTelBk" invalidateContentOnDrop="true" getVisible="GroupVisible"/>
 		</contextMenu>
 		<contextMenu idMso="ContextMenuJournalItem">
 			<menuSeparator id="Seperator_CM2"/>

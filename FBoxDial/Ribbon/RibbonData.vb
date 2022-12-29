@@ -568,6 +568,8 @@ Namespace RibbonData
                                     ' Rekursiver Aufruf
                                     Return VisibilityGroup(.Item(1))
 
+                                Case TypeOf .Item(1) Is Outlook.ContactItem
+                                    Return True
                                 Case Else
                                     Return False
                             End Select

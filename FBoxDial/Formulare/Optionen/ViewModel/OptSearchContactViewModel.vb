@@ -99,6 +99,16 @@ Public Class OptSearchContactViewModel
         End Get
     End Property
 
+    Private _ExIndexStatus As String
+    Public Property ExIndexStatus As String
+        Get
+            Return _ExIndexStatus
+        End Get
+        Set
+            SetProperty(_ExIndexStatus, Value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "ICommand"
@@ -127,13 +137,14 @@ Public Class OptSearchContactViewModel
 
     End Sub
 
-    Private Async Sub StartIndex(obj As Object)
+    Private Async Sub StartIndex(o As Object)
 
         CTS = New CancellationTokenSource
-        Dim progressIndicator = New Progress(Of Integer)(Sub(status)
-                                                             IndexProgressValue += status
-                                                             IndexStatus = $"{Localize.LocOptionen.strIndexStatus}: {IndexProgressValue}/{IndexProgressMax}"
-                                                         End Sub)
+        Dim progressIndicator = New Progress(Of String)(Sub(status)
+                                                            IndexProgressValue += 1
+                                                            IndexStatus = $"{Localize.LocOptionen.strIndexStatus}: {IndexProgressValue}/{IndexProgressMax}"
+                                                            ExIndexStatus += status & Environment.NewLine
+                                                        End Sub)
         ' Aktiv-Flag setzen
         IsAktiv = True
 
@@ -163,6 +174,8 @@ Public Class OptSearchContactViewModel
         Catch ex As OperationCanceledException
             NLogger.Debug(ex)
         End Try
+
+        ExIndexStatus += $"{If(IndexModus, "Indizierung", "Deindizierung")} abgeschlossen."
 
         ' Aktiv-Flag setzen
         IsAktiv = False

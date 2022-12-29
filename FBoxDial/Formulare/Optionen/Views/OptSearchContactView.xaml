@@ -47,6 +47,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
                 <RowDefinition/>                
             </Grid.RowDefinitions>
 
@@ -88,6 +89,10 @@
                        Grid.Row="2" 
                        Margin="4"
                        Text="{Binding IndexStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+            <TextBox Style="{StaticResource ConsoleTextBox}" 
+                     Grid.Row="4" Grid.ColumnSpan="2"
+                     Text="{Binding ExIndexStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         </Grid>
 
