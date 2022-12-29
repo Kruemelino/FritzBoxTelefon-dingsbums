@@ -743,6 +743,61 @@ Namespace RibbonData
 
 #End Region
 
+#Region "IndexTest"
+
+        Friend Function VisibilityIndexTest() As Boolean
+
+            Return XMLData.POptionen.CBShowIndexEntries
+
+        End Function
+
+        Friend Function GetDynamicMenuIndexTest(Kontakt As Outlook.ContactItem, ListName As String) As String
+
+            Dim XDynaMenu As New XmlDocument
+
+            ListName = ListName.RegExRemove("_.*")
+
+            With XDynaMenu
+                ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
+                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
+
+                For Each kvp As KeyValuePair(Of String, String) In GetIndex(Kontakt)
+                    If kvp.Value.IsNotStringNothingOrEmpty Then
+                        .DocumentElement.AppendChild(CreateDynMenuEditBox(XDynaMenu, kvp.Key, kvp.Value, ListName))
+                    End If
+                Next
+
+            End With
+
+            Return XDynaMenu.InnerXml
+        End Function
+
+        Private Function CreateDynMenuEditBox(xDoc As XmlDocument, Key As String, Value As String, Tag As String) As XmlElement
+            Dim XButton As XmlElement
+            Dim XAttribute As XmlAttribute
+
+            XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
+
+            XAttribute = xDoc.CreateAttribute("id")
+            XAttribute.Value = $"{Tag}_{Key}"
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("enabled")
+            XAttribute.Value = $"false"
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("label")
+            XAttribute.Value = $"{Key.XMLMaskiereZeichen}: {Value.XMLMaskiereZeichen}"
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("tag")
+            XAttribute.Value = Key.XMLMaskiereZeichen
+            XButton.Attributes.Append(XAttribute)
+
+            Return XButton
+        End Function
+#End Region
+
 #Region "Telefonbücher"
         Friend Function GetDynamicMenuTelBk(ListName As String) As String
 

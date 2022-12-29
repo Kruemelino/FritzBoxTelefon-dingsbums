@@ -356,6 +356,18 @@ Imports FBoxDial.RibbonData
         Return GetDynamicMenuTelBk(control.Id)
     End Function
 #End Region
+
+#Region "Index-Test"
+    Public Function FillDynamicMenuIndex(control As IRibbonControl) As String
+        Return GetDynamicMenuIndexTest(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem), control.Id)
+    End Function
+
+#Disable Warning IDE0060 ' Nicht verwendete Parameter entfernen
+    Public Function IndexTestVisible(control As IRibbonControl) As Boolean
+#Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
+        Return VisibilityIndexTest()
+    End Function
+#End Region
 #End Region
 
 #Region "VIP-Ribbon"

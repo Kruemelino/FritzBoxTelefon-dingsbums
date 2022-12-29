@@ -74,7 +74,7 @@ Friend Module KontaktIndizierer
 
             ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
 
-            If .Speichern Then NLogger.Debug($"Indizierung des Kontaktes { .FullNameAndCompany} abgeschlossen.")
+            If .Speichern Then NLogger.Debug($"Indizierung des Kontaktes { .FullNameAndCompany.RemoveLineBreaks} abgeschlossen.")
 
         End With
     End Sub
@@ -89,9 +89,23 @@ Friend Module KontaktIndizierer
             ' Lösche alle Indizierungsfelder
             .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
 
-            If .Speichern Then NLogger.Debug($"Kontakt { .FullNameAndCompany} gespeichert")
+            If .Speichern Then NLogger.Debug($"Deindizierung des Kontaktes { .FullNameAndCompany.RemoveLineBreaks} abgeschlossen.")
         End With
     End Sub
+
+    Friend Function GetIndex(olKontakt As ContactItem) As Dictionary(Of String, String)
+        With olKontakt
+            Dim colArgs As Object() = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
+            Dim Text As List(Of String) = GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) P.Name).ToList
+
+            Return Text.ToDictionary(Function(i)
+                                         Return resEnum.ResourceManager.GetString(Text(Text.IndexOf(i)))
+                                         ' Return Text(Text.IndexOf(i))
+                                     End Function, Function(j)
+                                                       Return colArgs(Text.IndexOf(j)).ToString
+                                                   End Function)
+        End With
+    End Function
 
 #End Region
 

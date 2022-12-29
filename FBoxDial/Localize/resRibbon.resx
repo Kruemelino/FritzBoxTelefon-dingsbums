@@ -186,6 +186,12 @@
   <data name="FritzBoxData_ScreenTipp" xml:space="preserve">
     <value>Öffne die Verwaltung der Fritz!Box Daten...</value>
   </data>
+  <data name="IndexTest_Label" xml:space="preserve">
+    <value>Indizierungseinträge</value>
+  </data>
+  <data name="IndexTest_ScreenTipp" xml:space="preserve">
+    <value>Zeigt die Indizierungseinträge dieses Kontaktes an.</value>
+  </data>
   <data name="mmFBox_Label" xml:space="preserve">
     <value>Fritz!Box</value>
   </data>

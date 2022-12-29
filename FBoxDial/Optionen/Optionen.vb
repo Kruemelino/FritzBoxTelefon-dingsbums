@@ -225,6 +225,10 @@
 
     <XmlElement("CBKontaktSucheFritzBox")> Public Property CBKontaktSucheFritzBox As Boolean = False
 
+    ''' <summary>
+    ''' Zeigt die Indizierungseinträge in geöffnetes Kontakten an.
+    ''' </summary>
+    <XmlElement("CBShowIndexEntries")> Public Property CBShowIndexEntries As Boolean = False
 #End Region
 
 #Region "Einstellungen für die Kontaktsuche - Rückwärtssuche (RWS)"

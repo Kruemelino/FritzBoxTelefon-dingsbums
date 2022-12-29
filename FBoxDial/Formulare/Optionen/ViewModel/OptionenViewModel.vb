@@ -696,6 +696,16 @@ Public Class OptionenViewModel
             SetProperty(_OutlookOrdner, Value)
         End Set
     End Property
+
+    Private _CBShowIndexEntries As Boolean
+    Public Property CBShowIndexEntries As Boolean
+        Get
+            Return _CBShowIndexEntries
+        End Get
+        Set
+            SetProperty(_CBShowIndexEntries, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Einstellungen für die Kontaktsuche - Rückwärtssuche (RWS)"
@@ -1284,19 +1294,19 @@ Public Class OptionenViewModel
 
             ' <-- Kontaktordner -->
 
-            ' deindiziere (Task muss abgeschlossen sein. Ansonsten startet der Deindizierungstaskmit einer leeren Liste):
-            Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = Await Task.Run(Function()
-                                                                                   Return .FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
-                                                                               End Function)
+            ' Deindiziere entfernte Kontaktornder  (Task muss abgeschlossen sein. Ansonsten startet der Deindizierungstask mit einer leeren Liste):
+            Dim MAPIFolderList As List(Of Outlook.MAPIFolder) = Await Task.Run(Function() .FindAll(OutlookOrdnerVerwendung.KontaktSuche) _
+                                                                                          .Except(OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche)) _
+                                                                                          .Select(Function(S) S.MAPIFolder).ToList)
 
             ' Füge die Unterordner hinzu
             If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
             TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, False, Nothing, Nothing)))
 
-            ' indiziere (Task muss abgeschlossen sein. Ansonsten startet der Indizierungstask mit einer leeren Liste):
-            MAPIFolderList = Await Task.Run(Function()
-                                                Return OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche).Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche)).Select(Function(S) S.MAPIFolder).ToList
-                                            End Function)
+            ' Indiziere neu hinzugefügte Kontaktornder (Task muss abgeschlossen sein. Ansonsten startet der Indizierungstask mit einer leeren Liste):
+            MAPIFolderList = Await Task.Run(Function() OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.KontaktSuche) _
+                                                                         .Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche)) _
+                                                                         .Select(Function(S) S.MAPIFolder).ToList)
             ' Füge die Unterordner hinzu
             If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
             TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, True, Nothing, Nothing)))

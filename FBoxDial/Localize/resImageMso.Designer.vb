@@ -136,6 +136,15 @@ Public Class resImageMso
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die TableIndexes ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property IndexTest_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("IndexTest_ImageMso", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die NewJournalEntry ähnelt.
     '''</summary>
     Public Shared ReadOnly Property JournalImport_ImageMso() As String

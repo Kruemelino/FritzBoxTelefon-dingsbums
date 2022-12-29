@@ -44,7 +44,7 @@ Friend Structure OutlookContactNumberFields
     Public Shared ReadOnly Property BusinessFaxNumber As String = """urn:schemas:contacts:facsimiletelephonenumber"""
     Public Shared ReadOnly Property HomeFaxNumber As String = """urn:schemas:contacts:homefax"""
     Public Shared ReadOnly Property OtherFaxNumber As String = """urn:schemas:contacts:otherfax"""
-    Public Shared ReadOnly Property Telex As String = """urn:schemas:contacts:telexnumber"""
+    Public Shared ReadOnly Property Telex As String = """urn:schemas:contacts:telexnumber""" ' Eigentlich TelexNumber
     Public Shared ReadOnly Property TTYTDDTelephoneNumber As String = """urn:schemas:contacts:ttytddphone"""
 
 End Structure

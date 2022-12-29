@@ -33,6 +33,10 @@
                   Content="{x:Static localize:LocOptionen.strSearchContactCBKontaktSucheFritzBox}" 
                   IsChecked="{Binding OptVM.CBKontaktSucheFritzBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strCBShowIndexEntries}" 
+                  IsChecked="{Binding OptVM.CBShowIndexEntries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strSearchContactHeadIndex}"/>
         

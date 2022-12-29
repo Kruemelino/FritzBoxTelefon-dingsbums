@@ -357,6 +357,10 @@
     <value>Verzögert kurz</value>
     <comment>AVM XML Rufumleitung Mode</comment>
   </data>
+  <data name="Telex" xml:space="preserve">
+    <value>Telex</value>
+    <comment>Outlook (obloset: TelexNumber)</comment>
+  </data>
   <data name="TelexNumber" xml:space="preserve">
     <value>Telex</value>
     <comment>Outlook</comment>

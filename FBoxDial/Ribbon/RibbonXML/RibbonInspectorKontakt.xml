@@ -9,6 +9,8 @@
           <dynamicMenu id="RWS_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" getContent="FillDynamicMenuRWS"/>
           <toggleButton id="VIP_C" getLabel="GetItemLabel" getImage="GetItemImageMsoVIP" getScreentip="GetItemScreenTipVIP" size="normal" getPressed="TBtnPressedVIP" onAction="ToggleBtnOnActionVIP"/>
           <dynamicMenu id="Upload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="FillDynamicMenuTelBk" invalidateContentOnDrop="true" />
+          <separator id="Seperator_C2" getVisible="IndexTestVisible"/>
+          <dynamicMenu id="IndexTest_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getContent="FillDynamicMenuIndex" size="large" getVisible="IndexTestVisible" />
         </group>
       </tab>
     </tabs>

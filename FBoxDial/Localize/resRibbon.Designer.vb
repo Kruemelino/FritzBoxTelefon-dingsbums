@@ -272,6 +272,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Indizierungseinträge ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property IndexTest_Label() As String
+            Get
+                Return ResourceManager.GetString("IndexTest_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt die Indizierungseinträge dieses Kontaktes an. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property IndexTest_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("IndexTest_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box ähnelt.
         '''</summary>
         Public Shared ReadOnly Property mmFBox_Label() As String

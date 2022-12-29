@@ -209,6 +209,9 @@ Public Module Extensions
         Return Text.Replace("&", "&amp;&amp;").Replace("&amp;&amp;#", "&#").Replace("<", "&lt;").Replace(">", "&gt;").Replace(Chr(34), "&quot;").Replace("'", "&apos;")
     End Function
 
+    <Extension> Public Function RemoveLineBreaks(Str1 As String) As String
+        Return Str1.Replace(vbCrLf, " ")
+    End Function
 #End Region
 
 #Region "Extensions für Verarbeitung von Date"

@@ -700,6 +700,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt die Indizierungseinträge im geöffnenten Kontakt an. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCBShowIndexEntries() As String
+            Get
+                Return ResourceManager.GetString("strCBShowIndexEntries", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Raute (#) an die zu wählende Nummer anhängen. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCBSoftPhoneSuffix() As String
