@@ -272,6 +272,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Indiziere Kontakt ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property IndexContact_Label() As String
+            Get
+                Return ResourceManager.GetString("IndexContact_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nachträgliches Indizieren dieses Kontaktes. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property IndexContact_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("IndexContact_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Indizierungseinträge ähnelt.
         '''</summary>
         Public Shared ReadOnly Property IndexTest_Label() As String

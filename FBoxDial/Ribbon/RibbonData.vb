@@ -1,9 +1,7 @@
 ﻿Imports System.Reflection
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Tab
 Imports System.Xml
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
-
 
 Namespace RibbonData
     ''' <summary>
@@ -751,6 +749,16 @@ Namespace RibbonData
 
         End Function
 
+        Private Sub IndexContact(OutlookInspector As Outlook.Inspector, ListName As String)
+
+            If ListName.IsNotStringNothingOrEmpty Then ' Abfrage eigentlich unnötig
+                If TypeOf OutlookInspector.CurrentItem Is Outlook.ContactItem Then
+                    IndiziereKontakt(CType(OutlookInspector.CurrentItem, Outlook.ContactItem))
+                End If
+            End If
+
+        End Sub
+
         Friend Function GetDynamicMenuIndexTest(Kontakt As Outlook.ContactItem, ListName As String) As String
 
             Dim XDynaMenu As New XmlDocument
@@ -761,9 +769,15 @@ Namespace RibbonData
                 ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
                 .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
 
-                For Each kvp As KeyValuePair(Of String, String) In GetIndex(Kontakt)
-                    If kvp.Value.IsNotStringNothingOrEmpty Then
-                        .DocumentElement.AppendChild(CreateDynMenuEditBox(XDynaMenu, kvp.Key, kvp.Value, ListName))
+                ' Button für das manuelle Indizieren des Kontaktes
+                ' Füge den Löschbutton und einen Seperator hinzu
+                .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, $"IndexContact_{ListName}", "I"))
+                .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
+
+                ' Einzelnen Indexeinträge
+                For Each Eintrag In GetIndexList(Kontakt)
+                    If Eintrag.Value.IsNotStringNothingOrEmpty Then
+                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag))
                     End If
                 Next
 
@@ -772,14 +786,14 @@ Namespace RibbonData
             Return XDynaMenu.InnerXml
         End Function
 
-        Private Function CreateDynMenuEditBox(xDoc As XmlDocument, Key As String, Value As String, Tag As String) As XmlElement
+        Private Function CreateDynMenuButton(xDoc As XmlDocument, ID As String, KVP As KeyValuePair(Of String, String)) As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
 
             XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
 
             XAttribute = xDoc.CreateAttribute("id")
-            XAttribute.Value = $"{Tag}_{Key}"
+            XAttribute.Value = $"{ID}_{KVP.Key}"
             XButton.Attributes.Append(XAttribute)
 
             XAttribute = xDoc.CreateAttribute("enabled")
@@ -787,11 +801,7 @@ Namespace RibbonData
             XButton.Attributes.Append(XAttribute)
 
             XAttribute = xDoc.CreateAttribute("label")
-            XAttribute.Value = $"{Key.XMLMaskiereZeichen}: {Value.XMLMaskiereZeichen}"
-            XButton.Attributes.Append(XAttribute)
-
-            XAttribute = xDoc.CreateAttribute("tag")
-            XAttribute.Value = Key.XMLMaskiereZeichen
+            XAttribute.Value = $"{resEnum.ResourceManager.GetString(KVP.Key)}: {KVP.Value}".Trim.XMLMaskiereZeichen
             XButton.Attributes.Append(XAttribute)
 
             Return XButton
@@ -899,7 +909,7 @@ Namespace RibbonData
             Return XDynaMenu.InnerXml
         End Function
 
-        Private Function CreateDynMenuButton(xDoc As XmlDocument, ID As String) As XmlElement
+        Private Function CreateDynMenuButton(xDoc As XmlDocument, ID As String, Optional OnActionSuffix As String = "") As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
             XButton = xDoc.CreateElement("button", "http://schemas.microsoft.com/office/2009/07/customui")
@@ -917,7 +927,7 @@ Namespace RibbonData
             XButton.Attributes.Append(XAttribute)
 
             XAttribute = xDoc.CreateAttribute("onAction")
-            XAttribute.Value = "BtnOnAction"
+            XAttribute.Value = $"BtnOnAction{OnActionSuffix}"
             XButton.Attributes.Append(XAttribute)
 
             XAttribute = xDoc.CreateAttribute("getImage")

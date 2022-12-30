@@ -93,17 +93,12 @@ Friend Module KontaktIndizierer
         End With
     End Sub
 
-    Friend Function GetIndex(olKontakt As ContactItem) As Dictionary(Of String, String)
+    Friend Function GetIndexList(olKontakt As ContactItem) As Dictionary(Of String, String)
         With olKontakt
             Dim colArgs As Object() = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
             Dim Text As List(Of String) = GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) P.Name).ToList
 
-            Return Text.ToDictionary(Function(i)
-                                         Return resEnum.ResourceManager.GetString(Text(Text.IndexOf(i)))
-                                         ' Return Text(Text.IndexOf(i))
-                                     End Function, Function(j)
-                                                       Return colArgs(Text.IndexOf(j)).ToString
-                                                   End Function)
+            Return Text.ToDictionary(Function(i) Text(Text.IndexOf(i)), Function(j) colArgs(Text.IndexOf(j)).ToString)
         End With
     End Function
 

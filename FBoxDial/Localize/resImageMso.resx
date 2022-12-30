@@ -141,6 +141,9 @@
   <data name="FritzBoxData_ImageMso" xml:space="preserve">
     <value>AddressBook</value>
   </data>
+  <data name="IndexContact_ImageMso" xml:space="preserve">
+    <value>IndexUpdate</value>
+  </data>
   <data name="IndexTest_ImageMso" xml:space="preserve">
     <value>TableIndexes</value>
   </data>
