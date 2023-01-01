@@ -700,7 +700,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt die Indizierungseinträge im geöffnenten Kontakt an. ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeige den Indizierungsstatus im geöffnenten Kontakt an ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCBShowIndexEntries() As String
             Get

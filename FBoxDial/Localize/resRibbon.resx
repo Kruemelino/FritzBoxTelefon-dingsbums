@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddVIP_ScreenTipp" xml:space="preserve">
-    <value>Fügt diesen Kontakt zur VIP-Liste hinzu...</value>
+    <value>Fügt diesen Kontakt zur VIP-Liste hinzu…</value>
   </data>
   <data name="CALLListeEntry_Clear" xml:space="preserve">
     <value>Soll dieser Eintrag aus der Wahlwiederholungsliste entfernt werden?</value>
@@ -130,25 +130,25 @@
     <value>Wahlwiederholung</value>
   </data>
   <data name="CALLListe_ScreenTipp" xml:space="preserve">
-    <value>Öffnet den Wähldialog für die Wahlwiederholung...</value>
+    <value>Öffnet den Wähldialog für die Wahlwiederholung…</value>
   </data>
   <data name="CallMonitor_Label" xml:space="preserve">
     <value>Anrufmonitor</value>
   </data>
   <data name="CallMonitor_ScreenTipp" xml:space="preserve">
-    <value>Startet oder beendert den Anrufmonitor...</value>
+    <value>Startet oder beendert den Anrufmonitor…</value>
   </data>
   <data name="Config_Label" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
   <data name="Config_ScreenTipp" xml:space="preserve">
-    <value>Öffnet die Einstellungen...</value>
+    <value>Öffnet die Einstellungen…</value>
   </data>
   <data name="CreateContact_Label" xml:space="preserve">
     <value>Kontakt erstellen</value>
   </data>
   <data name="CreateContact_ScreenTipp" xml:space="preserve">
-    <value>Erstellt einen neuen Kontakt...</value>
+    <value>Erstellt einen neuen Kontakt…</value>
   </data>
   <data name="DeleteEntryButtonCRV_Label" xml:space="preserve">
     <value>Eintrag löschen</value>
@@ -157,34 +157,34 @@
     <value>Entfernt diesen Eintrag aus dieser Liste</value>
   </data>
   <data name="DeleteList_Label" xml:space="preserve">
-    <value>Liste löschen...</value>
+    <value>Liste löschen…</value>
   </data>
   <data name="DeleteList_ScreenTipp" xml:space="preserve">
-    <value>Lösche diese Liste...</value>
+    <value>Lösche diese Liste…</value>
   </data>
   <data name="Dial_Label" xml:space="preserve">
     <value>Wählen</value>
   </data>
   <data name="Dial_ScreenTipp" xml:space="preserve">
-    <value>Öffnet den Wahldialog um das ausgewählte Element anzurufen...</value>
+    <value>Öffnet den Wahldialog um das ausgewählte Element anzurufen…</value>
   </data>
   <data name="DirectCall_Label" xml:space="preserve">
     <value>Direktwahl</value>
   </data>
   <data name="DirectCall_ScreenTipp" xml:space="preserve">
-    <value>Öffnet den Wähldialog für die Direktwahl...</value>
+    <value>Öffnet den Wähldialog für die Direktwahl…</value>
   </data>
   <data name="DynListDel_Label" xml:space="preserve">
-    <value>Liste löschen...</value>
+    <value>Liste löschen…</value>
   </data>
   <data name="DynListDel_ScreenTipp" xml:space="preserve">
-    <value>Entfernt alle Einträge dieser Liste...</value>
+    <value>Entfernt alle Einträge dieser Liste…</value>
   </data>
   <data name="FritzBoxData_Label" xml:space="preserve">
     <value>Fritz!Box Daten</value>
   </data>
   <data name="FritzBoxData_ScreenTipp" xml:space="preserve">
-    <value>Öffne die Verwaltung der Fritz!Box Daten...</value>
+    <value>Öffne die Verwaltung der Fritz!Box Daten…</value>
   </data>
   <data name="IndexContact_Label" xml:space="preserve">
     <value>Indiziere Kontakt</value>
@@ -193,16 +193,16 @@
     <value>Nachträgliches Indizieren dieses Kontaktes.</value>
   </data>
   <data name="IndexTest_Label" xml:space="preserve">
-    <value>Indizierungseinträge</value>
+    <value>Indizierungsstatus…</value>
   </data>
   <data name="IndexTest_ScreenTipp" xml:space="preserve">
-    <value>Zeigt die Indizierungseinträge dieses Kontaktes an.</value>
+    <value>Zeigt den Indizierungsstatus dieses Kontaktes an.</value>
   </data>
   <data name="mmFBox_Label" xml:space="preserve">
     <value>Fritz!Box</value>
   </data>
   <data name="RemoveVIP_ScreenTipp" xml:space="preserve">
-    <value>Entfernt diesen Kontakt von der VIP-Liste...</value>
+    <value>Entfernt diesen Kontakt von der VIP-Liste…</value>
   </data>
   <data name="RINGListeEntry_Clear" xml:space="preserve">
     <value>Soll dieser Eintrag aus der Rückrufliste entfernt werden?</value>
@@ -214,13 +214,13 @@
     <value>Rückruf</value>
   </data>
   <data name="RINGListe_ScreenTipp" xml:space="preserve">
-    <value>Öffnet den Wähldialog für den Rückruf...</value>
+    <value>Öffnet den Wähldialog für den Rückruf…</value>
   </data>
   <data name="RWS_Label" xml:space="preserve">
     <value>Rückwärtssuche</value>
   </data>
   <data name="RWS_ScreenTipp" xml:space="preserve">
-    <value>Sucht zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche...</value>
+    <value>Sucht zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche…</value>
   </data>
   <data name="SceduleButtonCRV_Label" xml:space="preserve">
     <value>Anruftermin erstellen</value>
@@ -238,13 +238,13 @@
     <value>Anzeigen</value>
   </data>
   <data name="ShowCallMonitor_ScreenTipp" xml:space="preserve">
-    <value>Zeigt den letzten Anruf an...</value>
+    <value>Zeigt den letzten Anruf an…</value>
   </data>
   <data name="ShowContact_Label" xml:space="preserve">
     <value>Kontakt anzeigen</value>
   </data>
   <data name="ShowContact_ScreenTipp" xml:space="preserve">
-    <value>Zeigt den Kontakt an...</value>
+    <value>Zeigt den Kontakt an…</value>
   </data>
   <data name="ShowMissedCalls_Label" xml:space="preserve">
     <value>Verpasste Anrufe</value>
@@ -277,7 +277,7 @@
     <value>Hochladen</value>
   </data>
   <data name="Upload_ScreenTipp" xml:space="preserve">
-    <value>Lädt diesen Kontakt auf die Fritz!Box hoch....</value>
+    <value>Lädt diesen Kontakt auf die Fritz!Box hoch…</value>
   </data>
   <data name="VIPListeEntry_Clear" xml:space="preserve">
     <value>Soll dieser Eintrag aus der VIP-Liste entfernt werden?</value>
@@ -292,7 +292,7 @@
     <value>VIP-Liste</value>
   </data>
   <data name="VIPListe_ScreenTipp" xml:space="preserve">
-    <value>Öffnet den Wahldialog um einen VIP anzurufen...</value>
+    <value>Öffnet den Wahldialog um einen VIP anzurufen…</value>
   </data>
   <data name="VIP_Label" xml:space="preserve">
     <value>VIP</value>

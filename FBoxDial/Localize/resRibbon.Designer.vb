@@ -65,7 +65,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Fügt diesen Kontakt zur VIP-Liste hinzu... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fügt diesen Kontakt zur VIP-Liste hinzu… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property AddVIP_ScreenTipp() As String
             Get
@@ -92,7 +92,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wähldialog für die Wahlwiederholung... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wähldialog für die Wahlwiederholung… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property CALLListe_ScreenTipp() As String
             Get
@@ -119,7 +119,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Startet oder beendert den Anrufmonitor... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Startet oder beendert den Anrufmonitor… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property CallMonitor_ScreenTipp() As String
             Get
@@ -137,7 +137,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet die Einstellungen... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet die Einstellungen… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property Config_ScreenTipp() As String
             Get
@@ -155,7 +155,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Erstellt einen neuen Kontakt... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Erstellt einen neuen Kontakt… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property CreateContact_ScreenTipp() As String
             Get
@@ -182,7 +182,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Liste löschen... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Liste löschen… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property DeleteList_Label() As String
             Get
@@ -191,7 +191,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Lösche diese Liste... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Lösche diese Liste… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property DeleteList_ScreenTipp() As String
             Get
@@ -209,7 +209,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wahldialog um das ausgewählte Element anzurufen... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wahldialog um das ausgewählte Element anzurufen… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property Dial_ScreenTipp() As String
             Get
@@ -227,7 +227,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wähldialog für die Direktwahl... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wähldialog für die Direktwahl… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property DirectCall_ScreenTipp() As String
             Get
@@ -236,7 +236,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Liste löschen... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Liste löschen… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property DynListDel_Label() As String
             Get
@@ -245,7 +245,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Entfernt alle Einträge dieser Liste... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Entfernt alle Einträge dieser Liste… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property DynListDel_ScreenTipp() As String
             Get
@@ -263,7 +263,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Öffne die Verwaltung der Fritz!Box Daten... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffne die Verwaltung der Fritz!Box Daten… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property FritzBoxData_ScreenTipp() As String
             Get
@@ -290,7 +290,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Indizierungseinträge ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Indizierungsstatus… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property IndexTest_Label() As String
             Get
@@ -299,7 +299,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt die Indizierungseinträge dieses Kontaktes an. ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt den Indizierungsstatus dieses Kontaktes an. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property IndexTest_ScreenTipp() As String
             Get
@@ -317,7 +317,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Entfernt diesen Kontakt von der VIP-Liste... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Entfernt diesen Kontakt von der VIP-Liste… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property RemoveVIP_ScreenTipp() As String
             Get
@@ -344,7 +344,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wähldialog für den Rückruf... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wähldialog für den Rückruf… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property RINGListe_ScreenTipp() As String
             Get
@@ -371,7 +371,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Sucht zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Sucht zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property RWS_ScreenTipp() As String
             Get
@@ -425,7 +425,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt den letzten Anruf an... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt den letzten Anruf an… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property ShowCallMonitor_ScreenTipp() As String
             Get
@@ -443,7 +443,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt den Kontakt an... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt den Kontakt an… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property ShowContact_ScreenTipp() As String
             Get
@@ -497,7 +497,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Lädt diesen Kontakt auf die Fritz!Box hoch.... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Lädt diesen Kontakt auf die Fritz!Box hoch… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property Upload_ScreenTipp() As String
             Get
@@ -587,7 +587,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wahldialog um einen VIP anzurufen... ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet den Wahldialog um einen VIP anzurufen… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property VIPListe_ScreenTipp() As String
             Get

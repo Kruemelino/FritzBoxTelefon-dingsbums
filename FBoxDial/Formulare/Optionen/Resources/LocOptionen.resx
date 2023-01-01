@@ -403,7 +403,7 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
     <comment>OptDialerView</comment>
   </data>
   <data name="strCBShowIndexEntries" xml:space="preserve">
-    <value>Zeigt die Indizierungseinträge im geöffnenten Kontakt an.</value>
+    <value>Zeige den Indizierungsstatus im geöffnenten Kontakt an</value>
     <comment>OptSearchContactView</comment>
   </data>
   <data name="strCBSoftPhoneSuffix" xml:space="preserve">

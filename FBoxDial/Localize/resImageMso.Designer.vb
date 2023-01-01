@@ -136,7 +136,7 @@ Public Class resImageMso
     End Property
     
     '''<summary>
-    '''  Sucht eine lokalisierte Zeichenfolge, die IndexUpdate ähnelt.
+    '''  Sucht eine lokalisierte Zeichenfolge, die CatalogMergeUseOutlookContacts ähnelt.
     '''</summary>
     Public Shared ReadOnly Property IndexContact_ImageMso() As String
         Get
@@ -145,7 +145,7 @@ Public Class resImageMso
     End Property
     
     '''<summary>
-    '''  Sucht eine lokalisierte Zeichenfolge, die TableIndexes ähnelt.
+    '''  Sucht eine lokalisierte Zeichenfolge, die OutlookSearchIndexState ähnelt.
     '''</summary>
     Public Shared ReadOnly Property IndexTest_ImageMso() As String
         Get

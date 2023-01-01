@@ -142,10 +142,10 @@
     <value>AddressBook</value>
   </data>
   <data name="IndexContact_ImageMso" xml:space="preserve">
-    <value>IndexUpdate</value>
+    <value>CatalogMergeUseOutlookContacts</value>
   </data>
   <data name="IndexTest_ImageMso" xml:space="preserve">
-    <value>TableIndexes</value>
+    <value>OutlookSearchIndexState</value>
   </data>
   <data name="JournalImport_ImageMso" xml:space="preserve">
     <value>NewJournalEntry</value>

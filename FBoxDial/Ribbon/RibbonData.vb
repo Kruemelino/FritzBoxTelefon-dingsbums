@@ -1139,7 +1139,7 @@ Namespace RibbonData
                 XAttribute.Value = $"{ExID}_{ID}"
                 .Attributes.Append(XAttribute)
 
-                ' angezeigte Text
+                ' angezeigter Text
                 XAttribute = xDoc.CreateAttribute("getLabel")
                 XAttribute.Value = "GetItemLabel"
                 .Attributes.Append(XAttribute)
@@ -1154,7 +1154,7 @@ Namespace RibbonData
                 XAttribute.Value = $"{Tag}_{ID}".XMLMaskiereZeichen
                 .Attributes.Append(XAttribute)
 
-                ' ScreenTipp
+                ' Image des Bottons
                 XAttribute = xDoc.CreateAttribute("getImage")
                 XAttribute.Value = "GetItemImageMso"
                 .Attributes.Append(XAttribute)
