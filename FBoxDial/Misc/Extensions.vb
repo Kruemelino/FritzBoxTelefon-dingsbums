@@ -210,7 +210,7 @@ Public Module Extensions
     End Function
 
     <Extension> Public Function RemoveLineBreaks(Str1 As String) As String
-        Return Str1.Replace(vbCrLf, " ")
+        Return If(Str1.IsNotStringNothingOrEmpty, Str1.Replace(vbCrLf, " "), String.Empty)
     End Function
 #End Region
 

@@ -290,6 +290,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Kontakt kann nicht indiziert werden. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property IndexError_Label() As String
+            Get
+                Return ResourceManager.GetString("IndexError_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Kontaktorder wird nicht für die Kontaktsuche verwendet. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property IndexError_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("IndexError_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Indizierungsstatus… ähnelt.
         '''</summary>
         Public Shared ReadOnly Property IndexTest_Label() As String

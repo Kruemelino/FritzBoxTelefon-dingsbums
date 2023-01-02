@@ -192,6 +192,12 @@
   <data name="IndexContact_ScreenTipp" xml:space="preserve">
     <value>Nachträgliches Indizieren dieses Kontaktes.</value>
   </data>
+  <data name="IndexError_Label" xml:space="preserve">
+    <value>Der Kontakt kann nicht indiziert werden.</value>
+  </data>
+  <data name="IndexError_ScreenTipp" xml:space="preserve">
+    <value>Der Kontaktorder wird nicht für die Kontaktsuche verwendet.</value>
+  </data>
   <data name="IndexTest_Label" xml:space="preserve">
     <value>Indizierungsstatus…</value>
   </data>

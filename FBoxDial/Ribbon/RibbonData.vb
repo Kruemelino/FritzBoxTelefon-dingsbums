@@ -1,5 +1,6 @@
 ﻿Imports System.Reflection
 Imports System.Xml
+Imports FBoxDial.Localize
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 
@@ -755,6 +756,7 @@ Namespace RibbonData
 
             If ListName.IsNotStringNothingOrEmpty Then ' Abfrage eigentlich unnötig
                 If TypeOf OutlookInspector.CurrentItem Is Outlook.ContactItem Then
+
                     IndiziereKontakt(CType(OutlookInspector.CurrentItem, Outlook.ContactItem))
                 End If
             End If
@@ -777,15 +779,21 @@ Namespace RibbonData
                 ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
                 .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", NamespaceURI)))
 
-                ' Button für das manuelle Indizieren des Kontaktes
-                ' Füge den Löschbutton und einen Seperator hinzu
-                .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, $"IndexContact_{ListName}", "I"))
-                .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
+                ' Wenn der Ordner für die Kontaktsuche verwendet werden soll, dann ergänze die Einträge
+                If oContact.Parent IsNot Nothing AndAlso CType(oContact.Parent, Outlook.MAPIFolder).OrdnerAusgewählt(OutlookOrdnerVerwendung.KontaktSuche) Then
+                    ' Button für das manuelle Indizieren des Kontaktes
+                    ' Füge den Löschbutton und einen Seperator hinzu
+                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, $"IndexContact_{ListName}", "I"))
+                    .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
 
-                ' Einzelnen Indexeinträge
-                For Each Eintrag In GetIndexList(oContact)
-                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag))
-                Next
+                    ' Einzelnen Indexeinträge
+                    For Each Eintrag In GetIndexList(oContact)
+                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag))
+                    Next
+                Else
+                    ' Fehlermeldung
+                    .DocumentElement.AppendChild(CreateDisabledDynMenuButton(XDynaMenu, ListName, "IndexError"))
+                End If
 
             End With
 
@@ -810,6 +818,31 @@ Namespace RibbonData
 
             XAttribute = xDoc.CreateAttribute("label")
             XAttribute.Value = $"{resEnum.ResourceManager.GetString(KVP.Key)}: {KVP.Value}".Trim.XMLMaskiereZeichen
+            XButton.Attributes.Append(XAttribute)
+
+            Return XButton
+        End Function
+
+        Private Function CreateDisabledDynMenuButton(xDoc As XmlDocument, ID As String, Label As String) As XmlElement
+            Dim XButton As XmlElement
+            Dim XAttribute As XmlAttribute
+
+            XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
+
+            XAttribute = xDoc.CreateAttribute("id")
+            XAttribute.Value = $"{ID}_{Label}"
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("enabled")
+            XAttribute.Value = $"false"
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("label")
+            XAttribute.Value = $"{resRibbon.ResourceManager.GetString($"{Label}_Label")}".Trim.XMLMaskiereZeichen
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("screentip")
+            XAttribute.Value = $"{resRibbon.ResourceManager.GetString($"{Label}_ScreenTipp")}".Trim.XMLMaskiereZeichen
             XButton.Attributes.Append(XAttribute)
 
             Return XButton

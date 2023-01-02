@@ -125,8 +125,6 @@ Friend Class OptionenService
                         DeIndiziereKontakt(aktKontakt)
                     End If
 
-                    aktKontakt.Speichern
-
                     ' Erhöhe Wert für Progressbar und schreibe einen Status
                     progress?.Report($"Kontakt '{aktKontakt.FullName}' abgeschlossen ...")
 

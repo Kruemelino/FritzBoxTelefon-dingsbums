@@ -3,7 +3,7 @@
 Friend Module KontaktIndizierer
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property DASLTagTelNrIndex As Object() = GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) $"{DfltDASLSchema}FBDB-{P.Name}").ToArray
-
+    Private Const ProppertyAccessorError As String = "-2147221233"
 #Region "Kontaktindizierung"
 
     ''' <summary>
@@ -106,7 +106,7 @@ Friend Module KontaktIndizierer
             ' Stellt eine Zuordnung zwichen der Nummernbezeichnung und dem Key sowie der Nummer und des Values her.
             ' Im zweiten schritt werden alle elemente rausgefiltert, die leer sind.
             Return Text.ToDictionary(Function(i) Text(Text.IndexOf(i)), Function(i) colArgs(Text.IndexOf(i)).ToString) _
-                       .Where(Function(i) i.Value.IsNotStringNothingOrEmpty) _
+                       .Where(Function(i) i.Value.IsNotStringNothingOrEmpty AndAlso i.Value.IsNotEqual(ProppertyAccessorError)) _
                        .ToDictionary(Function(i) i.Key, Function(i) i.Value)
         End With
     End Function
