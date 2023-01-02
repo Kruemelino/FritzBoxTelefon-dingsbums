@@ -364,9 +364,9 @@ Imports FBoxDial.RibbonData
 
 #Disable Warning IDE0060 ' Nicht verwendete Parameter entfernen
     Public Function IndexTestVisible(control As IRibbonControl) As Boolean
-#Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
         Return VisibilityIndexTest()
     End Function
+#Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
 #End Region
 #End Region
 

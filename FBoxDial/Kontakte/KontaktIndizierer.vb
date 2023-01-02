@@ -93,12 +93,21 @@ Friend Module KontaktIndizierer
         End With
     End Sub
 
+    ''' <summary>
+    ''' Erstellt ein Dictionary aller indizierten Telefonnummern. Key ist die englisch-sprachige Bezeichnung des Eintrages.
+    ''' </summary>
+    ''' <param name="olKontakt">Aktueller Kontakt</param>
+    ''' <returns>Dictionary aller indizierten Telefonnummern</returns>
     Friend Function GetIndexList(olKontakt As ContactItem) As Dictionary(Of String, String)
         With olKontakt
             Dim colArgs As Object() = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
             Dim Text As List(Of String) = GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) P.Name).ToList
 
-            Return Text.ToDictionary(Function(i) Text(Text.IndexOf(i)), Function(j) colArgs(Text.IndexOf(j)).ToString)
+            ' Stellt eine Zuordnung zwichen der Nummernbezeichnung und dem Key sowie der Nummer und des Values her.
+            ' Im zweiten schritt werden alle elemente rausgefiltert, die leer sind.
+            Return Text.ToDictionary(Function(i) Text(Text.IndexOf(i)), Function(i) colArgs(Text.IndexOf(i)).ToString) _
+                       .Where(Function(i) i.Value.IsNotStringNothingOrEmpty) _
+                       .ToDictionary(Function(i) i.Key, Function(i) i.Value)
         End With
     End Function
 

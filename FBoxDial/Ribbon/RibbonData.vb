@@ -10,6 +10,8 @@ Namespace RibbonData
     Friend Module RibbonData
         Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
+        Private Const NamespaceURI As String = "http://schemas.microsoft.com/office/2009/07/customui"
+
         Friend Enum Typ
             Label
             ScreenTipp
@@ -700,7 +702,7 @@ Namespace RibbonData
 
             With XDynaMenu
                 ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
-                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
+                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", NamespaceURI)))
 
                 ' Ermittle alle Telefonnummern des Kontaktes
                 ListofTelefonnummer = Kontakt.GetKontaktTelNrList
@@ -759,7 +761,13 @@ Namespace RibbonData
 
         End Sub
 
-        Friend Function GetDynamicMenuIndexTest(Kontakt As Outlook.ContactItem, ListName As String) As String
+        ''' <summary>
+        ''' Erstelle die Liste der entsprechenden Indizierungseinträge des <paramref name="oContact"/> ausgehend vom <paramref name="ListName"/>.
+        ''' </summary>
+        ''' <param name="oContact">Der aktuelle Kontakt</param>
+        ''' <param name="ListName">Eindeutige Bezeichnung der Liste</param>
+        ''' <returns>XML-Dokument als String</returns>
+        Friend Function GetDynamicMenuIndexTest(oContact As Outlook.ContactItem, ListName As String) As String
 
             Dim XDynaMenu As New XmlDocument
 
@@ -767,7 +775,7 @@ Namespace RibbonData
 
             With XDynaMenu
                 ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
-                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
+                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", NamespaceURI)))
 
                 ' Button für das manuelle Indizieren des Kontaktes
                 ' Füge den Löschbutton und einen Seperator hinzu
@@ -775,13 +783,13 @@ Namespace RibbonData
                 .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
 
                 ' Einzelnen Indexeinträge
-                For Each Eintrag In GetIndexList(Kontakt)
-                    If Eintrag.Value.IsNotStringNothingOrEmpty Then
-                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag))
-                    End If
+                For Each Eintrag In GetIndexList(oContact)
+                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag))
                 Next
 
             End With
+
+            NLogger.Trace($"{ListName}: {XDynaMenu.OuterXml}")
 
             Return XDynaMenu.InnerXml
         End Function
@@ -809,6 +817,11 @@ Namespace RibbonData
 #End Region
 
 #Region "Telefonbücher"
+        ''' <summary>
+        ''' Erstelle die Liste mit den vorhandenen Telefonbüchern ausgehend vom <paramref name="ListName"/>.
+        ''' </summary>
+        ''' <param name="ListName">Name der Liste</param>
+        ''' <returns>XML-Dokument als String</returns>
         Friend Function GetDynamicMenuTelBk(ListName As String) As String
 
             Dim XDynaMenu As New XmlDocument
@@ -817,7 +830,7 @@ Namespace RibbonData
 
             With XDynaMenu
                 ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
-                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
+                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", NamespaceURI)))
 
                 ' Ermittle die verfügbaren Quellen für die Telefonbuchnamen
                 If Globals.ThisAddIn.PhoneBookXML IsNot Nothing Then
@@ -830,6 +843,8 @@ Namespace RibbonData
                 End If
 
             End With
+
+            NLogger.Trace($"{ListName}: {XDynaMenu.OuterXml}")
 
             Return XDynaMenu.InnerXml
         End Function
@@ -868,8 +883,8 @@ Namespace RibbonData
         ''' <summary>
         ''' Erstelle die Liste der entsprechenden Einträge ausgehend vom <paramref name="ListName"/>.
         ''' </summary>
-        ''' <param name="ListName">Name der Liste</param>
-        ''' <returns></returns>
+        ''' <param name="ListName">Eindeutige Bezeichnung der Liste</param>
+        ''' <returns>XML-Dokument als String</returns>
         Friend Function GetDynamicMenu(ListName As String) As String
             Dim XDynaMenu As New XmlDocument
 
@@ -877,7 +892,7 @@ Namespace RibbonData
 
             With XDynaMenu
                 ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
-                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
+                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", NamespaceURI)))
 
                 ' Füge den Löschbutton und einen Seperator hinzu
                 .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, $"DynListDel_{ListName}"))
@@ -901,10 +916,11 @@ Namespace RibbonData
                         For Each VIP As VIPEntry In XMLData.PTelListen.VIPListe
                             .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, VIP, XMLData.PTelListen.VIPListe.IndexOf(VIP), ListName))
                         Next
-
                 End Select
 
             End With
+
+            NLogger.Trace($"{ListName}: {XDynaMenu.OuterXml}")
 
             Return XDynaMenu.InnerXml
         End Function
@@ -912,7 +928,7 @@ Namespace RibbonData
         Private Function CreateDynMenuButton(xDoc As XmlDocument, ID As String, Optional OnActionSuffix As String = "") As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
-            XButton = xDoc.CreateElement("button", "http://schemas.microsoft.com/office/2009/07/customui")
+            XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
 
             XAttribute = xDoc.CreateAttribute("id")
             XAttribute.Value = ID
@@ -939,6 +955,7 @@ Namespace RibbonData
             XButton.Attributes.Append(XAttribute)
 
             Return XButton
+
         End Function
 
         ''' <summary>
@@ -1172,7 +1189,7 @@ Namespace RibbonData
             Dim XSeperator As XmlElement
             Dim XAttribute As XmlAttribute
 
-            XSeperator = xDoc.CreateElement("menuSeparator", "http://schemas.microsoft.com/office/2009/07/customui")
+            XSeperator = xDoc.CreateElement("menuSeparator", xDoc.DocumentElement.NamespaceURI)
 
             XAttribute = xDoc.CreateAttribute("id")
             XAttribute.Value = "separator"
