@@ -4,6 +4,7 @@ Imports System.Windows
 Imports System.Xml.Serialization
 Imports FBoxDial.DfltWerteTelefonie
 Imports Microsoft.Office.Interop
+
 <Serializable()> Public Class Telefonat
     Inherits NotifyBase
 
@@ -211,10 +212,18 @@ Imports Microsoft.Office.Interop
         End Get
     End Property
 
+    Private _Import As Boolean = False
     ''' <summary>
     ''' Gibt an, ob die Daten zu dem Telefonat nachträglich aus der Anrufliste importiert werden.
     ''' </summary>
-    <XmlIgnore> Friend Property Import As Boolean = False
+    <XmlIgnore> Friend Property Import As Boolean
+        Set
+            _Import = Value
+        End Set
+        Get
+            Return _Import OrElse ID.IsLarger(10)
+        End Get
+    End Property
 
     ''' <summary>
     ''' Interne Rufweiterleitung.
@@ -1466,7 +1475,7 @@ Imports Microsoft.Office.Interop
 
 #End Region
 
-#Region "Equals, CompareTo"
+#Region "Equals"
     Public Overrides Function Equals(obj As Object) As Boolean
         Return Equals(TryCast(obj, Telefonat))
     End Function
@@ -1482,9 +1491,21 @@ Imports Microsoft.Office.Interop
                 EigeneTelNr = New Telefonnummer With {.SetNummer = OutEigeneTelNr}
             End If
 
-            Return EigeneTelNr IsNot Nothing AndAlso
-                   EigeneTelNr.Equals(other.EigeneTelNr) AndAlso GegenstelleTelNr.Equals(other.GegenstelleTelNr) AndAlso
-                   ZeitBeginn.IsSameAs(other.ZeitBeginn) AndAlso ZeitEnde.IsSameAs(other.ZeitEnde)
+            ' Die Telefonnummern und die Zeiten müssen grundsätzlich gleich sein
+            If EigeneTelNr IsNot Nothing AndAlso
+               EigeneTelNr.Equals(other.EigeneTelNr) AndAlso GegenstelleTelNr.Equals(other.GegenstelleTelNr) AndAlso
+               ZeitBeginn.IsSameAs(other.ZeitBeginn) AndAlso ZeitEnde.IsSameAs(other.ZeitEnde) Then
+
+                ' Falls beide Telefonate importiert wurden, dann vergleiche zusätzlich die IDs. 
+                ' Bei Live-Telefonaten kommt die ID aus dem Anrufmonitor und entspricht der Anzahl aktuell geführter Telefonate (-1: 0-10)
+                If Import And other.Import Then
+                    Return ID.AreEqual(other.ID)
+                Else
+                    Return True
+                End If
+            Else
+                Return False
+            End If
         Else
             Return False
         End If
