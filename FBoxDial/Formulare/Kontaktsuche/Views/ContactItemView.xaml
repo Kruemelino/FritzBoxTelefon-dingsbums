@@ -6,7 +6,8 @@
              xmlns:fbd="clr-namespace:FBoxDial"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=fbd:ContactItemViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="25" d:DesignWidth="400" >
+             d:DesignHeight="25" d:DesignWidth="425" 
+             ToolTip="{Binding ParentFolder, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -30,6 +31,6 @@
                    Text="{Binding FullName, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />    
         
         <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="5"
-                   Text="{Binding CompanyName, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                   Text="{Binding CompanyName, FallbackValue=N/A, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />       
     </Grid>
 </UserControl>

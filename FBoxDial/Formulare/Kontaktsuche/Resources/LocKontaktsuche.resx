@@ -126,4 +126,8 @@
   <data name="strInputWatermark" xml:space="preserve">
     <value>Name des Kontaktes</value>
   </data>
+  <data name="strToolTippParentFolder" xml:space="preserve">
+    <value>Der Kontakt befindet sich im Ordner:
+{0}</value>
+  </data>
 </root>

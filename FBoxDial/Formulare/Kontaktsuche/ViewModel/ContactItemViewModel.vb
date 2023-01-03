@@ -1,4 +1,6 @@
 ﻿Imports Microsoft.Office.Interop
+Imports Microsoft.Office.Interop.Outlook
+
 Public Class ContactItemViewModel
     Inherits NotifyBase
 
@@ -16,7 +18,8 @@ Public Class ContactItemViewModel
                 FullName = OlKontakt.FullName
                 ' CompanyName zuweisen
                 CompanyName = OlKontakt.CompanyName
-
+                ' Parent Folder Name zuweisen
+                ParentFolder = String.Format(Localize.LocKontaktsuche.strToolTippParentFolder, If(CType(OlKontakt.Parent, MAPIFolder).Name, "Unbekannt"))
             End If
         End Set
     End Property
@@ -38,6 +41,16 @@ Public Class ContactItemViewModel
         End Get
         Set
             SetProperty(_CompanyName, Value)
+        End Set
+    End Property
+
+    Private _ParentFolder As String
+    Public Property ParentFolder As String
+        Get
+            Return _ParentFolder
+        End Get
+        Set
+            SetProperty(_ParentFolder, Value)
         End Set
     End Property
 #End Region

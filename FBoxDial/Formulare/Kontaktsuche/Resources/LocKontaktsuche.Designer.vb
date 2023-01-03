@@ -22,7 +22,7 @@ Namespace Localize
     '''<summary>
     '''  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class LocKontaktsuche
@@ -88,6 +88,16 @@ Namespace Localize
         Public Shared ReadOnly Property strInputWatermark() As String
             Get
                 Return ResourceManager.GetString("strInputWatermark", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Kontakt befindet sich im Ordner:
+        '''{0} ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strToolTippParentFolder() As String
+            Get
+                Return ResourceManager.GetString("strToolTippParentFolder", resourceCulture)
             End Get
         End Property
     End Class
