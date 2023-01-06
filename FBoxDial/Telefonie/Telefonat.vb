@@ -956,7 +956,7 @@ Imports Microsoft.Office.Interop
             If olAppointment IsNot Nothing Then
 
                 With olAppointment
-                    .Subject = $"{Localize.resCommon.strAppointmentSubject} {AnruferName}"
+                    .Subject = $"{Localize.resCommon.strAppointmentSubject} {NameGegenstelle}"
                     .Categories = $"{String.Join("; ", DfltOlItemCategories.ToArray)}"
                     .Start = Now.AddMinutes(XMLData.POptionen.TBAppointmentOffset)
                     .Duration = XMLData.POptionen.TBAppointmentDauer
