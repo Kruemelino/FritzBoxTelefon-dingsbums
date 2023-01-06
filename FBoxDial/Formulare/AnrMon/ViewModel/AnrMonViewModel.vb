@@ -155,6 +155,7 @@ Public Class AnrMonViewModel
     Public Property ShowContactCommand As RelayCommand
     Public Property ClosingCommand As RelayCommand
     Public Property BlockCommand As RelayCommand
+    Public Property AppointmentCommand As RelayCommand
 #End Region
 
     Public Sub New()
@@ -164,6 +165,7 @@ Public Class AnrMonViewModel
         CallCommand = New RelayCommand(AddressOf [Call], AddressOf CanCall)
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)
         BlockCommand = New RelayCommand(AddressOf BlockNumber)
+        AppointmentCommand = New RelayCommand(AddressOf AddAppointment)
 
         ' Window Command
         ClosingCommand = New RelayCommand(AddressOf Closing)
@@ -321,12 +323,13 @@ Public Class AnrMonViewModel
     End Sub
 
     Private Sub BlockNumber(o As Object)
-
         If DialogService.ShowMessageBox(String.Format(Localize.LocAnrMon.strQuestionBlockNumber, AnrMonTelefonat.GegenstelleTelNr.Formatiert)) = Windows.MessageBoxResult.Yes Then
             DatenService.BlockNumber(AnrMonTelefonat.GegenstelleTelNr)
         End If
-
     End Sub
 
+    Private Sub AddAppointment(o As Object)
+        AnrMonTelefonat?.ErstelleErinnerungEintrag()
+    End Sub
 #End Region
 End Class

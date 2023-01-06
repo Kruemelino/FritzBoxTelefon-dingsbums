@@ -76,6 +76,42 @@
         </Rectangle>
     </Viewbox>
 
+    <Viewbox x:Key="HamburgerMenu_16x" x:Shared="false" Width="16" Height="16">
+        <Rectangle Width="16" Height="16">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <DrawingGroup.Children>
+                                <GeometryDrawing Brush="Transparent" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                <GeometryDrawing Brush="{DynamicResource ControlDefaultBackground}" Geometry="F1M2,2L14,2 14,14 2,14z" />
+                                <GeometryDrawing Brush="{DynamicResource ControlGlythColor}" Geometry="F1M13,11L3,11 3,13 13,13z M13,7L3,7 3,9 13,9z M13,5L3,5 3,3 13,3z" />
+                            </DrawingGroup.Children>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Viewbox>
+
+    <Viewbox x:Key="Calendar_16x" x:Shared="false"  Width="16" Height="16" >
+        <Rectangle Width="16" Height="16">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <DrawingGroup.Children>
+                                <GeometryDrawing Brush="Transparent" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                <GeometryDrawing Brush="{DynamicResource ControlDefaultBackground}" Geometry="F1M15,2L15,15 1,15 1,2 4,2 4,1 7,1 7,2 9,2 9,1 12,1 12,2z" />
+                                <GeometryDrawing Brush="{DynamicResource ControlGlythColor}" Geometry="F1M10.5957,11.9639L10.5957,11.2149 9.1267,11.2149 9.1267,11.2019 9.4867,10.9019C10.0507,10.3989 10.5247,9.8769 10.5247,9.2229 10.5247,8.5159 10.0387,7.9999 9.1577,7.9999 8.6297,7.9999 8.1737,8.1799 7.8797,8.4019L8.1377,9.0559C8.3417,8.8999 8.6357,8.7319 8.9707,8.7319 9.4207,8.7319 9.6137,8.9839 9.6137,9.3009 9.6017,9.7569 9.1877,10.1949 8.3357,10.9569L7.8317,11.4119 7.8317,11.9639z M5.9057,11.9639L6.7867,11.9639 6.7867,8.0659 6.0317,8.0659 4.9997,8.5459 5.1497,9.2299 5.8937,8.8759 5.9057,8.8759z M12.9997,6.9999L2.9997,6.9999 2.9997,12.9999 12.9997,12.9999z M13.9997,2.9999L13.9997,13.9999 1.9997,13.9999 1.9997,2.9999 3.9997,2.9999 3.9997,4.9999 6.9997,4.9999 6.9997,2.9999 8.9997,2.9999 8.9997,4.9999 11.9997,4.9999 11.9997,2.9999z M10.9997,1.9999L9.9997,1.9999 9.9997,3.9999 10.9997,3.9999z M5.9997,3.9999L4.9997,3.9999 4.9997,1.9999 5.9997,1.9999z" />
+                                <GeometryDrawing Brush="{DynamicResource ControlDefaultBackground}" Geometry="F1M10.5957,11.9639L7.8317,11.9639 7.8317,11.4119 8.3357,10.9569C9.1877,10.1949 9.6017,9.7569 9.6137,9.3009 9.6137,8.9839 9.4207,8.7319 8.9707,8.7319 8.6357,8.7319 8.3417,8.8999 8.1377,9.0559L7.8797,8.4019C8.1737,8.1799 8.6297,7.9999 9.1577,7.9999 10.0387,7.9999 10.5247,8.5159 10.5247,9.2229 10.5247,9.8769 10.0507,10.3989 9.4867,10.9019L9.1267,11.2019 9.1267,11.2149 10.5957,11.2149z M6.7867,11.9639L5.9057,11.9639 5.9057,8.8759 5.8937,8.8759 5.1497,9.2299 4.9997,8.5459 6.0317,8.0659 6.7867,8.0659z M2.9997,12.9999L12.9997,12.9999 12.9997,6.9999 2.9997,6.9999z M2.9997,6.9999" />
+                            </DrawingGroup.Children>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Viewbox>
     <!--MicroSIP Path-->
     <Viewbox x:Key="ImportFile_16x" x:Shared="false" Width="16" Height="16">
         <Rectangle Width="16" Height="16">

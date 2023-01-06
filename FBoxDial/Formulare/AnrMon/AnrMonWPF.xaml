@@ -86,20 +86,42 @@
                     Command="{Binding CloseCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
 
-            <Button Style="{StaticResource MiniIconButton}"
+            <ToggleButton x:Name="bOptionen" 
+                          Content="{DynamicResource HamburgerMenu_16x}" Tag="{StaticResource HamburgerMenu_16x}"
+                          Style="{StaticResource MiniIconToggleButton}" 
+                          MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave"/>
+           
+            <!--<Button Style="{StaticResource MiniIconButton}"
                     Content="{DynamicResource CallTo_16x}" 
-                    Command="{Binding CallCommand}" />
-
-            <Button Style="{StaticResource MiniIconButton}"
-                    Content="{DynamicResource ContactCard_16x}" 
-                    Command="{Binding ShowContactCommand}" />
+                    Command="{Binding CallCommand}" />-->
 
             <Button Style="{StaticResource MiniIconButton}"
                     Content="{DynamicResource StatusNo_16x}" 
                     Command="{Binding BlockCommand}" 
                     Visibility="{Binding ZeigeBlockButton, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
+            <Popup Name="OptionPopup" 
+                   IsOpen="{Binding ElementName=bOptionen, Path=IsChecked}" 
+                   PlacementTarget="{Binding ElementName=bOptionen}" Placement="Relative"
+                   AllowsTransparency="True" 
+                   PopupAnimation="Slide" 
+                   StaysOpen="False">
+                
+                <StackPanel>
+                    <Button Style="{StaticResource MiniIconButton}" Margin="0,0,4,0"
+                            Content="{DynamicResource CallTo_16x}" 
+                            Command="{Binding CallCommand}" />
+
+                    <Button Style="{StaticResource MiniIconButton}"
+                            Content="{DynamicResource Calendar_16x}" 
+                            Command="{Binding AppointmentCommand}" />
+
+                    <Button Style="{StaticResource MiniIconButton}"
+                            Content="{DynamicResource ContactCard_16x}" 
+                            Command="{Binding ShowContactCommand}" />
+                    
+                </StackPanel>                
+            </Popup>
         </StackPanel>
     </Grid>
-
 </Window>

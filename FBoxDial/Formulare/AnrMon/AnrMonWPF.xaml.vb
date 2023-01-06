@@ -1,6 +1,7 @@
 ﻿Imports System.Windows
 Imports System.Windows.Markup
 Imports System.Threading
+Imports System.Windows.Input
 
 Public Class AnrMonWPF
     Inherits Window
@@ -68,5 +69,13 @@ Public Class AnrMonWPF
     Friend Sub StarteAusblendTimer(Intervall As TimeSpan)
         ' Timer für das Ausblenden starten
         WindowHelper.StartTimer(True, Intervall)
+    End Sub
+
+    Private Sub BOptionen_MouseEnter(sender As Object, e As MouseEventArgs)
+        OptionPopup.StaysOpen = True
+    End Sub
+
+    Private Sub BOptionen_MouseLeave(sender As Object, e As MouseEventArgs)
+        OptionPopup.StaysOpen = False
     End Sub
 End Class
