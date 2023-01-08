@@ -90,10 +90,6 @@
                           Content="{DynamicResource HamburgerMenu_16x}" Tag="{StaticResource HamburgerMenu_16x}"
                           Style="{StaticResource MiniIconToggleButton}" 
                           MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave"/>
-           
-            <!--<Button Style="{StaticResource MiniIconButton}"
-                    Content="{DynamicResource CallTo_16x}" 
-                    Command="{Binding CallCommand}" />-->
 
             <Button Style="{StaticResource MiniIconButton}"
                     Content="{DynamicResource StatusNo_16x}" 

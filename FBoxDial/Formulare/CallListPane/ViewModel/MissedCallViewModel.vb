@@ -182,6 +182,7 @@ Public Class MissedCallViewModel
     Public Property ShowContactCommand As RelayCommand
     Public Property BlockCommand As RelayCommand
     Public Property PlayMessageCommand As RelayCommand
+    Public Property AppointmentCommand As RelayCommand
 #End Region
     Public Sub New(dataService As IAnrMonService, dialogservice As IDialogService)
 
@@ -194,7 +195,7 @@ Public Class MissedCallViewModel
         ShowContactCommand = New RelayCommand(AddressOf ShowContact)
         BlockCommand = New RelayCommand(AddressOf BlockNumber)
         PlayMessageCommand = New RelayCommand(AddressOf PlayMessage)
-
+        AppointmentCommand = New RelayCommand(AddressOf AddAppointment)
     End Sub
 
     Private Async Sub LadeDaten()
@@ -336,6 +337,9 @@ Public Class MissedCallViewModel
 
     End Sub
 
+    Private Sub AddAppointment(o As Object)
+        VerpasstesTelefonat?.ErstelleErinnerungEintrag()
+    End Sub
 #End Region
 
     Private Sub AnzuzeigendeDaten()
