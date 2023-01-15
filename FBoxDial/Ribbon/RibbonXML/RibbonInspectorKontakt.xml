@@ -3,7 +3,7 @@
   <ribbon>
     <tabs>
       <tab idMso="TabContact">
-        <group id="Tab_Contact" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
+        <group id="Tab_Contact" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon" centerVertically="true" autoScale="true">
           <button id="Dial_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnActionI" getEnabled="DialEnabled"/>
           <separator id="Seperator_C1"/>
           <dynamicMenu id="RWS_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" getContent="FillDynamicMenuRWS"/>

@@ -3,7 +3,7 @@
   <ribbon>
     <tabs>
       <tab idMso="TabAppointment">
-        <group id="Tab_Appointment" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
+        <group id="Tab_Appointment" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon" centerVertically="true" autoScale="true">
           <button id="Dial_A" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" getEnabled="DialEnabled" onAction="BtnOnActionI"/>
           <button id="RWS_A" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" onAction="BtnOnActionI" tag="DoNotDeleteTag"/>
           <button id="Contact_A" getLabel="GetItemLabelAppointment" getImage="GetItemImageMsoAppointment" getScreentip="GetItemScreenTipAppointment" size="normal" onAction="BtnOnActionI"/>

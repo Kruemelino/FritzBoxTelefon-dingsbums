@@ -73,6 +73,15 @@ Public Class resImageMso
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Redo ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property CALLListe_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("CALLListe_ImageMso", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
     '''</summary>
     Public Shared ReadOnly Property Config_ImageMso() As String
@@ -235,6 +244,15 @@ Public Class resImageMso
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Undo ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property RINGListe_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("RINGListe_ImageMso", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die CheckNames ähnelt.
     '''</summary>
     Public Shared ReadOnly Property RWS_ImageMso() As String
@@ -321,6 +339,15 @@ Public Class resImageMso
     Public Shared ReadOnly Property UploadSl_ImageMso() As String
         Get
             Return ResourceManager.GetString("UploadSl_ImageMso", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die StarRatedFull ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property VIPListe_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("VIPListe_ImageMso", resourceCulture)
         End Get
     End Property
 End Class

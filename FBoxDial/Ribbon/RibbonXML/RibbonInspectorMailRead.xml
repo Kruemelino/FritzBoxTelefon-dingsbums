@@ -3,7 +3,7 @@
   <ribbon>
     <tabs>
       <tab idMso="TabReadMessage">
-        <group id="Tab_ReadMessage" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
+        <group id="Tab_ReadMessage" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon" centerVertically="true">
           <button id="Dial_M" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnActionI" getEnabled="DialEnabled"/>
         </group>
       </tab>

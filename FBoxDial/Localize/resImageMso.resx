@@ -120,6 +120,9 @@
   <data name="AddVIP_ImageMso" xml:space="preserve">
     <value>ShapeStar</value>
   </data>
+  <data name="CALLListe_ImageMso" xml:space="preserve">
+    <value>Redo</value>
+  </data>
   <data name="Config_ImageMso" xml:space="preserve">
     <value />
   </data>
@@ -174,6 +177,9 @@
   <data name="RemoveVIP_ImageMso" xml:space="preserve">
     <value>StarRatedFull</value>
   </data>
+  <data name="RINGListe_ImageMso" xml:space="preserve">
+    <value>Undo</value>
+  </data>
   <data name="RWS_ImageMso" xml:space="preserve">
     <value>CheckNames</value>
   </data>
@@ -203,5 +209,8 @@
   </data>
   <data name="Upload_ImageMso" xml:space="preserve">
     <value>DistributionListAddNewMember</value>
+  </data>
+  <data name="VIPListe_ImageMso" xml:space="preserve">
+    <value>StarRatedFull</value>
   </data>
 </root>
