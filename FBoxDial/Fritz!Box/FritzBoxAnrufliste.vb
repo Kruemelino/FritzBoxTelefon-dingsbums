@@ -57,7 +57,6 @@ Friend Module FritzBoxAnrufliste
                                                     .ID = [Call].ID,
                                                     .NebenstellenNummer = [Call].Port,
                                                     .ZeitBeginn = CDate([Call].[Date].ToString)}
-            Dim tmpTelNr As Telefonnummer
 
             With tmpTelefonat
 
@@ -84,11 +83,13 @@ Friend Module FritzBoxAnrufliste
                     .AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
 
                     ' Own Number of called party (incoming call)
-                    tmpTelNr = New Telefonnummer With {.SetNummer = [Call].CalledNumber}
-                    .EigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(Tel) Tel.Equals(tmpTelNr))
+                    .EigeneTelNr = XMLData.PTelefonie.GetEigeneTelNr([Call].CalledNumber)
 
                     ' Falls keine Nummer übereinstimmt, dann setze den tmpTelNr
-                    If .EigeneTelNr Is Nothing Then .EigeneTelNr = tmpTelNr
+                    If .EigeneTelNr Is Nothing Then
+                        NLogger.Warn($"Eigene Nummer '{[Call].CalledNumber}' ist nicht bekannt (ID: { .ID}).")
+                        .EigeneTelNr = New Telefonnummer With {.SetNummer = [Call].CalledNumber}
+                    End If
 
                     ' Wert für Serialisierung in separater Eigenschaft ablegen
                     .OutEigeneTelNr = .EigeneTelNr.Unformatiert
@@ -105,12 +106,17 @@ Friend Module FritzBoxAnrufliste
                 If [Call].Type.AreEqual(3) Then 'outgoing
                     .AnrufRichtung = Telefonat.AnrufRichtungen.Ausgehend
                     ' Own Number of called party (outgoing call) 
-                    tmpTelNr = New Telefonnummer With {.SetNummer = [Call].CallerNumber}
-                    .EigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(Tel) Tel.Equals(tmpTelNr))
+                    .EigeneTelNr = XMLData.PTelefonie.GetEigeneTelNr([Call].CallerNumber)
+
                     ' Falls keine Nummer übereinstimmt, dann setze den tmpTelNr
-                    If .EigeneTelNr Is Nothing Then .EigeneTelNr = tmpTelNr
+                    If .EigeneTelNr Is Nothing Then
+                        NLogger.Warn($"Eigene Nummer '{[Call].CallerNumber}' ist nicht bekannt (ID: { .ID}).")
+                        .EigeneTelNr = New Telefonnummer With {.SetNummer = [Call].CallerNumber}
+                    End If
+
                     ' Wert für Serialisierung in separater Eigenschaft ablegen
                     .OutEigeneTelNr = .EigeneTelNr.Unformatiert
+
                     ' Number or name of called party  
                     .GegenstelleTelNr = New Telefonnummer With {.SetNummer = [Call].Called}
 
