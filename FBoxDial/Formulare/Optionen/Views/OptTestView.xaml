@@ -171,11 +171,5 @@
             </StackPanel>
         </Expander>
 
-        <Expander Header="{x:Static localize:LocOptionen.strTest2FAHead}">
-            <StackPanel>
-                <Button Content="{x:Static localize:LocOptionen.strTest2FAStart}"
-                        Command="{Binding Test2FACommand}" Height="25"/>
-            </StackPanel>
-        </Expander>
     </StackPanel>
 </UserControl>

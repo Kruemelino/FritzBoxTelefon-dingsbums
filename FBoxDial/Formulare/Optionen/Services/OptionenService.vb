@@ -485,11 +485,4 @@ Friend Class OptionenService
 
 #End Region
 
-#Region "Test 2FA"
-    Private Sub Start2FATest() Implements IOptionenService.Start2FATest
-
-        Globals.ThisAddIn.FBoxTR064.X_voip.DialSetConfig("DECT: Gert")
-
-    End Sub
-#End Region
 End Class
