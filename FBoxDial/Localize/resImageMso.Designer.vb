@@ -343,7 +343,7 @@ Public Class resImageMso
     End Property
     
     '''<summary>
-    '''  Sucht eine lokalisierte Zeichenfolge, die StarRatedFull ähnelt.
+    '''  Sucht eine lokalisierte Zeichenfolge, die ShapeStar ähnelt.
     '''</summary>
     Public Shared ReadOnly Property VIPListe_ImageMso() As String
         Get

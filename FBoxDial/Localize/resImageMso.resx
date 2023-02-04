@@ -211,6 +211,6 @@
     <value>DistributionListAddNewMember</value>
   </data>
   <data name="VIPListe_ImageMso" xml:space="preserve">
-    <value>StarRatedFull</value>
+    <value>ShapeStar</value>
   </data>
 </root>
