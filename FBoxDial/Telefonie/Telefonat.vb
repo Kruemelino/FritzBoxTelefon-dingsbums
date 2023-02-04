@@ -258,6 +258,30 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Friend ReadOnly Property IstRelevant As Boolean
         Get
             Return EigeneTelNr.EigeneNummerInfo IsNot Nothing AndAlso EigeneTelNr.EigeneNummerInfo.Überwacht AndAlso (Not Blockiert OrElse (XMLData.POptionen.CBJournalBlockNr Or XMLData.POptionen.CBAnrMonBlockNr))
+
+            '' Für Debugzewecke
+            'If EigeneTelNr.EigeneNummerInfo IsNot Nothing Then
+            '    If EigeneTelNr.EigeneNummerInfo.Überwacht Then
+            '        NLogger.Trace($"Die eigene Telefonnummer '{EigeneTelNr.Unformatiert}' wird überwacht.")
+
+            '        If Not Blockiert Then
+            '            NLogger.Trace($"Die Gegenstelle '{GegenstelleTelNr.Unformatiert}' wird durch die Fritz!Box nicht blockiert.")
+            '            Return True
+            '        Else
+            '            ' Das Telefonat wird blockiert
+            '            NLogger.Trace($"Die Gegenstelle '{GegenstelleTelNr.Unformatiert}' wird durch die Fritz!Box  blockiert.")
+            '            ' Sofern die Einstellungen gesetzt sind, dass blockierte Nummern dennoch erfasst werden sollen...
+            '            NLogger.Trace($"Einstellungen: CBJournalBlockNr={XMLData.POptionen.CBJournalBlockNr} CBAnrMonBlockNr={XMLData.POptionen.CBAnrMonBlockNr}")
+            '            Return XMLData.POptionen.CBJournalBlockNr Or XMLData.POptionen.CBAnrMonBlockNr
+            '        End If
+            '    Else
+            '        NLogger.Trace($"Die eigene Telefonnummer '{EigeneTelNr.Unformatiert}' wird nicht überwacht.")
+            '    End If
+            'Else
+            '    NLogger.Trace($"Datenstz für eigene Nummer '{EigeneTelNr.Unformatiert}' nicht vorhanden (Nothing).")
+            'End If
+
+            'Return False
         End Get
     End Property
 

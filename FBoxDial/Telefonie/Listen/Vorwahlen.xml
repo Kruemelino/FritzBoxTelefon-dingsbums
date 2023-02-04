@@ -10322,6 +10322,7 @@
 		<ONKZ n="137" Name="Massenverkehrs-Rufnummer"/>
 		<ONKZ n="138" Name="Massenverkehrs-Rufnummer"/>
 		<ONKZ n="150" Name="Mobilfunk"/>
+		<ONKZ n="15019" Name="Mobilfunk"/>
 		<ONKZ n="151" Name="Mobilfunk"/>
 		<ONKZ n="152" Name="Mobilfunk"/>
 		<ONKZ n="153" Name="Mobilfunk"/>
@@ -10374,7 +10375,9 @@
 		<ONKZ n="1515" Name="Mobilfunk"/>
 		<ONKZ n="1516" Name="Mobilfunk"/>
 		<ONKZ n="1517" Name="Mobilfunk"/>
-		<ONKZ n="1518" Name="Mobilfunk"/>
+		<ONKZ n="15180" Name="Mobilfunk"/>
+		<ONKZ n="15181" Name="Mobilfunk"/>
+		<ONKZ n="15310" Name="Mobilfunk"/>
 		<ONKZ n="1520" Name="Mobilfunk"/>
 		<ONKZ n="1521" Name="Mobilfunk"/>
 		<ONKZ n="1522" Name="Mobilfunk"/>
@@ -10382,18 +10385,20 @@
 		<ONKZ n="1525" Name="Mobilfunk"/>
 		<ONKZ n="1526" Name="Mobilfunk"/>
 		<ONKZ n="1529" Name="Mobilfunk"/>
-		<ONKZ n="1531" Name="Mobilfunk"/>
-		<ONKZ n="1551" Name="Mobilfunk"/>
-		<ONKZ n="1556" Name="Mobilfunk"/>
-		<ONKZ n="1563" Name="Mobilfunk"/>
-		<ONKZ n="1567" Name="Mobilfunk"/>
+		<ONKZ n="15310" Name="Mobilfunk"/>
+		<ONKZ n="15510" Name="Mobilfunk"/>
+		<ONKZ n="15511" Name="Mobilfunk"/>
+		<ONKZ n="15566" Name="Mobilfunk"/>
+		<ONKZ n="15630" Name="Mobilfunk"/>
+		<ONKZ n="15678" Name="Mobilfunk"/>
+		<ONKZ n="15679" Name="Mobilfunk"/>
 		<ONKZ n="1570" Name="Mobilfunk"/>
 		<ONKZ n="1573" Name="Mobilfunk"/>
 		<ONKZ n="1575" Name="Mobilfunk"/>
 		<ONKZ n="1577" Name="Mobilfunk"/>
 		<ONKZ n="1578" Name="Mobilfunk"/>
 		<ONKZ n="1579" Name="Mobilfunk"/>
-		<ONKZ n="1588" Name="Mobilfunk"/>
+		<ONKZ n="15888" Name="Mobilfunk"/>
 		<ONKZ n="1590" Name="Mobilfunk"/>
 		<ONKZ n="1672" Name="Mobilfunk"/>
 		<ONKZ n="1801" Name="Servicedienste"/>
