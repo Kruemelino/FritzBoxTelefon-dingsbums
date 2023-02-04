@@ -325,6 +325,15 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die von Person nicht im Telefonbuch ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fromNotInPhonebook() As String
+        Get
+            Return ResourceManager.GetString("fromNotInPhonebook", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die von kein-VIP ähnelt.
     '''</summary>
     Public Shared ReadOnly Property fromNotVIP() As String
