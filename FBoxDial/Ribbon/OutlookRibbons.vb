@@ -22,8 +22,6 @@ Imports FBoxDial.RibbonData
     ''' <summary>
     ''' Lädt das XML-Markup aus einer XML-Anpassungsdatei oder aus XML-Markup, das in die Prozedur eingebettet ist, mit der die Menüband-Benutzeroberfläche angepasst wird.
     ''' </summary>
-    ''' <param name="ribbonID"></param>
-    ''' <returns>String</returns>
     Public Function GetCustomUI(ribbonID As String) As String Implements IRibbonExtensibility.GetCustomUI
 
         Select Case ribbonID
@@ -66,10 +64,10 @@ Imports FBoxDial.RibbonData
 
 #Region "Ribbon Office" ' Ribbon Inspektorfenster
     ''' <summary>
-    ''' Funktion ermittelt anhand des Controls und dessen Context das JournalItem.
+    ''' Funktion ermittelt anhand des Controls und dessen Context das Outlook-Item.
     ''' </summary>
-    ''' <param name="control">Das Control, von dem das JournalItem ermittelt werden soll.</param>
-    ''' <returns>Das JournalItem</returns>
+    ''' <param name="control">Das Control, von dem das Outlook-Item ermittelt werden soll.</param>
+    ''' <returns>Das Outlook-Item</returns>
     Private Function GetOutlookItem(Of T)(control As IRibbonControl) As T
         Select Case True
             Case TypeOf control.Context Is Outlook.Selection
