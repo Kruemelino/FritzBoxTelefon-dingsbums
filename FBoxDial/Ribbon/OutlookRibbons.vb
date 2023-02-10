@@ -6,7 +6,7 @@ Imports FBoxDial.RibbonData
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-#Region "Ribbon Grundlagen für Outlook 2010 bis 2019"
+#Region "Ribbon Grundlagen für Outlook (ab 2010)"
     Private Property RibbonObjekt As IRibbonUI
     Sub Ribbon_Load(Ribbon As IRibbonUI)
         RibbonObjekt = Ribbon
@@ -26,20 +26,22 @@ Imports FBoxDial.RibbonData
 
         Select Case ribbonID
             Case "Microsoft.Outlook.Explorer"
-                Return My.Resources.RibbonExplorer
+                GetCustomUI = My.Resources.RibbonExplorer
             Case "Microsoft.Outlook.Mail.Read"
-                Return My.Resources.RibbonInspectorMailRead
+                GetCustomUI = My.Resources.RibbonInspectorMailRead
             Case "Microsoft.Outlook.Journal"
-                Return My.Resources.RibbonInspectorJournal
+                GetCustomUI = My.Resources.RibbonInspectorJournal
             Case "Microsoft.Outlook.Appointment"
-                Return My.Resources.RibbonInspectorAppointment
+                GetCustomUI = My.Resources.RibbonInspectorAppointment
             Case "Microsoft.Outlook.Contact"
-                Return My.Resources.RibbonInspectorKontakt
+                GetCustomUI = My.Resources.RibbonInspectorKontakt
             Case "Microsoft.Mso.IMLayerUI"
-                Return My.Resources.RibbonIMLayerUI
+                GetCustomUI = My.Resources.RibbonIMLayerUI
             Case Else
-                Return String.Empty
+                GetCustomUI = String.Empty
         End Select
+
+        If GetCustomUI.IsNotStringNothingOrEmpty Then NLogger.Trace($"RibbonXML für {ribbonID}:{vbCrLf}{GetCustomUI}")
     End Function
 
     Public Sub RefreshRibbon()
@@ -62,7 +64,7 @@ Imports FBoxDial.RibbonData
 
 #End Region
 
-#Region "Ribbon Office" ' Ribbon Inspektorfenster
+#Region "Ribbon Office Inspektor" ' Ribbon Inspektorfenster
     ''' <summary>
     ''' Funktion ermittelt anhand des Controls und dessen Context das Outlook-Item.
     ''' </summary>
@@ -236,7 +238,7 @@ Imports FBoxDial.RibbonData
         Return False
     End Function
 
-#End Region 'Ribbon Inspector
+#End Region
 
 #Region "Ribbon: Label, ScreenTipp, ImageMso, OnAction"
 #Disable Warning IDE0060 ' Nicht verwendete Parameter entfernen
