@@ -614,13 +614,13 @@ Imports Microsoft.Office.Interop
             ' Kontaktsuche in den Fritz!Box Telefonbüchern
             If Not AnruferErmittelt Then
                 If XMLData.POptionen.CBKontaktSucheFritzBox Then
-
-                    If Globals.ThisAddIn.PhoneBookXML Is Nothing Then 'OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
-                        ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
-                        ' Dann lade die Telefonbücher herunter
-                        NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
-                        Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher()
-                    End If
+                    ' TODO: Der geht hier eigenlich nie rein...
+                    'If Globals.ThisAddIn.PhoneBookXML Is Nothing Then 'OrElse ThisAddIn.PhoneBookXML.NurHeaderDaten Then
+                    '    ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind (Header-Daten),
+                    '    ' Dann lade die Telefonbücher herunter
+                    '    NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
+                    '    Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher()
+                    'End If
 
                     ' Wenn die Telefonbücher immer noch nicht zur Verfügung stehen, brich an dieser Stelle ab
                     If Globals.ThisAddIn.PhoneBookXML IsNot Nothing Then 'AndAlso Not ThisAddIn.PhoneBookXML.NurHeaderDaten Then

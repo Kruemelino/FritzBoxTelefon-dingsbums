@@ -114,7 +114,7 @@ Public NotInheritable Class ThisAddIn
                 TaskTelefonbücher = Telefonbücher.LadeTelefonbücher()
             Else
                 ' Falls die Kontaktsuche nicht über die Fritz!Box Telefonbücher laufen soll, dann lade die Telefonbuchnamen herunter
-                TaskTelefonbücher = Task.Run(Function() Telefonbücher.LadeTelefonbücherNamen())
+                TaskTelefonbücher = Task.Run(Function() Telefonbücher.LadeTelefonbuchNamen())
             End If
 
             ' Tellows ScoreList laden

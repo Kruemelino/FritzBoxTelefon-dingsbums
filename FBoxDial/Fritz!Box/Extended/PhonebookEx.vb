@@ -7,7 +7,6 @@
 
     Friend Property ID As Integer
     Friend Property Rufsperren As Boolean = False
-    Friend Property Name As String
 
 #Region "Funktionen"
     ''' <summary>

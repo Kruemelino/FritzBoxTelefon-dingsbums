@@ -37,7 +37,7 @@ Imports System.Security
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 <Assembly: AssemblyVersion("5.0.3.20")>
-<Assembly: AssemblyFileVersion("5.0.3.20")>
+<Assembly: AssemblyFileVersion("5.0.3.21")>
 <Assembly: NeutralResourcesLanguage("de-DE")>
 Friend Module DesignTimeConstants
     Public Const RibbonTypeSerializer As String = "Microsoft.VisualStudio.Tools.Office.Ribbon.Serialization.RibbonTypeCodeDomSerializer, Microsoft.VisualStudio.Tools.Office.Designer, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"

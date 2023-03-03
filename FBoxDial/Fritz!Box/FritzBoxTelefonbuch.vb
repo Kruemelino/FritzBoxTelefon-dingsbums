@@ -59,7 +59,7 @@ Namespace Telefonbücher
             End If
         End Function
 
-        Friend Function LadeTelefonbücherNamen() As IEnumerable(Of PhonebookEx)
+        Friend Function LadeTelefonbuchNamen() As IEnumerable(Of PhonebookEx)
             '' Prüfe, ob Fritz!Box verfügbar
             With Globals.ThisAddIn.FBoxTR064.X_contact
                 ' Ermittle alle verfügbaren Telefonbücher
@@ -77,12 +77,20 @@ Namespace Telefonbücher
 
                             NLogger.Debug($"Name des Telefonbuches {PhonebookID} ermittelt: '{PhonebookName}'")
 
-                            Dim AktuellePhoneBookXML As New PhonebookEx(Nothing) With {.ID = PhonebookID, .Rufsperren = False, .Name = PhonebookName}
+                            Dim AktuellePhoneBookXML As New PhonebookEx(Nothing) With {.ID = PhonebookID,
+                                                                                       .Rufsperren = False,
+                                                                                       .Phonebook = New FBoxAPI.Phonebook With {.Name = PhonebookName}}
 
                             AlleTelefonbücher.Add(AktuellePhoneBookXML)
 
                         End If
                     Next
+
+                    ' Füge das Telefonbuch der Rufsperre hinzu.
+                    AlleTelefonbücher.Add(New PhonebookEx(Nothing) With {.ID = 258,
+                                                                         .Rufsperren = True,
+                                                                         .Phonebook = New FBoxAPI.Phonebook With {.Name = Localize.LocFBoxData.strCallBarringList}})
+
                     ' Setze diese unvollständige Liste global.
                     If Globals.ThisAddIn.PhoneBookXML Is Nothing Then Globals.ThisAddIn.PhoneBookXML = AlleTelefonbücher
 

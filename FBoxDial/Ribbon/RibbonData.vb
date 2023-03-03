@@ -869,7 +869,7 @@ Namespace RibbonData
                 If Globals.ThisAddIn.PhoneBookXML IsNot Nothing Then
                     ' Trage die einzelnen Bücher ein
                     For Each Buch As PhonebookEx In Globals.ThisAddIn.PhoneBookXML
-                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Name, Buch.ID, Buch.Rufsperren, ListName))
+                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Phonebook.Name, Buch.ID, Buch.Rufsperren, ListName))
                     Next
                 Else
                     NLogger.Warn($"Telefonbücher sind nicht bekannt.")
