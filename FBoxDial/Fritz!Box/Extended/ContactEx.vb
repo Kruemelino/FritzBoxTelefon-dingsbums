@@ -159,7 +159,15 @@ Friend Module ContactEx
     End Function
 
     <Extension> Friend Function CompleteImageURL(Person As FBoxAPI.Person, SessionID As String) As String
-        Return If(SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID), $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Person.ImageURL}&{SessionID}", String.Empty)
+
+        If SessionID.IsNotEqual(FritzBoxDefault.DfltFritzBoxSessionID) Then
+            ' Bei DAV-Telefonbüchern ist dies der Fall. Das Herunterladen ist dann nicht möglich.
+            If Not Person.ImageURL.StartsWith("/download.lua?path=https://localhost/") Then
+                Return $"https://{XMLData.POptionen.ValidFBAdr}:{FritzBoxDefault.DfltTR064PortSSL}{Person.ImageURL}&{SessionID}"
+            End If
+        End If
+
+        Return String.Empty
     End Function
 
     <Extension> Friend Function GetKontaktTelNrList(Contact As FBoxAPI.Contact) As List(Of Telefonnummer)
