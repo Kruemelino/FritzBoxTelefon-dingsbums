@@ -105,7 +105,7 @@ Public Class KontaktViewModel
         EditCommand = New RelayCommand(AddressOf Edit, AddressOf CanEdit)
         SaveCommand = New RelayCommand(AddressOf Save, AddressOf IsEdit)
         CancelCommand = New RelayCommand(AddressOf CancelEdit, AddressOf IsEdit)
-        UpdateCommand = New RelayCommand(AddressOf Update)
+        UpdateCommand = New RelayCommand(AddressOf Update, AddressOf CanUpdate)
 
         DeleteCommand = New RelayCommand(AddressOf Delete, AddressOf CanDelete)
         DialCommand = New RelayCommand(AddressOf Dial, AddressOf CanDial)
@@ -160,7 +160,7 @@ Public Class KontaktViewModel
 
     End Sub
     Private Function CanDelete(o As Object) As Boolean
-        Return FBoxKontakt IsNot Nothing
+        Return FBoxTelefonbuch IsNot Nothing AndAlso Not FBoxTelefonbuch.Telefonbuch.IsDAV And FBoxKontakt IsNot Nothing
     End Function
 #End Region
 
@@ -187,7 +187,10 @@ Public Class KontaktViewModel
     End Sub
 
     Private Function CanAddKontakt(o As Object) As Boolean
-        Return IsDisplayMode AndAlso FBoxTelefonbuch IsNot Nothing AndAlso FBoxTelefonbuch.Contacts IsNot Nothing
+        Return IsDisplayMode AndAlso
+               FBoxTelefonbuch IsNot Nothing AndAlso
+               Not FBoxTelefonbuch.Telefonbuch.IsDAV AndAlso
+               FBoxTelefonbuch.Contacts IsNot Nothing
     End Function
 #End Region
 
@@ -197,8 +200,11 @@ Public Class KontaktViewModel
         If IsDisplayMode Then
             FBoxKontakt.Uniqueid = DatenService.SetKontakt(FBoxTelefonbuch.ID, FBoxKontakt.Kontakt.GetXMLKontakt)
         End If
-
     End Sub
+    Private Function CanUpdate(o As Object) As Boolean
+        Return FBoxTelefonbuch IsNot Nothing AndAlso
+               Not FBoxTelefonbuch.Telefonbuch.IsDAV
+    End Function
 #End Region
 
 #Region "Kontakt speichern"
@@ -234,7 +240,7 @@ Public Class KontaktViewModel
     End Function
 
     Private Function CanEdit(o As Object) As Boolean
-        Return FBoxKontakt IsNot Nothing And Not IsEditMode
+        Return FBoxTelefonbuch IsNot Nothing AndAlso Not FBoxTelefonbuch.Telefonbuch.IsDAV And FBoxKontakt IsNot Nothing And Not IsEditMode
         'Return Not IsEditMode
     End Function
 

@@ -32,10 +32,8 @@ Namespace Telefonbücher
 
                             If AktuellePhoneBookXML IsNot Nothing Then
                                 ' Verarbeite die Telefonbücher
-                                For Each Telefonbuch In AktuellePhoneBookXML.Phonebooks.ConvertAll(Function(P) New PhonebookEx With {.Phonebook = P})
-
-                                    ' Setze die ID
-                                    Telefonbuch.ID = PhonebookID
+                                For Each Telefonbuch In AktuellePhoneBookXML.Phonebooks.ConvertAll(Function(P) New PhonebookEx With {.Phonebook = P,
+                                                                                                                                     .ID = PhonebookID})
                                     ' Füge die Telefonbücher zusammen
                                     AlleTelefonbücher.Add(Telefonbuch)
                                 Next

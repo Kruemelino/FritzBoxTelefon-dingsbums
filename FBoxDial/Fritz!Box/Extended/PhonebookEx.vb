@@ -12,6 +12,11 @@
     Friend Property ID As Integer
     Friend Property Rufsperren As Boolean = False
     Friend Property NurName As Boolean = False
+    Friend ReadOnly Property IsDAV As Boolean
+        Get
+            Return Phonebook.Owner.ToInt.IsInRange(240, 257)
+        End Get
+    End Property
 
 #Region "Funktionen"
     ''' <summary>
