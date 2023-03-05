@@ -1,12 +1,17 @@
 ﻿Public Class PhonebookEx
     Friend Property Phonebook As FBoxAPI.Phonebook
 
+    Public Sub New()
+
+    End Sub
+
     Public Sub New(phonebook As FBoxAPI.Phonebook)
         _Phonebook = phonebook
     End Sub
 
     Friend Property ID As Integer
     Friend Property Rufsperren As Boolean = False
+    Friend Property NurName As Boolean = False
 
 #Region "Funktionen"
     ''' <summary>

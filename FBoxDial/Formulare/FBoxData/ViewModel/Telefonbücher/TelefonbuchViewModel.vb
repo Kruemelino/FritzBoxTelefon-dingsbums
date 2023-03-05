@@ -99,7 +99,7 @@ Public Class TelefonbuchViewModel
 #Region "Telefonbuch anlegen"
     Private Sub NeuesTelefonbuch(o As Object)
         ' Erzeuge ein neues Telefonbuch
-        Dim Telefonbuch As New PhonebookEx(New FBoxAPI.Phonebook)
+        Dim Telefonbuch As New PhonebookEx With {.Phonebook = New FBoxAPI.Phonebook}
 
         ' Füge im Viewmodel ein neues Telefonbuch hinzu.
         Telefonbücher.Add(New PhonebookViewModel(DatenService, Telefonbuch) With {.Name = "TELEFONBUCHNAME", .IsBookEditMode = True, .ID = -1})

@@ -45,7 +45,7 @@
                     End If
                 End With
             Else
-                NLogger.Info("Benutzername zum Login konnte nucht ermittelt werden, da TR-064 nicht bereit.")
+                NLogger.Info("Benutzername zum Login konnte nicht ermittelt werden, da TR-064 nicht bereit.")
                 Return String.Empty
             End If
         End Get

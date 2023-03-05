@@ -5,6 +5,10 @@ Namespace Telefonbücher
     Friend Module FritzBoxTelefonbuch
         Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
+        ''' <summary>
+        ''' Erstellt eine Liste aller auf der Fritz!Box verfügbaren Telefonbücher.
+        ''' Die einzelnen Einträge werden heruntergeladen.
+        ''' </summary>
         Friend Async Function LadeTelefonbücher() As Task(Of IEnumerable(Of PhonebookEx))
 
             ' Prüfe, ob Fritz!Box verfügbar
@@ -28,7 +32,7 @@ Namespace Telefonbücher
 
                             If AktuellePhoneBookXML IsNot Nothing Then
                                 ' Verarbeite die Telefonbücher
-                                For Each Telefonbuch In AktuellePhoneBookXML.Phonebooks.ConvertAll(Function(P) New PhonebookEx(P))
+                                For Each Telefonbuch In AktuellePhoneBookXML.Phonebooks.ConvertAll(Function(P) New PhonebookEx With {.Phonebook = P})
 
                                     ' Setze die ID
                                     Telefonbuch.ID = PhonebookID
@@ -59,6 +63,10 @@ Namespace Telefonbücher
             End If
         End Function
 
+        ''' <summary>
+        ''' Erstellt eine Liste aller auf der Fritz!Box verfügbaren Telefonbücher.
+        ''' Die einzelnen Einträge werden jedoch nicht heruntergeladen.
+        ''' </summary>
         Friend Function LadeTelefonbuchNamen() As IEnumerable(Of PhonebookEx)
             '' Prüfe, ob Fritz!Box verfügbar
             With Globals.ThisAddIn.FBoxTR064.X_contact
@@ -77,9 +85,10 @@ Namespace Telefonbücher
 
                             NLogger.Debug($"Name des Telefonbuches {PhonebookID} ermittelt: '{PhonebookName}'")
 
-                            Dim AktuellePhoneBookXML As New PhonebookEx(Nothing) With {.ID = PhonebookID,
-                                                                                       .Rufsperren = False,
-                                                                                       .Phonebook = New FBoxAPI.Phonebook With {.Name = PhonebookName}}
+                            Dim AktuellePhoneBookXML As New PhonebookEx() With {.ID = PhonebookID,
+                                                                                .Rufsperren = False,
+                                                                                .NurName = True,
+                                                                                .Phonebook = New FBoxAPI.Phonebook With {.Name = PhonebookName}}
 
                             AlleTelefonbücher.Add(AktuellePhoneBookXML)
 
@@ -87,9 +96,10 @@ Namespace Telefonbücher
                     Next
 
                     ' Füge das Telefonbuch der Rufsperre hinzu.
-                    AlleTelefonbücher.Add(New PhonebookEx(Nothing) With {.ID = 258,
-                                                                         .Rufsperren = True,
-                                                                         .Phonebook = New FBoxAPI.Phonebook With {.Name = Localize.LocFBoxData.strCallBarringList}})
+                    AlleTelefonbücher.Add(New PhonebookEx() With {.ID = 258,
+                                                                  .Rufsperren = True,
+                                                                  .NurName = True,
+                                                                  .Phonebook = New FBoxAPI.Phonebook With {.Name = Localize.LocFBoxData.strCallBarringList}})
 
                     ' Setze diese unvollständige Liste global.
                     If Globals.ThisAddIn.PhoneBookXML Is Nothing Then Globals.ThisAddIn.PhoneBookXML = AlleTelefonbücher
@@ -112,7 +122,7 @@ Namespace Telefonbücher
 
                 If CallBarringXML IsNot Nothing Then
                     ' Verarbeite die Sperrliste
-                    For Each Telefonbuch As PhonebookEx In CallBarringXML.Phonebooks.ConvertAll(Function(P) New PhonebookEx(P))
+                    For Each Telefonbuch As PhonebookEx In CallBarringXML.Phonebooks.ConvertAll(Function(P) New PhonebookEx() With {.Phonebook = P})
 
                         ' Angabe, dass es sich um die Rufsperren handelt
                         Telefonbuch.Rufsperren = True
@@ -162,6 +172,7 @@ Namespace Telefonbücher
                 Dim IdsA As Integer() = {}
                 Dim PhonebookURL As String = String.Empty
                 Dim NameOK As Boolean = True
+
                 If .GetPhonebookList(IdsA) Then
 
                     ' Prüfe, ob bereits ein Telefonbuch mit dem Namen vorhanden ist.

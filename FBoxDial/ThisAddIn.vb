@@ -113,7 +113,9 @@ Public NotInheritable Class ThisAddIn
             If XMLData.POptionen.CBKontaktSucheFritzBox Then
                 TaskTelefonbücher = Telefonbücher.LadeTelefonbücher()
             Else
-                ' Falls die Kontaktsuche nicht über die Fritz!Box Telefonbücher laufen soll, dann lade die Telefonbuchnamen herunter
+                ' Falls die Kontaktsuche nicht über die Fritz!Box Telefonbücher laufen soll,
+                ' dann lade die Telefonbuchnamen herunter.
+                ' Die Namen werden für den Ribbon/Button Kontaktupload benötigt.
                 TaskTelefonbücher = Task.Run(Function() Telefonbücher.LadeTelefonbuchNamen())
             End If
 
