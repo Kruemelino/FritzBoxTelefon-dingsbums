@@ -511,7 +511,7 @@ Namespace RibbonData
 
                     With CType(Context, Outlook.ContactItem)
                         ' Hat der Kontakt Telefonnummern?
-                        Return .GetKontaktTelNrList.Any
+                        Return .GetKontaktTelNrList(False).Any
                     End With
 
                 Case TypeOf Context Is Outlook.JournalItem
@@ -706,7 +706,7 @@ Namespace RibbonData
                 .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", NamespaceURI)))
 
                 ' Ermittle alle Telefonnummern des Kontaktes
-                ListofTelefonnummer = Kontakt.GetKontaktTelNrList
+                ListofTelefonnummer = Kontakt.GetKontaktTelNrList(False)
 
                 For Each TelNr In ListofTelefonnummer
                     .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, TelNr, ListofTelefonnummer.IndexOf(TelNr), ListName))
@@ -868,7 +868,7 @@ Namespace RibbonData
                 ' Ermittle die verfügbaren Quellen für die Telefonbuchnamen
                 If Globals.ThisAddIn.PhoneBookXML IsNot Nothing Then
                     ' Trage die einzelnen Bücher ein
-                    For Each Buch As PhonebookEx In Globals.ThisAddIn.PhoneBookXML
+                    For Each Buch As PhonebookEx In Globals.ThisAddIn.PhoneBookXML.Where(Function(d) Not d.IsDAV)
                         .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Phonebook.Name, Buch.ID, Buch.Rufsperren, ListName))
                     Next
                 Else

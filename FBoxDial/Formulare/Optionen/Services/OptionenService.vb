@@ -397,7 +397,7 @@ Friend Class OptionenService
                 Dim C As ContactItem = OLC.Item(RndGen.Next(0, OLC.Count))
 
                 ' Ermittle eine zufällige Telefonnummer des Kontaktes
-                Dim NL = C.GetKontaktTelNrList
+                Dim NL = C.GetKontaktTelNrList(True)
                 If NL.Any Then
                     TelNr = NL.Item(RndGen.Next(0, NL.Count)).Unformatiert
                 Else

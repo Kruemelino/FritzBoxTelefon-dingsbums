@@ -329,56 +329,28 @@ Friend Module KontaktFunktionen
         MAPIFolderList.AddRange(MAPIFolderChildList)
     End Sub
 
-    <Extension> Friend Function GetKontaktTelNrList(olContact As ContactItem) As List(Of Telefonnummer)
+    <Extension> Friend Function GetKontaktTelNrList(olContact As ContactItem, MitFax As Boolean) As List(Of Telefonnummer)
 
-        Dim alleTelNr(14) As String ' alle im Kontakt enthaltenen Telefonnummern
-        Dim alleNrTypen(14) As TelNrType ' die Bezeichnungen der Telefonnummern
-        Dim tmpTelNr As Telefonnummer
+        Dim TelNrArray As List(Of Object) = olContact.GetTelNrArray.ToList
+        Return TelNrArray.Where(Function(N) N IsNot Nothing AndAlso TelNrArray.IndexOf(N).IsLessOrEqual(If(MitFax, 13, 18))) _
+                         .Select(Function(S) New Telefonnummer With {.SetNummer = S.ToString,
+                                                                     .Typ = New TelNrType With {.TelNrType = CType(TelNrArray.IndexOf(S), OutlookNrType)}}).ToList
 
-        With olContact
-            alleTelNr(1) = .AssistantTelephoneNumber : alleNrTypen(1).TelNrType = OutlookNrType.AssistantTelephoneNumber
-            alleTelNr(2) = .BusinessTelephoneNumber : alleNrTypen(2).TelNrType = OutlookNrType.BusinessTelephoneNumber
-            alleTelNr(3) = .Business2TelephoneNumber : alleNrTypen(3).TelNrType = OutlookNrType.Business2TelephoneNumber
-            alleTelNr(4) = .CallbackTelephoneNumber : alleNrTypen(4).TelNrType = OutlookNrType.CallbackTelephoneNumber
-            alleTelNr(5) = .CarTelephoneNumber : alleNrTypen(5).TelNrType = OutlookNrType.CarTelephoneNumber
-            alleTelNr(6) = .CompanyMainTelephoneNumber : alleNrTypen(6).TelNrType = OutlookNrType.CompanyMainTelephoneNumber
-            alleTelNr(7) = .HomeTelephoneNumber : alleNrTypen(7).TelNrType = OutlookNrType.HomeTelephoneNumber
-            alleTelNr(8) = .Home2TelephoneNumber : alleNrTypen(8).TelNrType = OutlookNrType.Home2TelephoneNumber
-            alleTelNr(9) = .ISDNNumber : alleNrTypen(9).TelNrType = OutlookNrType.ISDNNumber
-            alleTelNr(10) = .MobileTelephoneNumber : alleNrTypen(10).TelNrType = OutlookNrType.MobileTelephoneNumber
-            alleTelNr(11) = .OtherTelephoneNumber : alleNrTypen(11).TelNrType = OutlookNrType.OtherTelephoneNumber
-            alleTelNr(12) = .PagerNumber : alleNrTypen(12).TelNrType = OutlookNrType.PagerNumber
-            alleTelNr(13) = .PrimaryTelephoneNumber : alleNrTypen(13).TelNrType = OutlookNrType.PrimaryTelephoneNumber
-            alleTelNr(14) = .RadioTelephoneNumber : alleNrTypen(14).TelNrType = OutlookNrType.RadioTelephoneNumber
-        End With
-
-        GetKontaktTelNrList = New List(Of Telefonnummer)
-        For i = LBound(alleTelNr) To UBound(alleTelNr)
-            If alleTelNr(i).IsNotStringNothingOrEmpty Then
-                tmpTelNr = New Telefonnummer With {.SetNummer = alleTelNr(i), .Typ = alleNrTypen(i)}
-                GetKontaktTelNrList.Add(tmpTelNr)
-            End If
-        Next
     End Function
 
     <Extension> Friend Function GetKontaktTelNrList(olExchangeNutzer As ExchangeUser) As List(Of Telefonnummer)
 
-        Dim alleTelNr(2) As String ' alle im Exchangenutzer enthaltenen Telefonnummern
-        Dim alleNrTypen(2) As TelNrType ' die Bezeichnungen der Telefonnummern
-        Dim tmpTelNr As Telefonnummer
-
+        Dim tmpTelNr(18) As Object
         With olExchangeNutzer
-            alleTelNr(1) = .BusinessTelephoneNumber : alleNrTypen(1).TelNrType = OutlookNrType.BusinessTelephoneNumber
-            alleTelNr(2) = .MobileTelephoneNumber : alleNrTypen(2).TelNrType = OutlookNrType.MobileTelephoneNumber
+            tmpTelNr(1) = .BusinessTelephoneNumber
+            tmpTelNr(9) = .MobileTelephoneNumber
         End With
 
-        GetKontaktTelNrList = New List(Of Telefonnummer)
-        For i = LBound(alleTelNr) To UBound(alleTelNr)
-            If alleTelNr(i).IsNotStringNothingOrEmpty Then
-                tmpTelNr = New Telefonnummer With {.SetNummer = alleTelNr(i), .Typ = alleNrTypen(i)}
-                GetKontaktTelNrList.Add(tmpTelNr)
-            End If
-        Next
+        Dim TelNrArray As List(Of Object) = tmpTelNr.ToList
+        Return TelNrArray.Where(Function(N) N IsNot Nothing) _
+                         .Select(Function(S) New Telefonnummer With {.SetNummer = S.ToString,
+                                                                     .Typ = New TelNrType With {.TelNrType = CType(TelNrArray.IndexOf(S), OutlookNrType)}}).ToList
+
     End Function
 
     <Extension> Friend Function StoreID(olKontakt As ContactItem) As String
@@ -576,7 +548,7 @@ Friend Module KontaktFunktionen
 
                 ' Weise die Telefonnummern zu
                 With .Numbers
-                    For Each TelNr In GetKontaktTelNrList(olContact)
+                    For Each TelNr In GetKontaktTelNrList(olContact, True)
                         .Add(New FBoxAPI.NumberType With {.Number = TelNr.Unformatiert, .Type = TelNr.Typ.XML})
                     Next
                 End With

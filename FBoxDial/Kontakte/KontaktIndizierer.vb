@@ -43,24 +43,11 @@ Friend Module KontaktIndizierer
             ' Lade alle Telefonnummern des Kontaktes
             ' Das Laden der Telefonnummern mittels PropertyAccessor ist nicht sinnvoll.
             ' Die Daten liegen darin erst nach dem Speichern des Kontaktes vor.
-            ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNr), Object())
+            ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
             ' Die Telefonnummern werden stattdessen aus den Eigenschaften des Kontaktes direkt ausgelesen.
-            colArgs = .GetTelNrArray
 
             ' Entferne alle Formatierungen der Telefonnummern
-            For i = LBound(colArgs) To UBound(colArgs)
-                If colArgs(i) IsNot Nothing Then
-
-                    If colArgs(i).ToString.IsNotStringNothingOrEmpty Then
-                        Using tempTelNr = New Telefonnummer() With {.SetNummer = colArgs(i).ToString}
-                            colArgs(i) = tempTelNr.Unformatiert
-                        End Using
-                    End If
-
-                Else
-                    colArgs(i) = String.Empty
-                End If
-            Next
+            colArgs = .GetTelNrArray.Select(Of Object)(Function(N) If(N IsNot Nothing, New Telefonnummer() With {.SetNummer = N.ToString}.Unformatiert, String.Empty)).ToArray
 
             ' Lösche alle Indizierungsfelder
             .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
