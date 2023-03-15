@@ -338,6 +338,12 @@ Friend Module KontaktFunktionen
 
     End Function
 
+    <Extension> Friend Function HatKontaktTelefonnummern(olContact As ContactItem, MitFax As Boolean) As Boolean
+        With olContact.GetTelNrArray.ToList
+            Return .Where(Function(N) N IsNot Nothing AndAlso .IndexOf(N).IsLessOrEqual(If(MitFax, 13, 18))).Any
+        End With
+    End Function
+
     <Extension> Friend Function GetKontaktTelNrList(olExchangeNutzer As ExchangeUser) As List(Of Telefonnummer)
 
         Dim tmpTelNr(18) As Object
@@ -351,6 +357,12 @@ Friend Module KontaktFunktionen
                          .Select(Function(S) New Telefonnummer With {.SetNummer = S.ToString,
                                                                      .Typ = New TelNrType With {.TelNrType = CType(TelNrArray.IndexOf(S), OutlookNrType)}}).ToList
 
+    End Function
+
+    <Extension> Friend Function HatKontaktTelefonnummern(olExchangeNutzer As ExchangeUser) As Boolean
+        With olExchangeNutzer
+            Return .BusinessTelephoneNumber.IsNotStringNothingOrEmpty Or .MobileTelephoneNumber.IsNotStringNothingOrEmpty
+        End With
     End Function
 
     <Extension> Friend Function StoreID(olKontakt As ContactItem) As String

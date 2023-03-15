@@ -509,10 +509,8 @@ Namespace RibbonData
                 Case TypeOf Context Is Outlook.ContactItem
                     ' Ermittelt, ob der Kontakt angerufen werden kann
 
-                    With CType(Context, Outlook.ContactItem)
-                        ' Hat der Kontakt Telefonnummern?
-                        Return .GetKontaktTelNrList(False).Any
-                    End With
+                    ' Hat der Kontakt Telefonnummern?
+                    Return CType(Context, Outlook.ContactItem).HatKontaktTelefonnummern(False)
 
                 Case TypeOf Context Is Outlook.JournalItem
                     ' Ermittelt, ob dem Journaleintrag ein Kontakt hinterlegt ist, oder eine vCard, oder eine Telefonnummer
@@ -531,7 +529,7 @@ Namespace RibbonData
                 Case TypeOf Context Is Outlook.ExchangeUser
                     ' Ermittelt, ob der Kontakt angerufen werden kann
                     ' Hat der Kontakt Telefonnummern?
-                    Return CType(Context, Outlook.ExchangeUser).GetKontaktTelNrList.Any
+                    Return CType(Context, Outlook.ExchangeUser).HatKontaktTelefonnummern
 
             End Select
 
