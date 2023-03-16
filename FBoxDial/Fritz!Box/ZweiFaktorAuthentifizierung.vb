@@ -25,7 +25,7 @@ Friend Class ZweiFaktorAuthentifizierung
 
                                ' Neuen Wählclient generieren
                                ' Finde das existierende Fenster, oder generiere ein neues
-                               ZweiFAWPF = AddWindow(Of ZweiFaktorBoxWPF)()
+                               ZweiFAWPF = AddWindow(Of ZweiFaktorBoxWPF)(False)
 
                                ' Übergib die Methoden
                                ZweiFaktorBox(Methods)

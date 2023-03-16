@@ -145,7 +145,7 @@ Namespace RibbonData
         ''' </summary>
         Private Sub Einstellungen()
             ' Blendet ein neues Einstellungsfenster ein
-            AddWindow(Of OptionenWPF)()
+            AddWindow(Of OptionenWPF)(False)
         End Sub
 
         ''' <summary>
@@ -252,11 +252,11 @@ Namespace RibbonData
         ''' Einblenden der Fritz!Box Daten
         ''' </summary>
         Private Sub FritzBoxData()
-            AddWindow(Of FBoxDataWPF)().Show()
+            AddWindow(Of FBoxDataWPF)(False).Show()
         End Sub
 
         Private Sub Search()
-            AddWindow(Of KontaktsucheWPF)()
+            AddWindow(Of KontaktsucheWPF)(False)
         End Sub
 
         ''' <summary>

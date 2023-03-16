@@ -23,7 +23,7 @@ Public Class FritzBoxWählClient
         DialDatenService = New DialService(Me)
 
         ' Neues Fenster, sofern es nicht explizit in einem STA Thread erzeugt werden soll (Dateiüberwachung).
-        If Not InSTAThread Then WPFWindow = AddWindow(Of WählclientWPF)()
+        If Not InSTAThread Then WPFWindow = AddWindow(Of WählclientWPF)(True)
     End Sub
 
 #Region "Wählen per TR-064"
@@ -491,7 +491,7 @@ Public Class FritzBoxWählClient
 
                                ' Neuen Wählclient generieren
                                ' Finde das existierende Fenster, oder generiere ein neues
-                               WPFWindow = AddWindow(Of WählclientWPF)()
+                               WPFWindow = AddWindow(Of WählclientWPF)(True)
 
                                ' Übergib die Telefonnummer
                                Wählbox(TelNr)

@@ -56,7 +56,7 @@ Friend NotInheritable Class KeyboardHooking
                 If Not Shift And Not Control Then ModifierKey = Not IsKeyDown(Keys.ShiftKey) AndAlso Not IsKeyDown(Keys.ControlKey)
 
                 ' Prüfe, ob die Modifier-Keys und die definierte Taste gedrückt wurden
-                If IsKeyDown(keyData) And keyData = Keys.F2 And ModifierKey Then AddWindow(Of KontaktsucheWPF)()
+                If IsKeyDown(keyData) And keyData = Keys.F2 And ModifierKey Then AddWindow(Of KontaktsucheWPF)(False)
 
             End If
 

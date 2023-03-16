@@ -63,7 +63,7 @@ Friend Module Fenster
         End If
     End Sub
 
-    Friend Function AddWindow(Of T As Windows.Window)() As T
+    Friend Function AddWindow(Of T As Windows.Window)(SetTopMost As Boolean) As T
         ' Blendet ein neue Kontaktsuche ein
         Dim AddinFenster As T = CType(Globals.ThisAddIn.AddinWindows.Find(Function(Window) TypeOf Window Is T), T)
 
@@ -74,6 +74,8 @@ Friend Module Fenster
             AddHandler AddinFenster.Closed, AddressOf Window_Closed
             ' Window in die Liste aufnehmen
             Globals.ThisAddIn.AddinWindows.Add(AddinFenster)
+            ' Topmost sicherstellen
+            AddinFenster.Topmost = SetTopMost
 
             NLogger.Debug($"Neues Fenster für '{AddinFenster.GetType.Name}' erzeugt.")
         Else

@@ -26,7 +26,7 @@ Friend Class OptionenService
     End Sub
 
     Private Sub ShowDesignTest() Implements IOptionenService.ShowDesignTest
-        AddWindow(Of EasyWPFThemeLib.MainWindow)()
+        AddWindow(Of EasyWPFThemeLib.MainWindow)(False)
     End Sub
 
     Private Sub ToogleDesign() Implements IOptionenService.ToogleDesign
