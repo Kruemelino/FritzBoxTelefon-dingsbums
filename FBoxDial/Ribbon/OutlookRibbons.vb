@@ -41,7 +41,7 @@ Imports FBoxDial.RibbonData
                 GetCustomUI = String.Empty
         End Select
 
-        If GetCustomUI.IsNotStringNothingOrEmpty Then NLogger.Trace($"RibbonXML für {ribbonID}:{vbCrLf}{GetCustomUI}")
+        'If GetCustomUI.IsNotStringNothingOrEmpty Then NLogger.Trace($"RibbonXML für {ribbonID}:{vbCrLf}{GetCustomUI}")
     End Function
 
     Public Sub RefreshRibbon()

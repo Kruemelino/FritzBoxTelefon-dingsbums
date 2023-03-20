@@ -79,6 +79,12 @@
     ''' Angabe, ob auf das tel:// und callto:// Protokoll reagiert werden soll
     ''' </summary>
     <XmlElement("CBLinkProtokoll")> Public Property CBLinkProtokoll As Boolean = False
+
+    ''' <summary>
+    ''' Angabe, ob der Wählclient stete TopMost angezeigt werden soll.
+    ''' </summary>
+    ''' <returns></returns>
+    <XmlElement("CBTweakWählClientTopMost")> Public Property CBTweakWählClientTopMost As Boolean = False
 #End Region
 
 #Region "Grundeinstlleungen - Tweaks"

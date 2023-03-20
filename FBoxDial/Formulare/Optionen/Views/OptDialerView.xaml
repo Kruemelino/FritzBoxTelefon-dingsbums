@@ -42,6 +42,10 @@
                  Tag="{x:Static localize:LocOptionen.strDialerTBWClientEnblDauer}"
                  Text="{Binding OptVM.TBWClientEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                  Content="{x:Static localize:LocOptionen.strTweakWählClientTopMost}" 
+                  IsChecked="{Binding OptVM.CBTweakWählClientTopMost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strProtokolHead}"/>
         

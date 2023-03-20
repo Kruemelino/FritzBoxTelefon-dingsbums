@@ -1,5 +1,6 @@
 ﻿Imports System.Xml.Serialization
 Imports FBoxDial.DfltWerteTelefonie
+
 <Serializable(), XmlRoot("KZ")> Public Class Kennzahlen
     <XmlElement("LKZ")> Public Property Landeskennzahlen As List(Of Landeskennzahl)
 End Class

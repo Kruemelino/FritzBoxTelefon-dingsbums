@@ -2496,6 +2496,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Wählclient stets an vorderster Stelle anzeigen (Topmost) ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTweakWählClientTopMost() As String
+            Get
+                Return ResourceManager.GetString("strTweakWählClientTopMost", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Zurücksetzen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strUndo() As String

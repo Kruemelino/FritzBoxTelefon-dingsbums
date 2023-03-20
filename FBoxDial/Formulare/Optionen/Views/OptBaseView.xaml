@@ -190,6 +190,8 @@
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeout}"
                          Text="{Binding OptVM.TBNetworkTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                
             </StackPanel>
         </Expander>
     </StackPanel>

@@ -1219,6 +1219,10 @@ Bei erfolgreicher Suche wird der gefundene Kontakt eingeblendet.</value>
     <value>Unformatierte Telefonnummer</value>
     <comment>OptTestView</comment>
   </data>
+  <data name="strTweakWählClientTopMost" xml:space="preserve">
+    <value>Wählclient stets an vorderster Stelle anzeigen (Topmost)</value>
+    <comment>OptDialerView</comment>
+  </data>
   <data name="strUndo" xml:space="preserve">
     <value>Zurücksetzen</value>
     <comment>MainView</comment>

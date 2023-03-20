@@ -663,6 +663,16 @@ Public Class OptionenViewModel
             SetProperty(_CBLinkProtokoll, Value)
         End Set
     End Property
+
+    Private _CBTweakWählClientTopMost As Boolean
+    Public Property CBTweakWählClientTopMost As Boolean
+        Get
+            Return _CBTweakWählClientTopMost
+        End Get
+        Set
+            SetProperty(_CBTweakWählClientTopMost, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Einstellungen für die Kontaktsuche"
