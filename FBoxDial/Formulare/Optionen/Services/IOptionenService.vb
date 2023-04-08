@@ -48,6 +48,14 @@ Public Interface IOptionenService
     Function RegisterApp() As Boolean
 #End Region
 
+#Region "Kontakt Synchronisation"
+    Function LadeOutlookKontaktFolder(ItemType As OlItemType, Verwendung As OutlookOrdnerVerwendung) As IEnumerable(Of OutlookOrdner)
+    Function LadeFritzBoxTelefonbücher() As IEnumerable(Of PhonebookEx)
+
+    Function Synchronisierer(Ordner As List(Of MAPIFolder), FBoxTBuch As PhonebookEx, Modus As SyncMode, ct As Threading.CancellationToken, progress As IProgress(Of String)) As Task(Of Integer)
+
+#End Region
+
 #Region "Test Kontaktsuche"
     Event BeendetKontaktsuche As EventHandler(Of NotifyEventArgs(Of Boolean))
     Sub StartKontaktsucheTest(TelNr As String)

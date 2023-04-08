@@ -1,4 +1,6 @@
-﻿Public Class PhonebookEx
+﻿Imports System.Threading.Tasks
+
+Public Class PhonebookEx
     Friend Property Phonebook As FBoxAPI.Phonebook
 
     Public Sub New()
@@ -10,6 +12,13 @@
     End Sub
 
     Friend Property ID As Integer
+
+    ' Der Telefonbuchname wird in der Combobox für Kontaktsynchronisation verwendet
+    Public ReadOnly Property Name As String
+        Get
+            Return Phonebook.Name
+        End Get
+    End Property
     Friend Property Rufsperren As Boolean = False
     Friend Property NurName As Boolean = False
     Friend ReadOnly Property IsDAV As Boolean
@@ -19,9 +28,51 @@
     End Property
 
 #Region "Funktionen"
+
+    Friend Async Function UpdatePhonebook() As Task(Of Boolean)
+        Phonebook = (Await Telefonbücher.LadeTelefonbuch(ID))?.First.Phonebook
+
+        NurName = Phonebook Is Nothing
+
+        Return NurName
+    End Function
+
+    Friend Function GetContact(EntryID As Integer) As FBoxAPI.Contact
+        Return Phonebook.Contacts.Find(Function(K) K.Uniqueid.AreEqual(EntryID))
+    End Function
+
+    ''' <summary>
+    ''' Durchsucht die Kontakte nach der übergebenen Telefonnummer.
+    ''' </summary>
+    ''' <param name="TelNr">Zu suchende Telefonnummer als Typ: <see cref="Telefonnummer"/></param>
+    ''' <returns>Eine Auflistung aller infrage kommenden Kontakte.</returns>
+    Friend Function GetContact(TelNr As Telefonnummer) As IEnumerable(Of FBoxAPI.Contact)
+        Return Phonebook.Contacts.Where(Function(K)
+                                            ' interne Telefone sollen nicht duchsucht werden
+                                            Return Not K.IstTelefon AndAlso K.Telephony.Numbers.Where(Function(N) TelNr.Equals(N.Number)).Any
+                                        End Function)
+    End Function
+
+    ''' <summary>
+    ''' Durchsucht die Kontakte nach der übergebenen Telefonnummer.
+    ''' </summary>
+    ''' <param name="TelNr">Zu suchende Telefonnummer als Typ: <see cref="String"/></param>
+    ''' <returns>Eine Auflistung aller infrage kommenden Kontakte.</returns>
+    Friend Function GetContact(TelNr As String) As IEnumerable(Of FBoxAPI.Contact)
+        Return Phonebook.Contacts.Where(Function(K)
+                                            ' interne Telefone sollen nicht duchsucht werden
+                                            Return Not K.IstTelefon AndAlso K.Telephony.Numbers.Where(Function(N) TelNr.Equals(N.Number)).Any
+                                        End Function)
+    End Function
+
+    Friend Function GetContacts() As IEnumerable(Of FBoxAPI.Contact)
+        ' interne Telefone sollen nicht duchsucht werden
+        Return Phonebook.Contacts.Where(Function(K) Not K.IstTelefon)
+    End Function
+
     ''' <summary>
     ''' Fügt den übergebenen Kontakt hinzu. 
-    ''' Kontakte mit der selben ID werden entfernt (sollte beim Aktualisieren nur einer sein.
+    ''' Kontakte mit der selben ID werden entfernt (sollte beim Aktualisieren nur einer sein.)
     ''' </summary>
     ''' <param name="Kontakt"></param>
     Friend Sub AddContact(Kontakt As FBoxAPI.Contact)
@@ -45,37 +96,13 @@
     ''' <summary>
     ''' Entfernt eine Auflistung von Kontakten aus dem Telefonbuch
     ''' </summary>
-    ''' <param name="RemoveKontakte">Liste der zu entfernenden Kontakte.</param>
-    Friend Sub DeleteKontakte(RemoveKontakte As IEnumerable(Of FBoxAPI.Contact))
+    ''' <param name="Kontakte">Liste der zu entfernenden Kontakte.</param>
+    Friend Sub DeleteKontakte(Kontakte As IEnumerable(Of FBoxAPI.Contact))
         With Phonebook.Contacts
             ' Kontake entfernen
-            RemoveKontakte.AsParallel.ForAll(Sub(C) .Remove(C))
+            Kontakte.AsParallel.ForAll(Sub(C) .Remove(C))
         End With
     End Sub
-
-    ''' <summary>
-    ''' Durchsucht die Kontakte nach der übergebenen Telefonnummer.
-    ''' </summary>
-    ''' <param name="TelNr">Zu suchende Telefonnummer als Typ: <see cref="Telefonnummer"/></param>
-    ''' <returns>Eine Auflistung aller infrage kommenden Kontakte.</returns>
-    Friend Function FindbyNumber(TelNr As Telefonnummer) As IEnumerable(Of FBoxAPI.Contact)
-        Return Phonebook.Contacts.Where(Function(K)
-                                            ' interne Telefone sollen nicht duchsucht werden
-                                            Return Not K.IstTelefon AndAlso K.Telephony.Numbers.Where(Function(N) TelNr.Equals(N.Number)).Any
-                                        End Function)
-    End Function
-
-    ''' <summary>
-    ''' Durchsucht die Kontakte nach der übergebenen Telefonnummer.
-    ''' </summary>
-    ''' <param name="TelNr">Zu suchende Telefonnummer als Typ: <see cref="String"/></param>
-    ''' <returns>Eine Auflistung aller infrage kommenden Kontakte.</returns>
-    Friend Function FindbyNumber(TelNr As String) As IEnumerable(Of FBoxAPI.Contact)
-        Return Phonebook.Contacts.Where(Function(K)
-                                            ' interne Telefone sollen nicht duchsucht werden
-                                            Return Not K.IstTelefon AndAlso K.Telephony.Numbers.Where(Function(N) TelNr.Equals(N.Number)).Any
-                                        End Function)
-    End Function
 
     ''' <summary>
     ''' Gibt an, ob das Telefonbuch einen Kontakt mit der gesuchten Telefonnummer enthält.

@@ -101,7 +101,10 @@ Friend Module ContactEx
                 End Using
             Next
             ' Body
-            If Not XMLData.POptionen.CBNoContactNotes Then XmlSerializeToString(Contact, .Body)
+            If Not XMLData.POptionen.CBNoContactNotes Then
+                XmlSerializeToString(Contact, .Body)
+                .Body = String.Format(Localize.resCommon.strCreateContact, My.Resources.strDefLongName, Now, vbNewLine, .Body)
+            End If
 
             If Contact.Person.ImageURL.IsNotStringNothingOrEmpty And HerunterladenKontaktBild IsNot Nothing Then
                 ' Kontaktbild

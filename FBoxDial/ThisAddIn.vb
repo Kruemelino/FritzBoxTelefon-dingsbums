@@ -130,6 +130,9 @@ Public NotInheritable Class ThisAddIn
             If TaskTelefonbücher IsNot Nothing Then
                 PhoneBookXML = Await TaskTelefonbücher
                 NLogger.Debug($"Fritz!Box Telefonbücher geladen...")
+
+                ' Starte Kontaktsynchronisation
+                StartAutoSync()
             End If
 
             ' Beendigung des Task für das Herunterladen der tellows ScoreList abwarten
@@ -159,6 +162,7 @@ Public NotInheritable Class ThisAddIn
                 NLogger.Debug("Dateiüberwachung für tel:// und callto:// Links gestartet...")
                 LinkProtokoll = New DateiÜberwacher(IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName), My.Resources.strLinkProtFileName)
             End If
+
         Else
             ' Wenn kein Active Explorer vorhanden ist, läuft der Code hier rein.
             ' Z. B. wenn man eine msg-Datei öffnet, während Outlook nicht läuft. 

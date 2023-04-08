@@ -101,7 +101,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Erstellt durch das {0} am {1}  ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Erstellt durch das {0} am {1}: {2}{3}  ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCreateContact() As String
             Get

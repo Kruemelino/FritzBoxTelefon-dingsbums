@@ -33,7 +33,7 @@ Public Module Extensions
     End Function
 
     ''' <summary>
-    ''' Prüft, ob die beiden übergebenen Größen gleich sind: <paramref name="Val1"/> == <paramref name="Val2"/>
+    ''' Prüft, ob die beiden übergebenen Größen ungleich sind: <paramref name="Val1"/> &lt;&gt; <paramref name="Val2"/>
     ''' </summary>
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>

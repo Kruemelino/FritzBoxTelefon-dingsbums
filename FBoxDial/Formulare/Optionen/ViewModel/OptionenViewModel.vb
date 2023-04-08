@@ -1138,6 +1138,7 @@ Public Class OptionenViewModel
             .Add(New OptTelephonyViewModel(DatenService))
             .Add(New OptIPPhonesViewModel(DatenService))
             .Add(New OptTellowsViewModel(DatenService))
+            .Add(New OptContactSyncViewModel(DatenService))
             .Add(New OptInfoViewModel())
             .Add(New OptTestViewModel(DatenService))
         End With

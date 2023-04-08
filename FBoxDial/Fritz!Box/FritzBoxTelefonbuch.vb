@@ -22,24 +22,10 @@ Namespace Telefonbücher
                         Dim AlleTelefonbücher As New List(Of PhonebookEx)
                         Dim PhonebookURL As String = String.Empty
 
-                        Dim AktuellePhoneBookXML As FBoxAPI.PhonebooksType
 
                         ' Schleife durch alle ermittelten IDs
                         For Each PhonebookID In PhonebookIDs
-
-                            ' Lade das Telefonbuch herunter und deserialisiere es im Anschluss
-                            AktuellePhoneBookXML = Await .GetPhonebook(PhonebookID)
-
-                            If AktuellePhoneBookXML IsNot Nothing Then
-                                ' Verarbeite die Telefonbücher
-                                For Each Telefonbuch In AktuellePhoneBookXML.Phonebooks.ConvertAll(Function(P) New PhonebookEx With {.Phonebook = P,
-                                                                                                                                     .ID = PhonebookID})
-                                    ' Füge die Telefonbücher zusammen
-                                    AlleTelefonbücher.Add(Telefonbuch)
-                                Next
-
-                            End If
-
+                            AlleTelefonbücher.AddRange(Await LadeTelefonbuch(PhonebookID))
                         Next
 
                         If AlleTelefonbücher.Count.AreDifferentTo(PhonebookIDs.Count) Then
@@ -61,6 +47,40 @@ Namespace Telefonbücher
             End If
         End Function
 
+        Friend Async Function LadeTelefonbuch(PhonebookID As Integer) As Task(Of IEnumerable(Of PhonebookEx))
+
+            ' Prüfe, ob Fritz!Box verfügbar
+            If Globals.ThisAddIn.FBoxTR064.Ready Then
+                With Globals.ThisAddIn.FBoxTR064.X_contact
+
+                    ' Initialiesiere die Gesamtliste der Telefonbücher
+                    Dim AlleTelefonbücher As New List(Of PhonebookEx)
+                    Dim PhonebookURL As String = String.Empty
+
+                    Dim AktuellePhoneBookXML As FBoxAPI.PhonebooksType
+
+                    ' Lade das Telefonbuch herunter und deserialisiere es im Anschluss
+                    AktuellePhoneBookXML = Await .GetPhonebook(PhonebookID)
+
+                    If AktuellePhoneBookXML IsNot Nothing Then
+                        ' Verarbeite die Telefonbücher
+                        For Each Telefonbuch In AktuellePhoneBookXML.Phonebooks.ConvertAll(Function(P) New PhonebookEx With {.Phonebook = P,
+                                                                                                                             .ID = PhonebookID})
+                            ' Füge die Telefonbücher zusammen
+                            AlleTelefonbücher.Add(Telefonbuch)
+                        Next
+                    End If
+
+                    Return AlleTelefonbücher
+
+                End With
+            Else
+                NLogger.Warn($"Fritz!Box nicht verfügbar: '{XMLData.POptionen.ValidFBAdr}'")
+                Return Nothing
+            End If
+        End Function
+
+
         ''' <summary>
         ''' Erstellt eine Liste aller auf der Fritz!Box verfügbaren Telefonbücher.
         ''' Die einzelnen Einträge werden jedoch nicht heruntergeladen.
@@ -79,7 +99,7 @@ Namespace Telefonbücher
                     For Each PhonebookID In PhonebookIDs
                         Dim PhonebookName As String = String.Empty
                         ' Ermittle die Namen zum Telefonbuch
-                        If .GetPhonebook(PhonebookID, String.Empty, PhonebookName) Then
+                        If .GetPhonebook(PhonebookID, String.Empty, PhonebookName, String.Empty) Then
 
                             NLogger.Debug($"Name des Telefonbuches {PhonebookID} ermittelt: '{PhonebookName}'")
 
@@ -149,7 +169,7 @@ Namespace Telefonbücher
             If Bücher.Any Then
                 NLogger.Debug($"Telefonnummer {TelNr.Unformatiert} in {Bücher.Count} Buch/Büchern gefunden.")
                 ' Extrahiere einen Kontakt mit dieser Nummer
-                Return Bücher.First.FindbyNumber(TelNr).First
+                Return Bücher.First.GetContact(TelNr).First
             Else
                 Return Nothing
             End If
@@ -177,7 +197,7 @@ Namespace Telefonbücher
                     For Each ID In IdsA
                         Dim Name As String = String.Empty
 
-                        If .GetPhonebook(ID, PhonebookURL, Name) Then
+                        If .GetPhonebook(ID, PhonebookURL, Name, String.Empty) Then
                             If Name.IsEqual(TelefonbuchName) Then
                                 NLogger.Warn($"Ein Telefonbuch mit dem Namen '{TelefonbuchName}' kann nicht angelegt werden, da bereits eins mit diesem Namen exisiert.")
                                 NameOK = False
@@ -243,6 +263,12 @@ Namespace Telefonbücher
 #End Region
 
 #Region "Aktionen für Telefonbucheinträge"
+        Friend Async Function GetTelefonbuchEintrag(TelefonbuchID As Integer, ID As Integer) As Task(Of FBoxAPI.Contact)
+            With Globals.ThisAddIn.FBoxTR064.X_contact
+                Return Await .GetPhonebookEntryUID(TelefonbuchID, ID)
+            End With
+
+        End Function
 
         ''' <summary>
         ''' Startet das Hochladen eines Kontaktes.
@@ -266,6 +292,36 @@ Namespace Telefonbücher
         End Function
 
         ''' <summary>
+        ''' Startet das Hochladen eines Kontaktes.
+        ''' </summary>
+        ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
+        ''' <param name="OutlookKontakt">Outlook-Kontakt, der konvertiert und hochgeladen werden soll.</param>
+        ''' <returns>Ergebniszeichenfolge</returns>
+        ''' <remarks>Der Outlook-Kontakt wird mit der UniqueID und der TelefonbuchID ergänzt (via PropertyAccessor).</remarks>
+        Friend Function SetTelefonbuchEintrag(TelefonbuchID As Integer, OutlookKontakt As ContactItem) As String
+            With OutlookKontakt
+                ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
+                Dim UID As Integer = .GetUniqueID(TelefonbuchID)
+                Dim retVal As String = If(UID.AreEqual(-1), Localize.resRibbon.UploadCreateContact, Localize.resRibbon.UploadOverwriteContact)
+
+                ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
+                If Globals.ThisAddIn.FBoxTR064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
+                    ' Stelle die Verknüpfung her
+                    .SetUniqueID(TelefonbuchID.ToString, UID.ToString, True)
+
+                    ' Statusmeldung
+                    retVal = String.Format(Localize.resRibbon.UploadSuccess, .FullName, TelefonbuchID, retVal, UID)
+
+                Else
+                    ' Statusmeldung
+                    retVal = String.Format(Localize.resRibbon.UploadError, .FullName, TelefonbuchID, retVal)
+                End If
+                NLogger.Info(retVal)
+                Return retVal
+            End With
+        End Function
+
+        ''' <summary>
         ''' Startet das Hochladen mehrerer Outlook-Kontakte mittels asynchroner Aufgaben (<see cref="Task"/>).
         ''' </summary>
         ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
@@ -278,28 +334,7 @@ Namespace Telefonbücher
 
             ' Schleife durch alle Kontakte
             For Each Kontakt In OutlookKontakte
-                TaskList.Add(Task.Run(Function() As String
-                                          With Kontakt
-                                              ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
-                                              Dim UID As Integer = Kontakt.GetUniqueID(TelefonbuchID)
-                                              Dim retVal As String = If(UID.AreEqual(-1), Localize.resRibbon.UploadCreateContact, Localize.resRibbon.UploadOverwriteContact)
-
-                                              ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
-                                              If Globals.ThisAddIn.FBoxTR064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
-                                                  ' Stelle die Verknüpfung her
-                                                  .SetUniqueID(TelefonbuchID.ToString, UID.ToString)
-
-                                                  ' Statusmeldung
-                                                  retVal = String.Format(Localize.resRibbon.UploadSuccess, .FullName, TelefonbuchID, retVal, UID)
-
-                                              Else
-                                                  ' Statusmeldung
-                                                  retVal = String.Format(Localize.resRibbon.UploadError, .FullName, TelefonbuchID, retVal)
-                                              End If
-                                              NLogger.Info(retVal)
-                                              Return retVal
-                                          End With
-                                      End Function))
+                TaskList.Add(Task.Run(Function() SetTelefonbuchEintrag(TelefonbuchID, Kontakt)))
 
                 ' Die einzelnen Vorgänge müssen nacheinander erfolgen, da es sonst zu einer WebException kommt: Die zugrunde liegende Verbindung wurde geschlossen: Für den geschützten SSL/TLS-Kanal konnte keine Vertrauensstellung hergestellt werden.
                 Await TaskList.Last

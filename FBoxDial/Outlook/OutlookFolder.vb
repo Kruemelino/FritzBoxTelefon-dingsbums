@@ -17,6 +17,25 @@ Public Module OutlookFolder
     End Function
 
     ''' <summary>
+    ''' Rekursive Funktion, die alle Outlook-Ordner ermittelt, die dem Typ <paramref name="ItemType"/> entsprechen.
+    ''' </summary>
+    ''' <param name="RootFolder">Basis Ordner</param>
+    ''' <param name="ItemType">Outlook ItemType</param>
+    ''' <returns></returns>
+    Friend Function GetChildFolders(RootFolder As MAPIFolder, ItemType As OlItemType) As IEnumerable(Of MAPIFolder)
+
+        Dim ContactFolders = New List(Of MAPIFolder)
+
+        If RootFolder.DefaultItemType = ItemType Then ContactFolders.Add(RootFolder)
+        ' Rekursiver Aufruf
+        For Each ChildFolder As MAPIFolder In RootFolder.Folders
+            ContactFolders.AddRange(GetChildFolders(ChildFolder, ItemType))
+        Next
+
+        Return ContactFolders
+    End Function
+
+    ''' <summary>
     ''' Dekrementiert den Verweiszähler des dem angegebenen COM-Objekt zugeordneten angegebenen Runtime Callable Wrapper (RCW)
     ''' </summary>
     ''' <param name="COMObject">Das freizugebende COM-Objekt.</param>

@@ -29,6 +29,10 @@ Public Class OutlookOrdnerListe
         Return OrdnerListe.Find(Function(fldr) fldr.Typ = Verwendung)
     End Function
 
+    Friend Function Find(MAPIFolder As MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As OutlookOrdner
+        Return OrdnerListe.Find(Function(fldr) fldr.MAPIFolder.AreEqual(MAPIFolder) And fldr.Typ = Verwendung)
+    End Function
+
     Friend Function Find(StoreID As String, FolderID As String, Verwendung As OutlookOrdnerVerwendung) As OutlookOrdner
         Return OrdnerListe.Find(Function(fldr) fldr.FolderID.IsEqual(FolderID) And fldr.StoreID.IsEqual(StoreID) And fldr.Typ = Verwendung)
     End Function

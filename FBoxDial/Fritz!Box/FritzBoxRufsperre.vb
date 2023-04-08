@@ -76,7 +76,7 @@ Friend Module FritzBoxRufsperre
                                    ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
                                    If Globals.ThisAddIn.FBoxTR064.X_contact.SetCallBarringEntry(.ErstelleXMLKontakt(UID), UID) Then
                                        ' Stelle die Verknüpfung her
-                                       .SetUniqueID(SperrlistenID.ToString, UID.ToString)
+                                       .SetUniqueID(SperrlistenID.ToString, UID.ToString, True)
 
                                        NLogger.Info($"Kontakt { .FullName} mit der ID '{UID}' in der Sperrliste der Fritz!Box angelegt.")
 
@@ -206,7 +206,7 @@ Friend Module FritzBoxRufsperre
         Dim DfltName As String = $"{Eintrag.CallerType} (tellows Score {Eintrag.Score})"
 
         ' Finde einen Eintrag, der die Nummer bereits enthält
-        If FBoxRufSperre.FindbyNumber(Eintrag.Number).Any Then
+        If FBoxRufSperre.GetContact(Eintrag.Number).Any Then
             NLogger.Trace($"Die Nummer {Eintrag.Number} ist bereits in der Sperrliste enthalten.")
             ' gib Nothing zurück
             Return Nothing

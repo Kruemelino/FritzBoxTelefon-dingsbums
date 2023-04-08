@@ -299,6 +299,7 @@
     <XmlElement("CBAnrListeUpdateCallLists")> Public Property CBAnrListeUpdateCallLists As Boolean = True
 
 #End Region
+
 #Region "Auswertung der Fritz!box Anrufliste - Anruflisten"
     <XmlElement("TBNumEntryList")> Public Property TBNumEntryList As Integer = 10
 #End Region

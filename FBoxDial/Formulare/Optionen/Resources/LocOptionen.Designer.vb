@@ -807,6 +807,69 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Synchronisation ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strContactSync() As String
+            Get
+                Return ResourceManager.GetString("strContactSync", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kontaktsynchronisation hinzufügen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strContactSyncAdd() As String
+            Get
+                Return ResourceManager.GetString("strContactSyncAdd", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefonbuch ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strContactSyncFBoxPhonebook() As String
+            Get
+                Return ResourceManager.GetString("strContactSyncFBoxPhonebook", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Synchronisationsmodus ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strContactSyncModus() As String
+            Get
+                Return ResourceManager.GetString("strContactSyncModus", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Outlook Kontaktordner ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strContactSyncOutlookFolder() As String
+            Get
+                Return ResourceManager.GetString("strContactSyncOutlookFolder", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kontaktsynchronisation entfernen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strContactSyncRemove() As String
+            Get
+                Return ResourceManager.GetString("strContactSyncRemove", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Starte Synchronisierung ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strContactSyncStart() As String
+            Get
+                Return ResourceManager.GetString("strContactSyncStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Kontakterstellung ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strCreateContact() As String
@@ -1650,6 +1713,35 @@ Namespace Localize
         Public Shared ReadOnly Property strStoppuhr() As String
             Get
                 Return ResourceManager.GetString("strStoppuhr", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur Synchronisation von Kontakten:
+        '''Hier können Abgleiche zwischen einem Kontaktordner in Outlook und einem Telefonbuch auf der Fritz!Box eingerichtet werden. Diese Funktion ist experimentell und bietet (noch) nicht alle Funktionen, die man ggf. erwartet.  ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSyncContacsInfo() As String
+            Get
+                Return ResourceManager.GetString("strSyncContacsInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Experimentelle Funktionen!
+        '''Achtung: Es werden Kontakte sowohl in Outlook als auch im Fritz!Box Telefonbuch ohne Vorwarnung gelöscht, falls die Routine dies für nötig hält. Macht vorher eine Datensicherung! ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSyncContacsWarn() As String
+            Get
+                Return ResourceManager.GetString("strSyncContacsWarn", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Synchronisiere bei Outlookstart ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSyncStartUp() As String
+            Get
+                Return ResourceManager.GetString("strSyncStartUp", resourceCulture)
             End Get
         End Property
         

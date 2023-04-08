@@ -2,6 +2,8 @@
 Imports System.Runtime.CompilerServices
 Imports Microsoft.Office.Interop.Outlook
 Imports System.Windows.Media
+Imports System.Collections
+
 Friend Module KontaktFunktionen
     Private ReadOnly Property DfltErrorvalue As Integer = -2147221233
     Private ReadOnly Property DfltDASLSMTPAdress As String = "http://schemas.microsoft.com/mapi/proptag/0x39FE001E"
@@ -103,9 +105,6 @@ Friend Module KontaktFunktionen
 
                     .Categories = My.Resources.strDefLongName ' 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
 
-                    If Not XMLData.POptionen.CBNoContactNotes Then
-                        .Body = String.Format(Localize.resCommon.strCreateContact, My.Resources.strDefLongName, Now)
-                    End If
                 End If
 
             End With
@@ -117,6 +116,48 @@ Friend Module KontaktFunktionen
         End If
 
         Return Nothing
+    End Function
+
+    Friend Function ErstelleKontakt(XMLKontakt As FBoxAPI.Contact, olFolder As MAPIFolder, FBoxBuchID As Integer) As ContactItem
+
+        Dim olKontakt As ContactItem = CType(Globals.ThisAddIn.Application.CreateItem(OlItemType.olContactItem), ContactItem)
+
+        With olKontakt
+
+            If XMLKontakt IsNot Nothing Then
+                XMLKontakt.XMLKontaktOutlook(olKontakt)
+                .SetUniqueID(FBoxBuchID.ToString, XMLKontakt.Uniqueid.ToString, False)
+                If Not olFolder.AreEqual(GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts)) Then
+                    ' Verschiebe den Kontakt in den gewünschten Ornder
+                    olKontakt = CType(olKontakt.Move(olFolder), ContactItem)
+                    NLogger.Info($"Kontakt {olKontakt.FullName} wurde erstellt und in den Ordner {olFolder.Name} verschoben.")
+
+                Else
+                    ' Speichere den Kontakt im Kontakthauptordner
+                    ' Speichern ist überflüssig, da der Kontakt bein nachfolgenden Indizieren/deindizieren ohnehin stets gespeichert wird.
+
+                    'If olKontakt.Speichern Then NLogger.Info($"Kontakt {olKontakt.FullName} wurde Hauptkontaktordner gespeichert.")
+                End If
+
+                ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
+                IndiziereKontakt(olKontakt, olFolder, False)
+            End If
+
+        End With
+
+        Return olKontakt
+
+        Return Nothing
+    End Function
+
+    Friend Function ÜberschreibeKontakt(olKontakt As ContactItem, XMLKontakt As FBoxAPI.Contact) As String
+        If olKontakt IsNot Nothing AndAlso XMLKontakt IsNot Nothing Then
+            XMLKontakt.XMLKontaktOutlook(olKontakt)
+
+            ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
+            IndiziereKontakt(olKontakt, olKontakt.ParentFolder, False)
+        End If
+        Return String.Empty
     End Function
 
     ''' <summary>
@@ -523,12 +564,13 @@ Friend Module KontaktFunktionen
 
     End Sub
 
+#Region "Interaktionen für Fritz!Box Telefonbücher"
     ''' <summary>
-    ''' Überführt einen Outlook-Kontakt in einen Kontakt für das Fritz!Box Telefondingsbums
+    ''' Überführt einen Outlook-Kontakt in einen Kontakt für das Fritz!Box Telefonbuch
     ''' </summary>
     ''' <param name="olContact">Der Outlook Kontakt, der überführt werden soll.</param>
     ''' <param name="UID">Falls bekannt, die Uniqueid des Kontaktes im Fritz!Box Telefonbuch.</param>
-    ''' <returns></returns>
+    ''' <returns>Ein XML-Objekt für das Fritz!Box Telefonbuch.</returns>
     <Extension> Friend Function ErstelleFBoxKontakt(olContact As ContactItem, Optional UID As Integer = -1) As FBoxAPI.Contact
 
         ' Erstelle ein nen neuen XMLKontakt
@@ -572,23 +614,40 @@ Friend Module KontaktFunktionen
     End Function
 
     ''' <summary>
-    ''' Überführt eine Auflistung von <see cref="ContactItem"/> zu einer Auflistung von XML_Strings (Fritz!Box Telefonbuch). 
+    ''' Überführt einen Outlook-Kontakt in einen Kontakt für das Fritz!Box Telefonbuch als Strings. 
     ''' </summary>
-    ''' <param name="olContacts">Die Auflistung von <see cref="ContactItem"/></param>
-    ''' <returns>Auflistung von XML_Strings (Fritz!Box Telefonbuch)</returns>
+    ''' <param name="olContact">Der Outlook-Kontakt als <see cref="ContactItem"/></param>
+    ''' <param name="UID">Falls bekannt, die Uniqueid des Kontaktes im Fritz!Box Telefonbuch.</param>
+    ''' <returns>Eine Zeichenfolge die ein XML-Eintrag für das Fritz!Box Telefonbuch enthält.</returns>
     ''' <remarks>Die Auflistung kann leere Strings enthalten.</remarks>
-    <Extension> Friend Function ErstelleXMLKontakt(olContacts As ContactItem, Optional UID As Integer = -1) As String
+    <Extension> Friend Function ErstelleXMLKontakt(olContact As ContactItem, Optional UID As Integer = -1) As String
 
         Dim NeuerKontakt As String = String.Empty
-        If XmlSerializeToString(olContacts.ErstelleFBoxKontakt(UID), NeuerKontakt) Then
+        If XmlSerializeToString(olContact.ErstelleFBoxKontakt(UID), NeuerKontakt) Then
             Return NeuerKontakt
         Else
-            NLogger.Warn($"Der Kontakt {olContacts.FullNameAndCompany} kann nicht serialisiert werden.")
-            Return String.Empty
+            NLogger.Warn($"Der Kontakt {olContact.FullNameAndCompany} kann nicht serialisiert werden.")
         End If
+        Return String.Empty
+    End Function
+
+    ''' <summary>
+    ''' Vergleichsfunktion um einen Outlook-Kontakt mit einem Fritz!Box Telefonbucheintrag abzugleichen.
+    ''' </summary>
+    <Extension> Friend Function IsEqual(olContact As ContactItem, FBoxContact As FBoxAPI.Contact) As Boolean
+
+        ' Erzeuge aus dem Outlook-Kontakt einen weiteren Fritz!Box Kontakt, der als Vergleichsobjekt dient
+        With olContact.ErstelleFBoxKontakt(FBoxContact.Uniqueid)
+            Return .Equals(FBoxContact)
+        End With
 
     End Function
 
+    ''' <summary>
+    ''' Ermittelt die UniqueID des verknüpften Fritz!Box Telefonbucheintrages.
+    ''' </summary>
+    ''' <param name="olContacts">Der Outlook-Kontakt, aus dem die UniqueID ausgelesen werden soll.</param>
+    ''' <param name="TelefonbuchID">Die ID des zugehörigen Telefonbuches.</param>
     <Extension> Friend Function GetUniqueID(olContacts As ContactItem, TelefonbuchID As Integer) As Integer
         With olContacts
 
@@ -611,7 +670,14 @@ Friend Module KontaktFunktionen
         End With
     End Function
 
-    <Extension> Friend Sub SetUniqueID(olContacts As ContactItem, TelefonbuchID As String, UniqueID As String)
+    ''' <summary>
+    ''' Speichert die UniqueID des verknüpften Fritz!Box Telefonbucheintrages.
+    ''' </summary>
+    ''' <param name="olContacts">Der Outlook-Kontakt, in dem die UniqueID gespeichert werden soll.</param>
+    ''' <param name="TelefonbuchID">Die ID des zugehörigen Telefonbuches.</param>
+    ''' <param name="UniqueID">Die UniqueID des verknüpften Fritz!Box Telefonbucheintrages, welche in den Kontakt gespeichert werden soll.</param>
+    ''' <param name="Speichern">Angabe, ob der Kontakt im Anschluss gespeichert werden soll.</param>
+    <Extension> Friend Sub SetUniqueID(olContacts As ContactItem, TelefonbuchID As String, UniqueID As String, Speichern As Boolean)
         With olContacts
 
             ' Ermittle alle bisherigen Verknüpfungen
@@ -648,9 +714,11 @@ Friend Module KontaktFunktionen
             .PropertyAccessor.SetProperties(DASLTagFBTelBuch, colArgs)
 
             ' Speichere den Kontakt
-            .Save()
+            If Speichern Then .Save()
         End With
     End Sub
+
+#End Region
 
 #Region "Bilder"
 

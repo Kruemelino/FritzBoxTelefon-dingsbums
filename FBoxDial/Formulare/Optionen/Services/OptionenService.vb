@@ -1,5 +1,6 @@
 ﻿Imports System.Threading
 Imports System.Threading.Tasks
+Imports System.Windows.Controls
 Imports System.Windows.Threading
 Imports Microsoft.Office.Interop.Outlook
 Imports Microsoft.Win32
@@ -106,7 +107,7 @@ Friend Class OptionenService
         Return retval
     End Function
 
-    Private Function Indexer(olOrdner As MAPIFolder, IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of String)) As Integer
+    Private Function Indexer(olOrdner As MAPIFolder, IndexModus As Boolean, ct As CancellationToken, Progress As IProgress(Of String)) As Integer
 
         Dim VerarbeiteteKontakte As Integer = 0
 
@@ -126,23 +127,23 @@ Friend Class OptionenService
                     End If
 
                     ' Erhöhe Wert für Progressbar und schreibe einen Status
-                    progress?.Report($"Kontakt '{aktKontakt.FullName}' abgeschlossen ...")
+                    Progress?.Report($"Kontakt '{aktKontakt.FullName}' abgeschlossen ...")
 
                     aktKontakt = Nothing
                     'ReleaseComObject(aktKontakt)
 
                 Case TypeOf Item Is AddressList ' Adressliste
                     With CType(Item, AddressList)
-                        progress?.Report($"Adressliste '{ .Name}' übergangen ...")
+                        Progress?.Report($"Adressliste '{ .Name}' übergangen ...")
                     End With
 
                 Case TypeOf Item Is DistListItem ' Verteilerliste
                     With CType(Item, DistListItem)
-                        progress?.Report($"Verteilerliste '{ .DLName}' übergangen ...")
+                        Progress?.Report($"Verteilerliste '{ .DLName}' übergangen ...")
                     End With
 
                 Case Else
-                    progress?.Report($"Unbekanntes Objekt übergangen ...")
+                    Progress?.Report($"Unbekanntes Objekt übergangen ...")
 
             End Select
 
@@ -160,7 +161,7 @@ Friend Class OptionenService
         Return VerarbeiteteKontakte
     End Function
 
-    Private Async Function Indexer(OrdnerListe As List(Of MAPIFolder), IndexModus As Boolean, ct As CancellationToken, progress As IProgress(Of String)) As Task(Of Integer) Implements IOptionenService.Indexer
+    Private Async Function Indexer(OrdnerListe As List(Of MAPIFolder), IndexModus As Boolean, ct As CancellationToken, Progress As IProgress(Of String)) As Task(Of Integer) Implements IOptionenService.Indexer
 
         Dim IndexTasks As New List(Of Task(Of Integer))
 
@@ -169,7 +170,7 @@ Friend Class OptionenService
             NLogger.Debug($"{If(IndexModus, "Indiziere", "Deindiziere")} Ordner {Ordner.Name}")
             ' Starte das Indizieren
             IndexTasks.Add(Task.Run(Function()
-                                        Return Indexer(Ordner, IndexModus, ct, progress)
+                                        Return Indexer(Ordner, IndexModus, ct, Progress)
                                     End Function, ct))
 
             ' Frage Cancelation ab
@@ -321,6 +322,60 @@ Friend Class OptionenService
         End Using
 
         Return True
+    End Function
+#End Region
+
+#Region "Kontakt Synchronisation"
+    Private Function LadeOutlookKontaktFolder(ItemType As OlItemType, Verwendung As OutlookOrdnerVerwendung) As IEnumerable(Of OutlookOrdner) Implements IOptionenService.LadeOutlookKontaktFolder
+        Dim Kontaktliste As New List(Of OutlookOrdner)
+
+        ' Schleife durch alle OutlookStoreRootFolder
+        For Each olStoreRootFolder In GetOutlookStoreRootFolder()
+            Kontaktliste.AddRange(From F In GetChildFolders(olStoreRootFolder, ItemType) Select New OutlookOrdner(F, Verwendung))
+        Next
+
+        Return Kontaktliste
+    End Function
+
+    Private Function LadeFritzBoxTelefonbücher() As IEnumerable(Of PhonebookEx) Implements IOptionenService.LadeFritzBoxTelefonbücher
+        Return Globals.ThisAddIn.PhoneBookXML
+    End Function
+
+    Private Async Function Synchronisierer(OrdnerListe As List(Of MAPIFolder), FBoxTBuch As PhonebookEx, Modus As SyncMode, ct As CancellationToken, Progress As IProgress(Of String)) As Task(Of Integer) Implements IOptionenService.Synchronisierer
+
+        Dim SyncTasks As New List(Of Task(Of Integer))
+
+        ' Wenn das Telefonbuch noch nicht heruntergeladen wurden, oder nur der Name bekannt sind, dann lade das Telefonbuch herunter.
+        If FBoxTBuch.NurName Then
+            If Globals.ThisAddIn.FBoxTR064.Ready Then
+                With Globals.ThisAddIn.FBoxTR064.X_contact
+
+                    NLogger.Debug($"Das Telefonbuch '{FBoxTBuch.Name}' ({FBoxTBuch.ID}) wird heruntergeladen.")
+
+                    ' Es sollte nur ein Telefonbuch enthalten sein.
+                    FBoxTBuch = (Await .GetPhonebook(FBoxTBuch.ID)).Phonebooks.Select(Function(P) New PhonebookEx With {.Phonebook = P, .ID = FBoxTBuch.ID}).First
+                End With
+            End If
+        End If
+
+        If FBoxTBuch.Phonebook?.Contacts?.Any Then
+            ' Verarbeite alle Ordner die der Kontaktsuche entsprechen
+            For Each Ordner In OrdnerListe
+                NLogger.Debug($"Synchronisiere Ordner {Ordner.Name}")
+                ' Starte das Indizieren
+                SyncTasks.Add(Task.Run(Function()
+                                           Return KontaktSync.Synchronisierer(Ordner, FBoxTBuch, Modus, ct, Progress)
+                                       End Function, ct))
+
+                ' Frage Cancelation ab
+                If ct.IsCancellationRequested Then Exit For
+            Next
+
+        End If
+
+        ' Warte den Abschluss der Indizierung ab
+        Return (Await Task.WhenAll(SyncTasks)).Sum
+
     End Function
 #End Region
 
@@ -481,7 +536,6 @@ Friend Class OptionenService
 
         RndGen = Nothing
     End Sub
-
 
 #End Region
 

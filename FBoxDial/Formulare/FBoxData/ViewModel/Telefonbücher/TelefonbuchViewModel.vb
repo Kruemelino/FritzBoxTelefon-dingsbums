@@ -84,7 +84,7 @@ Public Class TelefonbuchViewModel
 
     Friend Sub InitTelefonbücher(Bücher As IEnumerable(Of PhonebookEx))
         If Bücher IsNot Nothing Then
-            Telefonbücher.AddRange(Bücher.Select(Function(pb) New PhonebookViewModel(DatenService, pb)))
+            Telefonbücher.AddRange(From PB In Bücher Select New PhonebookViewModel(DatenService, PB))
             ' Selektiere das erste Telefonbuch
             ' Dies ist deaktiviert, da es sonst automatisch beim Starten der Fritz!Box Daten alle Bilder dieses Telefonbuches geladen werde. 
             ' Das kann zu sehr unschönen Effekten führen. Insbesondere, wenn die Bilder nicht verfügbar sind.

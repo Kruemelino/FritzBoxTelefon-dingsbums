@@ -221,6 +221,10 @@
     <value>FON4</value>
     <comment>AVM XML Rufumleitung Type</comment>
   </data>
+  <data name="FritzBoxToOutlook" xml:space="preserve">
+    <value>Fritz!Box zu Oulook</value>
+    <comment>Kontaktsynchronisation</comment>
+  </data>
   <data name="fromAll" xml:space="preserve">
     <value>alle Anrufe</value>
     <comment>AVM XML Rufumleitung Type</comment>
@@ -332,6 +336,10 @@
   <data name="OtherTelephoneNumber" xml:space="preserve">
     <value>Weitere</value>
     <comment>Outlook</comment>
+  </data>
+  <data name="OutlookToFritzBox" xml:space="preserve">
+    <value>Outlook zur Fritz!Box</value>
+    <comment>Kontaktsynchronisation</comment>
   </data>
   <data name="PagerNumber" xml:space="preserve">
     <value>Pager</value>

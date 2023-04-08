@@ -18,14 +18,21 @@ Friend Class InspectorWrapper
 
             ' Füge Ereignishandler hinzu
             AddHandler OlKontakt.Write, AddressOf OlKontakt_Write
+            AddHandler OlKontakt.BeforeDelete, AddressOf OlKontakt_BeforeDelete
 
         End If
 
     End Sub
 
+    Private Sub OlKontakt_BeforeDelete(Item As Object, ByRef Cancel As Boolean)
+        OlKontakt.SyncDelete
+    End Sub
+
     Private Sub OlKontakt_Write(ByRef Cancel As Boolean)
         NLogger.Debug($"Speichern des Kontaktes '{OlKontakt.FullName}' wurde registriert.")
         IndiziereKontakt(OlKontakt, OlKontakt.ParentFolder, True)
+
+        OlKontakt.Synchronisierer(OlKontakt.ParentFolder)
     End Sub
 
     Private Sub Inspektor_Close()
@@ -33,7 +40,7 @@ Friend Class InspectorWrapper
         If OlKontakt IsNot Nothing Then
             ' Entferne Ereignishandler 
             RemoveHandler OlKontakt.Write, AddressOf OlKontakt_Write
-
+            RemoveHandler OlKontakt.BeforeDelete, AddressOf OlKontakt_BeforeDelete
             ReleaseComObject(OlKontakt)
             OlKontakt = Nothing
         End If

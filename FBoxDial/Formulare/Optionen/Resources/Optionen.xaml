@@ -47,6 +47,10 @@
         <fbd:OptTellowsView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type fbd:OptContactSyncViewModel}">
+        <fbd:OptContactSyncView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type fbd:OptInfoViewModel}">
         <fbd:OptInfoView />
     </DataTemplate>

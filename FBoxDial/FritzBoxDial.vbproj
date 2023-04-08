@@ -159,7 +159,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.5.1.2\lib\net46\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.5.1.3\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -244,9 +244,17 @@
     <Compile Include="App.xaml.vb">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\Optionen\ViewModel\ContactSyncViewModel\OptSyncSetupViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptAppointmentViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\OptContactSyncViewModel.vb" />
+    <Compile Include="Formulare\Optionen\Views\ContactSyncViews\OptSyncSetupView.xaml.vb">
+      <DependentUpon>OptSyncSetupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\Optionen\Views\OptAppointmentView.xaml.vb">
       <DependentUpon>OptAppointmentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\OptContactSyncView.xaml.vb">
+      <DependentUpon>OptContactSyncView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\ZweiFaktorBoxWPF\Resources\LocZweiFaktorBox.Designer.vb">
       <DependentUpon>LocZweiFaktorBox.resx</DependentUpon>
@@ -434,6 +442,7 @@
     <Compile Include="Fritz!Box\ZweiFaktorAuthentifizierung.vb" />
     <Compile Include="JSON\JSONSerialize.vb" />
     <Compile Include="JSON\JSONTraceWriter.vb" />
+    <Compile Include="Kontakte\KontaktSync.vb" />
     <Compile Include="Misc\AddinHTTPClient.vb" />
     <Compile Include="Misc\FileSystemSafeWatcher.vb" />
     <Compile Include="Misc\DateiÜberwacher.vb" />
@@ -713,7 +722,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Formulare\Optionen\Views\ContactSyncViews\OptSyncSetupView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Formulare\Optionen\Views\OptAppointmentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\OptContactSyncView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="OptContactSyncView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=fbd:OptContactSyncViewModel, IsDesignTimeCreatable=False}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Optionen.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+
+        <Label Style="{StaticResource OptHintTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strSyncContacsInfo}"/>
+        <Label Style="{StaticResource OptWarnTextBlock}" 
+               Content="{x:Static localize:LocOptionen.strSyncContacsWarn}"/>
+        <Button Style="{StaticResource OptMiniIconButton}"
+                        Content="{x:Static localize:LocOptionen.strContactSyncAdd}"
+                        Tag="{DynamicResource Add_16x}" 
+                        Command="{Binding ContactSyncAddCommand}"/>
+
+        <ItemsControl ItemsSource="{Binding SyncSetups, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <fbd:OptSyncSetupView DataContext="{Binding}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+    </StackPanel>
+</UserControl>

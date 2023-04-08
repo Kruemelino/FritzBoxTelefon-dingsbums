@@ -130,7 +130,7 @@
     <value>Rufsperre</value>
   </data>
   <data name="strCreateContact" xml:space="preserve">
-    <value>Erstellt durch das {0} am {1} </value>
+    <value>Erstellt durch das {0} am {1}: {2}{3} </value>
   </data>
   <data name="strDate" xml:space="preserve">
     <value>Datum</value>

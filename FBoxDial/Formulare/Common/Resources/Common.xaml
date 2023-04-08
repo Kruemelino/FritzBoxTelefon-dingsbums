@@ -156,6 +156,30 @@
         </Setter>
     </Style>
 
+    <Style x:Key="OptWarnTextBlock" TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}" >
+        <Setter Property="Margin" Value="0,0,0,4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border BorderThickness="2" 
+                            BorderBrush="{DynamicResource ValidationBrush}"
+                            Background="{DynamicResource ControlDisabledBackground}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="60">
+                            <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Label}}}"
+                                       TextWrapping="WrapWithOverflow" 
+                                       FontSize="10"/>
+                        </ScrollViewer>
+
+                        <b:Interaction.Behaviors>
+                            <fbd:PassthroughMouseWheelBehavior />
+                        </b:Interaction.Behaviors>
+                    </Border>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="OptTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}" >
         <Setter Property="Template">
             <Setter.Value>
@@ -290,7 +314,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="OptMiniIconButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" >
+    <Style x:Key="OptMiniIconButton" TargetType="{x:Type Button}" >
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -305,17 +329,20 @@
                                           RecognizesAccessKey="True"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Grid.Column="0"/>
+                                          Grid.Column="0" >
+                            <ContentPresenter.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Foreground" Value="{DynamicResource ControlDefaultForeground}"/>
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
 
-                        <Button Grid.Column="1"
-                                HorizontalAlignment="Left" 
+                        <Button Grid.Column="1" Margin="0,4,0,0"
+                                HorizontalAlignment="Right" 
                                 Style="{StaticResource MiniIconButton}"
                                 Content="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
                                 Command="{Binding Path=Command, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                                CommandParameter="{Binding Path=CommandParameter, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                               />
-
-
+                                CommandParameter="{Binding Path=CommandParameter, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -414,6 +441,10 @@
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Margin" Value="5,0"/>
         <Setter Property="FontSize" Value="10"/>
+    </Style>
+
+    <Style x:Key="OptProgressBar" TargetType="{x:Type ProgressBar}">
+        <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
 </ResourceDictionary>

@@ -26,16 +26,17 @@ Friend Module JSONSerialize
         Return Await Task.Run(Function()
                                   ' Schalte das JSON Logging aus, falls dies nicht erwünscht ist.
                                   JSONTraceWriter.JSONLoggerOff = LogOff
+                                  If FilePath.IsNotStringNothingOrEmpty Then
+                                      Using FS As New FileStream(FilePath, FileMode.Open)
+                                          Using SR As New StreamReader(FS)
+                                              Using JR As New JsonTextReader(SR)
+                                                  Dim JS As JsonSerializer = JsonSerializer.Create(JSS)
 
-                                  Using FS As New FileStream(FilePath, FileMode.Open)
-                                      Using SR As New StreamReader(FS)
-                                          Using JR As New JsonTextReader(SR)
-                                              Dim JS As JsonSerializer = JsonSerializer.Create(JSS)
-
-                                              Return JS.Deserialize(Of T)(JR)
+                                                  Return JS.Deserialize(Of T)(JR)
+                                              End Using
                                           End Using
                                       End Using
-                                  End Using
+                                  End If
 
                                   ' Schalte das JSON Logging in den Ursprungszustand
                                   JSONTraceWriter.JSONLoggerOff = False
@@ -52,15 +53,16 @@ Friend Module JSONSerialize
         Return Await Task.Run(Function()
                                   ' Schalte das JSON Logging aus, falls dies nicht erwünscht ist.
                                   JSONTraceWriter.JSONLoggerOff = LogOff
+                                  If S IsNot Nothing Then
+                                      Using SR As New StreamReader(S)
+                                          Using JR As New JsonTextReader(SR)
+                                              Dim JS As JsonSerializer = JsonSerializer.Create(JSS)
 
-                                  Using SR As New StreamReader(S)
-                                      Using JR As New JsonTextReader(SR)
-                                          Dim JS As JsonSerializer = JsonSerializer.Create(JSS)
+                                              Return JS.Deserialize(Of T)(JR)
 
-                                          Return JS.Deserialize(Of T)(JR)
-
+                                          End Using
                                       End Using
-                                  End Using
+                                  End If
 
                                   ' Schalte das JSON Logging in den Ursprungszustand
                                   JSONTraceWriter.JSONLoggerOff = False

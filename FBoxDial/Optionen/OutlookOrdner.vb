@@ -1,4 +1,5 @@
-﻿Imports System.Xml.Serialization
+﻿Imports System.ComponentModel
+Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop
 
 Public Enum OutlookOrdnerVerwendung As Integer
@@ -6,7 +7,32 @@ Public Enum OutlookOrdnerVerwendung As Integer
     KontaktSpeichern = 2
     JournalSpeichern = 4
     TerminSpeichern = 8
+    FBoxSync = 16
 End Enum
+
+<TypeConverter(GetType(EnumDescriptionTypeConverter))>
+Public Enum SyncMode As Integer
+    <LocalizedDescription("OutlookToFritzBox", GetType(resEnum))>
+    OutlookToFritzBox = 1
+
+    <LocalizedDescription("FritzBoxToOutlook", GetType(resEnum))>
+    FritzBoxToOutlook = 2
+
+End Enum
+
+<Serializable()>
+Public Class SyncOptions
+    <XmlElement> Public Property FBoxSyncID As Integer = -1
+    <XmlElement> Public Property FBoxSyncMode As SyncMode
+    <XmlElement> Public Property FBoxCBSyncStartUp As Boolean = False
+
+    <XmlIgnore> Friend ReadOnly Property ValidData As Boolean
+        Get
+            Return FBoxSyncID.AreDifferentTo(-1) And Not FBoxSyncMode = 0
+        End Get
+    End Property
+
+End Class
 
 <Serializable()>
 Public Class OutlookOrdner
@@ -36,6 +62,8 @@ Public Class OutlookOrdner
     <XmlElement> Public Property FolderID As String
     <XmlElement> Public Property StoreID As String
     <XmlAttribute> Public Property Name As String
+
+    <XmlElement> Public Property FBoxSyncOptions As SyncOptions = Nothing
     <XmlAttribute> Public Property Typ As OutlookOrdnerVerwendung
     <XmlIgnore> Friend ReadOnly Property Exists As Boolean
         Get
@@ -50,6 +78,12 @@ Public Class OutlookOrdner
             FolderID = Value.EntryID
             StoreID = Value.StoreID
         End Set
+    End Property
+
+    <XmlIgnore> Friend ReadOnly Property ItemsCount As Integer
+        Get
+            Return If(Exists, MAPIFolder.Items.Count, -1)
+        End Get
     End Property
 
 #Region "IEquatable Support"

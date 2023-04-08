@@ -454,6 +454,34 @@ Der Schlüssel {TelNr} wird mit der zu wählenden Telefonnummer ersetzt.</value>
     <value>URL für Verbindungsabbruch</value>
     <comment>OptConnURIView</comment>
   </data>
+  <data name="strContactSync" xml:space="preserve">
+    <value>Synchronisation</value>
+    <comment>MainView</comment>
+  </data>
+  <data name="strContactSyncAdd" xml:space="preserve">
+    <value>Kontaktsynchronisation hinzufügen</value>
+    <comment>OptSyncSetupView</comment>
+  </data>
+  <data name="strContactSyncFBoxPhonebook" xml:space="preserve">
+    <value>Fritz!Box Telefonbuch</value>
+    <comment>OptSyncSetupView</comment>
+  </data>
+  <data name="strContactSyncModus" xml:space="preserve">
+    <value>Synchronisationsmodus</value>
+    <comment>OptSyncSetupView</comment>
+  </data>
+  <data name="strContactSyncOutlookFolder" xml:space="preserve">
+    <value>Outlook Kontaktordner</value>
+    <comment>OptSyncSetupView</comment>
+  </data>
+  <data name="strContactSyncRemove" xml:space="preserve">
+    <value>Kontaktsynchronisation entfernen</value>
+    <comment>OptSyncSetupView</comment>
+  </data>
+  <data name="strContactSyncStart" xml:space="preserve">
+    <value>Starte Synchronisierung</value>
+    <comment>OptSyncSetupView</comment>
+  </data>
   <data name="strCreateContact" xml:space="preserve">
     <value>Kontakterstellung</value>
     <comment>MainView</comment>
@@ -792,7 +820,7 @@ HInweis: Es wird bei Auswahl der Anwendung eine "Windows-Befehlsprozessor" (cmd)
   </data>
   <data name="strSearchContactCBSucheUnterordner" xml:space="preserve">
     <value>Outlook Unterordner einbeziehen</value>
-    <comment>OptSearchContactView</comment>
+    <comment>OptSearchContactView, OptSyncSetupView</comment>
   </data>
   <data name="strSearchContactDeIndex" xml:space="preserve">
     <value>Deindizieren</value>
@@ -841,6 +869,20 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
   <data name="strStoppuhr" xml:space="preserve">
     <value>Stoppuhr</value>
     <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strSyncContacsInfo" xml:space="preserve">
+    <value>Hinweise zur Synchronisation von Kontakten:
+Hier können Abgleiche zwischen einem Kontaktordner in Outlook und einem Telefonbuch auf der Fritz!Box eingerichtet werden. Diese Funktion ist experimentell und bietet (noch) nicht alle Funktionen, die man ggf. erwartet. </value>
+    <comment>OptSyncSetupView</comment>
+  </data>
+  <data name="strSyncContacsWarn" xml:space="preserve">
+    <value>Experimentelle Funktionen!
+Achtung: Es werden Kontakte sowohl in Outlook als auch im Fritz!Box Telefonbuch ohne Vorwarnung gelöscht, falls die Routine dies für nötig hält. Macht vorher eine Datensicherung!</value>
+    <comment>OptSyncSetupView</comment>
+  </data>
+  <data name="strSyncStartUp" xml:space="preserve">
+    <value>Synchronisiere bei Outlookstart</value>
+    <comment>OptSyncSetupView</comment>
   </data>
   <data name="strTBFBSecAdr" xml:space="preserve">
     <value>Alternative IP-Adresse</value>

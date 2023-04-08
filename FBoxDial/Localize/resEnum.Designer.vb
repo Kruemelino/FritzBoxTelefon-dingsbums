@@ -307,6 +307,15 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box zu Oulook ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property FritzBoxToOutlook() As String
+        Get
+            Return ResourceManager.GetString("FritzBoxToOutlook", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die alle Anrufe ähnelt.
     '''</summary>
     Public Shared ReadOnly Property fromAll() As String
@@ -321,15 +330,6 @@ Public Class resEnum
     Public Shared ReadOnly Property fromAnonymous() As String
         Get
             Return ResourceManager.GetString("fromAnonymous", resourceCulture)
-        End Get
-    End Property
-    
-    '''<summary>
-    '''  Sucht eine lokalisierte Zeichenfolge, die von Person nicht im Telefonbuch ähnelt.
-    '''</summary>
-    Public Shared ReadOnly Property fromNotInPhonebook() As String
-        Get
-            Return ResourceManager.GetString("fromNotInPhonebook", resourceCulture)
         End Get
     End Property
     
@@ -564,6 +564,15 @@ Public Class resEnum
     Public Shared ReadOnly Property OtherTelephoneNumber() As String
         Get
             Return ResourceManager.GetString("OtherTelephoneNumber", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Outlook zur Fritz!Box ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property OutlookToFritzBox() As String
+        Get
+            Return ResourceManager.GetString("OutlookToFritzBox", resourceCulture)
         End Get
     End Property
     

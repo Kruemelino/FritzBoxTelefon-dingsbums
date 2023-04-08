@@ -12,6 +12,8 @@ Friend Class ExplorerWrapper
     Private Property Dialogservice As IDialogService
     Private Property PaneDispatcher As Windows.Threading.Dispatcher
 
+    Private Property OlSelectedContacts As New List(Of ContactItem)
+
     Friend ReadOnly Property PaneVisible As Boolean
         Get
             Return CallListPane IsNot Nothing AndAlso CallListPane.Visible
@@ -207,11 +209,17 @@ Friend Class ExplorerWrapper
             ' Schleife durch alle Elemente der selektierten Objekte
             For Each ClipboardObject As Object In CType(ClipboardContent, Selection)
 
-                ' Wenn es sich um Kontakte handelt, dann (de-)indiziere den Kontakt
+                ' Wenn es sich um Kontakte handelt, dann 
                 If TypeOf ClipboardObject Is ContactItem Then
+                    Dim olContact As ContactItem = CType(ClipboardObject, ContactItem)
 
-                    IndiziereKontakt(CType(ClipboardObject, ContactItem), Target, True)
+                    ' (de-)indiziere den Kontakt
+                    IndiziereKontakt(olContact, Target, True)
 
+                    ' Synchronisiere den Kontakt
+                    Synchronisierer(olContact, Target)
+
+                    ReleaseComObject(olContact)
                 End If
             Next
         End If
@@ -219,9 +227,47 @@ Friend Class ExplorerWrapper
 
     Private Sub Explorer_SelectionChange()
         Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
+
+        OlSelectedContactList()
+
+        ' Falls etwas selektiert wurde, prüfe ob es Kontakte sind
+        If OlExplorer.Selection.Count.IsNotZero Then
+            For Each Item In OlExplorer.Selection
+                If TypeOf Item Is ContactItem Then
+                    ' Nimm den Kontakt in die Liste auf
+                    OlSelectedContacts.Add(CType(Item, ContactItem))
+
+                    ' Füge einen Eventhandler hinzu
+                    AddHandler OlSelectedContacts.Last.BeforeDelete, AddressOf ContactItem_Delete
+
+                End If
+            Next
+        End If
+    End Sub
+
+    Private Sub ContactItem_Delete(Item As Object, ByRef Cancel As Boolean)
+        If TypeOf Item Is ContactItem Then
+            With CType(Item, ContactItem)
+                RemoveHandler .BeforeDelete, AddressOf ContactItem_Delete
+
+                .SyncDelete()
+            End With
+        End If
+    End Sub
+
+    Private Sub OlSelectedContactList()
+        ' Entferne die Verweise auf die Eventhandler
+        OlSelectedContacts.ForEach(Sub(Kontakt)
+                                       RemoveHandler Kontakt.BeforeDelete, AddressOf ContactItem_Delete
+                                       ReleaseComObject(Kontakt)
+                                   End Sub)
+
+        ' Leere die Liste
+        OlSelectedContacts.Clear()
     End Sub
 
     Private Sub Explorer_Close()
+        OlSelectedContactList()
 
         ' Entferne Pane
         If CallListPane IsNot Nothing Then

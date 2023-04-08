@@ -25,8 +25,11 @@ Friend Module KontaktIndizierer
 
         End If
 
-        If RCO Then ReleaseComObject(olKontakt)
-        ReleaseComObject(olOrdner)
+        If RCO Then
+            ReleaseComObject(olKontakt)
+            ReleaseComObject(olOrdner)
+        End If
+
     End Sub
 
     ''' <summary>
