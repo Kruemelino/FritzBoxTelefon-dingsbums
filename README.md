@@ -29,6 +29,7 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
 * [x] Signalisierung der aktuellen Gesprächsdauer (Stoppuhr)
 * [x] Bearbeiten von Kontakten in den Fritz!Box Telefonbüchern
 * [x] Hochladen von Outlook Kontakten zu den Fritz!Box Telefonbüchern
+* [x] Synchronisation verschiendener Outlook-Kontaktordner mit Telefonbüchern auf der Fritz!Box (Experimentell)
 * [x] Bearbeiten der Fritz!Box Sperrliste
 * [x] Rückruf- und Wahlwiederholungsliste
 * [x] VIP-Liste für häufig anzurufende Kontakte
