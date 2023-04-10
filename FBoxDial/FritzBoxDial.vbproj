@@ -581,7 +581,6 @@
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
     <Compile Include="Kontakte\KontaktNotiz.vb" />
     <Compile Include="Kontakte\Rückwärtssuche.vb" />
-    <Compile Include="Kontakte\Visitenkarte.vb" />
     <Compile Include="Logging\Logging.vb" />
     <Compile Include="Misc\Nutzerdaten.vb" />
     <Compile Include="Optionen\OutlookOrdner.vb" />
