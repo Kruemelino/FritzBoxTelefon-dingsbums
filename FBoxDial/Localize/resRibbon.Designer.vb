@@ -488,6 +488,60 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Synchronisiere Kontakt ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property SyncContact_Label() As String
+            Get
+                Return ResourceManager.GetString("SyncContact_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Nachträgliches Synchronisieren dieses Kontaktes. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property SyncContact_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("SyncContact_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Kontakt wird nicht syncronisiert. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property SyncError_Label() As String
+            Get
+                Return ResourceManager.GetString("SyncError_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Kontaktorder wird nicht für die Synchronisieren verwendet. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property SyncError_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("SyncError_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Synchronisationsstatus... ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property SyncTest_Label() As String
+            Get
+                Return ResourceManager.GetString("SyncTest_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeigt den Synchronisationsstatus dieses Kontaktes an. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property SyncTest_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("SyncTest_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefon-dingsbums ähnelt.
         '''</summary>
         Public Shared ReadOnly Property Tab_Label() As String

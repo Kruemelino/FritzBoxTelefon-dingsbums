@@ -704,7 +704,7 @@ Namespace RibbonData
                 .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", NamespaceURI)))
 
                 ' Ermittle alle Telefonnummern des Kontaktes
-                ListofTelefonnummer = Kontakt.GetKontaktTelNrList(False)
+                ListofTelefonnummer = Kontakt.GetTelNrList(False)
 
                 For Each TelNr In ListofTelefonnummer
                     .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, TelNr, ListofTelefonnummer.IndexOf(TelNr), ListName))
@@ -742,7 +742,7 @@ Namespace RibbonData
 
 #End Region
 
-#Region "IndexTest"
+#Region "Index-Test"
 
         Friend Function VisibilityIndexTest() As Boolean
 
@@ -800,6 +800,45 @@ Namespace RibbonData
             Return XDynaMenu.InnerXml
         End Function
 
+        ''' <summary>
+        ''' Erstelle die Liste der entsprechenden Syncronisierungsdaten des <paramref name="oContact"/> ausgehend vom <paramref name="ListName"/>.
+        ''' </summary>
+        ''' <param name="oContact">Der aktuelle Kontakt</param>
+        ''' <param name="ListName">Eindeutige Bezeichnung der Liste</param>
+        ''' <returns>XML-Dokument als String</returns>
+        Friend Function GetDynamicMenuSyncTest(oContact As Outlook.ContactItem, ListName As String) As String
+
+            Dim XDynaMenu As New XmlDocument
+
+            ListName = ListName.RegExRemove("_.*")
+
+            With XDynaMenu
+                ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
+                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", NamespaceURI)))
+
+                ' Wenn der Ordner für die Kontaktsuche verwendet werden soll, dann ergänze die Einträge
+                If oContact.Parent IsNot Nothing AndAlso CType(oContact.Parent, Outlook.MAPIFolder).OrdnerAusgewählt(OutlookOrdnerVerwendung.FBoxSync) Then
+                    ' Button für das manuelle Synchronisieren des Kontaktes
+                    ' Füge den Löschbutton und einen Seperator hinzu
+                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, $"SyncContact_{ListName}", "S"))
+                    .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
+
+                    ' Einzelnen Indexeinträge
+                    For Each Eintrag In oContact.GetUniqueID
+                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag.Key, $"BuchID: {Eintrag.Key}, uID: {Eintrag.Value}"))
+                    Next
+                Else
+                    ' Fehlermeldung
+                    .DocumentElement.AppendChild(CreateDisabledDynMenuButton(XDynaMenu, ListName, "SyncError"))
+                End If
+
+            End With
+
+            NLogger.Trace($"{ListName}: {XDynaMenu.OuterXml}")
+
+            Return XDynaMenu.InnerXml
+        End Function
+
         Private Function CreateDynMenuButton(xDoc As XmlDocument, ID As String, KVP As KeyValuePair(Of String, String)) As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
@@ -816,6 +855,27 @@ Namespace RibbonData
 
             XAttribute = xDoc.CreateAttribute("label")
             XAttribute.Value = $"{resEnum.ResourceManager.GetString(KVP.Key)}: {KVP.Value}".Trim.XMLMaskiereZeichen
+            XButton.Attributes.Append(XAttribute)
+
+            Return XButton
+        End Function
+
+        Private Function CreateDynMenuButton(xDoc As XmlDocument, ID As String, Key As String, Label As String) As XmlElement
+            Dim XButton As XmlElement
+            Dim XAttribute As XmlAttribute
+
+            XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
+
+            XAttribute = xDoc.CreateAttribute("id")
+            XAttribute.Value = $"{ID}_{Key}"
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("enabled")
+            XAttribute.Value = $"false"
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("label")
+            XAttribute.Value = Label.Trim.XMLMaskiereZeichen
             XButton.Attributes.Append(XAttribute)
 
             Return XButton
@@ -845,6 +905,20 @@ Namespace RibbonData
 
             Return XButton
         End Function
+#End Region
+
+#Region "Synchronisationstest"
+        Private Sub SyncContact(OutlookInspector As Outlook.Inspector, ListName As String)
+
+            If ListName.IsNotStringNothingOrEmpty Then ' Abfrage eigentlich unnötig
+                If TypeOf OutlookInspector.CurrentItem Is Outlook.ContactItem Then
+                    With CType(OutlookInspector.CurrentItem, Outlook.ContactItem)
+                        Synchronisierer(.Self, .ParentFolder)
+                    End With
+                End If
+            End If
+
+        End Sub
 #End Region
 
 #Region "Telefonbücher"

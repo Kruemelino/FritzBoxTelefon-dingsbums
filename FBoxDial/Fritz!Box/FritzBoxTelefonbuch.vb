@@ -22,7 +22,6 @@ Namespace Telefonbücher
                         Dim AlleTelefonbücher As New List(Of PhonebookEx)
                         Dim PhonebookURL As String = String.Empty
 
-
                         ' Schleife durch alle ermittelten IDs
                         For Each PhonebookID In PhonebookIDs
                             AlleTelefonbücher.AddRange(Await LadeTelefonbuch(PhonebookID))
@@ -292,13 +291,23 @@ Namespace Telefonbücher
         End Function
 
         ''' <summary>
-        ''' Startet das Hochladen eines Kontaktes.
+        ''' Startet das Hochladen eines Kontaktes ohne Rückmeldung.
         ''' </summary>
         ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
         ''' <param name="OutlookKontakt">Outlook-Kontakt, der konvertiert und hochgeladen werden soll.</param>
-        ''' <returns>Ergebniszeichenfolge</returns>
         ''' <remarks>Der Outlook-Kontakt wird mit der UniqueID und der TelefonbuchID ergänzt (via PropertyAccessor).</remarks>
-        Friend Function SetTelefonbuchEintrag(TelefonbuchID As Integer, OutlookKontakt As ContactItem) As String
+        Friend Sub SetTelefonbuchEintrag(TelefonbuchID As Integer, OutlookKontakt As ContactItem)
+            SetPhonebookEntryUID(TelefonbuchID, OutlookKontakt)
+        End Sub
+
+        ''' <summary>
+        ''' Startet das Hochladen eines Kontaktes mit Rückmeldung.
+        ''' </summary>
+        ''' <param name="TelefonbuchID">ID des Telefonbuches</param>
+        ''' <param name="OutlookKontakt">Outlook-Kontakt, der konvertiert und hochgeladen werden soll.</param>
+        ''' <remarks>Der Outlook-Kontakt wird mit der UniqueID und der TelefonbuchID ergänzt (via PropertyAccessor).</remarks>
+        ''' <returns>Ergebniszeichenfolge</returns>
+        Private Function SetPhonebookEntryUID(TelefonbuchID As Integer, OutlookKontakt As ContactItem) As String
             With OutlookKontakt
                 ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
                 Dim UID As Integer = .GetUniqueID(TelefonbuchID)
@@ -334,7 +343,7 @@ Namespace Telefonbücher
 
             ' Schleife durch alle Kontakte
             For Each Kontakt In OutlookKontakte
-                TaskList.Add(Task.Run(Function() SetTelefonbuchEintrag(TelefonbuchID, Kontakt)))
+                TaskList.Add(Task.Run(Function() SetPhonebookEntryUID(TelefonbuchID, Kontakt)))
 
                 ' Die einzelnen Vorgänge müssen nacheinander erfolgen, da es sonst zu einer WebException kommt: Die zugrunde liegende Verbindung wurde geschlossen: Für den geschützten SSL/TLS-Kanal konnte keine Vertrauensstellung hergestellt werden.
                 Await TaskList.Last

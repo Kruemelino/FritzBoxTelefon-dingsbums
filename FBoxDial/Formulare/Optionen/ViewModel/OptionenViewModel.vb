@@ -1311,7 +1311,7 @@ Public Class OptionenViewModel
                                                                                           .Select(Function(S) S.MAPIFolder).ToList)
 
             ' Füge die Unterordner hinzu
-            If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+            If CBSucheUnterordner Then AddOutlookChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
             TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, False, Nothing, Nothing)))
 
             ' Indiziere neu hinzugefügte Kontaktornder (Task muss abgeschlossen sein. Ansonsten startet der Indizierungstask mit einer leeren Liste):
@@ -1319,7 +1319,7 @@ Public Class OptionenViewModel
                                                                          .Except(.FindAll(OutlookOrdnerVerwendung.KontaktSuche)) _
                                                                          .Select(Function(S) S.MAPIFolder).ToList)
             ' Füge die Unterordner hinzu
-            If CBSucheUnterordner Then AddChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
+            If CBSucheUnterordner Then AddOutlookChildFolders(MAPIFolderList, Outlook.OlItemType.olContactItem)
             TaskList.Add(Task.Run(Sub() DatenService.Indexer(MAPIFolderList, True, Nothing, Nothing)))
 
         End With

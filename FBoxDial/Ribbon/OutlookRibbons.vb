@@ -368,6 +368,19 @@ Imports FBoxDial.RibbonData
     End Function
 #Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
 #End Region
+
+#Region "Synchronisationstest"
+    Public Function FillDynamicMenuSync(control As IRibbonControl) As String
+        Return GetDynamicMenuSyncTest(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem), control.Id)
+    End Function
+
+#Disable Warning IDE0060 ' Nicht verwendete Parameter entfernen
+    Public Function SyncTestVisible(control As IRibbonControl) As Boolean
+        Return VisibilityIndexTest()
+    End Function
+#Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
+#End Region
+
 #End Region
 
 #Region "VIP-Ribbon"

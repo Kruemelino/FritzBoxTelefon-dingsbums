@@ -197,7 +197,6 @@ Public Module Extensions
     <Extension> Public Function Split(Text As String, Delimiter As String) As String()
         Return Strings.Split(Text, Delimiter,, CompareMethod.Text)
     End Function
-
     <Extension> Public Function XMLMaskiereZeichen(Text As String) As String
         ' Nicht zugelassene Zeichen der XML-Notifikation ersetzen.
         ' Zeichen	Notation in XML

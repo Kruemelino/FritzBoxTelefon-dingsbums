@@ -1,6 +1,5 @@
 ﻿Imports System.Threading
 Imports System.Threading.Tasks
-Imports System.Windows.Controls
 Imports System.Windows.Threading
 Imports Microsoft.Office.Interop.Outlook
 Imports Microsoft.Win32
@@ -364,7 +363,7 @@ Friend Class OptionenService
                 NLogger.Debug($"Synchronisiere Ordner {Ordner.Name}")
                 ' Starte das Indizieren
                 SyncTasks.Add(Task.Run(Function()
-                                           Return KontaktSync.Synchronisierer(Ordner, FBoxTBuch, Modus, ct, Progress)
+                                           Return KontaktFunktionen.Synchronisierer(Ordner, FBoxTBuch, Modus, ct, Progress)
                                        End Function, ct))
 
                 ' Frage Cancelation ab
@@ -384,8 +383,8 @@ Friend Class OptionenService
 
     Private Async Sub StartKontaktsucheTest(TelNr As String) Implements IOptionenService.StartKontaktsucheTest
         ' Ereignishandler hinzufügen
-        AddHandler KontaktSucher.Beendet, AddressOf KontaktsucheTestBeendet
-        AddHandler KontaktSucher.Status, AddressOf SetStatus
+        AddHandler KontaktFunktionen.Beendet, AddressOf KontaktsucheTestBeendet
+        AddHandler KontaktFunktionen.Status, AddressOf SetStatus
 
         ' Führe eine Kontaktsuche durch
         Dim oc As ContactItem = Await KontaktSucheTelNr(New Telefonnummer With {.SetNummer = TelNr})
@@ -397,8 +396,8 @@ Friend Class OptionenService
         RaiseEvent BeendetKontaktsuche(Me, New NotifyEventArgs(Of Boolean)(e.Value))
 
         ' Ereignishandler hinzufügen
-        RemoveHandler KontaktSucher.Beendet, AddressOf KontaktsucheTestBeendet
-        RemoveHandler KontaktSucher.Status, AddressOf SetStatus
+        RemoveHandler KontaktFunktionen.Beendet, AddressOf KontaktsucheTestBeendet
+        RemoveHandler KontaktFunktionen.Status, AddressOf SetStatus
 
         NLogger.Debug($"Test der Kontaktsuche beendet")
     End Sub
@@ -452,7 +451,7 @@ Friend Class OptionenService
                 Dim C As ContactItem = OLC.Item(RndGen.Next(0, OLC.Count))
 
                 ' Ermittle eine zufällige Telefonnummer des Kontaktes
-                Dim NL = C.GetKontaktTelNrList(True)
+                Dim NL = C.GetTelNrList(True)
                 If NL.Any Then
                     TelNr = NL.Item(RndGen.Next(0, NL.Count)).Unformatiert
                 Else

@@ -157,7 +157,7 @@ Public Class OptSearchContactViewModel
         End If
 
         ' Füge die Unterordner hinzu
-        If OptVM.CBSucheUnterordner Then AddChildFolders(OrdnerListe, OlItemType.olContactItem)
+        If OptVM.CBSucheUnterordner Then AddOutlookChildFolders(OrdnerListe, OlItemType.olContactItem)
 
         ' Setze Progressbar Maximum
         IndexProgressMax = DatenService.ZähleOutlookKontakte(OrdnerListe)

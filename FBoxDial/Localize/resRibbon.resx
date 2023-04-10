@@ -258,6 +258,24 @@
   <data name="ShowMissedCalls_ScreenTipp" xml:space="preserve">
     <value>Zeigt die verpassten Anrufe in einem SidePane an.</value>
   </data>
+  <data name="SyncContact_Label" xml:space="preserve">
+    <value>Synchronisiere Kontakt</value>
+  </data>
+  <data name="SyncContact_ScreenTipp" xml:space="preserve">
+    <value>Nachträgliches Synchronisieren dieses Kontaktes.</value>
+  </data>
+  <data name="SyncError_Label" xml:space="preserve">
+    <value>Der Kontakt wird nicht syncronisiert.</value>
+  </data>
+  <data name="SyncError_ScreenTipp" xml:space="preserve">
+    <value>Der Kontaktorder wird nicht für die Synchronisieren verwendet.</value>
+  </data>
+  <data name="SyncTest_Label" xml:space="preserve">
+    <value>Synchronisationsstatus...</value>
+  </data>
+  <data name="SyncTest_ScreenTipp" xml:space="preserve">
+    <value>Zeigt den Synchronisationsstatus dieses Kontaktes an.</value>
+  </data>
   <data name="Tab_Label" xml:space="preserve">
     <value>Fritz!Box Telefon-dingsbums</value>
   </data>

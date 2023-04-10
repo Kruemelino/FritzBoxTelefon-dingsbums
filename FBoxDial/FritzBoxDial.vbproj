@@ -442,7 +442,6 @@
     <Compile Include="Fritz!Box\ZweiFaktorAuthentifizierung.vb" />
     <Compile Include="JSON\JSONSerialize.vb" />
     <Compile Include="JSON\JSONTraceWriter.vb" />
-    <Compile Include="Kontakte\KontaktSync.vb" />
     <Compile Include="Misc\AddinHTTPClient.vb" />
     <Compile Include="Misc\FileSystemSafeWatcher.vb" />
     <Compile Include="Misc\DateiÜberwacher.vb" />
@@ -580,9 +579,7 @@
     <Compile Include="Fritz!Box\FritzBoxTelefonbuch.vb" />
     <Compile Include="Journal\Journal.vb" />
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
-    <Compile Include="Kontakte\KontaktIndizierer.vb" />
     <Compile Include="Kontakte\KontaktNotiz.vb" />
-    <Compile Include="Kontakte\KontaktSucher.vb" />
     <Compile Include="Kontakte\Rückwärtssuche.vb" />
     <Compile Include="Kontakte\Visitenkarte.vb" />
     <Compile Include="Logging\Logging.vb" />

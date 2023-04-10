@@ -109,7 +109,7 @@ Public Class ContactDialViewModel
 
             ' Telefonnummern des Kontaktes setzen 
             DialNumberList.Clear()
-            DialNumberList.AddRange(.GetKontaktTelNrList(False))
+            DialNumberList.AddRange(.GetTelNrList(False))
 
             ' Kopfdaten setzen
             DialVM.Name = String.Format(Localize.LocWählclient.strHeader, $"{ .FullName}{If(.CompanyName.IsNotStringNothingOrEmpty, $" ({ .CompanyName})", String.Empty)}")

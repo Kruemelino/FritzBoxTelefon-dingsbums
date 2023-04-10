@@ -8,7 +8,6 @@ Public Class OptSyncSetupViewModel
     Private Property DialogService As IDialogService
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Public ReadOnly Property ParentViewModel As OptContactSyncViewModel
-
     Public Property ContactSyncRemoveCommand As RelayCommand
     Public Property StartSyncCommand As RelayCommand
     Public Property CancelSyncCommand As RelayCommand
@@ -203,9 +202,6 @@ Public Class OptSyncSetupViewModel
         IsAktiv = True
 
         Dim OrdnerListe As New List(Of MAPIFolder) From {OlOrdner.MAPIFolder}
-
-        ' Füge die Unterordner hinzu
-        ' If CBSyncUnterordner Then AddChildFolders(OrdnerListe, OlItemType.olContactItem)
 
         ' Setze Progressbar Maximum
         SyncProgressMax = DatenService.ZähleOutlookKontakte(OrdnerListe)
