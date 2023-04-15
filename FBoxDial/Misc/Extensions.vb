@@ -245,7 +245,7 @@ Public Module Extensions
             ' Liste sortieren
             Anrufliste = Anrufliste.OrderByDescending(Function(TF) TF?.ZeitBeginn).ToList
 
-            NLogger.Debug($"Telefonat ({Anruf.AnruferName}, {Anruf.ZeitBeginn}) wurde in die Liste aufgenommen.")
+            NLogger.Debug($"Telefonat ({Anruf.NameGegenstelle}, {Anruf.ZeitBeginn}) wurde in die Liste aufgenommen.")
 
 
             ' Entferne alle überflüssigen Elemente
@@ -260,7 +260,7 @@ Public Module Extensions
 
             End With
         Else
-            NLogger.Debug($"Telefonat ({Anruf.AnruferName}, {Anruf.ZeitBeginn}) befindet sich bereits in der Liste.")
+            NLogger.Debug($"Telefonat ({Anruf.NameGegenstelle}, {Anruf.ZeitBeginn}) befindet sich bereits in der Liste.")
         End If
         Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
