@@ -383,7 +383,6 @@ Imports Microsoft.Office.Interop
 
                 If _OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty) Then
                     _OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
-                    NLogger.Debug($"Outlook Kontakt {_OlKontakt?.FullNameAndCompany} aus EntryID und KontaktID ermittelt.")
                 End If
 
             End Try
@@ -1051,12 +1050,12 @@ Imports Microsoft.Office.Interop
             If AnrufRichtung = AnrufRichtungen.Eingehend Then
                 ' RING-Liste initialisieren, falls erforderlich
                 If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
-                ' Telefonat in erste Positon der RING-Liste speicher
+                ' Telefonat in erste Positon der RING-Liste speichern
                 XMLData.PTelListen.RINGListe.Insert(Me)
             Else
                 ' CALL-Liste initialisieren, falls erforderlich
                 If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
-                ' Telefonat in erste Positon der CALL-Liste speicher
+                ' Telefonat in erste Positon der CALL-Liste speichern
                 XMLData.PTelListen.CALLListe.Insert(Me)
             End If
         End If

@@ -225,7 +225,13 @@ Public Module Extensions
     End Function
 #End Region
 
-#Region "Extensions für Verarbeitung von Zeichenfolgen: List(Of Telefonat), List(Of VIPEntry)"
+#Region "Extensions für Verarbeitung von Zeichenfolgen: List(Of Telefonat)"
+    ''' <summary>
+    ''' Fügt ein Anruf in die vorgesehene Liste ein. Die Liste wird nach der <see cref="Telefonat.ZeitBeginn"/> sortiert.
+    ''' Alle überflüssigen Einträge werden entfernt.
+    ''' </summary>
+    ''' <param name="Anrufliste">Liste der Anrufer</param>
+    ''' <param name="Anruf">Der aktuelle Anruf, der hinzugefügt werden soll.</param>
     <Extension> Public Sub Insert(ByRef Anrufliste As List(Of Telefonat), Anruf As Telefonat)
 
         ' Liste initialisieren, falls erforderlich
@@ -239,6 +245,9 @@ Public Module Extensions
             ' Liste sortieren
             Anrufliste = Anrufliste.OrderByDescending(Function(TF) TF?.ZeitBeginn).ToList
 
+            NLogger.Debug($"Telefonat ({Anruf.AnruferName}, {Anruf.ZeitBeginn}) wurde in die Liste aufgenommen.")
+
+
             ' Entferne alle überflüssigen Elemente
             With Anrufliste
                 ' PTBNumEntryList = 10
@@ -250,6 +259,8 @@ Public Module Extensions
                 End If
 
             End With
+        Else
+            NLogger.Debug($"Telefonat ({Anruf.AnruferName}, {Anruf.ZeitBeginn}) befindet sich bereits in der Liste.")
         End If
         Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub

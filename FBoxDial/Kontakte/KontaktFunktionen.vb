@@ -320,6 +320,7 @@ Friend Module KontaktFunktionen
         GetOutlookKontakt = Nothing
         Try
             GetOutlookKontakt = CType(Globals.ThisAddIn.Application.Session.GetItemFromID(KontaktID, StoreID), ContactItem)
+            NLogger.Debug($"Outlook Kontakt {GetOutlookKontakt?.FullNameAndCompany.RemoveLineBreaks} aus EntryID und KontaktID ermittelt.")
         Catch ex As System.Exception
             NLogger.Error(ex, $"der Kontakt kann mit der KontaktID '{KontaktID}' und der StoreID '{StoreID}' nicht ermittelt werden.")
         End Try
