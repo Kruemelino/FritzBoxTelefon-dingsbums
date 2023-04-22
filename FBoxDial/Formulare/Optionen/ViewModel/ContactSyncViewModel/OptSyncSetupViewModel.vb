@@ -11,6 +11,7 @@ Public Class OptSyncSetupViewModel
     Public Property ContactSyncRemoveCommand As RelayCommand
     Public Property StartSyncCommand As RelayCommand
     Public Property CancelSyncCommand As RelayCommand
+
     Public Sub New(dataService As IOptionenService, dialogService As IDialogService, Parent As OptContactSyncViewModel)
         ' Interface
         _DatenService = dataService
@@ -178,7 +179,6 @@ Public Class OptSyncSetupViewModel
 
 #Region "Cancel"
     Private Property CTS As CancellationTokenSource
-#End Region
 
     Private Function CanCancelSync(o As Object) As Boolean
         Return IsAktiv
@@ -189,7 +189,9 @@ Public Class OptSyncSetupViewModel
         NLogger.Debug("Kontaktsynchronisation abgebrochen.")
         IsAktiv = False
     End Sub
+#End Region
 
+#Region "Sync"
     Private Async Sub StartSync(o As Object)
         CTS = New CancellationTokenSource
         Dim progressIndicator = New Progress(Of String)(Sub(status)
@@ -233,4 +235,26 @@ Public Class OptSyncSetupViewModel
     Private Sub RemoveSyncSetup(o As Object)
         ParentViewModel.RemoveSyncSetup(Me)
     End Sub
+#End Region
+
+#Region "Lade Daten"
+    Friend WriteOnly Property SetOrdner As OutlookOrdner
+        Set
+            ' Setze den Ordner in die lokale Variable
+            _OlOrdner = Value
+            With _OlOrdner
+                If .FBoxSyncOptions IsNot Nothing Then
+
+                    ' Setze den ausgewählten Synchronisationsmodus
+                    _Modus = .FBoxSyncOptions.FBoxSyncMode
+
+                    ' Setze die ausgewählte Einstellung zu den Unterordnern
+                    _CBSyncStartUp = .FBoxSyncOptions.FBoxCBSyncStartUp
+
+                End If
+            End With
+
+        End Set
+    End Property
+#End Region
 End Class

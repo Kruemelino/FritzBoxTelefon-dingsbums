@@ -58,8 +58,7 @@ Public Class OptContactSyncViewModel
         ' Lade gespeicherte Setups
         SyncSetups.AddRange(OptVM.OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.FBoxSync) _
                                                     .Select(Function(O) New OptSyncSetupViewModel(DatenService, DialogService, Me) With
-                                                        {.OlOrdner = O,
-                                                         .Modus = O.FBoxSyncOptions.FBoxSyncMode,
+                                                        {.SetOrdner = O,
                                                          .FBoxTelefonbuch = FBoxPhoneBooks.Where(Function(FB) FB.ID.AreEqual(O.FBoxSyncOptions.FBoxSyncID)).First}))
 
     End Sub
