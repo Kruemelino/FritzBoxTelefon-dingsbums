@@ -1,4 +1,5 @@
-﻿Imports System.Threading.Tasks
+﻿Imports System.Security.Cryptography
+Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop.Outlook
 
 Namespace Telefonbücher
@@ -78,7 +79,6 @@ Namespace Telefonbücher
                 Return Nothing
             End If
         End Function
-
 
         ''' <summary>
         ''' Erstellt eine Liste aller auf der Fritz!Box verfügbaren Telefonbücher.
@@ -174,6 +174,12 @@ Namespace Telefonbücher
             End If
 
         End Function
+
+        'Friend Sub ExtendContacts(Phonebooks As IEnumerable(Of PhonebookEx))
+        '    For Each Phonebook As PhonebookEx In Phonebooks.Where(Function(PB) Not PB.Rufsperren And Not PB.IsDAV)
+        '        Phonebook.ExtendContacts()
+        '    Next
+        'End Sub
 #End Region
 
 #Region "Aktionen für Telefonbuch"
@@ -315,6 +321,10 @@ Namespace Telefonbücher
 
                 ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
                 If Globals.ThisAddIn.FBoxTR064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
+
+                    ' Merke dir die aktuelle Zeit in dem Kontakt
+                    .SetFBoxModTime(TelefonbuchID, UID, Now)
+
                     ' Stelle die Verknüpfung her
                     .SetUniqueID(TelefonbuchID.ToString, UID.ToString, True)
 

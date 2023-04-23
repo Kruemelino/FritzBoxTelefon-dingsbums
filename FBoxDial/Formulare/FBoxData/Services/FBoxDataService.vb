@@ -223,6 +223,10 @@ Public Class FBoxDataService
             Return Nothing
         End If
     End Function
+
+    Public Async Function GetKontakt(TelefonbuchID As Integer, UID As Integer) As Task(Of FBoxAPI.Contact) Implements IFBoxDataService.GetKontakt
+        Return Await Telefonbücher.GetTelefonbuchEintrag(TelefonbuchID, UID)
+    End Function
 #End Region
 
 #Region "Rufsperre"

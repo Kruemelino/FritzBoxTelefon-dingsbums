@@ -115,6 +115,24 @@ Public Class PhonebookEx
                                         End Function).Any
     End Function
 
+    'Friend Async Sub ExtendContacts()
+
+    '    Dim tmpList As New Dictionary(Of Integer, FBoxAPI.Contact)
+
+    '    For Each Contact As FBoxAPI.Contact In Phonebook.Contacts.Where(Function(C) Not C.IstTelefon)
+    '        ' Lade den Kontakt erneut mittels GetPhonebookEntryUID herunter und überschreibe ihn.
+    '        tmpList.Add(Phonebook.Contacts.IndexOf(Contact), Await Telefonbücher.GetTelefonbuchEintrag(ID, Contact.Uniqueid))
+    '    Next
+
+    '    For Each ExtendedContact As KeyValuePair(Of Integer, FBoxAPI.Contact) In tmpList
+    '        ' Entferne den alten Eintrag
+    '        Phonebook.Contacts.RemoveAt(ExtendedContact.Key)
+
+    '        Phonebook.Contacts.Insert(ExtendedContact.Key, ExtendedContact.Value)
+    '    Next
+
+    'End Sub
+
 #End Region
 
 End Class

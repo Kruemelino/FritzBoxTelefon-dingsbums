@@ -214,13 +214,13 @@ Public Module Extensions
 #End Region
 
 #Region "Extensions für Verarbeitung von Date"
-    <Extension> Function IsEarlierAs(D1 As Date, D2 As Date) As Boolean
+    <Extension> Public Function IsEarlierAs(D1 As Date, D2 As Date) As Boolean
         Return D1.CompareTo(D2) < 0
     End Function
-    <Extension> Function IsLaterAs(D1 As Date, D2 As Date) As Boolean
+    <Extension> Public Function IsLaterAs(D1 As Date, D2 As Date) As Boolean
         Return D1.CompareTo(D2) > 0
     End Function
-    <Extension> Function IsSameAs(D1 As Date, D2 As Date) As Boolean
+    <Extension> Public Function IsSameAs(D1 As Date, D2 As Date) As Boolean
         Return D1.CompareTo(D2) = 0
     End Function
 #End Region

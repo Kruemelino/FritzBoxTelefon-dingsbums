@@ -76,6 +76,7 @@ Public Interface IFBoxDataService
 #End Region
 
 #Region "Kontakte"
+    Function GetKontakt(TelefonbuchID As Integer, UID As Integer) As Task(Of FBoxAPI.Contact)
     Function SetKontakt(TelefonbuchID As Integer, XMLDaten As String) As Integer
     Function DeleteKontakt(TelefonbuchID As Integer, UID As Integer) As Boolean
     Function DeleteKontakte(TelefonbuchID As Integer, Einträge As IEnumerable(Of FBoxAPI.Contact)) As Boolean

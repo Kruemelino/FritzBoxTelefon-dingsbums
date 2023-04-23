@@ -1737,6 +1737,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Kontakt im Fritz!Box Telefonbuch wurde seit dem letzen Abgleich verändert. Soll er auf der Fritz!Box überschrieben werden? ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSyncQuestion() As String
+            Get
+                Return ResourceManager.GetString("strSyncQuestion", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Synchronisiere bei Outlookstart ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strSyncStartUp() As String

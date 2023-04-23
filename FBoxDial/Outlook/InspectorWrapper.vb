@@ -30,9 +30,11 @@ Friend Class InspectorWrapper
 
     Private Sub OlKontakt_Write(ByRef Cancel As Boolean)
         NLogger.Debug($"Speichern des Kontaktes '{OlKontakt.FullName}' wurde registriert.")
-        IndiziereKontakt(OlKontakt, OlKontakt.ParentFolder, True)
 
+        ' Synchronisieren
         OlKontakt.Synchronisierer(OlKontakt.ParentFolder)
+        ' Indizieren
+        IndiziereKontakt(OlKontakt, OlKontakt.ParentFolder, True)
     End Sub
 
     Private Sub Inspektor_Close()

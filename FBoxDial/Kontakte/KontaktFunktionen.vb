@@ -7,7 +7,7 @@ Imports Microsoft.Office.Interop.Outlook
 Imports MixERP.Net.VCards
 Friend Module KontaktFunktionen
     Private ReadOnly Property DfltErrorvalue As Integer = -2147221233
-    Private ReadOnly Property DfltDASLSMTPAdress As String = "http://schemas.microsoft.com/mapi/proptag/0x39FE001E"
+    Private ReadOnly Property DfltDASLSMTPAdress As String = "http://schemas.micosoft.com/mapi/proptag/0x39FE001E"
     Private ReadOnly Property DASLTagFBTelBuch As Object() = {$"{DfltDASLSchema}FBDB-PhonebookID", $"{DfltDASLSchema}FBDB-PhonebookEntryID"}.ToArray
     Private ReadOnly Property DASLTagTelNrIndex As Object() = GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) $"{DfltDASLSchema}FBDB-{P.Name}").ToArray
 
@@ -804,7 +804,6 @@ Friend Module KontaktFunktionen
 
         Dim VerarbeiteteKontakte As Integer = 0
 
-        'Dim TaskList As New List(Of Task(Of String))
         Dim TaskList As New List(Of Task)
 
         Dim FBKontakte As New List(Of FBoxAPI.Contact)
@@ -816,8 +815,6 @@ Friend Module KontaktFunktionen
             Select Case True
                 ' Unterscheidung je nach Datentyp
                 Case TypeOf Item Is ContactItem
-
-                    'Dim aktKontakt As ContactItem = CType(Item, ContactItem)
 
                     ' Synchronisiere Kontakt
                     With CType(Item, ContactItem)
@@ -833,6 +830,7 @@ Friend Module KontaktFunktionen
                             If FBoxKontakt IsNot Nothing Then
                                 ' Ja ... Abgleich
                                 If Not .IsEqual(FBoxKontakt) Then
+
                                     Select Case Modus
                                         Case SyncMode.OutlookToFritzBox
                                             Progress?.Report($"Kontakt '{ .FullName}' auf der Fritz!Box überschrieben (uID {FBoxKontakt.Uniqueid}) ...")
@@ -929,30 +927,48 @@ Friend Module KontaktFunktionen
             ' Synchronisiere Kontakt
 
             With olContact
+                ' Lies die UniqueID des verknüpften Kontaktes aus
                 Dim uID As Integer = .GetUniqueID(olOrdner.FBoxSyncOptions.FBoxSyncID)
+                Dim bID As Integer = olOrdner.FBoxSyncOptions.FBoxSyncID
+
                 If uID.AreEqual(-1) Then
-                    NLogger.Info($"Kontakt '{ .FullName}' auf der Fritz!Box erzeugt ...")
+                    NLogger.Info($"Kontakt '{ .FullName.RemoveLineBreaks}' auf der Fritz!Box erzeugt ...")
                     ' Es gibt keinen Kontakt auf der Fritz!Box
-                    Telefonbücher.SetTelefonbuchEintrag(olOrdner.FBoxSyncOptions.FBoxSyncID, olContact)
+                    Telefonbücher.SetTelefonbuchEintrag(bID, olContact)
                 Else
                     ' Es gibt einen Kontakt im Fritz!Box Telefonbuch
-                    Dim FBoxKontakt As FBoxAPI.Contact = Await Telefonbücher.GetTelefonbuchEintrag(olOrdner.FBoxSyncOptions.FBoxSyncID, uID)
+
+                    ' Lade den Kontakt nochmals einzeln herunter, da über GetPhonebook nicht alle Daten übermittelt werden
+                    Dim FBoxKontakt As FBoxAPI.Contact = Await Telefonbücher.GetTelefonbuchEintrag(bID, uID)
+
                     ' Gibt es in dem Telefonbuch einen Kontakt mit der ID
                     If FBoxKontakt IsNot Nothing Then
                         ' Ja ... Abgleich
                         If Not .IsEqual(FBoxKontakt) Then
 
-                            NLogger.Info($"Kontakt '{ .FullName}' auf der Fritz!Box überschrieben (uID {FBoxKontakt.Uniqueid}) ...")
+                            ' Prüfe, ob der Eintrag auf der Fritz!Box neuer ist.
+                            Dim FBoxModeTimeOL As Integer = .GetFBoxModTime(bID, uID)
 
-                            ' Kontakt auf der Fritz!Box ersetzen
-                            Telefonbücher.SetTelefonbuchEintrag(olOrdner.FBoxSyncOptions.FBoxSyncID, olContact)
+                            If FBoxModeTimeOL.IsNotZero AndAlso FBoxKontakt.Mod_Time.ToInt.IsLarger(FBoxModeTimeOL) AndAlso
+                                                                AddinMsgBox(Localize.LocOptionen.strSyncQuestion, MsgBoxStyle.YesNo) = vbNo Then
+
+                                ' Der Kontakt auf der Fritz!Box wurde nachträglich verändert.
+                                NLogger.Warn($"Kontakt '{ .FullName.RemoveLineBreaks}' übergangen: FB: {FBoxKontakt.Mod_Time} OL: {FBoxModeTimeOL}")
+
+                            Else
+                                NLogger.Info($"Kontakt '{ .FullName.RemoveLineBreaks}' auf der Fritz!Box überschrieben (uID {FBoxKontakt.Uniqueid})...")
+
+                                ' Kontakt auf der Fritz!Box ersetzen
+                                Telefonbücher.SetTelefonbuchEintrag(bID, olContact)
+
+                            End If
 
                         End If
                     Else
-                        ' Nein ... Kontakt wurde auf der Fritz!Box gelöscht?
-                        NLogger.Info($"Kontakt '{ .FullName}' im Outlook gelöscht ...")
-                        .Delete()
+                        ' Nein ... Ein Kontakt sollte vorhanden sein...
+                        NLogger.Info($"Kontakt '{ .FullName.RemoveLineBreaks}' auf der Fritz!Box nicht vorhanden. (uID {uID}) Erstelle einen neuen Kontakt auf der Fritz!Box...")
 
+                        Telefonbücher.SetTelefonbuchEintrag(bID, olContact)
                     End If
 
                 End If
@@ -1531,6 +1547,22 @@ Friend Module KontaktFunktionen
     End Function
 
     ''' <summary>
+    ''' Überschreibt einen vorhandenen Outlook-Kontakt mit Werten eines Fritz!Box Telefonbucheintrages.
+    ''' </summary>
+    ''' <param name="olKontakt"></param>
+    ''' <param name="XMLKontakt"></param>
+    Friend Sub ÜberschreibeKontakt(olKontakt As ContactItem, XMLKontakt As FBoxAPI.Contact)
+        If olKontakt IsNot Nothing AndAlso XMLKontakt IsNot Nothing Then
+            XMLKontakt.XMLKontaktOutlook(olKontakt)
+
+            ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
+            IndiziereKontakt(olKontakt, olKontakt.ParentFolder, False)
+        End If
+    End Sub
+
+#Region "UniqueID"
+
+    ''' <summary>
     ''' Ermittelt die UniqueID des verknüpften Fritz!Box Telefonbucheintrages.
     ''' </summary>
     ''' <param name="olKontakte">Der Outlook-Kontakt, aus dem die UniqueID ausgelesen werden soll.</param>
@@ -1630,19 +1662,42 @@ Friend Module KontaktFunktionen
         End With
     End Sub
 
-    ''' <summary>
-    ''' Überschreibt einen vorhandenen Outlook-Kontakt mit Werten eines Fritz!Box Telefonbucheintrages.
-    ''' </summary>
-    ''' <param name="olKontakt"></param>
-    ''' <param name="XMLKontakt"></param>
-    Friend Sub ÜberschreibeKontakt(olKontakt As ContactItem, XMLKontakt As FBoxAPI.Contact)
-        If olKontakt IsNot Nothing AndAlso XMLKontakt IsNot Nothing Then
-            XMLKontakt.XMLKontaktOutlook(olKontakt)
+    <Extension> Friend Function GetFBoxModTime(olKontakte As ContactItem, TelefonbuchID As Integer, UniqueID As Integer) As Integer
+        With olKontakte
+            ' Definition eines eindeutigen Schlüssels
+            Dim DASLTag() As String = {$"{DfltDASLSchema}FBDB-PID{TelefonbuchID}-UID{UniqueID}-ModTime"}
 
-            ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
-            IndiziereKontakt(olKontakt, olKontakt.ParentFolder, False)
-        End If
+            ' Auslesen des Wertes aus dem Kontakt
+            Dim colArgs As String = CType(.PropertyAccessor.GetProperties(DASLTag), Object()).First.ToString
+
+            ' Überprüfung auf Fehler
+            If colArgs.IsEqual(DfltErrorvalue.ToString) Then
+                NLogger.Warn($"Mod-Time kann aus dem Kontakt '{olKontakte.FullName.RemoveLineBreaks}' nicht ausgelesen werden ({DASLTag}).")
+                Return 0 ' 0 als Fehlerwert
+            Else
+                Return colArgs.ToInt
+            End If
+        End With
+
+    End Function
+
+    <Extension> Friend Sub SetFBoxModTime(olKontakte As ContactItem, TelefonbuchID As Integer, UniqueID As Integer, ModTime As Date)
+        With olKontakte
+
+            ' Definition eines eindeutigen Schlüssels
+            Dim DASLTag As String = $"{DfltDASLSchema}FBDB-PID{TelefonbuchID}-UID{UniqueID}-ModTime"
+
+            ' Setze den neuen Zeitstempel in den Outlook Kontakt
+            Dim dto As New DateTimeOffset(ModTime.ToUniversalTime)
+
+            NLogger.Debug($"Mod-Time {dto.ToUnixTimeSeconds} in den Kontakt '{olKontakte.FullName.RemoveLineBreaks}' geschrieben ({DASLTag}).")
+
+            .PropertyAccessor.SetProperty(DASLTag, dto.ToUnixTimeSeconds)
+
+        End With
     End Sub
+
+#End Region
 #End Region
 
 #Region "Bilder"

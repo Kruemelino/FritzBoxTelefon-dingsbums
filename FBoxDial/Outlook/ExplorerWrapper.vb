@@ -211,15 +211,18 @@ Friend Class ExplorerWrapper
 
                 ' Wenn es sich um Kontakte handelt, dann 
                 If TypeOf ClipboardObject Is ContactItem Then
-                    Dim olContact As ContactItem = CType(ClipboardObject, ContactItem)
 
-                    ' (de-)indiziere den Kontakt
-                    IndiziereKontakt(olContact, Target, True)
+                    With CType(ClipboardObject, ContactItem)
+                        ' Synchronisiere den Kontakt
+                        Synchronisierer(.Self, Target)
 
-                    ' Synchronisiere den Kontakt
-                    Synchronisierer(olContact, Target)
+                        ' (de-)indiziere den Kontakt
+                        IndiziereKontakt(.Self, Target, False)
 
-                    ReleaseComObject(olContact)
+                        'ReleaseComObject(olContact)
+
+                    End With
+
                 End If
             Next
         End If

@@ -880,6 +880,10 @@ Hier können Abgleiche zwischen einem Kontaktordner in Outlook und einem Telefon
 Achtung: Es werden Kontakte sowohl in Outlook als auch im Fritz!Box Telefonbuch ohne Vorwarnung gelöscht, falls die Routine dies für nötig hält. Macht vorher eine Datensicherung!</value>
     <comment>OptSyncSetupView</comment>
   </data>
+  <data name="strSyncQuestion" xml:space="preserve">
+    <value>Der Kontakt im Fritz!Box Telefonbuch wurde seit dem letzen Abgleich verändert. Soll er auf der Fritz!Box überschrieben werden?</value>
+    <comment>OptSyncSetupView</comment>
+  </data>
   <data name="strSyncStartUp" xml:space="preserve">
     <value>Synchronisiere bei Outlookstart</value>
     <comment>OptSyncSetupView</comment>

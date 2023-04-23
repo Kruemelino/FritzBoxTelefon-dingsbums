@@ -244,11 +244,17 @@ Public Class KontaktViewModel
         'Return Not IsEditMode
     End Function
 
-    Private Sub Edit(o As Object)
+    Private Async Sub Edit(o As Object)
         If IsEditMode Then
             ' Aktuelle Änderungen speichern
             Save(o)
         Else
+
+            If FBoxKontakt.Kontakt.Mod_Time.IsStringNothingOrEmpty Then
+                ' Lade den erweiterten Kontakt herunter, da nicht alle Informationen über GetPhonebook übermittelt werden
+                FBoxKontakt.Kontakt = Await DatenService.GetKontakt(FBoxTelefonbuch.ID, FBoxKontakt.Uniqueid)
+            End If
+
             ' Erstelle einen Clone des aktuellen Kontakte
             FBoxKontakt.KontaktKlone = XMLClone(FBoxKontakt.Kontakt)
 
@@ -272,6 +278,10 @@ Public Class KontaktViewModel
 
             If .Telefonie Is Nothing Then .Telefonie = New FBoxAPI.Telephony
             If .Telefonie.Numbers Is Nothing Then .Telefonie.Numbers = New List(Of FBoxAPI.NumberType)
+
+            ' Neue ID der Nummer ermitteln.
+            ' ID wird jedoch beim Herunterladen über GetPhonebook nicht ausgegeben.
+            NeueNummer.ID = If(.Telefonie.Numbers.Any, .Telefonie.Numbers.Max(Function(N) N.ID) + 1, 0)
 
             ' Nummer dem Modell hinzufügen
             .Telefonie.Numbers.Add(NeueNummer)
