@@ -160,7 +160,7 @@ Friend Module KontaktFunktionen
                 End If
 
                 ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
-                IndiziereKontakt(olKontakt, olFolder, False)
+                IndiziereKontakt(olKontakt, olFolder)
             End If
 
         End With
@@ -292,7 +292,7 @@ Friend Module KontaktFunktionen
             End If
 
             ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
-            IndiziereKontakt(olKontakt, KontaktOrdner, False)
+            IndiziereKontakt(olKontakt, KontaktOrdner)
 
         End With
 
@@ -699,8 +699,7 @@ Friend Module KontaktFunktionen
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
     ''' <param name="olOrdner">Der Ordner in dem Der Kontakt gespeichert werden soll.</param>
-    ''' <param name="RCO">Angabe, ob der indizierte Kontakte freigegeben werden soll. <see cref="ReleaseComObject"/></param>
-    Friend Sub IndiziereKontakt(olKontakt As ContactItem, olOrdner As MAPIFolder, RCO As Boolean)
+    Friend Sub IndiziereKontakt(olKontakt As ContactItem, olOrdner As MAPIFolder)
 
         ' Wird der Zielordner für, die Kontaktsuche verwendet?
         If olOrdner.OrdnerAusgewählt(OutlookOrdnerVerwendung.KontaktSuche) Then
@@ -711,11 +710,6 @@ Friend Module KontaktFunktionen
             ' Deindiziere den Kontakt
             DeIndiziereKontakt(olKontakt)
 
-        End If
-
-        If RCO Then
-            ReleaseComObject(olKontakt)
-            ReleaseComObject(olOrdner)
         End If
 
     End Sub
@@ -1556,7 +1550,7 @@ Friend Module KontaktFunktionen
             XMLKontakt.XMLKontaktOutlook(olKontakt)
 
             ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
-            IndiziereKontakt(olKontakt, olKontakt.ParentFolder, False)
+            IndiziereKontakt(olKontakt, olKontakt.ParentFolder)
         End If
     End Sub
 
@@ -1662,6 +1656,12 @@ Friend Module KontaktFunktionen
         End With
     End Sub
 
+    ''' <summary>
+    ''' Ermittelt ein Unix-Zeitstempel aus dem Kontakt, wann der Kontakt letztmalig mit der Fritz!Box synchronisiert wurde.
+    ''' </summary>
+    ''' <param name="olKontakte">Der Outlook-Kontakt, in dem die UniqueID gespeichert werden soll.</param>
+    ''' <param name="TelefonbuchID">Die ID des zugehörigen Telefonbuches.</param>
+    ''' <param name="UniqueID">Die UniqueID des verknüpften Fritz!Box Telefonbucheintrages, welche in den Kontakt gespeichert werden soll.</param>
     <Extension> Friend Function GetFBoxModTime(olKontakte As ContactItem, TelefonbuchID As Integer, UniqueID As Integer) As Integer
         With olKontakte
             ' Definition eines eindeutigen Schlüssels
@@ -1681,6 +1681,13 @@ Friend Module KontaktFunktionen
 
     End Function
 
+    ''' <summary>
+    ''' Speichert ein Unix-Zeitstempel in dem Kontakt, wann der Kontakt letztmalig mit der Fritz!Box synchronisiert wurde.
+    ''' </summary>
+    ''' <param name="olKontakte">Der Outlook-Kontakt, in dem die UniqueID gespeichert werden soll.</param>
+    ''' <param name="TelefonbuchID">Die ID des zugehörigen Telefonbuches.</param>
+    ''' <param name="UniqueID">Die UniqueID des verknüpften Fritz!Box Telefonbucheintrages, welche in den Kontakt gespeichert werden soll.</param>
+    ''' <param name="ModTime">Unix-Zeitstempel</param>
     <Extension> Friend Sub SetFBoxModTime(olKontakte As ContactItem, TelefonbuchID As Integer, UniqueID As Integer, ModTime As Date)
         With olKontakte
 

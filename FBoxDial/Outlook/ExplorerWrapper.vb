@@ -217,9 +217,7 @@ Friend Class ExplorerWrapper
                         Synchronisierer(.Self, Target)
 
                         ' (de-)indiziere den Kontakt
-                        IndiziereKontakt(.Self, Target, False)
-
-                        'ReleaseComObject(olContact)
+                        IndiziereKontakt(.Self, Target)
 
                     End With
 

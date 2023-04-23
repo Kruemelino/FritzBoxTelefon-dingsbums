@@ -34,7 +34,7 @@ Friend Class InspectorWrapper
         ' Synchronisieren
         OlKontakt.Synchronisierer(OlKontakt.ParentFolder)
         ' Indizieren
-        IndiziereKontakt(OlKontakt, OlKontakt.ParentFolder, True)
+        IndiziereKontakt(OlKontakt, OlKontakt.ParentFolder)
     End Sub
 
     Private Sub Inspektor_Close()
