@@ -828,6 +828,7 @@ Namespace RibbonData
                         .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag.Key,
                                                                          $"BuchID: {Eintrag.Key}, uID: {Eintrag.Value}",
                                                                          $"Mod_Time: {oContact.GetFBoxModTime(Eintrag.Key.ToInt, Eintrag.Value.ToInt)}"))
+
                     Next
                 Else
                     ' Fehlermeldung
