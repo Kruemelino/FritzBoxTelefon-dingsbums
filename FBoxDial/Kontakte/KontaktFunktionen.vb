@@ -1672,7 +1672,7 @@ Friend Module KontaktFunktionen
 
             ' Überprüfung auf Fehler
             If colArgs.IsEqual(DfltErrorvalue.ToString) Then
-                NLogger.Warn($"Mod-Time kann aus dem Kontakt '{olKontakte.FullName.RemoveLineBreaks}' nicht ausgelesen werden ({DASLTag}).")
+                NLogger.Warn($"Mod-Time kann aus dem Kontakt '{ .FullName.RemoveLineBreaks}' nicht ausgelesen werden ({DASLTag}).")
                 Return 0 ' 0 als Fehlerwert
             Else
                 Return colArgs.ToInt

@@ -825,7 +825,8 @@ Namespace RibbonData
 
                     ' Einzelnen Indexeinträge
                     For Each Eintrag In oContact.GetUniqueID
-                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag.Key, $"BuchID: {Eintrag.Key}, uID: {Eintrag.Value}"))
+                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag.Key,
+                                                                         $"BuchID: {Eintrag.Key}, uID: {Eintrag.Value}", oContact.GetFBoxModTime(Eintrag.Key.ToInt, Eintrag.Value.ToInt)))
                     Next
                 Else
                     ' Fehlermeldung
@@ -860,7 +861,7 @@ Namespace RibbonData
             Return XButton
         End Function
 
-        Private Function CreateDynMenuButton(xDoc As XmlDocument, ID As String, Key As String, Label As String) As XmlElement
+        Private Function CreateDynMenuButton(xDoc As XmlDocument, ID As String, Key As String, Label As String, Screentip As Integer) As XmlElement
             Dim XButton As XmlElement
             Dim XAttribute As XmlAttribute
 
@@ -876,6 +877,10 @@ Namespace RibbonData
 
             XAttribute = xDoc.CreateAttribute("label")
             XAttribute.Value = Label.Trim.XMLMaskiereZeichen
+            XButton.Attributes.Append(XAttribute)
+
+            XAttribute = xDoc.CreateAttribute("screentip")
+            XAttribute.Value = Screentip.ToString.XMLMaskiereZeichen
             XButton.Attributes.Append(XAttribute)
 
             Return XButton
