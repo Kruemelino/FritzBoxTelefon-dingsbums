@@ -150,7 +150,7 @@ Public Class TelefonbuchViewModel
                 Case 0
                     ' Standard-Telefonbuch kann nicht gelöscht werden. Es werden stattdessen alle Kontakte gelöscht.
                     Löschen = DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBookDeleteID0, .Name)) = Windows.MessageBoxResult.Yes
-                Case 258
+                Case FritzBoxDefault.DfltCallBarringID
                     ' Die Einträge der Rufsperre müssen einzeln gelöscht werden
                     Löschen = DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionBookDeleteID258, .Name)) = Windows.MessageBoxResult.Yes
                 Case Else
@@ -159,7 +159,7 @@ Public Class TelefonbuchViewModel
             End Select
 
             If Löschen Then
-                If .ID.Equals(258) Then
+                If .ID.Equals(FritzBoxDefault.DfltCallBarringID) Then
                     ' Entferne alle Einträge der Rufsperre
                     If DatenService.DeleteRufsperren(.Telefonbuch.Phonebook.Contacts) Then
                         ' Leere die angezeigte Kontaktliste der Rufsperre

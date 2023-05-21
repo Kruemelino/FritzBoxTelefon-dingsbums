@@ -113,7 +113,7 @@ Namespace Telefonbücher
                     Next
 
                     ' Füge das Telefonbuch der Rufsperre hinzu.
-                    AlleTelefonbücher.Add(New PhonebookEx() With {.ID = 258,
+                    AlleTelefonbücher.Add(New PhonebookEx() With {.ID = FritzBoxDefault.DfltCallBarringID,
                                                                   .Rufsperren = True,
                                                                   .NurName = True,
                                                                   .Phonebook = New FBoxAPI.Phonebook With {.Name = Localize.LocFBoxData.strCallBarringList}})
@@ -173,6 +173,18 @@ Namespace Telefonbücher
                 Return Nothing
             End If
 
+        End Function
+
+        Friend Function Contains(Phonebooks As IEnumerable(Of PhonebookEx), TelNr As Telefonnummer) As Boolean
+            NLogger.Debug($"Starte Kontaktsuche in den Fritz!Box Telefonbüchern für Telefonnummer '{TelNr.Unformatiert}'.")
+
+            ' Suche alle Telefonbücher mit einem entsprechenden Kontakt
+            Return Phonebooks.Where(Function(B) B.ContainsNumber(TelNr)).Any
+
+        End Function
+
+        Friend Function GetPhonebook(PhonebookID As Integer) As PhonebookEx
+            Return Globals.ThisAddIn.PhoneBookXML.Where(Function(B) B.ID.AreEqual(PhonebookID)).First
         End Function
 
         'Friend Sub ExtendContacts(Phonebooks As IEnumerable(Of PhonebookEx))

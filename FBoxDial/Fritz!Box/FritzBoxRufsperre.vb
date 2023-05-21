@@ -22,7 +22,8 @@ Friend Module FritzBoxRufsperre
             ' Prüfe, ob die übergebenen Nummern bereits auf der Rufsperre der Fritz!Box vorhanden sind.
             ' Ein Eintrag auf der Fritz!Box kann mehrere Telefonnummern enthalten
             For Each TelNr In Nummern
-                If IsFBoxBlocked(TelNr) Then
+
+                If IsNumonCallBarringList(TelNr) Then
                     ' Ein Eintrag mit der Nummer bereits vorhanden
                     NLogger.Info($"Ein Eintrag mit der '{TelNr}' ist in der Sperrliste bereits vorhanden.")
                 Else
@@ -57,7 +58,7 @@ Friend Module FritzBoxRufsperre
     ''' </summary>
     ''' <param name="OutlookKontakte">Auflistung von Sperrlisteneinträgen</param>
     Friend Async Sub AddToCallBarring(OutlookKontakte As IEnumerable(Of ContactItem))
-        Const SperrlistenID As Integer = 258
+
 
         ' Erzeuge für jeden Kontakt einen Eintrag
         For Each Kontakt In OutlookKontakte
@@ -65,7 +66,7 @@ Friend Module FritzBoxRufsperre
 
                                With Kontakt
                                    ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
-                                   Dim UID As Integer = Kontakt.GetUniqueID(SperrlistenID)
+                                   Dim UID As Integer = Kontakt.GetUniqueID(FritzBoxDefault.DfltCallBarringID)
 
                                    If UID.AreEqual(-1) Then
                                        NLogger.Debug($"Sperreintrag { .FullName} wird neu angelegt.")
@@ -76,7 +77,7 @@ Friend Module FritzBoxRufsperre
                                    ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
                                    If Globals.ThisAddIn.FBoxTR064.X_contact.SetCallBarringEntry(.ErstelleXMLKontakt(UID), UID) Then
                                        ' Stelle die Verknüpfung her
-                                       .SetUniqueID(SperrlistenID.ToString, UID.ToString, True)
+                                       .SetUniqueID(FritzBoxDefault.DfltCallBarringID.ToString, UID.ToString, True)
 
                                        NLogger.Info($"Kontakt { .FullName} mit der ID '{UID}' in der Sperrliste der Fritz!Box angelegt.")
 
@@ -144,40 +145,59 @@ Friend Module FritzBoxRufsperre
         End With
     End Function
 
+    Private Function IsNumOnCallBarringList(Nummer As String) As Boolean
+        With Globals.ThisAddIn.FBoxTR064.X_contact
+
+            Dim EintragsDaten As String = String.Empty
+            If .GetCallBarringEntryByNum(Nummer, EintragsDaten) AndAlso EintragsDaten.IsNotStringNothingOrEmpty Then
+
+                NLogger.Info($"Eintrag für die Nummer '{Nummer}' wurde in den Rufsperren der Fritz!Box gefunden.")
+                Return True
+            Else
+                NLogger.Debug($"Eintrag für die Nummer '{Nummer}' wurde in den Rufsperren der Fritz!Box nicht gefunden.")
+                Return False
+            End If
+        End With
+    End Function
+
     ''' <summary>
     ''' Überprüft, ob sich die Telefonnummer auf der Fitz!Box Sperrliste befindet.
     ''' </summary>
     ''' <param name="TelNr">Zu prüfende Nummer</param>
     Friend Function IsFBoxBlocked(TelNr As Telefonnummer) As Boolean
+        Dim DeflectionList As New FBoxAPI.DeflectionList
+
         If Globals.ThisAddIn.FBoxTR064?.Ready Then
-            If TelNr.Unterdrückt Then
-                ' Abfrage, ob unterdrückte Nummern generell nicht signalisiert werden.
-                Dim DeflectionList As New FBoxAPI.DeflectionList
-                Globals.ThisAddIn.FBoxTR064.X_contact.GetDeflections(DeflectionList)
 
-                ' Finde eine Rufbehandlung, nach der unterdrückte Nummern (DeflectionType.fromAnonymous) nicht signalisiert (DeflectionMode.eNoSignal) werden.
-                Return DeflectionList.Deflections.Find(Function(D) D.Enable AndAlso
-                                                                   D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And
-                                                                   D.Type = FBoxAPI.DeflectionTypeEnum.fromAnonymous) IsNot Nothing
+            ' Lade alle Rufbehandlungen herunter
+            If Globals.ThisAddIn.FBoxTR064.X_contact.GetDeflections(DeflectionList) Then
 
-            Else
-                ' Abfrage, ob Nummer auf der Sperrlist enthalten ist
-                Return IsFBoxBlocked(TelNr.Unformatiert)
+                If TelNr.Unterdrückt Then
+                    ' Abfrage, ob unterdrückte Nummern generell nicht signalisiert werden.
+                    ' Finde eine Rufbehandlung, nach der unterdrückte Nummern (DeflectionType.fromAnonymous) nicht signalisiert (DeflectionMode.eNoSignal) werden.
+                    Return DeflectionList.Deflections.Find(Function(D) D.Enable AndAlso
+                                                                       D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And
+                                                                       D.Type = FBoxAPI.DeflectionTypeEnum.fromAnonymous) IsNot Nothing
+
+                Else
+                    ' Erstelle eine Liste aller Telefonbücher die zur Blockierung genutzt werden
+                    Dim TBuchAbweisung As New List(Of PhonebookEx) From {Telefonbücher.GetPhonebook(FritzBoxDefault.DfltCallBarringID)}
+
+                    TBuchAbweisung.AddRange(DeflectionList.Deflections.FindAll(Function(D) D.Enable AndAlso
+                                                                                           D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And
+                                                                                           D.Type = FBoxAPI.DeflectionTypeEnum.fromPB) _
+                                                                      .Select(Function(dNoSignal) Telefonbücher.GetPhonebook(dNoSignal.PhonebookID.ToInt)))
+
+                    ' Nutze die Kontaktsuche in den Telefonbüchern um einen Eintrag zu finden
+                    Return Telefonbücher.Contains(TBuchAbweisung, TelNr)
+
+                End If
+
             End If
+
         End If
         Return False
     End Function
-
-    ''' <summary>
-    ''' Überprüft, ob sich die Telefonnummer auf der Fitz!Box Sperrliste befindet.
-    ''' </summary>
-    ''' <param name="TelNr">Zu prüfende Nummer</param>
-    Friend Function IsFBoxBlocked(TelNr As String) As Boolean
-        Dim Eintrag As FBoxAPI.Contact = Nothing
-        GetCallBarringEntryByNum(TelNr, Eintrag)
-        Return Eintrag IsNot Nothing
-    End Function
-
 
     ''' <summary>
     ''' Erzeugt einen Sperrlisteneintrag aus einer <see cref="Telefonnummer"/> und lädt diesen auf die Fritz!Box hoch.

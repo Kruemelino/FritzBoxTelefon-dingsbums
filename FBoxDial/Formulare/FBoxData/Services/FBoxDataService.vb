@@ -195,7 +195,7 @@ Public Class FBoxDataService
         If Globals.ThisAddIn.PhoneBookXML Is Nothing Then
             Return $"ID {TelefonbuchID}"
         Else
-            Return $"{Globals.ThisAddIn.PhoneBookXML.Where(Function(PB) PB.ID.AreEqual(TelefonbuchID)).First.Name} ({TelefonbuchID})"
+            Return $"{Telefonbücher.GetPhonebook(TelefonbuchID).Name} ({TelefonbuchID})"
         End If
     End Function
 

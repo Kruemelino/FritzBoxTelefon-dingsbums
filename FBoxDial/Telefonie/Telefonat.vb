@@ -1189,8 +1189,6 @@ Imports Microsoft.Office.Interop
         ' prüfe, ob die anrufende Nummer auf der Rufsperre der Fritz!Box steht
         If EigeneTelNr.EigeneNummerInfo.Überwacht Then Blockiert = IsFBoxBlocked(GegenstelleTelNr)
 
-        'Abweisen()
-
         If IstRelevant Then
             ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
             ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
@@ -1205,25 +1203,6 @@ Imports Microsoft.Office.Interop
         End If
 
     End Sub
-
-    'Private Sub Abweisen()
-    '    NLogger.Debug($"Rufabweisung")
-    '    Dim PhoneName As String = String.Empty
-    '    With Globals.ThisAddIn.FBoxTR064
-    '        If .Ready Then
-    '            If .X_voip.DialGetConfig(PhoneName) Then
-    '                ' Setze auf das Telefon, auf dass das Telefonat umgeleitet werden soll
-    '                .X_voip.DialSetConfig("ISDN: TelefonTest")
-
-    '                ' Hole das Telefonat ran
-    '                .X_voip.DialNumber("**062")
-
-    '                ' Setze auf das Telefon, was ursprünglich eingesetzt war.
-    '                .X_voip.DialSetConfig(PhoneName)
-    '            End If
-    '        End If
-    '    End With
-    'End Sub
 
     Private Sub AnrMonCALL()
 
