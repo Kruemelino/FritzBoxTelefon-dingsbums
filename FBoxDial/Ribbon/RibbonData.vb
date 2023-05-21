@@ -537,6 +537,16 @@ Namespace RibbonData
             Return False
         End Function
 
+        Friend Function IsFBoxAPIConnected() As Boolean
+
+            If Globals.ThisAddIn.FBoxTR064 Is Nothing Then
+                Return False
+            Else
+                Return Globals.ThisAddIn.FBoxTR064.Ready
+            End If
+
+        End Function
+
 #End Region
 
 #Region "Control Visible"

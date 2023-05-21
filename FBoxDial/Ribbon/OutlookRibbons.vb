@@ -245,6 +245,10 @@ Imports FBoxDial.RibbonData
     Public Function GetPressed(control As IRibbonControl) As Boolean
         Return GetPressedAnrMon()
     End Function
+
+    Public Function GetEnabledFBoxData(control As IRibbonControl) As Boolean
+        Return IsFBoxAPIConnected()
+    End Function
 #Enable Warning IDE0060 ' Nicht verwendete Parameter entfernen
 
     ''' <summary>

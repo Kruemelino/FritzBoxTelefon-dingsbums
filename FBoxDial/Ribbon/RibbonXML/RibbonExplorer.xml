@@ -102,7 +102,7 @@
 							<button id="ShowMissedCalls_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getEnabled="CallPaneEnabled"/>
 						</menu>
 					</splitButton>
-					<button id="FritzBoxData_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+					<button id="FritzBoxData_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getEnabled="GetEnabledFBoxData"/>
 					<button id="Search_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
 					<dialogBoxLauncher>
 						<button id="Einstellungen_M" getScreentip="GetItemScreenTipp" onAction="BtnOnAction"/>
