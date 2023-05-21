@@ -6,6 +6,7 @@
     Friend Const DfltFritzBoxSessionID As String = "0000000000000000"
     Friend Const DfltCodePageFritzBox As Integer = 65001
     Friend Const DfltTR064PortSSL As Integer = 49443
+    Friend Const DfltCallBarringID As Integer = 258
     ''' <summary>
     ''' Anmeldeinformationen für die Fritz!Box
     ''' </summary>
