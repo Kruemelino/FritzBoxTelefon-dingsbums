@@ -13,7 +13,7 @@ Public Class FBoxDataService
     Friend Property SessionID As String
 
     Public Sub New()
-        Globals.ThisAddIn.FBoxTR064.Deviceconfig.GetSessionID(SessionID)
+        Globals.ThisAddIn.FBoxTR064?.Deviceconfig.GetSessionID(SessionID)
     End Sub
 
     Protected Overrides Sub Finalize() Implements IFBoxDataService.TR064HttpClient
@@ -189,6 +189,14 @@ Public Class FBoxDataService
 
     Private Function DeletePhonebook(TelefonbuchID As Integer) As Boolean Implements IFBoxDataService.DeleteTelefonbuch
         Return Telefonbücher.LöscheTelefonbuch(TelefonbuchID)
+    End Function
+
+    Private Function GetTelefonbuchName(TelefonbuchID As Integer) As String Implements IFBoxDataService.GetTelefonbuchName
+        If Globals.ThisAddIn.PhoneBookXML Is Nothing Then
+            Return $"ID {TelefonbuchID}"
+        Else
+            Return $"{Globals.ThisAddIn.PhoneBookXML.Where(Function(PB) PB.ID.AreEqual(TelefonbuchID)).First.Name} ({TelefonbuchID})"
+        End If
     End Function
 
     Private Function GetSesssionID() As String Implements IFBoxDataService.GetSessionID

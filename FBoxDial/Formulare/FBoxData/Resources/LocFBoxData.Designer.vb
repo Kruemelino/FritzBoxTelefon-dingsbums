@@ -537,6 +537,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Telefonbuch ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strRufUmlPB() As String
+            Get
+                Return ResourceManager.GetString("strRufUmlPB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Typ ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strRufUmlTyp() As String

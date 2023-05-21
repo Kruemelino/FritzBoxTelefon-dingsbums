@@ -19,16 +19,27 @@
 
     Public ReadOnly Property Type As TypeEnum
         Get
-            Return CType(Deflection.Type, TypeEnum)
+            [Enum].TryParse(Deflection.Type.ToString, Type)
         End Get
     End Property
 
     Public ReadOnly Property Mode As ModeEnum
         Get
-            Return CType(Deflection.Type, ModeEnum)
+            [Enum].TryParse(Deflection.Mode.ToString, Mode)
         End Get
     End Property
 
+    Public ReadOnly Property TelefonbuchName As String
+        Get
+            Return If(Type = TypeEnum.fromPB, DatenService.GetTelefonbuchName(Deflection.PhonebookID.ToInt), Nothing)
+        End Get
+    End Property
+
+    Public ReadOnly Property IsFromPB As Boolean
+        Get
+            Return Type = TypeEnum.fromPB
+        End Get
+    End Property
 #Region "ICommand"
     Public Property ToggleCommand As RelayCommand
 #End Region
