@@ -20,11 +20,12 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="110"/>
             <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="110"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -79,5 +80,14 @@
         <TextBlock Grid.Column="5" Grid.Row="1"
                    Style="{StaticResource MessageData}" 
                    Text="{Binding Mode, Mode=OneWay, FallbackValue=N/A}"/>
+
+        <TextBlock Grid.Column="6" Grid.Row="0"
+                   Style="{StaticResource MessageHead}" 
+                   Text="{x:Static localize:LocFBoxData.strRufUmlPB}"
+                   Visibility="{Binding IsFromPB, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <TextBlock Grid.Column="6" Grid.Row="1"
+                   Style="{StaticResource MessageData}" 
+                   Text="{Binding TelefonbuchName, Mode=OneWay, FallbackValue=N/A}"/>
     </Grid>
 </UserControl>

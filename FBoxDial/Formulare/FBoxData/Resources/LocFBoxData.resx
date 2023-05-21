@@ -277,6 +277,9 @@ Sollen die Einträge jetzt in die Fritz!Box geladen werden?</value>
   <data name="strRufUmlMode" xml:space="preserve">
     <value>Art der Umleitung</value>
   </data>
+  <data name="strRufUmlPB" xml:space="preserve">
+    <value>Telefonbuch</value>
+  </data>
   <data name="strRufUmlTyp" xml:space="preserve">
     <value>Typ</value>
   </data>

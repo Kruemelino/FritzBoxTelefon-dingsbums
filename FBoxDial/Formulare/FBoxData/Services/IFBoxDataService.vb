@@ -72,6 +72,7 @@ Public Interface IFBoxDataService
     Function GetTelefonbücher() As Task(Of IEnumerable(Of PhonebookEx))
     Function AddTelefonbuch(Name As String) As Task(Of PhonebookEx)
     Function DeleteTelefonbuch(TelefonbuchID As Integer) As Boolean
+    Function GetTelefonbuchName(TelefonbuchID As Integer) As String
     Function GetSessionID() As String
 #End Region
 

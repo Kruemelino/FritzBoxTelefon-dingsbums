@@ -254,91 +254,96 @@ Public Enum TypeEnum
     ''' Phone port 1 is selected
     ''' </summary>
     <LocalizedDescription("fon1", GetType(resEnum))>
-    <XmlEnum> fon1
+    <XmlEnum> fon1 = 1
 
     ''' <summary>
     ''' Phone port 2 is selected
     ''' </summary>
     <LocalizedDescription("fon2", GetType(resEnum))>
-    <XmlEnum> fon2
+    <XmlEnum> fon2 = 2
 
     ''' <summary>
     ''' Phone port 3 is selected
     ''' </summary>
     <LocalizedDescription("fon3", GetType(resEnum))>
-    <XmlEnum> fon3
+    <XmlEnum> fon3 = 3
 
     ''' <summary>
     ''' Phone port 4 is selected
     ''' </summary>
     <LocalizedDescription("fon4", GetType(resEnum))>
-    <XmlEnum> fon4
+    <XmlEnum> fon4 = 4
 
     ''' <summary>
     ''' From all
     ''' </summary>
     <LocalizedDescription("fromAll", GetType(resEnum))>
-    <XmlEnum> fromAll
+    <XmlEnum> fromAll = 5
 
     ''' <summary>
     ''' From a anonymous call 
     ''' </summary>
     <LocalizedDescription("fromAnonymous", GetType(resEnum))>
-    <XmlEnum> fromAnonymous
+    <XmlEnum> fromAnonymous = 6
 
     ''' <summary>
-    ''' Call not from a VIP 
+    ''' The caller is not in the phonebook 
+    ''' </summary>
+    <XmlEnum> fromNotInPhonebook = 7
+
+    ''' <summary>
+    ''' Call not from a VIP (obsolate from Version 37)
     ''' </summary>
     <LocalizedDescription("fromNotVIP", GetType(resEnum))>
-    <XmlEnum> fromNotVIP
+    <Obsolete("Obsolate from Version 37")> <XmlEnum> fromNotVIP = 8
 
     ''' <summary>
     ''' Specific Number 
     ''' </summary>
     <LocalizedDescription("fromNumber", GetType(resEnum))>
-    <XmlEnum> fromNumber
+    <XmlEnum> fromNumber = 9
 
     ''' <summary>
     ''' The caller is in the phonebook
     ''' </summary>
     <LocalizedDescription("fromPB", GetType(resEnum))>
-    <XmlEnum> fromPB
+    <XmlEnum> fromPB = 10
 
     ''' <summary>
     ''' Call from a VIP
     ''' </summary>
     <LocalizedDescription("fromVIP", GetType(resEnum))>
-    <XmlEnum> fromVIP
+    <XmlEnum> fromVIP = 11
 
     ''' <summary>
     ''' To Any
     ''' </summary>
     <LocalizedDescription("toAny", GetType(resEnum))>
-    <XmlEnum> toAny
+    <XmlEnum> toAny = 12
 
     ''' <summary>
     ''' To MSN
     ''' </summary>
     <LocalizedDescription("toMSN", GetType(resEnum))>
-    <XmlEnum> toMSN
+    <XmlEnum> toMSN = 13
 
     ''' <summary>
     ''' To POTS
     ''' </summary>
     <LocalizedDescription("toPOTS", GetType(resEnum))>
-    <XmlEnum> toPOTS
+    <XmlEnum> toPOTS = 14
 
     ''' <summary>
     ''' To VoIP
     ''' </summary>
     <LocalizedDescription("toVoIP", GetType(resEnum))>
-    <XmlEnum> toVoIP
+    <XmlEnum> toVoIP = 15
 
     ''' <summary>
     ''' Type unknown
     ''' </summary>
     <LocalizedDescription("Unknown", GetType(resEnum))>
-    <XmlEnum> unknown
+    <XmlEnum> unknown = 16
 End Enum
 
 <TypeConverter(GetType(EnumDescriptionTypeConverter))>
