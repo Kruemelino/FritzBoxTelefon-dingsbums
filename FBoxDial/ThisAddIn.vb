@@ -4,6 +4,14 @@ Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop.Outlook
 
 Public NotInheritable Class ThisAddIn
+    Private Enum InitState
+        Stopped
+        Starting
+        Initializing
+        InspectorOnly
+        Initialized
+    End Enum
+
 
     Friend Property POutlookRibbons() As OutlookRibbons
     Friend Property PAnrufmonitor As Anrufmonitor
@@ -19,6 +27,8 @@ Public NotInheritable Class ThisAddIn
     Private Property LinkProtokoll As DateiÜberwacher
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
+    Private Property StartZustand As InitState = InitState.Stopped
+
 #Region "Timer für Raktivierung nach StandBy"
     Private Property NeustartTimer As Timers.Timer
     Private Property NeustartTimerIterations As Integer
@@ -30,6 +40,9 @@ Public NotInheritable Class ThisAddIn
     End Function
 
     Private Sub ThisAddIn_Startup() Handles Me.Startup
+        ' Setze Flag, dass das Initialisieren des Addins begonnen wurde
+        StartZustand = InitState.Initializing
+
         ' Logging konfigurieren
         LogManager.Configuration = DefaultNLogConfig()
 
@@ -48,6 +61,8 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Sub StarteAddinFunktionen()
+        ' Setze Flag, dass das Starten des Addins begonnen wurde
+        StartZustand = InitState.Starting
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
@@ -96,7 +111,8 @@ Public NotInheritable Class ThisAddIn
         ' Schreibe in das Log noch Informationen zur Fritz!Box
         NLogger.Info($"{FBoxTR064.FriendlyName} {FBoxTR064.DisplayVersion}")
 
-        If Application.ActiveExplorer IsNot Nothing Then
+        If Application.Explorers.Count.IsNotZero Then
+            'If Application.ActiveExplorer IsNot Nothing Then
             ' Anrufmonitor starten
             If XMLData.POptionen.CBAnrMonAuto Then
                 If PAnrufmonitor Is Nothing Then PAnrufmonitor = New Anrufmonitor
@@ -110,14 +126,7 @@ Public NotInheritable Class ThisAddIn
                                                                                          XMLData.POptionen.FBoxCallListTimeStamp)
 
             ' Lade alle Telefonbücher aus der Fritz!Box via Task herunter
-            If XMLData.POptionen.CBKontaktSucheFritzBox Then
-                TaskTelefonbücher = Telefonbücher.LadeTelefonbücher()
-            Else
-                ' Falls die Kontaktsuche nicht über die Fritz!Box Telefonbücher laufen soll,
-                ' dann lade die Telefonbuchnamen herunter.
-                ' Die Namen werden für den Ribbon/Button Kontaktupload benötigt.
-                TaskTelefonbücher = Task.Run(Function() Telefonbücher.LadeTelefonbuchNamen())
-            End If
+            TaskTelefonbücher = Telefonbücher.LadeTelefonbücher()
 
             ' Tellows ScoreList laden
             If XMLData.POptionen.CBTellowsAutoUpdateScoreList Then
@@ -163,7 +172,12 @@ Public NotInheritable Class ThisAddIn
                 LinkProtokoll = New DateiÜberwacher(IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName), My.Resources.strLinkProtFileName)
             End If
 
+            ' Setze Flag, dass das Addin vollständig gestartet wurde
+            StartZustand = InitState.Initialized
         Else
+            ' Setze Flag, dass das Addin nicht gestartet wurde, da kein Explorer vorhanden
+            StartZustand = InitState.InspectorOnly
+
             ' Wenn kein Active Explorer vorhanden ist, läuft der Code hier rein.
             ' Z. B. wenn man eine msg-Datei öffnet, während Outlook nicht läuft. 
             NLogger.Warn("Erweiterte Addin-Funktionen nicht gestartet, da kein Outlook-Explorer vorhanden")
@@ -171,6 +185,9 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Sub BeendeAddinFunktionen()
+        ' Setze Flag, dass das Addin gestartet wurde
+        StartZustand = InitState.Stopped
+
         ' Inspector
         RemoveHandler InspectorListe.NewInspector, AddressOf Inspectoren_NewInspector
         InspectorListe = Nothing
@@ -331,6 +348,15 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Sub Explorer_NewExplorer(e As Explorer)
+
+        ' Initiiere den timergesteuerten Start der einzelnen Funktionen
+        If ExplorerWrappers.Count.IsZero And StartZustand = InitState.InspectorOnly Then
+            NLogger.Info($"Die erweiterten Addin-Funktionen werden nachträglich gestartet.")
+
+            ' Stoße das Starten der erweiterten Addin-Funktionen mittels Timer an
+            TimerStart()
+        End If
+
         ExplorerWrappers.Add(e, New ExplorerWrapper(e))
     End Sub
 

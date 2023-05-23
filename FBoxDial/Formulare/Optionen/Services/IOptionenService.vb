@@ -74,4 +74,7 @@ Public Interface IOptionenService
                         AnrMonGeräteID As Integer)
 #End Region
 
+#Region "Test der TR-064 Schnittstelle"
+    Sub StartTR064Test()
+#End Region
 End Interface

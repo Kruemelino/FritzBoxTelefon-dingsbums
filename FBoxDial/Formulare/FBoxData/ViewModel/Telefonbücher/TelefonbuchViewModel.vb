@@ -208,7 +208,7 @@ Public Class TelefonbuchViewModel
         Dim Kontakte As IEnumerable(Of ContactViewModel) = From a In CType(o, IList).Cast(Of ContactViewModel)
         Dim CList As IEnumerable(Of FBoxAPI.Contact) = Kontakte.Select(Function(C) C.Kontakt)
 
-        If Telefonbuch.Telefonbuch.Rufsperren Then
+        If Telefonbuch.Telefonbuch.CallBarringBook Then
             If DialogService.ShowMessageBox(String.Format(Localize.LocFBoxData.strQuestionDeleteCallBarrings, Kontakte.Count)) = Windows.MessageBoxResult.Yes Then
                 ' Lösche die Einträge der Rufsperre auf der Fritz!Box
                 If DatenService.DeleteRufsperren(CList) Then

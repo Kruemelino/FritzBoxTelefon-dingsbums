@@ -49,7 +49,7 @@ Public Class FBoxDataService
     End Function
 
     Private Sub BlockNumbers(TelNrListe As IEnumerable(Of String)) Implements IFBoxDataService.BlockNumbers
-        AddNrToBlockList(TelNrListe)
+        Telefonbücher.AddNrToBlockList(TelNrListe)
     End Sub
 
     Private Async Sub CallXMLContact(Anruf As FBoxAPI.Call) Implements IFBoxDataService.CallXMLContact
@@ -169,7 +169,7 @@ Public Class FBoxDataService
     End Function
 
     Private Async Function BlockTellowsNumbers(MinScore As Integer, MaxNrbyEntry As Integer, Einträge As IEnumerable(Of TellowsScoreListEntry), ct As Threading.CancellationToken, progress As IProgress(Of Integer)) As Task(Of Integer) Implements IFBoxDataService.BlockTellowsNumbers
-        Return Await FritzBoxRufsperre.BlockTellowsNumbers(MinScore, MaxNrbyEntry, Einträge, ct, progress)
+        Return Await Telefonbücher.BlockTellowsNumbers(MinScore, MaxNrbyEntry, Einträge, ct, progress)
     End Function
 
 #End Region
@@ -240,15 +240,15 @@ Public Class FBoxDataService
 #Region "Rufsperre"
     Private Function SetRufsperre(XMLDaten As FBoxAPI.Contact) As Integer Implements IFBoxDataService.SetRufsperre
         Dim UID As Integer = 0
-        Return If(AddToCallBarring(XMLDaten, UID), UID, -1)
+        Return If(Telefonbücher.AddToCallBarring(XMLDaten, UID), UID, -1)
     End Function
 
     Private Function DeleteRufsperre(UID As Integer) As Boolean Implements IFBoxDataService.DeleteRufsperre
-        Return DeleteCallBarring(UID)
+        Return Telefonbücher.DeleteCallBarring(UID)
     End Function
 
     Private Function DeleteRufsperren(Einträge As IEnumerable(Of FBoxAPI.Contact)) As Boolean Implements IFBoxDataService.DeleteRufsperren
-        Return DeleteCallBarrings(Einträge)
+        Return Telefonbücher.DeleteCallBarrings(Einträge)
     End Function
 
 #End Region

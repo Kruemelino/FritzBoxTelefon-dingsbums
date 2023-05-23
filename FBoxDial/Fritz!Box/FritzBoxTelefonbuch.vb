@@ -1,4 +1,4 @@
-﻿Imports System.Security.Cryptography
+﻿Imports System.Runtime.CompilerServices
 Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop.Outlook
 
@@ -34,6 +34,9 @@ Namespace Telefonbücher
 
                         ' Füge das Telefonbuch der Rufsperre hinzu.
                         AlleTelefonbücher.AddRange(Await LadeSperrliste())
+
+                        ' Markier alle Telefonbücher, die als Rufsperre dienen.
+                        SetRufsperrenFlag(AlleTelefonbücher)
 
                         Return AlleTelefonbücher
 
@@ -80,55 +83,54 @@ Namespace Telefonbücher
             End If
         End Function
 
-        ''' <summary>
-        ''' Erstellt eine Liste aller auf der Fritz!Box verfügbaren Telefonbücher.
-        ''' Die einzelnen Einträge werden jedoch nicht heruntergeladen.
-        ''' </summary>
-        Friend Function LadeTelefonbuchNamen() As IEnumerable(Of PhonebookEx)
-            '' Prüfe, ob Fritz!Box verfügbar
-            With Globals.ThisAddIn.FBoxTR064.X_contact
-                ' Ermittle alle verfügbaren Telefonbücher
-                Dim PhonebookIDs As Integer() = {}
-                If .GetPhonebookList(PhonebookIDs) Then
+        '''' <summary>
+        '''' Erstellt eine Liste aller auf der Fritz!Box verfügbaren Telefonbücher.
+        '''' Die einzelnen Einträge werden jedoch nicht heruntergeladen.
+        '''' </summary>
+        'Friend Function LadeTelefonbuchNamen() As IEnumerable(Of PhonebookEx)
+        '    '' Prüfe, ob Fritz!Box verfügbar
+        '    With Globals.ThisAddIn.FBoxTR064.X_contact
+        '        ' Ermittle alle verfügbaren Telefonbücher
+        '        Dim PhonebookIDs As Integer() = {}
+        '        If .GetPhonebookList(PhonebookIDs) Then
 
-                    ' Initialiesiere die Gesamtliste der Telefonbücher
-                    Dim AlleTelefonbücher As New List(Of PhonebookEx)
+        '            ' Initialiesiere die Gesamtliste der Telefonbücher
+        '            Dim AlleTelefonbücher As New List(Of PhonebookEx)
 
-                    ' Schleife durch alle ermittelten IDs
-                    For Each PhonebookID In PhonebookIDs
-                        Dim PhonebookName As String = String.Empty
-                        ' Ermittle die Namen zum Telefonbuch
-                        If .GetPhonebook(PhonebookID, String.Empty, PhonebookName, String.Empty) Then
+        '            ' Schleife durch alle ermittelten IDs
+        '            For Each PhonebookID In PhonebookIDs
+        '                Dim PhonebookName As String = String.Empty
+        '                ' Ermittle die Namen zum Telefonbuch
+        '                If .GetPhonebook(PhonebookID, String.Empty, PhonebookName, String.Empty) Then
 
-                            NLogger.Debug($"Name des Telefonbuches {PhonebookID} ermittelt: '{PhonebookName}'")
+        '                    NLogger.Debug($"Name des Telefonbuches {PhonebookID} ermittelt: '{PhonebookName}'")
 
-                            Dim AktuellePhoneBookXML As New PhonebookEx() With {.ID = PhonebookID,
-                                                                                .Rufsperren = False,
-                                                                                .NurName = True,
-                                                                                .Phonebook = New FBoxAPI.Phonebook With {.Name = PhonebookName}}
+        '                    Dim AktuellePhoneBookXML As New PhonebookEx() With {.ID = PhonebookID,
+        '                                                                        .Rufsperren = False,
+        '                                                                        .NurName = True,
+        '                                                                        .Phonebook = New FBoxAPI.Phonebook With {.Name = PhonebookName}}
 
-                            AlleTelefonbücher.Add(AktuellePhoneBookXML)
+        '                    AlleTelefonbücher.Add(AktuellePhoneBookXML)
 
-                        End If
-                    Next
+        '                End If
+        '            Next
 
-                    ' Füge das Telefonbuch der Rufsperre hinzu.
-                    AlleTelefonbücher.Add(New PhonebookEx() With {.ID = FritzBoxDefault.DfltCallBarringID,
-                                                                  .Rufsperren = True,
-                                                                  .NurName = True,
-                                                                  .Phonebook = New FBoxAPI.Phonebook With {.Name = Localize.LocFBoxData.strCallBarringList}})
+        '            ' Füge das Telefonbuch der Rufsperre hinzu.
+        '            AlleTelefonbücher.Add(New PhonebookEx() With {.ID = FritzBoxDefault.DfltCallBarringID,
+        '                                                          .Rufsperren = True,
+        '                                                          .NurName = True,
+        '                                                          .Phonebook = New FBoxAPI.Phonebook With {.Name = Localize.LocFBoxData.strCallBarringList}})
 
-                    ' Setze diese unvollständige Liste global.
-                    If Globals.ThisAddIn.PhoneBookXML Is Nothing Then Globals.ThisAddIn.PhoneBookXML = AlleTelefonbücher
+        '            ' Setze diese unvollständige Liste global.
+        '            If Globals.ThisAddIn.PhoneBookXML Is Nothing Then Globals.ThisAddIn.PhoneBookXML = AlleTelefonbücher
 
-                    Return AlleTelefonbücher
-                End If
+        '            Return AlleTelefonbücher
+        '        End If
 
-                Return Nothing
-            End With
+        '        Return Nothing
+        '    End With
 
-        End Function
-
+        'End Function
         Friend Async Function LadeSperrliste() As Task(Of IEnumerable(Of PhonebookEx))
 
             With Globals.ThisAddIn.FBoxTR064.X_contact
@@ -141,14 +143,19 @@ Namespace Telefonbücher
                     ' Verarbeite die Sperrliste
                     For Each Telefonbuch As PhonebookEx In CallBarringXML.Phonebooks.ConvertAll(Function(P) New PhonebookEx() With {.Phonebook = P})
 
-                        ' Angabe, dass es sich um die Rufsperren handelt
-                        Telefonbuch.Rufsperren = True
+                        With Telefonbuch
+                            ' Angabe, dass es sich um die interne Rufsperre handelt
+                            .CallBarringBook = True
 
-                        ' ID Setzen 258
-                        Telefonbuch.ID = Telefonbuch.Phonebook.Owner.ToInt
+                            ' Angabe, dass dieses Telefonbuch als Rufsperre verwendet wird
+                            .Rufsperre = True
 
-                        ' Ändere Namen
-                        Telefonbuch.Phonebook.Name = Localize.LocFBoxData.strCallBarringList
+                            ' ID Setzen 258
+                            .ID = Telefonbuch.Phonebook.Owner.ToInt
+
+                            ' Ändere Namen
+                            .Phonebook.Name = Localize.LocFBoxData.strCallBarringList
+                        End With
 
                         Rufsperren.Add(Telefonbuch)
                     Next
@@ -159,7 +166,7 @@ Namespace Telefonbücher
         End Function
 
 #Region "Aktionen für Telefonbücher"
-        Friend Function Find(Phonebooks As IEnumerable(Of PhonebookEx), TelNr As Telefonnummer) As FBoxAPI.Contact
+        <Extension> Friend Function Find(Phonebooks As IEnumerable(Of PhonebookEx), TelNr As Telefonnummer) As FBoxAPI.Contact
             NLogger.Debug($"Starte Kontaktsuche in den Fritz!Box Telefonbüchern für Telefonnummer '{TelNr.Unformatiert}'.")
 
             ' Suche alle Telefonbücher mit einem entsprechenden Kontakt
@@ -175,7 +182,7 @@ Namespace Telefonbücher
 
         End Function
 
-        Friend Function Contains(Phonebooks As IEnumerable(Of PhonebookEx), TelNr As Telefonnummer) As Boolean
+        <Extension> Friend Function Contains(Phonebooks As IEnumerable(Of PhonebookEx), TelNr As Telefonnummer) As Boolean
             NLogger.Debug($"Starte Kontaktsuche in den Fritz!Box Telefonbüchern für Telefonnummer '{TelNr.Unformatiert}'.")
 
             ' Suche alle Telefonbücher mit einem entsprechenden Kontakt
@@ -187,11 +194,35 @@ Namespace Telefonbücher
             Return Globals.ThisAddIn.PhoneBookXML.Where(Function(B) B.ID.AreEqual(PhonebookID)).First
         End Function
 
-        'Friend Sub ExtendContacts(Phonebooks As IEnumerable(Of PhonebookEx))
-        '    For Each Phonebook As PhonebookEx In Phonebooks.Where(Function(PB) Not PB.Rufsperren And Not PB.IsDAV)
-        '        Phonebook.ExtendContacts()
-        '    Next
-        'End Sub
+        <Extension> Friend Function GetSperrTelefonbücher(Phonebooks As IEnumerable(Of PhonebookEx)) As IEnumerable(Of PhonebookEx)
+            ' Suche alle Telefonbücher mit einem entsprechenden Flag
+            Return Phonebooks.Where(Function(B) B.Rufsperre)
+        End Function
+
+        ''' <summary>
+        ''' Markiert alle Telefonbücher, die als Rufsperre dienen.
+        ''' </summary>
+        ''' <param name="Phonebooks">Liste aller heruntergeladener Telefonbücher</param>
+        Private Sub SetRufsperrenFlag(Phonebooks As IEnumerable(Of PhonebookEx))
+            With Globals.ThisAddIn.FBoxTR064.X_contact
+                Dim DeflectionList As New FBoxAPI.DeflectionList
+                If Globals.ThisAddIn.FBoxTR064.X_contact.GetDeflections(DeflectionList) Then
+
+                    ' Schleife durch alle aktiven Rufbehandlungen, die bei Einträgen aus einem Telefonbuch keine Signalisierung auslösen 
+                    For Each Rufbehandlung As FBoxAPI.Deflection In DeflectionList.Deflections.FindAll(Function(D) D.Enable AndAlso
+                                                                                                                D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And
+                                                                                                                D.Type = FBoxAPI.DeflectionTypeEnum.fromPB)
+
+                        ' Schleife durch alle Telefonbücher, die in der Rufbehandlung verlinkt sind. Sollte nur eines sein.
+                        For Each Telefonbuch As PhonebookEx In Phonebooks.Where(Function(PB) PB.ID.AreEqual(Rufbehandlung.PhonebookID.ToInt))
+                            Telefonbuch.Rufsperre = True
+                        Next
+
+                    Next
+
+                End If
+            End With
+        End Sub
 #End Region
 
 #Region "Aktionen für Telefonbuch"

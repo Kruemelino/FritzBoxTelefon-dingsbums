@@ -355,7 +355,7 @@ Namespace RibbonData
             NLogger.Debug($"Füge {OutlookContactItems.Count} Einträge zur Sperrliste (ID{BookID}) hinzu.")
 
             ' Lädt die Kontakte in das Telefonbuch der Rufsperre hoch
-            AddToCallBarring(OutlookContactItems)
+            Telefonbücher.AddToCallBarring(OutlookContactItems)
 
         End Sub
 
@@ -958,7 +958,7 @@ Namespace RibbonData
                 If Globals.ThisAddIn.PhoneBookXML IsNot Nothing Then
                     ' Trage die einzelnen Bücher ein
                     For Each Buch As PhonebookEx In Globals.ThisAddIn.PhoneBookXML.Where(Function(d) Not d.IsDAV)
-                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Phonebook.Name, Buch.ID, Buch.Rufsperren, ListName))
+                        .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, Buch.Phonebook.Name, Buch.ID, Buch.CallBarringBook, ListName))
                     Next
                 Else
                     NLogger.Warn($"Telefonbücher sind nicht bekannt.")

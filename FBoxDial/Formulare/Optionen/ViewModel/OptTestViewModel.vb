@@ -26,8 +26,7 @@ Public Class OptTestViewModel
 #Region "ICommand"
     Public Property TestTelNrCommand As RelayCommand
     Public Property TestRWSCommand As RelayCommand
-    Public Property TestUserListCommand As RelayCommand
-    Public Property TestAuthCommand As RelayCommand
+    Public Property TestTR064Command As RelayCommand
     Public Property TestKontaktsucheCommand As RelayCommand
     Public Property TestAnrMonCommand As RelayCommand
 #End Region
@@ -37,6 +36,7 @@ Public Class OptTestViewModel
         TestRWSCommand = New RelayCommand(AddressOf StartRWSTest, AddressOf CanRunTestRWS)
         TestKontaktsucheCommand = New RelayCommand(AddressOf StartKontaktsucheTest, AddressOf CanRunTestKontaktsuche)
         TestAnrMonCommand = New RelayCommand(AddressOf StartAnrMonTest, AddressOf CanRunAnrMonTest)
+        TestTR064Command = New RelayCommand(AddressOf StartTR064Test)
         ' Interface
         _DatenService = ds
     End Sub
@@ -328,4 +328,9 @@ Public Class OptTestViewModel
     End Sub
 #End Region
 
+#Region "Test der TR-064 Schnittstelle"
+    Private Sub StartTR064Test(o As Object)
+        DatenService.StartTR064Test()
+    End Sub
+#End Region
 End Class

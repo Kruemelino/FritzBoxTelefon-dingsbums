@@ -1265,6 +1265,14 @@ Bei erfolgreicher Suche wird der gefundene Kontakt eingeblendet.</value>
     <value>Unformatierte Telefonnummer</value>
     <comment>OptTestView</comment>
   </data>
+  <data name="strTestTR064" xml:space="preserve">
+    <value>Test: TR-064</value>
+    <comment>OptTestView</comment>
+  </data>
+  <data name="strTestTR064Start" xml:space="preserve">
+    <value>TR-064 starten (Ergebnisse im Log)</value>
+    <comment>OptTestView</comment>
+  </data>
   <data name="strTweakWählClientTopMost" xml:space="preserve">
     <value>Wählclient stets an vorderster Stelle anzeigen (Topmost)</value>
     <comment>OptDialerView</comment>

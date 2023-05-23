@@ -613,15 +613,14 @@ Imports Microsoft.Office.Interop
             ' Kontaktsuche in den Fritz!Box Telefonbüchern
             If Not AnruferErmittelt Then
                 If XMLData.POptionen.CBKontaktSucheFritzBox Then
-
-                    If Globals.ThisAddIn.PhoneBookXML Is Nothing OrElse Globals.ThisAddIn.PhoneBookXML.Where(Function(b) b.NurName).Any Then
-                        ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind, dann lade die Telefonbücher herunter.
-                        NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
-                        Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher()
-                    End If
+                    'If Globals.ThisAddIn.PhoneBookXML Is Nothing OrElse Globals.ThisAddIn.PhoneBookXML.Where(Function(b) b.NurName).Any Then
+                    '    ' Wenn die Telefonbücher noch nicht heruntergeladen wurden, oder nur die Namen bekannt sind, dann lade die Telefonbücher herunter.
+                    '    NLogger.Debug($"Die Telefonbücher sind für die Kontaktsuche nicht bereit. Beginne sie herunterzuladen...")
+                    '    Globals.ThisAddIn.PhoneBookXML = Await Telefonbücher.LadeTelefonbücher()
+                    'End If
 
                     ' Wenn die Telefonbücher immer noch nicht zur Verfügung stehen, brich an dieser Stelle ab
-                    If Globals.ThisAddIn.PhoneBookXML IsNot Nothing AndAlso Not Globals.ThisAddIn.PhoneBookXML.Where(Function(b) b.NurName).Any Then
+                    If Globals.ThisAddIn.PhoneBookXML IsNot Nothing Then ' AndAlso Not Globals.ThisAddIn.PhoneBookXML.Where(Function(b) b.NurName).Any Then
                         FBTelBookKontakt = Telefonbücher.Find(Globals.ThisAddIn.PhoneBookXML, GegenstelleTelNr)
                     Else
                         NLogger.Warn("Kontaktsuche in Fritz!Box Telefonbüchern ist nicht möglich: Telefonbücher sind nicht heruntergeladen worden.")
@@ -679,7 +678,7 @@ Imports Microsoft.Office.Interop
 
                                         If XMLData.POptionen.CBTellowsAutoFBBlockList AndAlso .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAutoScoreFBBlockList) Then
                                             ' Sperrlisteintrag erzeugen
-                                            AddToCallBarring(New List(Of String) From { .Number}, .CallerName)
+                                            Telefonbücher.AddToCallBarring(New List(Of String) From { .Number}, .CallerName)
                                         End If
                                     End With
                                     AnruferErmittelt = True
@@ -700,7 +699,7 @@ Imports Microsoft.Office.Interop
 
                                     If XMLData.POptionen.CBTellowsAutoFBBlockList AndAlso .Score.IsLargerOrEqual(XMLData.POptionen.CBTellowsAutoScoreFBBlockList) Then
                                         ' Sperrlisteintrag erzeugen
-                                        AddToCallBarring(New List(Of String) From { .Number}, AnruferName)
+                                        Telefonbücher.AddToCallBarring(New List(Of String) From { .Number}, AnruferName)
                                     End If
                                 End With
                                 AnruferErmittelt = True
@@ -1187,7 +1186,7 @@ Imports Microsoft.Office.Interop
 #Region "Anrufmonitor"
     Private Sub AnrMonRING()
         ' prüfe, ob die anrufende Nummer auf der Rufsperre der Fritz!Box steht
-        If EigeneTelNr.EigeneNummerInfo.Überwacht Then Blockiert = IsFBoxBlocked(GegenstelleTelNr)
+        If EigeneTelNr.EigeneNummerInfo.Überwacht Then Blockiert = Telefonbücher.IsFBoxBlocked(GegenstelleTelNr)
 
         If IstRelevant Then
             ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde

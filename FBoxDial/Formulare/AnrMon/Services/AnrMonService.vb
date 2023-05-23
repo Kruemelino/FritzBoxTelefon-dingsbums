@@ -75,7 +75,7 @@ Public Class AnrMonService
 #End Region
 
     Private Sub BlockNumber(TelNr As Telefonnummer) Implements IAnrMonService.BlockNumber
-        AddNrToBlockList(TelNr)
+        Telefonbücher.AddNrToBlockList(TelNr)
     End Sub
 
     Private Async Function LadeBild(AnrMonTelefonat As Telefonat) As Task(Of BitmapImage) Implements IAnrMonService.LadeBild

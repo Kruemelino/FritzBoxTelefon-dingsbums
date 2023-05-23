@@ -345,17 +345,17 @@ Friend Class OptionenService
         Dim SyncTasks As New List(Of Task(Of Integer))
 
         ' Wenn das Telefonbuch noch nicht heruntergeladen wurden, oder nur der Name bekannt sind, dann lade das Telefonbuch herunter.
-        If FBoxTBuch.NurName Then
-            If Globals.ThisAddIn.FBoxTR064.Ready Then
-                With Globals.ThisAddIn.FBoxTR064.X_contact
+        'If FBoxTBuch.NurName Then
+        '    If Globals.ThisAddIn.FBoxTR064.Ready Then
+        '        With Globals.ThisAddIn.FBoxTR064.X_contact
 
-                    NLogger.Debug($"Das Telefonbuch '{FBoxTBuch.Name}' ({FBoxTBuch.ID}) wird heruntergeladen.")
+        '            NLogger.Debug($"Das Telefonbuch '{FBoxTBuch.Name}' ({FBoxTBuch.ID}) wird heruntergeladen.")
 
-                    ' Es sollte nur ein Telefonbuch enthalten sein.
-                    FBoxTBuch = (Await .GetPhonebook(FBoxTBuch.ID)).Phonebooks.Select(Function(P) New PhonebookEx With {.Phonebook = P, .ID = FBoxTBuch.ID}).First
-                End With
-            End If
-        End If
+        '            ' Es sollte nur ein Telefonbuch enthalten sein.
+        '            FBoxTBuch = (Await .GetPhonebook(FBoxTBuch.ID)).Phonebooks.Select(Function(P) New PhonebookEx With {.Phonebook = P, .ID = FBoxTBuch.ID}).First
+        '        End With
+        '    End If
+        'End If
 
         If FBoxTBuch.Phonebook?.Contacts?.Any Then
             ' Verarbeite alle Ordner die der Kontaktsuche entsprechen
@@ -538,4 +538,24 @@ Friend Class OptionenService
 
 #End Region
 
+#Region "Test der TR-064 Schnittstelle"
+    Private Sub StartTR064Test() Implements IOptionenService.StartTR064Test
+        'Dim e As New FBoxAPI.PortMappingEntry
+        'Dim w As New FBoxAPI.WANAddonInfo
+
+        'Dim i As Integer = -1
+
+        'With Globals.ThisAddIn.FBoxTR064
+        '    'With .IGDI1cfg
+        '    '    .GetAddonInfos(w)
+        '    'End With
+
+        '    With .IGD2ipv6fwc
+        '        .GetFirewallStatus(True, False)
+        '    End With
+
+
+        'End With
+    End Sub
+#End Region
 End Class

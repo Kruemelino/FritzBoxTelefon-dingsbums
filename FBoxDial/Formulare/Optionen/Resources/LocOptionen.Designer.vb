@@ -2597,6 +2597,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Test: TR-064 ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTR064() As String
+            Get
+                Return ResourceManager.GetString("strTestTR064", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die TR-064 starten (Ergebnisse im Log) ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTestTR064Start() As String
+            Get
+                Return ResourceManager.GetString("strTestTR064Start", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Wählclient stets an vorderster Stelle anzeigen (Topmost) ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTweakWählClientTopMost() As String

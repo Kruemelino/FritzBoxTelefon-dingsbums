@@ -1007,11 +1007,11 @@ Friend Module KontaktFunktionen
             Dim FBoxTelefonbuch As PhonebookEx = Globals.ThisAddIn.PhoneBookXML.Where(Function(TB) TB.ID.AreEqual(Ordner.FBoxSyncOptions.FBoxSyncID)).First
             If FBoxTelefonbuch IsNot Nothing Then
 
-                If Not FBoxTelefonbuch.NurName OrElse Not Await FBoxTelefonbuch.UpdatePhonebook() Then
-                    NLogger.Info($"Starte die automatische Syncronisation des Outlook-Ordners {Ordner.Name} mit {FBoxTelefonbuch.Name}")
+                'If Not FBoxTelefonbuch.NurName OrElse Not Await FBoxTelefonbuch.UpdatePhonebook() Then
+                NLogger.Info($"Starte die automatische Syncronisation des Outlook-Ordners {Ordner.Name} mit {FBoxTelefonbuch.Name}")
 
-                    TaskList.Add(Task.Run(Function() Synchronisierer(Ordner.MAPIFolder, FBoxTelefonbuch, SyncMode.FritzBoxToOutlook, Nothing, progressIndicator)))
-                End If
+                TaskList.Add(Task.Run(Function() Synchronisierer(Ordner.MAPIFolder, FBoxTelefonbuch, SyncMode.FritzBoxToOutlook, Nothing, progressIndicator)))
+                'End If
             End If
 
             ' Die einzelnen Vorgänge müssen nacheinander erfolgen, da es sonst zu einer WebException kommt: Die zugrunde liegende Verbindung wurde geschlossen: Für den geschützten SSL/TLS-Kanal konnte keine Vertrauensstellung hergestellt werden.

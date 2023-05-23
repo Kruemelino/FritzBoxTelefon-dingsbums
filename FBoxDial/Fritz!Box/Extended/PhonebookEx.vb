@@ -19,8 +19,20 @@ Public Class PhonebookEx
             Return Phonebook.Name
         End Get
     End Property
-    Friend Property Rufsperren As Boolean = False
-    Friend Property NurName As Boolean = False
+
+    ''' <summary>
+    ''' Angabe, ob es sich um das interne Rufsperrentelefonbuch handelt (ID 258, CallBarring).
+    ''' </summary>
+    Friend Property CallBarringBook As Boolean = False
+
+    ''' <summary>
+    ''' Angabe, ob das Telefonbuch als Rufsperre genutzt wird.
+    ''' </summary>
+    Friend Property Rufsperre As Boolean = False
+
+    ''' <summary>
+    ''' Angabe, ob das Telefonbuch via DAV synchronisiert wird.
+    ''' </summary>
     Friend ReadOnly Property IsDAV As Boolean
         Get
             Return Phonebook.Owner.ToInt.IsInRange(240, 257)
@@ -28,14 +40,6 @@ Public Class PhonebookEx
     End Property
 
 #Region "Funktionen"
-
-    Friend Async Function UpdatePhonebook() As Task(Of Boolean)
-        Phonebook = (Await Telefonbücher.LadeTelefonbuch(ID))?.First.Phonebook
-
-        NurName = Phonebook Is Nothing
-
-        Return NurName
-    End Function
 
     Friend Function GetContact(EntryID As Integer) As FBoxAPI.Contact
         Return Phonebook.Contacts.Find(Function(K) K.Uniqueid.AreEqual(EntryID))

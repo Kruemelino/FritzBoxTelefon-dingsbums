@@ -77,7 +77,6 @@ Friend Class ExplorerWrapper
 
     End Sub
 
-
 #Region "CallListPane"
     ''' <summary>
     ''' Blendet das CallListPane ein

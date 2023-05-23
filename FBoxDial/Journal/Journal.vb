@@ -39,7 +39,7 @@ Friend Module Journal
                 Dim progressIndicator = New Progress(Of Integer)(Sub(status)
                                                                  End Sub)
 
-                Await BlockTellowsNumbers(.CBTellowsAutoScoreFBBlockList, .CBTellowsEntryNumberCount, Globals.ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
+                Await Telefonbücher.BlockTellowsNumbers(.CBTellowsAutoScoreFBBlockList, .CBTellowsEntryNumberCount, Globals.ThisAddIn.TellowsScoreList, CTS.Token, progressIndicator)
 
                 .LetzteSperrlistenAktualisierung = Now
 

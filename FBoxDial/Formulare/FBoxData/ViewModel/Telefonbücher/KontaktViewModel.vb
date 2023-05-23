@@ -131,7 +131,7 @@ Public Class KontaktViewModel
 #Region "ICommand Callback"
 #Region "Kontakt löschen"
     Private Sub Delete(o As Object)
-        If FBoxTelefonbuch.Telefonbuch.Rufsperren Then
+        If FBoxTelefonbuch.Telefonbuch.CallBarringBook Then
             If DialogService.ShowMessageBox(Localize.LocFBoxData.strQuestionDeleteCallBarring) = Windows.MessageBoxResult.Yes Then
                 ' Lösche die Rufsperre auf der Fritz!Box
                 If DatenService.DeleteRufsperre(FBoxKontakt.Uniqueid) Then
@@ -209,7 +209,7 @@ Public Class KontaktViewModel
 
 #Region "Kontakt speichern"
     Private Sub Save(o As Object)
-        If FBoxTelefonbuch.Telefonbuch.Rufsperren Then
+        If FBoxTelefonbuch.Telefonbuch.CallBarringBook Then
             FBoxKontakt.Uniqueid = DatenService.SetRufsperre(FBoxKontakt.Kontakt)
         Else
             ' Lade den Kontakt hoch und setze die UID

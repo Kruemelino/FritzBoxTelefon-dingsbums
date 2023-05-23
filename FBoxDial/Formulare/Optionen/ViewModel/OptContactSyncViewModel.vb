@@ -53,7 +53,7 @@ Public Class OptContactSyncViewModel
 
         FBoxPhoneBooks.Clear()
         ' Lade Fritz!Box Telefonbücher
-        FBoxPhoneBooks.AddRange((DatenService.LadeFritzBoxTelefonbücher)?.Where(Function(F) Not (F.IsDAV Or F.Rufsperren)))
+        FBoxPhoneBooks.AddRange((DatenService.LadeFritzBoxTelefonbücher)?.Where(Function(F) Not (F.IsDAV Or F.CallBarringBook)))
 
         ' Lade gespeicherte Setups
         SyncSetups.AddRange(OptVM.OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.FBoxSync) _

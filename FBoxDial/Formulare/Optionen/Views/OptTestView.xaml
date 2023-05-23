@@ -170,6 +170,11 @@
 
             </StackPanel>
         </Expander>
-
+        <!--<Expander Header="{x:Static localize:LocOptionen.strTestTR064}">
+            <StackPanel>
+                <Button Content="{x:Static localize:LocOptionen.strTestTR064Start}"
+                        Command="{Binding TestTR064Command}" Height="25"/>
+            </StackPanel>
+        </Expander>-->
     </StackPanel>
 </UserControl>
