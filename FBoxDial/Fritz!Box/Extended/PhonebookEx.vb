@@ -43,7 +43,6 @@ Public Class PhonebookEx
 
     Friend Function GetContact(EntryID As Integer) As FBoxAPI.Contact
         Return Phonebook.Contacts.Find(Function(K) K.Uniqueid.AreEqual(EntryID))
-        If GetContact Is Nothing Then Stop
     End Function
 
     ''' <summary>
