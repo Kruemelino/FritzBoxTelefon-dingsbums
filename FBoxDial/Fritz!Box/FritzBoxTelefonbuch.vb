@@ -383,6 +383,36 @@ Namespace Telefonbücher
             End With
         End Function
 
+        Friend Async Function UploadContactAndReturn(TelefonbuchID As Integer, OutlookKontakt As ContactItem) As Task(Of FBoxAPI.Contact)
+            With OutlookKontakt
+                ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
+                Dim UID As Integer = .GetUniqueID(TelefonbuchID)
+
+                Dim retVal As FBoxAPI.Contact = Nothing
+
+                ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
+                If Globals.ThisAddIn.FBoxTR064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
+
+                    ' Merke dir die aktuelle Zeit in dem Kontakt
+                    .SetFBoxModTime(TelefonbuchID, UID, Now)
+
+                    ' Stelle die Verknüpfung her
+                    .SetUniqueID(TelefonbuchID.ToString, UID.ToString, True)
+
+                    ' Lade den Kontakt nochmal herunter
+                    retVal = Await Globals.ThisAddIn.FBoxTR064.X_contact.GetPhonebookEntryUID(TelefonbuchID, UID)
+
+                    ' Statusmeldung
+                    NLogger.Info(String.Format(Localize.resRibbon.UploadSuccess, .FullName, TelefonbuchID, retVal, UID))
+                Else
+                    ' Statusmeldung
+                    NLogger.Warn(String.Format(Localize.resRibbon.UploadError, .FullName, TelefonbuchID, retVal))
+                End If
+
+                Return retVal
+            End With
+        End Function
+
         ''' <summary>
         ''' Startet das Hochladen mehrerer Outlook-Kontakte mittels asynchroner Aufgaben (<see cref="Task"/>).
         ''' </summary>

@@ -43,6 +43,7 @@ Public Class PhonebookEx
 
     Friend Function GetContact(EntryID As Integer) As FBoxAPI.Contact
         Return Phonebook.Contacts.Find(Function(K) K.Uniqueid.AreEqual(EntryID))
+        If GetContact Is Nothing Then Stop
     End Function
 
     ''' <summary>
@@ -80,10 +81,15 @@ Public Class PhonebookEx
     ''' </summary>
     ''' <param name="Kontakt"></param>
     Friend Sub AddContact(Kontakt As FBoxAPI.Contact)
-        With Phonebook.Contacts
-            ' Kontakt hinzufügen
-            .Add(Kontakt)
-        End With
+        If Kontakt IsNot Nothing Then
+            With Phonebook.Contacts
+                ' Entferne alle Kontakte mit der selben UniqueID (sollte nur einen oder keinen geben)
+                .RemoveAll(Function(E) E.Uniqueid.AreEqual(Kontakt.Uniqueid))
+
+                ' Kontakt hinzufügen
+                .Add(Kontakt)
+            End With
+        End If
     End Sub
 
     ''' <summary>
@@ -91,10 +97,12 @@ Public Class PhonebookEx
     ''' </summary>
     ''' <param name="Kontakt">Der zu entfernende Kontakt.</param>
     Friend Sub DeleteKontakt(Kontakt As FBoxAPI.Contact)
-        With Phonebook.Contacts
-            ' Kontake entfernen
-            .Remove(Kontakt)
-        End With
+        If Kontakt IsNot Nothing Then
+            With Phonebook.Contacts
+                ' Kontake entfernen
+                .Remove(Kontakt)
+            End With
+        End If
     End Sub
 
     ''' <summary>

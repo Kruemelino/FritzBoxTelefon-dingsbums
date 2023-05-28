@@ -790,7 +790,7 @@ Friend Module KontaktFunktionen
     ''' Synchronisiert einen Kontaktordner <paramref name="OutlookOrdner"/> mit einem Fritz!Box Telefonbuch (<paramref name="FBoxTBuch"/>)
     ''' </summary>
     ''' <param name="OutlookOrdner">Der zu synchrinisierende Outlook Ordner</param>
-    ''' <param name="FBoxTBuch">Das zu synchrinisierende Fritz!Box Telefonbuch</param>
+    ''' <param name="FBoxTBuch">Das zu synchronisierende Fritz!Box Telefonbuch</param>
     ''' <param name="Modus">Der Synchronisationsmodus. Hier wird festgelegt, in welche Richtung die Daten bei Änderungen verschoben werden.</param>
     ''' <param name="ct">CancellationToken zum Abbruch der Routine</param>
     ''' <param name="Progress">Anbieter für Statusupdates</param>
@@ -801,6 +801,9 @@ Friend Module KontaktFunktionen
         Dim TaskList As New List(Of Task)
 
         Dim FBKontakte As New List(Of FBoxAPI.Contact)
+
+        'Dim DelKontakte As New List(Of ContactItem)
+
         FBKontakte.AddRange(FBoxTBuch.GetContacts)
 
         ' Schleife durch jedes Element dieses Ordners. 
@@ -816,7 +819,12 @@ Friend Module KontaktFunktionen
                         If uID.AreEqual(-1) Then
                             Progress?.Report($"Kontakt '{ .FullName}' auf der Fritz!Box erzeugt ...")
                             ' Es gibt keinen Kontakt auf der Fritz!Box
-                            TaskList.Add(Task.Run(Sub() Telefonbücher.SetTelefonbuchEintrag(FBoxTBuch.ID, .Self)))
+
+                            ' Lade den Kontakt hoch und füge ihn in das lokal heruntergeladene Telefonbuch ein
+                            TaskList.Add(Task.Run(Async Function()
+                                                      FBoxTBuch.AddContact(Await Telefonbücher.UploadContactAndReturn(FBoxTBuch.ID, .Self))
+                                                  End Function))
+
                         Else
                             ' Es gibt einen Kontakt im Fritz!Box Telefonbuch
                             Dim FBoxKontakt As FBoxAPI.Contact = FBoxTBuch.GetContact(uID)
@@ -829,8 +837,10 @@ Friend Module KontaktFunktionen
                                         Case SyncMode.OutlookToFritzBox
                                             Progress?.Report($"Kontakt '{ .FullName}' auf der Fritz!Box überschrieben (uID {FBoxKontakt.Uniqueid}) ...")
 
-                                            ' Kontakt auf der Fritz!Box ersetzen
-                                            TaskList.Add(Task.Run(Sub() Telefonbücher.SetTelefonbuchEintrag(FBoxTBuch.ID, .Self)))
+                                            ' Kontakt auf der Fritz!Box ersetzen und füge ihn in das lokal heruntergeladene Telefonbuch ein (wird überschrieben)
+                                            TaskList.Add(Task.Run(Async Function()
+                                                                      FBoxTBuch.AddContact(Await Telefonbücher.UploadContactAndReturn(FBoxTBuch.ID, .Self))
+                                                                  End Function))
 
                                         Case SyncMode.FritzBoxToOutlook
                                             Progress?.Report($"Kontakt '{ .FullName}' in Outlook überschrieben (uID {FBoxKontakt.Uniqueid}) ...")
@@ -911,10 +921,12 @@ Friend Module KontaktFunktionen
     ''' Synchronisiert einen einzelnen Outlook Kontakt <paramref name="olContact"/> mit einem Fritz!Box Telefonbuch.
     ''' </summary>
     ''' <param name="olContact">Der zu synchrinisierende Outlook Kontakt</param>
-    ''' <param name="olFolder">Der Ordner in dem sich der zu synchrinisierende Outlook Kontakt befindet</param>
+    ''' <param name="olFolder">Der Ordner in dem sich der zu synchronisierende Outlook Kontakt befindet</param>
     <Extension> Friend Async Sub Synchronisierer(olContact As ContactItem, olFolder As MAPIFolder)
 
         Dim olOrdner As OutlookOrdner = XMLData.POptionen.OutlookOrdner.Find(olFolder, OutlookOrdnerVerwendung.FBoxSync)
+        Dim Telefonbuch As PhonebookEx
+        Dim FBKontakt As FBoxAPI.Contact = Nothing
 
         If olOrdner?.FBoxSyncOptions?.ValidData IsNot Nothing Then
 
@@ -925,10 +937,14 @@ Friend Module KontaktFunktionen
                 Dim uID As Integer = .GetUniqueID(olOrdner.FBoxSyncOptions.FBoxSyncID)
                 Dim bID As Integer = olOrdner.FBoxSyncOptions.FBoxSyncID
 
+                ' Ermittle das lokal heruntergeladene Telefonbuch
+
                 If uID.AreEqual(-1) Then
                     NLogger.Info($"Kontakt '{ .FullName.RemoveLineBreaks}' auf der Fritz!Box erzeugt ...")
                     ' Es gibt keinen Kontakt auf der Fritz!Box
-                    Telefonbücher.SetTelefonbuchEintrag(bID, olContact)
+
+                    ' Lade den Kontakt hoch und füge ihn in das lokal heruntergeladene Telefonbuch ein
+                    FBKontakt = Await Telefonbücher.UploadContactAndReturn(bID, olContact)
                 Else
                     ' Es gibt einen Kontakt im Fritz!Box Telefonbuch
 
@@ -953,7 +969,7 @@ Friend Module KontaktFunktionen
                                 NLogger.Info($"Kontakt '{ .FullName.RemoveLineBreaks}' auf der Fritz!Box überschrieben (uID {FBoxKontakt.Uniqueid})...")
 
                                 ' Kontakt auf der Fritz!Box ersetzen
-                                Telefonbücher.SetTelefonbuchEintrag(bID, olContact)
+                                FBKontakt = Await Telefonbücher.UploadContactAndReturn(bID, olContact)
 
                             End If
 
@@ -962,10 +978,24 @@ Friend Module KontaktFunktionen
                         ' Nein ... Ein Kontakt sollte vorhanden sein...
                         NLogger.Info($"Kontakt '{ .FullName.RemoveLineBreaks}' auf der Fritz!Box nicht vorhanden. (uID {uID}) Erstelle einen neuen Kontakt auf der Fritz!Box...")
 
-                        Telefonbücher.SetTelefonbuchEintrag(bID, olContact)
+                        FBKontakt = Await Telefonbücher.UploadContactAndReturn(bID, olContact)
                     End If
 
                 End If
+
+                ' Ein Kontakt wurde auf die Fritz!Box hochgeladen oder ersetzt
+                If FBKontakt IsNot Nothing Then
+                    ' Ermittle das zugehörige lokale Telefonbuch
+                    Telefonbuch = Globals.ThisAddIn.PhoneBookXML.Where(Function(Buch) Buch.ID.AreEqual(bID))?.First
+
+                    If Telefonbuch IsNot Nothing Then
+                        Telefonbuch.AddContact(FBKontakt)
+                    Else
+                        NLogger.Warn($"Das lokale Telefonbuch mit der ID {bID}, indem der Kontakt { .FullName.RemoveLineBreaks} synchronisiert werden soll, ist nicht vorhanden.")
+                    End If
+
+                End If
+
             End With
         End If
     End Sub
@@ -996,9 +1026,7 @@ Friend Module KontaktFunktionen
     ''' Startet die automatische Synchronisation bei Outlook-Start.
     ''' </summary>
     Friend Async Sub StartAutoSync()
-        Dim progressIndicator = New Progress(Of String)(Sub(status)
-                                                            NLogger.Info(status)
-                                                        End Sub)
+        Dim progressIndicator = New Progress(Of String)(Sub(status) NLogger.Info(status))
 
         Dim TaskList As New List(Of Task(Of Integer))
 
@@ -1007,14 +1035,14 @@ Friend Module KontaktFunktionen
             Dim FBoxTelefonbuch As PhonebookEx = Globals.ThisAddIn.PhoneBookXML.Where(Function(TB) TB.ID.AreEqual(Ordner.FBoxSyncOptions.FBoxSyncID)).First
             If FBoxTelefonbuch IsNot Nothing Then
 
-                'If Not FBoxTelefonbuch.NurName OrElse Not Await FBoxTelefonbuch.UpdatePhonebook() Then
                 NLogger.Info($"Starte die automatische Syncronisation des Outlook-Ordners {Ordner.Name} mit {FBoxTelefonbuch.Name}")
 
                 TaskList.Add(Task.Run(Function() Synchronisierer(Ordner.MAPIFolder, FBoxTelefonbuch, SyncMode.FritzBoxToOutlook, Nothing, progressIndicator)))
-                'End If
+
             End If
 
-            ' Die einzelnen Vorgänge müssen nacheinander erfolgen, da es sonst zu einer WebException kommt: Die zugrunde liegende Verbindung wurde geschlossen: Für den geschützten SSL/TLS-Kanal konnte keine Vertrauensstellung hergestellt werden.
+            ' Die einzelnen Vorgänge müssen nacheinander erfolgen, da es sonst zu einer WebException kommt:
+            ' Die zugrunde liegende Verbindung wurde geschlossen: Für den geschützten SSL/TLS-Kanal konnte keine Vertrauensstellung hergestellt werden.
             If TaskList.Any Then Await TaskList.Last
         Next
         NLogger.Info($"Automatische Syncronisation abgeschlossen: {(Await Task.WhenAll(TaskList)).Sum}")
@@ -1547,6 +1575,7 @@ Friend Module KontaktFunktionen
     ''' <param name="XMLKontakt"></param>
     Friend Sub ÜberschreibeKontakt(olKontakt As ContactItem, XMLKontakt As FBoxAPI.Contact)
         If olKontakt IsNot Nothing AndAlso XMLKontakt IsNot Nothing Then
+            ' TODO: Eventuell vorhandene Daten im Outlook-Kontakt löschen
             XMLKontakt.XMLKontaktOutlook(olKontakt)
 
             ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
@@ -1559,10 +1588,10 @@ Friend Module KontaktFunktionen
     ''' <summary>
     ''' Ermittelt die UniqueID des verknüpften Fritz!Box Telefonbucheintrages.
     ''' </summary>
-    ''' <param name="olKontakte">Der Outlook-Kontakt, aus dem die UniqueID ausgelesen werden soll.</param>
+    ''' <param name="olKontakt">Der Outlook-Kontakt, aus dem die UniqueID ausgelesen werden soll.</param>
     ''' <param name="TelefonbuchID">Die ID des zugehörigen Telefonbuches.</param>
-    <Extension> Friend Function GetUniqueID(olKontakte As ContactItem, TelefonbuchID As Integer) As Integer
-        With olKontakte
+    <Extension> Friend Function GetUniqueID(olKontakt As ContactItem, TelefonbuchID As Integer) As Integer
+        With olKontakt
 
             ' Überprüfe, ob es in diesem Kontakt Daten zu einem Eintrag in einem Telefonbuch gibt
             Dim colArgs() As Object = CType(.PropertyAccessor.GetProperties(DASLTagFBTelBuch), Object())
