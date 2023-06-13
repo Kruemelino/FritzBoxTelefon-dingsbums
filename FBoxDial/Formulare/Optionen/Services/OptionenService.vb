@@ -302,13 +302,13 @@ Friend Class OptionenService
             key.SetValue("ApplicationDescription", My.Resources.strDefLongName, RegistryValueKind.String)
             key.SetValue("ApplicationName", My.Resources.strDefShortName, RegistryValueKind.String)
 
-            Using key.CreateSubKey("URLAssociations")
+            Using URLAssociationsKey As RegistryKey = key.CreateSubKey("URLAssociations")
                 ' [HKEY_CURRENT_USER\SOFTWARE\FritzOutlookV5\Capabilities\URLAssociations]
                 ' "callto"="FritzOutlookV5.callto"
                 ' "tel"="FritzOutlookV5.callto"
 
-                key.SetValue("callto", $"{My.Resources.strDefShortName}.callto", RegistryValueKind.String)
-                key.SetValue("tel", $"{My.Resources.strDefShortName}.callto", RegistryValueKind.String)
+                URLAssociationsKey.SetValue("callto", $"{My.Resources.strDefShortName}.callto", RegistryValueKind.String)
+                URLAssociationsKey.SetValue("tel", $"{My.Resources.strDefShortName}.callto", RegistryValueKind.String)
             End Using
 
         End Using
