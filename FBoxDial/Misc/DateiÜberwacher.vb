@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Web
 
 Friend Class DateiÜberwacher
     Implements IDisposable
@@ -20,7 +21,8 @@ Friend Class DateiÜberwacher
 
     Private Sub OnChanged(source As Object, e As FileSystemEventArgs)
 
-        Dim TelNr As New Telefonnummer With {.SetNummer = File.ReadLines(e.FullPath).First}
+        Dim TelNr As New Telefonnummer With {.SetNummer = HttpUtility.UrlDecode(File.ReadLines(e.FullPath).First, Encoding.UTF8)}
+
         NLogger.Info($"Telefonnummer aus tel:// bzw. callto:// erfasst: {TelNr.Unformatiert}")
 
         ' Neuen Wählclient generieren
