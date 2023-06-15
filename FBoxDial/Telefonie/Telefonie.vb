@@ -123,29 +123,43 @@ Imports FBoxDial.DfltWerteTelefonie
                         Telefoniegeräte.Add(Telefon)
                     Next
 
-                    ' Asynchroner Task für das Einlesen der FON-Geräte via Query
-                    Dim TaskFON As Task(Of List(Of Telefoniegerät)) = GetFON(SessionID)
+#Region "ALT: Nicht alle werden erkannt"
+                    '' Asynchroner Task für das Einlesen der FON-Geräte via Query
+                    'Dim TaskFON As Task(Of List(Of Telefoniegerät)) = GetFON(SessionID)
 
-                    ' Asynchroner Task für das Einlesen der DECT-Geräte via Query
-                    Dim TaskDECT As Task(Of List(Of Telefoniegerät)) = GetDECT(SessionID)
+                    '' Asynchroner Task für das Einlesen der DECT-Geräte via Query
+                    'Dim TaskDECT As Task(Of List(Of Telefoniegerät)) = GetDECT(SessionID)
 
-                    ' Asynchroner Task für das Einlesen der S0-Geräte via Query
-                    Dim TaskS0 As Task(Of List(Of Telefoniegerät)) = GetS0(SessionID)
+                    '' Asynchroner Task für das Einlesen der S0-Geräte via Query
+                    'Dim TaskS0 As Task(Of List(Of Telefoniegerät)) = GetS0(SessionID)
 
-                    ' Asynchroner Task für das Einlesen der Mobil-Geräte sowie integrieten Faxempfang via Query
-                    Dim TaskMobilFax As Task(Of List(Of Telefoniegerät)) = GetFaxMailMobil(SessionID)
+                    '' Asynchroner Task für das Einlesen der Mobil-Geräte sowie integrieten Faxempfang via Query
+                    'Dim TaskMobilFax As Task(Of List(Of Telefoniegerät)) = GetFaxMailMobil(SessionID)
+
+                    '' Füge die ermittelten FON-Geräte hinzu
+                    'Telefoniegeräte.AddRange(Await TaskFON)
+
+                    '' Füge die ermittelten DECT-Geräte hinzu 
+                    'Telefoniegeräte.AddRange(Await TaskDECT)
+
+                    '' Füge die ermittelten S0-Geräte hinzu 
+                    'Telefoniegeräte.AddRange(Await TaskS0)
+
+                    '' Füge die ermittelten Mobil-Geräte sowie integrieten Faxempfang hinzu
+                    'Telefoniegeräte.AddRange(Await TaskMobilFax)
+#End Region
 
                     ' Füge die ermittelten FON-Geräte hinzu
-                    Telefoniegeräte.AddRange(Await TaskFON)
+                    Telefoniegeräte.AddRange(Await GetFON(SessionID))
 
                     ' Füge die ermittelten DECT-Geräte hinzu 
-                    Telefoniegeräte.AddRange(Await TaskDECT)
+                    Telefoniegeräte.AddRange(Await GetDECT(SessionID))
 
                     ' Füge die ermittelten S0-Geräte hinzu 
-                    Telefoniegeräte.AddRange(Await TaskS0)
+                    Telefoniegeräte.AddRange(Await GetS0(SessionID))
 
                     ' Füge die ermittelten Mobil-Geräte sowie integrieten Faxempfang hinzu
-                    Telefoniegeräte.AddRange(Await TaskMobilFax)
+                    Telefoniegeräte.AddRange(Await GetFaxMailMobil(SessionID))
 
                     ' Ermittle TR-064 Phoneports
                     ' Für die Fritz!Box Wählhilfe nutzbare Telefone ermitteln
