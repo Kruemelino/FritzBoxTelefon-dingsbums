@@ -3,49 +3,25 @@
 Friend Class InspectorWrapper
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property Inspektor As Inspector
-    Private Property OlKontakt As ContactItem
+    Private Property OlItem As OutlookItemWrapper
 
     Public Sub New(i As Inspector)
         ' ThisAddin!: Nur für ContactItem
 
-        Inspektor = i
+        _Inspektor = i
         NLogger.Debug("Ein neues Inspector-Fenster für einen Kontakt wird geöffnet.")
 
         AddHandler Inspektor.Close, AddressOf Inspektor_Close
 
-        If Inspektor IsNot Nothing Then 'AndAlso TypeOf Inspektor.CurrentItem Is ContactItem Then
-            OlKontakt = CType(Inspektor.CurrentItem, ContactItem)
+        If Inspektor IsNot Nothing Then OlItem = New OutlookItemWrapper(Inspektor.CurrentItem)
 
-            ' Füge Ereignishandler hinzu
-            AddHandler OlKontakt.Write, AddressOf OlKontakt_Write
-            AddHandler OlKontakt.BeforeDelete, AddressOf OlKontakt_BeforeDelete
-
-        End If
-
-    End Sub
-
-    Private Sub OlKontakt_BeforeDelete(Item As Object, ByRef Cancel As Boolean)
-        OlKontakt.SyncDelete
-    End Sub
-
-    Private Sub OlKontakt_Write(ByRef Cancel As Boolean)
-        NLogger.Debug($"Speichern des Kontaktes '{OlKontakt.FullName}' wurde registriert.")
-
-        ' Synchronisieren
-        OlKontakt.Synchronisierer(OlKontakt.ParentFolder)
-        ' Indizieren
-        IndiziereKontakt(OlKontakt, OlKontakt.ParentFolder)
+        ' Entferne das aktuelle Item des Inspectors aus der Liste der selektierten Elemente des Explorers. 
+        ' Ansonsten werden die Events für Write doppelt ausgelöst.
+        Globals.ThisAddIn.ExplorerWrappers.Values.ToList.ForEach(Sub(E) E.RemoveSelectedItem(OlItem))
     End Sub
 
     Private Sub Inspektor_Close()
-
-        If OlKontakt IsNot Nothing Then
-            ' Entferne Ereignishandler 
-            RemoveHandler OlKontakt.Write, AddressOf OlKontakt_Write
-            RemoveHandler OlKontakt.BeforeDelete, AddressOf OlKontakt_BeforeDelete
-            ReleaseComObject(OlKontakt)
-            OlKontakt = Nothing
-        End If
+        OlItem.Auflösen()
 
         Globals.ThisAddIn.InspectorWrappers.Remove(Inspektor)
 

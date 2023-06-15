@@ -115,7 +115,7 @@ Friend Module ContactEx
                     ' Füge das Kontaktbild hinzu. Der Kontakt muss danach neu gespeichert werden
                     .AddPicture(Pfad)
                     ' Wenn der Kontakt bereits gespeichert war, dann speichere ihn erneut.
-                    If .Speichern Then NLogger.Debug($"Kontakt { .FullNameAndCompany} nach hinzufügen des Kontaktbildes gespeichert")
+                    If .Speichern Then NLogger.Debug($"Kontakt { .FullNameAndCompanyWithoutLineBreak} nach hinzufügen des Kontaktbildes gespeichert")
                 Catch ex As System.Exception
                     NLogger.Warn(ex)
                 Finally

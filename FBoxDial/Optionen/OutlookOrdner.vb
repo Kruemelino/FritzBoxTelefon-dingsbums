@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Xml.Serialization
-Imports Microsoft.Office.Interop
+Imports Microsoft.Office.Interop.Outlook
 
 Public Enum OutlookOrdnerVerwendung As Integer
     KontaktSuche = 1
@@ -42,7 +42,7 @@ Public Class OutlookOrdner
     Public Sub New()
         ' Nicht löschen. Wird zum deserialisieren benötigt: Parameterloser Konstruktor
     End Sub
-    Public Sub New(OlFolder As Outlook.MAPIFolder)
+    Public Sub New(OlFolder As MAPIFolder)
 
         FolderID = OlFolder.EntryID
         StoreID = OlFolder.StoreID
@@ -50,7 +50,7 @@ Public Class OutlookOrdner
 
     End Sub
 
-    Public Sub New(OlFolder As Outlook.MAPIFolder, Verwendung As OutlookOrdnerVerwendung)
+    Public Sub New(OlFolder As MAPIFolder, Verwendung As OutlookOrdnerVerwendung)
 
         FolderID = OlFolder.EntryID
         StoreID = OlFolder.StoreID
@@ -70,7 +70,7 @@ Public Class OutlookOrdner
             Return GetOutlookFolder(FolderID, StoreID) IsNot Nothing
         End Get
     End Property
-    <XmlIgnore> Friend Property MAPIFolder As Outlook.MAPIFolder
+    <XmlIgnore> Friend Property MAPIFolder As MAPIFolder
         Get
             Return GetOutlookFolder(FolderID, StoreID)
         End Get
@@ -86,25 +86,26 @@ Public Class OutlookOrdner
         End Get
     End Property
 
+    Friend Function ContainsChildFolder(Ordner As MAPIFolder) As Boolean
+        Return GetChildFolders(MAPIFolder, Ordner.DefaultItemType, Typ).Contains(New OutlookOrdner(Ordner, Typ))
+    End Function
+
 #Region "IEquatable Support"
     Public Overloads Function Equals(other As OutlookOrdner) As Boolean Implements IEquatable(Of OutlookOrdner).Equals
         If other Is Nothing Then Return False
-        Return FolderID.IsEqual(other.FolderID) And StoreID.IsEqual(other.StoreID) And Typ.Equals(other.Typ)
+        Return Typ.Equals(other.Typ) AndAlso (FolderID.IsEqual(other.FolderID) And StoreID.IsEqual(other.StoreID))
     End Function
 
-    Public Overloads Function Equals(other As Outlook.MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
+    Public Overloads Function Equals(other As MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
         If other Is Nothing Then Return False
-        Return Equals(other) And Typ.Equals(Verwendung)
+        Return Typ.Equals(Verwendung) AndAlso Equals(other)
     End Function
 
-    Public Overloads Function Equals(other As Outlook.MAPIFolder) As Boolean
+    Public Overloads Function Equals(other As MAPIFolder) As Boolean
         If other Is Nothing Then Return False
         Return FolderID.IsEqual(other.EntryID) And StoreID.IsEqual(other.StoreID)
     End Function
 
-    Public Overrides Function GetHashCode() As Integer
-        Return (FolderID, StoreID).GetHashCode()
-    End Function
 #End Region
 
 #Region "IDisposable Support"

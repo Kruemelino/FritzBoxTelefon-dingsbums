@@ -6,14 +6,14 @@ Imports System.Windows.Forms
 Friend Class ExplorerWrapper
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property OlExplorer As Explorer
+    Private Property AktuellerOrdner As MAPIFolder
     Private Property CallListPane As CustomTaskPane
     Private Property CallListPaneVM As CallListPaneViewModel
     Private Property Datenservice As IAnrMonService
     Private Property Dialogservice As IDialogService
     Private Property PaneDispatcher As Windows.Threading.Dispatcher
-
-    Private Property OlSelectedContacts As New List(Of ContactItem)
-
+    Private Property OlSelectedItems As List(Of OutlookItemWrapper)
+    Private Property OlPastedItem As OutlookItemWrapper
     Friend ReadOnly Property PaneVisible As Boolean
         Get
             Return CallListPane IsNot Nothing AndAlso CallListPane.Visible
@@ -27,6 +27,8 @@ Friend Class ExplorerWrapper
 
     Friend Sub New(e As Explorer)
         OlExplorer = e
+
+        OlSelectedItems = New List(Of OutlookItemWrapper)
 
         If OlExplorer IsNot Nothing Then
             NLogger.Debug("Ein neues Explorer-Fenster wird geöffnet")
@@ -205,19 +207,26 @@ Friend Class ExplorerWrapper
     Private Sub OutlookExplorer_BeforeItemPaste(ByRef ClipboardContent As Object, Target As MAPIFolder, ByRef Cancel As Boolean)
         ' Ist der Inhalt eine Selection? (Im Besten Fall eine Anzahl an Kontakten)
         If TypeOf ClipboardContent Is Selection Then
+
             ' Schleife durch alle Elemente der selektierten Objekte
             For Each ClipboardObject As Object In CType(ClipboardContent, Selection)
 
                 ' Wenn es sich um Kontakte handelt, dann 
                 If TypeOf ClipboardObject Is ContactItem Then
 
+                    ' Füge einen Ereignishandler für das Target hinzu
+                    AddHandler Target.Items.ItemAdd, AddressOf Target_ItemAdd
+
                     With CType(ClipboardObject, ContactItem)
+
+                        ' Entferne alle Synchronisierungsdaten aus dem Kontakt
+                        '.DeleteUniqueID
+
                         ' Synchronisiere den Kontakt
-                        Synchronisierer(.Self, Target)
+                        '.SyncKontakt(Target, True)
 
                         ' (de-)indiziere den Kontakt
-                        IndiziereKontakt(.Self, Target)
-
+                        '.IndiziereKontakt(Target)
                     End With
 
                 End If
@@ -225,49 +234,63 @@ Friend Class ExplorerWrapper
         End If
     End Sub
 
+    Private Sub Target_ItemAdd(Item As Object)
+        ' Wenn es sich um Kontakte handelt, dann 
+        If TypeOf Item Is ContactItem Then
+
+            With CType(Item, ContactItem)
+                ' Entfernt den Ereignishandler für das eingefügte Element hinzu
+                RemoveHandler .ParentFolder.Items.ItemAdd, AddressOf Target_ItemAdd
+
+                ' Entferne alle Synchronisierungsdaten aus dem Kontakt
+                .DeleteUniqueID
+
+                OlPastedItem = New OutlookItemWrapper(Item)
+
+                .Speichern()
+            End With
+
+        End If
+    End Sub
+
     Private Sub Explorer_SelectionChange()
         Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
 
-        OlSelectedContactList()
+        ClearSelectedItemList()
 
-        ' Falls etwas selektiert wurde, prüfe ob es Kontakte sind
         If OlExplorer.Selection.Count.IsNotZero Then
             For Each Item In OlExplorer.Selection
-                If TypeOf Item Is ContactItem Then
-                    ' Nimm den Kontakt in die Liste auf
-                    OlSelectedContacts.Add(CType(Item, ContactItem))
-
-                    ' Füge einen Eventhandler hinzu
-                    AddHandler OlSelectedContacts.Last.BeforeDelete, AddressOf ContactItem_Delete
-
-                End If
+                OlSelectedItems.Add(New OutlookItemWrapper(Item))
             Next
         End If
     End Sub
 
-    Private Sub ContactItem_Delete(Item As Object, ByRef Cancel As Boolean)
-        If TypeOf Item Is ContactItem Then
-            With CType(Item, ContactItem)
-                RemoveHandler .BeforeDelete, AddressOf ContactItem_Delete
+    Private Sub ClearSelectedItemList()
+        ' Entferne die Verweise auf die Eventhandler
+        OlSelectedItems.ForEach(Sub(ItemWrapper) ItemWrapper.Auflösen())
 
-                .SyncDelete()
-            End With
+        ' Leere die Liste
+        OlSelectedItems.Clear()
+    End Sub
+
+    ''' <summary>
+    ''' Entfernt einen <see cref="OutlookItemWrapper"/> aus der Liste der selektierten Outlook-Items. 
+    ''' Der Abgleich der gleichheit erfolgt über die <see cref="ContactItem.EntryID"/> des <paramref name="CurrentItem"/> und der <see cref="MAPIFolder.StoreID"/> des Ordners indem sich das <paramref name="CurrentItem"/> befindet.
+    ''' </summary>
+    ''' <param name="CurrentItem">Das gegenständliche Item</param>
+    Friend Sub RemoveSelectedItem(CurrentItem As OutlookItemWrapper)
+        ' Suche anhand der EntryID und StoreID den passenden ItemWrapper.
+        Dim EqualItemWrapper As OutlookItemWrapper = OlSelectedItems.Find(Function(IW) IW.Equals(CurrentItem))
+
+        ' Wenn ein passender ItemWrapper gefunden wurde, dann löse ihn auf und entferne ihn aus der Liste
+        If EqualItemWrapper IsNot Nothing Then
+            EqualItemWrapper.Auflösen()
+            OlSelectedItems.Remove(EqualItemWrapper)
         End If
     End Sub
 
-    Private Sub OlSelectedContactList()
-        ' Entferne die Verweise auf die Eventhandler
-        OlSelectedContacts.ForEach(Sub(Kontakt)
-                                       RemoveHandler Kontakt.BeforeDelete, AddressOf ContactItem_Delete
-                                       ReleaseComObject(Kontakt)
-                                   End Sub)
-
-        ' Leere die Liste
-        OlSelectedContacts.Clear()
-    End Sub
-
     Private Sub Explorer_Close()
-        OlSelectedContactList()
+        ClearSelectedItemList()
 
         ' Entferne Pane
         If CallListPane IsNot Nothing Then
@@ -285,7 +308,6 @@ Friend Class ExplorerWrapper
         RemoveHandler OlExplorer.Close, AddressOf Explorer_Close
         RemoveHandler OlExplorer.SelectionChange, AddressOf Explorer_SelectionChange
         RemoveHandler OlExplorer.BeforeItemPaste, AddressOf OutlookExplorer_BeforeItemPaste
-
         Globals.ThisAddIn.ExplorerWrappers.Remove(OlExplorer)
 
         ' Gib das OfficeObjekt frei

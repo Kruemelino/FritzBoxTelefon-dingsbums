@@ -765,7 +765,7 @@ Namespace RibbonData
             If ListName.IsNotStringNothingOrEmpty Then ' Abfrage eigentlich unnötig
                 If TypeOf OutlookInspector.CurrentItem Is Outlook.ContactItem Then
 
-                    IndiziereKontakt(CType(OutlookInspector.CurrentItem, Outlook.ContactItem))
+                    CType(OutlookInspector.CurrentItem, Outlook.ContactItem).IndiziereKontakt
                 End If
             End If
 
@@ -795,7 +795,7 @@ Namespace RibbonData
                     .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
 
                     ' Einzelnen Indexeinträge
-                    For Each Eintrag In GetIndexList(oContact)
+                    For Each Eintrag In oContact.GetIndexList
                         .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, ListName, Eintrag))
                     Next
                 Else
@@ -830,7 +830,7 @@ Namespace RibbonData
                 If oContact.Parent IsNot Nothing AndAlso CType(oContact.Parent, Outlook.MAPIFolder).OrdnerAusgewählt(OutlookOrdnerVerwendung.FBoxSync) Then
                     ' Button für das manuelle Synchronisieren des Kontaktes
                     ' Füge den Löschbutton und einen Seperator hinzu
-                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, $"SyncContact_{ListName}", "S"))
+                    .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, $"SyncContact_{ListName}", "I"))
                     .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
 
                     ' Einzelnen Indexeinträge
@@ -930,7 +930,7 @@ Namespace RibbonData
             If ListName.IsNotStringNothingOrEmpty Then ' Abfrage eigentlich unnötig
                 If TypeOf OutlookInspector.CurrentItem Is Outlook.ContactItem Then
                     With CType(OutlookInspector.CurrentItem, Outlook.ContactItem)
-                        Synchronisierer(.Self, .ParentFolder)
+                        .Self.SyncKontakt(.ParentFolder, True)
                     End With
                 End If
             End If

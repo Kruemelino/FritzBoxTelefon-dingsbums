@@ -120,9 +120,9 @@ Friend Class OptionenService
                     Dim aktKontakt As ContactItem = CType(Item, ContactItem)
 
                     If IndexModus Then
-                        IndiziereKontakt(aktKontakt)
+                        aktKontakt.IndiziereKontakt
                     Else
-                        DeIndiziereKontakt(aktKontakt)
+                        aktKontakt.DeIndiziereKontakt
                     End If
 
                     ' Erhöhe Wert für Progressbar und schreibe einen Status
@@ -279,12 +279,6 @@ Friend Class OptionenService
 
         Using key As RegistryKey = Registry.CurrentUser.CreateSubKey($"SOFTWARE\Classes\{My.Resources.strDefShortName}.callto\Shell\Open\Command")
 
-            ' [HKEY_CURRENT_USER\SOFTWARE\Classes\FritzOutlookV5.callto]
-
-            ' [HKEY_CURRENT_USER\SOFTWARE\Classes\FritzOutlookV5.callto\Shell]
-
-            ' [HKEY_CURRENT_USER\SOFTWARE\Classes\FritzOutlookV5.callto\Shell\Open]
-
             ' [HKEY_CURRENT_USER\SOFTWARE\Classes\FritzOutlookV5.callto\Shell\Open\Command]
             ' @="cmd.exe /C echo %1 > "%%AppData%%\Fritz!Box Telefon-Dingsbums\TelProt.txt""
 
@@ -293,7 +287,6 @@ Friend Class OptionenService
         End Using
 
         Using key As RegistryKey = Registry.CurrentUser.CreateSubKey($"SOFTWARE\{My.Resources.strDefShortName}\Capabilities")
-            ' [HKEY_CURRENT_USER\SOFTWARE\FritzOutlookV5]
 
             ' [HKEY_CURRENT_USER\SOFTWARE\FritzOutlookV5\Capabilities]
             ' "ApplicationDescription"="Fritz!Box Telefon-dingsbums"
@@ -330,7 +323,7 @@ Friend Class OptionenService
 
         ' Schleife durch alle OutlookStoreRootFolder
         For Each olStoreRootFolder In GetOutlookStoreRootFolder()
-            Kontaktliste.AddRange(From F In GetChildFolders(olStoreRootFolder, ItemType) Select New OutlookOrdner(F, Verwendung))
+            Kontaktliste.AddRange(GetChildFolders(olStoreRootFolder, ItemType, Verwendung))
         Next
 
         Return Kontaktliste

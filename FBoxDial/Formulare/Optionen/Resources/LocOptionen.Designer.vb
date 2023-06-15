@@ -1043,11 +1043,11 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Es werden keine Informationen an mich als Entwickler oder Dritte weitergeben.
         '''Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
         '''Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmn:
         '''Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
-        '''Bei der Nutzung von tellows wird die zu Telefonnummer an den Anbieter übergeben. Die Datenschut [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''Bei der Nutzung von tellows wird die zu Telefonnummer an den Anbieter übergeben. Die Datensch [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strInfoDatenschutz() As String
             Get
@@ -1727,8 +1727,10 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Experimentelle Funktionen!
-        '''Achtung: Es werden Kontakte sowohl in Outlook als auch im Fritz!Box Telefonbuch ohne Vorwarnung gelöscht, falls die Routine dies für nötig hält. Macht vorher eine Datensicherung! ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Experimentelle Funktionen! Eine Datensicherung wird dringend empfohlen!
+        '''Hinweis 1: Es werden Kontakte sowohl in Outlook als auch im Fritz!Box Telefonbuch ohne Vorwarnung gelöscht, falls die Routine dies für nötig hält. 
+        '''Hinweis 2: Änderungen in Outlook-Kontakten werden beim Speichern sofort auf das entsprechende Fritz!Box Telefonbuch übertragen. Auch Löschungen von Kontakten werden sofort umgesetzt.
+        '''Hinweis 3: Das Einfügen von Kontakten per Copy&amp;Paste führt nicht immer dazu, dass der Kontakt sofort synch [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strSyncContacsWarn() As String
             Get

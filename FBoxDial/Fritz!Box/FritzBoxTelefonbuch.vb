@@ -210,8 +210,8 @@ Namespace Telefonbücher
 
                     ' Schleife durch alle aktiven Rufbehandlungen, die bei Einträgen aus einem Telefonbuch keine Signalisierung auslösen 
                     For Each Rufbehandlung As FBoxAPI.Deflection In DeflectionList.Deflections.FindAll(Function(D) D.Enable AndAlso
-                                                                                                                D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And
-                                                                                                                D.Type = FBoxAPI.DeflectionTypeEnum.fromPB)
+                                                                                                                   D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And
+                                                                                                                   D.Type = FBoxAPI.DeflectionTypeEnum.fromPB)
 
                         ' Schleife durch alle Telefonbücher, die in der Rufbehandlung verlinkt sind. Sollte nur eines sein.
                         For Each Telefonbuch As PhonebookEx In Phonebooks.Where(Function(PB) PB.ID.AreEqual(Rufbehandlung.PhonebookID.ToInt))
@@ -372,41 +372,43 @@ Namespace Telefonbücher
                     .SetUniqueID(TelefonbuchID.ToString, UID.ToString, True)
 
                     ' Statusmeldung
-                    retVal = String.Format(Localize.resRibbon.UploadSuccess, .FullName, TelefonbuchID, retVal, UID)
+                    retVal = String.Format(Localize.resRibbon.UploadSuccess, .FullNameAndCompanyWithoutLineBreak, TelefonbuchID, retVal, UID)
 
                 Else
                     ' Statusmeldung
-                    retVal = String.Format(Localize.resRibbon.UploadError, .FullName, TelefonbuchID, retVal)
+                    retVal = String.Format(Localize.resRibbon.UploadError, .FullNameAndCompanyWithoutLineBreak, TelefonbuchID, retVal)
                 End If
                 NLogger.Info(retVal)
                 Return retVal
             End With
         End Function
 
-        Friend Async Function UploadContactAndReturn(TelefonbuchID As Integer, OutlookKontakt As ContactItem) As Task(Of FBoxAPI.Contact)
+        Friend Async Function UploadContactAndReturn(TelefonbuchID As Integer, UniqueID As Integer, OutlookKontakt As ContactItem, Speichern As Boolean) As Task(Of FBoxAPI.Contact)
             With OutlookKontakt
                 ' Überprüfe, ob es in diesem Telefonbuch bereits einen verknüpften Kontakt gibt
-                Dim UID As Integer = .GetUniqueID(TelefonbuchID)
+                Dim UID As Integer
 
                 Dim retVal As FBoxAPI.Contact = Nothing
 
                 ' Erstelle ein entsprechendes XML-Datenobjekt und lade es hoch
-                If Globals.ThisAddIn.FBoxTR064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UID), UID) Then
+                If Globals.ThisAddIn.FBoxTR064.X_contact.SetPhonebookEntryUID(TelefonbuchID, .ErstelleXMLKontakt(UniqueID), UID) Then
 
                     ' Merke dir die aktuelle Zeit in dem Kontakt
                     .SetFBoxModTime(TelefonbuchID, UID, Now)
 
-                    ' Stelle die Verknüpfung her
-                    .SetUniqueID(TelefonbuchID.ToString, UID.ToString, True)
+                    If UID.AreDifferentTo(UniqueID) Then
+                        ' Stelle die Verknüpfung her
+                        .SetUniqueID(TelefonbuchID.ToString, UID.ToString, Speichern)
+                    End If
 
                     ' Lade den Kontakt nochmal herunter
                     retVal = Await Globals.ThisAddIn.FBoxTR064.X_contact.GetPhonebookEntryUID(TelefonbuchID, UID)
 
                     ' Statusmeldung
-                    NLogger.Info(String.Format(Localize.resRibbon.UploadSuccess, .FullName, TelefonbuchID, retVal, UID))
+                    NLogger.Info(String.Format(Localize.resRibbon.UploadSuccess, .FullNameAndCompanyWithoutLineBreak, TelefonbuchID, "abgeglichen", UID))
                 Else
                     ' Statusmeldung
-                    NLogger.Warn(String.Format(Localize.resRibbon.UploadError, .FullName, TelefonbuchID, retVal))
+                    NLogger.Warn(String.Format(Localize.resRibbon.UploadError, .FullNameAndCompanyWithoutLineBreak, TelefonbuchID, "abgeglichen"))
                 End If
 
                 Return retVal

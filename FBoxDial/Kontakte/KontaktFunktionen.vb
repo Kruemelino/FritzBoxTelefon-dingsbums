@@ -12,7 +12,7 @@ Friend Module KontaktFunktionen
     Private ReadOnly Property DASLTagTelNrIndex As Object() = GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) $"{DfltDASLSchema}FBDB-{P.Name}").ToArray
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-
+#Region "Extension"
     ''' <summary>
     ''' Gibt den Kontakt als Objekt zurück. 
     ''' </summary>
@@ -21,6 +21,12 @@ Friend Module KontaktFunktionen
     <Extension> Friend Function Self(olKontakt As ContactItem) As ContactItem
         Return olKontakt
     End Function
+
+    <Extension> Friend Function FullNameAndCompanyWithoutLineBreak(olKontakt As ContactItem) As String
+        Return olKontakt.FullNameAndCompany.RemoveLineBreaks
+    End Function
+#End Region
+
 
 #Region "Generieung neuer Kontakte"
     ''' <summary>
@@ -132,7 +138,7 @@ Friend Module KontaktFunktionen
     End Function
 
     ''' <summary>
-    ''' Erstellt einen Kontakt aus einer Fritz!Box Telefonbucheintrag.
+    ''' Erstellt einen Kontakt aus einer Fritz!Box Telefonbucheintrag für die Kontaktsynchronisation.
     ''' </summary>
     ''' <param name="XMLKontakt">Kontaktdaten als Fritz!Box Telefonbucheintrag</param>
     ''' <param name="olFolder">Outlook Ordner in dem der Kontakt gespeichert werden soll.</param>
@@ -145,7 +151,9 @@ Friend Module KontaktFunktionen
         With olKontakt
 
             If XMLKontakt IsNot Nothing Then
+                ' Übergib die Daten des Telefonbucheintrages an den neu erzeugten Outlook-Kontakt
                 XMLKontakt.XMLKontaktOutlook(olKontakt)
+                ' Setze die Uniqueid und die TelefonbuchID in dem Kontakt 
                 .SetUniqueID(FBoxBuchID.ToString, XMLKontakt.Uniqueid.ToString, False)
                 If Not olFolder.AreEqual(GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts)) Then
                     ' Verschiebe den Kontakt in den gewünschten Ornder
@@ -160,7 +168,7 @@ Friend Module KontaktFunktionen
                 End If
 
                 ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
-                IndiziereKontakt(olKontakt, olFolder)
+                olKontakt.IndiziereKontakt(olFolder)
             End If
 
         End With
@@ -292,7 +300,7 @@ Friend Module KontaktFunktionen
             End If
 
             ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
-            IndiziereKontakt(olKontakt, KontaktOrdner)
+            olKontakt.IndiziereKontakt(KontaktOrdner)
 
         End With
 
@@ -303,7 +311,7 @@ Friend Module KontaktFunktionen
             olKontakt.Save()
             Return True
         Catch ex As System.Exception
-            NLogger.Error(ex, $"Kontakt {olKontakt.FullNameAndCompany} kann nicht gespeichert werden.")
+            NLogger.Error(ex, $"Kontakt {olKontakt.FullNameAndCompanyWithoutLineBreak} kann nicht gespeichert werden.")
             Return False
         End Try
     End Function
@@ -320,7 +328,7 @@ Friend Module KontaktFunktionen
         GetOutlookKontakt = Nothing
         Try
             GetOutlookKontakt = CType(Globals.ThisAddIn.Application.Session.GetItemFromID(KontaktID, StoreID), ContactItem)
-            NLogger.Debug($"Outlook Kontakt {GetOutlookKontakt?.FullNameAndCompany.RemoveLineBreaks} aus EntryID und KontaktID ermittelt.")
+            NLogger.Debug($"Outlook Kontakt {GetOutlookKontakt?.FullNameAndCompanyWithoutLineBreak} aus EntryID und KontaktID ermittelt.")
         Catch ex As System.Exception
             NLogger.Error(ex, $"der Kontakt kann mit der KontaktID '{KontaktID}' und der StoreID '{StoreID}' nicht ermittelt werden.")
         End Try
@@ -695,20 +703,20 @@ Friend Module KontaktFunktionen
 #Region "Indizierung"
 
     ''' <summary>
-    ''' Indiziert oder deindiziert ein Kontaktelement, ne nach dem, ob der Ordner für die Kontaktsuche ausgewählt wurde
+    ''' Indiziert oder deindiziert ein Kontaktelement, je ne nach dem, ob der Ordner für die Kontaktsuche ausgewählt wurde
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
     ''' <param name="olOrdner">Der Ordner in dem Der Kontakt gespeichert werden soll.</param>
-    Friend Sub IndiziereKontakt(olKontakt As ContactItem, olOrdner As MAPIFolder)
+    <Extension> Friend Sub IndiziereKontakt(olKontakt As ContactItem, olOrdner As MAPIFolder)
 
         ' Wird der Zielordner für, die Kontaktsuche verwendet?
         If olOrdner.OrdnerAusgewählt(OutlookOrdnerVerwendung.KontaktSuche) Then
             ' Indiziere den Kontakt
-            IndiziereKontakt(olKontakt)
+            olKontakt.IndiziereKontakt
 
         Else
             ' Deindiziere den Kontakt
-            DeIndiziereKontakt(olKontakt)
+            olKontakt.DeIndiziereKontakt
 
         End If
 
@@ -718,11 +726,11 @@ Friend Module KontaktFunktionen
     ''' Indiziert ein Kontaktelement.
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
-    Friend Sub IndiziereKontakt(olKontakt As ContactItem)
+    <Extension> Friend Sub IndiziereKontakt(olKontakt As ContactItem)
 
         With olKontakt
 
-            NLogger.Trace($"Indizierung des Kontaktes { .FullNameAndCompany} gestartet.")
+            NLogger.Trace($"Indizierung des Kontaktes { .FullNameAndCompanyWithoutLineBreak} gestartet.")
 
             Dim colArgs As Object()
             ' Lade alle Telefonnummern des Kontaktes
@@ -741,12 +749,12 @@ Friend Module KontaktFunktionen
             Try
                 .PropertyAccessor.SetProperties(DASLTagTelNrIndex, colArgs)
             Catch ex As System.Exception
-                NLogger.Error(ex, $"Kontakt: { .FullNameAndCompany}")
+                NLogger.Error(ex, $"Kontakt: { .FullNameAndCompanyWithoutLineBreak}")
             End Try
 
             ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
 
-            If .Speichern Then NLogger.Debug($"Indizierung des Kontaktes { .FullNameAndCompany.RemoveLineBreaks} abgeschlossen.")
+            'If .Speichern Then NLogger.Debug($"Indizierung des Kontaktes { .FullNameAndCompanyWithoutLineBreak} abgeschlossen.")
 
         End With
     End Sub
@@ -755,13 +763,13 @@ Friend Module KontaktFunktionen
     ''' Entfernt alle Indizierungseinträge aus einem Kontaktelement.
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der deindiziert werden soll.</param>
-    Friend Sub DeIndiziereKontakt(olKontakt As ContactItem)
+    <Extension> Friend Sub DeIndiziereKontakt(olKontakt As ContactItem)
 
         With olKontakt
             ' Lösche alle Indizierungsfelder
             .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
 
-            If .Speichern Then NLogger.Debug($"Deindizierung des Kontaktes { .FullNameAndCompany.RemoveLineBreaks} abgeschlossen.")
+            'If .Speichern Then NLogger.Debug($"Deindizierung des Kontaktes { .FullNameAndCompanyWithoutLineBreak} abgeschlossen.")
         End With
     End Sub
 
@@ -770,7 +778,7 @@ Friend Module KontaktFunktionen
     ''' </summary>
     ''' <param name="olKontakt">Aktueller Kontakt</param>
     ''' <returns>Dictionary aller indizierten Telefonnummern</returns>
-    Friend Function GetIndexList(olKontakt As ContactItem) As Dictionary(Of String, String)
+    <Extension> Friend Function GetIndexList(olKontakt As ContactItem) As Dictionary(Of String, String)
         With olKontakt
             Dim colArgs As Object() = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
             Dim Text As List(Of String) = GetType(OutlookContactNumberFields).GetProperties.Select(Function(P) P.Name).ToList
@@ -802,8 +810,6 @@ Friend Module KontaktFunktionen
 
         Dim FBKontakte As New List(Of FBoxAPI.Contact)
 
-        'Dim DelKontakte As New List(Of ContactItem)
-
         FBKontakte.AddRange(FBoxTBuch.GetContacts)
 
         ' Schleife durch jedes Element dieses Ordners. 
@@ -815,14 +821,17 @@ Friend Module KontaktFunktionen
 
                     ' Synchronisiere Kontakt
                     With CType(Item, ContactItem)
+
                         Dim uID As Integer = .GetUniqueID(FBoxTBuch.ID)
+                        Dim Name As String = .FullNameAndCompanyWithoutLineBreak
+
                         If uID.AreEqual(-1) Then
-                            Progress?.Report($"Kontakt '{ .FullName}' auf der Fritz!Box erzeugt ...")
+                            Progress?.Report($"Kontakt '{Name}' auf der Fritz!Box erzeugt ...")
                             ' Es gibt keinen Kontakt auf der Fritz!Box
 
                             ' Lade den Kontakt hoch und füge ihn in das lokal heruntergeladene Telefonbuch ein
                             TaskList.Add(Task.Run(Async Function()
-                                                      FBoxTBuch.AddContact(Await Telefonbücher.UploadContactAndReturn(FBoxTBuch.ID, .Self))
+                                                      FBoxTBuch.AddContact(Await Telefonbücher.UploadContactAndReturn(FBoxTBuch.ID, uID, .Self, True))
                                                   End Function))
 
                         Else
@@ -835,15 +844,15 @@ Friend Module KontaktFunktionen
 
                                     Select Case Modus
                                         Case SyncMode.OutlookToFritzBox
-                                            Progress?.Report($"Kontakt '{ .FullName}' auf der Fritz!Box überschrieben (uID {FBoxKontakt.Uniqueid}) ...")
+                                            Progress?.Report($"Kontakt '{Name}' auf der Fritz!Box überschrieben (uID {FBoxKontakt.Uniqueid}) ...")
 
                                             ' Kontakt auf der Fritz!Box ersetzen und füge ihn in das lokal heruntergeladene Telefonbuch ein (wird überschrieben)
                                             TaskList.Add(Task.Run(Async Function()
-                                                                      FBoxTBuch.AddContact(Await Telefonbücher.UploadContactAndReturn(FBoxTBuch.ID, .Self))
+                                                                      FBoxTBuch.AddContact(Await Telefonbücher.UploadContactAndReturn(FBoxTBuch.ID, uID, .Self, True))
                                                                   End Function))
 
                                         Case SyncMode.FritzBoxToOutlook
-                                            Progress?.Report($"Kontakt '{ .FullName}' in Outlook überschrieben (uID {FBoxKontakt.Uniqueid}) ...")
+                                            Progress?.Report($"Kontakt '{Name}' in Outlook überschrieben (uID {FBoxKontakt.Uniqueid}) ...")
 
                                             TaskList.Add(Task.Run(Sub() ÜberschreibeKontakt(.Self, FBoxKontakt)))
 
@@ -852,7 +861,7 @@ Friend Module KontaktFunktionen
                                 End If
                             Else
                                 ' Nein ... Kontakt wurde auf der Fritz!Box gelöscht?
-                                Progress?.Report($"Kontakt '{ .FullName}' im Outlook gelöscht ...")
+                                Progress?.Report($"Kontakt '{Name}' im Outlook gelöscht ...")
                                 .Delete()
 
                             End If
@@ -862,7 +871,7 @@ Friend Module KontaktFunktionen
                         End If
 
                         ' Erhöhe Wert für Progressbar und schreibe einen Status
-                        Progress?.Report($"Kontakt '{ .FullName}' abgeschlossen ...")
+                        Progress?.Report($"Kontakt '{Name}' abgeschlossen ...")
                     End With
 
                     'aktKontakt = Nothing
@@ -894,13 +903,17 @@ Friend Module KontaktFunktionen
 
         ' Alle Kontakte, welche jetzt noch im Telefonbuch sind, müssen im Outlook angelegt werden
         For Each FBoxKontakt In FBKontakte
+
+            ' Unterscheidung, je nach Modus (Usereingabe)
             Select Case Modus
+                ' Outlook hat Datenhoheit: Der Kontakt wird auf der Fritz!Box gelöscht.
                 Case SyncMode.OutlookToFritzBox
                     With FBoxKontakt
                         Telefonbücher.DeleteTelefonbuchEintrag(FBoxTBuch.ID, .Uniqueid)
                         Progress?.Report($"Kontakt '{ .Person.RealName}' auf der Fritz!Box gelöscht (uID { .Uniqueid}) ...")
                     End With
 
+                ' Fritz!Box Telefonbuch hat Datenhoheit: Der Kontakt wird in Outlook erzeugt
                 Case SyncMode.FritzBoxToOutlook
 
                     With ErstelleKontakt(FBoxKontakt, OutlookOrdner, FBoxTBuch.ID)
@@ -908,6 +921,7 @@ Friend Module KontaktFunktionen
                     End With
 
             End Select
+
             ' Frage Cancelation ab
             If ct.IsCancellationRequested Then Exit For
 
@@ -922,7 +936,7 @@ Friend Module KontaktFunktionen
     ''' </summary>
     ''' <param name="olContact">Der zu synchrinisierende Outlook Kontakt</param>
     ''' <param name="olFolder">Der Ordner in dem sich der zu synchronisierende Outlook Kontakt befindet</param>
-    <Extension> Friend Async Sub Synchronisierer(olContact As ContactItem, olFolder As MAPIFolder)
+    <Extension> Friend Async Sub SyncKontakt(olContact As ContactItem, olFolder As MAPIFolder, Speichern As Boolean)
 
         Dim olOrdner As OutlookOrdner = XMLData.POptionen.OutlookOrdner.Find(olFolder, OutlookOrdnerVerwendung.FBoxSync)
         Dim Telefonbuch As PhonebookEx
@@ -944,7 +958,7 @@ Friend Module KontaktFunktionen
                     ' Es gibt keinen Kontakt auf der Fritz!Box
 
                     ' Lade den Kontakt hoch und füge ihn in das lokal heruntergeladene Telefonbuch ein
-                    FBKontakt = Await Telefonbücher.UploadContactAndReturn(bID, olContact)
+                    FBKontakt = Await Telefonbücher.UploadContactAndReturn(bID, uID, olContact, Speichern)
                 Else
                     ' Es gibt einen Kontakt im Fritz!Box Telefonbuch
 
@@ -966,10 +980,11 @@ Friend Module KontaktFunktionen
                                 NLogger.Warn($"Kontakt '{ .FullName.RemoveLineBreaks}' übergangen: FB: {FBoxKontakt.Mod_Time} OL: {FBoxModeTimeOL}")
 
                             Else
+
                                 NLogger.Info($"Kontakt '{ .FullName.RemoveLineBreaks}' auf der Fritz!Box überschrieben (uID {FBoxKontakt.Uniqueid})...")
 
                                 ' Kontakt auf der Fritz!Box ersetzen
-                                FBKontakt = Await Telefonbücher.UploadContactAndReturn(bID, olContact)
+                                FBKontakt = Await Telefonbücher.UploadContactAndReturn(bID, uID, olContact, Speichern)
 
                             End If
 
@@ -978,7 +993,7 @@ Friend Module KontaktFunktionen
                         ' Nein ... Ein Kontakt sollte vorhanden sein...
                         NLogger.Info($"Kontakt '{ .FullName.RemoveLineBreaks}' auf der Fritz!Box nicht vorhanden. (uID {uID}) Erstelle einen neuen Kontakt auf der Fritz!Box...")
 
-                        FBKontakt = Await Telefonbücher.UploadContactAndReturn(bID, olContact)
+                        FBKontakt = Await Telefonbücher.UploadContactAndReturn(bID, 0, olContact, Speichern)
                     End If
 
                 End If
@@ -1033,9 +1048,10 @@ Friend Module KontaktFunktionen
         For Each Ordner In XMLData.POptionen.OutlookOrdner.FindAll(OutlookOrdnerVerwendung.FBoxSync).Where(Function(O) (O.FBoxSyncOptions.FBoxCBSyncStartUp))
 
             Dim FBoxTelefonbuch As PhonebookEx = Globals.ThisAddIn.PhoneBookXML.Where(Function(TB) TB.ID.AreEqual(Ordner.FBoxSyncOptions.FBoxSyncID)).First
+
             If FBoxTelefonbuch IsNot Nothing Then
 
-                NLogger.Info($"Starte die automatische Syncronisation des Outlook-Ordners {Ordner.Name} mit {FBoxTelefonbuch.Name}")
+                NLogger.Info($"Starte die automatische Synchronisation des Outlook-Ordners {Ordner.Name} mit {FBoxTelefonbuch.Name}")
 
                 TaskList.Add(Task.Run(Function() Synchronisierer(Ordner.MAPIFolder, FBoxTelefonbuch, SyncMode.FritzBoxToOutlook, Nothing, progressIndicator)))
 
@@ -1045,9 +1061,11 @@ Friend Module KontaktFunktionen
             ' Die zugrunde liegende Verbindung wurde geschlossen: Für den geschützten SSL/TLS-Kanal konnte keine Vertrauensstellung hergestellt werden.
             If TaskList.Any Then Await TaskList.Last
         Next
-        NLogger.Info($"Automatische Syncronisation abgeschlossen: {(Await Task.WhenAll(TaskList)).Sum}")
+
+        NLogger.Info($"Automatische Synchronisation abgeschlossen: {(Await Task.WhenAll(TaskList)).Sum}")
 
     End Sub
+
 #End Region
 
 #Region "MAPIFolder"
@@ -1551,7 +1569,7 @@ Friend Module KontaktFunktionen
         If XmlSerializeToString(olKontakt.ErstelleFBoxKontakt(UID), NeuerKontakt) Then
             Return NeuerKontakt
         Else
-            NLogger.Warn($"Der Kontakt {olKontakt.FullNameAndCompany} kann nicht serialisiert werden.")
+            NLogger.Warn($"Der Kontakt {olKontakt.FullNameAndCompanyWithoutLineBreak} kann nicht serialisiert werden.")
         End If
         Return String.Empty
     End Function
@@ -1579,9 +1597,11 @@ Friend Module KontaktFunktionen
             XMLKontakt.XMLKontaktOutlook(olKontakt)
 
             ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
-            IndiziereKontakt(olKontakt, olKontakt.ParentFolder)
+            olKontakt.IndiziereKontakt(olKontakt.ParentFolder)
         End If
     End Sub
+
+#End Region
 
 #Region "UniqueID"
 
@@ -1590,23 +1610,36 @@ Friend Module KontaktFunktionen
     ''' </summary>
     ''' <param name="olKontakt">Der Outlook-Kontakt, aus dem die UniqueID ausgelesen werden soll.</param>
     ''' <param name="TelefonbuchID">Die ID des zugehörigen Telefonbuches.</param>
+    ''' <returns>Die UniqueID des Kontaktes, welche zu der <paramref name="TelefonbuchID"/> passt. Andernfalls -1</returns>
     <Extension> Friend Function GetUniqueID(olKontakt As ContactItem, TelefonbuchID As Integer) As Integer
+
+        ' Die Werte liegen in Komma-seperierten Zeichenfolgen vor
+        ' colArgs(0): TelefonbuchID 0,1,2,3
+        ' colArgs(1): UniqueID des Kontaktes 10,20,32,41
+
         With olKontakt
 
-            ' Überprüfe, ob es in diesem Kontakt Daten zu einem Eintrag in einem Telefonbuch gibt
+            ' Lies die Einträge aus dem Kontakt aus.
             Dim colArgs() As Object = CType(.PropertyAccessor.GetProperties(DASLTagFBTelBuch), Object())
 
-            ' Wenn es keine Fehler gab (Einträge sind vorhanden) und die TelefonbuchID übereinstimmt. dann gib die ID zurück
+            ' Wenn der standardisierte Fehlerwert enthalten ist, wurde der Kontakt noch nicht synchronisiert. 
             If Not colArgs.Contains(DfltErrorvalue) Then
 
-                Dim i As Integer = Array.IndexOf(Split(colArgs(0).ToString, ","), TelefonbuchID.ToString)
+                Dim BookIDs As List(Of Integer) = Split(colArgs(0).ToString, ",").Select(Function(S) S.ToInt).ToList
+                Dim UniqueIDs As List(Of Integer) = Split(colArgs(1).ToString, ",").Select(Function(S) S.ToInt).ToList
+                ' Ermittle den Index der TelefonbuchID in der Liste der IDs der Telefonbücher in dem der Kontakt synchronisiert wurde.
+                Dim i As Integer = BookIDs.IndexOf(TelefonbuchID)
+
                 If i.AreEqual(-1) Then
+                    NLogger.Debug($"Der Kontakts '{olKontakt.FullNameAndCompanyWithoutLineBreak}' hat keinen Synchronisierungseintrag für die TelefonbuchID '{TelefonbuchID}'.")
                     Return -1
                 Else
-                    Return Split(colArgs(1).ToString, ",").ToList(i).ToInt
+                    NLogger.Debug($"UniqueID des Kontakts '{olKontakt.FullNameAndCompanyWithoutLineBreak}' für die TelefonbuchID '{TelefonbuchID}' ausgelesen: '{UniqueIDs(i)}'")
+                    Return UniqueIDs(i)
                 End If
 
             Else
+                NLogger.Debug($"Der Kontakts '{olKontakt.FullNameAndCompanyWithoutLineBreak}' hat keine Synchronisierungseinträge.")
                 Return -1
             End If
         End With
@@ -1640,48 +1673,71 @@ Friend Module KontaktFunktionen
     ''' <summary>
     ''' Speichert die UniqueID des verknüpften Fritz!Box Telefonbucheintrages.
     ''' </summary>
-    ''' <param name="olKontakte">Der Outlook-Kontakt, in dem die UniqueID gespeichert werden soll.</param>
+    ''' <param name="olKontakt">Der Outlook-Kontakt, in dem die UniqueID gespeichert werden soll.</param>
     ''' <param name="TelefonbuchID">Die ID des zugehörigen Telefonbuches.</param>
     ''' <param name="UniqueID">Die UniqueID des verknüpften Fritz!Box Telefonbucheintrages, welche in den Kontakt gespeichert werden soll.</param>
     ''' <param name="Speichern">Angabe, ob der Kontakt im Anschluss gespeichert werden soll.</param>
-    <Extension> Friend Sub SetUniqueID(olKontakte As ContactItem, TelefonbuchID As String, UniqueID As String, Speichern As Boolean)
-        With olKontakte
+    <Extension> Friend Sub SetUniqueID(olKontakt As ContactItem, TelefonbuchID As String, UniqueID As String, Speichern As Boolean)
+        With olKontakt
 
             ' Ermittle alle bisherigen Verknüpfungen
             Dim colArgs() As Object = CType(.PropertyAccessor.GetProperties(DASLTagFBTelBuch), Object())
             Dim BookIDs As List(Of String)
             Dim UniqueIDs As List(Of String)
+            Dim BookIndex As Integer
 
             If colArgs.Contains(DfltErrorvalue) Then
                 BookIDs = New List(Of String)
                 UniqueIDs = New List(Of String)
+
+                ' Setze den Standard-Fehlerwert der List(Of String).IndexOf: -1.
+                BookIndex = -1
             Else
                 BookIDs = Split(colArgs(0).ToString, ",").ToList
                 UniqueIDs = Split(colArgs(1).ToString, ",").ToList
+
+                ' Ermittle den Index des übergebenen Telefonbuches in der Gesamtliste. Falls nicht gefunden, dann ist dieser -1.
+                BookIndex = BookIDs.IndexOf(TelefonbuchID)
             End If
 
-            Dim i As Integer = Array.IndexOf(Split(colArgs(0).ToString, ","), TelefonbuchID)
-
-            If i.AreEqual(-1) Then
+            If BookIndex.AreEqual(-1) Then
                 ' Es gibt noch keinen Eintrag
                 BookIDs.Add(TelefonbuchID)
                 UniqueIDs.Add(UniqueID)
+
+                NLogger.Debug($"Synchronisierungseintrag des Kontakts '{olKontakt.FullNameAndCompanyWithoutLineBreak}' für die TelefonbuchID '{TelefonbuchID}' hinzugefügt: '{UniqueID}'")
             Else
                 ' Es gibt bereits einen Eintrag: Überschreibe den Wert
-                UniqueIDs(i) = UniqueID
+                NLogger.Debug($"Synchronisierungseintrag des Kontakts '{olKontakt.FullNameAndCompanyWithoutLineBreak}' für die TelefonbuchID '{TelefonbuchID}' überschrieben (Alt: {UniqueIDs(BookIndex)}): '{UniqueID}'")
+
+                UniqueIDs(BookIndex) = UniqueID
             End If
 
-            ' Entferne etwaige vorhandene 
-            .PropertyAccessor.DeleteProperties(DASLTagFBTelBuch)
+            ' Entferne alle vorhandene Einträge
+            .DeleteUniqueID
 
+            ' Erzeuge kommaseparierte Zeichenfolgen, die in den Kontakt gespeichert werden sollen.
             colArgs(0) = String.Join(",", BookIDs)
             colArgs(1) = String.Join(",", UniqueIDs)
 
             ' Verknüpfe Outlook-Kontakt mit dem Fritz!Box Telefonbucheintrag
             .PropertyAccessor.SetProperties(DASLTagFBTelBuch, colArgs)
 
+            NLogger.Debug($"Synchronisierungseinträge des Kontakts '{ .FullNameAndCompanyWithoutLineBreak}': Bücher: '{colArgs(0)}' UniqueIDs: '{colArgs(1)}'")
+
             ' Speichere den Kontakt
-            If Speichern Then .Save()
+            ' If Speichern Then .Speichern()
+        End With
+    End Sub
+
+    ''' <summary>
+    ''' Entfernt alle Sychronisierungseinträge in dem Kontakt.
+    ''' </summary>
+    ''' <param name="olContact">Kontakt aus dem alle Sychronisierungseinträge entfernt werden sollen.</param>
+    <Extension> Friend Sub DeleteUniqueID(olContact As ContactItem)
+        With olContact
+            .PropertyAccessor.DeleteProperties(DASLTagFBTelBuch)
+            NLogger.Debug($"Synchronisierungseinträge des Kontakts '{ .FullNameAndCompanyWithoutLineBreak}' entfernt.")
         End With
     End Sub
 
@@ -1733,7 +1789,6 @@ Friend Module KontaktFunktionen
         End With
     End Sub
 
-#End Region
 #End Region
 
 #Region "Bilder"

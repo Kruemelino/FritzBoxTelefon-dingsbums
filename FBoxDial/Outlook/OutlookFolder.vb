@@ -12,7 +12,19 @@ Public Module OutlookFolder
     ''' <returns></returns>
     <Extension> Public Function OrdnerAusgewählt(Ordner As MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
 
-        Return XMLData.POptionen.OutlookOrdner.OrdnerAusgewählt(Ordner, Verwendung)
+        If XMLData.POptionen.OutlookOrdner.OrdnerAusgewählt(Ordner, Verwendung) Then
+            Return True
+        Else
+            ' Wenn Unterordner durchsucht werden sollen, dann muss geprüft werden,
+            ' ob der aktuelle Ordner ein Unterordner eines zur Kontaktsuche genutzem Ordners ist.
+            If Verwendung = OutlookOrdnerVerwendung.KontaktSuche And XMLData.POptionen.CBSucheUnterordner Then
+                Return XMLData.POptionen.OutlookOrdner.FindAll(Verwendung).Where(Function(O) O.ContainsChildFolder(Ordner)).Any
+            Else
+                Return False
+            End If
+        End If
+
+        'Return XMLData.POptionen.OutlookOrdner.OrdnerAusgewählt(Ordner, Verwendung)
 
     End Function
 
@@ -22,14 +34,14 @@ Public Module OutlookFolder
     ''' <param name="RootFolder">Basis Ordner</param>
     ''' <param name="ItemType">Outlook ItemType</param>
     ''' <returns></returns>
-    Friend Function GetChildFolders(RootFolder As MAPIFolder, ItemType As OlItemType) As IEnumerable(Of MAPIFolder)
+    Friend Function GetChildFolders(RootFolder As MAPIFolder, ItemType As OlItemType, Verwendung As OutlookOrdnerVerwendung) As IEnumerable(Of OutlookOrdner)
 
-        Dim ContactFolders = New List(Of MAPIFolder)
+        Dim ContactFolders = New List(Of OutlookOrdner)
 
-        If RootFolder.DefaultItemType = ItemType Then ContactFolders.Add(RootFolder)
+        If RootFolder.DefaultItemType = ItemType Then ContactFolders.Add(New OutlookOrdner(RootFolder, Verwendung))
         ' Rekursiver Aufruf
         For Each ChildFolder As MAPIFolder In RootFolder.Folders
-            ContactFolders.AddRange(GetChildFolders(ChildFolder, ItemType))
+            ContactFolders.AddRange(GetChildFolders(ChildFolder, ItemType, Verwendung))
         Next
 
         Return ContactFolders

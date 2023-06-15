@@ -69,6 +69,10 @@ Public Class PhonebookEx
                                         End Function)
     End Function
 
+    ''' <summary>
+    ''' Erzeugt eine Auflistung aller Kontakte, die keinem angeschlossenen Telefon entsprechen.
+    ''' </summary>
+    ''' <returns>Auflistung aller Konta</returns>
     Friend Function GetContacts() As IEnumerable(Of FBoxAPI.Contact)
         ' interne Telefone sollen nicht duchsucht werden
         Return Phonebook.Contacts.Where(Function(K) Not K.IstTelefon)

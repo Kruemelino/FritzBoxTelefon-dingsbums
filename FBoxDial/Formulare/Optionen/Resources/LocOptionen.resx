@@ -561,7 +561,7 @@ Wird kein Ordner gewählt, wird der Outlook-Standard verwendet.</value>
     <comment>MainView</comment>
   </data>
   <data name="strInfoDatenschutz" xml:space="preserve">
-    <value>Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
+    <value>Es werden keine Informationen an mich als Entwickler oder Dritte weitergeben.
 Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
 Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmn:
 Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
@@ -876,8 +876,10 @@ Hier können Abgleiche zwischen einem Kontaktordner in Outlook und einem Telefon
     <comment>OptSyncSetupView</comment>
   </data>
   <data name="strSyncContacsWarn" xml:space="preserve">
-    <value>Experimentelle Funktionen!
-Achtung: Es werden Kontakte sowohl in Outlook als auch im Fritz!Box Telefonbuch ohne Vorwarnung gelöscht, falls die Routine dies für nötig hält. Macht vorher eine Datensicherung!</value>
+    <value>Experimentelle Funktionen! Eine Datensicherung wird dringend empfohlen!
+Hinweis 1: Es werden Kontakte sowohl in Outlook als auch im Fritz!Box Telefonbuch ohne Vorwarnung gelöscht, falls die Routine dies für nötig hält. 
+Hinweis 2: Änderungen in Outlook-Kontakten werden beim Speichern sofort auf das entsprechende Fritz!Box Telefonbuch übertragen. Auch Löschungen von Kontakten werden sofort umgesetzt.
+Hinweis 3: Das Einfügen von Kontakten per Copy&amp;Paste führt nicht immer dazu, dass der Kontakt sofort synchronisiert wird.</value>
     <comment>OptSyncSetupView</comment>
   </data>
   <data name="strSyncQuestion" xml:space="preserve">

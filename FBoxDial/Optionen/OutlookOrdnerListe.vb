@@ -59,7 +59,7 @@ Public Class OutlookOrdnerListe
     ''' </summary>
     ''' <param name="Verwendung"></param>
     ''' <returns></returns>
-    Public Function GetMAPIFolder(Verwendung As OutlookOrdnerVerwendung) As MAPIFolder
+    Friend Function GetMAPIFolder(Verwendung As OutlookOrdnerVerwendung) As MAPIFolder
         ' Ist der Order für die gewählte Verwendung vom User ausgewählt?
 
         If Exists(Verwendung) Then
@@ -82,7 +82,7 @@ Public Class OutlookOrdnerListe
 
     End Function
 
-    Public Function OrdnerAusgewählt(Ordner As MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
+    Friend Function OrdnerAusgewählt(Ordner As MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
 
         ' Gibt es überhaupt Ordner für die gewählte Verwendung
         If FindAll(Verwendung).Any Then
