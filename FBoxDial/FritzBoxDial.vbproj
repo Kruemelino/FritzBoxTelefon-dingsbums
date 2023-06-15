@@ -141,6 +141,9 @@
     <Reference Include="ColorPicker, Version=3.3.1.0, Culture=neutral, PublicKeyToken=1c61eec504ce2276, processorArchitecture=MSIL">
       <HintPath>..\packages\PixiEditor.ColorPicker.3.3.1\lib\net451\ColorPicker.dll</HintPath>
     </Reference>
+    <Reference Include="FilterDataGrid, Version=1.2.7.0, Culture=neutral, PublicKeyToken=42060d65a6cc17c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\FilterDataGrid.1.2.7\lib\net48\FilterDataGrid.dll</HintPath>
+    </Reference>
     <Reference Include="HttpClientFactoryLite, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HttpClientFactoryLite.0.4.0\lib\netstandard2.0\HttpClientFactoryLite.dll</HintPath>
     </Reference>
@@ -159,7 +162,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.5.1.4\lib\net46\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.5.2.0\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -178,6 +181,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
@@ -565,6 +569,7 @@
     <Compile Include="Outlook\OfficeColors.vb" />
     <Compile Include="Outlook\OutlookContactFields.vb" />
     <Compile Include="Outlook\OutlookFolder.vb" />
+    <Compile Include="Outlook\OutlookItemWrapper.vb" />
     <Compile Include="Telefonie\EigeneNrInfo.vb" />
     <Compile Include="Telefonie\TelEnum.vb" />
     <Compile Include="Ribbon\RibbonData.vb" />
@@ -974,10 +979,6 @@
     <Resource Include="Tellows\Resources\score9.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DataGridFilter\FilterDataGrid\FilterDataGrid.csproj">
-      <Project>{1284f448-055d-49b6-9a1b-81e9bbf447c8}</Project>
-      <Name>FilterDataGrid</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\EasyWPFThemeLib\EasyWPFThemeLib.vbproj">
       <Project>{44775c00-c7ae-4bc1-a15e-c58e1c57655c}</Project>
       <Name>EasyWPFThemeLib</Name>

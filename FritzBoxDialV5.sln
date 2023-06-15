@@ -20,8 +20,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EasyWPFThemeLib", "..\..\Ea
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "FBoxAPI", "..\FBoxAPI\FBoxAPI.vbproj", "{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilterDataGrid", "..\..\DataGridFilter\FilterDataGrid\FilterDataGrid.csproj", "{1284F448-055D-49B6-9A1B-81E9BBF447C8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU
@@ -50,19 +48,11 @@ Global
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB430A10-E464-4CB9-B2F4-4898ADC6C3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.All|Any CPU.ActiveCfg = Debug|Any CPU
-		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.All|Any CPU.Build.0 = Debug|Any CPU
-		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1284F448-055D-49B6-9A1B-81E9BBF447C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7AA8846E-6F14-4C7F-8E6D-0398DF916635}
-	EndGlobalSection
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\..\DataGridFilter\Shared\Shared.projitems*{1284f448-055d-49b6-9a1b-81e9bbf447c8}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal
