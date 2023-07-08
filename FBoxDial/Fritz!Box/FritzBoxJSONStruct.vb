@@ -38,12 +38,16 @@ End Class
 
 #Region "DECT"
 Friend Class DECTEntry
+    <JsonProperty("_Node")> Public Property Node As String
     Public Property Name As String
     Public Property Intern As String
     Public Property Id As Integer
+    'Public Property Phonebook As Integer
+    'Public Property Type As Integer
 End Class
 
 Friend Class DECTNr
+    <JsonProperty("_Node")> Public Property Node As String
     Public Property Number As String
 End Class
 

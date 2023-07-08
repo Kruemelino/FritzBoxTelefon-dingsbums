@@ -65,11 +65,10 @@ Namespace My.Resources
         '''&lt;customUI xmlns=&quot;http://schemas.microsoft.com/office/2009/07/customui&quot; onLoad=&quot;Ribbon_Load&quot;&gt;
         '''	&lt;ribbon startFromScratch=&quot;false&quot;&gt;
         '''		&lt;tabs&gt;
-        '''			&lt;tab idMso=&quot;TabCalendar&quot;&gt;
-        '''				&lt;group id=&quot;Tab_Calendar&quot; getLabel=&quot;GetItemLabel&quot; autoScale=&quot;false&quot; imageMso=&quot;AutoDial&quot;&gt;
+        '''      &lt;tab idMso=&quot;TabCalendar&quot;&gt;
+        '''				&lt;group id=&quot;Tab_Calendar&quot; getLabel=&quot;GetItemLabel&quot; autoScale=&quot;true&quot; imageMso=&quot;AutoDial&quot; centerVertically=&quot;true&quot;&gt;
         '''					&lt;splitButton id=&quot;spb1_K&quot; size=&quot;large&quot;&gt;
-        '''						&lt;button id=&quot;Dial_K&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; onAction=&quot;BtnOnAction&quot; getScreentip=&quot;GetItemScreenTipp&quot; getEnabled=&quot;DialEnabled&quot;/&gt;
-        '''			 [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''						&lt;button id=&quot;Dial_K&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; onAction=&quot;BtnOnAction&quot; getScreentip=&quot;GetItemScreenTipp&quot; getEn [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonExplorer() As String
             Get
@@ -99,9 +98,9 @@ Namespace My.Resources
         '''  &lt;ribbon&gt;
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabAppointment&quot;&gt;
-        '''        &lt;group id=&quot;Tab_Appointment&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
+        '''        &lt;group id=&quot;Tab_Appointment&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot; centerVertically=&quot;true&quot; autoScale=&quot;true&quot;&gt;
         '''          &lt;button id=&quot;Dial_A&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;normal&quot; getEnabled=&quot;DialEnabled&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
-        '''          &lt;button id=&quot;RWS_A&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;G [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''          &lt;button id=&quot;R [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonInspectorAppointment() As String
             Get
@@ -115,9 +114,9 @@ Namespace My.Resources
         '''  &lt;ribbon&gt;
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabJournal&quot;&gt;
-        '''        &lt;group id=&quot;Tab_Journal&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
+        '''        &lt;group id=&quot;Tab_Journal&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot; centerVertically=&quot;true&quot; autoScale=&quot;true&quot;&gt;
         '''          &lt;button id=&quot;Dial_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;normal&quot; getEnabled=&quot;DialEnabled&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
-        '''          &lt;button id=&quot;RWS_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemIm [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''          &lt;button id=&quot;RWS_J&quot; ge [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonInspectorJournal() As String
             Get
@@ -131,10 +130,9 @@ Namespace My.Resources
         '''  &lt;ribbon&gt;
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabContact&quot;&gt;
-        '''        &lt;group id=&quot;Tab_Contact&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
+        '''        &lt;group id=&quot;Tab_Contact&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot; centerVertically=&quot;true&quot; autoScale=&quot;true&quot;&gt;
         '''          &lt;button id=&quot;Dial_C&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot; getEnabled=&quot;DialEnabled&quot;/&gt;
-        '''          &lt;separator id=&quot;Seperator_C1&quot;/&gt;
-        '''          &lt;dynamicMenu id=&quot;RWS_ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''          &lt;separator id=&quot;Seperat [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonInspectorKontakt() As String
             Get
@@ -148,13 +146,11 @@ Namespace My.Resources
         '''  &lt;ribbon&gt;
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabReadMessage&quot;&gt;
-        '''        &lt;group id=&quot;Tab_ReadMessage&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
+        '''        &lt;group id=&quot;Tab_ReadMessage&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot; centerVertically=&quot;true&quot;&gt;
         '''          &lt;button id=&quot;Dial_M&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot; getEnabled=&quot;DialEnabled&quot;/&gt;
         '''        &lt;/group&gt;
         '''      &lt;/tab&gt;
-        '''    &lt;/tabs&gt;
-        '''  &lt;/ribbon&gt;
-        '''&lt;/custo [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''    &lt;/tab [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Public ReadOnly Property RibbonInspectorMailRead() As String
             Get
