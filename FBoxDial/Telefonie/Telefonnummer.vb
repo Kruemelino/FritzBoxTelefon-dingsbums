@@ -8,8 +8,8 @@ Public Class Telefonnummer
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
-    <XmlElement> Public Property EigeneNummerInfo As EigeneNrInfo = Nothing
-    <XmlIgnore> Public Property Original As String
+    <XmlElement> Public EigeneNummerInfo As EigeneNrInfo = Nothing
+    <XmlElement> Public Property Original As String
     <XmlElement> Public Property Nummer As String
     <XmlElement> Public Property Landeskennzahl As String
     <XmlElement> Public Property Ortskennzahl As String
@@ -24,37 +24,7 @@ Public Class Telefonnummer
     <XmlIgnore> Public Property Typ As TelNrType
     <XmlElement> Public Property Location As String
     <XmlElement> Public Property AreaCode As String
-    <XmlIgnore> Public WriteOnly Property SetNummer As String
-        Set
-            NLogger.Trace($"SetNummer Start: '{Value}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
-            ' Prüfe, ob eine leere Zeichenfolge übergeben wurde
-            If Value.IsStringNothingOrEmpty Then
-                Unterdrückt = True
 
-            Else
-                Original = Value
-
-                ' Ermittle die unformatierte Telefonnummer
-                Unformatiert = NurZiffern(Original)
-
-                ' Ermittle die Kennzahlen LKZ und ONKZ aus der Datei
-                ' Gibt True zurück, wenn die LKZ und ONKZ ermittelt werden konnten.
-                If SetTelNrTeile() Then
-                    ' Formatiere die Telefonnummer
-                    Formatiert = FormatTelNr()
-
-                    ' Ermittle die unformatierte Telefonnummer
-                    Unformatiert = NurZiffern(Formatiert)
-                Else
-                    ' Die Nummer ist ungültig
-                    NLogger.Info($"Formatierung der ungültigen Telefonnummer '{Original}' nicht durchgeführt.")
-                    Formatiert = Unformatiert
-                End If
-
-            End If
-            NLogger.Trace($"Nummer erfasst: '{Original}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
-        End Set
-    End Property
     <XmlIgnore> Public ReadOnly Property TellowsNummer As String
         Get
             ' 1. Entferne jeden String, der vor einem Doppelpunkt steht (einschließlich :)
@@ -66,6 +36,7 @@ Public Class Telefonnummer
             Return Nummer.RegExRemove("^.+:+").RegExReplace("^[+]", PDfltVAZ).RegExRemove("[^0-9]").RegExReplace("^(?!0)", $"0{Ortskennzahl}")
         End Get
     End Property
+
     <XmlIgnore> ReadOnly Property IstMobilnummer As Boolean
         Get
             If Not Ortskennzahl = String.Empty Then
@@ -108,51 +79,96 @@ Public Class Telefonnummer
     End Property
 
 #End Region
+
+#Region "SetNummer"
+    <XmlIgnore> Public WriteOnly Property SetNummer As String
+        Set
+            NLogger.Trace($"SetNummer Start: '{Value}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
+            ' Prüfe, ob eine leere Zeichenfolge übergeben wurde
+            If Value.IsStringNothingOrEmpty Then
+                _Unterdrückt = True
+
+            Else
+                Original = Value
+
+                ' Ermittle die unformatierte Telefonnummer
+                Unformatiert = NurZiffern(Original)
+
+                ' Ermittle die Kennzahlen LKZ und ONKZ aus der Datei
+                ' Gibt True zurück, wenn die LKZ und ONKZ ermittelt werden konnten.
+                If SetTelNrTeile() Then
+                    ' Formatiere die Telefonnummer
+                    Formatiert = FormatTelNr()
+
+                    ' Ermittle die unformatierte Telefonnummer erneut
+                    Unformatiert = NurZiffern(Formatiert, True)
+                Else
+                    ' Die Nummer ist ungültig
+                    NLogger.Info($"Formatierung der ungültigen Telefonnummer '{Original}' nicht durchgeführt.")
+                    Formatiert = Unformatiert
+                End If
+
+            End If
+            NLogger.Trace($"Nummer erfasst: '{Original}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
+        End Set
+    End Property
+#End Region
+
+#Region "Konstruktor"
     Public Sub New()
 
     End Sub
+
+    Friend Sub New(LKZ As String, OKZ As String)
+        Landeskennzahl = LKZ
+        Ortskennzahl = OKZ
+    End Sub
+#End Region
 
 #Region "Funktionen"
     ''' <summary>
     ''' Bereinigt die Telefunnummer von Sonderzeichen wie Klammern und Striche.
     ''' Buchstaben werden wie auf der Telefontastatur in Zahlen übertragen.
     ''' </summary>
-    Private Function NurZiffern(Nr As String) As String
+    ''' <param name="FürVergleich">Angabe, ob die Telefonnummer für Vergleichszwecke bereinigt werden soll.</param>
+    Private Function NurZiffern(Nr As String, Optional FürVergleich As Boolean = False) As String
+
+        ' Initioalen Rückgabewert
         NurZiffern = Nr
 
-        If NurZiffern.IsNotStringNothingOrEmpty Then
+        If Nr.IsNotStringNothingOrEmpty Then
 
             ' Entferne alle Klammerausdrücke, die sich am Ende der Telefonnummer befinden können.
             ' In der Klammer muss ein Text gefolgt von einem Doppelpunkt enthalten sein.
-            NurZiffern = NurZiffern.ToLower.RegExRemove("[\(|\{|\[].+:.+[\)|\}|\]]$")
+            Nr = Nr.ToLower.RegExRemove("[\(|\{|\[].+:.+[\)|\}|\]]$")
 
             ' Entferne jeden String, der vor einem Doppelpunkt steht (einschließlich :)
-            NurZiffern = NurZiffern.ToLower.RegExRemove("^.+:+")
+            Nr = Nr.RegExRemove("^.+:+")
 
-            ' Schreibe die relevate noch formatierte Nummer in die Eigenschaft
-            Nummer = NurZiffern.Trim
+            ' Schreibe die relevate noch formatierte Nummer in die Eigenschaft, wenn es sich um die eigene Nummer handelt
+            If Not FürVergleich Then _Nummer = Nr.Trim
 
             ' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
-            NurZiffern = NurZiffern.RegExReplace("[abc]", "2").
-                                    RegExReplace("[def]", "3").
-                                    RegExReplace("[ghi]", "4").
-                                    RegExReplace("[jkl]", "5").
-                                    RegExReplace("[mno]", "6").
-                                    RegExReplace("[pqrs]", "7").
-                                    RegExReplace("[tuv]", "8").
-                                    RegExReplace("[wxyz]", "9").
-                                    RegExReplace("^[+]", PDfltVAZ)
+            Nr = Nr.RegExReplace("[abc]", "2").
+                    RegExReplace("[def]", "3").
+                    RegExReplace("[ghi]", "4").
+                    RegExReplace("[jkl]", "5").
+                    RegExReplace("[mno]", "6").
+                    RegExReplace("[pqrs]", "7").
+                    RegExReplace("[tuv]", "8").
+                    RegExReplace("[wxyz]", "9").
+                    RegExReplace("^[+]", PDfltVAZ)
 
             ' Entferne alles, was keine Ziffer ist
-            NurZiffern = NurZiffern.RegExRemove("[^0-9]")
+            Nr = Nr.RegExRemove("[^0-9]")
 
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich ggf. vorhandener nachfolgender 0)
             If Landeskennzahl.IsEqual(XMLData.PTelefonie.LKZ) Then
-                NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{Landeskennzahl}{{1}}[0]?", "0")
+                Nr = Nr.RegExReplace($"^{PDfltVAZ}{Landeskennzahl}{{1}}[0]?", "0")
             End If
 
             ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
-            NurZiffern = NurZiffern.RegExReplace("^[0]{3}", "0")
+            Return Nr.RegExReplace("^[0]{3}", "0")
         End If
     End Function
 
@@ -160,23 +176,23 @@ Public Class Telefonnummer
     ''' Zerlegt die Telefonnummer in ihre Bestandteile.
     ''' </summary>
     Private Function SetTelNrTeile() As Boolean
-        Dim _LKZ As Landeskennzahl = Nothing
-        Dim _ONKZ As Ortsnetzkennzahlen = Nothing
+        Dim LKZ As Landeskennzahl = Nothing
+        Dim ONKZ As Ortsnetzkennzahlen = Nothing
 
         SetTelNrTeile = True
 
         If Unformatiert.IsNotStringNothingOrEmpty AndAlso Unformatiert.Length.IsLarger(2) Then
 
             ' Ermittle die Vorwahlen
-            Globals.ThisAddIn.PVorwahlen.TelNrKennzahlen(Me, _LKZ, _ONKZ)
+            Globals.ThisAddIn.PVorwahlen.TelNrKennzahlen(Me, LKZ, ONKZ)
 
             ' Weise die Eigenschaften der Landeskennzahl zu
-            If _LKZ IsNot Nothing Then
-                With _LKZ
+            If LKZ IsNot Nothing Then
+                With LKZ
                     ' Landeskennzahl ohne VAZ
-                    Landeskennzahl = .Landeskennzahl
+                    _Landeskennzahl = .Landeskennzahl
                     ' Areacode des Landes
-                    AreaCode = .Code
+                    _AreaCode = .Code
                 End With
             Else
                 SetTelNrTeile = False
@@ -184,8 +200,8 @@ Public Class Telefonnummer
             End If
 
             ' Weise die Eigenschaften der Ortsnetzkennzahl zu
-            If _ONKZ IsNot Nothing Then
-                With _ONKZ
+            If ONKZ IsNot Nothing Then
+                With ONKZ
                     ' Landeskennzahl ohne VAZ
                     Ortskennzahl = .Ortsnetzkennzahl
                     ' Name des Ortes/zugehörigen Netzes
@@ -355,7 +371,7 @@ Public Class Telefonnummer
         If AndereTelefonnummer.StartsWith("*") Then Return False
 
         ' Entferne erstmal alle unnötigen Zeichen:
-        Dim AndereNummer As String = NurZiffern(AndereTelefonnummer)
+        Dim AndereNummer As String = NurZiffern(AndereTelefonnummer, True)
 
         ' Führe einen schnellen Vergleich durch, ob die unformatierte Nummer oder die Einwahl identisch sind.
         Select Case True
@@ -374,9 +390,7 @@ Public Class Telefonnummer
                     ' Führe den direkten Vergleich durch, in dem eine neue Telefonnummer angelegt wird
                     ' Bei Vergleich eigener Nummern, übergib die OKZ und LKZ
                     If EigeneNummerInfo IsNot Nothing Then
-                        Return Equals(New Telefonnummer With {.Landeskennzahl = Landeskennzahl,
-                                                              .Ortskennzahl = Ortskennzahl,
-                                                              .SetNummer = AndereNummer})
+                        Return Equals(New Telefonnummer(Landeskennzahl, Ortskennzahl) With {.SetNummer = AndereNummer})
                     Else
                         Return Equals(New Telefonnummer With {.SetNummer = AndereNummer})
                     End If
