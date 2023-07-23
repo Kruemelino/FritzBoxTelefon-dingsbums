@@ -83,7 +83,8 @@ Friend Module KontaktFunktionen
                     .Categories = My.Resources.strDefLongName 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
 
                     If Not XMLData.POptionen.CBNoContactNotes Then
-                        .Body = $"{String.Format(Localize.resCommon.strCreateContact, My.Resources.strDefLongName, Now)}{vbCrLf & vbCrLf}vCard:{vbCrLf & vbCrLf}{vCard}"
+                        ' Erstellt durch das {0} am {1}: {2}{3} 
+                        .Body = String.Format(Localize.resCommon.strCreateContact, My.Resources.strDefLongName, Now, vbCrLf & vbCrLf, vCard)
                     End If
                 End If
 
