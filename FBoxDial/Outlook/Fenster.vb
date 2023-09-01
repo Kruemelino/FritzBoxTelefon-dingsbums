@@ -1,9 +1,12 @@
 ﻿Imports Microsoft.Office.Interop
+Imports Microsoft.Win32
 
 Friend Module Fenster
 #Region "Properties"
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property OInsp As Outlook.Inspector
+
+    Private ListChildren As New List(Of ApiWindow)
 #End Region
 
     ''' <summary>
@@ -97,5 +100,38 @@ Friend Module Fenster
 
         NLogger.Debug($"Fenster '{Window.GetType.Name}' aus der Gesamtliste entfernt.")
     End Sub
+
+
+    ''' <summary>
+    ''' Gibt alle Handles der Childwindows zurück.
+    ''' </summary>
+    ''' <param name="hwnd">Ausgangshandle</param>
+    ''' <returns>Liste der Handles.</returns>
+    Friend Function GetChildWindows(hwnd As IntPtr) As List(Of ApiWindow)
+        ' Clear the window list
+        Dim ReturnValue As Integer
+        ListChildren = New List(Of ApiWindow)
+        ' Start the enumeration process.
+        ReturnValue = UnSaveMethods.EnumChildWindows(hwnd, AddressOf EnumChildWindowProc, IntPtr.Zero)
+        ' Return the children list when the process is completed.
+        Return ListChildren
+    End Function
+
+    ''' <summary>
+    ''' Attempt to match the child class, if one was specified, otherwiseenumerate all the child windows.
+    ''' </summary>
+    ''' <param name="hwnd"></param>
+    ''' <param name="lParam"></param>
+    Private Sub EnumChildWindowProc(hwnd As IntPtr, lParam As Integer)
+        ListChildren.Add(GetWindowIdentification(hwnd))
+    End Sub
+
+    ''' <summary>
+    ''' Build the ApiWindow object to hold information about the Window object.
+    ''' Gibt hier das Handle zurück.
+    ''' </summary>
+    Private Function GetWindowIdentification(hwnd As IntPtr) As ApiWindow
+        Return New ApiWindow With {.HWnd = hwnd}
+    End Function
 
 End Module

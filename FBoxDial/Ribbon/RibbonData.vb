@@ -1,6 +1,5 @@
 ﻿Imports System.Reflection
 Imports System.Xml
-Imports FBoxDial.Localize
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 
@@ -230,6 +229,14 @@ Namespace RibbonData
                 End If
             End With
 
+        End Sub
+
+        ''' <summary>
+        ''' Erstellt einen Kontakt
+        ''' </summary>
+        ''' <param name="Tag">Identifikation des Listeneintrages: RingList_0</param>
+        Private Sub CreateContactButtonCRV(Tag As String)
+            XMLData.PTelListen.CreateContact(Tag)
         End Sub
 
         ''' <summary>
@@ -913,11 +920,11 @@ Namespace RibbonData
             XButton.Attributes.Append(XAttribute)
 
             XAttribute = xDoc.CreateAttribute("label")
-            XAttribute.Value = $"{resRibbon.ResourceManager.GetString($"{Label}_Label")}".Trim.XMLMaskiereZeichen
+            XAttribute.Value = $"{Localize.resRibbon.ResourceManager.GetString($"{Label}_Label")}".Trim.XMLMaskiereZeichen
             XButton.Attributes.Append(XAttribute)
 
             XAttribute = xDoc.CreateAttribute("screentip")
-            XAttribute.Value = $"{resRibbon.ResourceManager.GetString($"{Label}_ScreenTipp")}".Trim.XMLMaskiereZeichen
+            XAttribute.Value = $"{Localize.resRibbon.ResourceManager.GetString($"{Label}_ScreenTipp")}".Trim.XMLMaskiereZeichen
             XButton.Attributes.Append(XAttribute)
 
             Return XButton
@@ -1106,6 +1113,7 @@ Namespace RibbonData
                 .Attributes.Append(XAttribute)
 
                 ' Erzeuge die Buttons für das Menu
+                .AppendChild(CreateDynMenuSplitMenueButton(xDoc, "CreateContactButtonCRV", ID, Tag)) ' Terminerstellung
                 .AppendChild(CreateDynMenuSplitMenueButton(xDoc, "SceduleButtonCRV", ID, Tag)) ' Terminerstellung
                 .AppendChild(CreateDynMenuSplitMenueButton(xDoc, "DeleteEntryButtonCRV", ID, Tag)) ' Eintrag löschem
 

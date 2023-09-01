@@ -258,6 +258,7 @@
     <XmlElement("CBTellowsAutoUpdateScoreList")> Public Property CBTellowsAutoUpdateScoreList As Boolean = False
     <XmlElement("CBTellowsEntryNumberCount")> Public Property CBTellowsEntryNumberCount As Integer = 10
     <XmlElement("LetzteSperrlistenaktualsierung")> Public Property LetzteSperrlistenAktualisierung As Date = Now
+    <XmlElement("TBTellowsApiKeyGütigBis")> Public Property TBTellowsApiKeyGütigBis As Date = Now
 #End Region
 #End Region
 

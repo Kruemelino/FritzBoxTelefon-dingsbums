@@ -126,6 +126,9 @@
   <data name="Config_ImageMso" xml:space="preserve">
     <value />
   </data>
+  <data name="CreateContactButtonCRV_ImageMso" xml:space="preserve">
+    <value>RecordsSaveAsOutlookContact</value>
+  </data>
   <data name="CreateContact_ImageMso" xml:space="preserve">
     <value>RecordsSaveAsOutlookContact</value>
   </data>

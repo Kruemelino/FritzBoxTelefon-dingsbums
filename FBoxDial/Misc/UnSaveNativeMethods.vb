@@ -437,9 +437,23 @@ End Enum
     <DllImport("winmm.dll")>
     Friend Shared Function mciSendString(command As String, buffer As StringBuilder, bufferSize As Integer, hwndCallback As IntPtr) As Integer
     End Function
+
+    <DllImport("user32.dll", EntryPoint:="EnumChildWindows", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    Friend Shared Function EnumChildWindows(hWndParent As IntPtr, lpEnumFunc As UnSaveMethods.EnumCallBackDelegate, lParam As IntPtr) As Integer
+    End Function
+
+
+    <DllImport("user32.dll", EntryPoint:="FindWindowEx", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    Friend Shared Function FindWindowEx(parentHandle As IntPtr, childAfter As IntPtr, lclassName As String, windowTitle As String) As IntPtr
+    End Function
+
+    <DllImport("user32.dll", EntryPoint:="SetFocus", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    Friend Shared Function SetFocus(hwnd As IntPtr) As Long
+    End Function
 End Class
 
 Public NotInheritable Class UnSaveMethods
+    Public Delegate Sub EnumCallBackDelegate(hwnd As IntPtr, lParam As Integer)
 
     ''' <summary>
     ''' Retrieves a handle to the foreground window (the window with which the user is currently working). 
@@ -531,6 +545,57 @@ Public NotInheritable Class UnSaveMethods
             Integer.TryParse(lengthBuf.ToString(), length)
 
             Return length
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to an application-defined callback function. EnumChildWindows continues until the last child window is enumerated or the callback function returns FALSE.
+    ''' </summary>
+    ''' <param name="hWndParent">A handle to the parent window whose child windows are to be enumerated. If this parameter is NULL, this function is equivalent to EnumWindows.</param>
+    ''' <param name="lpEnumFunc">A pointer to an application-defined callback function.</param>
+    ''' <param name="lParam">An application-defined value to be passed to the callback function.</param>
+    ''' <value>IntPtr</value>
+    ''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633494(v=vs.85).aspx</remarks>
+    Public Shared ReadOnly Property EnumChildWindows(hWndParent As IntPtr, lpEnumFunc As EnumCallBackDelegate, lParam As IntPtr) As Integer
+        Get
+            Return UnsafeNativeMethods.EnumChildWindows(hWndParent, lpEnumFunc, lParam)
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Retrieves a handle to a window whose class name and window name match the specified strings. 
+    ''' The function searches child windows, beginning with the one following the specified child window. This function does not perform a case-sensitive search.
+    ''' </summary>
+    ''' <param name="hWndParent">A handle to the parent window whose child windows are to be searched.
+    ''' If hwndParent is NULL, the function uses the desktop window as the parent window. The function searches among windows that are child windows of the desktop.
+    ''' If hwndParent is HWND_MESSAGE, the function searches all message-only windows.</param>
+    ''' <param name="hWndChildAfter">A handle to a child window. The search begins with the next child window in the Z order. The child window must be a direct child window of hwndParent, not just a descendant window.
+    ''' If hwndChildAfter is NULL, the search begins with the first child window of hwndParent.
+    ''' Note that if both hwndParent and hwndChildAfter are NULL, the function searches all top-level and message-only windows.</param>
+    ''' <param name="lpszClass">The class name or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be placed in the low-order word of lpszClass; the high-order word must be zero.
+    ''' If lpszClass is a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names, or it can be MAKEINTATOM(0x8000). In this latter case, 0x8000 is the atom for a menu class. For more information, see the Remarks section of this topic.</param>
+    ''' <param name="lpszWindow">The window name (the window's title). If this parameter is NULL, all window names match.</param>
+    ''' <value>IntPtr</value>
+    ''' <returns>If the function succeeds, the return value is a handle to the window that has the specified class and window names.</returns>
+    Public Shared ReadOnly Property FindWindowEX(hWndParent As IntPtr, hWndChildAfter As IntPtr, lpszClass As String, lpszWindow As String) As IntPtr
+        Get
+            Return UnsafeNativeMethods.FindWindowEx(hWndParent, hWndChildAfter, lpszClass, lpszWindow)
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.
+    ''' </summary>
+    ''' <param name="hwnd">A handle to the window that will receive the keyboard input. If this parameter is NULL, keystrokes are ignored.</param>
+    ''' <returns>If the function succeeds, the return value is the handle to the window that previously had the keyboard focus. If the hWnd parameter is invalid or the window is not attached to the calling thread's message queue, the return value is NULL. </returns>
+    ''' <remarks>
+    ''' The SetFocus function sends a WM_KILLFOCUS message to the window that loses the keyboard focus and a WM_SETFOCUS message to the window that receives the keyboard focus. It also activates either the window that receives the focus or the parent of the window that receives the focus.
+    ''' If a window is active but does not have the focus, any key pressed will produce the WM_SYSCHAR, WM_SYSKEYDOWN, or WM_SYSKEYUP message. If the VK_MENU key is also pressed, the lParam parameter of the message will have bit 30 set. Otherwise, the messages produced do not have this bit set.
+    ''' By using the AttachThreadInput function, a thread can attach its input processing to another thread. This allows a thread to call SetFocus to set the keyboard focus to a window attached to another thread's message queue.
+    ''' </remarks>
+    Public Shared ReadOnly Property SetFocus(hwnd As IntPtr) As Long
+        Get
+            Return UnsafeNativeMethods.SetFocus(hwnd)
         End Get
     End Property
 End Class

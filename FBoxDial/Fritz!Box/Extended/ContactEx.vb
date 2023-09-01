@@ -109,7 +109,7 @@ Friend Module ContactEx
             If Contact.Person.ImageURL.IsNotStringNothingOrEmpty And HerunterladenKontaktBild IsNot Nothing Then
                 ' Kontaktbild
                 Dim Pfad As String = Await HerunterladenKontaktBild
-                Dim Kontaktspeichern As Boolean = .Saved
+                'Dim Kontaktspeichern As Boolean = .Saved
                 ' Kontaktbild hinzufügen
                 Try
                     ' Füge das Kontaktbild hinzu. Der Kontakt muss danach neu gespeichert werden

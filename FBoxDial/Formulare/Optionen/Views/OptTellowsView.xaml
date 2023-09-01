@@ -40,6 +40,10 @@
                                 Value="{Binding Path=OptVM.TBTellowsAPIKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 DeCryptKey="{Binding Path=OptVM.DfltTellowsDeCryptKey, Mode=OneWay}"/>
 
+        <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                        Tag="{x:Static localize:LocOptionen.strTellowsValidUntil}"
+                        Text="{Binding OptVM.TBTellowsApiKeyGütigBis, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=d}" />
+
         <TextBox Style="{StaticResource OptTextBox}"
                  Tag="{x:Static localize:LocOptionen.strTellowsMinComments}"
                  Text="{Binding OptVM.CBTellowsAnrMonMinComments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -103,6 +107,10 @@
                 <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
                          Tag="{x:Static localize:LocOptionen.strTellowsRequestCount}"
                          Text="{Binding TellowsPartnerInfo.Requests, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox Style="{StaticResource OptTextBox}" IsEnabled="False"
+                        Tag="{x:Static localize:LocOptionen.strTellowsValidUntil}"
+                        Text="{Binding TellowsPartnerInfo.Validuntil, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
             </StackPanel>
         </Expander>

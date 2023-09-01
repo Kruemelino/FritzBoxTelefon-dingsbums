@@ -4,7 +4,6 @@ Imports System.Reflection
 <Serializable()> Public Class TelListen
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-
     <XmlArray("RINGListe"), XmlArrayItem("Eintrag")> Public Property RINGListe As List(Of Telefonat)
     <XmlArray("CALLListe"), XmlArrayItem("Eintrag")> Public Property CALLListe As List(Of Telefonat)
     <XmlArray("RWSIndex"), XmlArrayItem("Eintrag")> Public Property RWSIndex As List(Of RWSIndexEntry)
@@ -79,6 +78,22 @@ Imports System.Reflection
 
             ' Erstelle eine Terminerinnerung
             If o IsNot Nothing Then o.ErstelleErinnerungEintrag()
+        End If
+    End Sub
+
+    Friend Sub CreateContact(Tag As String)
+        Dim ID As String() = Tag.Split("_")
+
+        ' Liste anhand des übergeben Parameter ermitteln
+        Dim ListPropertyInfo As PropertyInfo = Array.Find([GetType].GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.IsEqual(ID.First))
+
+        If ListPropertyInfo IsNot Nothing Then
+
+            ' Suche die Eigenschaft Item und löse sie mit dem Index auf.
+            Dim o As Telefonat = CType(ListPropertyInfo.PropertyType.GetProperty("Item").GetValue(ListPropertyInfo.GetValue(Me), {ID.Last.ToInt}), Telefonat)
+
+            ' Erstelle eine Terminerinnerung
+            If o IsNot Nothing Then o.ZeigeKontakt()
         End If
     End Sub
 End Class

@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Threading
+Imports FBoxDial.Telefonbücher
 Imports Microsoft.Office.Interop.Outlook
 Public Class OptContactSyncViewModel
     Inherits NotifyBase
@@ -57,9 +58,7 @@ Public Class OptContactSyncViewModel
 
         ' Lade gespeicherte Setups
         SyncSetups.AddRange(OptVM.OutlookOrdnerListe.FindAll(OutlookOrdnerVerwendung.FBoxSync) _
-                                                    .Select(Function(O) New OptSyncSetupViewModel(DatenService, DialogService, Me) With
-                                                        {.SetOrdner = O,
-                                                         .FBoxTelefonbuch = FBoxPhoneBooks.Where(Function(FB) FB.ID.AreEqual(O.FBoxSyncOptions.FBoxSyncID)).First}))
+                                                    .Select(Function(O) New OptSyncSetupViewModel(DatenService, DialogService, Me) With {.SetOrdner = O, .FBoxTelefonbuch = FBoxPhoneBooks.Find(O.FBoxSyncOptions.FBoxSyncID)}))
 
     End Sub
 

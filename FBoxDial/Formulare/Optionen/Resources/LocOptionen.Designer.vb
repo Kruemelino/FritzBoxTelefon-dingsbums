@@ -2273,6 +2273,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Gültig bis ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTellowsValidUntil() As String
+            Get
+                Return ResourceManager.GetString("strTellowsValidUntil", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Testbereich ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strTest() As String

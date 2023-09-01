@@ -182,6 +182,12 @@ Namespace Telefonbücher
 
         End Function
 
+        <Extension> Friend Function Find(Phonebooks As IEnumerable(Of PhonebookEx), ID As Integer) As PhonebookEx
+            With Phonebooks.Where(Function(FB) FB.ID.AreEqual(ID))
+                Return If(.Any, .First, Nothing)
+            End With
+        End Function
+
         <Extension> Friend Function Contains(Phonebooks As IEnumerable(Of PhonebookEx), TelNr As Telefonnummer) As Boolean
             NLogger.Debug($"Starte Kontaktsuche in den Fritz!Box Telefonbüchern für Telefonnummer '{TelNr.Unformatiert}'.")
 

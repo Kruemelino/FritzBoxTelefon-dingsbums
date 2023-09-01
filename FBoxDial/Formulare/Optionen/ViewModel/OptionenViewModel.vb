@@ -772,6 +772,16 @@ Public Class OptionenViewModel
         End Set
     End Property
 
+    Private _TBTellowsApiKeyGütigBis As Date
+    Public Property TBTellowsApiKeyGütigBis As Date
+        Get
+            Return _TBTellowsApiKeyGütigBis
+        End Get
+        Set
+            SetProperty(_TBTellowsApiKeyGütigBis, Value)
+        End Set
+    End Property
+
     Private _CBTellows As Boolean
     Public Property CBTellows As Boolean
         Get
@@ -1324,6 +1334,15 @@ Public Class OptionenViewModel
 
         End With
 
+        ' Tellows
+        If TBTellowsAPIKey.IsNotStringNothingOrEmpty Then
+            Using tel As New Tellows()
+                With Await tel.GetTellowsAccountInfo
+                    XMLData.POptionen.TBTellowsApiKeyGütigBis = Date.Parse(.Validuntil)
+                End With
+            End Using
+        End If
+
         With XMLData.POptionen
             .OutlookOrdner = OutlookOrdnerListe
 
@@ -1341,6 +1360,8 @@ Public Class OptionenViewModel
         XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
 
         Await Task.WhenAll(TaskList)
+
+
     End Sub
 
     ''' <summary>

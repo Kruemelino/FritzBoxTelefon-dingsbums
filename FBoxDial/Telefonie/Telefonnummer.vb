@@ -8,7 +8,7 @@ Public Class Telefonnummer
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
-    <XmlElement> Public EigeneNummerInfo As EigeneNrInfo = Nothing
+    <XmlElement> Public Property EigeneNummerInfo As EigeneNrInfo = Nothing
     <XmlElement> Public Property Original As String
     <XmlElement> Public Property Nummer As String
     <XmlElement> Public Property Landeskennzahl As String

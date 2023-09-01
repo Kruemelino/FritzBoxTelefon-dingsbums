@@ -12,7 +12,7 @@ Friend Class Tellows
     Private ReadOnly Property Pfad As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.json")
     Private ReadOnly Property Ready As Boolean
         Get
-            Return XAuthToken.IsNotStringNothingOrEmpty
+            Return XAuthToken.IsNotStringNothingOrEmpty AndAlso XMLData.POptionen.TBTellowsApiKeyGütigBis.IsLaterAs(Now)
         End Get
     End Property
 
@@ -32,6 +32,7 @@ Friend Class Tellows
 
         ' httpClient für tellows registrieren
         Globals.ThisAddIn.FBoxhttpClient.RegisterClient(httpClientKey, New HttpClientHandler)
+
     End Sub
 
 #Region "Basisfunktionen"
@@ -44,8 +45,12 @@ Friend Class Tellows
 
         RequestMessage.Headers.Add("X-Auth-Token", XAuthToken)
 
+        Dim ResponseString As String = Await Globals.ThisAddIn.FBoxhttpClient.GetString(httpClientKey, RequestMessage, Encoding.UTF8)
+
         ' Deserialisieren
-        If Not DeserializeXML(Await Globals.ThisAddIn.FBoxhttpClient.GetString(httpClientKey, RequestMessage, Encoding.UTF8), False, Response) Then
+        If DeserializeXML(ResponseString, False, Response) Then
+            NLogger.Debug(ResponseString)
+        Else
             NLogger.Error($"Die Tellows Abfrage zu '{UniformResourceIdentifier}' war nicht erfolgreich.")
             Return New TellowsResponse
         End If
@@ -55,12 +60,13 @@ Friend Class Tellows
 
 #End Region
 
+#Region "AccountInfo"
     ''' <summary>
     ''' Führt eine Abfrage beim tellows zum Herunterladen der Account-Info bei tellows durch.
     ''' </summary>
     ''' <returns>Antwort von tellows als <see cref="TellowsPartnerInfo"/></returns>
     Friend Async Function GetTellowsAccountInfo() As Task(Of TellowsPartnerInfo)
-        If Ready Then
+        If XAuthToken.IsNotStringNothingOrEmpty Then
             Dim ub As New UriBuilder With {.Scheme = Uri.UriSchemeHttps,
                                            .Host = "www.tellows.de",
                                            .Path = "/api/getpartnerinfo",
@@ -68,10 +74,13 @@ Friend Class Tellows
 
             Return (Await GetTellowsResponseXML(ub.Uri)).Partnerinfo
         Else
-            NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich, da kein API-Key eingegeben wurde.")
+            NLogger.Warn($"Abfrage der tellows Accountdaten nicht möglich, da kein gültiger API-Key eingegeben wurde.")
             Return New TellowsPartnerInfo With {.Info = "Kein tellows ApiKey vorhanden."}
         End If
     End Function
+
+#End Region
+
 
     ''' <summary>
     ''' Führt eine Abfrage beim tellows über die LiveAPI durch.
@@ -89,7 +98,7 @@ Friend Class Tellows
 
             Return Await GetTellowsResponseXML(ub.Uri)
         Else
-            NLogger.Warn($"Abfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer} nicht möglich, da kein API-Key eingegeben wurde.")
+            NLogger.Warn($"Abfrage via tellows LiveAPI für Nummer {TelNr.TellowsNummer} nicht möglich, da kein gültiger API-Key eingegeben wurde.")
             Return Nothing
         End If
 
@@ -143,7 +152,7 @@ Friend Class Tellows
             End If
 
         Else
-            NLogger.Warn($"Ein tellows API-Key wurde nicht eingegeben.")
+            NLogger.Warn($"Ein gültiger tellows API-Key wurde nicht eingegeben.")
             ' Gib eine leere Liste zurück
             Return New List(Of TellowsScoreListEntry)
         End If

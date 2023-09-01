@@ -164,6 +164,24 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kontakt öffnen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property CreateContactButtonCRV_Label() As String
+            Get
+                Return ResourceManager.GetString("CreateContactButtonCRV_Label", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Öffnet einen diesen Kontakt… ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property CreateContactButtonCRV_ScreenTipp() As String
+            Get
+                Return ResourceManager.GetString("CreateContactButtonCRV_ScreenTipp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Eintrag löschen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property DeleteEntryButtonCRV_Label() As String
@@ -506,7 +524,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Der Kontakt wird nicht syncronisiert. ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Kontakt wird nicht synchronisiert. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property SyncError_Label() As String
             Get

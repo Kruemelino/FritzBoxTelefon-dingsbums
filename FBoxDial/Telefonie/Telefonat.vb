@@ -293,6 +293,7 @@ Imports Microsoft.Office.Interop
             Return NebenstellenNummer = AnrMonTelIDBase.CallThrough
         End Get
     End Property
+
 #End Region
 
 #Region "Date"
@@ -368,32 +369,30 @@ Imports Microsoft.Office.Interop
         End Set
     End Property
 
-    Private _OlKontakt As Outlook.ContactItem = Nothing
+    Private WithEvents OKontakt As Outlook.ContactItem = Nothing
     <XmlIgnore> Friend Property OlKontakt() As Outlook.ContactItem
         Get
             ' Ermittle den Outlook-Kontakt, falls dies noch nicht geschehen ist
             Try
                 ' Versuche auf den Kontakt zuzugreifen. Ansonsten gibt es einen Fehler.
-                If _OlKontakt IsNot Nothing Then Dim tmp As String = _OlKontakt.EntryID
+                If OKontakt IsNot Nothing Then Dim tmp As String = OKontakt.EntryID
 
             Catch ex As Exception
-                _OlKontakt = Nothing
+                OKontakt = Nothing
                 NLogger.Warn(ex)
             Finally
 
-                If _OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty) Then
-                    _OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
+                If OKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty) Then
+                    OKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
                 End If
 
             End Try
-            Return _OlKontakt
+            Return OKontakt
         End Get
         Set
-            SetProperty(_OlKontakt, Value)
+            SetProperty(OKontakt, Value)
         End Set
     End Property
-
-    Private WithEvents OlKontakt_wEvents As Outlook.ContactItem
 
     <XmlElement> Public ReadOnly Property NameGegenstelle As String
         Get
@@ -424,6 +423,7 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Friend WriteOnly Property SetAnrMonRING As String()
         Set(FBStatus As String())
             AnrufRichtung = AnrufRichtungen.Eingehend
+            AnrMonStatus = AnrufStatus.RING
 
             For i = LBound(FBStatus) To UBound(FBStatus)
                 Select Case i
@@ -466,6 +466,7 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Friend WriteOnly Property SetAnrMonCALL As String()
         Set(FBStatus As String())
             AnrufRichtung = AnrufRichtungen.Ausgehend
+            AnrMonStatus = AnrufStatus.CALL
 
             For i = LBound(FBStatus) To UBound(FBStatus)
                 Select Case i
@@ -519,6 +520,8 @@ Imports Microsoft.Office.Interop
     ''' </summary>
     <XmlIgnore> Friend WriteOnly Property SetAnrMonCONNECT As String()
         Set(FBStatus As String())
+            AnrMonStatus = AnrufStatus.CONNECT
+
             For i = LBound(FBStatus) To UBound(FBStatus)
                 Select Case i
                     Case 0 ' Uhrzeit des Telefonates - Startzeit
@@ -542,6 +545,8 @@ Imports Microsoft.Office.Interop
     ''' </summary>
     <XmlIgnore> Friend WriteOnly Property SetAnrMonDISCONNECT As String()
         Set(FBStatus As String())
+            AnrMonStatus = AnrufStatus.DISCONNECT
+
             For i = LBound(FBStatus) To UBound(FBStatus)
                 Select Case i
                     Case 0 ' Uhrzeit des Telefonates - Startzeit
@@ -563,8 +568,20 @@ Imports Microsoft.Office.Interop
         Friend Const Eingehend As Integer = 0
         Friend Const Ausgehend As Integer = 1
     End Structure
+
 #End Region
 
+#Region "Enums"
+    <Flags> Friend Enum AnrufStatus
+        RING
+        [CALL]
+        CONNECT
+        DISCONNECT
+    End Enum
+
+    <XmlIgnore> Friend Property AnrMonStatus As AnrufStatus
+
+#End Region
     Friend Sub New()
         'Stop
     End Sub
@@ -742,7 +759,10 @@ Imports Microsoft.Office.Interop
             End If
 
             ' Zeige Kontakt
-            If XMLData.POptionen.CBAnrMonZeigeKontakt Then ZeigeKontakt()
+            If XMLData.POptionen.CBAnrMonZeigeKontakt Then
+                ZeigeKontakt()
+                'FillNote(Me)
+            End If
         Else
             AnruferName = Localize.LocAnrMon.strNrUnterdrückt
         End If
@@ -760,47 +780,57 @@ Imports Microsoft.Office.Interop
         ' 4. Es ist nur eine Nummer hinterlegt
         ' 5. Es ist nichts hinterlegt.
 
+        If OlKontakt Is Nothing Then
+
+            If OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty Then
+                ' Ermittle den bestehenden Outlook-Kontakt
+                OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
+
+            Else
+                ' ein Kontaktitem, welches eingeblendet werden kann muss erst erzeugt werden
+                If FBTelBookKontakt IsNot Nothing Then
+
+                    ' Es gibt einen Kontakt aus dem Fritz!Box Telefonbuch.
+                    OlKontakt = ErstelleKontakt(FBTelBookKontakt, GegenstelleTelNr, False)
+
+                ElseIf VCard.IsNotStringNothingOrEmpty Then
+                    ' eine vCard ist verfügbar
+                    OlKontakt = ErstelleKontakt(VCard, GegenstelleTelNr, False)
+                Else
+                    ' eine Telefonnummer ist als einige Information vorhanden
+                    OlKontakt = ErstelleKontakt(GegenstelleTelNr, False)
+                End If
+
+                ' Füge einen Ereignishandler hinzu, der das Speichern dieses temporären Kontaktes überwacht
+                AddHandler OlKontakt.Write, AddressOf OlKontakt_Write
+
+            End If
+        End If
+
         If OlKontakt IsNot Nothing Then
             ' Blende den Kontakt ein
             OlKontakt.Display()
 
-        ElseIf OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty Then
-            ' Ermittle den bestehenden Outlook-Kontakt
-            OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
-
-            ' Blende den Kontakt ein
-            If OlKontakt IsNot Nothing Then OlKontakt.Display()
-        Else
-            ' ein Kontaktitem, welches eingeblendet werden kann muss erst erzeugt werden
-            If FBTelBookKontakt IsNot Nothing Then
-
-                ' Es gibt einen Kontakt aus dem Fritz!Box Telefonbuch.
-                OlKontakt_wEvents = ErstelleKontakt(FBTelBookKontakt, GegenstelleTelNr, False)
-
-            ElseIf VCard.IsNotStringNothingOrEmpty Then
-                ' eine vCard ist verfügbar
-                OlKontakt_wEvents = ErstelleKontakt(VCard, GegenstelleTelNr, False)
-            Else
-                ' eine Telefonnummer ist als einige Information vorhanden
-                OlKontakt_wEvents = ErstelleKontakt(GegenstelleTelNr, False)
-            End If
-
-            ' Füge einen Ereignishandler hinzu, der das Speichern dieses temporären Kontaktes überwacht
-            AddHandler OlKontakt_wEvents.Write, AddressOf EOlKontakt_wEvents_Write
-
-            ' Blende den temporäten Kontakt ein
-            If OlKontakt_wEvents IsNot Nothing Then OlKontakt_wEvents.Display()
-
+            AddHandler OlKontakt.GetInspector.Close, AddressOf OlKontakt_Close
         End If
 
     End Sub
 
-    Private Sub EOlKontakt_wEvents_Write(ByRef Cancel As Boolean)
+    Private Sub OlKontakt_Close()
 
-        With OlKontakt_wEvents
+        With OlKontakt
+            ' Entferne den Ereignishandler
+            RemoveHandler .Write, AddressOf OlKontakt_Write
+            AddHandler .GetInspector.Close, AddressOf OlKontakt_Close
+        End With
+    End Sub
+
+    Private Sub OlKontakt_Write(ByRef Cancel As Boolean)
+
+        With OlKontakt
 
             ' Entferne den Ereignishandler
-            RemoveHandler .Write, AddressOf EOlKontakt_wEvents_Write
+            RemoveHandler .Write, AddressOf OlKontakt_Write
 
             ' Merke Kontakt und StoreID
             OutlookStoreID = .StoreID
@@ -915,20 +945,22 @@ Imports Microsoft.Office.Interop
                         ' Speichern der EntryID und StoreID in benutzerdefinierten Feldern
                         If OlKontakt IsNot Nothing Then
 
-                            Dim colArgs(1) As Object
-                            colArgs(0) = OlKontakt.EntryID
-                            colArgs(1) = OlKontakt.StoreID
+                            If OlKontakt.EntryID IsNot Nothing Then
+                                Dim colArgs(1) As Object
+                                colArgs(0) = OlKontakt.EntryID
+                                colArgs(1) = OlKontakt.StoreID
 
-                            For i As Integer = 0 To 1
-                                .PropertyAccessor.SetProperty(DASLTagOlItem(i).ToString, colArgs(i))
-                            Next
+                                For i As Integer = 0 To 1
+                                    .PropertyAccessor.SetProperty(DASLTagOlItem(i).ToString, colArgs(i))
+                                Next
 
-                            ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
-                            '.PropertyAccessor.SetProperties(DASLTagOlItem, colArgs)
+                                ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
+                                '.PropertyAccessor.SetProperties(DASLTagOlItem, colArgs)
+                            End If
                         End If
 
-                        ' Speicherort wählen
-                        olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
+                            ' Speicherort wählen
+                            olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
 
                         If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing AndAlso
                         Not olJournalFolder.Equals(Globals.ThisAddIn.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
@@ -1050,12 +1082,12 @@ Imports Microsoft.Office.Interop
                 ' RING-Liste initialisieren, falls erforderlich
                 If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
                 ' Telefonat in erste Positon der RING-Liste speichern
-                XMLData.PTelListen.RINGListe.Insert(Me)
+                If Not XMLData.PTelListen.RINGListe.Contains(Me) Then XMLData.PTelListen.RINGListe.Insert(Me)
             Else
                 ' CALL-Liste initialisieren, falls erforderlich
                 If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
                 ' Telefonat in erste Positon der CALL-Liste speichern
-                XMLData.PTelListen.CALLListe.Insert(Me)
+                If Not XMLData.PTelListen.CALLListe.Contains(Me) Then XMLData.PTelListen.CALLListe.Insert(Me)
             End If
         End If
     End Sub
@@ -1240,6 +1272,7 @@ Imports Microsoft.Office.Interop
 
             ' Aktualisiere die Wahlwiederholungsliste
             UpdateRingCallList()
+
         End If
 
     End Sub
@@ -1269,6 +1302,9 @@ Imports Microsoft.Office.Interop
 
             ' Stoppuhr einblenden, wenn Bedingungen erfüllt 
             If XMLData.POptionen.CBStoppUhrEinblenden Then ShowStoppUhr()
+
+            ' Kontaktnotiz schreiben
+            'FillNote(Me)
         End If
 
     End Sub
@@ -1288,6 +1324,9 @@ Imports Microsoft.Office.Interop
 
             ' Ermittle die aufgenommene Benachrichtigung des Anrufbeantwortes
             GetTAMMessage()
+
+            ' Kontaktnotiz schreiben
+            'FillNote(Me)
         End If
 
     End Sub

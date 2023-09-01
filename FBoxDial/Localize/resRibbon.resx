@@ -144,6 +144,12 @@
   <data name="Config_ScreenTipp" xml:space="preserve">
     <value>Öffnet die Einstellungen…</value>
   </data>
+  <data name="CreateContactButtonCRV_Label" xml:space="preserve">
+    <value>Kontakt öffnen</value>
+  </data>
+  <data name="CreateContactButtonCRV_ScreenTipp" xml:space="preserve">
+    <value>Öffnet einen diesen Kontakt…</value>
+  </data>
   <data name="CreateContact_Label" xml:space="preserve">
     <value>Kontakt erstellen</value>
   </data>
@@ -265,7 +271,7 @@
     <value>Nachträgliches Synchronisieren dieses Kontaktes.</value>
   </data>
   <data name="SyncError_Label" xml:space="preserve">
-    <value>Der Kontakt wird nicht syncronisiert.</value>
+    <value>Der Kontakt wird nicht synchronisiert.</value>
   </data>
   <data name="SyncError_ScreenTipp" xml:space="preserve">
     <value>Der Kontaktorder wird nicht für die Synchronisieren verwendet.</value>

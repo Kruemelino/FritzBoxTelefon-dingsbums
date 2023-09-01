@@ -1121,6 +1121,10 @@ Warnung: Wenn viele Einträge auf die Fritz!Box geladen werden, kann diese träg
     <value>tellows - Test der Live API</value>
     <comment>OptTellows</comment>
   </data>
+  <data name="strTellowsValidUntil" xml:space="preserve">
+    <value>Gültig bis</value>
+    <comment>OptTellows</comment>
+  </data>
   <data name="strTest" xml:space="preserve">
     <value>Testbereich</value>
     <comment>MainView</comment>

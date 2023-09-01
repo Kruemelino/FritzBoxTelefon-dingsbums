@@ -100,6 +100,15 @@ Public Class resImageMso
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die RecordsSaveAsOutlookContact ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property CreateContactButtonCRV_ImageMso() As String
+        Get
+            Return ResourceManager.GetString("CreateContactButtonCRV_ImageMso", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die ToolDelete ähnelt.
     '''</summary>
     Public Shared ReadOnly Property DeleteEntryButtonCRV_ImageMso() As String
