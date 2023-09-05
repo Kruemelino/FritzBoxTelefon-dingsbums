@@ -3,6 +3,7 @@ Imports FBoxDial.DfltWerteTelefonie
 
 <Serializable()>
 Public Class Telefonnummer
+    Implements IEqualityComparer(Of Telefonnummer)
     Implements IEquatable(Of Telefonnummer)
     Implements IDisposable
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -400,6 +401,20 @@ Public Class Telefonnummer
                 End If
         End Select
 
+    End Function
+#End Region
+
+#Region "IEqualityComparer Support"
+    Public Overloads Function Equals(x As Telefonnummer, y As Telefonnummer) As Boolean Implements IEqualityComparer(Of Telefonnummer).Equals
+        Return x.Equals(y)
+    End Function
+
+    Public Overloads Function GetHashCode(obj As Telefonnummer) As Integer Implements IEqualityComparer(Of Telefonnummer).GetHashCode
+
+        ' Check whether the object is null.
+        If obj Is Nothing Then Return 0
+
+        Return If(obj.Unformatiert Is Nothing, 0, obj.Unformatiert.GetHashCode())
     End Function
 #End Region
 

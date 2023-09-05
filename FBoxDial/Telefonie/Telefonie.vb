@@ -313,7 +313,7 @@ Imports FBoxDial.DfltWerteTelefonie
                     ' Veraarbeite alle Nummer des DECT-Telefones
                     If DECTNr.DECTRingOnAllMSNs Then
                         ' Weise dem Telefon alle bekannten Nummern zu
-                        For Each TelNr In Telefonnummern.Distinct
+                        For Each TelNr In Telefonnummern.Distinct(New Telefonnummer)
                             Telefon.StrEinTelNr.Add(TelNr.Einwahl)
                         Next
                     Else
