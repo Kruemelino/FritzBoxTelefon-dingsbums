@@ -1030,20 +1030,26 @@ Namespace RibbonData
                 Select Case ListName
                     Case My.Resources.strDfltNameListCALL
 
-                        For Each TelFt As Telefonat In XMLData.PTelListen.CALLListe.Where(Function(Tf) Not Tf.NrUnterdrückt)
-                            .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, XMLData.PTelListen.CALLListe.IndexOf(TelFt), ListName))
+                        Dim L As List(Of Telefonat) = XMLData.PTelListen.CALLListe.Distinct(New Telefonat).ToList
+
+                        For Each TelFt As Telefonat In L.Where(Function(Tf) Not Tf.NrUnterdrückt)
+                            .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, L.IndexOf(TelFt), ListName))
                         Next
 
                     Case My.Resources.strDfltNameListRING
 
-                        For Each TelFt As Telefonat In XMLData.PTelListen.RINGListe.Where(Function(Tf) Not Tf.NrUnterdrückt)
-                            .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, XMLData.PTelListen.RINGListe.IndexOf(TelFt), ListName))
+                        Dim L As List(Of Telefonat) = XMLData.PTelListen.RINGListe.Distinct(New Telefonat).ToList
+
+                        For Each TelFt As Telefonat In L.Where(Function(Tf) Not Tf.NrUnterdrückt)
+                            .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, L.IndexOf(TelFt), ListName))
                         Next
 
                     Case My.Resources.strDfltNameListVIP
 
-                        For Each VIP As VIPEntry In XMLData.PTelListen.VIPListe
-                            .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, VIP, XMLData.PTelListen.VIPListe.IndexOf(VIP), ListName))
+                        Dim L As List(Of VIPEntry) = XMLData.PTelListen.VIPListe.Distinct(New VIPEntry).ToList
+
+                        For Each VIP As VIPEntry In L
+                            .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, VIP, L.IndexOf(VIP), ListName))
                         Next
                 End Select
 

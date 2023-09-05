@@ -1,5 +1,6 @@
 ﻿Imports System.Net
 Imports System.Threading.Tasks
+Imports System.Xml
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop.Outlook
 
@@ -197,6 +198,9 @@ Public NotInheritable Class ThisAddIn
         RemoveHandler ExplorerListe.NewExplorer, AddressOf Explorer_NewExplorer
         ExplorerListe = Nothing
         ExplorerWrappers = Nothing
+
+        ' Doppelte Werte entfernen
+        XMLData.PTelListen.DistictList()
 
         ' Listen leeren
         If PVorwahlen IsNot Nothing Then PVorwahlen.Kennzahlen.Landeskennzahlen.Clear()

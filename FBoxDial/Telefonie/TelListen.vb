@@ -43,6 +43,12 @@ Imports System.Reflection
 
     End Sub
 
+    Friend Sub DistictList()
+        RINGListe = RINGListe.Distinct(New Telefonat).ToList
+        CALLListe = CALLListe.Distinct(New Telefonat).ToList
+        VIPListe = VIPListe.Distinct(New VIPEntry).ToList
+    End Sub
+
     ''' <summary>
     ''' Entfernt einen Eintrag aus der Liste
     ''' </summary>

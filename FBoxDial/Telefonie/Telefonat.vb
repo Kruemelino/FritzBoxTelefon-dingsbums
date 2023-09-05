@@ -7,7 +7,7 @@ Imports Microsoft.Office.Interop
 
 <Serializable()> Public Class Telefonat
     Inherits NotifyBase
-
+    Implements IEqualityComparer(Of Telefonat)
     Implements IEquatable(Of Telefonat)
     Implements IDisposable
 
@@ -959,8 +959,8 @@ Imports Microsoft.Office.Interop
                             End If
                         End If
 
-                            ' Speicherort wählen
-                            olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
+                        ' Speicherort wählen
+                        olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
 
                         If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing AndAlso
                         Not olJournalFolder.Equals(Globals.ThisAddIn.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal)) Then
@@ -1070,6 +1070,7 @@ Imports Microsoft.Office.Interop
             NLogger.Warn(Localize.resCommon.strAppointmentError)
         End If
     End Sub
+
     ''' <summary>
     ''' Routine zum Aktualisieren der Wahlwiederholungs- und Rückrufliste. Das Telefonat wird in die entsprechende Liste aufgenommen.
     ''' </summary>
@@ -1212,6 +1213,14 @@ Imports Microsoft.Office.Interop
             NLogger.Warn($"Telefoniegerät nicht ermittelt: NebenstellenNummer: {NebenstellenNummer}; AnrListDeviceName: '{AnrListDeviceName}'")
         Else
             NLogger.Debug($"Telefoniegerät ermittelt: {TelGerät.Name} (NebenstellenNummer: {NebenstellenNummer})")
+        End If
+    End Sub
+
+    Private Sub InitNummern()
+        ' Es kann sein, dass Eigene Telefonnummer Nothing ist. Tritt bei den Wahlwiederholungslisten auf.
+        If EigeneTelNr Is Nothing AndAlso OutEigeneTelNr.IsNotStringNothingOrEmpty Then
+            ' Setze die eigene Nummer
+            EigeneTelNr = New Telefonnummer With {.SetNummer = OutEigeneTelNr}
         End If
     End Sub
 
@@ -1514,7 +1523,7 @@ Imports Microsoft.Office.Interop
 
 #End Region
 
-#Region "Equals"
+#Region "IEquatable Support"
     Public Overrides Function Equals(obj As Object) As Boolean
         Return Equals(TryCast(obj, Telefonat))
     End Function
@@ -1525,10 +1534,8 @@ Imports Microsoft.Office.Interop
         If other IsNot Nothing Then
 
             ' Es kann sein, dass Eigene Telefonnummer Nothing ist. Tritt bei den Wahlwiederholungslisten auf.
-            If EigeneTelNr Is Nothing AndAlso OutEigeneTelNr.IsNotStringNothingOrEmpty Then
-                ' Setze die eigene Nummer
-                EigeneTelNr = New Telefonnummer With {.SetNummer = OutEigeneTelNr}
-            End If
+            InitNummern()
+            other.InitNummern()
 
             ' Die Telefonnummern und die Zeiten müssen grundsätzlich gleich sein
             If EigeneTelNr IsNot Nothing AndAlso
@@ -1548,6 +1555,20 @@ Imports Microsoft.Office.Interop
         Else
             Return False
         End If
+    End Function
+#End Region
+
+#Region "IEqualityComparer Support"
+    Public Overloads Function Equals(x As Telefonat, y As Telefonat) As Boolean Implements IEqualityComparer(Of Telefonat).Equals
+        Return x.Equals(y)
+    End Function
+
+    Public Overloads Function GetHashCode(obj As Telefonat) As Integer Implements IEqualityComparer(Of Telefonat).GetHashCode
+
+        ' Check whether the object is null.
+        If obj Is Nothing Then Return 0
+
+        Return If(obj.AnruferName Is Nothing, 0, obj.AnruferName.GetHashCode())
     End Function
 #End Region
 
@@ -1583,6 +1604,7 @@ Imports Microsoft.Office.Interop
         ' Auskommentierung der folgenden Zeile aufheben, wenn Finalize() oben überschrieben wird.
         ' GC.SuppressFinalize(Me)
     End Sub
+
 #End Region
 
 End Class
