@@ -44,9 +44,9 @@ Imports System.Reflection
     End Sub
 
     Friend Sub DistictList()
-        RINGListe = RINGListe.Distinct(New Telefonat).ToList
-        CALLListe = CALLListe.Distinct(New Telefonat).ToList
-        VIPListe = VIPListe.Distinct(New VIPEntry).ToList
+        RINGListe = RINGListe.Distinct(New EqualityComparer).ToList
+        CALLListe = CALLListe.Distinct(New EqualityComparer).ToList
+        VIPListe = VIPListe.Distinct(New EqualityComparer).ToList
     End Sub
 
     ''' <summary>

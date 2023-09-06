@@ -1,6 +1,7 @@
 ﻿Imports System.Xml.Serialization
 Imports System.Threading.Tasks
 Imports FBoxDial.DfltWerteTelefonie
+Imports System.Collections
 
 <Serializable()> Public Class Telefonie
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -313,7 +314,7 @@ Imports FBoxDial.DfltWerteTelefonie
                     ' Veraarbeite alle Nummer des DECT-Telefones
                     If DECTNr.DECTRingOnAllMSNs Then
                         ' Weise dem Telefon alle bekannten Nummern zu
-                        For Each TelNr In Telefonnummern.Distinct(New Telefonnummer)
+                        For Each TelNr In Telefonnummern.Distinct(New EqualityComparer)
                             Telefon.StrEinTelNr.Add(TelNr.Einwahl)
                         Next
                     Else

@@ -7,7 +7,6 @@ Imports Microsoft.Office.Interop
 
 <Serializable()> Public Class Telefonat
     Inherits NotifyBase
-    Implements IEqualityComparer(Of Telefonat)
     Implements IEquatable(Of Telefonat)
     Implements IDisposable
 
@@ -1555,20 +1554,6 @@ Imports Microsoft.Office.Interop
         Else
             Return False
         End If
-    End Function
-#End Region
-
-#Region "IEqualityComparer Support"
-    Public Overloads Function Equals(x As Telefonat, y As Telefonat) As Boolean Implements IEqualityComparer(Of Telefonat).Equals
-        Return x.Equals(y)
-    End Function
-
-    Public Overloads Function GetHashCode(obj As Telefonat) As Integer Implements IEqualityComparer(Of Telefonat).GetHashCode
-
-        ' Check whether the object is null.
-        If obj Is Nothing Then Return 0
-
-        Return If(obj.AnruferName Is Nothing, 0, obj.AnruferName.GetHashCode())
     End Function
 #End Region
 
