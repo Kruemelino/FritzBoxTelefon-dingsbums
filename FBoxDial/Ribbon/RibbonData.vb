@@ -1030,7 +1030,7 @@ Namespace RibbonData
                 Select Case ListName
                     Case My.Resources.strDfltNameListCALL
 
-                        Dim L As List(Of Telefonat) = XMLData.PTelListen.CALLListe.Distinct(New Telefonat).ToList
+                        Dim L As List(Of Telefonat) = XMLData.PTelListen.CALLListe.Distinct(New EqualityComparer).ToList
 
                         For Each TelFt As Telefonat In L.Where(Function(Tf) Not Tf.NrUnterdrückt)
                             .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, L.IndexOf(TelFt), ListName))
@@ -1038,7 +1038,7 @@ Namespace RibbonData
 
                     Case My.Resources.strDfltNameListRING
 
-                        Dim L As List(Of Telefonat) = XMLData.PTelListen.RINGListe.Distinct(New Telefonat).ToList
+                        Dim L As List(Of Telefonat) = XMLData.PTelListen.RINGListe.Distinct(New EqualityComparer).ToList
 
                         For Each TelFt As Telefonat In L.Where(Function(Tf) Not Tf.NrUnterdrückt)
                             .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, L.IndexOf(TelFt), ListName))
@@ -1046,7 +1046,7 @@ Namespace RibbonData
 
                     Case My.Resources.strDfltNameListVIP
 
-                        Dim L As List(Of VIPEntry) = XMLData.PTelListen.VIPListe.Distinct(New VIPEntry).ToList
+                        Dim L As List(Of VIPEntry) = XMLData.PTelListen.VIPListe.Distinct(New EqualityComparer).ToList
 
                         For Each VIP As VIPEntry In L
                             .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, VIP, L.IndexOf(VIP), ListName))

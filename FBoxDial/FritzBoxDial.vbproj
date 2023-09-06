@@ -451,6 +451,7 @@
     <Compile Include="JSON\JSONSerialize.vb" />
     <Compile Include="JSON\JSONTraceWriter.vb" />
     <Compile Include="Misc\AddinHTTPClient.vb" />
+    <Compile Include="Misc\EqualityComparer.vb" />
     <Compile Include="Misc\FileSystemSafeWatcher.vb" />
     <Compile Include="Misc\DateiÜberwacher.vb" />
     <Compile Include="Misc\KeyboardHooking.vb" />
