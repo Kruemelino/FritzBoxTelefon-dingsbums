@@ -1,7 +1,10 @@
 ﻿Public Class EqualityComparer
+
     Implements IEqualityComparer(Of Telefonnummer)
     Implements IEqualityComparer(Of Telefonat)
     Implements IEqualityComparer(Of VIPEntry)
+
+    Private disposedValue As Boolean
 #Region "Telefonnummer"
     Public Overloads Function Equals(x As Telefonnummer, y As Telefonnummer) As Boolean Implements IEqualityComparer(Of Telefonnummer).Equals
         Return x.Equals(y)
@@ -42,5 +45,7 @@
 
         Return If(obj.EntryID Is Nothing, 0, obj.EntryID.GetHashCode())
     End Function
+
 #End Region
+
 End Class

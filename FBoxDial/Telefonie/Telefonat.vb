@@ -1082,12 +1082,12 @@ Imports Microsoft.Office.Interop
                 ' RING-Liste initialisieren, falls erforderlich
                 If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
                 ' Telefonat in erste Positon der RING-Liste speichern
-                If Not XMLData.PTelListen.RINGListe.Contains(Me) Then XMLData.PTelListen.RINGListe.Insert(Me)
+                XMLData.PTelListen.RINGListe.Insert(Me)
             Else
                 ' CALL-Liste initialisieren, falls erforderlich
                 If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
                 ' Telefonat in erste Positon der CALL-Liste speichern
-                If Not XMLData.PTelListen.CALLListe.Contains(Me) Then XMLData.PTelListen.CALLListe.Insert(Me)
+                XMLData.PTelListen.CALLListe.Insert(Me)
             End If
         End If
     End Sub

@@ -238,7 +238,7 @@ Public Module Extensions
         If Anrufliste Is Nothing Then Anrufliste = New List(Of Telefonat)
 
         ' Ignoriere dieses Telefonat, wenn es sich bereits in der Liste befindet 
-        If Not Anrufliste.Contains(Anruf) Then
+        If Not Anrufliste.Contains(Anruf, New EqualityComparer) Then
 
             ' Eintrag hinzufügen
             Anrufliste.Insert(0, Anruf)

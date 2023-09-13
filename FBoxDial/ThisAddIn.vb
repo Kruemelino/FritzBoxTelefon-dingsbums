@@ -199,9 +199,6 @@ Public NotInheritable Class ThisAddIn
         ExplorerListe = Nothing
         ExplorerWrappers = Nothing
 
-        ' Doppelte Werte entfernen
-        XMLData.PTelListen.DistictList()
-
         ' Listen leeren
         If PVorwahlen IsNot Nothing Then PVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
 
