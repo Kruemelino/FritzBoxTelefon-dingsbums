@@ -139,8 +139,8 @@
     This section specifies references for the project.
   -->
   <ItemGroup>
-    <Reference Include="ColorPicker, Version=3.3.1.0, Culture=neutral, PublicKeyToken=1c61eec504ce2276, processorArchitecture=MSIL">
-      <HintPath>..\packages\PixiEditor.ColorPicker.3.3.1\lib\net451\ColorPicker.dll</HintPath>
+    <Reference Include="ColorPicker, Version=3.4.1.0, Culture=neutral, PublicKeyToken=1c61eec504ce2276, processorArchitecture=MSIL">
+      <HintPath>..\packages\PixiEditor.ColorPicker.3.4.1\lib\net451\ColorPicker.dll</HintPath>
     </Reference>
     <Reference Include="FilterDataGrid, Version=1.2.7.0, Culture=neutral, PublicKeyToken=42060d65a6cc17c2, processorArchitecture=MSIL">
       <HintPath>..\packages\FilterDataGrid.1.2.7\lib\net48\FilterDataGrid.dll</HintPath>
@@ -166,7 +166,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.5.2.3\lib\net46\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.5.2.4\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
