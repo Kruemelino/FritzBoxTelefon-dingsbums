@@ -17,11 +17,12 @@ Friend Class WindowHelper
     ''' Wenn die Maus sich auf dem Fenster befindet, wird der Timer unterbrochen.
     ''' Sobald sich die Maus vom dem Fenster entfernt, wird der Timer fortgesetzt.
     ''' </summary>
-    Private AusblendDispatcherTimer As Threading.DispatcherTimer
 
-    Private AusblendTimer As Timers.Timer
+    Private Property AusblendDispatcherTimer As Threading.DispatcherTimer
 
-    Private Dispatcher As Boolean
+    Private Property AusblendTimer As Timers.Timer
+
+    Private Property Dispatcher As Boolean
 
     Public Sub New(wndw As Window)
         Fenster = wndw
@@ -84,7 +85,7 @@ Friend Class WindowHelper
             NLogger.Debug($"Fenster nach {Now.Subtract(StartTime).TotalSeconds} + {TotalTimePaused.TotalSeconds} Sekunden geschlossen.")
 
             If Dispatcher Then
-                With AusblendDispatcherTimer
+                With CType(sender, Threading.DispatcherTimer)
                     ' Stoppe den Timer
                     .Stop()
 
@@ -93,7 +94,7 @@ Friend Class WindowHelper
 
                 End With
             Else
-                With AusblendTimer
+                With CType(sender, Timers.Timer)
                     ' Stoppe den Timer
                     .Stop()
 
