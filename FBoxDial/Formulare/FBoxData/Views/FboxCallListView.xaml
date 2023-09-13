@@ -143,7 +143,11 @@
                               Command="{Binding ShowContactCommand}"
                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
                               Icon="{DynamicResource ContactCard_16x}"/>
-
+                    
+                    <MenuItem Header="{x:Static localize:LocFBoxData.strAppointment}" 
+                              Command="{Binding AppointmentCommand}"
+                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Icon="{DynamicResource Calendar_16x}"/>
                     <Separator/>
 
                     <MenuItem Header="{x:Static localize:LocFBoxData.strCheckAll}" 

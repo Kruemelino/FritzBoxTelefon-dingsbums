@@ -593,11 +593,11 @@ Imports Microsoft.Office.Interop
     ''' 3. Tellows
     ''' 4. Rückwärtssuche
     ''' </summary>
-    Friend Async Sub KontaktSuche()
-        Await KontaktSucheTask()
+    Friend Async Sub KontaktSuche(Show As Boolean)
+        Await KontaktSucheTask(Show)
     End Sub
 
-    Friend Async Function KontaktSucheTask() As Task
+    Friend Async Function KontaktSucheTask(Show As Boolean) As Task
 
         ' Führe keine Kontaktsuche durch, wenn die Nummer unterdrückt ist
         If Not NrUnterdrückt Then
@@ -758,7 +758,7 @@ Imports Microsoft.Office.Interop
             End If
 
             ' Zeige Kontakt
-            If XMLData.POptionen.CBAnrMonZeigeKontakt Then
+            If XMLData.POptionen.CBAnrMonZeigeKontakt And Show Then
                 ZeigeKontakt()
                 'FillNote(Me)
             End If
@@ -1020,7 +1020,7 @@ Imports Microsoft.Office.Interop
                     .Body = $"{Localize.LocAnrMon.strJournalBodyStart} {If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert)}{vbCrLf}Status: {If(Angenommen, String.Empty, "nicht ")}angenommen{vbCrLf & vbCrLf}{VCard}"
 
                     ' Speichern der EntryID und StoreID in benutzerdefinierten Feldern
-                    If OlKontakt IsNot Nothing Then
+                    If OlKontakt IsNot Nothing AndAlso OlKontakt.EntryID.IsNotStringNothingOrEmpty Then
 
                         Dim colArgs(1) As Object
                         colArgs(0) = OlKontakt.EntryID
@@ -1231,7 +1231,7 @@ Imports Microsoft.Office.Interop
         If IstRelevant Then
             ' Starte die Kontaktsuche mit Hilfe asynchroner Routinen, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
             ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-            KontaktSuche()
+            KontaktSuche(True)
 
             ' Anrufmonitor einblenden,
             ShowAnrMon()
@@ -1247,7 +1247,7 @@ Imports Microsoft.Office.Interop
 
         If IstRelevant Then
             ' Anrufername aus Kontakten und Rückwärtssuche ermitteln, sofern es sich nicht um eine Weiterleitung handelt.
-            If Not Intern And Not Rufweiterleitung Then KontaktSuche()
+            If Not Intern And Not Rufweiterleitung Then KontaktSuche(True)
 
             ' 01.05.22 10:18:04;CALL;2;4;987654;62;SIP4;
 

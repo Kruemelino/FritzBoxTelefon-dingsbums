@@ -126,6 +126,9 @@
   <data name="strAnrList" xml:space="preserve">
     <value>Anrufliste</value>
   </data>
+  <data name="strAppointment" xml:space="preserve">
+    <value>Anruftermin erstellen</value>
+  </data>
   <data name="strBrowse" xml:space="preserve">
     <value>Auswählen</value>
   </data>

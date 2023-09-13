@@ -1,5 +1,4 @@
 ﻿Imports System.Threading.Tasks
-Imports Microsoft.Office.Core
 
 Public Class FBoxDataService
     Implements IFBoxDataService
@@ -60,6 +59,11 @@ Public Class FBoxDataService
     Private Async Sub ShowXMLContact(Anruf As FBoxAPI.Call) Implements IFBoxDataService.ShowXMLContact
         Dim T As Telefonat = Await ErstelleTelefonat(Anruf)
         T.ZeigeKontakt()
+    End Sub
+
+    Private Async Sub SetAppointment(Anruf As FBoxAPI.Call) Implements IFBoxDataService.SetAppointment
+        Dim T As Telefonat = Await ErstelleTelefonat(Anruf)
+        T.ErstelleErinnerungEintrag()
     End Sub
 
     Private Sub PlayMessage(CallItem As FBoxAPI.Call) Implements IFBoxDataService.PlayMessage

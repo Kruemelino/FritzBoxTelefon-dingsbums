@@ -50,6 +50,7 @@ Public Interface IFBoxDataService
     Sub CallXMLContact(Anruf As FBoxAPI.Call)
 
     Sub ShowXMLContact(Anruf As FBoxAPI.Call)
+    Sub SetAppointment(Anruf As FBoxAPI.Call)
     Sub PlayMessage(Anruf As FBoxAPI.Call)
     Sub DownloadFax(Anruf As FBoxAPI.Call)
 

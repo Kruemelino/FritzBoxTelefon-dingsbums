@@ -126,7 +126,7 @@ Friend Module FritzBoxAnrufliste
                 If [Call].Name.IsNotStringNothingOrEmpty Then .AnruferName = [Call].Name
 
                 If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unterdrückt Then
-                    Await .KontaktSucheTask()
+                    Await .KontaktSucheTask(False)
                 End If
 
                 If [Call].Type.AreEqual(2) Or [Call].Type.AreEqual(10) Then .Angenommen = False ' missed, rejected

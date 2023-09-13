@@ -92,6 +92,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Anruftermin erstellen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strAppointment() As String
+            Get
+                Return ResourceManager.GetString("strAppointment", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Auswählen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strBrowse() As String

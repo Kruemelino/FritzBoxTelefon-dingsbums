@@ -35,6 +35,7 @@ Public Class FBoxDataCallListViewModel
     Public Property BlockCommand As RelayCommand
     Public Property CallCommand As RelayCommand
     Public Property ShowContactCommand As RelayCommand
+    Public Property AppointmentCommand As RelayCommand
 #End Region
 
 #Region "Properties"
@@ -150,6 +151,7 @@ Public Class FBoxDataCallListViewModel
         BlockCommand = New RelayCommand(AddressOf BlockNumbers)
         CallCommand = New RelayCommand(AddressOf Dial, AddressOf CanDial)
         ShowContactCommand = New RelayCommand(AddressOf ShowContact, AddressOf CanShowContact)
+        AppointmentCommand = New RelayCommand(AddressOf AddAppointment)
     End Sub
 
     Private Async Sub Init() Implements IFBoxData.Init
@@ -300,22 +302,31 @@ Public Class FBoxDataCallListViewModel
 
 #Region "Kontakt Anzeigen"
     Private Sub ShowContact(o As Object)
-        Dim AnrufListetListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
+        Dim AnrufListeListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
 
-        For Each Anruf In AnrufListetListe
+        For Each Anruf In AnrufListeListe
             DatenService.ShowXMLContact(Anruf.CallItem)
         Next
     End Sub
 
     Private Function CanShowContact(o As Object) As Boolean
         If o IsNot Nothing Then
-            Dim AnrufListetListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
-            Return AnrufListetListe.Any AndAlso AnrufListetListe.First.Gegenstelle.IsNotStringNothingOrEmpty
+            Dim AnrufListeListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
+            Return AnrufListeListe.Any AndAlso AnrufListeListe.First.Gegenstelle.IsNotStringNothingOrEmpty
         Else
             Return False
         End If
     End Function
 #End Region
 
+#Region "Anruftermin"
+    Private Sub AddAppointment(o As Object)
+        Dim AnrufListeListe As IEnumerable(Of CallViewModel) = From a In CType(o, IList).Cast(Of CallViewModel)().ToList
+
+        For Each Anruf In AnrufListeListe
+            DatenService.SetAppointment(Anruf.CallItem)
+        Next
+    End Sub
+#End Region
 #End Region
 End Class
