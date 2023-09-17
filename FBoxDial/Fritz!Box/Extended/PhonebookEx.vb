@@ -25,10 +25,10 @@ Public Class PhonebookEx
     ''' </summary>
     Friend Property CallBarringBook As Boolean = False
 
-    ''' <summary>
-    ''' Angabe, ob das Telefonbuch als Rufsperre genutzt wird.
-    ''' </summary>
-    Friend Property Rufsperre As Boolean = False
+    '''' <summary>
+    '''' Angabe, ob das Telefonbuch als Rufsperre genutzt wird.
+    '''' </summary>
+    'Friend Property Rufsperre As Boolean = False
 
     ''' <summary>
     ''' Angabe, ob das Telefonbuch via DAV synchronisiert wird.

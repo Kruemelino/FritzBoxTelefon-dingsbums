@@ -36,6 +36,13 @@ Namespace Telefonbücher
 
                 ' Prüfe, ob der Sperreintrag überhaupt Nummern hat.
                 If .Telephony.Numbers.Any Then
+                    ' Fügen den neuen Sperreintrag dem heruntergeladenen Telefonbuch hinzu
+                    'With Globals.ThisAddIn.PhoneBookXML.Where(Function(Buch) Buch.CallBarringBook)
+                    '    If .Any Then
+                    '        .First.AddContact(Sperreintrag)
+                    '    End If
+                    'End With
+
                     ' lade den Sperreintrag hoch
                     Return Globals.ThisAddIn.FBoxTR064.X_contact.SetCallBarringEntry(Sperreintrag.GetXMLKontakt, UID)
                 Else
@@ -60,7 +67,6 @@ Namespace Telefonbücher
         ''' </summary>
         ''' <param name="OutlookKontakte">Auflistung von Sperrlisteneinträgen</param>
         Friend Async Sub AddToCallBarring(OutlookKontakte As IEnumerable(Of ContactItem))
-
 
             ' Erzeuge für jeden Kontakt einen Eintrag
             For Each Kontakt In OutlookKontakte
@@ -187,27 +193,60 @@ Namespace Telefonbücher
         ''' </summary>
         ''' <param name="TelNr">Zu prüfende Nummer</param>
         Friend Function IsFBoxBlocked(TelNr As Telefonnummer) As Boolean
-            Dim DeflectionList As New FBoxAPI.DeflectionList
 
             If Globals.ThisAddIn.FBoxTR064?.Ready Then
+
+                ' Ist die Nummer auf der Rufsperre der Fritz!Box
+                If IsNumOnCallBarringList(TelNr.Unformatiert) Then Return True
+
+                Dim DeflectionList As New FBoxAPI.DeflectionList
 
                 ' Lade alle Rufbehandlungen herunter
                 If Globals.ThisAddIn.FBoxTR064.X_contact.GetDeflections(DeflectionList) Then
 
-                    If TelNr.Unterdrückt Then
-                        ' Abfrage, ob unterdrückte Nummern generell nicht signalisiert werden.
-                        ' Finde eine Rufbehandlung, nach der unterdrückte Nummern (DeflectionType.fromAnonymous) nicht signalisiert (DeflectionMode.eNoSignal) werden.
-                        Return DeflectionList.Deflections.Find(Function(D) D.Enable AndAlso
-                                                                           D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal And
-                                                                           D.Type = FBoxAPI.DeflectionTypeEnum.fromAnonymous) IsNot Nothing
+                    ' Filtere alle aktiven Rufbehandlungen, die zur Rufsperre dienen
+                    With DeflectionList.Deflections.Where(Function(D) D.Enable AndAlso D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal)
 
-                    Else
-                        Return Globals.ThisAddIn.PhoneBookXML.GetSperrTelefonbücher.Contains(TelNr)
-                    End If
+                        If .Any Then ' Es gibt aktive Rufbehandlungen, die zur Rufsperre dienen
 
+                            ' Unterscheidung: Rufnummer unterdrückt
+                            If TelNr.Unterdrückt Then
+                                ' 2. Abfrage, ob unterdrückte Nummern generell nicht signalisiert werden.
+                                ' Finde eine Rufbehandlung, nach der unterdrückte Nummern (DeflectionType.fromAnonymous) nicht signalisiert (DeflectionMode.eNoSignal) werden.
+                                Return .Where(Function(D) D.Type = FBoxAPI.DeflectionTypeEnum.fromAnonymous).Any
+                            Else
+
+                                ' Prüfe, ob Rufsperren für gesamte Telefonbücher vorhanden sind.
+                                With .Where(Function(D) D.Type = FBoxAPI.DeflectionTypeEnum.fromPB)
+                                    ' Ermittle alle Telefonbücher, die zur Rufsperre dienen und prüfe, ob die Telefonnummer enthalten ist.
+                                    If .Any AndAlso .Select(Function(DEF) Globals.ThisAddIn.PhoneBookXML.Where(Function(PB) PB.ID.AreEqual(DEF.PhonebookID.ToInt)).First).Contains(TelNr) Then
+                                        NLogger.Debug($"Die Nummer '{TelNr.Unformatiert}' ist in einem Telefonbuch enthalten, welches als Rufsperre dient.")
+                                        Return True
+                                    End If
+                                End With
+
+                                ' Rufsperre für Nummern, die mit Zeichenfolge beginnen
+                                With .Where(Function(D) D.Type = FBoxAPI.DeflectionTypeEnum.fromNumber AndAlso TelNr.Unformatiert.StartsWith(D.Number))
+                                    If .Any Then
+                                        NLogger.Debug($"Für die Nummer '{TelNr.Unformatiert}' existiert eine passende Rufbehandlung { .First.DeflectionId}: { .First.Number}")
+                                        Return True
+                                    End If
+                                End With
+
+                                ' Rufsperre für alle eingehenden Telefonate, die nicht auf dem Telefonbuch sind
+                                With .Where(Function(D) D.Type = FBoxAPI.DeflectionTypeEnum.fromNotInPhonebook AndAlso Not Globals.ThisAddIn.PhoneBookXML.Contains(TelNr))
+                                    If .Any Then
+                                        NLogger.Debug($"Die Nummer '{TelNr.Unformatiert}' ist in keinem Telefonbuch enthalten (Rufbehandlung: { .First.DeflectionId} { .First.Type})")
+                                        Return True
+                                    End If
+                                End With
+                            End If
+                        End If
+                    End With
                 End If
 
             End If
+
             Return False
         End Function
 #End Region
