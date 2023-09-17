@@ -160,6 +160,12 @@ Imports Microsoft.Office.Interop
         End Get
     End Property
 
+    <XmlElement> Public ReadOnly Property NameGegenstelle As String
+        Get
+            Return If(AnruferName.IsNotStringNothingOrEmpty, AnruferName, If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert))
+        End Get
+    End Property
+
 #End Region
 
 #Region "Boolean"
@@ -386,17 +392,14 @@ Imports Microsoft.Office.Interop
                 End If
 
             End Try
+
             Return OKontakt
         End Get
         Set
             SetProperty(OKontakt, Value)
-        End Set
-    End Property
 
-    <XmlElement> Public ReadOnly Property NameGegenstelle As String
-        Get
-            Return If(AnruferName.IsNotStringNothingOrEmpty, AnruferName, If(NrUnterdrückt, Localize.LocAnrMon.strNrUnterdrückt, GegenstelleTelNr.Formatiert))
-        End Get
+            OnPropertyChanged(NameOf(OlKontakt))
+        End Set
     End Property
 
     <XmlIgnore> Private Property PopUpAnrMonWPF As AnrMonWPF
