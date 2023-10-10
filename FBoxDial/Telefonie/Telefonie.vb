@@ -1,7 +1,6 @@
 ﻿Imports System.Xml.Serialization
 Imports System.Threading.Tasks
 Imports FBoxDial.DfltWerteTelefonie
-Imports System.Collections
 
 <Serializable()> Public Class Telefonie
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger

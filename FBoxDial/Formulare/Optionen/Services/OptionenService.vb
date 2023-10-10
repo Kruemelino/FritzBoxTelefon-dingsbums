@@ -42,13 +42,24 @@ Friend Class OptionenService
         Dim FritzBoxUsers As New FBoxAPI.UserList
 
         If Globals.ThisAddIn.FBoxTR064?.Ready Then
-            If Globals.ThisAddIn.FBoxTR064.LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
-                UserList.AddRange(FritzBoxUsers.UserListe)
 
-                NLogger.Trace($"Userliste ermittelt: {XMLString}")
-            Else
-                NLogger.Trace("Userliste nicht ermittelt")
-            End If
+            With Globals.ThisAddIn.FBoxTR064
+                If .LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
+
+                    NLogger.Trace($"Userliste ermittelt: {XMLString}")
+
+                    ' Frage ab, ob die Liste User enthält.
+                    If FritzBoxUsers.UserListe.Any Then
+                        UserList.AddRange(FritzBoxUsers.UserListe)
+                    Else
+                        UserList.Add(New FBoxAPI.User With {.UserName = XMLData.POptionen.TBBenutzer})
+                    End If
+
+                Else
+                    NLogger.Trace("Userliste nicht ermittelt")
+                End If
+            End With
+
         Else
             NLogger.Trace("Userliste nicht ermittelt, da TR064 nicht verfügbar.")
         End If

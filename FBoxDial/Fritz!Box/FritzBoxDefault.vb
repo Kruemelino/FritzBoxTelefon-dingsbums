@@ -32,7 +32,7 @@
                         Dim XMLString As String = String.Empty
                         Dim FritzBoxUsers As New FBoxAPI.UserList
 
-                        If .LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) Then
+                        If .LANConfigSecurity.GetUserList(XMLString) AndAlso DeserializeXML(XMLString, False, FritzBoxUsers) AndAlso FritzBoxUsers.UserListe.Any Then
                             NLogger.Info($"Benutzername zum Login auf zuletzt genutzten User gesetzt: '{FritzBoxUsers.GetLastUsedUser.UserName}'")
                             Return FritzBoxUsers.GetLastUsedUser.UserName
                         Else
