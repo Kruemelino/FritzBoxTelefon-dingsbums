@@ -189,7 +189,7 @@ Namespace Telefonbücher
         End Function
 
         ''' <summary>
-        ''' Überprüft, ob sich die Telefonnummer auf der Fitz!Box Sperrliste befindet.
+        ''' Überprüft, ob die Telefonnummer durch die Fitz!Box gesperrt ist. Hierzu wird die Sperrliste abgefragt und alle Rufbehandlungen geprüft, die zur Rufsperre dienen.
         ''' </summary>
         ''' <param name="TelNr">Zu prüfende Nummer</param>
         Friend Function IsFBoxBlocked(TelNr As Telefonnummer) As Boolean
@@ -203,6 +203,10 @@ Namespace Telefonbücher
 
                 ' Lade alle Rufbehandlungen herunter
                 If Globals.ThisAddIn.FBoxTR064.X_contact.GetDeflections(DeflectionList) Then
+
+                    ' Temporäres Ausgeben der aktuellen Rufbehandlungen 
+                    'Dim r As String = String.Empty
+                    'If XmlSerializeToString(DeflectionList, r) Then NLogger.Debug($"Aktuelle Rufbehandlungen: {r}")
 
                     ' Filtere alle aktiven Rufbehandlungen, die zur Rufsperre dienen
                     With DeflectionList.Deflections.Where(Function(D) D.Enable AndAlso D.Mode = FBoxAPI.DeflectionModeEnum.eNoSignal)

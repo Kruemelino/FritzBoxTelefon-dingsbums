@@ -49,23 +49,31 @@ Friend Module FritzBoxAnrufliste
     End Function
 #End Region
 
-    Friend Async Function ErstelleTelefonat([Call] As FBoxAPI.Call) As Task(Of Telefonat)
+    ''' <summary>
+    ''' Erstellt ein Telefonat-Objekt aus einem Eintrag der Fritz!Box Anrufliste
+    ''' </summary>
+    ''' <param name="Anruf">Der Anruf, der umgewandelt werden soll.</param>
+    Friend Async Function ErstelleTelefonat(Anruf As FBoxAPI.Call) As Task(Of Telefonat)
 
-        If [Call].Type.IsLessOrEqual(3) Or [Call].Type.AreEqual(10) Then
+        ' TODO: Temporäres Ausgeben des aktuellen Anrufes 
+        Dim r As String = String.Empty
+        If XmlSerializeToString(Anruf, r) Then NLogger.Debug($"Aktueller Anruf: {r}")
+
+        If Anruf.Type.IsLessOrEqual(3) Or Anruf.Type.AreEqual(10) Then
 
             Dim tmpTelefonat As New Telefonat With {.Import = True,
-                                                    .ID = [Call].ID,
-                                                    .NebenstellenNummer = [Call].Port,
-                                                    .ZeitBeginn = CDate([Call].[Date].ToString)}
+                                                    .ID = Anruf.ID,
+                                                    .NebenstellenNummer = Anruf.Port,
+                                                    .ZeitBeginn = CDate(Anruf.Date.ToString)}
 
             With tmpTelefonat
 
-                If [Call].Type.AreEqual(1) Or [Call].Type.AreEqual(3) Then ' incoming, outgoing
+                If Anruf.Type.AreEqual(1) Or Anruf.Type.AreEqual(3) Then ' incoming, outgoing
                     ' Es wird auch nach dem Namen des Gerätes gesucht, wenn über den Port nichts gefunden wurde.
-                    .SetTelefoniegerät([Call].Device)
+                    .SetTelefoniegerät(Anruf.Device)
 
                     ' Umwandlung von "hh:mm" in Sekundenwert
-                    With CDate([Call].Duration)
+                    With CDate(Anruf.Duration)
                         tmpTelefonat.Dauer = New TimeSpan(.Hour, .Minute, .Second).TotalSeconds.ToInt
                     End With
 
@@ -79,61 +87,61 @@ Friend Module FritzBoxAnrufliste
 
                 End If
 
-                If [Call].Type.AreEqual(1) Or [Call].Type.AreEqual(2) Or [Call].Type.AreEqual(10) Then ' incoming, missed, rejected
+                If Anruf.Type.AreEqual(1) Or Anruf.Type.AreEqual(2) Or Anruf.Type.AreEqual(10) Then ' incoming, missed, rejected
                     .AnrufRichtung = Telefonat.AnrufRichtungen.Eingehend
 
                     ' Own Number of called party (incoming call)
-                    .EigeneTelNr = XMLData.PTelefonie.GetEigeneTelNr([Call].CalledNumber)
+                    .EigeneTelNr = XMLData.PTelefonie.GetEigeneTelNr(Anruf.CalledNumber)
 
                     ' Falls keine Nummer übereinstimmt, dann setze den tmpTelNr
                     If .EigeneTelNr Is Nothing Then
-                        NLogger.Warn($"Eigene Nummer '{[Call].CalledNumber}' ist nicht bekannt (ID: { .ID}).")
-                        .EigeneTelNr = New Telefonnummer With {.SetNummer = [Call].CalledNumber}
+                        NLogger.Warn($"Eigene Nummer '{Anruf.CalledNumber}' ist nicht bekannt (ID: { .ID}).")
+                        .EigeneTelNr = New Telefonnummer With {.SetNummer = Anruf.CalledNumber}
                     End If
 
                     ' Wert für Serialisierung in separater Eigenschaft ablegen
                     .OutEigeneTelNr = .EigeneTelNr.Unformatiert
 
                     ' Number of calling party 
-                    .GegenstelleTelNr = New Telefonnummer With {.SetNummer = [Call].Caller}
+                    .GegenstelleTelNr = New Telefonnummer With {.SetNummer = Anruf.Caller}
                     .NrUnterdrückt = .GegenstelleTelNr.Unterdrückt
 
                     ' Merke den Pfad zur TAM-Message bzw. FAX nachricht
-                    .TAMMessagePath = [Call].Path
+                    .TAMMessagePath = Anruf.Path
 
                 End If
 
-                If [Call].Type.AreEqual(3) Then 'outgoing
+                If Anruf.Type.AreEqual(3) Then 'outgoing
                     .AnrufRichtung = Telefonat.AnrufRichtungen.Ausgehend
                     ' Own Number of called party (outgoing call) 
-                    .EigeneTelNr = XMLData.PTelefonie.GetEigeneTelNr([Call].CallerNumber)
+                    .EigeneTelNr = XMLData.PTelefonie.GetEigeneTelNr(Anruf.CallerNumber)
 
                     ' Falls keine Nummer übereinstimmt, dann setze den tmpTelNr
                     If .EigeneTelNr Is Nothing Then
-                        NLogger.Warn($"Eigene Nummer '{[Call].CallerNumber}' ist nicht bekannt (ID: { .ID}).")
-                        .EigeneTelNr = New Telefonnummer With {.SetNummer = [Call].CallerNumber}
+                        NLogger.Warn($"Eigene Nummer '{Anruf.CallerNumber}' ist nicht bekannt (ID: { .ID}).")
+                        .EigeneTelNr = New Telefonnummer With {.SetNummer = Anruf.CallerNumber}
                     End If
 
                     ' Wert für Serialisierung in separater Eigenschaft ablegen
                     .OutEigeneTelNr = .EigeneTelNr.Unformatiert
 
                     ' Number or name of called party  
-                    .GegenstelleTelNr = New Telefonnummer With {.SetNummer = [Call].Called}
+                    .GegenstelleTelNr = New Telefonnummer With {.SetNummer = Anruf.Called}
 
                 End If
 
                 ' Anrufer ermitteln
-                If [Call].Name.IsNotStringNothingOrEmpty Then .AnruferName = [Call].Name
+                If Anruf.Name.IsNotStringNothingOrEmpty Then .AnruferName = Anruf.Name
 
                 If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unterdrückt Then
                     Await .KontaktSucheTask(False)
                 End If
 
-                If [Call].Type.AreEqual(2) Or [Call].Type.AreEqual(10) Then .Angenommen = False ' missed, rejected
+                If Anruf.Type.AreEqual(2) Or Anruf.Type.AreEqual(10) Then .Angenommen = False ' missed, rejected
 
-                If [Call].Type.AreEqual(10) Then .Blockiert = True ' rejected
+                If Anruf.Type.AreEqual(10) Then .Blockiert = True ' rejected
 
-                If [Call].Type.AreEqual(9) Or [Call].Type.AreEqual(10) Or [Call].Type.AreEqual(11) Then
+                If Anruf.Type.AreEqual(9) Or Anruf.Type.AreEqual(10) Or Anruf.Type.AreEqual(11) Then
                     ' 9 active incoming,
                     ' 11 active outgoing 
 

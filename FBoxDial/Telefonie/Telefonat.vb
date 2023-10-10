@@ -274,7 +274,7 @@ Imports Microsoft.Office.Interop
             '            Return True
             '        Else
             '            ' Das Telefonat wird blockiert
-            '            NLogger.Trace($"Die Gegenstelle '{GegenstelleTelNr.Unformatiert}' wird durch die Fritz!Box  blockiert.")
+            '            NLogger.Trace($"Die Gegenstelle '{GegenstelleTelNr.Unformatiert}' wird durch die Fritz!Box blockiert.")
             '            ' Sofern die Einstellungen gesetzt sind, dass blockierte Nummern dennoch erfasst werden sollen...
             '            NLogger.Trace($"Einstellungen: CBJournalBlockNr={XMLData.POptionen.CBJournalBlockNr} CBAnrMonBlockNr={XMLData.POptionen.CBAnrMonBlockNr}")
             '            Return XMLData.POptionen.CBJournalBlockNr Or XMLData.POptionen.CBAnrMonBlockNr
