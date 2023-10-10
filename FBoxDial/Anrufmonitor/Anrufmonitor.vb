@@ -39,7 +39,8 @@ Friend Class Anrufmonitor
 
         If IPAddress.TryParse(FBoxIP, IP) Then
             If Ping(IP.ToString) Then
-                Dim TC As New TcpClient With {.ExclusiveAddressUse = False}
+                ' Für die Unterscheidung, ob IPv4 oder IPv6 muss die AddressFamily der übergebenen IP dem TcpClient übergeben werden.
+                Dim TC As New TcpClient(IP.AddressFamily) With {.ExclusiveAddressUse = False}
 
                 Try
                     TC.Connect(New IPEndPoint(IP, AnrMon_Port))

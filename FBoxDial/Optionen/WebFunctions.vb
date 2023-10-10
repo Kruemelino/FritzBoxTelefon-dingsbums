@@ -13,7 +13,7 @@ Friend Module WebFunctions
     Friend Function Ping(ByRef IPAdresse As String) As Boolean
         Ping = False
 
-        Dim IPHostInfo As IPHostEntry
+        'Dim IPHostInfo As IPHostEntry
         Dim PingSender As New NetworkInformation.Ping()
         Dim Options As New NetworkInformation.PingOptions() With {.DontFragment = True}
         Dim PingReply As NetworkInformation.PingReply = Nothing
@@ -31,17 +31,17 @@ Friend Module WebFunctions
             With PingReply
                 If .Status = NetworkInformation.IPStatus.Success Then
                     If .Address.AddressFamily = Sockets.AddressFamily.InterNetworkV6 Then
-                        'Zugehörige IPv4 ermitteln
-                        IPHostInfo = Dns.GetHostEntry(.Address)
-                        For Each _IPAddress As IPAddress In IPHostInfo.AddressList
-                            If _IPAddress.AddressFamily = Sockets.AddressFamily.InterNetwork Then
-                                IPAdresse = _IPAddress.ToString
-                                ' Prüfen ob es eine generel gültige lokale IPv6 Adresse gibt: fd00::2665:11ff:fed8:6086
-                                ' und wie die zu ermitteln ist
-                                NLogger.Info($"IPv6: { .Address}, IPv4: {IPAdresse}")
-                                Exit For
-                            End If
-                        Next
+                        IPAdresse = $"[{ .Address}]"
+                        ''Zugehörige IPv4 ermitteln
+                        'IPHostInfo = Dns.GetHostEntry(.Address)
+                        'For Each _IPAddress As IPAddress In IPHostInfo.AddressList
+                        '    If _IPAddress.AddressFamily = Sockets.AddressFamily.InterNetwork Then
+                        '        IPAdresse = _IPAddress.ToString
+
+                        '        NLogger.Info($"IPv6: { .Address}, IPv4: {IPAdresse}")
+                        '        Exit For
+                        '    End If
+                        'Next
                     Else
                         IPAdresse = .Address.ToString
                     End If
@@ -95,7 +95,7 @@ Friend Module WebFunctions
                     End If
                 Next
             Catch ex As Exception
-                NLogger.Warn(ex, $"Die Adresse '{XMLData.POptionen.TBFBAdr}' kann nicht zugeordnet werden.")
+                NLogger.Warn(ex, $"Die Adresse '{InputIP}' kann nicht zugeordnet werden.")
                 ValidIP = XMLData.POptionen.TBFBAdr
             End Try
         End If

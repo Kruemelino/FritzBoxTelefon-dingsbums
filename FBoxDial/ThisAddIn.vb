@@ -1,6 +1,5 @@
 ﻿Imports System.Net
 Imports System.Threading.Tasks
-Imports System.Xml
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop.Outlook
 
