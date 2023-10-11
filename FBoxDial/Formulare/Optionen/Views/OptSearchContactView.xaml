@@ -6,7 +6,7 @@
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400"
+             d:DesignHeight="600" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance Type=fbd:OptSearchContactViewModel, IsDesignTimeCreatable=False}">
     
     <UserControl.Resources>
@@ -37,82 +37,103 @@
                   Content="{x:Static localize:LocOptionen.strCBShowIndexEntries}" 
                   IsChecked="{Binding OptVM.CBShowIndexEntries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock Style="{StaticResource OptHeader}" 
-                   Text="{x:Static localize:LocOptionen.strSearchContactHeadIndex}"/>
+        <Expander Header="{x:Static localize:LocOptionen.strSearchContactHeadIndex}" IsExpanded="True">
+            <StackPanel>
+                <fbd:OutlookFolderView DataContext="{Binding Root}" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <RadioButton Content="{x:Static localize:LocOptionen.strSearchContactIndex}" 
+                                 Grid.Column="0" Grid.Row="0" 
+                                 HorizontalAlignment="Center" 
+                                 IsChecked="{Binding IndexModus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 GroupName="Index"/>
+
+                    <RadioButton Content="{x:Static localize:LocOptionen.strSearchContactDeIndex}" 
+                                 Grid.Column="1" Grid.Row="0"
+                                 HorizontalAlignment="Center"
+                                 GroupName="Index"/>
+
+                    <Button Content="{x:Static localize:LocOptionen.strSearchContactIndexStart}" 
+                            Grid.Column="0" Grid.Row="1"  
+                            Margin="4"
+                            Command="{Binding IndexCommand}" 
+                            IsEnabled="{Binding Path=IsNotAktiv, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+
+                    <Button Content="{x:Static localize:LocOptionen.strSearchContactIndexCancel}" 
+                            Grid.Column="1" Grid.Row="1" 
+                            Margin="4" 
+                            Command="{Binding CancelCommand}"
+                            IsEnabled="{Binding Path=IsAktiv, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+
+                    <ProgressBar Height="16" Margin="4"
+                                 Grid.Column="0"  Grid.Row="2" 
+                                 Style="{StaticResource OptProgressBar}"
+                                 Value="{Binding Path=IndexProgressValue, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                 Maximum="{Binding Path=IndexProgressMax, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+                    <TextBlock Grid.Column="1" 
+                               Grid.Row="2" 
+                               Margin="4"
+                               Text="{Binding IndexStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+                    <TextBox Style="{StaticResource ConsoleTextBox}" 
+                             Grid.Row="4" Grid.ColumnSpan="2"
+                             Text="{Binding ExIndexStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+
+                </Grid>
+            </StackPanel>
+        </Expander>   
         
-        <fbd:OutlookFolderView DataContext="{Binding Root}" />
+        <Expander Header="{x:Static localize:LocOptionen.strSearchContactHeadRWS}">
+            <StackPanel>
+                <TextBlock Style="{StaticResource OptHeader}" 
+                           Text="{x:Static localize:LocOptionen.strSearchContactHeadRWS}"/>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strSearchContactCBRWS}" 
+                          IsChecked="{Binding OptVM.CBRWS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>                
-            </Grid.RowDefinitions>
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strSearchContactCBRWSIndex}" 
+                          IsChecked="{Binding OptVM.CBRWSIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Expander>
 
-            <RadioButton Content="{x:Static localize:LocOptionen.strSearchContactIndex}" 
-                         Grid.Column="0" 
-                         Grid.Row="0" 
-                         HorizontalAlignment="Center" 
-                         IsChecked="{Binding IndexModus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         GroupName="Index"/>           
-            
-            <RadioButton Content="{x:Static localize:LocOptionen.strSearchContactDeIndex}" 
-                         Grid.Column="1" 
-                         Grid.Row="0" 
-                         HorizontalAlignment="Center"
-                         GroupName="Index"/>
-            
-            <Button Content="{x:Static localize:LocOptionen.strSearchContactIndexStart}" 
-                    Grid.Column="0" 
-                    Grid.Row="1"  
-                    Margin="4"
-                    Command="{Binding IndexCommand}" 
-                    IsEnabled="{Binding Path=IsNotAktiv, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-            
-            <Button Content="{x:Static localize:LocOptionen.strSearchContactIndexCancel}" 
-                    Grid.Column="1" 
-                    Grid.Row="1" 
-                    Margin="4" 
-                    Command="{Binding CancelCommand}"
-                    IsEnabled="{Binding Path=IsAktiv, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+        <Expander Header="{x:Static localize:LocOptionen.strSearchContactHeaderForm}">
+            <StackPanel>
+                <Label Style="{StaticResource OptHintTextBlock}" 
+                       Content="{x:Static localize:LocOptionen.strBaseTweakKeyboardInfo}"/>
 
-            <ProgressBar Height="16" 
-                         Grid.Column="0" 
-                         Grid.Row="2" 
-                         Margin="4"
-                         Style="{StaticResource OptProgressBar}"
-                         Value="{Binding Path=IndexProgressValue, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                         Maximum="{Binding Path=IndexProgressMax, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strBaseTweakKeyboard}" 
+                          IsChecked="{Binding OptVM.CBKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBlock Grid.Column="1" 
-                       Grid.Row="2" 
-                       Margin="4"
-                       Text="{Binding IndexStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strBaseTweakKeyboardModifierShift}" 
+                          IsChecked="{Binding OptVM.CBKeyboardModifierShift, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsEnabled="{Binding OptVM.CBKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBox Style="{StaticResource ConsoleTextBox}" 
-                     Grid.Row="4" Grid.ColumnSpan="2"
-                     Text="{Binding ExIndexStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                <CheckBox Style="{StaticResource OptCheckBox}" 
+                          Content="{x:Static localize:LocOptionen.strBaseTweakKeyboardModifierControl}" 
+                          IsChecked="{Binding OptVM.CBKeyboardModifierControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsEnabled="{Binding OptVM.CBKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        </Grid>
-
-        <TextBlock Style="{StaticResource OptHeader}" 
-                   Text="{x:Static localize:LocOptionen.strSearchContactHeadRWS}"/>
-
-        <CheckBox Style="{StaticResource OptCheckBox}" 
-                  Content="{x:Static localize:LocOptionen.strSearchContactCBRWS}" 
-                  IsChecked="{Binding OptVM.CBRWS, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
-        <CheckBox Style="{StaticResource OptCheckBox}" 
-                  Content="{x:Static localize:LocOptionen.strSearchContactCBRWSIndex}" 
-                  IsChecked="{Binding OptVM.CBRWSIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strTBFormSearchMinLength}"
+                         Text="{Binding OptVM.TBFormSearchMinLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Expander>
     </StackPanel>
-
-
 </UserControl>

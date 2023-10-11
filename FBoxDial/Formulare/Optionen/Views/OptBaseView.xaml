@@ -173,24 +173,6 @@
             <StackPanel>
 
                 <Label Style="{StaticResource OptHintTextBlock}" 
-                       Content="{x:Static localize:LocOptionen.strBaseTweakKeyboardInfo}"/>
-
-                <CheckBox Style="{StaticResource OptCheckBox}" 
-                          Content="{x:Static localize:LocOptionen.strBaseTweakKeyboard}" 
-                          IsChecked="{Binding OptVM.CBKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <CheckBox Style="{StaticResource OptCheckBox}" 
-                          Content="{x:Static localize:LocOptionen.strBaseTweakKeyboardModifierShift}" 
-                          IsChecked="{Binding OptVM.CBKeyboardModifierShift, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          IsEnabled="{Binding OptVM.CBKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                
-                <CheckBox Style="{StaticResource OptCheckBox}" 
-                          Content="{x:Static localize:LocOptionen.strBaseTweakKeyboardModifierControl}" 
-                          IsChecked="{Binding OptVM.CBKeyboardModifierControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          IsEnabled="{Binding OptVM.CBKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-
-                <Label Style="{StaticResource OptHintTextBlock}" 
                        Content="{x:Static localize:LocOptionen.strBaseTweakDisableMailCheckInfo}"/>
                 
                 <CheckBox Style="{StaticResource OptCheckBox}" 

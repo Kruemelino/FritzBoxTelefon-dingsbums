@@ -1623,6 +1623,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Kontaktsuche - Formular ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSearchContactHeaderForm() As String
+            Get
+                Return ResourceManager.GetString("strSearchContactHeaderForm", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Outlook Kontaktindizierung ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strSearchContactHeadIndex() As String
@@ -1762,6 +1771,15 @@ Namespace Localize
         Public Shared ReadOnly Property strTBFBSecAdr() As String
             Get
                 Return ResourceManager.GetString("strTBFBSecAdr", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Mindestanzahl an eingegebenen Zeichen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTBFormSearchMinLength() As String
+            Get
+                Return ResourceManager.GetString("strTBFormSearchMinLength", resourceCulture)
             End Get
         End Property
         

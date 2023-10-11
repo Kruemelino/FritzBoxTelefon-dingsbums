@@ -89,12 +89,6 @@
 
 #Region "Grundeinstlleungen - Tweaks"
     ''' <summary>
-    ''' Gibt an, ob die Tastatursteuerung aktiviert werden soll.
-    ''' </summary>
-    <XmlElement("CBKeyboard")> Public Property CBKeyboard As Boolean = True
-    <XmlElement("CBKeyboardModifierShift")> Public Property CBKeyboardModifierShift As Boolean = False
-    <XmlElement("CBKeyboardModifierControl")> Public Property CBKeyboardModifierControl As Boolean = False
-    ''' <summary>
     ''' Gibt an, ob bei der Prüfung des Enabled-State des Wählenbuttons im Ribbon deaktiviert wird.
     ''' Dies ist bei verzögertem E-Mail versand notwendig.
     ''' </summary>
@@ -259,6 +253,20 @@
     <XmlElement("CBTellowsEntryNumberCount")> Public Property CBTellowsEntryNumberCount As Integer = 10
     <XmlElement("LetzteSperrlistenaktualsierung")> Public Property LetzteSperrlistenAktualisierung As Date = Now
     <XmlElement("TBTellowsApiKeyGütigBis")> Public Property TBTellowsApiKeyGütigBis As Date = Now
+#End Region
+
+#Region "Einstellungen für die Kontaktsuche - Formular"
+    ''' <summary>
+    ''' Gibt an, ob die Tastatursteuerung aktiviert werden soll.
+    ''' </summary>
+    <XmlElement("CBKeyboard")> Public Property CBKeyboard As Boolean = True
+    <XmlElement("CBKeyboardModifierShift")> Public Property CBKeyboardModifierShift As Boolean = False
+    <XmlElement("CBKeyboardModifierControl")> Public Property CBKeyboardModifierControl As Boolean = False
+
+    ''' <summary>
+    ''' Gibt die Mindestanzahl an eingegebenen Buchstaben für die Kontaktsuche an.
+    ''' </summary>
+    <XmlElement("TBFormSearchMinLength")> Public Property TBFormSearchMinLength As Integer = 1
 #End Region
 #End Region
 

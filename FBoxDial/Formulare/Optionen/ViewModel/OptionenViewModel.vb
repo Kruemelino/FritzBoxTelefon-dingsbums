@@ -877,6 +877,49 @@ Public Class OptionenViewModel
 
     Public ReadOnly Property CBoxTellowsScore As IEnumerable(Of Integer) = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 #End Region
+
+#Region "Einstellungen für die Kontaktsuche - Formular"
+    Private _CBKeyboard As Boolean
+    Public Property CBKeyboard As Boolean
+        Get
+            Return _CBKeyboard
+        End Get
+        Set
+            SetProperty(_CBKeyboard, Value)
+        End Set
+    End Property
+
+    Private _CBKeyboardModifierShift As Boolean
+    Public Property CBKeyboardModifierShift As Boolean
+        Get
+            Return _CBKeyboardModifierShift
+        End Get
+        Set
+            SetProperty(_CBKeyboardModifierShift, Value)
+        End Set
+    End Property
+
+    Private _CBKeyboardModifierControl As Boolean
+    Public Property CBKeyboardModifierControl As Boolean
+        Get
+            Return _CBKeyboardModifierControl
+        End Get
+        Set
+            SetProperty(_CBKeyboardModifierControl, Value)
+        End Set
+    End Property
+
+    Private _TBFormSearchMinLength As Integer
+    Public Property TBFormSearchMinLength As Integer
+        Get
+            Return _TBFormSearchMinLength
+        End Get
+        Set
+            SetProperty(_TBFormSearchMinLength, Value)
+        End Set
+    End Property
+
+#End Region
 #End Region
 
 #Region "Auswertung der Fritz!box Anrufliste"
@@ -1017,36 +1060,6 @@ Public Class OptionenViewModel
 #End Region
 
 #Region "Tweaks"
-    Private _CBKeyboard As Boolean
-    Public Property CBKeyboard As Boolean
-        Get
-            Return _CBKeyboard
-        End Get
-        Set
-            SetProperty(_CBKeyboard, Value)
-        End Set
-    End Property
-
-    Private _CBKeyboardModifierShift As Boolean
-    Public Property CBKeyboardModifierShift As Boolean
-        Get
-            Return _CBKeyboardModifierShift
-        End Get
-        Set
-            SetProperty(_CBKeyboardModifierShift, Value)
-        End Set
-    End Property
-
-    Private _CBKeyboardModifierControl As Boolean
-    Public Property CBKeyboardModifierControl As Boolean
-        Get
-            Return _CBKeyboardModifierControl
-        End Get
-        Set
-            SetProperty(_CBKeyboardModifierControl, Value)
-        End Set
-    End Property
-
     Private _CBDisableMailCheck As Boolean
     Public Property CBDisableMailCheck As Boolean
         Get

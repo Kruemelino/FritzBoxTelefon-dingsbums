@@ -826,6 +826,10 @@ HInweis: Es wird bei Auswahl der Anwendung eine "Windows-Befehlsprozessor" (cmd)
     <value>Deindizieren</value>
     <comment>OptSearchContactView</comment>
   </data>
+  <data name="strSearchContactHeaderForm" xml:space="preserve">
+    <value>Kontaktsuche - Formular</value>
+    <comment>OptSearchContactView</comment>
+  </data>
   <data name="strSearchContactHeadIndex" xml:space="preserve">
     <value>Outlook Kontaktindizierung</value>
     <comment>OptSearchContactView</comment>
@@ -893,6 +897,10 @@ Hinweis 3: Das Einfügen von Kontakten per Copy&amp;Paste führt nicht immer daz
   <data name="strTBFBSecAdr" xml:space="preserve">
     <value>Alternative IP-Adresse</value>
     <comment>OptAnrMonView</comment>
+  </data>
+  <data name="strTBFormSearchMinLength" xml:space="preserve">
+    <value>Mindestanzahl an eingegebenen Zeichen</value>
+    <comment>OptSearchContactView</comment>
   </data>
   <data name="strTelephonyHeadImport" xml:space="preserve">
     <value>Einlesen der Telefoniedaten von der Fritz!Box</value>
