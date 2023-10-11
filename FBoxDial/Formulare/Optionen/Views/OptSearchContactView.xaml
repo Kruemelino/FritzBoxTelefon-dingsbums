@@ -131,8 +131,17 @@
                           IsEnabled="{Binding OptVM.CBKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBox Style="{StaticResource OptTextBox}"
-                         Tag="{x:Static localize:LocOptionen.strTBFormSearchMinLength}"
-                         Text="{Binding OptVM.TBFormSearchMinLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                         Tag="{x:Static localize:LocOptionen.strTBFormSearchMinLength}">
+                    <TextBox.Text>
+                        <Binding Path="OptVM.TBFormSearchMinLength"
+                                 Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <fbd:IntValidationRule Min="1" Max="0"/>
+                            </Binding.ValidationRules>
+                        </Binding>                                 
+                    </TextBox.Text>
+                </TextBox>
+                         <!--Text="{Binding OptVM.TBFormSearchMinLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
             </StackPanel>
         </Expander>
     </StackPanel>
