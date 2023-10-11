@@ -29,7 +29,9 @@
 
                 <!--Grid wird eingeblendet, wenn die Benutzerliste seitens der Fritz!Box übermittelt wird.-->
                 <Grid Margin="0,0,0,4"
-                      Visibility="{Binding OptVM.UserListNotHidden, Converter={StaticResource BoolToVisibilityConverter}}">
+                      Visibility="{Binding OptVM.UserListNotHidden, 
+                                           FallbackValue=Visible, 
+                                           Converter={StaticResource BoolToVisibilityConverter}}">
                     
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -58,7 +60,9 @@
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strBaseTBBenutzer}"
                          Text="{Binding OptVM.TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Visibility="{Binding OptVM.UserListHidden, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                         Visibility="{Binding OptVM.UserListHidden, 
+                                              FallbackValue=Collapsed, 
+                                              Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <Label Style="{StaticResource OptHintTextBlock}" 
                        Content="{x:Static localize:LocOptionen.strBaseTBPasswortInfo}"/>
