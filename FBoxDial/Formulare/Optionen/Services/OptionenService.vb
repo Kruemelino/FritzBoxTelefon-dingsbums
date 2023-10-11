@@ -52,7 +52,7 @@ Friend Class OptionenService
                     If FritzBoxUsers.UserListe.Any Then
                         UserList.AddRange(FritzBoxUsers.UserListe)
                     Else
-                        UserList.Add(New FBoxAPI.User With {.UserName = XMLData.POptionen.TBBenutzer})
+                        'UserList.Add(New FBoxAPI.User With {.UserName = XMLData.POptionen.TBBenutzer})
                     End If
 
                 Else

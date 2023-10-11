@@ -2,8 +2,7 @@
 Imports System.Windows
 Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop
-Imports System.Xml.Serialization
-Imports System.Net.Security
+
 ''' <summary>
 ''' https://rachel53461.wordpress.com/2011/12/18/navigation-with-mvvm-2/
 ''' </summary>
@@ -42,7 +41,21 @@ Public Class OptionenViewModel
         End Get
         Set
             SetProperty(_CBoxBenutzer, Value)
+
+            OnPropertyChanged(NameOf(UserListHidden))
+            OnPropertyChanged(NameOf(UserListNotHidden))
         End Set
+    End Property
+    Public ReadOnly Property UserListHidden As Boolean
+        Get
+            Return CBoxBenutzer IsNot Nothing AndAlso Not CBoxBenutzer.Any
+        End Get
+    End Property
+
+    Public ReadOnly Property UserListNotHidden As Boolean
+        Get
+            Return Not UserListHidden
+        End Get
     End Property
 
     Private _TBPasswort As String
@@ -1216,6 +1229,9 @@ Public Class OptionenViewModel
                                             Next
                                         End Sub)
 
+        ' Fritz!Box Benutzer laden
+        CBoxBenutzer = DatenService.LadeFBoxUser()
+
         ' Landes- und Ortskennzahl aus der Telefonie holen
         TBLandesKZ = XMLData.PTelefonie.LKZ
         TBOrtsKZ = XMLData.PTelefonie.OKZ
@@ -1240,9 +1256,6 @@ Public Class OptionenViewModel
         Farben = GetDefaultColors()
 
         Await LadeTask
-
-        ' Fritz!Box Benutzer laden
-        CBoxBenutzer = DatenService.LadeFBoxUser()
 
         ' Aktiviere die Eingabemaske, nachdem alle Daten geladen wurden
         DatenGeladen = True

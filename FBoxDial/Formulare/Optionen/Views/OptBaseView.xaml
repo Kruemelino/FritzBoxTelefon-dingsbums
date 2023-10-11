@@ -26,8 +26,11 @@
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strBaseTBFBAdr}"
                          Text="{Binding OptVM.TBFBAdr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
-                <Grid Margin="0,0,0,4">
+
+                <!--Grid wird eingeblendet, wenn die Benutzerliste seitens der Fritz!Box übermittelt wird.-->
+                <Grid Margin="0,0,0,4"
+                      Visibility="{Binding OptVM.UserListNotHidden, Converter={StaticResource BoolToVisibilityConverter}}">
+                    
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto"/>
@@ -51,6 +54,12 @@
 
                 </Grid>
                 
+                <!--TextBox wird eingeblendet, wenn die Benutzerliste seitens der Fritz!Box nicht übermittelt wird.-->
+                <TextBox Style="{StaticResource OptTextBox}"
+                         Tag="{x:Static localize:LocOptionen.strBaseTBBenutzer}"
+                         Text="{Binding OptVM.TBBenutzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Visibility="{Binding OptVM.UserListHidden, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
                 <Label Style="{StaticResource OptHintTextBlock}" 
                        Content="{x:Static localize:LocOptionen.strBaseTBPasswortInfo}"/>
 
