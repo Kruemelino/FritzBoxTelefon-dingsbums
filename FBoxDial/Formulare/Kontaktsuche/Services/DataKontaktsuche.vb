@@ -12,7 +12,8 @@ Public Class DataKontaktsuche
 
     Private Async Function KontaktSuche(Wort As String) As Task(Of List(Of ContactItem)) Implements IDataKontaktsuche.KontaktSuche
 
-        If Wort.Length.IsLargerOrEqual(XMLData.POptionen.TBFormSearchMinLength) Then
+        ' Überprüfung, ob die mindesteingabelänge der Zeichenfolge erreicht wurde. Zahlen kleiner 1 werden ignoriert.
+        If Wort.Length.IsLargerOrEqual(XMLData.POptionen.TBFormSearchMinLength.GetLarger(1)) Then
 
             If SuchTask IsNot Nothing AndAlso Not SuchTask.IsCompleted Then
                 NLogger.Trace($"SuchTask abgebrochen: Alters Wort: {AltesWort} Neues Wort: {Wort}")
