@@ -252,6 +252,7 @@
     <Compile Include="App.xaml.vb">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\Common\Services\ValidationRules.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\ContactSyncViewModel\OptSyncSetupViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptAppointmentViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptContactSyncViewModel.vb" />
