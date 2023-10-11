@@ -180,5 +180,41 @@ Namespace Localize
                 Return ResourceManager.GetString("strTime", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Es wurde keine Zahl eingegeben oder &apos;{0}&apos; ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strValidationIntChr() As String
+            Get
+                Return ResourceManager.GetString("strValidationIntChr", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der eingegebene Wert ist größer als der Maximalwert von {0} ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strValidationIntLarger() As String
+            Get
+                Return ResourceManager.GetString("strValidationIntLarger", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der eingegebene Wert ist kleiner als der Mindestwert von {0} ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strValidationIntLess() As String
+            Get
+                Return ResourceManager.GetString("strValidationIntLess", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Der Wert muss im Bereich zwischen {0} und {1} liegen. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strValidationIntRange() As String
+            Get
+                Return ResourceManager.GetString("strValidationIntRange", resourceCulture)
+            End Get
+        End Property
     End Class
 End Namespace

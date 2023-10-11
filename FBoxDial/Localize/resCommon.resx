@@ -156,4 +156,16 @@
   <data name="strTime" xml:space="preserve">
     <value>Zeit</value>
   </data>
+  <data name="strValidationIntChr" xml:space="preserve">
+    <value>Es wurde keine Zahl eingegeben oder '{0}'</value>
+  </data>
+  <data name="strValidationIntLarger" xml:space="preserve">
+    <value>Der eingegebene Wert ist größer als der Maximalwert von {0}</value>
+  </data>
+  <data name="strValidationIntLess" xml:space="preserve">
+    <value>Der eingegebene Wert ist kleiner als der Mindestwert von {0}</value>
+  </data>
+  <data name="strValidationIntRange" xml:space="preserve">
+    <value>Der Wert muss im Bereich zwischen {0} und {1} liegen.</value>
+  </data>
 </root>

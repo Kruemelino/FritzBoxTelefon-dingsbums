@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Controls
+Imports FBoxDial.Localize
 
 Public Class IntValidationRule
     Inherits ValidationRule
@@ -20,26 +21,26 @@ Public Class IntValidationRule
                 num1 = Integer.Parse(CStr(value))
             End If
         Catch ex As Exception
-            NLogger.Warn(ex, $"Es wurde keine Zahl eingegeben oder {ex.Message}")
-            Return New ValidationResult(False, $"Es wurde keine Zahl eingegeben oder {ex.Message}")
+            NLogger.Warn(ex)
+            Return New ValidationResult(False, String.Format(resCommon.strValidationIntChr, ex.Message))
         End Try
 
         ' Es gibt nur eine untere Grenze
         If Min.IsLarger(Max) AndAlso num1.IsLess(Min) Then
-            NLogger.Warn($"Der eingegebene Wert ({num1}) muss größer als {Min} sein.")
-            Return New ValidationResult(False, $"Der Wert muss größer als {Min} sein.")
+            NLogger.Warn($"Der eingegebene Wert ({num1}) ist kleiner als der Mindestwert von {Min}")
+            Return New ValidationResult(False, String.Format(resCommon.strValidationIntLess, Min))
         End If
 
         ' Es gibt nur eine obere Grenze
         If Min.AreEqual(Max) AndAlso num1.IsLarger(Max) Then
-            NLogger.Warn($"Der eingegebene Wert ({num1}) muss kleiner als {Max} sein.")
-            Return New ValidationResult(False, $"Der Wert muss kleiner als {Max} sein.")
+            NLogger.Warn($"Der eingegebene Wert ({num1}) ist größer als der Maximalwert von {Max}")
+            Return New ValidationResult(False, String.Format(resCommon.strValidationIntLarger, Max))
         End If
 
         ' Es wird ein Bereich festgelegt
         If Min.IsLess(Max) AndAlso Not num1.IsInRange(Min, Max) Then
             NLogger.Warn($"Der eingegebene Wert ({num1}) muss im Bereich zwischen {Min} und {Max} liegen.")
-            Return New ValidationResult(False, $"Der Wert muss im Bereich zwischen {Min} und {Max} liegen.")
+            Return New ValidationResult(False, String.Format(resCommon.strValidationIntRange, Min, Max))
         End If
 
         Return ValidationResult.ValidResult
