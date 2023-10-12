@@ -20,26 +20,50 @@
     <StackPanel x:Name="MainStackPanel" Margin="8">
 
         <TextBlock Style="{StaticResource OptHeader}" 
-                   Text="{x:Static localize:LocOptionen.strAppointmentHead}"/>
+                   Text="{x:Static localize:LocOptionen.strAppointmentHead}" />
         
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strAppointmentDisplay}" 
                   IsChecked="{Binding OptVM.CBAppointmentDisplay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
-        <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strAppointmentDauer}"
-                 Text="{Binding OptVM.TBAppointmentDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strAppointmentOffset}"
-                 Text="{Binding OptVM.TBAppointmentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Tag="{x:Static localize:LocOptionen.strAppointmentDauer}" >
+            <TextBox.Text>
+                <Binding Path="OptVM.TBAppointmentDauer"
+                         Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <fbd:IntValidationRule Min="0" Max="-1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <TextBox Style="{StaticResource OptTextBox}"
+                 Tag="{x:Static localize:LocOptionen.strAppointmentOffset}" >
+            <TextBox.Text>
+                <Binding Path="OptVM.TBAppointmentOffset"
+                         Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <fbd:IntValidationRule Min="0" Max="-1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         
         <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strAppointmentReminder}"
-                 Text="{Binding OptVM.TBAppointmentReminder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
+                 Tag="{x:Static localize:LocOptionen.strAppointmentReminder}" >
+            <TextBox.Text>
+                <Binding Path="OptVM.TBAppointmentReminder"
+                         Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <fbd:IntValidationRule Min="0" Max="-1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
         <Label Style="{StaticResource OptHintTextBlock}" 
-               Content="{x:Static localize:LocOptionen.strAppointmentInfo}"/>
+               Content="{x:Static localize:LocOptionen.strAppointmentInfo}" />
 
         <fbd:OutlookFolderView DataContext="{Binding Root}" />
         

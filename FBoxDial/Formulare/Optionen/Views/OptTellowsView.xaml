@@ -45,9 +45,17 @@
                         Text="{Binding OptVM.TBTellowsApiKeyGütigBis, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=d}" />
 
         <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strTellowsMinComments}"
-                 Text="{Binding OptVM.CBTellowsAnrMonMinComments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
+                 Tag="{x:Static localize:LocOptionen.strTellowsMinComments}" >
+            <TextBox.Text>
+                <Binding Path="OptVM.CBTellowsAnrMonMinComments"
+                         Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <fbd:IntValidationRule Min="1" Max="0"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        
         <TextBlock Style="{StaticResource OptHeader}" 
                    Text="{x:Static localize:LocOptionen.strTellowsHeadAnrMon}"/>
         
@@ -87,8 +95,16 @@
                   SelectedValue="{Binding OptVM.CBTellowsAutoScoreFBBlockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strTellowsEntryNumberCount}"
-                 Text="{Binding OptVM.CBTellowsEntryNumberCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Tag="{x:Static localize:LocOptionen.strTellowsEntryNumberCount}">
+            <TextBox.Text>
+                <Binding Path="OptVM.CBTellowsEntryNumberCount"
+                         Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <fbd:IntValidationRule Min="1" Max="0"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
 
         <Expander Header="{x:Static localize:LocOptionen.strTellowsHeadAccountInfo}">
 

@@ -114,11 +114,19 @@
 
         <Expander IsExpanded="True"
                   Header="{x:Static localize:LocOptionen.strBaseHeadList}">
-            <StackPanel>     
-        
+            <StackPanel>
+
                 <TextBox Style="{StaticResource OptTextBox}"
-                         Tag="{x:Static localize:LocOptionen.strBaseTBNumEntryList}"
-                         Text="{Binding OptVM.TBNumEntryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                         Tag="{x:Static localize:LocOptionen.strBaseTBNumEntryList}">
+                    <TextBox.Text>
+                        <Binding Path="OptVM.TBNumEntryList"
+                                 Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <fbd:IntValidationRule Min="1" Max="0"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </StackPanel>
         </Expander>
 
@@ -181,12 +189,18 @@
 
                 <Label Style="{StaticResource OptHintTextBlock}" 
                        Content="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeoutInfo}"/>
-                
+
                 <TextBox Style="{StaticResource OptTextBox}"
-                         Tag="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeout}"
-                         Text="{Binding OptVM.TBNetworkTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                
-                
+                         Tag="{x:Static localize:LocOptionen.strBaseTweakNetworkTimeout}">
+                    <TextBox.Text>
+                        <Binding Path="OptVM.TBNetworkTimeout"
+                                 Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <fbd:IntValidationRule Min="0" Max="-1"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </StackPanel>
         </Expander>
     </StackPanel>

@@ -46,8 +46,16 @@
 
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strAnrMonTBEnblDauer}"
-                         Text="{Binding OptVM.TBEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                         IsEnabled="{Binding OptVM.CBAutoClose, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" >
+                    <TextBox.Text>
+                        <Binding Path="OptVM.TBEnblDauer"
+                                 Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <fbd:IntValidationRule Min="0" Max="-1"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
                 <Label Style="{StaticResource OptHintTextBlock}" 
                        Content="{x:Static localize:LocOptionen.strAnrMonHideInfo}"
@@ -95,10 +103,18 @@
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonModPosY}"
                          Text="{Binding OptVM.TBAnrMonModPosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-       
+
                 <TextBox Style="{StaticResource OptTextBox}"
-                         Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonAbstand}"
-                         Text="{Binding OptVM.TBAnrMonAbstand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                         Tag="{x:Static localize:LocOptionen.strAnrMonTBAnrMonAbstand}" >
+                    <TextBox.Text>
+                        <Binding Path="OptVM.TBAnrMonAbstand"
+                                 Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <fbd:IntValidationRule Min="0" Max="-1"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </StackPanel>
         </Expander>
         
@@ -119,8 +135,16 @@
 
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strAnrMonTBStoppUhrAusblendverzögerung}"
-                         Text="{Binding OptVM.TBStoppUhrAusblendverzögerung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         IsEnabled="{Binding OptVM.CBStoppUhrAusblenden, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                         IsEnabled="{Binding OptVM.CBStoppUhrAusblenden, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" >
+                    <TextBox.Text>
+                        <Binding Path="OptVM.TBStoppUhrAusblendverzögerung"
+                                 Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <fbd:IntValidationRule Min="0" Max="-1"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
             </StackPanel>
         </Expander>
@@ -152,9 +176,17 @@
 
                 <TextBox Style="{StaticResource OptTextBox}"
                          Tag="{x:Static localize:LocOptionen.strAnrMonTBCallPaneStartWidth}"
-                         Text="{Binding OptVM.TBCallPaneStartWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         IsEnabled="{Binding OptVM.CBShowMissedCallPane, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                
+                         IsEnabled="{Binding OptVM.CBShowMissedCallPane, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Text>
+                        <Binding Path="OptVM.TBCallPaneStartWidth"
+                                 Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <fbd:IntValidationRule Min="0" Max="-1"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
             </StackPanel>
         </Expander>
 

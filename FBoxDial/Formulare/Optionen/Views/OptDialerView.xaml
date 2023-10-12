@@ -39,8 +39,16 @@
                   IsChecked="{Binding OptVM.CBCloseWClient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strDialerTBWClientEnblDauer}"
-                 Text="{Binding OptVM.TBWClientEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Tag="{x:Static localize:LocOptionen.strDialerTBWClientEnblDauer}">
+            <TextBox.Text>
+                <Binding Path="OptVM.TBWClientEnblDauer"
+                         Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <fbd:IntValidationRule Min="0" Max="-1"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
 
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strTweakWählClientTopMost}" 
