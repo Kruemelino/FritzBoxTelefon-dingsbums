@@ -168,4 +168,7 @@
   <data name="strValidationIntRange" xml:space="preserve">
     <value>Der Wert muss im Bereich zwischen {0} und {1} liegen.</value>
   </data>
+  <data name="strValidationStrRegEx" xml:space="preserve">
+    <value>Die eingegbene Zeichenfolge entspricht nicht den erwarteten Format.</value>
+  </data>
 </root>

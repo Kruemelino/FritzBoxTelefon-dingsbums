@@ -15,32 +15,50 @@ Public Class IntValidationRule
     ''' Für einen Bereich: Min &lt; Max
     ''' </summary>
     Public Overrides Function Validate(value As Object, cultureInfo As Globalization.CultureInfo) As ValidationResult
-        Dim num1 As Integer = 0
+        Dim Input As Integer = 0
         Try
-            If (CStr(value).Length.IsNotZero) Then
-                num1 = Integer.Parse(CStr(value))
-            End If
+            If CStr(value).Length.IsNotZero Then Input = Integer.Parse(CStr(value))
         Catch ex As Exception
             NLogger.Warn(ex)
             Return New ValidationResult(False, String.Format(resCommon.strValidationIntChr, ex.Message))
         End Try
 
         ' Es gibt nur eine untere Grenze
-        If Min.IsLarger(Max) AndAlso num1.IsLess(Min) Then
-            NLogger.Warn($"Der eingegebene Wert ({num1}) ist kleiner als der Mindestwert von {Min}")
+        If Min.IsLarger(Max) AndAlso Input.IsLess(Min) Then
+            NLogger.Warn($"Der eingegebene Wert ({Input}) ist kleiner als der Mindestwert von {Min}.")
             Return New ValidationResult(False, String.Format(resCommon.strValidationIntLess, Min))
         End If
 
         ' Es gibt nur eine obere Grenze
-        If Min.AreEqual(Max) AndAlso num1.IsLarger(Max) Then
-            NLogger.Warn($"Der eingegebene Wert ({num1}) ist größer als der Maximalwert von {Max}")
+        If Min.AreEqual(Max) AndAlso Input.IsLarger(Max) Then
+            NLogger.Warn($"Der eingegebene Wert ({Input}) ist größer als der Maximalwert von {Max}.")
             Return New ValidationResult(False, String.Format(resCommon.strValidationIntLarger, Max))
         End If
 
         ' Es wird ein Bereich festgelegt
-        If Min.IsLess(Max) AndAlso Not num1.IsInRange(Min, Max) Then
-            NLogger.Warn($"Der eingegebene Wert ({num1}) muss im Bereich zwischen {Min} und {Max} liegen.")
+        If Min.IsLess(Max) AndAlso Not Input.IsInRange(Min, Max) Then
+            NLogger.Warn($"Der eingegebene Wert ({Input}) muss im Bereich zwischen {Min} und {Max} liegen.")
             Return New ValidationResult(False, String.Format(resCommon.strValidationIntRange, Min, Max))
+        End If
+
+        Return ValidationResult.ValidResult
+    End Function
+End Class
+
+Public Class StrValidationRule
+    Inherits ValidationRule
+
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+
+    Public Property RegExPattern As String
+
+    Public Overrides Function Validate(value As Object, cultureInfo As Globalization.CultureInfo) As ValidationResult
+
+        Dim Input As String = CStr(value)
+
+        If Not Input.IsRegExMatch(RegExPattern) Then
+            NLogger.Warn($"Die eingegbene Zeichenfolge ({Input}) entspricht nicht den erwarteten Format '{RegExPattern}'.")
+            Return New ValidationResult(False, resCommon.strValidationStrRegEx)
         End If
 
         Return ValidationResult.ValidResult

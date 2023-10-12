@@ -216,5 +216,14 @@ Namespace Localize
                 Return ResourceManager.GetString("strValidationIntRange", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Die eingegbene Zeichenfolge entspricht nicht den erwarteten Format. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strValidationStrRegEx() As String
+            Get
+                Return ResourceManager.GetString("strValidationStrRegEx", resourceCulture)
+            End Get
+        End Property
     End Class
 End Namespace
