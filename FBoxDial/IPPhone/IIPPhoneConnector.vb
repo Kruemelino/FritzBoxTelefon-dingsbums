@@ -12,6 +12,8 @@ Public Interface IIPPhoneConnector
     ''' </summary>
     Property ConnectedPhoneID As Integer
 
+    Property Port As Integer
+
     ''' <summary>
     ''' String zur Anwahl des Telefones
     ''' </summary>

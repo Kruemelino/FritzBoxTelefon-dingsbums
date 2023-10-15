@@ -64,7 +64,11 @@
     <DataTemplate DataType="{x:Type fbd:OptConnPhonerViewModel}">
         <fbd:OptConnPhonerView />
     </DataTemplate>
-
+    
+    <DataTemplate DataType="{x:Type fbd:OptConnPhonerLiteViewModel}">
+        <fbd:OptConnPhonerLiteView />
+    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type fbd:OptConnMicroSIPViewModel}">
         <fbd:OptConnMicroSIPView />
     </DataTemplate>

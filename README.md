@@ -35,7 +35,8 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
 * [x] VIP-Liste für häufig anzurufende Kontakte
 * [x] Anzeige verpasster Anrufe in einem Outlook Seitenfenster ([CustomTaskPane](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.tools.customtaskpane?view=vsto-2017))
 * [x] Direktes Übermitteln einer anzurufenden Telefonnummer an eigige IP-Telefone via http Request (vgl. [Fernsteuermöglichkeit diverser SIP-Telefone](https://www.ip-phone-forum.de/threads/fernsteuerm%C3%B6glichkeit-diverser-sip-telefone.313272/))
-  * [x] Softphone: [Phoner](https://phoner.de) (PhonerLight wird nicht unterstützt)
+  * [x] Softphone: [Phoner](https://phoner.de)
+  * [x] Softphone: [PhonerLite](https://lite.phoner.de) (In den PhonerLite CLI Optionen  darf kein Passwort gesetzt sein.)
   * [x] SoftPhone: [MicroSIP](https://www.microsip.org/)
   * [x] Getestet: Snom
   * [x] Ungetestet (sollte funktionieren): Fanvil, Gigaset, Yealink

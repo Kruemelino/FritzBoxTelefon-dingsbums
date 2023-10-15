@@ -375,6 +375,9 @@ Public Enum IPPhoneConnectorType
     <LocalizedDescription("IPConnPhoner", GetType(resEnum))>
     <XmlEnum> Phoner
 
+    <LocalizedDescription("IPConnPhonerLite", GetType(resEnum))>
+    <XmlEnum> PhonerLite
+
     <LocalizedDescription("IPConnMicroSIP", GetType(resEnum))>
     <XmlEnum> MicroSIP
 
