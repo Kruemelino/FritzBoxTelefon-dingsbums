@@ -87,7 +87,7 @@ Public Class PhonebookEx
         If Kontakt IsNot Nothing Then
             With Phonebook.Contacts
                 ' Entferne alle Kontakte mit der selben UniqueID (sollte nur einen oder keinen geben)
-                .RemoveAll(Function(E) E.Uniqueid.AreEqual(Kontakt.Uniqueid))
+                If Kontakt.Uniqueid.IsNotZero Then .RemoveAll(Function(E) E.Uniqueid.AreEqual(Kontakt.Uniqueid))
 
                 ' Kontakt hinzufügen
                 .Add(Kontakt)
