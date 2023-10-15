@@ -10,6 +10,16 @@ Public Class IPPhoneConnector
 
     Public Property ConnectedPhoneID As Integer Implements IIPPhoneConnector.ConnectedPhoneID
 
+    Private _Port As Integer
+    Public Property Port As Integer Implements IIPPhoneConnector.Port
+        Get
+            Return _Port
+        End Get
+        Set
+            SetProperty(_Port, Value)
+        End Set
+    End Property
+
     Private _ConnectionUriCall As String
     Public Property ConnectionUriCall As String Implements IIPPhoneConnector.ConnectionUriCall
         Get
@@ -78,10 +88,16 @@ Public Class IPPhoneConnector
         Select Case Type
             Case IPPhoneConnectorType.Phoner
                 Return Phoner.Dial(Me, DialCode, Hangup)
+
+            Case IPPhoneConnectorType.PhonerLite
+                Return PhonerLite.Dial(Me, DialCode, Hangup)
+
             Case IPPhoneConnectorType.MicroSIP
                 Return MicroSIP.Dial(Me, DialCode, Hangup)
+
             Case IPPhoneConnectorType.URI
                 Return Await IPPhoneURI.Dial(Me, DialCode, Hangup)
+
             Case Else
                 Return False
         End Select

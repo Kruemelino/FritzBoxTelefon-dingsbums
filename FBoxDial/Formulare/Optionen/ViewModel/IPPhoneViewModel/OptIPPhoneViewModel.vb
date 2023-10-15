@@ -67,6 +67,7 @@
         With ConnectorViewModels
             .Add(New OptConnURIViewModel) '(DatenService, DialogService))
             .Add(New OptConnPhonerViewModel(DatenService, DialogService))
+            .Add(New OptConnPhonerLiteViewModel(DatenService, DialogService))
             .Add(New OptConnMicroSIPViewModel(DatenService, DialogService))
         End With
 

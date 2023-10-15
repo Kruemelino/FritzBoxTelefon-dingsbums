@@ -21,8 +21,10 @@
 
         <Label Style="{StaticResource OptHintTextBlock}" 
                Content="{x:Static localize:LocOptionen.strSyncContacsInfo}"/>
+        
         <Label Style="{StaticResource OptWarnTextBlock}" 
                Content="{x:Static localize:LocOptionen.strSyncContacsWarn}"/>
+        
         <Button Style="{StaticResource OptMiniIconButton}"
                         Content="{x:Static localize:LocOptionen.strContactSyncAdd}"
                         Tag="{DynamicResource Add_16x}" 

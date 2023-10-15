@@ -254,10 +254,14 @@
     </Compile>
     <Compile Include="Formulare\Common\Services\ValidationRules.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\ContactSyncViewModel\OptSyncSetupViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptConnPhonerLiteViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptAppointmentViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptContactSyncViewModel.vb" />
     <Compile Include="Formulare\Optionen\Views\ContactSyncViews\OptSyncSetupView.xaml.vb">
       <DependentUpon>OptSyncSetupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptConnPhonerLiteView.xaml.vb">
+      <DependentUpon>OptConnPhonerLiteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptAppointmentView.xaml.vb">
       <DependentUpon>OptAppointmentView.xaml</DependentUpon>
@@ -449,6 +453,7 @@
     <Compile Include="Fritz!Box\FritzBoxDeflection.vb" />
     <Compile Include="Fritz!Box\FritzBoxTAM.vb" />
     <Compile Include="Fritz!Box\ZweiFaktorAuthentifizierung.vb" />
+    <Compile Include="IPPhone\PhonerLite.vb" />
     <Compile Include="JSON\JSONSerialize.vb" />
     <Compile Include="JSON\JSONTraceWriter.vb" />
     <Compile Include="Misc\AddinHTTPClient.vb" />
@@ -584,7 +589,7 @@
     <Compile Include="IPPhone\IPPhoneConnector.vb" />
     <Compile Include="IPPhone\IPPhoneURI.vb" />
     <Compile Include="IPPhone\MicroSIP.vb" />
-    <Compile Include="TCPClient\AnrMonClient.vb" />
+    <Compile Include="Anrufmonitor\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
     <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
     <Compile Include="Formulare\FBoxData\ViewModel\Telefonbücher\PhonebookViewModel.vb" />
@@ -687,6 +692,7 @@
     <EmbeddedResource Include="Localize\resEnum.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resEnum.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Localize\resRibbon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -731,6 +737,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Views\ContactSyncViews\OptSyncSetupView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\Optionen\Views\IPPhoneViews\OptConnPhonerLiteView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

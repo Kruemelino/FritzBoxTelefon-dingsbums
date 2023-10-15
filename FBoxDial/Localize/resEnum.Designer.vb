@@ -451,6 +451,15 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Softphone: PhonerLite ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property IPConnPhonerLite() As String
+        Get
+            Return ResourceManager.GetString("IPConnPhonerLite", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die http Anfrage ähnelt.
     '''</summary>
     Public Shared ReadOnly Property IPConnURI() As String

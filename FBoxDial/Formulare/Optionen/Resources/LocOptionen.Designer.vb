@@ -1457,7 +1457,7 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner Copyright 2022 Heiko Sommerfeldt. Alle Rechte vorbehalten. ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner Copyright Heiko Sommerfeldt. Alle Rechte vorbehalten. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strPhonerCopyRight() As String
             Get
@@ -1505,11 +1505,59 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die PhonerLight wird nicht unterstützt! ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner wird nicht mehr weiter entwickelt! Empfehlung: PhonerLite ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strPhonerInfoLight() As String
             Get
                 Return ResourceManager.GetString("strPhonerInfoLight", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die PhonerLite - Konfiguration ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPhonerLiteHeadConfig() As String
+            Get
+                Return ResourceManager.GetString("strPhonerLiteHeadConfig", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die PhonerLite ist eine übersichtliche und leicht zu bedienende Anwendung für Windows, die es ermöglicht, unkompliziert den PC als Internet-Telefon (VoIP, Voice over IP) zu nutzen. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPhonerLiteInfo() As String
+            Get
+                Return ResourceManager.GetString("strPhonerLiteInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur korrekten Konfiguration:
+        '''Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
+        '''Aktiviere Telnet in PhonerLite unter Optionen / CLI.
+        '''Gib den lokalen Port aus den CLI Optionen hier ein (Standard 50600). ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPhonerLiteInfoConfig() As String
+            Get
+                Return ResourceManager.GetString("strPhonerLiteInfoConfig", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die In den PhonerLite CLI Optionen darf kein Passwort gesetzt sein! ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPhonerLitePasswort() As String
+            Get
+                Return ResourceManager.GetString("strPhonerLitePasswort", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Port ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPhonerLitePort() As String
+            Get
+                Return ResourceManager.GetString("strPhonerLitePort", resourceCulture)
             End Get
         End Property
         

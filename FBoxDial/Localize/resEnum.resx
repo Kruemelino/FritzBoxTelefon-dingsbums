@@ -285,6 +285,10 @@
     <value>Softphone: Phoner</value>
     <comment>TypeIPPhoneConnection</comment>
   </data>
+  <data name="IPConnPhonerLite" xml:space="preserve">
+    <value>Softphone: PhonerLite</value>
+    <comment>TypeIPPhoneConnection</comment>
+  </data>
   <data name="IPConnURI" xml:space="preserve">
     <value>http Anfrage</value>
     <comment>TypeIPPhoneConnection</comment>

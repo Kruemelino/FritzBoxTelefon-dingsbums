@@ -751,7 +751,7 @@ Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Bo
     <comment>MainView</comment>
   </data>
   <data name="strPhonerCopyRight" xml:space="preserve">
-    <value>Phoner Copyright 2022 Heiko Sommerfeldt. Alle Rechte vorbehalten.</value>
+    <value>Phoner Copyright Heiko Sommerfeldt. Alle Rechte vorbehalten.</value>
     <comment>OptPhonerView</comment>
   </data>
   <data name="strPhonerHeadConfig" xml:space="preserve">
@@ -774,8 +774,31 @@ Prüfe, ob die Authentifizierung erfolgreich ist.</value>
     <comment>OptPhonerView</comment>
   </data>
   <data name="strPhonerInfoLight" xml:space="preserve">
-    <value>PhonerLight wird nicht unterstützt!</value>
+    <value>Phoner wird nicht mehr weiter entwickelt! Empfehlung: PhonerLite</value>
     <comment>OptPhonerView</comment>
+  </data>
+  <data name="strPhonerLiteHeadConfig" xml:space="preserve">
+    <value>PhonerLite - Konfiguration</value>
+    <comment>OptPhonerLiteView</comment>
+  </data>
+  <data name="strPhonerLiteInfo" xml:space="preserve">
+    <value>PhonerLite ist eine übersichtliche und leicht zu bedienende Anwendung für Windows, die es ermöglicht, unkompliziert den PC als Internet-Telefon (VoIP, Voice over IP) zu nutzen.</value>
+    <comment>OptPhonerLiteView</comment>
+  </data>
+  <data name="strPhonerLiteInfoConfig" xml:space="preserve">
+    <value>Hinweise zur korrekten Konfiguration:
+Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
+Aktiviere Telnet in PhonerLite unter Optionen / CLI.
+Gib den lokalen Port aus den CLI Optionen hier ein (Standard 50600).</value>
+    <comment>OptPhonerLiteView</comment>
+  </data>
+  <data name="strPhonerLitePasswort" xml:space="preserve">
+    <value>In den PhonerLite CLI Optionen darf kein Passwort gesetzt sein!</value>
+    <comment>OptPhonerLiteView</comment>
+  </data>
+  <data name="strPhonerLitePort" xml:space="preserve">
+    <value>Port</value>
+    <comment>OptPhonerLiteView</comment>
   </data>
   <data name="strProtokolHead" xml:space="preserve">
     <value>Einstellungen zu tel:// und callto:// Protokollen</value>
