@@ -461,6 +461,7 @@
     <Compile Include="Misc\FileSystemSafeWatcher.vb" />
     <Compile Include="Misc\DateiÜberwacher.vb" />
     <Compile Include="Misc\KeyboardHooking.vb" />
+    <Compile Include="Misc\MinimalisticTelnet.vb" />
     <Compile Include="Misc\SoundPlayerEx.vb">
       <SubType>Component</SubType>
     </Compile>
