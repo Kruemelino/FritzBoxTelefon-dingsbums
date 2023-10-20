@@ -155,47 +155,20 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP ist bereit. ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die PhonerLite ist bereit. ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strMicroSIPBereit() As String
+        Public Shared ReadOnly Property strPhonerLiteBereit() As String
             Get
-                Return ResourceManager.GetString("strMicroSIPBereit", resourceCulture)
+                Return ResourceManager.GetString("strPhonerLiteBereit", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP gestartet ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die PhonerLite gestartet ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strMicroSIPgestartet() As String
+        Public Shared ReadOnly Property strPhonerLitegestartet() As String
             Get
-                Return ResourceManager.GetString("strMicroSIPgestartet", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Pfad zu MicroSIP ermittelt: {0} ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strMicroSIPgestartetPfad() As String
-            Get
-                Return ResourceManager.GetString("strMicroSIPgestartetPfad", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP ist nicht bereit. ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strMicroSIPNichtBereit() As String
-            Get
-                Return ResourceManager.GetString("strMicroSIPNichtBereit", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner ist nicht bereit. ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhonerNichtBereit() As String
-            Get
-                Return ResourceManager.GetString("strPhonerNichtBereit", resourceCulture)
+                Return ResourceManager.GetString("strPhonerLitegestartet", resourceCulture)
             End Get
         End Property
         
@@ -245,11 +218,38 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Das Softphone &apos;{0}&apos; ist bereit. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSoftPhoneBereit() As String
+            Get
+                Return ResourceManager.GetString("strSoftPhoneBereit", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Telefonnummer {0} erfolgreich an {1} übermittelt. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strSoftPhoneErfolgreich() As String
             Get
                 Return ResourceManager.GetString("strSoftPhoneErfolgreich", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Das Softphone &apos;{0}&apos; gestartet. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSoftPhoneGestartet() As String
+            Get
+                Return ResourceManager.GetString("strSoftPhoneGestartet", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Das Softphone &apos;{0}&apos; ist nicht bereit. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSoftPhoneNichtBereit() As String
+            Get
+                Return ResourceManager.GetString("strSoftPhoneNichtBereit", resourceCulture)
             End Get
         End Property
         

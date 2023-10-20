@@ -787,9 +787,7 @@ Prüfe, ob die Authentifizierung erfolgreich ist.</value>
   </data>
   <data name="strPhonerLiteInfoConfig" xml:space="preserve">
     <value>Hinweise zur korrekten Konfiguration:
-Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
-Aktiviere Telnet in PhonerLite unter Optionen / CLI.
-Gib den lokalen Port aus den CLI Optionen hier ein (Standard 50600).</value>
+Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.</value>
     <comment>OptPhonerLiteView</comment>
   </data>
   <data name="strPhonerLitePasswort" xml:space="preserve">
@@ -924,6 +922,10 @@ Hinweis 3: Das Einfügen von Kontakten per Copy&amp;Paste führt nicht immer daz
   <data name="strTBFormSearchMinLength" xml:space="preserve">
     <value>Mindestanzahl an eingegebenen Zeichen</value>
     <comment>OptSearchContactView</comment>
+  </data>
+  <data name="strTBPhonerLitePath" xml:space="preserve">
+    <value>Pfad zu PhonerLite.exe</value>
+    <comment>OptPhonerLiteView</comment>
   </data>
   <data name="strTelephonyHeadImport" xml:space="preserve">
     <value>Einlesen der Telefoniedaten von der Fritz!Box</value>

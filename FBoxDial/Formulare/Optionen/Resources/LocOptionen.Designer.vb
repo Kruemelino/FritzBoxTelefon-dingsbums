@@ -1533,9 +1533,7 @@ Namespace Localize
         
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur korrekten Konfiguration:
-        '''Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
-        '''Aktiviere Telnet in PhonerLite unter Optionen / CLI.
-        '''Gib den lokalen Port aus den CLI Optionen hier ein (Standard 50600). ähnelt.
+        '''Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein. ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strPhonerLiteInfoConfig() As String
             Get
@@ -1828,6 +1826,15 @@ Namespace Localize
         Public Shared ReadOnly Property strTBFormSearchMinLength() As String
             Get
                 Return ResourceManager.GetString("strTBFormSearchMinLength", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Pfad zu PhonerLite.exe ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTBPhonerLitePath() As String
+            Get
+                Return ResourceManager.GetString("strTBPhonerLitePath", resourceCulture)
             End Get
         End Property
         

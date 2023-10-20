@@ -35,7 +35,7 @@
 
     Private Sub GetMicroSIPPath(o As Object)
         ' Initialen Pfad ermitteln
-        If Connector.ConnectionUriCall.IsNotStringNothingOrEmpty Then Connector.ConnectionUriCall = MicroSIPGetExecutablePath()
+        If Connector.ConnectionUriCall.IsStringNothingOrEmpty Then Connector.ConnectionUriCall = MicroSIPGetExecutablePath()
 
         Dim Dateipfad As String = DialogService.OpenFile("MicroSIP.exe (.exe)|*.exe", Connector.ConnectionUriCall)
         If Dateipfad.IsNotStringNothingOrEmpty Then Connector.ConnectionUriCall = Dateipfad

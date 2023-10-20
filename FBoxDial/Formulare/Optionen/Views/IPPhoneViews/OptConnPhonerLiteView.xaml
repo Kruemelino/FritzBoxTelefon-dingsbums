@@ -32,16 +32,41 @@
         <Label Style="{StaticResource OptHintTextBlock}" 
                Content="{x:Static localize:LocOptionen.strPhonerLiteInfoConfig}"/>
 
-        <Label Style="{StaticResource OptWarnTextBlock}" 
+        <!--<Label Style="{StaticResource OptWarnTextBlock}" 
                Content="{x:Static localize:LocOptionen.strPhonerLitePasswort}"/>
-        
+
+        <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strIPPhoneTBPasswort}"
+                                Value="{Binding Path=Connector.Passwort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                DeCryptKey="{Binding Path=OptVM.DfltPhonerDeCryptKey, Mode=OneWay}"/>
+
         <TextBox Style="{StaticResource OptTextBox}"
                  Tag="{x:Static localize:LocOptionen.strPhonerLitePort}"
-                 Text="{Binding Connector.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding Connector.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
                 
         <CheckBox Style="{StaticResource OptCheckBox}" 
                   Content="{x:Static localize:LocOptionen.strCBSoftPhoneSuffix}" 
                   IsChecked="{Binding Connector.AppendSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
+
+        <Grid Margin="0,0,0,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="115*" />
+                <ColumnDefinition Width="99*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0"
+                   Content="{x:Static localize:LocOptionen.strTBPhonerLitePath}" Grid.ColumnSpan="2"/>
+
+            <Button Grid.Column="2" Margin="0"
+                    Content="{DynamicResource ImportFile_16x}" 
+                    Style="{DynamicResource MiniIconButton}"
+                    Command="{Binding PhonerLitePathCommand}" />
+
+            <TextBox Grid.Column="3" IsReadOnly="True"
+                     Tag="{x:Static localize:LocOptionen.strTBPhonerLitePath}" 
+                     Text="{Binding Connector.ConnectionUriCall, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        </Grid>
     </StackPanel>
 </UserControl>

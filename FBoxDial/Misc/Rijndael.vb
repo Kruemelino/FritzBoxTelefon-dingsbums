@@ -197,33 +197,55 @@ Friend Class Rijndael
         End Using
     End Function
 
-    Friend Function StringToHash(input As String, AlgorithmName As String, Zeichencodierung As Encoding) As String
-        Return HashByteArray(AlgorithmName, Zeichencodierung.GetBytes(input))
-    End Function
+    'Friend Function StringToHash(input As String, AlgorithmName As String, Zeichencodierung As Encoding) As String
+    '    Return HashByteArray(AlgorithmName, Zeichencodierung.GetBytes(input))
+    'End Function
 
-    Friend Function SecureStringToBase64String(secureString As SecureString, Zeichencodierung As Encoding, Optional Präfix As String = "") As String
+    'Friend Function SecureStringToBase64String(secureString As SecureString, Zeichencodierung As Encoding, Optional Präfix As String = "") As String
 
-        If secureString IsNot Nothing Then
-            Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
-            Dim BufferPräfix As Byte() = Zeichencodierung.GetBytes(Präfix)
-            Dim Buffer(BufferSecuredString.Length + BufferPräfix.Length - 1) As Byte
-            Try
+    '    If secureString IsNot Nothing Then
+    '        Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
+    '        Dim BufferPräfix As Byte() = Zeichencodierung.GetBytes(Präfix)
+    '        Dim Buffer(BufferSecuredString.Length + BufferPräfix.Length - 1) As Byte
+    '        Try
 
-                BufferPräfix.CopyTo(Buffer, 0)
-                BufferSecuredString.CopyTo(Buffer, BufferPräfix.Length)
+    '            BufferPräfix.CopyTo(Buffer, 0)
+    '            BufferSecuredString.CopyTo(Buffer, BufferPräfix.Length)
 
-                Return Convert.ToBase64String(Buffer)
+    '            Return Convert.ToBase64String(Buffer)
 
-            Finally
-                If BufferSecuredString IsNot Nothing Then Array.Clear(BufferSecuredString, 0, BufferSecuredString.Length)
-                If Buffer IsNot Nothing Then Array.Clear(Buffer, 0, Buffer.Length)
-            End Try
-        Else
-            Return String.Empty
-        End If
+    '        Finally
+    '            If BufferSecuredString IsNot Nothing Then Array.Clear(BufferSecuredString, 0, BufferSecuredString.Length)
+    '            If Buffer IsNot Nothing Then Array.Clear(Buffer, 0, Buffer.Length)
+    '        End Try
+    '    Else
+    '        Return String.Empty
+    '    End If
 
-    End Function
+    'End Function
 
+    'Friend Function SecureStringToString(secureString As SecureString, Zeichencodierung As Encoding, Optional Präfix As String = "") As String
+
+    '    If secureString IsNot Nothing Then
+    '        Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
+    '        Dim BufferPräfix As Byte() = Zeichencodierung.GetBytes(Präfix)
+    '        Dim Buffer(BufferSecuredString.Length + BufferPräfix.Length - 1) As Byte
+    '        Try
+
+    '            BufferPräfix.CopyTo(Buffer, 0)
+    '            BufferSecuredString.CopyTo(Buffer, BufferPräfix.Length)
+
+    '            Return Zeichencodierung.GetString(Buffer)
+
+    '        Finally
+    '            If BufferSecuredString IsNot Nothing Then Array.Clear(BufferSecuredString, 0, BufferSecuredString.Length)
+    '            If Buffer IsNot Nothing Then Array.Clear(Buffer, 0, Buffer.Length)
+    '        End Try
+    '    Else
+    '        Return String.Empty
+    '    End If
+
+    'End Function
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' Dient zur Erkennung redundanter Aufrufe.
 

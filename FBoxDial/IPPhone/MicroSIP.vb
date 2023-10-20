@@ -3,7 +3,7 @@
     Private Const MicroSIPProgressName As String = "MicroSIP"
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Friend ReadOnly Property MicroSIPReady As Boolean
+    Private ReadOnly Property MicroSIPReady As Boolean
         Get
             Return Process.GetProcessesByName(MicroSIPProgressName).Length.IsNotZero
         End Get
@@ -13,7 +13,7 @@
     ''' <summary>
     ''' Hang up all calls: microsip.exe /hangupall
     ''' </summary>
-    Private Const CommandHangUpAll As String = "/hangupall"
+    Private Const CommandHangUp As String = "/hangupall"
 
     '    ''' <summary>
     '    ''' Answer a Call: microsip.exe /answer
@@ -36,7 +36,7 @@
 
         If ProcressMicroSIP.Length.IsNotZero Then
 
-            NLogger.Debug(Localize.LocWählclient.strMicroSIPBereit)
+            NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneBereit, MicroSIPProgressName))
 
             ' Ermittle Pfad zur ausgeführten MicroSIP.exe
             Return ProcressMicroSIP.First.MainModule.FileName
@@ -46,14 +46,14 @@
     End Function
 
     Private Sub MicroSIPStart(Connector As IIPPhoneConnector)
-        NLogger.Debug(Localize.LocWählclient.strMicroSIPNichtBereit)
+        NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneNichtBereit, MicroSIPProgressName))
 
         If Connector.ConnectionUriCall.IsNotStringNothingOrEmpty Then
             ' Starte MicroSIP
             Try
                 Process.Start(Connector.ConnectionUriCall)
 
-                NLogger.Info(Localize.LocWählclient.strMicroSIPgestartet)
+                NLogger.Info(String.Format(Localize.LocWählclient.strSoftPhoneGestartet, MicroSIPProgressName))
             Catch ex As ComponentModel.Win32Exception
                 NLogger.Warn(ex)
             Catch ex As ObjectDisposedException
@@ -75,7 +75,7 @@
                 ' Wählkommando senden
                 If Hangup Then
                     ' Abbruch des Rufaufbaues mittels Parameter
-                    Process.Start(Connector.ConnectionUriCancel, CommandHangUpAll)
+                    Process.Start(Connector.ConnectionUriCall, CommandHangUp)
 
                     NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
                 Else
@@ -90,7 +90,7 @@
                 Return True
             Else
                 ' MicroSIP nicht verfügbar
-                NLogger.Warn(Localize.LocWählclient.strMicroSIPNichtBereit)
+                NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneNichtBereit, MicroSIPProgressName))
                 ' Gib Rückmeldung, damit Wählclient einen Fehler ausgibt
                 Return False
             End If

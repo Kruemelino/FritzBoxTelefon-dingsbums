@@ -147,20 +147,11 @@
   <data name="strHeader" xml:space="preserve">
     <value>Anruf: {0}</value>
   </data>
-  <data name="strMicroSIPBereit" xml:space="preserve">
-    <value>MicroSIP ist bereit.</value>
+  <data name="strPhonerLiteBereit" xml:space="preserve">
+    <value>PhonerLite ist bereit.</value>
   </data>
-  <data name="strMicroSIPgestartet" xml:space="preserve">
-    <value>MicroSIP gestartet</value>
-  </data>
-  <data name="strMicroSIPgestartetPfad" xml:space="preserve">
-    <value>Pfad zu MicroSIP ermittelt: {0}</value>
-  </data>
-  <data name="strMicroSIPNichtBereit" xml:space="preserve">
-    <value>MicroSIP ist nicht bereit.</value>
-  </data>
-  <data name="strPhonerNichtBereit" xml:space="preserve">
-    <value>Phoner ist nicht bereit.</value>
+  <data name="strPhonerLitegestartet" xml:space="preserve">
+    <value>PhonerLite gestartet</value>
   </data>
   <data name="strPhonerPasswortFalsch" xml:space="preserve">
     <value>Das Phoner-Passwort ist falsch.</value>
@@ -177,8 +168,17 @@
   <data name="strSoftPhoneAbbruch" xml:space="preserve">
     <value>Abbruch des Rufaufbaues erfolgreich übermittelt.</value>
   </data>
+  <data name="strSoftPhoneBereit" xml:space="preserve">
+    <value>Das Softphone '{0}' ist bereit.</value>
+  </data>
   <data name="strSoftPhoneErfolgreich" xml:space="preserve">
     <value>Telefonnummer {0} erfolgreich an {1} übermittelt.</value>
+  </data>
+  <data name="strSoftPhoneGestartet" xml:space="preserve">
+    <value>Das Softphone '{0}' gestartet.</value>
+  </data>
+  <data name="strSoftPhoneNichtBereit" xml:space="preserve">
+    <value>Das Softphone '{0}' ist nicht bereit.</value>
   </data>
   <data name="strStatus" xml:space="preserve">
     <value>Status</value>

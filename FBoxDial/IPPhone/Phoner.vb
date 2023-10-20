@@ -115,7 +115,7 @@ Friend Module Phoner
                 End Using
             Else
                 ' Phoner nicht verfügbar
-                NLogger.Warn(Localize.LocWählclient.strPhonerNichtBereit)
+                NLogger.Warn(String.Format(Localize.LocWählclient.strSoftPhoneNichtBereit, PhonerProgressName))
             End If
 
         End If
