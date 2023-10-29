@@ -10,7 +10,7 @@ Public Class DialogService
     Public Function OpenFile(filter As String, Optional initialDirectory As String = "") As String Implements IDialogService.OpenFile
         Dim dialog = New OpenFileDialog() With {.Multiselect = False,
                                                 .Filter = filter,
-                                                .InitialDirectory = IO.Path.GetDirectoryName(initialDirectory)}
+                                                .InitialDirectory = If(initialDirectory.IsStringNothingOrEmpty, String.Empty, IO.Path.GetDirectoryName(initialDirectory))}
 
         Return If(dialog.ShowDialog() = True, dialog.FileName, String.Empty)
 

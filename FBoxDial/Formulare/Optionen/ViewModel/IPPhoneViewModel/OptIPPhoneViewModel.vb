@@ -67,8 +67,7 @@
         With ConnectorViewModels
             .Add(New OptConnURIViewModel) '(DatenService, DialogService))
             .Add(New OptConnPhonerViewModel(DatenService, DialogService))
-            .Add(New OptConnPhonerLiteViewModel(DatenService, DialogService))
-            .Add(New OptConnMicroSIPViewModel(DatenService, DialogService))
+            .Add(New OptConnCMDViewModel(DatenService, DialogService))
         End With
 
         ' Lade die eingehenden Nummern

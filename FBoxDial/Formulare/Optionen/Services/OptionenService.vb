@@ -257,6 +257,24 @@ Friend Class OptionenService
         ' Gib eine leere Liste zurück
         Return New FBoxAPI.SIPClientList
     End Function
+
+    Friend Function SoftPhoneGetExecutablePath(ProcessName As String) As String Implements IOptionenService.SoftPhoneGetExecutablePath
+
+        If ProcessName.IsNotStringNothingOrEmpty Then
+            Dim SoftPhoneProcress As Process() = Process.GetProcessesByName(ProcessName)
+
+            If SoftPhoneProcress.Length.IsNotZero Then
+
+                NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneBereit, ProcessName))
+
+                ' Ermittle Pfad zur ausgeführten EXE
+                Return SoftPhoneProcress.First.MainModule.FileName
+            End If
+        End If
+
+        ' Default
+        Return String.Empty
+    End Function
 #End Region
 
 #Region "Wählclient"

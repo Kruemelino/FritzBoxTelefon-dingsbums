@@ -112,7 +112,7 @@
             </Rectangle.Fill>
         </Rectangle>
     </Viewbox>
-    <!--MicroSIP Path-->
+    <!--Softphone Path-->
     <Viewbox x:Key="ImportFile_16x" x:Shared="false" Width="16" Height="16">
         <Rectangle Width="16" Height="16">
             <Rectangle.Fill>

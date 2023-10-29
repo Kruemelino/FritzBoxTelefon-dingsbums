@@ -424,6 +424,15 @@ Public Class resEnum
     End Property
     
     '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Parameter ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property IPConnCMD() As String
+        Get
+            Return ResourceManager.GetString("IPConnCMD", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Sucht eine lokalisierte Zeichenfolge, die Softphone: MicroSIP ähnelt.
     '''</summary>
     Public Shared ReadOnly Property IPConnMicroSIP() As String
@@ -627,6 +636,33 @@ Public Class resEnum
     Public Shared ReadOnly Property ShortDelayed() As String
         Get
             Return ResourceManager.GetString("ShortDelayed", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property SoftPhoneMicroSIP() As String
+        Get
+            Return ResourceManager.GetString("SoftPhoneMicroSIP", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Anderes ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property SoftPhoneOther() As String
+        Get
+            Return ResourceManager.GetString("SoftPhoneOther", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die PhonerLite ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property SoftPhonePhonerLite() As String
+        Get
+            Return ResourceManager.GetString("SoftPhonePhonerLite", resourceCulture)
         End Get
     End Property
     

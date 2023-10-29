@@ -375,12 +375,16 @@ Public Enum IPPhoneConnectorType
     <LocalizedDescription("IPConnPhoner", GetType(resEnum))>
     <XmlEnum> Phoner
 
-    <LocalizedDescription("IPConnPhonerLite", GetType(resEnum))>
-    <XmlEnum> PhonerLite
-
-    <LocalizedDescription("IPConnMicroSIP", GetType(resEnum))>
-    <XmlEnum> MicroSIP
+    <LocalizedDescription("IPConnCMD", GetType(resEnum))>
+    <XmlEnum> CMD
 
     <LocalizedDescription("IPConnURI", GetType(resEnum))>
     <XmlEnum> URI
+End Enum
+
+<TypeConverter(GetType(EnumDescriptionTypeConverter))>
+Public Enum SoftPhones
+    <LocalizedDescription("SoftPhonePhonerLite", GetType(resEnum))> PhonerLite
+    <LocalizedDescription("SoftPhoneMicroSIP", GetType(resEnum))> MicroSIP
+    <LocalizedDescription("SoftPhoneOther", GetType(resEnum))> Anderes
 End Enum

@@ -273,6 +273,10 @@
     <value>Intern</value>
     <comment>AVM XML Telefonbuch</comment>
   </data>
+  <data name="IPConnCMD" xml:space="preserve">
+    <value>Parameter</value>
+    <comment>TypeIPPhoneConnection</comment>
+  </data>
   <data name="IPConnMicroSIP" xml:space="preserve">
     <value>Softphone: MicroSIP</value>
     <comment>TypeIPPhoneConnection</comment>
@@ -368,6 +372,18 @@
   <data name="ShortDelayed" xml:space="preserve">
     <value>Verzögert kurz</value>
     <comment>AVM XML Rufumleitung Mode</comment>
+  </data>
+  <data name="SoftPhoneMicroSIP" xml:space="preserve">
+    <value>MicroSIP</value>
+    <comment>EnumSoftPhones</comment>
+  </data>
+  <data name="SoftPhoneOther" xml:space="preserve">
+    <value>Anderes</value>
+    <comment>EnumSoftPhones</comment>
+  </data>
+  <data name="SoftPhonePhonerLite" xml:space="preserve">
+    <value>PhonerLite</value>
+    <comment>EnumSoftPhones</comment>
   </data>
   <data name="Telex" xml:space="preserve">
     <value>Telex</value>

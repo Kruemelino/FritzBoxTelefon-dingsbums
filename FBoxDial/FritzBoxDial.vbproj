@@ -252,16 +252,17 @@
     <Compile Include="App.xaml.vb">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\Common\Controls\FocusedEditableComboBox.vb" />
     <Compile Include="Formulare\Common\Services\ValidationRules.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\ContactSyncViewModel\OptSyncSetupViewModel.vb" />
-    <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptConnPhonerLiteViewModel.vb" />
+    <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptConnCMDViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptAppointmentViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OptContactSyncViewModel.vb" />
     <Compile Include="Formulare\Optionen\Views\ContactSyncViews\OptSyncSetupView.xaml.vb">
       <DependentUpon>OptSyncSetupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptConnPhonerLiteView.xaml.vb">
-      <DependentUpon>OptConnPhonerLiteView.xaml</DependentUpon>
+    <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptConnCMDView.xaml.vb">
+      <DependentUpon>OptConnCMDView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\OptAppointmentView.xaml.vb">
       <DependentUpon>OptAppointmentView.xaml</DependentUpon>
@@ -397,7 +398,6 @@
     <Compile Include="Formulare\Optionen\Services\OptionenService.vb" />
     <Compile Include="Formulare\Optionen\Services\IOptionenService.vb" />
     <Compile Include="Formulare\Optionen\Services\VirtualToggleButton.vb" />
-    <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptConnMicroSIPViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptConnURIViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\IPPhoneViewModel\OptConnPhonerViewModel.vb" />
     <Compile Include="Formulare\Optionen\ViewModel\OlFolderViewModel.vb" />
@@ -453,7 +453,7 @@
     <Compile Include="Fritz!Box\FritzBoxDeflection.vb" />
     <Compile Include="Fritz!Box\FritzBoxTAM.vb" />
     <Compile Include="Fritz!Box\ZweiFaktorAuthentifizierung.vb" />
-    <Compile Include="IPPhone\PhonerLite.vb" />
+    <Compile Include="IPPhone\IPPhoneCMD.vb" />
     <Compile Include="JSON\JSONSerialize.vb" />
     <Compile Include="JSON\JSONTraceWriter.vb" />
     <Compile Include="Misc\AddinHTTPClient.vb" />
@@ -486,9 +486,6 @@
     </Compile>
     <Compile Include="Formulare\Optionen\Controls\OptionsLink.xaml.vb">
       <DependentUpon>OptionsLink.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptConnMicroSIPView.xaml.vb">
-      <DependentUpon>OptConnMicroSIPView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\Optionen\Views\IPPhoneViews\OptConnPhonerView.xaml.vb">
       <DependentUpon>OptConnPhonerView.xaml</DependentUpon>
@@ -588,7 +585,6 @@
     <Compile Include="IPPhone\IIPPhoneConnector.vb" />
     <Compile Include="IPPhone\IPPhoneConnector.vb" />
     <Compile Include="IPPhone\IPPhoneURI.vb" />
-    <Compile Include="IPPhone\MicroSIP.vb" />
     <Compile Include="Anrufmonitor\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
     <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
@@ -704,6 +700,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LocOptionen.Designer.vb</LastGenOutput>
       <CustomToolNamespace>Localize</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
@@ -740,7 +737,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Formulare\Optionen\Views\IPPhoneViews\OptConnPhonerLiteView.xaml">
+    <Page Include="Formulare\Optionen\Views\IPPhoneViews\OptConnCMDView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -910,10 +907,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Formulare\Optionen\Controls\OptionsLink.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Formulare\Optionen\Views\IPPhoneViews\OptConnMicroSIPView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

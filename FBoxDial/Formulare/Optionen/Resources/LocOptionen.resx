@@ -408,7 +408,7 @@ Da dies experimentell ist, kann diese Funktion deaktiviert werden, falls es zu P
   </data>
   <data name="strCBSoftPhoneSuffix" xml:space="preserve">
     <value>Raute (#) an die zu wählende Nummer anhängen.</value>
-    <comment>OptMicroSIPView, OptPhonerView</comment>
+    <comment>OptConnCMDView</comment>
   </data>
   <data name="strColorBackground" xml:space="preserve">
     <value>Hintergrund</value>
@@ -566,7 +566,7 @@ Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch 
 Das Programm übermittelt keinerlei Daten an Dritte, jedoch mit folgenden Ausnahmn:
 Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine übergeben. Die Datenschutzhinweise der Suchmaschinen sind zu beachten!
 Bei der Nutzung von tellows wird die zu Telefonnummer an den Anbieter übergeben. Die Datenschutzhinweise von tellows sind zu beachten!
-Bei der Nutzung der Software-Telefone Phoner und MicroSIP werden die zu wählenden Nummern an diese Programme übergeben. Die Datenschutzhinweise der Software-Telefone sind zu beachten!</value>
+Bei der Nutzung von Software-Telefonen wie Phoner, PhonerLite, MicroSIP etc. werden die zu wählenden Nummern an diese Programme übergeben. Die Datenschutzhinweise der Software-Telefone sind zu beachten!</value>
     <comment>OptInfoView</comment>
   </data>
   <data name="strInfoForum" xml:space="preserve">
@@ -651,6 +651,65 @@ Wer spenden will, der spendet und wer nicht will, der macht es halt nicht.</valu
     <value>ClientUserName:</value>
     <comment>OptIPPhoneView</comment>
   </data>
+  <data name="strIPPhoneCMDCallTo" xml:space="preserve">
+    <value>Parameter "Wählen"</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDExecutablePath" xml:space="preserve">
+    <value>Pfad zur Ausführungsdatei</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDHangUp" xml:space="preserve">
+    <value>Parameter "Auflegen"</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDHeadConfig" xml:space="preserve">
+    <value>Software-Telefone Konfiguration</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDInfo" xml:space="preserve">
+    <value>Einige Software-Telefone bieten die Möglichkeit der Fernsteuerung. Hierbei wird die zu wählende Nummer direkt an die Software-Telefon per Parameter übermittelt.
+Die Fernsteuerung wird nicht von jedem Software-Telefon unterstützt. Bitte vorab informieren.
+
+Die Software-Telefone 'PhonerLite' und 'MicroSIP' wurden getestet.</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDInfoConfig" xml:space="preserve">
+    <value>Hinweise zur korrekten Konfiguration:
+Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDMicroSIP" xml:space="preserve">
+    <value>MicroSIP</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDParameterInfo" xml:space="preserve">
+    <value>Die zu wählende Nummer bzw. ein Abbruch des Wählvorganges werden per Parameter an die Software übermittelt.
+
+PhonerLite: callto:{TelNr} bzw. hangup:
+MicroSIP: {TelNr} bzw. /hangupall
+
+Der Schlüssel {TelNr} wird mit der zu wählenden Telefonnummer ersetzt.</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDPhonerLite" xml:space="preserve">
+    <value>PhonerLite</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDProcessName" xml:space="preserve">
+    <value>Prozess Name</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDProcessNameInfo" xml:space="preserve">
+    <value>Prozessname
+PhonerLite: PhonerLite
+MicroSIP: MicroSIP</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDSoftphone" xml:space="preserve">
+    <value>Software-Telefon</value>
+    <comment>OptConnCMDView</comment>
+  </data>
   <data name="strIPPhoneConnectionMode" xml:space="preserve">
     <value>Art der Anbindung</value>
     <comment>OptIPPhoneView</comment>
@@ -713,23 +772,6 @@ Sofern Journaleinträge erstellt werden sollen, muss hier festgelegt werden, in 
 Wird kein Ordner gewählt, wird der Outlook-Standard verwendet.</value>
     <comment>OptJournalView</comment>
   </data>
-  <data name="strMicroSIP" xml:space="preserve">
-    <value>MicroSIP</value>
-    <comment>MainView</comment>
-  </data>
-  <data name="strMicroSIPHeadConfig" xml:space="preserve">
-    <value>MicroSIP - Konfiguration</value>
-    <comment>OptMicroSIPView</comment>
-  </data>
-  <data name="strMicroSIPInfo" xml:space="preserve">
-    <value>Hinweise zur korrekten Konfiguration:
-Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.</value>
-    <comment>OptMicroSIPView</comment>
-  </data>
-  <data name="strMicroSIPTBMicroSIPPath" xml:space="preserve">
-    <value>Pfad zu MicroSIP.exe</value>
-    <comment>OptMicroSIPView</comment>
-  </data>
   <data name="strOFF" xml:space="preserve">
     <value>Aus</value>
     <comment>OptTAMView</comment>
@@ -744,10 +786,6 @@ Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Bo
   </data>
   <data name="strPhone" xml:space="preserve">
     <value>Telefone</value>
-    <comment>MainView</comment>
-  </data>
-  <data name="strPhoner" xml:space="preserve">
-    <value>Phoner</value>
     <comment>MainView</comment>
   </data>
   <data name="strPhonerCopyRight" xml:space="preserve">
@@ -776,27 +814,6 @@ Prüfe, ob die Authentifizierung erfolgreich ist.</value>
   <data name="strPhonerInfoLight" xml:space="preserve">
     <value>Phoner wird nicht mehr weiter entwickelt! Empfehlung: PhonerLite</value>
     <comment>OptPhonerView</comment>
-  </data>
-  <data name="strPhonerLiteHeadConfig" xml:space="preserve">
-    <value>PhonerLite - Konfiguration</value>
-    <comment>OptPhonerLiteView</comment>
-  </data>
-  <data name="strPhonerLiteInfo" xml:space="preserve">
-    <value>PhonerLite ist eine übersichtliche und leicht zu bedienende Anwendung für Windows, die es ermöglicht, unkompliziert den PC als Internet-Telefon (VoIP, Voice over IP) zu nutzen.</value>
-    <comment>OptPhonerLiteView</comment>
-  </data>
-  <data name="strPhonerLiteInfoConfig" xml:space="preserve">
-    <value>Hinweise zur korrekten Konfiguration:
-Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.</value>
-    <comment>OptPhonerLiteView</comment>
-  </data>
-  <data name="strPhonerLitePasswort" xml:space="preserve">
-    <value>In den PhonerLite CLI Optionen darf kein Passwort gesetzt sein!</value>
-    <comment>OptPhonerLiteView</comment>
-  </data>
-  <data name="strPhonerLitePort" xml:space="preserve">
-    <value>Port</value>
-    <comment>OptPhonerLiteView</comment>
   </data>
   <data name="strProtokolHead" xml:space="preserve">
     <value>Einstellungen zu tel:// und callto:// Protokollen</value>
@@ -889,7 +906,7 @@ Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werde
   </data>
   <data name="strSoftPhoneHomepage" xml:space="preserve">
     <value>Homepage</value>
-    <comment>OptMicroSIPView, OptPhonerView</comment>
+    <comment>OptConnCMDView</comment>
   </data>
   <data name="strStoppuhr" xml:space="preserve">
     <value>Stoppuhr</value>
@@ -923,9 +940,9 @@ Hinweis 3: Das Einfügen von Kontakten per Copy&amp;Paste führt nicht immer daz
     <value>Mindestanzahl an eingegebenen Zeichen</value>
     <comment>OptSearchContactView</comment>
   </data>
-  <data name="strTBPhonerLitePath" xml:space="preserve">
-    <value>Pfad zu PhonerLite.exe</value>
-    <comment>OptPhonerLiteView</comment>
+  <data name="strTBSoftphonePath" xml:space="preserve">
+    <value>Pfad zur Ausführungsdatei (exe)</value>
+    <comment>OptConnCMDView</comment>
   </data>
   <data name="strTelephonyHeadImport" xml:space="preserve">
     <value>Einlesen der Telefoniedaten von der Fritz!Box</value>

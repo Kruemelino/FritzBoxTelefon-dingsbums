@@ -15,7 +15,7 @@ Friend Module Phoner
     Private Const PhonerDISCONNECT As String = "DISCONNECT"
 #End Region
 
-#Region "Eigenschften"
+#Region "Eigenschaften"
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property PhonerEndpoint As IPAddress = IPAddress.Loopback
     Private ReadOnly Property PhonerEndpointPort As Integer = 2012

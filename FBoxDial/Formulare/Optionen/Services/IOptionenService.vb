@@ -42,6 +42,8 @@ Public Interface IOptionenService
 
 #Region "IP Telefone"
     Function GetSIPClients() As FBoxAPI.SIPClientList
+    Function SoftPhoneGetExecutablePath(ProcessName As String) As String
+
 #End Region
 
 #Region "Wählclient"

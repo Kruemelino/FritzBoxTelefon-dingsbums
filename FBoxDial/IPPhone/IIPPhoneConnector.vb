@@ -12,17 +12,25 @@ Public Interface IIPPhoneConnector
     ''' </summary>
     Property ConnectedPhoneID As Integer
 
-    Property Port As Integer
-
+    Property Name As String
     ''' <summary>
     ''' String zur Anwahl des Telefones
     ''' </summary>
     Property ConnectionUriCall As String
     Property ConnectionUriCancel As String
 
+#Region "Softphone CMD"
+
+    Property CommandCallTo As String
+    Property CommandHangUp As String
+#End Region
+
+
+#Region "Authentication"
     Property AuthenticationRequired As Boolean
     Property UserName As String
     Property Passwort As String
+#End Region
 
     ''' <summary>
     ''' Angabe, ob die Raute # an die zu wählende Nummer angehangen werden soll.

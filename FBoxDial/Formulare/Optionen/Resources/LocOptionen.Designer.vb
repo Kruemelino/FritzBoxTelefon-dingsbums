@@ -1238,6 +1238,125 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Parameter &quot;Wählen&quot; ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDCallTo() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDCallTo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Pfad zur Ausführungsdatei ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDExecutablePath() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDExecutablePath", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Parameter &quot;Auflegen&quot; ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDHangUp() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDHangUp", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Software-Telefone Konfiguration ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDHeadConfig() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDHeadConfig", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Einige Software-Telefone bieten die Möglichkeit der Fernsteuerung. Hierbei wird die zu wählende Nummer direkt an die Software-Telefon per Parameter übermittelt.
+        '''Die Fernsteuerung wird nicht von jedem Software-Telefon unterstützt. Bitte vorab informieren.
+        '''
+        '''Die Software-Telefone &apos;PhonerLite&apos; und &apos;MicroSIP&apos; wurden getestet. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDInfo() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur korrekten Konfiguration:
+        '''Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDInfoConfig() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDInfoConfig", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDMicroSIP() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDMicroSIP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Die zu wählende Nummer bzw. ein Abbruch des Wählvorganges werden per Parameter an die Software übermittelt.
+        '''
+        '''PhonerLite: callto:{TelNr} bzw. hangup:
+        '''MicroSIP: {TelNr} bzw. /hangupall
+        '''
+        '''Der Schlüssel {TelNr} wird mit der zu wählenden Telefonnummer ersetzt. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDParameterInfo() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDParameterInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die PhonerLite ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDPhonerLite() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDPhonerLite", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Prozess Name ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDProcessName() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDProcessName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Prozessname
+        '''PhonerLite: PhonerLite
+        '''MicroSIP: MicroSIP ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDProcessNameInfo() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDProcessNameInfo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Software-Telefon ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDSoftphone() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDSoftphone", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Art der Anbindung ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strIPPhoneConnectionMode() As String
@@ -1375,43 +1494,6 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strMicroSIP() As String
-            Get
-                Return ResourceManager.GetString("strMicroSIP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP - Konfiguration ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strMicroSIPHeadConfig() As String
-            Get
-                Return ResourceManager.GetString("strMicroSIPHeadConfig", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur korrekten Konfiguration:
-        '''Stelle sicher, dass MicroSIP sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein. ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strMicroSIPInfo() As String
-            Get
-                Return ResourceManager.GetString("strMicroSIPInfo", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Pfad zu MicroSIP.exe ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strMicroSIPTBMicroSIPPath() As String
-            Get
-                Return ResourceManager.GetString("strMicroSIPTBMicroSIPPath", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Aus ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strOFF() As String
@@ -1444,15 +1526,6 @@ Namespace Localize
         Public Shared ReadOnly Property strPhone() As String
             Get
                 Return ResourceManager.GetString("strPhone", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Phoner ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhoner() As String
-            Get
-                Return ResourceManager.GetString("strPhoner", resourceCulture)
             End Get
         End Property
         
@@ -1510,52 +1583,6 @@ Namespace Localize
         Public Shared ReadOnly Property strPhonerInfoLight() As String
             Get
                 Return ResourceManager.GetString("strPhonerInfoLight", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die PhonerLite - Konfiguration ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhonerLiteHeadConfig() As String
-            Get
-                Return ResourceManager.GetString("strPhonerLiteHeadConfig", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die PhonerLite ist eine übersichtliche und leicht zu bedienende Anwendung für Windows, die es ermöglicht, unkompliziert den PC als Internet-Telefon (VoIP, Voice over IP) zu nutzen. ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhonerLiteInfo() As String
-            Get
-                Return ResourceManager.GetString("strPhonerLiteInfo", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Hinweise zur korrekten Konfiguration:
-        '''Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein. ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhonerLiteInfoConfig() As String
-            Get
-                Return ResourceManager.GetString("strPhonerLiteInfoConfig", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die In den PhonerLite CLI Optionen darf kein Passwort gesetzt sein! ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhonerLitePasswort() As String
-            Get
-                Return ResourceManager.GetString("strPhonerLitePasswort", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Port ähnelt.
-        '''</summary>
-        Public Shared ReadOnly Property strPhonerLitePort() As String
-            Get
-                Return ResourceManager.GetString("strPhonerLitePort", resourceCulture)
             End Get
         End Property
         
@@ -1830,11 +1857,11 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Pfad zu PhonerLite.exe ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Pfad zur Ausführungsdatei (exe) ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strTBPhonerLitePath() As String
+        Public Shared ReadOnly Property strTBSoftphonePath() As String
             Get
-                Return ResourceManager.GetString("strTBPhonerLitePath", resourceCulture)
+                Return ResourceManager.GetString("strTBSoftphonePath", resourceCulture)
             End Get
         End Property
         
