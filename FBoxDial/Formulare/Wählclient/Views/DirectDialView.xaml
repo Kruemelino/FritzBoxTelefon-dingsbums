@@ -1,13 +1,13 @@
 ﻿<UserControl x:Class="DirectDialView"
-            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:fbd="clr-namespace:FBoxDial"
-            xmlns:localize="clr-namespace:FBoxDial.Localize"
-            mc:Ignorable="d" 
-            d:DesignHeight="100" d:DesignWidth="400"
-            d:DataContext="{d:DesignInstance Type=fbd:DirectDialViewModel, IsDesignTimeCreatable=False}">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fbd="clr-namespace:FBoxDial"
+             xmlns:localize="clr-namespace:FBoxDial.Localize"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="400" 
+             d:DataContext="{d:DesignInstance Type=fbd:DirectDialViewModel, IsDesignTimeCreatable=False}">
     
     <UserControl.Resources>
         <ResourceDictionary>
@@ -16,25 +16,25 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
-    <StackPanel Orientation="Vertical"
+
+    <StackPanel Orientation="Vertical" 
                 IsEnabled="{Binding Path=DialVM.IsNotDialing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" >
         
         <Label Content="{x:Static localize:LocWählclient.strDirectDial}" Margin="4" HorizontalContentAlignment="Center"/>
 
-        <ComboBox x:Name="CBoxTelNr" 
-                  Style="{StaticResource DirektCallComboBox}"
-                  ItemsSource="{Binding Path=DialDirektWahlList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                  DisplayMemberPath="Unformatiert" 
-                  SelectedValuePath="Unformatiert"
-                  Text="{Binding Path=TelNr.Unformatiert, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-        
+        <fbd:FocusedEditableComboBox x:Name="CBoxTelNr" 
+                                     Style="{StaticResource DirektCallComboBox}"
+                                     ItemsSource="{Binding Path=DialDirektWahlList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                     DisplayMemberPath="Unformatiert" 
+                                     SelectedValuePath="Unformatiert"
+                                     Text="{Binding Path=TelNr.Unformatiert, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+       
         <Button Content="{x:Static localize:LocWählclient.strDial}" 
                 Tag="{StaticResource CallTo_16x}"
                 Command="{Binding DialVM.DialCommand}" 
                 CommandParameter="{Binding ElementName=CBoxTelNr, Path=Text}"               
                 DockPanel.Dock="Bottom" Margin="4" />
     </StackPanel>
-
 
 </UserControl>

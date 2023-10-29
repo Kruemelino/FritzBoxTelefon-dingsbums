@@ -8,11 +8,13 @@
         mc:Ignorable="d"
         d:DesignHeight="250" d:DesignWidth="450"
         d:DataContext="{d:DesignInstance Type=fbd:WählClientViewModel, IsDesignTimeCreatable=False}"  
-        Focusable="False" IsTabStop="False" ResizeMode="NoResize"
+        Focusable="True" IsTabStop="False" ResizeMode="NoResize"
         MinHeight="250" MinWidth="400" Height="250" Width="450"
         Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-        Style="{DynamicResource CustomToolWindowStyle}">
-
+        Style="{DynamicResource CustomToolWindowStyle}" >
+    
+    <!--FocusManager.FocusedElement="{Binding ElementName=CC}"-->
+    
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -21,7 +23,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8">
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8" >
 
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
@@ -62,8 +64,10 @@
             </GroupBox>
         </Grid>
 
-        <ContentControl Content="{Binding CurrentView}" Margin="4,4,0,4"                         
+        <ContentControl x:Name="CC"
+                        Content="{Binding CurrentView}" Margin="4,4,0,4"                       
                         ContentTemplateSelector="{StaticResource DialTemplateSelector}" />
+
     </DockPanel>
 
 </Window>
