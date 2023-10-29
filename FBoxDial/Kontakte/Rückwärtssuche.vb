@@ -16,9 +16,9 @@ Public Module Rückwärtssuche
 
         If RWSIndex Then
             ' Prüfe ob im RWSIndex ein Eintrag vorhanden ist
-            If XMLData.PTelListen.RWSIndex IsNot Nothing Then
+            If TelefonieListen.RWSIndex IsNot Nothing Then
 
-                RWSIndexEintrag = XMLData.PTelListen.RWSIndex.Find(Function(RWSEntry) TelNr.Equals(RWSEntry.TelNr))
+                RWSIndexEintrag = TelefonieListen.RWSIndex.Find(Function(RWSEntry) TelNr.Equals(RWSEntry.TelNr))
                 If RWSIndexEintrag IsNot Nothing AndAlso RWSIndexEintrag.VCard IsNot Nothing AndAlso RWSIndexEintrag.VCard.IsNotStringNothingOrEmpty Then
                     vCard = RWSIndexEintrag.VCard
                 End If
@@ -37,9 +37,9 @@ Public Module Rückwärtssuche
                 End With
 
                 ' RWS-Index-Liste initialisieren, falls erforderlich
-                If XMLData.PTelListen.RWSIndex Is Nothing Then XMLData.PTelListen.RWSIndex = New List(Of RWSIndexEntry)
+                If TelefonieListen.RWSIndex Is Nothing Then TelefonieListen.RWSIndex = New List(Of RWSIndexEntry)
 
-                XMLData.PTelListen.RWSIndex.Add(RWSIndexEintrag)
+                TelefonieListen.RWSIndex.Add(RWSIndexEintrag)
             End If
         End If
         Return vCard

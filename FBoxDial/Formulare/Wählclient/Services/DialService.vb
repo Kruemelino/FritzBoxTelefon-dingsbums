@@ -51,8 +51,8 @@ Public Class DialService
     End Function
 
     Private Function GetLastTelNr() As IEnumerable(Of Telefonnummer) Implements IDialService.GetLastTelNr
-        If XMLData.PTelListen.CALLListe IsNot Nothing AndAlso XMLData.PTelListen.CALLListe.Any Then
-            Return XMLData.PTelListen.GetTelNrList(XMLData.PTelListen.CALLListe)
+        If TelefonieListen.CALLListe IsNot Nothing AndAlso TelefonieListen.CALLListe.Any Then
+            Return TelefonieListen.GetTelNrList(TelefonieListen.CALLListe)
         Else
             Return Nothing
         End If

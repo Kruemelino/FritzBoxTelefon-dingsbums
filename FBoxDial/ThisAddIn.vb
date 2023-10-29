@@ -25,6 +25,7 @@ Public NotInheritable Class ThisAddIn
     Friend Property FBoxTR064 As FBoxAPI.FritzBoxTR64
     Friend Property FBoxhttpClient As AddinHTTPClient
     Private Property LinkProtokoll As DateiÜberwacher
+    Private Property AddinDaten As NutzerDaten
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Private Property StartZustand As InitState = InitState.Stopped
@@ -71,7 +72,7 @@ Public NotInheritable Class ThisAddIn
         NLogger.Debug("Landes- und Ortskennzahlen geladen...")
 
         ' Lade die Nutzerdaten
-        Dim UserData As New NutzerDaten
+        AddinDaten = New NutzerDaten
         NLogger.Debug("Nutzererinstellungen geladen...")
 
         ' Theme gemäß den aktuellen Einstellungen von Office setzen
@@ -217,7 +218,8 @@ Public NotInheritable Class ThisAddIn
         NLogger.Info($"{My.Resources.strDefLongName} {Reflection.Assembly.GetExecutingAssembly.GetName.Version} beendet.")
 
         ' XML-Datei Speichern
-        XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
+        'XmlSerializeToFile(XMLData, IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, $"{My.Resources.strDefShortName}.xml"))
+        AddinDaten.Speichern()
 
         ' disable keyboard intercepts
         If XMLData.POptionen.CBKeyboard Then KeyboardHooking.ReleaseHook()

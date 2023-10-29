@@ -151,8 +151,8 @@ Namespace RibbonData
         ''' Einblenden des Anrufmonitors. (Routine wird über <see cref="MethodInfo.Invoke"/> eingeblendet)
         ''' </summary>
         Private Sub ShowCallMonitor()
-            If XMLData.PTelListen.RINGListe.Count.IsNotZero Then
-                XMLData.PTelListen.RINGListe.Item(0).AnrMonEinblenden()
+            If TelefonieListen.RINGListe.Count.IsNotZero Then
+                TelefonieListen.RINGListe.Item(0).AnrMonEinblenden()
             Else
                 Using tmptelfnt As New Telefonat With {.AnruferName = My.Resources.strDefLongName, .GegenstelleTelNr = New Telefonnummer With {.SetNummer = "0123456789"}, .ZeitBeginn = Now}
                     tmptelfnt.AnrMonEinblenden()
@@ -222,10 +222,10 @@ Namespace RibbonData
             With New FritzBoxWählClient
 
                 If ID.First.Equals(My.Resources.strDfltNameListVIP) Then
-                    .WählboxStart(XMLData.PTelListen.VIPListe.Item(ID.Last.ToInt))
+                    .WählboxStart(TelefonieListen.VIPListe.Item(ID.Last.ToInt))
                 Else
                     ' Ermittle die Wahlwiederholungs- bzw. Rückrufliste mittels Reflection aus dem übergebenen Namen
-                    .WählboxStart(CType(XMLData.PTelListen.GetType().GetProperty(ID.First).GetValue(XMLData.PTelListen), List(Of Telefonat)).Item(ID.Last.ToInt))
+                    .WählboxStart(CType(TelefonieListen.GetType().GetProperty(ID.First).GetValue(TelefonieListen), List(Of Telefonat)).Item(ID.Last.ToInt))
                 End If
             End With
 
@@ -236,7 +236,7 @@ Namespace RibbonData
         ''' </summary>
         ''' <param name="Tag">Identifikation des Listeneintrages: RingList_0</param>
         Private Sub CreateContactButtonCRV(Tag As String)
-            XMLData.PTelListen.CreateContact(Tag)
+            TelefonieListen.CreateContact(Tag)
         End Sub
 
         ''' <summary>
@@ -244,7 +244,7 @@ Namespace RibbonData
         ''' </summary>
         ''' <param name="Tag">Identifikation des Listeneintrages: RingList_0</param>
         Private Sub SceduleButtonCRV(Tag As String)
-            XMLData.PTelListen.CreateAppointment(Tag)
+            TelefonieListen.CreateAppointment(Tag)
         End Sub
 
         ''' <summary>
@@ -252,7 +252,7 @@ Namespace RibbonData
         ''' </summary>
         ''' <param name="Tag">Identifikation des Listeneintrages: RingList_0</param>
         Private Sub DeleteEntryButtonCRV(Tag As String)
-            XMLData.PTelListen.ClearListEntry(Tag)
+            TelefonieListen.ClearListEntry(Tag)
         End Sub
 
         ''' <summary>
@@ -287,7 +287,7 @@ Namespace RibbonData
         ''' </summary>
         ''' <param name="Parameter">Identifikation der Liste</param>
         Private Sub DynListDel(Parameter As String)
-            XMLData.PTelListen.ClearList(Parameter.RegExRemove("^.*_"))
+            TelefonieListen.ClearList(Parameter.RegExRemove("^.*_"))
         End Sub
 
         Private Sub Contact(OutlookInspector As Outlook.Inspector)
@@ -381,13 +381,13 @@ Namespace RibbonData
             If XMLData IsNot Nothing Then
                 Select Case ID(0)
                     Case My.Resources.strDfltNameListCALL
-                        Return XMLData.PTelListen.CALLListe IsNot Nothing AndAlso XMLData.PTelListen.CALLListe.Any
+                        Return TelefonieListen.CALLListe IsNot Nothing AndAlso TelefonieListen.CALLListe.Any
 
                     Case My.Resources.strDfltNameListRING
-                        Return XMLData.PTelListen.RINGListe IsNot Nothing AndAlso XMLData.PTelListen.RINGListe.Any
+                        Return TelefonieListen.RINGListe IsNot Nothing AndAlso TelefonieListen.RINGListe.Any
 
                     Case My.Resources.strDfltNameListVIP
-                        Return XMLData.PTelListen.VIPListe IsNot Nothing AndAlso XMLData.PTelListen.VIPListe.Any
+                        Return TelefonieListen.VIPListe IsNot Nothing AndAlso TelefonieListen.VIPListe.Any
 
                     Case Else
                         Return False
@@ -1030,7 +1030,7 @@ Namespace RibbonData
                 Select Case ListName
                     Case My.Resources.strDfltNameListCALL
 
-                        Dim L As List(Of Telefonat) = XMLData.PTelListen.CALLListe.Distinct(New EqualityComparer).ToList
+                        Dim L As List(Of Telefonat) = TelefonieListen.CALLListe.Distinct(New EqualityComparer).ToList
 
                         For Each TelFt As Telefonat In L.Where(Function(Tf) Not Tf.NrUnterdrückt)
                             .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, L.IndexOf(TelFt), ListName))
@@ -1038,7 +1038,7 @@ Namespace RibbonData
 
                     Case My.Resources.strDfltNameListRING
 
-                        Dim L As List(Of Telefonat) = XMLData.PTelListen.RINGListe.Distinct(New EqualityComparer).ToList
+                        Dim L As List(Of Telefonat) = TelefonieListen.RINGListe.Distinct(New EqualityComparer).ToList
 
                         For Each TelFt As Telefonat In L.Where(Function(Tf) Not Tf.NrUnterdrückt)
                             .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, TelFt, L.IndexOf(TelFt), ListName))
@@ -1046,7 +1046,7 @@ Namespace RibbonData
 
                     Case My.Resources.strDfltNameListVIP
 
-                        Dim L As List(Of VIPEntry) = XMLData.PTelListen.VIPListe.Distinct(New EqualityComparer).ToList
+                        Dim L As List(Of VIPEntry) = TelefonieListen.VIPListe.Distinct(New EqualityComparer).ToList
 
                         For Each VIP As VIPEntry In L
                             .DocumentElement.AppendChild(CreateDynMenuSplitButton(XDynaMenu, VIP, L.IndexOf(VIP), ListName))

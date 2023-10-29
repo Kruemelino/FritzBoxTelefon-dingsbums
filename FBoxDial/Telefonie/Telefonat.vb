@@ -1083,14 +1083,14 @@ Imports Microsoft.Office.Interop
             ' Überprüfe, ob eigene Nummer überhaupt überwacht wird            ' 
             If AnrufRichtung = AnrufRichtungen.Eingehend Then
                 ' RING-Liste initialisieren, falls erforderlich
-                If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
+                If TelefonieListen.RINGListe Is Nothing Then TelefonieListen.RINGListe = New List(Of Telefonat)
                 ' Telefonat in erste Positon der RING-Liste speichern
-                XMLData.PTelListen.RINGListe.Insert(Me)
+                TelefonieListen.RINGListe.Insert(Me)
             Else
                 ' CALL-Liste initialisieren, falls erforderlich
-                If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
+                If TelefonieListen.CALLListe Is Nothing Then TelefonieListen.CALLListe = New List(Of Telefonat)
                 ' Telefonat in erste Positon der CALL-Liste speichern
-                XMLData.PTelListen.CALLListe.Insert(Me)
+                TelefonieListen.CALLListe.Insert(Me)
             End If
         End If
     End Sub

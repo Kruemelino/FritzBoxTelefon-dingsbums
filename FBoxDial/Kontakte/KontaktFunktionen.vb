@@ -1331,8 +1331,8 @@ Friend Module KontaktFunktionen
 #Region "VIP"
     <Extension> Friend Function IsVIP(olKontakt As ContactItem) As Boolean
         ' Prüfe, ob sich der Kontakt in der Liste befindet.
-        If XMLData.PTelListen.VIPListe IsNot Nothing Then
-            With XMLData.PTelListen.VIPListe
+        If TelefonieListen.VIPListe IsNot Nothing Then
+            With TelefonieListen.VIPListe
                 Return .Exists(Function(VIPEintrag) VIPEintrag.EntryID.IsEqual(olKontakt.EntryID) And VIPEintrag.StoreID.IsEqual(olKontakt.StoreID))
             End With
         End If
@@ -1340,14 +1340,14 @@ Friend Module KontaktFunktionen
     End Function
 
     <Extension> Friend Function ToggleVIP(olKontakt As ContactItem) As Boolean
-        If XMLData.PTelListen.VIPListe Is Nothing Then XMLData.PTelListen.VIPListe = New List(Of VIPEntry)
+        If TelefonieListen.VIPListe Is Nothing Then TelefonieListen.VIPListe = New List(Of VIPEntry)
 
         If olKontakt.IsVIP Then
             ' Entferne den Kontakt von der Liste
-            XMLData.PTelListen.VIPListe.RemoveAll(Function(VIPEintrag) VIPEintrag.EntryID.IsEqual(olKontakt.EntryID) And VIPEintrag.StoreID.IsEqual(olKontakt.StoreID))
+            TelefonieListen.VIPListe.RemoveAll(Function(VIPEintrag) VIPEintrag.EntryID.IsEqual(olKontakt.EntryID) And VIPEintrag.StoreID.IsEqual(olKontakt.StoreID))
         Else
             ' Füge einen neuen Eintrag hinzu
-            XMLData.PTelListen.VIPListe.Add(New VIPEntry With {.Name = olKontakt.FullNameAndCompany, .EntryID = olKontakt.EntryID, .StoreID = olKontakt.StoreID})
+            TelefonieListen.VIPListe.Add(New VIPEntry With {.Name = olKontakt.FullNameAndCompany, .EntryID = olKontakt.EntryID, .StoreID = olKontakt.StoreID})
         End If
 
         Globals.ThisAddIn.POutlookRibbons.RefreshRibbon()
