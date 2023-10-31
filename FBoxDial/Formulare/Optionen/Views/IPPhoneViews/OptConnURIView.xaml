@@ -17,53 +17,63 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <!--<GroupBox BorderBrush="{DynamicResource ValidationBrush}" Header="Experimentell!">-->
-        <StackPanel x:Name="MainStackPanel" Margin="4">
+    <StackPanel x:Name="MainStackPanel" Margin="4">
 
-            <Label Style="{StaticResource OptHintTextBlock}" 
-                   Content="{x:Static localize:LocOptionen.strConnURIInfo}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+                Content="{x:Static localize:LocOptionen.strConnURIInfo}"/>
 
-            <TextBox Style="{StaticResource OptTextBox}"
-                     Tag="{x:Static localize:LocOptionen.strConnURITBCall}"
-                     Text="{Binding Connector.ConnectionUriCall, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <!--<TextBox Style="{StaticResource OptTextBox}"
+                    Tag="{x:Static localize:LocOptionen.strConnURITBCall}"
+                    Text="{Binding Connector.ConnectionUriCall, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
 
-            <TextBox Style="{StaticResource OptTextBox}"
+        <TextBox Style="{StaticResource OptTextBox}"
+                     Tag="{x:Static localize:LocOptionen.strConnURITBCall}" >
+            <TextBox.Text>
+                <Binding Path="Connector.ConnectionUriCall"
+                         Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <fbd:StrValidationRule RegExPattern="\{TelNr\}"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <TextBox Style="{StaticResource OptTextBox}"
                      Tag="{x:Static localize:LocOptionen.strConnURITBCancel}"
                      Text="{Binding Connector.ConnectionUriCancel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <CheckBox Style="{StaticResource OptCheckBox}" 
-                      Content="{x:Static localize:LocOptionen.strCBSoftPhoneSuffix}" 
-                      IsChecked="{Binding Connector.AppendSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                    Content="{x:Static localize:LocOptionen.strCBSoftPhoneSuffix}" 
+                    IsChecked="{Binding Connector.AppendSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Label Style="{StaticResource OptHintTextBlock}" 
-                   Content="{x:Static localize:LocOptionen.strConnURIAuthInfo}"/>
+        <Label Style="{StaticResource OptHintTextBlock}" 
+                Content="{x:Static localize:LocOptionen.strConnURIAuthInfo}"/>
 
-            <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strConnURIAuthLinkInfo}"
-                             URL="https://www.ip-phone-forum.de/threads/fernsteuerm%C3%B6glichkeit-diverser-sip-telefone.313272/"
-                             LinkLabel="www.ip-phone-forum.de"/>
+        <fbd:OptionsLink Label="{x:Static localize:LocOptionen.strConnURIAuthLinkInfo}"
+                            URL="https://www.ip-phone-forum.de/threads/fernsteuerm%C3%B6glichkeit-diverser-sip-telefone.313272/"
+                            LinkLabel="www.ip-phone-forum.de"/>
             
-            <CheckBox Style="{StaticResource OptCheckBox}" 
-                      Content="{x:Static localize:LocOptionen.strIPPhoneAuthRequired}" 
-                      IsChecked="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <CheckBox Style="{StaticResource OptCheckBox}" 
+                    Content="{x:Static localize:LocOptionen.strIPPhoneAuthRequired}" 
+                    IsChecked="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <!--<ComboBox Style="{StaticResource OptComboBox}" 
-                      Tag="{x:Static localize:LocOptionen.strConnURIAuthType}"
-                      ItemsSource="{Binding Source={fbd:EnumBindingSource {x:Type fbd:IPPhoneAuthType}}}"
-                      SelectedValue="{Binding Connector.AuthenticationType, FallbackValue=None}"/>-->
+        <!--<ComboBox Style="{StaticResource OptComboBox}" 
+                    Tag="{x:Static localize:LocOptionen.strConnURIAuthType}"
+                    ItemsSource="{Binding Source={fbd:EnumBindingSource {x:Type fbd:IPPhoneAuthType}}}"
+                    SelectedValue="{Binding Connector.AuthenticationType, FallbackValue=None}"/>-->
 
-            <TextBox Style="{StaticResource OptTextBox}" 
-                    IsEnabled="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Tag="{x:Static localize:LocOptionen.strUserName}"
-                    Text="{Binding Connector.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Style="{StaticResource OptTextBox}" 
+                IsEnabled="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Tag="{x:Static localize:LocOptionen.strUserName}"
+                Text="{Binding Connector.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strIPPhoneTBPasswort}" 
-                                    IsEnabled="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Value="{Binding Path=Connector.Passwort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                    DeCryptKey="{Binding Path=OptVM.DfltIPPhoneDeCryptKey, Mode=OneWay}"/>
+        <fbd:OptionsPasswordBox Label="{x:Static localize:LocOptionen.strIPPhoneTBPasswort}" 
+                                IsEnabled="{Binding Connector.AuthenticationRequired, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Value="{Binding Path=Connector.Passwort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                DeCryptKey="{Binding Path=OptVM.DfltIPPhoneDeCryptKey, Mode=OneWay}"/>
 
            
-        </StackPanel>
+    </StackPanel>
 
-    <!--</GroupBox>-->
 
 </UserControl>

@@ -57,8 +57,8 @@ Public Class StrValidationRule
         Dim Input As String = CStr(value)
 
         If Not Input.IsRegExMatch(RegExPattern) Then
-            NLogger.Warn($"Die eingegbene Zeichenfolge ({Input}) entspricht nicht den erwarteten Format '{RegExPattern}'.")
-            Return New ValidationResult(False, resCommon.strValidationStrRegEx)
+            NLogger.Warn($"Die eingegebene Zeichenfolge ({Input}) entspricht nicht den erwarteten Format '{RegExPattern}'.")
+            Return New ValidationResult(False, $"Die eingegebene Zeichenfolge entspricht nicht den erwarteten Format '{RegExPattern}'.")
         End If
 
         Return ValidationResult.ValidResult
