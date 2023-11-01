@@ -88,7 +88,7 @@ Public Class OptTellowsViewModel
             With Crypter
                 TellowsPartnerInfo = Await DatenService.GetTellowsAccountData(.SecureStringToHash(.DecryptString(OptVM.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey),
                                                                                                   Encoding.Default,
-                                                                                                  Security.Cryptography.HashAlgorithmName.MD5.Name))
+                                                                                                  Security.Cryptography.HashAlgorithmName.MD5))
             End With
             If TellowsPartnerInfo Is Nothing Then
                 TellowsPartnerInfo = New TellowsPartnerInfo With {.Info = Localize.LocOptionen.strTellowsFehlerPartnerDaten}
@@ -105,7 +105,7 @@ Public Class OptTellowsViewModel
                 ' Setze Ergebnis
                 TellowsResponse = Await DatenService.GetTellowsLiveAPIData(TBTestTellowsInput, .SecureStringToHash(.DecryptString(OptVM.TBTellowsAPIKey, My.Resources.strDfltTellowsDeCryptKey),
                                                                                                                    Encoding.Default,
-                                                                                                                   Security.Cryptography.HashAlgorithmName.MD5.Name))
+                                                                                                                   Security.Cryptography.HashAlgorithmName.MD5))
             End With
         End Using
 

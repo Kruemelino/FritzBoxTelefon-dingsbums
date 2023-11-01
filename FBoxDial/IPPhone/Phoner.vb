@@ -65,7 +65,7 @@ Friend Module Phoner
                                             With Crypter
                                                 Response = .SecureStringToHash(.DecryptString(Connector.Passwort, My.Resources.strDfltPhonerDeCryptKey),
                                                                                Encoding.ASCII,
-                                                                               System.Security.Cryptography.HashAlgorithmName.MD5.Name,
+                                                                               System.Security.Cryptography.HashAlgorithmName.MD5,
                                                                                Challange).ToUpper
                                             End With
                                         End Using

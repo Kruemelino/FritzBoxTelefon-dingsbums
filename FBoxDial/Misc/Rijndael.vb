@@ -166,7 +166,7 @@ Friend Class Rijndael
     ''' <param name="AlgorithmName">Name des Hash-Algorithmus</param>
     ''' <param name="Präfix">Optionaler Präfix, welcher vor dem erstellen des Hashes dem <see cref="SecureString"/> vorangestellt wird.</param>
     ''' <returns>MD5 String</returns>
-    Friend Function SecureStringToHash(secureString As SecureString, Zeichencodierung As Encoding, AlgorithmName As String, Optional Präfix As String = "") As String
+    Friend Function SecureStringToHash(secureString As SecureString, Zeichencodierung As Encoding, AlgorithmName As HashAlgorithmName, Optional Präfix As String = "") As String
 
         If secureString IsNot Nothing Then
             Dim BufferSecuredString As Byte() = ToByteArray(secureString, Zeichencodierung)
@@ -191,8 +191,8 @@ Friend Class Rijndael
 
     End Function
 
-    Private Function HashByteArray(AlgorithmName As String, Buffer As Byte()) As String
-        Using Algorithm As HashAlgorithm = HashAlgorithm.Create(AlgorithmName)
+    Private Function HashByteArray(AlgorithmName As HashAlgorithmName, Buffer As Byte()) As String
+        Using Algorithm As HashAlgorithm = HashAlgorithm.Create(AlgorithmName.Name)
             Return String.Concat(Algorithm.ComputeHash(Buffer).Select(Function(x) x.ToString("x2")))
         End Using
     End Function
