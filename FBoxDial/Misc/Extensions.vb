@@ -234,11 +234,23 @@ Public Module Extensions
     ''' <param name="Anruf">Der aktuelle Anruf, der hinzugefügt werden soll.</param>
     <Extension> Public Sub Insert(ByRef Anrufliste As List(Of Telefonat), Anruf As Telefonat)
 
-        ' Liste initialisieren, falls erforderlich
-        If Anrufliste Is Nothing Then Anrufliste = New List(Of Telefonat)
-
         ' Ignoriere dieses Telefonat, wenn es sich bereits in der Liste befindet 
-        If Not Anrufliste.Contains(Anruf, New EqualityComparer) Then
+        Dim Unique As Boolean = True
+
+        ' Es kommt hier vor, dass das auf die Liste zugegriffen wird, während sie geändert wird.
+        ' Dann kommt es zu einer InvalidOperationException
+        Try
+            Unique = Not Anrufliste.Contains(Anruf, New EqualityComparer)
+
+        Catch ex As InvalidOperationException
+            NLogger.Error(ex)
+
+        Catch ex As Exception
+            NLogger.Error(ex)
+
+        End Try
+
+        If Unique Then
 
             ' Eintrag hinzufügen
             Anrufliste.Insert(0, Anruf)
@@ -247,10 +259,9 @@ Public Module Extensions
 
             NLogger.Debug($"Telefonat ({Anruf.NameGegenstelle}, {Anruf.ZeitBeginn}) wurde in die Liste aufgenommen.")
 
-
             ' Entferne alle überflüssigen Elemente
             With Anrufliste
-                ' PTBNumEntryList = 10
+                ' TBNumEntryList = 10
                 ' .Count = 11
                 ' Start = PTBNumEntryList (Nullbasiert), Anzahl an zu löschenden Elementen = .Count - PTBNumEntryList
                 ' Start = 10, Anzahl = 11 - 10 = 1

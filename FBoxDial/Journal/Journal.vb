@@ -24,6 +24,10 @@ Friend Module Journal
                                                       If t IsNot Nothing Then t.SetUpOlLists(True)
                                                   End Using
                                               End Sub)
+
+                               ' Wirf alle doppelten Einträge raus
+                               TelefonieListen.DistictList()
+
                            End Sub)
 
         End If

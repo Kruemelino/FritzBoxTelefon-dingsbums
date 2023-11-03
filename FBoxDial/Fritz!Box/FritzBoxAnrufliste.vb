@@ -43,6 +43,9 @@ Friend Module FritzBoxAnrufliste
                                       If ct.IsCancellationRequested Then Exit For
                                   Next
 
+                                  ' Wirf alle doppelten Einträge raus
+                                  TelefonieListen.DistictList()
+
                                   Return Einträge
                               End Function, ct)
 

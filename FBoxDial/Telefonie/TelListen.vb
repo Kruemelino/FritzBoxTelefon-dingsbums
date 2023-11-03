@@ -43,6 +43,15 @@ Imports System.Reflection
 
     End Sub
 
+    ''' <summary> 
+    ''' Entfernt alle doppelten Einträge aus den Listen.
+    ''' </summary>
+    Friend Sub DistictList()
+        RINGListe = RINGListe.Distinct(New EqualityComparer).ToList
+        CALLListe = CALLListe.Distinct(New EqualityComparer).ToList
+        VIPListe = VIPListe.Distinct(New EqualityComparer).ToList
+    End Sub
+
     ''' <summary>
     ''' Entfernt einen Eintrag aus der Liste
     ''' </summary>
