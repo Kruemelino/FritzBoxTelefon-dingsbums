@@ -15,7 +15,12 @@
         ' Check whether the object is null.
         If obj Is Nothing Then Return 0
 
-        Return If(obj.Unformatiert Is Nothing, 0, obj.Unformatiert.GetHashCode())
+        If obj.Unterdrückt Then
+            Return obj.Unterdrückt.GetHashCode
+        Else
+            Return If(obj.Unformatiert Is Nothing, 0, obj.Unformatiert.GetHashCode())
+        End If
+
     End Function
 #End Region
 
@@ -25,11 +30,7 @@
     End Function
 
     Public Overloads Function GetHashCode(obj As Telefonat) As Integer Implements IEqualityComparer(Of Telefonat).GetHashCode
-
-        ' Check whether the object is null.
-        If obj Is Nothing Then Return 0
-
-        Return If(obj.AnruferName Is Nothing, 0, obj.AnruferName.GetHashCode())
+        Return obj.ID.GetHashCode()
     End Function
 #End Region
 

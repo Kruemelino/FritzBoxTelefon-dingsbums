@@ -1540,8 +1540,7 @@ Imports Microsoft.Office.Interop
             other.InitNummern()
 
             ' Die Telefonnummern und die Zeiten müssen grundsätzlich gleich sein
-            If EigeneTelNr IsNot Nothing AndAlso
-               EigeneTelNr.Equals(other.EigeneTelNr) AndAlso GegenstelleTelNr.Equals(other.GegenstelleTelNr) AndAlso
+            If EigeneTelNr.Equals(other.EigeneTelNr) AndAlso GegenstelleTelNr.Equals(other.GegenstelleTelNr) AndAlso
                ZeitBeginn.IsSameAs(other.ZeitBeginn) AndAlso ZeitEnde.IsSameAs(other.ZeitEnde) Then
 
                 ' Falls beide Telefonate importiert wurden, dann vergleiche zusätzlich die IDs. 
