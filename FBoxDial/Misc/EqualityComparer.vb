@@ -30,7 +30,16 @@
     End Function
 
     Public Overloads Function GetHashCode(obj As Telefonat) As Integer Implements IEqualityComparer(Of Telefonat).GetHashCode
-        Return obj.ID.GetHashCode()
+
+        ' Check whether the object is null.
+        If obj Is Nothing Then Return 0
+
+        ' Es kann sein, dass Eigene Telefonnummer Nothing ist. Tritt bei den Wahlwiederholungslisten auf.
+        obj.InitNummern()
+
+        With obj
+            Return $"{ .ID}{ .EigeneTelNr.Unformatiert}{ .GegenstelleTelNr.Unformatiert}{ .ZeitBeginn.ToLongTimeString}{ .ZeitEnde.ToLongTimeString}".GetHashCode
+        End With
     End Function
 #End Region
 

@@ -1,4 +1,5 @@
-﻿Imports System.Threading
+﻿Imports System.Collections
+Imports System.Threading
 Imports System.Threading.Tasks
 Imports System.Windows
 Imports System.Xml.Serialization
@@ -1218,7 +1219,7 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
-    Private Sub InitNummern()
+    Friend Sub InitNummern()
         ' Es kann sein, dass Eigene Telefonnummer Nothing ist. Tritt bei den Wahlwiederholungslisten auf.
         If EigeneTelNr Is Nothing AndAlso OutEigeneTelNr.IsNotStringNothingOrEmpty Then
             ' Setze die eigene Nummer
