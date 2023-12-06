@@ -1,5 +1,5 @@
 ﻿#define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "5.0.3.27"
+#define MyAppVersion "5.0.4.0"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2021), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
@@ -80,7 +80,7 @@ var DownloadPage: TDownloadWizardPage;
 var inst_dotnetfx:boolean;
 var inst_VSTO2010_Redistributable:boolean;
 
-const dotnetfx_url = 'https://go.microsoft.com/fwlink/?linkid=2088631';
+const dotnetfx_url = 'https://go.microsoft.com/fwlink/?linkid=2203305';
 const VSTO2010_Redistributable_url = 'https://go.microsoft.com/fwlink/?LinkId=158918';
 
 function CurrectGUID(dummy: String): String;
@@ -105,7 +105,7 @@ begin
     if CurPageID = wpReady then begin
     DownloadPage.Clear;
     if inst_dotnetfx then
-        DownloadPage.Add(dotnetfx_url, ExpandConstant('ndp48-x86-x64-allos-enu.exe'), '');
+        DownloadPage.Add(dotnetfx_url, ExpandConstant('NDP481-x86-x64-AllOS-ENU.exe'), '');
 
     if inst_VSTO2010_Redistributable then
         DownloadPage.Add(VSTO2010_Redistributable_url, ExpandConstant('vstor_redist.exe'), '');
@@ -157,6 +157,7 @@ end;
 //    'v4.7.1'        .NET Framework 4.7.1
 //    'v4.7.2'        .NET Framework 4.7.2
 //    'v4.8'          .NET Framework 4.8
+//    'v4.8.1'        .NET Framework 4.8.1
 //
 // service -- Specify any non-negative integer for the required service pack level:
 //    0               No service packs required
@@ -178,6 +179,7 @@ function IsDotNetDetected(version: string; service: cardinal): boolean;
         end
 
         // .NET 4.5 and newer install as update to .NET 4.0 Full
+        // https://learn.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed
         else if Pos('v4.', version) = 1 then begin
             versionKey := 'v4\Full';
             case version of
@@ -191,7 +193,8 @@ function IsDotNetDetected(version: string; service: cardinal): boolean;
               'v4.7.1': versionRelease := 461308; // 461310 before Win10 Fall Creators Update
               'v4.7.2': versionRelease := 461808; // 461814 before Win10 April 2018 Update
               'v4.8':   versionRelease := 528040; // 528049 before Win10 May 2019 Update
-            end;
+              'v4.8.1': versionRelease := 533320; // 533320
+                                                end;
         end;
 
         // installation key group for all .NET versions
@@ -280,7 +283,7 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
             Result := '';
             
             begin
-                ShellExec('open', ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'), '/q /passive /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+                ShellExec('open', ExpandConstant('{tmp}\NDP481-x86-x64-AllOS-ENU.exe'), '/q /passive /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
         end;
 
         if inst_VSTO2010_Redistributable then
@@ -299,8 +302,8 @@ function InitializeSetup(): Boolean;
         Result := true;
 
         // Minimale erforderliche .NET Version
-        strNET := 'v4.8';
-        strNET2 := '.NET Framework 4.8';
+        strNET := 'v4.8.1';
+        strNET2 := '.NET Framework 4.8.1';
 
         // prüfe, ob die Outlook-Version ermittelt werden konnte. Wenn Version -1, dann wurde die Version nicht ermittelt.
         // Dann frage den User, ob das Addin dennoch installiert werden soll.
@@ -340,7 +343,7 @@ function InitializeSetup(): Boolean;
                         inst_VSTO2010_Redistributable := true            
                     end; 
       
-                // Prüfe, ob .NET 4.8 installiert ist    
+                // Prüfe, ob .NET 4.8.1 installiert ist    
                 if not IsDotNetDetected(strNet, 0) then
                     begin
                         Result := false
@@ -351,7 +354,7 @@ function InitializeSetup(): Boolean;
                     begin
                         strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
                   
-                        // .NET 4.8
+                        // .NET 4.8.1
                         if inst_dotnetfx then strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10'';                 
                         // VSTO
                         if inst_VSTO2010_Redistributable then strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10'';
