@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche.")>
 <Assembly: AssemblyCompany("Fritz!Box Telefon-Dingsbums")>
 <Assembly: AssemblyProduct("Fritz!Box Telefon-Dingsbums")>
-<Assembly: AssemblyCopyright("Gert Michael (Kruemelino) © 2022")>
+<Assembly: AssemblyCopyright("Gert Michael (Kruemelino) © 2024")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
