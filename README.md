@@ -38,6 +38,7 @@ d.h. es sind keine tiefgreifenden Modifikationen an der Fritz!Box erforderlich.
   * [x] Softphone: [Phoner](https://phoner.de)
   * [x] Softphone: [PhonerLite](https://lite.phoner.de)
   * [x] SoftPhone: [MicroSIP](https://www.microsip.org/)
+  * [x] SoftPhone: [PhoneSuite](https://www.phonesuite.de/)
   * [x] Getestet: Snom
   * [x] Ungetestet (sollte funktionieren): Fanvil, Gigaset, Yealink
   * [ ] Noch nicht implementiert: Grandstream (Authentifizierungsverfahren)

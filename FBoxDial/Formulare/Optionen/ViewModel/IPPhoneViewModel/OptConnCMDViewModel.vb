@@ -46,14 +46,20 @@ Public Class OptConnCMDViewModel
                 ' Setze die bekannten Daten für PhonerLite, MicroSIP etc.
                 Select Case _SelectedSoftPhone
                     Case SoftPhones.PhonerLite
-                        .CommandCallTo = "callto:"
+                        .CommandCallTo = $"callto:{Localize.LocOptionen.strIPPhoneCMDPlatzhalter}"
                         .CommandHangUp = "hangup:"
                         .Name = SoftPhones.PhonerLite.ToString
 
                     Case SoftPhones.MicroSIP
-                        .CommandCallTo = String.Empty
+                        .CommandCallTo = Localize.LocOptionen.strIPPhoneCMDPlatzhalter
                         .CommandHangUp = "/hangupall:"
                         .Name = SoftPhones.MicroSIP.ToString
+
+                    Case SoftPhones.PhoneSuite
+                        .CommandCallTo = $"/dial {Localize.LocOptionen.strIPPhoneCMDPlatzhalter}"
+                        .CommandHangUp = "/drop"
+                        .Name = SoftPhones.PhoneSuite.ToString
+
                     Case Else
                         .CommandCallTo = String.Empty
                         .CommandHangUp = String.Empty

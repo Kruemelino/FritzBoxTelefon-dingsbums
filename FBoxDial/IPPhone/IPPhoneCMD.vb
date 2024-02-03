@@ -49,9 +49,11 @@
 
                     NLogger.Debug(Localize.LocWählclient.strSoftPhoneAbbruch)
                 Else
+                    ' Füge die Raute hinzu, falls gewünscht
+                    DialCode += If(Connector.AppendSuffix, "#", String.Empty)
 
-                    ' Aufbau des Telefonates mittels Parameter 
-                    Process.Start(Connector.ConnectionUriCall, $"{Connector.CommandCallTo}{DialCode}{If(Connector.AppendSuffix, "#", String.Empty)}")
+                    ' Aufbau des Telefonates mittels Parameter
+                    Process.Start(Connector.ConnectionUriCall, Connector.CommandCallTo.Replace(Localize.LocOptionen.strIPPhoneCMDPlatzhalter, DialCode))
 
                     NLogger.Debug(String.Format(Localize.LocWählclient.strSoftPhoneErfolgreich, DialCode, Connector.Name))
                 End If

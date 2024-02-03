@@ -386,5 +386,6 @@ End Enum
 Public Enum SoftPhones
     <LocalizedDescription("SoftPhonePhonerLite", GetType(resEnum))> PhonerLite
     <LocalizedDescription("SoftPhoneMicroSIP", GetType(resEnum))> MicroSIP
+    <LocalizedDescription("SoftPhonePhoneSuite", GetType(resEnum))> PhoneSuite
     <LocalizedDescription("SoftPhoneOther", GetType(resEnum))> Anderes
 End Enum

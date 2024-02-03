@@ -262,7 +262,16 @@ Public Class resEnum
     End Property
     
     '''<summary>
-    '''  Sucht eine lokalisierte Zeichenfolge, die Fax ähnelt.
+    '''  Sucht eine lokalisierte Zeichenfolge, die Fax (Privat) ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property fax_home() As String
+        Get
+            Return ResourceManager.GetString("fax_home", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die Fax (Arbeit) ähnelt.
     '''</summary>
     Public Shared ReadOnly Property fax_work() As String
         Get
@@ -663,6 +672,15 @@ Public Class resEnum
     Public Shared ReadOnly Property SoftPhonePhonerLite() As String
         Get
             Return ResourceManager.GetString("SoftPhonePhonerLite", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Sucht eine lokalisierte Zeichenfolge, die PhoneSuite ähnelt.
+    '''</summary>
+    Public Shared ReadOnly Property SoftPhonePhoneSuite() As String
+        Get
+            Return ResourceManager.GetString("SoftPhonePhoneSuite", resourceCulture)
         End Get
     End Property
     

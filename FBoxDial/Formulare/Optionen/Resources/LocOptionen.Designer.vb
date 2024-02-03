@@ -1309,6 +1309,7 @@ Namespace Localize
         '''
         '''PhonerLite: callto:{TelNr} bzw. hangup:
         '''MicroSIP: {TelNr} bzw. /hangupall
+        '''PhoneSuite: /dial {TelNr} bzw. /drop
         '''
         '''Der Schlüssel {TelNr} wird mit der zu wählenden Telefonnummer ersetzt. ähnelt.
         '''</summary>
@@ -1324,6 +1325,15 @@ Namespace Localize
         Public Shared ReadOnly Property strIPPhoneCMDPhonerLite() As String
             Get
                 Return ResourceManager.GetString("strIPPhoneCMDPhonerLite", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die {TelNr} ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strIPPhoneCMDPlatzhalter() As String
+            Get
+                Return ResourceManager.GetString("strIPPhoneCMDPlatzhalter", resourceCulture)
             End Get
         End Property
         

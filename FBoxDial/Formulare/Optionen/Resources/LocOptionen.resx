@@ -688,12 +688,17 @@ Stelle sicher, dass PhonerLite sich erfolgreich als ein IP-Telefon an der Fritz!
 
 PhonerLite: callto:{TelNr} bzw. hangup:
 MicroSIP: {TelNr} bzw. /hangupall
+PhoneSuite: /dial {TelNr} bzw. /drop
 
 Der Schlüssel {TelNr} wird mit der zu wählenden Telefonnummer ersetzt.</value>
     <comment>OptConnCMDView</comment>
   </data>
   <data name="strIPPhoneCMDPhonerLite" xml:space="preserve">
     <value>PhonerLite</value>
+    <comment>OptConnCMDView</comment>
+  </data>
+  <data name="strIPPhoneCMDPlatzhalter" xml:space="preserve">
+    <value>{TelNr}</value>
     <comment>OptConnCMDView</comment>
   </data>
   <data name="strIPPhoneCMDProcessName" xml:space="preserve">

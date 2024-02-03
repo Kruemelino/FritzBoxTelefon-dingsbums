@@ -201,8 +201,12 @@
     <value>VoIP</value>
     <comment>SIPTypeEnum</comment>
   </data>
+  <data name="fax_home" xml:space="preserve">
+    <value>Fax (Privat)</value>
+    <comment>AVM XML Telefonbuch</comment>
+  </data>
   <data name="fax_work" xml:space="preserve">
-    <value>Fax</value>
+    <value>Fax (Arbeit)</value>
     <comment>AVM XML Telefonbuch</comment>
   </data>
   <data name="fon1" xml:space="preserve">
@@ -383,6 +387,10 @@
   </data>
   <data name="SoftPhonePhonerLite" xml:space="preserve">
     <value>PhonerLite</value>
+    <comment>EnumSoftPhones</comment>
+  </data>
+  <data name="SoftPhonePhoneSuite" xml:space="preserve">
+    <value>PhoneSuite</value>
     <comment>EnumSoftPhones</comment>
   </data>
   <data name="Telex" xml:space="preserve">
