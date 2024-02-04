@@ -259,6 +259,8 @@ Friend Class OptionenService
     End Function
 
     Friend Function SoftPhoneGetExecutablePath(ProcessName As String) As String Implements IOptionenService.SoftPhoneGetExecutablePath
+        ' Sonderfall PhoneSuite
+        If ProcessName.IsEqual(SoftPhones.PhoneSuite.ToString) Then ProcessName = "cti_client"
 
         If ProcessName.IsNotStringNothingOrEmpty Then
             Dim SoftPhoneProcress As Process() = Process.GetProcessesByName(ProcessName)

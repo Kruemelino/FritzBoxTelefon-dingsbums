@@ -2,9 +2,9 @@
 
 #Region "Eigenschaften"
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private ReadOnly Property SoftPhoneReady(ProcessName As String) As Boolean
+    Private ReadOnly Property SoftPhoneReady(Connector As IIPPhoneConnector) As Boolean
         Get
-            Return Process.GetProcessesByName(ProcessName).Length.IsNotZero
+            Return Process.GetProcessesByName(IO.Path.GetFileNameWithoutExtension(Connector.ConnectionUriCall)).Length.IsNotZero
         End Get
     End Property
 
@@ -39,9 +39,9 @@
 
         Dial = False
         If Connector.Type = IPPhoneConnectorType.CMD Then
-            If Not SoftPhoneReady(Connector.Name) Then SoftPhoneStart(Connector)
+            If Not SoftPhoneReady(Connector) Then SoftPhoneStart(Connector)
 
-            If SoftPhoneReady(Connector.Name) Then
+            If SoftPhoneReady(Connector) Then
                 ' Wählkommando senden
                 If Hangup Then
                     ' Abbruch des Rufaufbaues mittels Parameter

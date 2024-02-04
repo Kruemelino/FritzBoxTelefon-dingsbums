@@ -43,27 +43,24 @@ Public Class OptConnCMDViewModel
             SetProperty(_SelectedSoftPhone, Value)
 
             With Connector
+                .Name = Value
                 ' Setze die bekannten Daten für PhonerLite, MicroSIP etc.
                 Select Case _SelectedSoftPhone
                     Case SoftPhones.PhonerLite
                         .CommandCallTo = $"callto:{Localize.LocOptionen.strIPPhoneCMDPlatzhalter}"
                         .CommandHangUp = "hangup:"
-                        .Name = SoftPhones.PhonerLite.ToString
 
                     Case SoftPhones.MicroSIP
                         .CommandCallTo = Localize.LocOptionen.strIPPhoneCMDPlatzhalter
                         .CommandHangUp = "/hangupall:"
-                        .Name = SoftPhones.MicroSIP.ToString
 
                     Case SoftPhones.PhoneSuite
                         .CommandCallTo = $"/dial {Localize.LocOptionen.strIPPhoneCMDPlatzhalter}"
                         .CommandHangUp = "/drop"
-                        .Name = SoftPhones.PhoneSuite.ToString
 
                     Case Else
                         .CommandCallTo = String.Empty
                         .CommandHangUp = String.Empty
-                        .Name = String.Empty
 
                 End Select
             End With
@@ -72,12 +69,12 @@ Public Class OptConnCMDViewModel
 
     Private Sub GetExecutablePath(o As Object)
         ' Initialen Pfad ermitteln
-        Dim InitialDirectory As String = String.Empty
+        Dim InitialDirectory As String
 
         If Connector.ConnectionUriCall.IsStringNothingOrEmpty And Connector.UserName.IsNotStringNothingOrEmpty Then
             ' Ermittle den Pfad anhand des Prozessnamens
             ' TODO: Was passiert, wenn Prozess nicht läuft
-            InitialDirectory = DatenService.SoftPhoneGetExecutablePath(Connector.Name)
+            InitialDirectory = DatenService.SoftPhoneGetExecutablePath(Connector.Name.ToString)
         Else
             ' Ein Pfad ist im Connector hinterlegt.
             InitialDirectory = Connector.ConnectionUriCall
@@ -85,5 +82,12 @@ Public Class OptConnCMDViewModel
 
         Dim Dateipfad As String = DialogService.OpenFile(".exe (.exe)|*.exe", InitialDirectory)
         If Dateipfad.IsNotStringNothingOrEmpty Then Connector.ConnectionUriCall = Dateipfad
+    End Sub
+
+    Private Sub Init(C As IPPhoneConnector, O As OptionenViewModel) Implements IConnectorVM.Init
+        Connector = C
+        OptVM = O
+
+        _SelectedSoftPhone = C.Name
     End Sub
 End Class

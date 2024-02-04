@@ -29,5 +29,8 @@
     End Property
 
     Public Property Connector As New IPPhoneConnector With {.Type = IPPhoneConnectorType.Phoner} Implements IConnectorVM.Connector
-
+    Private Sub Init(C As IPPhoneConnector, O As OptionenViewModel) Implements IConnectorVM.Init
+        Connector = C
+        OptVM = O
+    End Sub
 End Class

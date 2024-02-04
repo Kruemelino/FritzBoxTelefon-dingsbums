@@ -31,8 +31,8 @@ Public Class IPPhoneConnector
     End Property
 
 #Region "Softphone CMD"
-    Private _Name As String
-    <XmlAttribute()> Public Property Name As String Implements IIPPhoneConnector.Name
+    Private _Name As SoftPhones
+    <XmlAttribute()> Public Property Name As SoftPhones Implements IIPPhoneConnector.Name
         Get
             Return _Name
         End Get

@@ -12,7 +12,7 @@ Public Interface IIPPhoneConnector
     ''' </summary>
     Property ConnectedPhoneID As Integer
 
-    Property Name As String
+
     ''' <summary>
     ''' String zur Anwahl des Telefones
     ''' </summary>
@@ -20,7 +20,7 @@ Public Interface IIPPhoneConnector
     Property ConnectionUriCancel As String
 
 #Region "Softphone CMD"
-
+    Property Name As SoftPhones
     Property CommandCallTo As String
     Property CommandHangUp As String
 #End Region

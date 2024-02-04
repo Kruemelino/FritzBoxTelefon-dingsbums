@@ -72,13 +72,6 @@
         </Grid>
 
         <Label Style="{StaticResource OptHintTextBlock}" 
-               Content="{x:Static localize:LocOptionen.strIPPhoneCMDProcessNameInfo}"/>
-
-        <TextBox Style="{StaticResource OptTextBox}"
-                 Tag="{x:Static localize:LocOptionen.strIPPhoneCMDProcessName}"
-                 Text="{Binding Connector.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <Label Style="{StaticResource OptHintTextBlock}" 
                Content="{x:Static localize:LocOptionen.strIPPhoneCMDParameterInfo}"/>
 
         <TextBox Style="{StaticResource OptTextBox}"

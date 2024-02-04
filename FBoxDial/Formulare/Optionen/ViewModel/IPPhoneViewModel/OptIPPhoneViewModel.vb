@@ -87,10 +87,11 @@
                 _ConnectorVM = ConnectorViewModels.Where(Function(VM) VM.Connector.Type = Liste.First.Type).First
 
                 ' Zuweisen
-                With _ConnectorVM
-                    .Connector = Liste.First
-                    .OptVM = OptVM
-                End With
+                _ConnectorVM.Init(Liste.First, OptVM)
+                'With _ConnectorVM
+                '    .Connector = Liste.First
+                '    .OptVM = OptVM
+                'End With
 
             End If
         End If
