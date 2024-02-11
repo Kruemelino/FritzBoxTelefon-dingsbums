@@ -755,7 +755,7 @@ Friend Module KontaktFunktionen
 
             ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
 
-            'If .Speichern Then NLogger.Debug($"Indizierung des Kontaktes { .FullNameAndCompanyWithoutLineBreak} abgeschlossen.")
+            If .Speichern Then NLogger.Debug($"Indizierung des Kontaktes { .FullNameAndCompanyWithoutLineBreak} abgeschlossen.")
 
         End With
     End Sub
@@ -770,7 +770,7 @@ Friend Module KontaktFunktionen
             ' Lösche alle Indizierungsfelder
             .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
 
-            'If .Speichern Then NLogger.Debug($"Deindizierung des Kontaktes { .FullNameAndCompanyWithoutLineBreak} abgeschlossen.")
+            If .Speichern Then NLogger.Debug($"Deindizierung des Kontaktes { .FullNameAndCompanyWithoutLineBreak} abgeschlossen.")
         End With
     End Sub
 
