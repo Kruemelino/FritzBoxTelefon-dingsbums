@@ -49,6 +49,9 @@ Friend NotInheritable Class NutzerDaten
         ' Setze einige Felder
 
         With XMLData.POptionen
+            ' Entferne alle nicht existierenden und nicht zugreifbaren Ordner
+            .OutlookOrdner.ClearNotExisting()
+
             ' Ermittle eine gülte IP-Adresse
             .ValidFBAdr = ValidIP(.TBFBAdr)
 

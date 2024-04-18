@@ -39,6 +39,8 @@ Public Class OutlookOrdner
     Implements IDisposable
     Implements IEquatable(Of OutlookOrdner)
 
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+
     Public Sub New()
         ' Nicht löschen. Wird zum deserialisieren benötigt: Parameterloser Konstruktor
     End Sub
@@ -67,7 +69,15 @@ Public Class OutlookOrdner
     <XmlAttribute> Public Property Typ As OutlookOrdnerVerwendung
     <XmlIgnore> Friend ReadOnly Property Exists As Boolean
         Get
-            Return GetOutlookFolder(FolderID, StoreID) IsNot Nothing
+            Dim F As MAPIFolder = GetOutlookFolder(FolderID, StoreID)
+            Try
+                ' Es kann sein, dass auf den Ordner nicht zugegriffen werden kann. Dann kommt es im schlimmsten Fall zu einem Absturz
+                Return F IsNot Nothing AndAlso F.EntryID.IsNotStringNothingOrEmpty
+            Catch ex As System.Exception
+                NLogger.Error(ex, $"Der Ordner '{Name}' ist vorhanden jedoch kann auf ihn nicht zugegriffen werden.")
+                Return False
+            End Try
+
         End Get
     End Property
     <XmlIgnore> Friend Property MAPIFolder As MAPIFolder
