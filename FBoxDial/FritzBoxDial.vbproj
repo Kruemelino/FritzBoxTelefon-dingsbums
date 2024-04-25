@@ -142,8 +142,8 @@
     <Reference Include="ColorPicker, Version=3.4.1.0, Culture=neutral, PublicKeyToken=1c61eec504ce2276, processorArchitecture=MSIL">
       <HintPath>..\packages\PixiEditor.ColorPicker.3.4.1\lib\net451\ColorPicker.dll</HintPath>
     </Reference>
-    <Reference Include="FilterDataGrid, Version=1.2.7.0, Culture=neutral, PublicKeyToken=42060d65a6cc17c2, processorArchitecture=MSIL">
-      <HintPath>..\packages\FilterDataGrid.1.2.7\lib\net48\FilterDataGrid.dll</HintPath>
+    <Reference Include="FilterDataGrid, Version=1.2.8.0, Culture=neutral, PublicKeyToken=42060d65a6cc17c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\FilterDataGrid.1.2.8\lib\net48\FilterDataGrid.dll</HintPath>
     </Reference>
     <Reference Include="HttpClientFactoryLite, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HttpClientFactoryLite.0.4.0\lib\netstandard2.0\HttpClientFactoryLite.dll</HintPath>
