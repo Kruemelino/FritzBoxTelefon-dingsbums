@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
-             xmlns:fdg="http://filterdatagrid.control.com/2021"
+             xmlns:fdg="clr-namespace:FilterDataGrid;assembly=FilterDataGrid"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=fbd:FBoxDataTellowsViewModel, IsDesignTimeCreatable=False}" >

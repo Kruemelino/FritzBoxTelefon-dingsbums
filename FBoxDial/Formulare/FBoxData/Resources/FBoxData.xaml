@@ -171,7 +171,7 @@
 
     <Style x:Key="FilterDatagridStyle"
            TargetType="{x:Type fdg:FilterDataGrid}"
-           BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly=fdg:FilterDataGrid, ResourceId=FilterDataGridStyle}}">
+           >
         <!--Farben müssen überschrieben werden, da ansonsten das FilterDataGrid diese wieder überschreibt.
             Alternativ würde der Button für das Löschen aller gefilterter Spalten nicht dargestellt.-->
         <Setter Property="Background" Value="Transparent" />

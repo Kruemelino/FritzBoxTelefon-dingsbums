@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fbd="clr-namespace:FBoxDial"
              xmlns:localize="clr-namespace:FBoxDial.Localize"
-             xmlns:fdg="http://filterdatagrid.control.com/2021"
+             xmlns:fdg="clr-namespace:FilterDataGrid;assembly=FilterDataGrid"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=fbd:FBoxDataCallListViewModel, IsDesignTimeCreatable=False}"

@@ -2,11 +2,13 @@
 # Diese .gitignore-Datei wurde von Microsoft(R) Visual Studio automatisch erstellt.
 ################################################################################
 
-
 /.vs
 #/FBoxDial
 Installer
-/FBoxDial/.vs/FritzBoxDial_2010/v16/Server/sqlite3
+/FBoxDial/.vs
+/FBoxDial/debug.log
+/FBoxAPI
+/nuget.config
 
 #################
 ## Visual Studio
@@ -103,9 +105,3 @@ Thumbs.db
 
 # Folder config file
 Desktop.ini
-
-
-
-/FBoxDial/debug.log
-/FBoxAPI
-/nuget.config
