@@ -124,7 +124,7 @@ Friend Class Vorwahlen
     Private Function TelNrONKZ(TelNr As Telefonnummer, _LKZ As List(Of Landeskennzahl)) As Ortsnetzkennzahlen
         Dim i, j As Integer
         Dim _ONKZ As Ortsnetzkennzahlen = Nothing
-        Dim ONKZListe As List(Of Ortsnetzkennzahlen)
+        Dim ONKZListe As New List(Of Ortsnetzkennzahlen)
 
         With TelNr.Unformatiert
 
@@ -140,10 +140,10 @@ Friend Class Vorwahlen
                     If TelNr.IstNANP And .StartsWith("1") Then i = 1
 
                     j = .Length - i
-                    Do
+                    Do Until ONKZListe.Count.AreEqual(1) Or j.IsZero
                         ONKZListe = LKZ.Ortsnetzkennzahlen.FindAll(Function(OrNKZ) OrNKZ.Ortsnetzkennzahl = .Substring(i, j))
                         j -= 1
-                    Loop Until ONKZListe.Count.AreEqual(1) Or j.IsZero
+                    Loop
 
                     If ONKZListe.Count.AreEqual(1) Then
 

@@ -237,6 +237,10 @@
     <value>von Anonym</value>
     <comment>AVM XML Rufumleitung Type</comment>
   </data>
+  <data name="fromNotInPhonebook" xml:space="preserve">
+    <value>von nicht im Telefonbuch</value>
+    <comment>AVM XML Rufumleitung Type</comment>
+  </data>
   <data name="fromNotVIP" xml:space="preserve">
     <value>von kein-VIP</value>
     <comment>AVM XML Rufumleitung Type</comment>

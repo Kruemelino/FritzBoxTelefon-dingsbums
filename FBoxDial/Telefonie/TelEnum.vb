@@ -289,6 +289,7 @@ Public Enum TypeEnum
     ''' <summary>
     ''' The caller is not in the phonebook 
     ''' </summary>
+    <LocalizedDescription("fromNotInPhonebook", GetType(resEnum))>
     <XmlEnum> fromNotInPhonebook = 7
 
     ''' <summary>
