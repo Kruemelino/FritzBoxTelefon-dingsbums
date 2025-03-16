@@ -1,5 +1,5 @@
 ﻿#define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "5.0.4.2"
+#define MyAppVersion "5.0.4.3"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2021), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."

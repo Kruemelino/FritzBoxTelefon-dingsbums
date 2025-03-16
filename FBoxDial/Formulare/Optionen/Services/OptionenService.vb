@@ -564,22 +564,20 @@ Friend Class OptionenService
 
 #Region "Test der TR-064 Schnittstelle"
     Private Sub StartTR064Test() Implements IOptionenService.StartTR064Test
-        'Dim e As New FBoxAPI.PortMappingEntry
-        'Dim w As New FBoxAPI.WANAddonInfo
 
-        'Dim i As Integer = -1
+        '        Dim w As New FBoxAPI.DeviceLog
 
-        'With Globals.ThisAddIn.FBoxTR064
-        '    'With .IGDI1cfg
-        '    '    .GetAddonInfos(w)
-        '    'End With
+        '        'Dim i As Integer = -1
 
-        '    With .IGD2ipv6fwc
-        '        .GetFirewallStatus(True, False)
-        '    End With
+        '        With Globals.ThisAddIn.FBoxTR064
 
 
-        'End With
+        '            With .Deviceinfo
+        '                w = Await .GetDeviceLogXML(FBoxAPI.DeviceLogFilter.all)
+        '            End With
+
+
+        '        End With
     End Sub
 #End Region
 End Class

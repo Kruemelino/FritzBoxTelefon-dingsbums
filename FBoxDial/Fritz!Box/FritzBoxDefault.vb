@@ -36,7 +36,7 @@
                             NLogger.Info($"Benutzername zum Login auf zuletzt genutzten User gesetzt: '{FritzBoxUsers.GetLastUsedUser.UserName}'")
                             Return FritzBoxUsers.GetLastUsedUser.UserName
                         Else
-                            NLogger.Warn($"Benutzername zum Login konnte nucht ermittelt werden: '{ .DisplayVersion}'")
+                            NLogger.Warn($"Benutzername zum Login konnte nicht ermittelt werden: '{ .DisplayVersion}'")
                             Return String.Empty
                         End If
                     Else

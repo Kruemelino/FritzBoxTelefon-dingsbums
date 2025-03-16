@@ -1377,7 +1377,7 @@ Public Class OptionenViewModel
         End With
 
         ' Anmeldeinformationen für Fritz!Box aktualisieren
-        Globals.ThisAddIn.FBoxTR064.UpdateCredential(FritzBoxDefault.Anmeldeinformationen)
+        Globals.ThisAddIn.FBoxTR064?.UpdateCredential(FritzBoxDefault.Anmeldeinformationen)
 
         ' Tastenkombination setzen
         Globals.ThisAddIn.SetupKeyboardHooking()
