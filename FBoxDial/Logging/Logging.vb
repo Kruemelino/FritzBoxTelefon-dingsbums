@@ -33,14 +33,11 @@ Friend Module NLogging
         config.AddTarget(New Targets.FileTarget With {.Name = "f",
                                                       .Encoding = Encoding.UTF8,
                                                       .KeepFileOpen = True,
-                                                      .ConcurrentWrites = True,
                                                       .FileName = Path.Combine(BaseDir, $"{My.Resources.strDefShortName}.log"),
                                                       .Layout = String.Join("|", LayoutText),
-                                                      .DeleteOldFileOnStartup = True,
                                                       .ArchiveOldFileOnStartup = True,
-                                                      .ArchiveNumbering = Targets.ArchiveNumberingMode.Date,
-                                                      .ArchiveDateFormat = "yyMMdd-HHmm",
-                                                      .ArchiveFileName = Path.Combine(BaseDir, $"{My.Resources.strDefShortName}.{{#}}.log"),
+                                                      .ArchiveSuffixFormat = "_{0:00}",
+                                                      .ArchiveFileName = .FileName,
                                                       .MaxArchiveFiles = 24,
                                                       .MaxArchiveDays = 7})
 
