@@ -1,5 +1,4 @@
 ﻿Imports Microsoft.Office.Interop
-Imports Microsoft.Win32
 
 Friend Module Fenster
 #Region "Properties"
@@ -54,7 +53,7 @@ Friend Module Fenster
             Else
                 If OInsp Is Nothing Then
                     With Globals.ThisAddIn.Application
-                        If .ActiveWindow Is .ActiveInspector Then
+                        If .ActiveInspector IsNot Nothing AndAlso .ActiveWindow Is .ActiveInspector Then
                             If UnSaveMethods.GetWindowText(UnSaveMethods.GetForegroundWindow) = .ActiveInspector.Caption Then
                                 NLogger.Debug($"Aktiver Outlook Inspektor '{ .ActiveInspector.Caption}' detektiert.")
                                 OInsp = .ActiveInspector()
